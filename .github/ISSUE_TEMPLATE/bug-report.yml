@@ -1,7 +1,7 @@
 name: Bug Report
-description: File a bug report
-title: "[Bug]: "
-labels: ["bug"]
+description: 버그 리포트 제출
+title: "[FE | BE | ALL | 버그] "
+labels: ["🚨 버그"]
 body:
   - type: markdown
     attributes:
