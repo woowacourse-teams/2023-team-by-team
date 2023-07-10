@@ -11,7 +11,8 @@ export const ModalContext = createContext<ModalContextProps>(
   {} as ModalContextProps,
 );
 
-export const ModalProvider = ({ children }: PropsWithChildren) => {
+export const ModalProvider = (props: PropsWithChildren) => {
+  const { children } = props;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
