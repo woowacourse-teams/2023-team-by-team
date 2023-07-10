@@ -4,6 +4,7 @@ import { initialize, mswDecorator } from 'msw-storybook-addon';
 import { handlers } from '../src/mocks/handlers/index';
 import { theme } from '../src/styles/theme';
 import GlobalStyle from '../src/styles/GlobalStyle';
+import { ModalProvider } from '../src/components/common/Modal/ModalContext';
 import type { Preview } from '@storybook/react';
 
 initialize();
@@ -24,8 +25,10 @@ const preview: Preview = {
 export const decorators = [
   (Story) => (
     <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      <Story />
+      <ModalProvider>
+        <GlobalStyle />
+        <Story />
+      </ModalProvider>
     </ThemeProvider>
   ),
   mswDecorator,
