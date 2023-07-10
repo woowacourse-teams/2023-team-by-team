@@ -6,6 +6,7 @@ import App from '~/App';
 import GlobalStyle from '~/styles/GlobalStyle';
 import { theme } from './styles/theme';
 import { worker } from '~/mocks/browser';
+import { ModalProvider } from '~/components/common/Modal/ModalContext';
 
 if (process.env.NODE_ENV === 'development') {
   worker.start();
@@ -23,8 +24,10 @@ const root = createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <StrictMode>
     <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      <RouterProvider router={router} />
+      <ModalProvider>
+        <GlobalStyle />
+        <RouterProvider router={router} />
+      </ModalProvider>
     </ThemeProvider>
   </StrictMode>,
 );
