@@ -1,5 +1,8 @@
 import { PropsWithChildren } from 'react';
+import type { CSSProp } from 'styled-components';
 import type { Size, Weight } from '~/types/size';
+import * as S from './Text.styled';
+
 interface TextProps extends PropsWithChildren {
   size?: Size;
   weight?: Weight;
