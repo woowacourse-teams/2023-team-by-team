@@ -4,14 +4,14 @@ import type { Size, Weight } from '~/types/size';
 import type { TextProps } from './Text';
 
 const FontWeight: Record<Weight, CSSProp> = {
-  normal: css`
+  light: css`
     font-weight: 100;
   `,
-  bold: css`
-    font-weight: 500;
+  normal: css`
+    font-weight: 400;
   `,
-  extraBold: css`
-    font-weight: 900;
+  bold: css`
+    font-weight: 800;
   `,
 };
 
@@ -42,5 +42,5 @@ const FontSize: Record<Size, CSSProp> = {
 export const Text = styled.p<TextProps>`
   ${({ size = 'md' }) => FontSize[size]}
   ${({ weight = 'normal' }) => FontWeight[weight]}
-    ${(props) => props.css}
+  ${(props) => props.css}
 `;
