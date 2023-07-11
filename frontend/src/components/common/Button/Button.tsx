@@ -1,7 +1,7 @@
-import * as S from './Button.styled';
 import type { PropsWithChildren, ButtonHTMLAttributes } from 'react';
 import type { CSSProp } from 'styled-components';
 import type { ButtonSize } from '~/types/size';
+import * as S from './Button.styled';
 
 export type ButtonType = 'button' | 'submit' | 'reset';
 export type ButtonVariant = 'primary' | 'normal';
