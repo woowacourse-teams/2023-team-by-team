@@ -1,7 +1,7 @@
 import { styled, css } from 'styled-components';
 import type { CSSProp } from 'styled-components';
-import type { Size, Weight } from '~/types/size';
-import type { TextProps } from './Text';
+import type { Size } from '~/types/size';
+import type { TextProps, Weight } from './Text';
 
 const FontWeight: Record<Weight, CSSProp> = {
   light: css`
