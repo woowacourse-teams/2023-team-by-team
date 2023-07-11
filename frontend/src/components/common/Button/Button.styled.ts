@@ -42,6 +42,10 @@ export const Button = styled.button<ButtonProps>`
 
   ${({ variant = 'primary' }) => variantStyles[variant]};
 
+  &:disabled {
+    opacity: 0.6;
+  }
+
   &:not([disabled]):hover {
     opacity: 0.8;
   }
