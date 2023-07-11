@@ -1,5 +1,6 @@
-import { styled, css, CSSProp } from 'styled-components';
-import type { ButtonProps, ButtonVariant } from './ButtonProps';
+import { styled, css } from 'styled-components';
+import type { CSSProp } from 'styled-components';
+import type { ButtonVariant, ButtonProps } from './Button';
 
 const colors = {
   primaryBlue: '#3145ff',
@@ -26,30 +27,20 @@ const variantStyles: Record<ButtonVariant, CSSProp> = {
   `,
 };
 
-export const Button = styled.p<ButtonProps>`
-  display: inline-block;
-
-  border-radius: 3px;
+export const Button = styled.button<ButtonProps>`
+  border-radius: 4px;
 
   font-size: 16px;
   line-height: 16px;
   text-align: center;
 
-  cursor: pointer;
   transition: 0.2s;
 
-  ${({ size }) => css`
+  ${({ size = 'medium' }) => css`
     padding: ${paddingStyles[size]};
   `};
 
   ${({ variant = 'primary' }) => variantStyles[variant]};
-
-  ${({ disabled = false }) =>
-    disabled &&
-    css`
-      opacity: 0.6;
-      cursor: not-allowed;
-    `};
 
   &:not([disabled]):hover {
     opacity: 0.8;
