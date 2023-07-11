@@ -1,29 +1,24 @@
 import { styled, css } from 'styled-components';
 import type { CSSProp } from 'styled-components';
 import type { ButtonVariant, ButtonProps } from './Button';
+import type { ButtonSize } from '~/types/size';
 
-const colors = {
-  primaryBlue: '#3145ff',
-  gray: '#666',
-  white: '#fff',
+const paddingSize: Record<ButtonSize, string> = {
+  sm: '6px',
+  md: '12px',
+  lg: '18px',
 };
 
-const paddingStyles = {
-  small: '6px',
-  medium: '12px',
-  large: '18px',
-};
-
-const variantStyles: Record<ButtonVariant, CSSProp> = {
+const variants: Record<ButtonVariant, CSSProp> = {
   primary: css`
-    background-color: ${colors.primaryBlue};
-    color: ${colors.white};
+    background-color: ${({ theme }) => theme.color.PRIMARY};
+    color: ${({ theme }) => theme.color.WHITE};
   `,
 
   normal: css`
-    background-color: ${colors.white};
-    color: ${colors.gray};
-    border: 1px solid ${colors.gray};
+    background-color: ${({ theme }) => theme.color.WHITE};
+    color: ${({ theme }) => theme.color.GRAY600};
+    border: 1px solid ${({ theme }) => theme.color.GRAY600};
   `,
 };
 
@@ -36,11 +31,11 @@ export const Button = styled.button<ButtonProps>`
 
   transition: 0.2s;
 
-  ${({ size = 'medium' }) => css`
-    padding: ${paddingStyles[size]};
+  ${({ size = 'md' }) => css`
+    padding: ${paddingSize[size]};
   `};
 
-  ${({ variant = 'primary' }) => variantStyles[variant]};
+  ${({ variant = 'primary' }) => variants[variant]};
 
   &:disabled {
     opacity: 0.6;
@@ -49,4 +44,6 @@ export const Button = styled.button<ButtonProps>`
   &:not([disabled]):hover {
     opacity: 0.8;
   }
+
+  ${(props) => props.css}
 `;

@@ -1,10 +1,10 @@
-import { PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 import type { CSSProp } from 'styled-components';
 import type { Size } from '~/types/size';
 import * as S from './Text.styled';
 
 export type Weight = 'light' | 'normal' | 'bold';
-export interface TextProps extends PropsWithChildren {
+export interface TextProps {
   as?:
     | 'h1'
     | 'h2'
@@ -21,7 +21,7 @@ export interface TextProps extends PropsWithChildren {
   css?: CSSProp;
 }
 
-const Text = (props: TextProps) => {
+const Text = (props: PropsWithChildren<TextProps>) => {
   const { as = 'p', size, weight, css, children } = props;
 
   return (
