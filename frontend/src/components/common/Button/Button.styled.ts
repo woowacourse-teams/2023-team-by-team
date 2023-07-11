@@ -1,11 +1,16 @@
 import { styled, css } from 'styled-components';
 import type { CSSProp } from 'styled-components';
 import type { ButtonVariant, ButtonProps } from './Button';
+import type { ButtonSize } from '~/types/size';
 
 const colors = {
   primaryBlue: '#3145ff',
   gray: '#666',
   white: '#fff',
+const paddingSize: Record<ButtonSize, string> = {
+  sm: '6px',
+  md: '12px',
+  lg: '18px',
 };
 
 const paddingStyles = {

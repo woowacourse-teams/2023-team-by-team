@@ -16,7 +16,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   args: {
     children: '확인',
-    size: 'medium',
+    size: 'md',
     variant: 'primary',
     onClick: () => alert('버튼이 클릭되었습니다!'),
   },
@@ -25,7 +25,7 @@ export const Primary: Story = {
 export const PrimaryLongMessage: Story = {
   args: {
     children: '네, 절차를 이해했으며 진행하기를 원합니다.',
-    size: 'medium',
+    size: 'md',
     variant: 'primary',
   },
 };
@@ -33,7 +33,7 @@ export const PrimaryLongMessage: Story = {
 export const PrimaryLarge: Story = {
   args: {
     children: '확인',
-    size: 'large',
+    size: 'lg',
     variant: 'primary',
   },
 };
@@ -41,7 +41,7 @@ export const PrimaryLarge: Story = {
 export const PrimarySmall: Story = {
   args: {
     children: '확인',
-    size: 'small',
+    size: 'sm',
     variant: 'primary',
   },
 };
@@ -49,7 +49,7 @@ export const PrimarySmall: Story = {
 export const PrimaryDisabled: Story = {
   args: {
     children: '확인',
-    size: 'medium',
+    size: 'md',
     variant: 'primary',
     disabled: true,
   },
@@ -58,7 +58,7 @@ export const PrimaryDisabled: Story = {
 export const Normal: Story = {
   args: {
     children: '취소',
-    size: 'medium',
+    size: 'md',
     variant: 'normal',
   },
 };

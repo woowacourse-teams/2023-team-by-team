@@ -1,6 +1,5 @@
-import { styled, css } from 'styled-components';
-import type { CSSProp } from 'styled-components';
-import type { Size } from '~/types/size';
+import { styled } from 'styled-components';
+import type { TextSize } from '~/types/size';
 import type { TextProps, Weight } from './Text';
 
 const fontWeight: Record<Weight, number> = {
@@ -9,7 +8,7 @@ const fontWeight: Record<Weight, number> = {
   bold: 800,
 };
 
-const fontSize: Record<Size, string> = {
+const fontSize: Record<TextSize, string> = {
   xxs: '10px',
   xs: '12px',
   sm: '14px',
