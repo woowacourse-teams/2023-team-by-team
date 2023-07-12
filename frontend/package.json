@@ -8,7 +8,8 @@
     "start": "webpack serve --open",
     "build": "webpack --mode production",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "",
@@ -34,7 +35,9 @@
     "eslint": "^8.44.0",
     "eslint-plugin-react": "^7.32.2",
     "html-webpack-plugin": "^5.5.3",
+    "husky": "^8.0.3",
     "jest": "^29.6.0",
+    "lint-staged": "^13.2.3",
     "msw": "^1.2.2",
     "msw-storybook-addon": "^1.8.0",
     "prettier": "3.0.0",
@@ -55,5 +58,11 @@
   },
   "msw": {
     "workerDirectory": "public"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
   }
 }
