@@ -15,6 +15,7 @@ import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 public class Name {
 
     private static final int MAX_LENGTH = 30;
+
     @Column(name = "name", nullable = false, length = MAX_LENGTH)
     private String value;
 
