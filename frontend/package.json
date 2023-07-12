@@ -9,7 +9,7 @@
     "build": "webpack --mode production",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "prepare": "husky install"
+    "prepare": "cd .. && husky install frontend/.husky && cd frontend"
   },
   "keywords": [],
   "author": "",
@@ -61,8 +61,10 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "prettier --write",
-      "eslint --fix"
+      "eslint --cache"
+    ],
+    "*.{ts,tsx,md,json}": [
+      "prettier --write"
     ]
   }
 }
