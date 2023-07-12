@@ -22,4 +22,5 @@ const Button = (props: PropsWithChildren<ButtonProps>) => {
     </S.Button>
   );
 };
+
 export default Button;
