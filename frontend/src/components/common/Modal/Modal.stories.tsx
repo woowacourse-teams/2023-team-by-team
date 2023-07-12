@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import Button from '~/components/common/Button/Button';
 import Modal from '~/components/common/Modal/Modal';
 import { useModal } from '~/components/common/Modal/useModal';
+import Text from '~/components/common/Text/Text';
 
 const meta = {
   title: 'common/Modal',
@@ -14,19 +16,10 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   render: ({ children }) => {
     const { openModal } = useModal();
+
     return (
       <>
-        <button
-          onClick={openModal}
-          style={{
-            width: '150px',
-            padding: '16px',
-            backgroundColor: '#333',
-            color: 'white',
-          }}
-        >
-          모달 열기
-        </button>
+        <Button onClick={openModal}>모달 열기</Button>
         <Modal>
           <div
             style={{
@@ -36,7 +29,7 @@ export const Default: Story = {
               backgroundColor: '#ddd',
             }}
           >
-            모달 컨텐츠
+            <Text>모달 컨텐츠</Text>
           </div>
         </Modal>
       </>
