@@ -18,7 +18,7 @@ public class Schedule {
     private Long teamPlaceId;
 
     @Embedded
-    private Name name;
+    private Title title;
 
     @Embedded
     private Span span;
