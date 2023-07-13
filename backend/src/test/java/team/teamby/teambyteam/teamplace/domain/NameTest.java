@@ -19,7 +19,7 @@ class NameTest {
 
         // when & then
         assertThatThrownBy(() -> new Name(nullName))
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(NullPointerException.class)
                 .hasMessage("팀 플레이스 이름은 null일 수 없습니다.");
     }
 
