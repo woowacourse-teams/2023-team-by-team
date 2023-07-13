@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import Button from '~/components/common/Button/Button';
 import Modal from '~/components/common/Modal/Modal';
-import { useModal } from '~/components/common/Modal/useModal';
+import { useModal } from '~/hooks/useModal';
 import Text from '~/components/common/Text/Text';
 
 const meta = {

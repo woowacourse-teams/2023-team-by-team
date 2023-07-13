@@ -1,5 +1,5 @@
 import { createPortal } from 'react-dom';
-import { useModal } from '~/components/common/Modal/useModal';
+import { useModal } from '~/hooks/useModal';
 import { useKeydownEffect } from '~/hooks/useKeydownEffect';
 import type { PropsWithChildren } from 'react';
 
