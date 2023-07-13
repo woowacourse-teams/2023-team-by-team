@@ -1,11 +1,18 @@
 package team.teamby.teambyteam.member.domain.vo;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import team.teamby.teambyteam.member.exception.MemberException;
 
 import java.util.Objects;
 import java.util.regex.Pattern;
 
+@Embeddable
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Email {
 
     private static final String EMAIL_REGEX = "^([\\w\\.\\_\\-])*[a-zA-Z0-9]+([\\w\\.\\_\\-])*([a-zA-Z0-9])+([\\w\\.\\_\\-])+@([a-zA-Z0-9]+\\.)+[a-zA-Z0-9]{2,8}$";
