@@ -1,3 +1,8 @@
+INSERT INTO team_place (name) VALUES ('대한 팀플');
+INSERT INTO team_place (name) VALUES ('동서 문명의 교류 팀플');
+INSERT INTO team_place (name) VALUES ('건축공학설계 팀플');
+INSERT INTO team_place (name) VALUES ('유체역학 팀플');
+
 -- 테스트 케이스
 -- 1. 당일 N 시간
 -- 2. 하루 종일
