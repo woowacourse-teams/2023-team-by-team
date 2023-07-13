@@ -1,7 +1,5 @@
 package team.teamby.teambyteam.teamplace.domain;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,8 +18,8 @@ class NameTest {
 
         // when & then
         Assertions.assertThatThrownBy(() -> new Name(nullName))
-                .isInstanceOf(TeamPlaceException.NameNullException.class)
-                .hasMessage("팀 플레이스 이름은 빈 값일 수 없습니다.");
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("팀 플레이스 이름은 null일 수 없습니다.");
     }
 
     @Test
