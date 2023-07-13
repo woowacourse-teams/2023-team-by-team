@@ -1,3 +1,25 @@
+INSERT INTO member (name, email, profile_image_url) VALUES ('james', 'abcd@gmail.com', './test.jpg');
+INSERT INTO member (name, email, profile_image_url) VALUES ('andy', 'aaa23213@gmail.com', './test.jpg');
+INSERT INTO member (name, email, profile_image_url) VALUES ('philip', 'sdf3244@gmail.com', './test.jpg');
+INSERT INTO member (name, email, profile_image_url) VALUES ('seongha', 'safd234@gmail.com', './test.jpg');
+INSERT INTO member (name, email, profile_image_url) VALUES ('rulu', 'dfg345@gmail.com', './test.jpg');
+INSERT INTO member (name, email, profile_image_url) VALUES ('tomas', 'htr35@gmail.com', './test.jpg');
+INSERT INTO member (name, email, profile_image_url) VALUES ('youth', 'sag345@gmail.com', './test.jpg');
+
+INSERT INTO member_team_place (member_id, team_place_id) VALUES (1, 1);
+INSERT INTO member_team_place (member_id, team_place_id) VALUES (2, 1);
+INSERT INTO member_team_place (member_id, team_place_id) VALUES (3, 1);
+INSERT INTO member_team_place (member_id, team_place_id) VALUES (3, 2);
+INSERT INTO member_team_place (member_id, team_place_id) VALUES (4, 2);
+INSERT INTO member_team_place (member_id, team_place_id) VALUES (5, 2);
+INSERT INTO member_team_place (member_id, team_place_id) VALUES (6, 2);
+INSERT INTO member_team_place (member_id, team_place_id) VALUES (1, 3);
+INSERT INTO member_team_place (member_id, team_place_id) VALUES (2, 3);
+INSERT INTO member_team_place (member_id, team_place_id) VALUES (3, 3);
+INSERT INTO member_team_place (member_id, team_place_id) VALUES (5, 3);
+INSERT INTO member_team_place (member_id, team_place_id) VALUES (7, 3);
+INSERT INTO member_team_place (member_id, team_place_id) VALUES (7, 4);
+
 INSERT INTO team_place (name) VALUES ('대한 팀플');
 INSERT INTO team_place (name) VALUES ('동서 문명의 교류 팀플');
 INSERT INTO team_place (name) VALUES ('건축공학설계 팀플');
