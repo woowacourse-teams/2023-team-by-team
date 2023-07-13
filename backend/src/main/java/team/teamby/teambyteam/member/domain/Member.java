@@ -1,0 +1,32 @@
+package team.teamby.teambyteam.member.domain;
+
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import team.teamby.teambyteam.member.domain.vo.Email;
+import team.teamby.teambyteam.member.domain.vo.Name;
+import team.teamby.teambyteam.member.domain.vo.ProfileImageUrl;
+
+import java.util.List;
+
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Member {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Embedded
+    private Name name;
+
+    @Embedded
+    private Email email;
+
+    @Embedded
+    private ProfileImageUrl profileImageUrl;
+
+    @Column
+    @OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    private List<MemberTeamPlace> memberTeamPlaces;
+}
