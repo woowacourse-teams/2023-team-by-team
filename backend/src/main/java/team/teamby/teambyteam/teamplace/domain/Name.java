@@ -26,7 +26,7 @@ public class Name {
 
     private void validate(final String value) {
         if (Objects.isNull(value)) {
-            throw new TeamPlaceException.NameNullException("팀 플레이스 이름은 빈 값일 수 없습니다.");
+            throw new IllegalArgumentException("팀 플레이스 이름은 null일 수 없습니다.");
         }
         if (value.length() > MAX_LENGTH) {
             throw new TeamPlaceException.NameLengthException("입력한 길이가 최대 이름 길이인 " + MAX_LENGTH + "를 초과했습니다.");

@@ -6,13 +6,6 @@ public class TeamPlaceException extends RuntimeException {
         super(message);
     }
 
-    public static class NameNullException extends TeamPlaceException {
-
-        public NameNullException(final String message) {
-            super(message);
-        }
-    }
-
     public static class NameLengthException extends TeamPlaceException {
         public NameLengthException(final String message) {
             super(message);
