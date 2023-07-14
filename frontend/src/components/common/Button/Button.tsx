@@ -4,7 +4,7 @@ import type { ButtonSize } from '~/types/size';
 import * as S from './Button.styled';
 
 export type ButtonType = 'button' | 'submit' | 'reset';
-export type ButtonVariant = 'primary' | 'normal';
+export type ButtonVariant = 'primary' | 'normal' | 'plain';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: ButtonSize;

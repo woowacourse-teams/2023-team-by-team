@@ -17,33 +17,48 @@ const variants: Record<ButtonVariant, CSSProp> = {
 
   normal: css`
     background-color: ${({ theme }) => theme.color.WHITE};
-    color: ${({ theme }) => theme.color.GRAY600};
-    border: 1px solid ${({ theme }) => theme.color.GRAY600};
+    color: ${({ theme }) => theme.color.GRAY900};
+    border: 1px solid ${({ theme }) => theme.color.GRAY300};
+  `,
+
+  plain: css`
+    background-color: ${({ theme }) => theme.color.WHITE};
+    color: ${({ theme }) => theme.color.GRAY900};
   `,
 };
 
 export const Button = styled.button<ButtonProps>`
-  border-radius: 4px;
-
   font-size: 16px;
   line-height: 16px;
   text-align: center;
 
-  transition: 0.2s;
+  ${({ size = 'md' }) => {
+    return css`
+      padding: ${paddingSize[size]};
+    `;
+  }};
 
-  ${({ size = 'md' }) => css`
-    padding: ${paddingSize[size]};
-  `};
+  ${({ variant = 'primary' }) => {
+    return variants[variant];
+  }};
 
-  ${({ variant = 'primary' }) => variants[variant]};
+  ${({ variant = 'primary' }) => {
+    if (variant !== 'plain') {
+      return css`
+        &:disabled {
+          opacity: 0.6;
+        }
 
-  &:disabled {
-    opacity: 0.6;
-  }
+        &:not([disabled]):hover {
+          opacity: 0.8;
+        }
 
-  &:not([disabled]):hover {
-    opacity: 0.8;
-  }
+        border-radius: 4px;
+
+        transition: 0.2s;
+      `;
+    }
+  }};
 
   ${(props) => props.css}
 `;
