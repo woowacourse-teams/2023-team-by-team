@@ -22,7 +22,7 @@ const variants: Record<ButtonVariant, CSSProp> = {
   `,
 
   plain: css`
-    background-color: ${({ theme }) => theme.color.WHITE};
+    background-color: transparent;
     color: ${({ theme }) => theme.color.GRAY900};
   `,
 };
