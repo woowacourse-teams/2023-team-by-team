@@ -57,7 +57,13 @@ const Calendar = () => {
         <S.DateView>
           {calendar.map((week) => {
             return week.map((day) => {
-              return <DateCell key={day.toISOString()} rawDate={day} />;
+              return (
+                <DateCell
+                  key={day.toISOString()}
+                  rawDate={day}
+                  currentMonth={month}
+                />
+              );
             });
           })}
         </S.DateView>

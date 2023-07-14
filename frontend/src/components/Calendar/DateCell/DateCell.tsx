@@ -5,12 +5,11 @@ import * as S from './DateCell.styled';
 
 interface DateCellProps {
   rawDate: Date;
+  currentMonth: number;
 }
 
-const currentMonth = new Date().getMonth();
-
 const DateCell = (props: DateCellProps) => {
-  const { rawDate } = props;
+  const { rawDate, currentMonth } = props;
   const { date, day } = parseDate(rawDate);
 
   const isSunday = day === 0;
