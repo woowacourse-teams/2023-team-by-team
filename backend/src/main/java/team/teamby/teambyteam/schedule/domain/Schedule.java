@@ -24,4 +24,10 @@ public class Schedule {
 
     @Embedded
     private Span span;
+
+    public Schedule(final Long teamPlaceId, final Title title, final Span span) {
+        this.teamPlaceId = teamPlaceId;
+        this.title = title;
+        this.span = span;
+    }
 }
