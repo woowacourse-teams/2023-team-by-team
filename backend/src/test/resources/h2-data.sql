@@ -6,6 +6,11 @@ INSERT INTO member (name, email, profile_image_url) VALUES ('rulu', 'dfg345@gmai
 INSERT INTO member (name, email, profile_image_url) VALUES ('tomas', 'htr35@gmail.com', './test.jpg');
 INSERT INTO member (name, email, profile_image_url) VALUES ('youth', 'sag345@gmail.com', './test.jpg');
 
+INSERT INTO team_place (name) VALUES ('대한 팀플');
+INSERT INTO team_place (name) VALUES ('동서 문명의 교류 팀플');
+INSERT INTO team_place (name) VALUES ('건축공학설계 팀플');
+INSERT INTO team_place (name) VALUES ('유체역학 팀플');
+
 INSERT INTO member_team_place (member_id, team_place_id) VALUES (1, 1);
 INSERT INTO member_team_place (member_id, team_place_id) VALUES (2, 1);
 INSERT INTO member_team_place (member_id, team_place_id) VALUES (3, 1);
@@ -19,11 +24,6 @@ INSERT INTO member_team_place (member_id, team_place_id) VALUES (3, 3);
 INSERT INTO member_team_place (member_id, team_place_id) VALUES (5, 3);
 INSERT INTO member_team_place (member_id, team_place_id) VALUES (7, 3);
 INSERT INTO member_team_place (member_id, team_place_id) VALUES (7, 4);
-
-INSERT INTO team_place (name) VALUES ('대한 팀플');
-INSERT INTO team_place (name) VALUES ('동서 문명의 교류 팀플');
-INSERT INTO team_place (name) VALUES ('건축공학설계 팀플');
-INSERT INTO team_place (name) VALUES ('유체역학 팀플');
 
 -- 테스트 케이스
 -- 1. 당일 N 시간
