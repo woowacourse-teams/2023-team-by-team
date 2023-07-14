@@ -1,3 +1,11 @@
+-- reset PK of the table before input test data
+ALTER TABLE member_team_place ALTER COLUMN id RESTART WITH 1;
+ALTER TABLE member ALTER COLUMN id RESTART WITH 1;
+ALTER TABLE team_place ALTER COLUMN id RESTART WITH 1;
+ALTER TABLE schedule ALTER COLUMN id RESTART WITH 1;
+
+
+
 INSERT INTO member (name, email, profile_image_url) VALUES ('james', 'abcd@gmail.com', './test.jpg');
 INSERT INTO member (name, email, profile_image_url) VALUES ('andy', 'aaa23213@gmail.com', './test.jpg');
 INSERT INTO member (name, email, profile_image_url) VALUES ('philip', 'sdf3244@gmail.com', './test.jpg');
