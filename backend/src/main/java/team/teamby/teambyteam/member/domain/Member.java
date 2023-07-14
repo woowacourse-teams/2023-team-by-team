@@ -31,4 +31,16 @@ public class Member {
     @Column
     @OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<MemberTeamPlace> memberTeamPlaces;
+
+    public Member(
+            final Name name,
+            final Email email,
+            final ProfileImageUrl profileImageUrl,
+            final List<MemberTeamPlace> memberTeamPlaces
+    ) {
+        this.name = name;
+        this.email = email;
+        this.profileImageUrl = profileImageUrl;
+        this.memberTeamPlaces = memberTeamPlaces;
+    }
 }

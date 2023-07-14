@@ -22,4 +22,9 @@ public class TeamPlace {
 
     @OneToMany(mappedBy = "teamPlace", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<MemberTeamPlace> memberTeamPlaces;
+
+    public TeamPlace(final Name name, final List<MemberTeamPlace> memberTeamPlaces) {
+        this.name = name;
+        this.memberTeamPlaces = memberTeamPlaces;
+    }
 }
