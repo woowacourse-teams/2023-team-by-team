@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import * as S from './Calendar.styled';
+import { css } from 'styled-components';
 import { arrayOf } from '~/utils/arrayOf';
 import { parseDate } from '~/utils/parseDate';
 import Text from '~/components/common/Text/Text';
 import Button from '~/components/common/Button/Button';
 import DateCell from '~/components/Calendar/DateCell/DateCell';
-import { css } from 'styled-components';
+import ArrowLeftIcon from '~/assets/svg/arrow-left.svg';
+import ArrowRightIcon from '~/assets/svg/arrow-right.svg';
+import * as S from './Calendar.styled';
 
 const DAYS_OF_WEEK = ['일', '월', '화', '수', '목', '금', '토'] as const;
 
@@ -37,7 +39,9 @@ const Calendar = () => {
   return (
     <S.Container>
       <S.CalendarHeader>
-        <Button variant="normal" onClick={handlePrevButtonClick} />
+        <Button variant="plain" onClick={handlePrevButtonClick}>
+          <ArrowLeftIcon />
+        </Button>
         <Text
           css={css`
             font-size: 28px;
@@ -46,7 +50,9 @@ const Calendar = () => {
         >
           {year}년 {month + 1}월
         </Text>
-        <Button variant="normal" onClick={handleNextButtonClick} />
+        <Button variant="plain" onClick={handleNextButtonClick}>
+          <ArrowRightIcon />
+        </Button>
       </S.CalendarHeader>
       <S.CalendarBody>
         <div>

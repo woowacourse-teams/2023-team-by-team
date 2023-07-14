@@ -4,9 +4,10 @@ export const Container = styled.div``;
 
 export const CalendarHeader = styled.div`
   display: flex;
+  align-items: center;
   justify-content: space-between;
 
-  width: 220px;
+  width: 280px;
   margin: 0 auto;
 `;
 
