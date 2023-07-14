@@ -5,7 +5,7 @@ import { parseDate } from '~/utils/parseDate';
 import Text from '~/components/common/Text/Text';
 import Button from '~/components/common/Button/Button';
 import DateCell from '~/components/Calendar/DateCell/DateCell';
-import { ArrowLeftIcon, ArrowRightIcon } from '~/assets/svg';
+import { css } from 'styled-components';
 
 const DAYS_OF_WEEK = ['일', '월', '화', '수', '목', '금', '토'] as const;
 
@@ -35,23 +35,26 @@ const Calendar = () => {
   const calendar = createCalendar();
 
   return (
-    <div>
+    <S.Container>
       <S.CalendarHeader>
-        <Button onClick={handlePrevButtonClick}>
-          <ArrowLeftIcon />
-        </Button>
-        <Text>
+        <Button variant="normal" onClick={handlePrevButtonClick} />
+        <Text
+          css={css`
+            font-size: 28px;
+            font-weight: 600;
+          `}
+        >
           {year}년 {month + 1}월
         </Text>
-        <Button onClick={handleNextButtonClick}>
-          <ArrowRightIcon />
-        </Button>
+        <Button variant="normal" onClick={handleNextButtonClick} />
       </S.CalendarHeader>
       <S.CalendarBody>
-        <S.DateView>
+        <div>
           {DAYS_OF_WEEK.map((day) => {
             return <S.DayOfWeek key={day}>{day}</S.DayOfWeek>;
           })}
+        </div>
+        <S.DateView>
           {calendar.map((week) => {
             return week.map((day) => {
               return <DateCell key={day.toISOString()} rawDate={day} />;
@@ -59,7 +62,7 @@ const Calendar = () => {
           })}
         </S.DateView>
       </S.CalendarBody>
-    </div>
+    </S.Container>
   );
 };
 
