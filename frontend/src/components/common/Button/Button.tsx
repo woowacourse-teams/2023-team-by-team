@@ -17,7 +17,7 @@ const Button = (props: PropsWithChildren<ButtonProps>) => {
   const { children, size, type = 'submit', variant, ...rest } = props;
 
   return (
-    <S.Button type={type} {...rest}>
+    <S.Button type={type} size={size} variant={variant} {...rest}>
       {children}
     </S.Button>
   );
