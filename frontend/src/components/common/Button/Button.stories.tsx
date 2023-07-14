@@ -62,3 +62,32 @@ export const Normal: Story = {
     variant: 'normal',
   },
 };
+
+/**
+ * `variant` 속성이 `plain` 인 경우, 버튼 색상이 투명하고, 버튼의 레이블 색상이 `#191f28` 인 것 외에 다른 속성이 적용되지 않습니다.
+ * 버튼에 따로 스타일을 적용해야 하는 경우에 사용하기 좋은 옵션입니다.
+ */
+export const Plain: Story = {
+  args: {
+    children: '아무 디자인이 없는 버튼',
+    size: 'md',
+    variant: 'plain',
+  },
+};
+
+export const CustomPlainButton: Story = {
+  args: {
+    children: (
+      <img
+        src="https://www.svgrepo.com/show/525636/arrow-right.svg"
+        width="80px"
+      />
+    ),
+    size: 'md',
+    variant: 'plain',
+    css: {
+      width: '100px',
+      height: '100px',
+    },
+  },
+};
