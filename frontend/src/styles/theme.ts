@@ -1,6 +1,7 @@
 const color = {
   WHITE: '#fff',
   BLACK: '#000',
+  RED: '#FF5B5B',
 
   GRAY100: '#f2f4f6',
   GRAY200: '#e5e8eb',
