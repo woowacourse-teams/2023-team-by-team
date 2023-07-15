@@ -1,6 +1,7 @@
 package team.teamby.teambyteam.schedule.domain;
 
 import jakarta.persistence.*;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,5 +30,9 @@ public class Schedule {
         this.teamPlaceId = teamPlaceId;
         this.title = title;
         this.span = span;
+    }
+
+    public boolean isScheduleOfTeam(final Long teamPlaceId) {
+        return Objects.equals(teamPlaceId, this.teamPlaceId);
     }
 }
