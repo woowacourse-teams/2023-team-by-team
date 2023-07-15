@@ -4,7 +4,7 @@ import type { Schedule } from '~/types/schedule';
 const schedules: Schedule[] = [
   {
     id: 1,
-    name: 'test',
+    title: 'test',
     startDateTime: '2023-07-13 00:00',
     endDateTime: '2023-07-14 00:00',
   },
@@ -21,8 +21,8 @@ export const calendarHandlers = [
   rest.post(
     `/api/team-place/:teamPlaceId/calendar/schedules`,
     async (req, res, ctx) => {
-      const { name, startDateTime, endDateTime } = await req.json();
-      const newSchedule = { id: Date.now(), name, startDateTime, endDateTime };
+      const { title, startDateTime, endDateTime } = await req.json();
+      const newSchedule = { id: Date.now(), title, startDateTime, endDateTime };
       const teamPlaceId = Number(req.params.teamPlaceId);
 
       schedules.push(newSchedule);
