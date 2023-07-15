@@ -24,7 +24,7 @@ public class ScheduleService {
 
         Title title = new Title(scheduleRegisterRequest.title());
         Span span = new Span(scheduleRegisterRequest.startDateTime(), scheduleRegisterRequest.endDateTime());
-        Schedule schedule = new Schedule(null, teamPlaceId, title, span);
+        Schedule schedule = new Schedule(teamPlaceId, title, span);
 
         Schedule savedSchedule = scheduleRepository.save(schedule);
         return savedSchedule.getId();
