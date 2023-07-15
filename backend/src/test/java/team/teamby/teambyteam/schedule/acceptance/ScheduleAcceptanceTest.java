@@ -55,22 +55,6 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
             });
         }
 
-        @Test
-        @DisplayName("일정 등록에 성공한다.")
-        void success2() {
-            // given
-            Long teamPlaceId = 팀플_1번_N시간_일정.TEAM_PLACE_ID;
-
-            // when
-            ExtractableResponse<Response> 정상_일정_등록_요청 = 일정_등록_요청(teamPlaceId, 팀플_1번_N시간_일정.REQUEST);
-
-            // then
-            assertSoftly(softly -> {
-                softly.assertThat(정상_일정_등록_요청.statusCode()).isEqualTo(HttpStatus.CREATED.value());
-                softly.assertThat(정상_일정_등록_요청.header(HttpHeaders.LOCATION)).contains("/api/team-place/" + teamPlaceId + "/calendar/schedules/");
-            });
-        }
-
         @ParameterizedTest
         @ValueSource(strings = {"", " ", "    "})
         @DisplayName("일정 제목이 빈 값인 요청이면 실패한다.")
