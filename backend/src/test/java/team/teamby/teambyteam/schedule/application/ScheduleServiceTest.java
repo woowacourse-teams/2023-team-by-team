@@ -34,7 +34,7 @@ class ScheduleServiceTest {
 
         //then
         SoftAssertions.assertSoftly(softly -> {
-            softly.assertThat(scheduleResponse.name()).isEqualTo("1번 팀플 N시간 일정");
+            softly.assertThat(scheduleResponse.title()).isEqualTo("1번 팀플 N시간 일정");
             softly.assertThat(scheduleResponse.startDateTime()).isEqualTo("2023-07-12 10:00");
             softly.assertThat(scheduleResponse.endDateTime()).isEqualTo("2023-07-12 18:00");
         });

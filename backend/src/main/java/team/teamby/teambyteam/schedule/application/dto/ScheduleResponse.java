@@ -6,7 +6,7 @@ import team.teamby.teambyteam.schedule.domain.Span;
 
 public record ScheduleResponse(
         Long id,
-        String name,
+        String title,
         String startDateTime,
         String endDateTime
 ) {
