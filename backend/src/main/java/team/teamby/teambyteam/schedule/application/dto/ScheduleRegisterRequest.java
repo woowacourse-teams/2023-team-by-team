@@ -1,7 +1,7 @@
 package team.teamby.teambyteam.schedule.application.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -9,10 +9,10 @@ public record ScheduleRegisterRequest(
         @NotBlank(message = "제목은 빈 값일 수 없습니다.")
         String title,
 
-        @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
         LocalDateTime startDateTime,
 
-        @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
         LocalDateTime endDateTime) {
 
 }
