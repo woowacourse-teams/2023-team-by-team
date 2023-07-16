@@ -37,7 +37,7 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
 
     @Nested
     @DisplayName("일정 등록 시")
-    class registerSchedule {
+    class RegisterSchedule {
 
         @Test
         @DisplayName("일정 등록에 성공한다.")
