@@ -11,4 +11,10 @@ public class ScheduleException extends RuntimeException {
             super(message);
         }
     }
+
+    public static class NotFoundException extends ScheduleException {
+        public NotFoundException(final String message) {
+            super(message);
+        }
+    }
 }
