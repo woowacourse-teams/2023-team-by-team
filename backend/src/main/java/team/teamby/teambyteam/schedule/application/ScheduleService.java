@@ -22,11 +22,11 @@ public class ScheduleService {
     public Long register(final ScheduleRegisterRequest scheduleRegisterRequest, final Long teamPlaceId) {
         checkTeamPlaceExist(teamPlaceId);
 
-        Title title = new Title(scheduleRegisterRequest.title());
-        Span span = new Span(scheduleRegisterRequest.startDateTime(), scheduleRegisterRequest.endDateTime());
-        Schedule schedule = new Schedule(teamPlaceId, title, span);
+        final Title title = new Title(scheduleRegisterRequest.title());
+        final Span span = new Span(scheduleRegisterRequest.startDateTime(), scheduleRegisterRequest.endDateTime());
+        final Schedule schedule = new Schedule(teamPlaceId, title, span);
 
-        Schedule savedSchedule = scheduleRepository.save(schedule);
+        final Schedule savedSchedule = scheduleRepository.save(schedule);
         return savedSchedule.getId();
     }
 

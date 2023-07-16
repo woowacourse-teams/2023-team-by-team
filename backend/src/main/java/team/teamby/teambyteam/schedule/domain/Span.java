@@ -26,7 +26,7 @@ public class Span {
         this.endDateTime = endDateTime;
     }
 
-    private void validateDateTimeOrder(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+    private void validateDateTimeOrder(final LocalDateTime startDateTime, final LocalDateTime endDateTime) {
         if (startDateTime.isAfter(endDateTime)) {
             throw new ScheduleException.SpanWrongOrderException("시작 일자가 종료 일자보다 이후일 수 없습니다.");
         }

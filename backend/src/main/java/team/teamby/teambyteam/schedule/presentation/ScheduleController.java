@@ -22,11 +22,11 @@ public class ScheduleController {
 
     @PostMapping("/{teamPlaceId}/calendar/schedules")
     public ResponseEntity<Void> register(
-            @RequestBody @Valid ScheduleRegisterRequest scheduleRegisterRequest,
-            @PathVariable Long teamPlaceId) {
+            @RequestBody @Valid final ScheduleRegisterRequest scheduleRegisterRequest,
+            @PathVariable final Long teamPlaceId) {
 
-        Long registeredId = scheduleService.register(scheduleRegisterRequest, teamPlaceId);
-        URI location = URI.create("/api/team-place/" + teamPlaceId + "/calendar/schedules/" + registeredId);
+        final Long registeredId = scheduleService.register(scheduleRegisterRequest, teamPlaceId);
+        final URI location = URI.create("/api/team-place/" + teamPlaceId + "/calendar/schedules/" + registeredId);
         return ResponseEntity.created(location).build();
     }
 }
