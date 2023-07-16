@@ -5,6 +5,7 @@ import { parseDate } from '~/utils/parseDate';
 import Text from '~/components/common/Text/Text';
 import Button from '~/components/common/Button/Button';
 import DateCell from '~/components/Calendar/DateCell/DateCell';
+import { ArrowLeftIcon, ArrowRightIcon } from '~/assets/svg';
 
 const DAYS_OF_WEEK = ['일', '월', '화', '수', '목', '금', '토'] as const;
 
@@ -36,11 +37,15 @@ const Calendar = () => {
   return (
     <div>
       <S.CalendarHeader>
-        <Button onClick={handlePrevButtonClick} />
+        <Button onClick={handlePrevButtonClick}>
+          <ArrowLeftIcon />
+        </Button>
         <Text>
           {year}년 {month + 1}월
         </Text>
-        <Button onClick={handleNextButtonClick} />
+        <Button onClick={handleNextButtonClick}>
+          <ArrowRightIcon />
+        </Button>
       </S.CalendarHeader>
       <S.CalendarBody>
         <S.DateView>
