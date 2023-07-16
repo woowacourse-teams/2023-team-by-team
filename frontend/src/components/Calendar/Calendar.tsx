@@ -5,8 +5,7 @@ import { parseDate } from '~/utils/parseDate';
 import Text from '~/components/common/Text/Text';
 import Button from '~/components/common/Button/Button';
 import DateCell from '~/components/Calendar/DateCell/DateCell';
-import ArrowLeftIcon from '~/assets/svg/arrow-left.svg';
-import ArrowRightIcon from '~/assets/svg/arrow-right.svg';
+import { ArrowLeftIcon, ArrowRightIcon } from '~/assets/svg';
 import * as S from './Calendar.styled';
 
 const DAYS_OF_WEEK = ['일', '월', '화', '수', '목', '금', '토'] as const;
