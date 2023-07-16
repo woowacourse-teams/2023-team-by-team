@@ -10,9 +10,8 @@ import team.teamby.teambyteam.schedule.domain.ScheduleRepository;
 import team.teamby.teambyteam.schedule.domain.Span;
 import team.teamby.teambyteam.schedule.domain.Title;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
-import team.teamby.teambyteam.schedule.exception.ScheduleException.ScheduleNotFoundException;
-import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceRepository;
+import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
 @Service
 @Transactional
@@ -47,7 +46,7 @@ public class ScheduleService {
         checkTeamPlaceExist(teamPlaceId);
 
         final Schedule schedule = scheduleRepository.findById(scheduleId)
-                .orElseThrow(ScheduleNotFoundException::new);
+                .orElseThrow(() -> new ScheduleException.ScheduleNotFoundException("조회한 일정이 존재하지 않습니다."));
         validateScheduleOwnerTeam(teamPlaceId, schedule);
 
         return ScheduleResponse.of(schedule);
@@ -55,7 +54,7 @@ public class ScheduleService {
 
     private void validateScheduleOwnerTeam(final Long teamPlaceId, final Schedule schedule) {
         if (isNotScheduleOfTeam(teamPlaceId, schedule)) {
-            throw new ScheduleException.TeamAccessForbidden();
+            throw new ScheduleException.TeamAccessForbidden("해당 팀플레이스에 일정을 조회할 권한이 없습니다.");
         }
     }
 
