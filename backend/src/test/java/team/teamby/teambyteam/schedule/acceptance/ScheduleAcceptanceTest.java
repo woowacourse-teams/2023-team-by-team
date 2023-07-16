@@ -4,7 +4,6 @@ import io.restassured.RestAssured;
 import io.restassured.http.Header;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import io.restassured.response.ResponseBodyExtractionOptions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -42,7 +41,7 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
                 softly.assertThat(response.jsonPath().getString("endDateTime")).isEqualTo("2023-07-12 18:00");
             });
         }
-        
+
         @Test
         @DisplayName("존재하지 않는 일정 조회시도시 실패한다.")
         void failGetScheduleWhichIsNotExist() {
@@ -75,7 +74,7 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
             return RestAssured.given().log().all()
                     .header(new Header("Authorization", JWT_PREFIX + JWT_TOKEN))
                     .when().log().all()
-                    .get("/api/team-place/" + teamPlaceId + "/calendar/schedules/" + scheduleId)
+                    .get("/api/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}", teamPlaceId, scheduleId)
                     .then().log().all()
                     .extract();
         }
