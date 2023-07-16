@@ -8,6 +8,7 @@ import team.teamby.teambyteam.schedule.domain.Schedule;
 import team.teamby.teambyteam.schedule.domain.ScheduleRepository;
 import team.teamby.teambyteam.schedule.domain.Span;
 import team.teamby.teambyteam.schedule.domain.Title;
+import team.teamby.teambyteam.schedule.exception.ScheduleException;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceRepository;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
@@ -38,5 +39,21 @@ public class ScheduleService {
 
     private boolean notExistTeamPlace(final Long teamPlaceId) {
         return !teamPlaceRepository.existsById(teamPlaceId);
+    }
+
+    public void delete(final Long teamPlaceId, final Long scheduleId) {
+        checkTeamPlaceExist(teamPlaceId);
+        checkScheduleExist(scheduleId);
+        scheduleRepository.deleteById(scheduleId);
+    }
+
+    private void checkScheduleExist(final Long scheduleId) {
+        if (notExistSchedule(scheduleId)) {
+            throw new ScheduleException.NotFoundException("ID에 해당하는 일정을 찾을 수 없습니다.");
+        }
+    }
+
+    private boolean notExistSchedule(final Long scheduleId) {
+        return !scheduleRepository.existsById(scheduleId);
     }
 }
