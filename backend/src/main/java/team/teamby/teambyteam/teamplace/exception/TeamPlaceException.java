@@ -11,4 +11,11 @@ public class TeamPlaceException extends RuntimeException {
             super(message);
         }
     }
+
+    public static class NotFoundException extends TeamPlaceException {
+
+        public NotFoundException(final String message) {
+            super(message);
+        }
+    }
 }
