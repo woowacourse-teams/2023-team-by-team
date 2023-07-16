@@ -1,5 +1,6 @@
 package team.teamby.teambyteam.schedule.application;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleResponse;
@@ -10,13 +11,10 @@ import team.teamby.teambyteam.schedule.exception.ScheduleException.ScheduleNotFo
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
-
-    public ScheduleService(final ScheduleRepository scheduleRepository) {
-        this.scheduleRepository = scheduleRepository;
-    }
 
     public ScheduleResponse findSchedule(final Long scheduleId, final Long teamPlaceId) {
         final Schedule schedule = scheduleRepository.findById(scheduleId)
