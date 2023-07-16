@@ -17,4 +17,16 @@ public class MemberException extends RuntimeException {
             super(message);
         }
     }
+
+    public static class MemberNotFoundException extends MemberException {
+        public MemberNotFoundException(final String message) {
+            super(message);
+        }
+    }
+
+    public static class IllegalTokenException extends MemberException {
+        public IllegalTokenException(final String message) {
+            super(message);
+        }
+    }
 }
