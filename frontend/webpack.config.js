@@ -21,7 +21,14 @@ module.exports = {
     alias: { '~': join(__dirname, '.', 'src/') },
   },
   module: {
-    rules: [{ test: /\.tsx?$/, use: 'ts-loader', exclude: /node_modules/ }],
+    rules: [
+      { test: /\.tsx?$/, use: 'ts-loader', exclude: /node_modules/ },
+      {
+        test: /\.svg$/i,
+        issuer: /\.[jt]sx?$/,
+        use: ['@svgr/webpack', 'url-loader'],
+      },
+    ],
   },
   output: {
     filename: 'bundle.js',
