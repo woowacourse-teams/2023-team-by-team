@@ -39,9 +39,14 @@ export const Text = styled.p<TextProps>`
   h4& {
     font-size: 24px;
   }
-  &&& {
+  p&,
+  span&,
+  strong&,
+  small& {
     font-size: ${({ size = 'md' }) => fontSize[size] || 'initial'};
     font-weight: ${({ weight = 'normal' }) => fontWeight[weight] || 'initial'};
+  }
+  && {
     ${(props) => props.css}
   }
 `;
