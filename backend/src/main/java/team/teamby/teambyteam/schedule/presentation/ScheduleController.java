@@ -1,5 +1,6 @@
 package team.teamby.teambyteam.schedule.presentation;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,13 +13,10 @@ import team.teamby.teambyteam.schedule.application.dto.ScheduleResponse;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class ScheduleController {
 
-    private ScheduleService scheduleService;
-
-    public ScheduleController(ScheduleService scheduleService) {
-        this.scheduleService = scheduleService;
-    }
+    private final ScheduleService scheduleService;
 
     @GetMapping("/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}")
     public ResponseEntity<ScheduleResponse> findSpecificSchedule(
