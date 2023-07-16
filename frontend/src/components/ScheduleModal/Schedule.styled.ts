@@ -3,7 +3,6 @@ import { styled, css } from 'styled-components';
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  position: relative;
   z-index: ${({ theme }) => theme.zIndex.MODAL};
   gap: 28px;
 
@@ -12,6 +11,7 @@ export const Container = styled.div`
   padding: 30px 40px 30px 40px;
 
   border-radius: 10px;
+  background-color: ${({ theme }) => theme.color.WHITE};
 
   box-shadow:
     0 0 1px #1b1d1f33,

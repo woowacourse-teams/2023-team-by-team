@@ -7,15 +7,22 @@ import Button from '~/components/common/Button/Button';
 
 interface ScheduleModalProps {
   id: number;
+  targetRef: React.RefObject<HTMLDivElement>;
 }
 const ScheduleModal = (props: ScheduleModalProps) => {
-  const { id } = props;
-
+  const { id, targetRef } = props;
   const { closeModal } = useModal();
+
+  const modalLocation: React.CSSProperties = {
+    position: 'absolute',
+    top: `${targetRef.current?.getBoundingClientRect().bottom}px`,
+    left: `${targetRef.current?.getBoundingClientRect().left}px`,
+  };
+
   return (
     <Modal>
       <S.Backdrop onClick={closeModal} />
-      <S.Container>
+      <S.Container style={modalLocation}>
         <S.Header>
           <S.TeamWrapper>
             <S.TeamColor />
