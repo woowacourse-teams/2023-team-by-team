@@ -15,7 +15,7 @@ build/
 .sts4-cache
 bin/
 !**/src/main/**/bin/
-!**/src/test/**/bin/
+!**/src/test/**/bin/가
 
 ### IntelliJ IDEA ###
 .idea
@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### REST Docs ###
+src/main/resources/static/docs/
