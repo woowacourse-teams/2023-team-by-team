@@ -76,8 +76,8 @@ public class ScheduleApiDocsTest {
                                 ),
                                 requestFields(
                                         fieldWithPath("title").type(JsonFieldType.STRING).description("등록할 일정 제목"),
-                                        fieldWithPath("startDateTime").type(JsonFieldType.STRING).description("등록할 일정의 시작 일시"),
-                                        fieldWithPath("endDateTime").type(JsonFieldType.STRING).description("등록할 일정의 종료 일시")
+                                        fieldWithPath("startDateTime").type(JsonFieldType.STRING).description("등록할 일정의 시작 일시(형식 : yyyy-MM-dd HH:mm)"),
+                                        fieldWithPath("endDateTime").type(JsonFieldType.STRING).description("등록할 일정의 종료 일시(형식 : yyyy-MM-dd HH:mm)")
                                 )
                         )
                 );
