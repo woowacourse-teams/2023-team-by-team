@@ -1,19 +1,20 @@
 package team.teamby.teambyteam.schedule.presentation;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import team.teamby.teambyteam.member.configuration.AuthPrincipal;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.schedule.application.ScheduleService;
+import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleResponse;
 
+import java.net.URI;
+
 @RestController
-@RequestMapping("/api")
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class ScheduleController {
 
     private final ScheduleService scheduleService;
@@ -27,5 +28,16 @@ public class ScheduleController {
         final ScheduleResponse responseBody = scheduleService.findSchedule(scheduleId, teamPlaceId);
 
         return ResponseEntity.ok(responseBody);
+    }
+
+    @PostMapping("/team-place/{teamPlaceId}/calendar/schedules")
+    public ResponseEntity<Void> register(
+            @RequestBody @Valid final ScheduleRegisterRequest scheduleRegisterRequest,
+            @PathVariable final Long teamPlaceId
+    ) {
+
+        final Long registeredId = scheduleService.register(scheduleRegisterRequest, teamPlaceId);
+        final URI location = URI.create("/api/team-place/" + teamPlaceId + "/calendar/schedules/" + registeredId);
+        return ResponseEntity.created(location).build();
     }
 }

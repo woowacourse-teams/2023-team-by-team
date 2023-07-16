@@ -17,4 +17,10 @@ public class ScheduleException extends RuntimeException {
             super("해당 팀플레이스에 일정을 조회할 권한이 없습니다.");
         }
     }
+
+    public static class SpanWrongOrderException extends ScheduleException {
+        public SpanWrongOrderException(final String message) {
+            super(message);
+        }
+    }
 }
