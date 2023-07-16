@@ -15,7 +15,7 @@ build/
 .sts4-cache
 bin/
 !**/src/main/**/bin/
-!**/src/test/**/bin/가
+!**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
 .idea
