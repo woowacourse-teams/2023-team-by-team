@@ -14,8 +14,8 @@ class SpanTest {
     @DisplayName("Span 생성 시 시작일자가 종료일자보다 이후면 예외가 발생한다.")
     void failSpanWrongRange() {
         // given
-        LocalDateTime startDateTime = LocalDateTime.now();
-        LocalDateTime endDateTime = LocalDateTime.now().minusDays(1);
+        final LocalDateTime startDateTime = LocalDateTime.now();
+        final LocalDateTime endDateTime = LocalDateTime.now().minusDays(1);
 
         // when & then
         assertThatThrownBy(() -> new Span(startDateTime, endDateTime))

@@ -51,7 +51,7 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
             final Long scheduleId = 1L;
 
             // when
-            ExtractableResponse<Response> response = requestSpecificSchedule(scheduleId, teamPlaceId);
+            final ExtractableResponse<Response> response = requestSpecificSchedule(scheduleId, teamPlaceId);
 
             // then
             assertSoftly(softly -> {
@@ -69,7 +69,7 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
             final Long wrongScheduleId = 100L;
 
             // when
-            ExtractableResponse<Response> response = requestSpecificSchedule(wrongScheduleId, teamPlaceId);
+            final ExtractableResponse<Response> response = requestSpecificSchedule(wrongScheduleId, teamPlaceId);
 
             // then
             assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
@@ -83,7 +83,7 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
             final Long wrongScheduleId = 1L;
 
             // when
-            ExtractableResponse<Response> response = requestSpecificSchedule(wrongScheduleId, teamPlaceId);
+            final ExtractableResponse<Response> response = requestSpecificSchedule(wrongScheduleId, teamPlaceId);
 
             // then
             assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
@@ -98,10 +98,10 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
         @DisplayName("일정 등록에 성공한다.")
         void success() {
             // given
-            Long teamPlaceId = 팀플_1번_N시간_일정.TEAM_PLACE_ID;
+            final Long teamPlaceId = 팀플_1번_N시간_일정.TEAM_PLACE_ID;
 
             // when
-            ExtractableResponse<Response> 정상_일정_등록_요청 = 일정_등록_요청(teamPlaceId, 팀플_1번_N시간_일정.REQUEST);
+            final ExtractableResponse<Response> 정상_일정_등록_요청 = 일정_등록_요청(teamPlaceId, 팀플_1번_N시간_일정.REQUEST);
 
             // then
             assertSoftly(softly -> {
@@ -113,13 +113,13 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
         @ParameterizedTest
         @ValueSource(strings = {"", " ", "    "})
         @DisplayName("일정 제목이 빈 값인 요청이면 실패한다.")
-        void failBlankTitleRequest(String blankTitle) {
+        void failBlankTitleRequest(final String blankTitle) {
             // given
-            Long teamPlaceId = 팀플_1번_N시간_일정.TEAM_PLACE_ID;
-            ScheduleRegisterRequest request = new ScheduleRegisterRequest(blankTitle, 팀플_1번_N시간_일정.START_DATE_TIME, 팀플_1번_N시간_일정.END_DATE_TIME);
+            final Long teamPlaceId = 팀플_1번_N시간_일정.TEAM_PLACE_ID;
+            final ScheduleRegisterRequest request = new ScheduleRegisterRequest(blankTitle, 팀플_1번_N시간_일정.START_DATE_TIME, 팀플_1번_N시간_일정.END_DATE_TIME);
 
             // when
-            ExtractableResponse<Response> 일정_제목_빈_값_일정_등록_요청 = 일정_등록_요청(teamPlaceId, request);
+            final ExtractableResponse<Response> 일정_제목_빈_값_일정_등록_요청 = 일정_등록_요청(teamPlaceId, request);
 
             // then
             assertSoftly(softly -> {
@@ -131,19 +131,19 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
         @ParameterizedTest
         @ValueSource(strings = {"2023-07-12 10-00", "2023:07:12 10:00", "2023-07-1210:10", "2023:07:12 10-00", "2023-07-12 10:00:00"})
         @DisplayName("잘못된 날짜 형식 요청이면 실패한다.")
-        void failWrongDateTimeTypeRequest(String wrongStartDateTimeType) throws JsonProcessingException {
+        void failWrongDateTimeTypeRequest(final String wrongStartDateTimeType) throws JsonProcessingException {
             // given
-            Long teamPlaceId = 팀플_1번_N시간_일정.TEAM_PLACE_ID;
-            String title = 팀플_1번_N시간_일정.TITLE;
-            String correctEndDateTimeType = "2023-07-12 18:00";
+            final Long teamPlaceId = 팀플_1번_N시간_일정.TEAM_PLACE_ID;
+            final String title = 팀플_1번_N시간_일정.TITLE;
+            final String correctEndDateTimeType = "2023-07-12 18:00";
 
-            Map<String, String> requestMap = new HashMap<>();
+            final Map<String, String> requestMap = new HashMap<>();
             requestMap.put(REQUEST_TITLE_KEY, title);
             requestMap.put(REQUEST_START_DATE_TIME_KEY, wrongStartDateTimeType);
             requestMap.put(REQUEST_END_DATE_KEY, correctEndDateTimeType);
 
             // when
-            ExtractableResponse<Response> 잘못된_날짜_형식_일정_등록_요청 = 잘못된_날짜_형식_일정_등록_요청(teamPlaceId, requestMap);
+            final ExtractableResponse<Response> 잘못된_날짜_형식_일정_등록_요청 = 잘못된_날짜_형식_일정_등록_요청(teamPlaceId, requestMap);
 
             // then
             assertSoftly(softly -> {
@@ -156,10 +156,10 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
         @DisplayName("없는 팀 플레이스 ID로 요청하면 실패한다.")
         void failNotExistTeamPlaceIdRequest() {
             // given
-            Long notExistTeamPlaceId = -1L;
+            final Long notExistTeamPlaceId = -1L;
 
             // when
-            ExtractableResponse<Response> 없는_팀_플레이스_ID_일정_등록_요청 = 일정_등록_요청(notExistTeamPlaceId, 팀플_1번_N시간_일정.REQUEST);
+            final ExtractableResponse<Response> 없는_팀_플레이스_ID_일정_등록_요청 = 일정_등록_요청(notExistTeamPlaceId, 팀플_1번_N시간_일정.REQUEST);
 
             // then
             assertSoftly(softly -> {
@@ -168,7 +168,7 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
             });
         }
 
-        private ExtractableResponse<Response> 잘못된_날짜_형식_일정_등록_요청(final Long teamPlaceId, Map<String, String> requestMap) throws JsonProcessingException {
+        private ExtractableResponse<Response> 잘못된_날짜_형식_일정_등록_요청(final Long teamPlaceId, final Map<String, String> requestMap) throws JsonProcessingException {
             return RestAssured.given().log().all()
                     .header("Authorization", JWT_PREFIX + JWT_TOKEN)
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -180,7 +180,7 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
     }
 
 
-    private ExtractableResponse<Response> 일정_등록_요청(final Long teamPlaceId, ScheduleRegisterRequest request) {
+    private ExtractableResponse<Response> 일정_등록_요청(final Long teamPlaceId, final ScheduleRegisterRequest request) {
         return RestAssured.given().log().all()
                 .header("Authorization", JWT_PREFIX + JWT_TOKEN)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
