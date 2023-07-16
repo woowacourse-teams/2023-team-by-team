@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import team.teamby.teambyteam.schedule.exception.ScheduleException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
 import java.time.format.DateTimeParseException;
@@ -33,6 +34,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(TeamPlaceException.class)
     public ResponseEntity<String> handleTeamPlaceException(final TeamPlaceException exception) {
+        log.warn(exception.getMessage(), exception);
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
+
+    @ExceptionHandler(ScheduleException.class)
+    public ResponseEntity<String> handleScheduleException(final ScheduleException exception) {
         log.warn(exception.getMessage(), exception);
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
