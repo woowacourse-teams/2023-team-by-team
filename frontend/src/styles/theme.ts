@@ -16,8 +16,13 @@ const color = {
   GRAY900: '#191f28',
 } as const;
 
+const zIndex = {
+  MODAL: 1,
+} as const;
+
 export const theme = {
   color,
+  zIndex,
 } as const;
 
 export type Theme = typeof theme;
