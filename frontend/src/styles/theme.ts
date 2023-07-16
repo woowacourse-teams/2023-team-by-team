@@ -1,4 +1,6 @@
 const color = {
+  LOGO: '#3145FF',
+  PRIMARY: '#516FFF',
   WHITE: '#fff',
   BLACK: '#000',
   RED: '#FF5B5B',
@@ -12,8 +14,6 @@ const color = {
   GRAY700: '#4e5968',
   GRAY800: '#333d4b',
   GRAY900: '#191f28',
-
-  PRIMARY: '#3145ff',
 } as const;
 
 export const theme = {
