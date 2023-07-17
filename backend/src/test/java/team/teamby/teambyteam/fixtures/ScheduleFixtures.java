@@ -7,7 +7,6 @@ import team.teamby.teambyteam.schedule.domain.Title;
 
 import java.time.LocalDateTime;
 
-@SuppressWarnings("NonAsciiCharacters")
 public class ScheduleFixtures {
 
     public static class 팀플_1번_N시간_일정 {

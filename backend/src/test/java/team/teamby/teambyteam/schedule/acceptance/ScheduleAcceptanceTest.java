@@ -23,7 +23,6 @@ import java.util.Map;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static team.teamby.teambyteam.fixtures.ScheduleFixtures.팀플_1번_N시간_일정;
 
-@SuppressWarnings("NonAsciiCharacters")
 public class ScheduleAcceptanceTest extends AcceptanceTest {
 
     private static final String JWT_PREFIX = "Bearer ";
