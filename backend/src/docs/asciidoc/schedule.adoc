@@ -4,12 +4,45 @@
 === 1. 팀 캘린더 일정 등록
 
 ====== 요청 Header
-include::{snippets}/schedules/register/request-headers.adoc[]
+include::{snippets}/schedules/register/success/request-headers.adoc[]
 
 ==== Request
-include::{snippets}/schedules/register/http-request.adoc[]
-include::{snippets}/schedules/register/request-fields.adoc[]
+include::{snippets}/schedules/register/success/http-request.adoc[]
+include::{snippets}/schedules/register/success/request-fields.adoc[]
 
 
 ==== Response
-include::{snippets}/schedules/register/http-response.adoc[]
+include::{snippets}/schedules/register/success/http-response.adoc[]
+
+=== 1-1. 일정 등록 실패 (등록할 일정 제목 빈 값)
+
+==== Request
+include::{snippets}/schedules/register/failBlankTitle/http-request.adoc[]
+
+==== Response
+include::{snippets}/schedules/register/failBlankTitle/http-response.adoc[]
+
+=== 1-2. 일정 등록 실패 (존재하지 않는 팀 플레이스 ID)
+
+==== Request
+include::{snippets}/schedules/register/failNotExistTeamPlaceId/http-request.adoc[]
+
+==== Response
+include::{snippets}/schedules/register/failNotExistTeamPlaceId/http-response.adoc[]
+
+=== 1-3. 일정 등록 실패 (등록할 시작 날짜가 등록할 종료 날짜보다 이후)
+
+==== Request
+include::{snippets}/schedules/register/failSpanWrongOrder/http-request.adoc[]
+
+==== Response
+include::{snippets}/schedules/register/failSpanWrongOrder/http-response.adoc[]
+
+=== 1-4. 일정 등록 실패 (등록할 날짜 형식 잘못된 경우)
+
+==== Request
+include::{snippets}/schedules/register/failWrongDateTimeType/http-request.adoc[]
+
+==== Response
+include::{snippets}/schedules/register/failWrongDateTimeType/http-response.adoc[]
+
