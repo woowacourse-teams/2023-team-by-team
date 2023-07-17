@@ -143,13 +143,13 @@ class ScheduleServiceTest {
         @DisplayName("일정 수정에 성공한다.")
         void success() {
             // given
-            Long id = Schedule1_N_Hour.ID;
-            Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
-            ScheduleUpdateRequest request = Schedule1_N_Hour.UPDATE_REQUEST;
+            final Long id = Schedule1_N_Hour.ID;
+            final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
+            final ScheduleUpdateRequest request = Schedule1_N_Hour.UPDATE_REQUEST;
 
             // when
             scheduleService.update(request, teamPlaceId, id);
-            Schedule updatedSchedule = scheduleRepository.findById(id).get();
+            final Schedule updatedSchedule = scheduleRepository.findById(id).get();
 
             // then
             assertThat(updatedSchedule).usingRecursiveComparison()
@@ -161,11 +161,11 @@ class ScheduleServiceTest {
         @DisplayName("일정 수정 시 수정할 일정 제목이 빈 값이면 예외가 발생한다.")
         void failUpdateTitleBlank(String titleToUpdate) {
             // given
-            Long id = Schedule1_N_Hour.ID;
-            Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
-            LocalDateTime startDateTime = Schedule1_N_Hour.START_DATE_TIME;
-            LocalDateTime endDateTime = Schedule1_N_Hour.END_DATE_TIME;
-            ScheduleUpdateRequest request = new ScheduleUpdateRequest(titleToUpdate, startDateTime, endDateTime);
+            final Long id = Schedule1_N_Hour.ID;
+            final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
+            final LocalDateTime startDateTime = Schedule1_N_Hour.START_DATE_TIME;
+            final LocalDateTime endDateTime = Schedule1_N_Hour.END_DATE_TIME;
+            final ScheduleUpdateRequest request = new ScheduleUpdateRequest(titleToUpdate, startDateTime, endDateTime);
 
             // when & then
             assertThatThrownBy(() -> scheduleService.update(request, teamPlaceId, id))
@@ -177,12 +177,12 @@ class ScheduleServiceTest {
         @DisplayName("일정 수정 시 Span 순서가 맞지 않으면 예외가 발생한다.")
         void failSpanWrongOrder() {
             // given
-            Long id = Schedule1_N_Hour.ID;
-            String title = Schedule1_N_Hour.TITLE;
-            Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
-            LocalDateTime startDateTime = Schedule1_N_Hour.START_DATE_TIME;
-            LocalDateTime wrongEndDateTime = Schedule1_N_Hour.START_DATE_TIME.minusDays(1);
-            ScheduleUpdateRequest request = new ScheduleUpdateRequest(title, startDateTime, wrongEndDateTime);
+            final Long id = Schedule1_N_Hour.ID;
+            final String title = Schedule1_N_Hour.TITLE;
+            final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
+            final LocalDateTime startDateTime = Schedule1_N_Hour.START_DATE_TIME;
+            final LocalDateTime wrongEndDateTime = Schedule1_N_Hour.START_DATE_TIME.minusDays(1);
+            final ScheduleUpdateRequest request = new ScheduleUpdateRequest(title, startDateTime, wrongEndDateTime);
 
             // when & then
             assertThatThrownBy(() -> scheduleService.update(request, teamPlaceId, id))

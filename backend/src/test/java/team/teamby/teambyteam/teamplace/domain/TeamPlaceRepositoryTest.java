@@ -23,7 +23,7 @@ class TeamPlaceRepositoryTest {
     @DisplayName("id에 해당하는 팀 플레이스가 존재하면 true, 존재하지 않으면 false를 반환한다.")
     void isExistById(Long teamPlaceId, boolean expected) {
         // when
-        boolean actual = teamPlaceRepository.existsById(teamPlaceId);
+        final boolean actual = teamPlaceRepository.existsById(teamPlaceId);
 
         // then
         assertThat(actual).isEqualTo(expected);
