@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleResponse;
+import team.teamby.teambyteam.schedule.application.dto.ScheduleUpdateRequest;
 import team.teamby.teambyteam.schedule.domain.Schedule;
 import team.teamby.teambyteam.schedule.domain.ScheduleRepository;
 import team.teamby.teambyteam.schedule.domain.Span;
@@ -60,5 +61,15 @@ public class ScheduleService {
 
     private boolean isNotScheduleOfTeam(final Long teamPlaceId, final Schedule schedule) {
         return !schedule.isScheduleOfTeam(teamPlaceId);
+    }
+
+    public void update(final ScheduleUpdateRequest scheduleUpdateRequest, final Long teamPlaceId, final Long scheduleId) {
+        checkTeamPlaceExist(teamPlaceId);
+
+        final Schedule schedule = scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new ScheduleException.NotFoundException("ID에 해당하는 일정을 찾을 수 없습니다."));
+
+        schedule.change(scheduleUpdateRequest.title(),
+                scheduleUpdateRequest.startDateTime(), scheduleUpdateRequest.endDateTime());
     }
 }
