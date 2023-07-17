@@ -21,6 +21,7 @@ import java.util.Optional;
 public final class MemberInterceptor implements HandlerInterceptor {
 
     private static final String EMAIL_KEY = "email";
+
     private final MemberRepository memberRepository;
 
     @Override
