@@ -1,0 +1,26 @@
+= Team-By-Team API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+
+=== 개요
+우아한테크코스 5기 팀바팀 프로젝트 API 문서입니다.
+
+=== 상태코드 (HttpStatus)
+응답시 다음과 같은 응답상태를 제공합니다.
+
+[cols="3,3"]
+|====
+|HttpStatus |설명
+
+|`OK(200)` |정상 응답
+|`UNAUTHORIZED(401)` |로그인되지 않은 상황에서 요청할 때 발생합니다.
+|`FORBIDDEN(403)` |권한이 없는 요청을 할 때 발생합니다.
+
+|====
+
+== API
+
+include::schedule.adoc[]
