@@ -12,11 +12,14 @@ import org.springframework.transaction.annotation.Transactional;
 import team.teamby.teambyteam.fixtures.ScheduleFixtures;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleResponse;
+import team.teamby.teambyteam.schedule.application.dto.SchedulesResponse;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
@@ -29,8 +32,8 @@ class ScheduleServiceTest {
 
 
     @Nested
-    @DisplayName("일정 정보 조회시")
-    class FindSchedule {
+    @DisplayName("팀플레이스 일정 정보 조회시")
+    class FindScheduleInTeamPlace {
 
         @Test
         @DisplayName("특정 일정의 정보를 조회한다.")
@@ -76,6 +79,44 @@ class ScheduleServiceTest {
                     .isInstanceOf(ScheduleException.TeamAccessForbidden.class)
                     .hasMessage("해당 팀플레이스에 일정을 조회할 권한이 없습니다.");
         }
+
+        @Test
+        @DisplayName("팀플레이스에서 특정 기간 내 일정들을 조회한다.")
+        void findAllInPeriod() {
+            // given
+            final Long teamPlaceId = 3L;
+            final int year = 2023;
+            final int month = 7;
+
+            // when
+            final SchedulesResponse schedulesResponse = scheduleService.findScheduleIn(teamPlaceId, year, month);
+            final List<ScheduleResponse> scheduleResponses = schedulesResponse.schedules();
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(scheduleResponses).hasSize(3);
+                softly.assertThat(scheduleResponses.get(0).title()).isEqualTo("3번 팀플 B");
+                softly.assertThat(scheduleResponses.get(1).title()).isEqualTo("3번 팀플 C");
+                softly.assertThat(scheduleResponses.get(2).title()).isEqualTo("3번 팀플 D");
+            });
+        }
+
+        @Test
+        @DisplayName("팀플레이스에서 일정이 없는 기간 내 일정들을 조회한다.")
+        void findAllInPeriodWith0Schedule() {
+            // given
+            final Long teamPlaceId = 3L;
+            final int year = 2023;
+            final int month = 5;
+
+            // when
+            final SchedulesResponse schedulesResponse = scheduleService.findScheduleIn(teamPlaceId, year, month);
+            final List<ScheduleResponse> scheduleResponses = schedulesResponse.schedules();
+
+            //then
+            assertThat(scheduleResponses).hasSize(0);
+        }
+
     }
 
     @Nested
@@ -93,7 +134,7 @@ class ScheduleServiceTest {
             final Long registeredId = scheduleService.register(request, teamPlaceId);
 
             // then
-            Assertions.assertThat(registeredId).isNotNull();
+            assertThat(registeredId).isNotNull();
         }
 
         @Test
