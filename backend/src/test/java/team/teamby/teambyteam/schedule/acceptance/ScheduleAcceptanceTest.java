@@ -16,9 +16,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import team.teamby.teambyteam.common.AcceptanceTest;
+import team.teamby.teambyteam.fixtures.ScheduleFixtures;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleUpdateRequest;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -147,6 +149,26 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
             assertSoftly(softly -> {
                 softly.assertThat(wrongDateTimeTypeRequest.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
                 softly.assertThat(wrongDateTimeTypeRequest.body().asString()).isEqualTo("DateTime 형식이 잘못되었습니다. 서버 관리자에게 문의해주세요.");
+            });
+        }
+
+        @Test
+        @DisplayName("시작 일자와 종료 일자의 순서가 맞지 않으면 실패한다.")
+        void failSpanWrongOrder() {
+            // given
+            final String title = ScheduleFixtures.Schedule1_N_Hour.TITLE;
+            final Long teamPlaceId = ScheduleFixtures.Schedule1_N_Hour.TEAM_PLACE_ID;
+            final LocalDateTime startDateTime = ScheduleFixtures.Schedule1_N_Hour.START_DATE_TIME;
+            final LocalDateTime wrongEndDateTime = ScheduleFixtures.Schedule1_N_Hour.START_DATE_TIME.minusDays(1);
+            final ScheduleRegisterRequest request = new ScheduleRegisterRequest(title, startDateTime, wrongEndDateTime);
+
+            // when & then
+            final ExtractableResponse<Response> wrongSpanOrderResponse = registerScheduleRequest(teamPlaceId, request);
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(wrongSpanOrderResponse.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+                softly.assertThat(wrongSpanOrderResponse.body().asString()).isEqualTo("시작 일자가 종료 일자보다 이후일 수 없습니다.");
             });
         }
 

@@ -51,4 +51,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(message);
     }
+
+    @ExceptionHandler(value = {ScheduleException.SpanWrongOrderException.class})
+    public ResponseEntity<String> handleSpanWrongOrderException(final ScheduleException exception) {
+        final String message = exception.getMessage();
+        log.warn(message, exception);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(message);
+    }
 }
