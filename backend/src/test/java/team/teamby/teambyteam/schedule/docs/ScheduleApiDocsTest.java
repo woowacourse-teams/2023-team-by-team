@@ -30,7 +30,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static team.teamby.teambyteam.fixtures.ScheduleFixtures.팀플_1번_N시간_일정;
+import static team.teamby.teambyteam.fixtures.ScheduleFixtures.Schedule1_N_Hour;
 
 @AutoConfigureRestDocs
 @WebMvcTest(ScheduleController.class)
@@ -52,8 +52,8 @@ public class ScheduleApiDocsTest {
     @DisplayName("일정 등록 문서화")
     void registerScheduleDocs() throws Exception {
         // given
-        final ScheduleRegisterRequest request = 팀플_1번_N시간_일정.REQUEST;
-        final Long teamPlaceId = 팀플_1번_N시간_일정.TEAM_PLACE_ID;
+        final ScheduleRegisterRequest request = Schedule1_N_Hour.REQUEST;
+        final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
         final Long registeredId = 1L;
         given(scheduleService.register(request, teamPlaceId))
                 .willReturn(registeredId);
