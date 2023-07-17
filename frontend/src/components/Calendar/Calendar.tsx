@@ -20,7 +20,11 @@ const Calendar = () => {
   return (
     <>
       <S.CalendarHeader>
-        <Button variant="plain" onClick={handlePrevButtonClick}>
+        <Button
+          variant="plain"
+          onClick={handlePrevButtonClick}
+          aria-label="이전 달로 이동하기"
+        >
           <ArrowLeftIcon />
         </Button>
         <Text
@@ -31,7 +35,11 @@ const Calendar = () => {
         >
           {year}년 {month + 1}월
         </Text>
-        <Button variant="plain" onClick={handleNextButtonClick}>
+        <Button
+          variant="plain"
+          onClick={handleNextButtonClick}
+          aria-label="다음 달로 이동하기"
+        >
           <ArrowRightIcon />
         </Button>
       </S.CalendarHeader>
