@@ -172,7 +172,7 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
 
         @Test
         @DisplayName("없는 팀 일정 ID로 요청하면 실패한다.")
-        void failNotExistScheduleIdRequest() {
+        void failNotExistScheduleId() {
             // given
             final Long existTeamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
             final Long notExistScheduleId = -1L;
