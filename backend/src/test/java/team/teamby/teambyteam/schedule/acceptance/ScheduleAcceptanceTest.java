@@ -138,7 +138,7 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
     class DeleteSchedule {
 
         @Test
-        @DisplayName("일정 삭제에 성공한다.")
+        @DisplayName("일정 삭제가 성공한다.")
         void success() {
             // given
             final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
@@ -154,7 +154,7 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
         }
 
         @Test
-        @DisplayName("없는 팀 플레이스 ID로 요청하면 실패한다.")
+        @DisplayName("없는 팀 플레이스의 ID로 요청하면 실패한다.")
         void failNotExistTeamPlaceIdRequest() {
             // given
             final Long notExistTeamPlaceId = -1L;
