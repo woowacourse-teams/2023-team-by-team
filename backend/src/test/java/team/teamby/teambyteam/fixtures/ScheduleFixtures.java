@@ -20,7 +20,7 @@ public class ScheduleFixtures {
         public static final LocalDateTime END_DATE_TIME = LocalDateTime.of(2023, 7, 12, 18, 0, 0);
         public static final LocalDateTime UPDATE_END_DATE_TIME = LocalDateTime.of(2023, 7, 13, 15, 0, 0);
 
-        public static final ScheduleRegisterRequest REGISTER_REQUEST = new ScheduleRegisterRequest(TITLE, START_DATE_TIME, END_DATE_TIME);
+        public static final ScheduleRegisterRequest REQUEST = new ScheduleRegisterRequest(TITLE, START_DATE_TIME, END_DATE_TIME);
         public static final ScheduleUpdateRequest UPDATE_REQUEST = new ScheduleUpdateRequest(UPDATE_TITLE, START_DATE_TIME, UPDATE_END_DATE_TIME);
 
         public static Schedule ENTITY() {

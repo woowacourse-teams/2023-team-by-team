@@ -57,7 +57,7 @@ public class ScheduleApiDocsTest {
     @DisplayName("일정 등록 문서화")
     void registerScheduleDocs() throws Exception {
         // given
-        final ScheduleRegisterRequest request = Schedule1_N_Hour.REGISTER_REQUEST;
+        final ScheduleRegisterRequest request = Schedule1_N_Hour.REQUEST;
         final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
         final Long registeredId = 1L;
         given(scheduleService.register(request, teamPlaceId))

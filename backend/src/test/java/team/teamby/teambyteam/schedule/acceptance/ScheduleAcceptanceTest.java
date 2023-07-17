@@ -98,7 +98,7 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
             final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
 
             // when
-            final ExtractableResponse<Response> successRequest = registerScheduleRequest(teamPlaceId, Schedule1_N_Hour.REGISTER_REQUEST);
+            final ExtractableResponse<Response> successRequest = registerScheduleRequest(teamPlaceId, Schedule1_N_Hour.REQUEST);
 
             // then
             assertSoftly(softly -> {
@@ -156,7 +156,7 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
             final Long notExistTeamPlaceId = -1L;
 
             // when
-            final ExtractableResponse<Response> notExistTeamPlaceIdRequest = registerScheduleRequest(notExistTeamPlaceId, Schedule1_N_Hour.REGISTER_REQUEST);
+            final ExtractableResponse<Response> notExistTeamPlaceIdRequest = registerScheduleRequest(notExistTeamPlaceId, Schedule1_N_Hour.REQUEST);
 
             // then
             assertSoftly(softly -> {
