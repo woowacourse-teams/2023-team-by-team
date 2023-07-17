@@ -27,10 +27,16 @@ const ScheduleModal = (props: ScheduleModalProps) => {
         <S.Header>
           <S.TeamWrapper>
             <S.TeamColor />
-            <Text css={S.TeamName}>
-              현대사회와 범죄 5조현대사회와 범죄 5조현대사회와 범죄
-              5조현대사회와 범죄 5조현대사회와 범죄 5조
-            </Text>
+            <p
+              title={
+                '현대사회와 범죄 5조현대사회와 범죄 5조현대사회와 범죄5조현대사회와 범죄 5조현대사회와 범죄 5조'
+              }
+            >
+              <Text css={S.TeamName}>
+                현대사회와 범죄 5조현대사회와 범죄 5조현대사회와
+                범죄5조현대사회와 범죄 5조현대사회와 범죄 5조
+              </Text>
+            </p>
           </S.TeamWrapper>
           <S.MenuWrapper>
             <Button size="sm" variant="plain">

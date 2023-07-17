@@ -51,10 +51,6 @@ export const TeamName = css`
   text-overflow: ellipsis;
 
   max-width: 200px;
-
-  &:hover {
-    overflow: visible;
-  }
 `;
 
 export const MenuWrapper = styled.div`
