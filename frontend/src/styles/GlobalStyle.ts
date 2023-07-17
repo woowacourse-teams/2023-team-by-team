@@ -9,8 +9,15 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Open Sans', 'Helvetica Neue', sans-serif;
     color: ${theme.color.BLACK}
+  }
+  
+  body,
+  input,
+  select,
+  textarea,
+  button {
+    font-family: 'Pretendard', system-ui, -apple-system, BlinkMacSystemFont, 'Open Sans', 'Helvetica Neue', sans-serif;
   }
 
   body:has([role="dialog"]) {
