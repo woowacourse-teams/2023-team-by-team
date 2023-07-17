@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import team.teamby.teambyteam.schedule.exception.ScheduleException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
 import java.time.format.DateTimeParseException;
@@ -31,10 +32,21 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body("DateTime 형식이 잘못되었습니다. 서버 관리자에게 문의해주세요.");
     }
 
-    @ExceptionHandler(TeamPlaceException.class)
-    public ResponseEntity<String> handleTeamPlaceException(final TeamPlaceException exception) {
+    @ExceptionHandler(value = {
+            TeamPlaceException.NotFoundException.class,
+            ScheduleException.ScheduleNotFoundException.class
+    })
+    public ResponseEntity<String> handleNotFoundException(final RuntimeException exception) {
         log.warn(exception.getMessage(), exception);
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
+
+    @ExceptionHandler(value = {ScheduleException.TeamAccessForbidden.class})
+    public ResponseEntity<String> handleCustomForbiddenException(final ScheduleException exception) {
+        final String message = exception.getMessage();
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(message);
     }
 }
