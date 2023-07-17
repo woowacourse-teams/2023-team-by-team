@@ -203,5 +203,19 @@ class ScheduleServiceTest {
                     .isInstanceOf(TeamPlaceException.NotFoundException.class)
                     .hasMessage("ID에 해당하는 팀 플레이스를 찾을 수 없습니다.");
         }
+
+        @Test
+        @DisplayName("일정 수정 시 수정할 일정 ID에 해당하는 일정이 존재하지 않으면 예외가 발생한다.")
+        void failScheduleNotExistById() {
+            // given
+            final Long notExistScheduleId = -1L;
+            final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
+            final ScheduleUpdateRequest request = Schedule1_N_Hour.UPDATE_REQUEST;
+
+            // when & then
+            assertThatThrownBy(() -> scheduleService.update(request, teamPlaceId, notExistScheduleId))
+                    .isInstanceOf(ScheduleException.ScheduleNotFoundException.class)
+                    .hasMessage("ID에 해당하는 일정을 찾을 수 없습니다.");
+        }
     }
 }

@@ -67,7 +67,7 @@ public class ScheduleService {
         checkTeamPlaceExist(teamPlaceId);
 
         final Schedule schedule = scheduleRepository.findById(scheduleId)
-                .orElseThrow(() -> new ScheduleException.NotFoundException("ID에 해당하는 일정을 찾을 수 없습니다."));
+                .orElseThrow(() -> new ScheduleException.ScheduleNotFoundException("ID에 해당하는 일정을 찾을 수 없습니다."));
 
         schedule.change(scheduleUpdateRequest.title(),
                 scheduleUpdateRequest.startDateTime(), scheduleUpdateRequest.endDateTime());
