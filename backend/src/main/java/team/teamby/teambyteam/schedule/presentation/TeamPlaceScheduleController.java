@@ -14,12 +14,12 @@ import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
-public class ScheduleController {
+@RequestMapping("/api/team-place")
+public class TeamPlaceScheduleController {
 
     private final ScheduleService scheduleService;
 
-    @GetMapping("/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}")
+    @GetMapping("/{teamPlaceId}/calendar/schedules/{scheduleId}")
     public ResponseEntity<ScheduleResponse> findSpecificSchedule(
             @AuthPrincipal final MemberEmailDto memberEmailDto,
             @PathVariable("teamPlaceId") final Long teamPlaceId,
@@ -30,7 +30,7 @@ public class ScheduleController {
         return ResponseEntity.ok(responseBody);
     }
 
-    @PostMapping("/team-place/{teamPlaceId}/calendar/schedules")
+    @PostMapping("/{teamPlaceId}/calendar/schedules")
     public ResponseEntity<Void> register(
             @RequestBody @Valid final ScheduleRegisterRequest scheduleRegisterRequest,
             @PathVariable final Long teamPlaceId
