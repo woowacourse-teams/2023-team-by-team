@@ -26,4 +26,8 @@ public class Title {
             throw new NullPointerException("일정의 제목이 null일 수 없습니다.");
         }
     }
+
+    public Title change(final String value) {
+        return new Title(value);
+    }
 }

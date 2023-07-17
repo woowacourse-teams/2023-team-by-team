@@ -31,4 +31,8 @@ public class Span {
             throw new ScheduleException.SpanWrongOrderException("시작 일자가 종료 일자보다 이후일 수 없습니다.");
         }
     }
+
+    public Span change(final LocalDateTime startDateTime, final LocalDateTime endDateTime) {
+        return new Span(startDateTime, endDateTime);
+    }
 }
