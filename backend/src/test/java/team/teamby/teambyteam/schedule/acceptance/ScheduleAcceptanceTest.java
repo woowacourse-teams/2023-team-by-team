@@ -141,15 +141,15 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
         @DisplayName("일정 삭제에 성공한다.")
         void success() {
             // given
-            final Long teamPlaceId = 팀플_1번_N시간_일정.TEAM_PLACE_ID;
-            final Long scheduleId = 팀플_1번_N시간_일정.ID;
+            final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
+            final Long scheduleId = Schedule1_N_Hour.ID;
 
             // when
-            ExtractableResponse<Response> 정상_일정_삭제_요청 = 일정_삭제_요청(teamPlaceId, scheduleId);
+            ExtractableResponse<Response> deleteScheduleResponse = deleteSchedule(teamPlaceId, scheduleId);
 
             // then
             assertSoftly(softly -> {
-                softly.assertThat(정상_일정_삭제_요청.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+                softly.assertThat(deleteScheduleResponse.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
             });
         }
 
@@ -158,15 +158,15 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
         void failNotExistTeamPlaceIdRequest() {
             // given
             final Long notExistTeamPlaceId = -1L;
-            final Long existScheduleId = 팀플_1번_N시간_일정.ID;
+            final Long existScheduleId = Schedule1_N_Hour.ID;
 
             // when
-            ExtractableResponse<Response> 없는_팀_플레이스_ID_일정_삭제_요청 = 일정_삭제_요청(notExistTeamPlaceId, existScheduleId);
+            ExtractableResponse<Response> notExistTeamPlaceIdDeleteScheduleResponse = deleteSchedule(notExistTeamPlaceId, existScheduleId);
 
             // then
             assertSoftly(softly -> {
-                softly.assertThat(없는_팀_플레이스_ID_일정_삭제_요청.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
-                softly.assertThat(없는_팀_플레이스_ID_일정_삭제_요청.body().asString()).isEqualTo("ID에 해당하는 팀 플레이스를 찾을 수 없습니다.");
+                softly.assertThat(notExistTeamPlaceIdDeleteScheduleResponse.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
+                softly.assertThat(notExistTeamPlaceIdDeleteScheduleResponse.body().asString()).isEqualTo("ID에 해당하는 팀 플레이스를 찾을 수 없습니다.");
             });
         }
 
@@ -174,21 +174,21 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
         @DisplayName("없는 팀 일정 ID로 요청하면 실패한다.")
         void failNotExistScheduleIdRequest() {
             // given
-            final Long existTeamPlaceId = 팀플_1번_N시간_일정.TEAM_PLACE_ID;
+            final Long existTeamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
             final Long notExistScheduleId = -1L;
 
             // when
-            ExtractableResponse<Response> 없는_일정_ID_일정_삭제_요청 = 일정_삭제_요청(existTeamPlaceId, notExistScheduleId);
+            ExtractableResponse<Response> notExistScheduleIdDeleteResponse = deleteSchedule(existTeamPlaceId, notExistScheduleId);
 
             // then
             assertSoftly(softly -> {
-                softly.assertThat(없는_일정_ID_일정_삭제_요청.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
-                softly.assertThat(없는_일정_ID_일정_삭제_요청.body().asString()).isEqualTo("ID에 해당하는 일정을 찾을 수 없습니다.");
+                softly.assertThat(notExistScheduleIdDeleteResponse.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
+                softly.assertThat(notExistScheduleIdDeleteResponse.body().asString()).isEqualTo("ID에 해당하는 일정을 찾을 수 없습니다.");
             });
         }
     }
 
-    private ExtractableResponse<Response> 일정_삭제_요청(final Long teamPlaceId, final Long scheduleId) {
+    private ExtractableResponse<Response> deleteSchedule(final Long teamPlaceId, final Long scheduleId) {
         return RestAssured.given().log().all()
                 .header("Authorization", JWT_PREFIX + JWT_TOKEN)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
