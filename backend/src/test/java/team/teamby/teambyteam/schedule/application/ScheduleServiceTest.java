@@ -72,4 +72,49 @@ class ScheduleServiceTest {
                     .hasMessage("ID에 해당하는 팀 플레이스를 찾을 수 없습니다.");
         }
     }
+
+    @Nested
+    @DisplayName("일정 삭제 시")
+    class DeleteSchedule {
+
+        @Test
+        @DisplayName("일정 삭제에 성공한다.")
+        void success() {
+            // given
+            Long teamPlaceId = 1L;
+            ScheduleRegisterRequest request = ScheduleFixtures.팀플_1번_N시간_일정.REQUEST;
+
+            // when
+            Long registeredId = scheduleService.register(request, teamPlaceId);
+
+            // then
+            Assertions.assertThat(registeredId).isNotNull();
+        }
+
+        @Test
+        @DisplayName("일정 등록 시 팀 플레이스 ID에 해당하는 팀 플레이스가 존재하지 않으면 예외가 발생한다.")
+        void failTeamPlaceNotExistById() {
+            // given
+            Long notExistTramPlaceId = -1L;
+            Long existScheduleId = 1L;
+
+            // when & then
+            assertThatThrownBy(() -> scheduleService.delete(notExistTramPlaceId, existScheduleId))
+                    .isInstanceOf(TeamPlaceException.NotFoundException.class)
+                    .hasMessage("ID에 해당하는 팀 플레이스를 찾을 수 없습니다.");
+        }
+
+        @Test
+        @DisplayName("일정 삭제 시 존재하지 않는 일정 Id면 실패한다.")
+        void failScheduleNotExistById() {
+            // given
+            Long existTramPlaceId = 1L;
+            Long notExistScheduleId = -1L;
+
+            // when & then
+            assertThatThrownBy(() -> scheduleService.delete(existTramPlaceId, notExistScheduleId))
+                    .isInstanceOf(ScheduleException.NotFoundException.class)
+                    .hasMessage("ID에 해당하는 일정을 찾을 수 없습니다.");
+        }
+    }
 }

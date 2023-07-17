@@ -132,4 +132,68 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
                 .then().log().all()
                 .extract();
     }
+
+    @Nested
+    @DisplayName("일정 삭제 시")
+    class DeleteSchedule {
+
+        @Test
+        @DisplayName("일정 삭제에 성공한다.")
+        void success() {
+            // given
+            final Long teamPlaceId = 팀플_1번_N시간_일정.TEAM_PLACE_ID;
+            final Long scheduleId = 팀플_1번_N시간_일정.ID;
+
+            // when
+            ExtractableResponse<Response> 정상_일정_삭제_요청 = 일정_삭제_요청(teamPlaceId, scheduleId);
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(정상_일정_삭제_요청.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+            });
+        }
+
+        @Test
+        @DisplayName("없는 팀 플레이스 ID로 요청하면 실패한다.")
+        void failNotExistTeamPlaceIdRequest() {
+            // given
+            final Long notExistTeamPlaceId = -1L;
+            final Long existScheduleId = 팀플_1번_N시간_일정.ID;
+
+            // when
+            ExtractableResponse<Response> 없는_팀_플레이스_ID_일정_삭제_요청 = 일정_삭제_요청(notExistTeamPlaceId, existScheduleId);
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(없는_팀_플레이스_ID_일정_삭제_요청.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
+                softly.assertThat(없는_팀_플레이스_ID_일정_삭제_요청.body().asString()).isEqualTo("ID에 해당하는 팀 플레이스를 찾을 수 없습니다.");
+            });
+        }
+
+        @Test
+        @DisplayName("없는 팀 일정 ID로 요청하면 실패한다.")
+        void failNotExistScheduleIdRequest() {
+            // given
+            final Long existTeamPlaceId = 팀플_1번_N시간_일정.TEAM_PLACE_ID;
+            final Long notExistScheduleId = -1L;
+
+            // when
+            ExtractableResponse<Response> 없는_일정_ID_일정_삭제_요청 = 일정_삭제_요청(existTeamPlaceId, notExistScheduleId);
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(없는_일정_ID_일정_삭제_요청.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
+                softly.assertThat(없는_일정_ID_일정_삭제_요청.body().asString()).isEqualTo("ID에 해당하는 일정을 찾을 수 없습니다.");
+            });
+        }
+    }
+
+    private ExtractableResponse<Response> 일정_삭제_요청(final Long teamPlaceId, final Long scheduleId) {
+        return RestAssured.given().log().all()
+                .header("Authorization", JWT_PREFIX + JWT_TOKEN)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .delete("/api/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}", teamPlaceId, scheduleId)
+                .then().log().all()
+                .extract();
+    }
 }
