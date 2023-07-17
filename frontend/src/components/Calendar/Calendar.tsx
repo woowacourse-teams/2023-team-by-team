@@ -3,8 +3,8 @@ import Text from '~/components/common/Text/Text';
 import Button from '~/components/common/Button/Button';
 import DateCell from '~/components/Calendar/DateCell/DateCell';
 import { ArrowLeftIcon, ArrowRightIcon } from '~/assets/svg';
-import * as S from './Calendar.styled';
 import useCalendar from '~/hooks/useCalendar';
+import * as S from './Calendar.styled';
 
 const DAYS_OF_WEEK = ['일', '월', '화', '수', '목', '금', '토'] as const;
 
@@ -18,7 +18,7 @@ const Calendar = () => {
   } = useCalendar();
 
   return (
-    <S.Container>
+    <>
       <S.CalendarHeader>
         <Button variant="plain" onClick={handlePrevButtonClick}>
           <ArrowLeftIcon />
@@ -36,26 +36,33 @@ const Calendar = () => {
         </Button>
       </S.CalendarHeader>
       <S.CalendarBody>
-        <div>
+        <S.DaysOfWeek>
           {DAYS_OF_WEEK.map((day) => {
             return <S.DayOfWeek key={day}>{day}</S.DayOfWeek>;
           })}
-        </div>
-        <S.DateView>
+        </S.DaysOfWeek>
+        <S.DateContainer>
           {calendar.map((week) => {
-            return week.map((day) => {
-              return (
-                <DateCell
-                  key={day.toISOString()}
-                  rawDate={day}
-                  currentMonth={month}
-                />
-              );
-            });
+            return (
+              <>
+                <S.DateView>
+                  {week.map((day) => {
+                    return (
+                      <DateCell
+                        key={day.toISOString()}
+                        rawDate={day}
+                        currentMonth={month}
+                      />
+                    );
+                  })}
+                </S.DateView>
+                <S.ScheduleBarContainer></S.ScheduleBarContainer>
+              </>
+            );
           })}
-        </S.DateView>
+        </S.DateContainer>
       </S.CalendarBody>
-    </S.Container>
+    </>
   );
 };
 
