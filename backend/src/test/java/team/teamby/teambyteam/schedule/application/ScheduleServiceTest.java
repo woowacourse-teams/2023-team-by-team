@@ -12,12 +12,14 @@ import org.springframework.transaction.annotation.Transactional;
 import team.teamby.teambyteam.fixtures.ScheduleFixtures;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleResponse;
+import team.teamby.teambyteam.schedule.domain.ScheduleRepository;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static team.teamby.teambyteam.fixtures.ScheduleFixtures.Schedule1_N_Hour;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @Transactional
@@ -27,6 +29,8 @@ class ScheduleServiceTest {
     @Autowired
     private ScheduleService scheduleService;
 
+    @Autowired
+    private ScheduleRepository scheduleRepository;
 
     @Nested
     @DisplayName("일정 정보 조회시")
