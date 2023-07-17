@@ -21,29 +21,27 @@ import java.util.Optional;
 public final class MemberInterceptor implements HandlerInterceptor {
 
     private static final String EMAIL_KEY = "email";
+    private static final String PREFIX_BEARER = "Bearer ";
 
     private final MemberRepository memberRepository;
 
     @Override
     public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler) throws Exception {
         final String token = extractToken(request);
-        if (token == null) {
-            throw new MemberException.IllegalTokenException("잘못된 토큰");
-        }
         String email = extractEmailFromToken(token);
         final Optional<Member> member = memberRepository.findByEmail(new Email(email));
         if (member.isEmpty()) {
-            throw new MemberException.IllegalTokenException("멤버 조회 실패");
+            throw new MemberException.MemberNotFoundException("멤버 조회 실패");
         }
         return true;
     }
 
     private String extractToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(PREFIX_BEARER)) {
+            return bearerToken.substring(PREFIX_BEARER.length());
         }
-        return null;
+        throw new MemberException.UnSupportAuthenticationException("지원하지 않는 인증 방식입니다.");
     }
 
     public String extractEmailFromToken(String token) {

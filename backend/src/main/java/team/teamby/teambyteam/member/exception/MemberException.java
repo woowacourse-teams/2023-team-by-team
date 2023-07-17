@@ -24,8 +24,8 @@ public class MemberException extends RuntimeException {
         }
     }
 
-    public static class IllegalTokenException extends MemberException {
-        public IllegalTokenException(final String message) {
+    public static class UnSupportAuthenticationException extends MemberException {
+        public UnSupportAuthenticationException(final String message) {
             super(message);
         }
     }
