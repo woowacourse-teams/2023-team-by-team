@@ -1,4 +1,6 @@
 const color = {
+  LOGO: '#3145FF',
+  PRIMARY: '#516FFF',
   WHITE: '#fff',
   BLACK: '#000',
   RED: '#FF5B5B',
@@ -12,12 +14,15 @@ const color = {
   GRAY700: '#4e5968',
   GRAY800: '#333d4b',
   GRAY900: '#191f28',
+} as const;
 
-  PRIMARY: '#3145ff',
+const zIndex = {
+  MODAL: 1,
 } as const;
 
 export const theme = {
   color,
+  zIndex,
 } as const;
 
 export type Theme = typeof theme;
