@@ -189,5 +189,19 @@ class ScheduleServiceTest {
                     .isInstanceOf(ScheduleException.SpanWrongOrderException.class)
                     .hasMessage("시작 일자가 종료 일자보다 이후일 수 없습니다.");
         }
+
+        @Test
+        @DisplayName("일정 수정 시 팀 플레이스 ID에 해당하는 팀 플레이스가 존재하지 않으면 예외가 발생한다.")
+        void failTeamPlaceNotExistById() {
+            // given
+            final Long id = Schedule1_N_Hour.ID;
+            final ScheduleUpdateRequest request = Schedule1_N_Hour.UPDATE_REQUEST;
+            final Long notExistTeamPlaceId = -1L;
+
+            // when & then
+            assertThatThrownBy(() -> scheduleService.update(request, notExistTeamPlaceId, id))
+                    .isInstanceOf(TeamPlaceException.NotFoundException.class)
+                    .hasMessage("ID에 해당하는 팀 플레이스를 찾을 수 없습니다.");
+        }
     }
 }
