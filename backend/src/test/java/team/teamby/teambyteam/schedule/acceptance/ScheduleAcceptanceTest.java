@@ -36,7 +36,6 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
     private static final String REQUEST_START_DATE_TIME_KEY = "startDateTime";
     private static final String REQUEST_END_DATE_KEY = "endDateTime";
 
-
     @Nested
     @DisplayName("팀플레이스 내 특정 일정 조회")
     class FindTest {
@@ -99,7 +98,7 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
             final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
 
             // when
-            final ExtractableResponse<Response> successRequest = registerScheduleRequest(teamPlaceId, Schedule1_N_Hour.REQUEST);
+            final ExtractableResponse<Response> successRequest = registerScheduleRequest(teamPlaceId, Schedule1_N_Hour.REGISTER_REQUEST);
 
             // then
             assertSoftly(softly -> {
@@ -157,7 +156,7 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
             final Long notExistTeamPlaceId = -1L;
 
             // when
-            final ExtractableResponse<Response> notExistTeamPlaceIdRequest = registerScheduleRequest(notExistTeamPlaceId, Schedule1_N_Hour.REQUEST);
+            final ExtractableResponse<Response> notExistTeamPlaceIdRequest = registerScheduleRequest(notExistTeamPlaceId, Schedule1_N_Hour.REGISTER_REQUEST);
 
             // then
             assertSoftly(softly -> {
