@@ -26,7 +26,7 @@ public final class MemberInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler) throws Exception {
         final String token = extractToken(request);
-        String email = extractEmailFromToken(token);
+        final String email = extractEmailFromToken(token);
         if (notExistsByEmail(email)) {
             throw new MemberException.MemberNotFoundException("멤버 조회 실패");
         }
@@ -38,7 +38,7 @@ public final class MemberInterceptor implements HandlerInterceptor {
     }
 
     private String extractToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+        final String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(PREFIX_BEARER)) {
             return bearerToken.substring(PREFIX_BEARER.length());
         }
