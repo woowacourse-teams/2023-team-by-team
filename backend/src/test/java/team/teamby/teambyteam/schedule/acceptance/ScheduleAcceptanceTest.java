@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static team.teamby.teambyteam.fixtures.ScheduleFixtures.팀플_1번_N시간_일정;
+import static team.teamby.teambyteam.fixtures.ScheduleFixtures.Schedule1_N_Hour;
 
 public class ScheduleAcceptanceTest extends AcceptanceTest {
 
@@ -42,10 +42,10 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
         @DisplayName("일정 등록에 성공한다.")
         void success() {
             // given
-            Long teamPlaceId = 팀플_1번_N시간_일정.TEAM_PLACE_ID;
+            Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
 
             // when
-            ExtractableResponse<Response> 정상_일정_등록_요청 = 일정_등록_요청(teamPlaceId, 팀플_1번_N시간_일정.REQUEST);
+            ExtractableResponse<Response> 정상_일정_등록_요청 = 일정_등록_요청(teamPlaceId, Schedule1_N_Hour.REQUEST);
 
             // then
             assertSoftly(softly -> {
@@ -59,8 +59,8 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
         @DisplayName("일정 제목이 빈 값인 요청이면 실패한다.")
         void failBlankTitleRequest(String blankTitle) {
             // given
-            Long teamPlaceId = 팀플_1번_N시간_일정.TEAM_PLACE_ID;
-            ScheduleRegisterRequest request = new ScheduleRegisterRequest(blankTitle, 팀플_1번_N시간_일정.START_DATE_TIME, 팀플_1번_N시간_일정.END_DATE_TIME);
+            Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
+            ScheduleRegisterRequest request = new ScheduleRegisterRequest(blankTitle, Schedule1_N_Hour.START_DATE_TIME, Schedule1_N_Hour.END_DATE_TIME);
 
             // when
             ExtractableResponse<Response> 일정_제목_빈_값_일정_등록_요청 = 일정_등록_요청(teamPlaceId, request);
@@ -77,8 +77,8 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
         @DisplayName("잘못된 날짜 형식 요청이면 실패한다.")
         void failWrongDateTimeTypeRequest(String wrongStartDateTimeType) throws JsonProcessingException {
             // given
-            Long teamPlaceId = 팀플_1번_N시간_일정.TEAM_PLACE_ID;
-            String title = 팀플_1번_N시간_일정.TITLE;
+            Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
+            String title = Schedule1_N_Hour.TITLE;
             String correctEndDateTimeType = "2023-07-12 18:00";
 
             Map<String, String> requestMap = new HashMap<>();
@@ -103,7 +103,7 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
             Long notExistTeamPlaceId = -1L;
 
             // when
-            ExtractableResponse<Response> 없는_팀_플레이스_ID_일정_등록_요청 = 일정_등록_요청(notExistTeamPlaceId, 팀플_1번_N시간_일정.REQUEST);
+            ExtractableResponse<Response> 없는_팀_플레이스_ID_일정_등록_요청 = 일정_등록_요청(notExistTeamPlaceId, Schedule1_N_Hour.REQUEST);
 
             // then
             assertSoftly(softly -> {

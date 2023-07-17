@@ -34,7 +34,7 @@ class ScheduleServiceTest {
         void success() {
             // given
             Long teamPlaceId = 1L;
-            ScheduleRegisterRequest request = ScheduleFixtures.팀플_1번_N시간_일정.REQUEST;
+            ScheduleRegisterRequest request = ScheduleFixtures.Schedule1_N_Hour.REQUEST;
 
             // when
             Long registeredId = scheduleService.register(request, teamPlaceId);
@@ -47,10 +47,10 @@ class ScheduleServiceTest {
         @DisplayName("일정 등록 시 Span 순서가 맞지 않으면 예외가 발생한다.")
         void failSpanWrongOrder() {
             // given
-            String title = ScheduleFixtures.팀플_1번_N시간_일정.TITLE;
-            Long teamPlaceId = ScheduleFixtures.팀플_1번_N시간_일정.TEAM_PLACE_ID;
-            LocalDateTime startDateTime = ScheduleFixtures.팀플_1번_N시간_일정.START_DATE_TIME;
-            LocalDateTime wrongEndDateTime = ScheduleFixtures.팀플_1번_N시간_일정.START_DATE_TIME.minusDays(1);
+            String title = ScheduleFixtures.Schedule1_N_Hour.TITLE;
+            Long teamPlaceId = ScheduleFixtures.Schedule1_N_Hour.TEAM_PLACE_ID;
+            LocalDateTime startDateTime = ScheduleFixtures.Schedule1_N_Hour.START_DATE_TIME;
+            LocalDateTime wrongEndDateTime = ScheduleFixtures.Schedule1_N_Hour.START_DATE_TIME.minusDays(1);
             ScheduleRegisterRequest request = new ScheduleRegisterRequest(title, startDateTime, wrongEndDateTime);
 
             // when & then
@@ -63,7 +63,7 @@ class ScheduleServiceTest {
         @DisplayName("일정 등록 시 팀 플레이스 ID에 해당하는 팀 플레이스가 존재하지 않으면 예외가 발생한다.")
         void failTeamPlaceNotExistById() {
             // given
-            ScheduleRegisterRequest request = ScheduleFixtures.팀플_1번_N시간_일정.REQUEST;
+            ScheduleRegisterRequest request = ScheduleFixtures.Schedule1_N_Hour.REQUEST;
             Long notExistTeamPlaceId = -1L;
 
             // when & then

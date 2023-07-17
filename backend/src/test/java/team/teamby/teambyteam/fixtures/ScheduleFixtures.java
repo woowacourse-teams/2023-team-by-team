@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 public class ScheduleFixtures {
 
-    public static class 팀플_1번_N시간_일정 {
+    public static class Schedule1_N_Hour {
 
         public static final Long ID = 1L;
         public static final String TITLE = "1번 팀플 N시간 일정";
