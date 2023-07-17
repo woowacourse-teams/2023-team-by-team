@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useModal } from '~/hooks/useModal';
 import ScheduleModal from '~/components/ScheduleModal/ScheduleModal';
 import { useRef, useState } from 'react';
+import { arrayOf } from '~/utils/arrayOf';
 
 const meta = {
   title: 'ScheduleModal',
@@ -15,8 +16,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   render: () => {
     const { openModal } = useModal();
-    const array = [1, 2, 3, 4, 5];
-    const refs = array.map(() => useRef(null));
+    const refs = arrayOf(5).map(() => useRef(null));
 
     const [targetRef, setTargetRef] = useState<React.RefObject<HTMLDivElement>>(
       refs[0],
@@ -29,7 +29,7 @@ export const Default: Story = {
 
     return (
       <>
-        {array.map((_, index) => {
+        {arrayOf(5).map((_, index) => {
           return (
             <div
               key={index}

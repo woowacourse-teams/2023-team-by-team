@@ -8,7 +8,7 @@ export const Container = styled.div`
 
   width: 551px;
   height: 272px;
-  padding: 30px 40px 30px 40px;
+  padding: 20px 30px 30px 40px;
 
   border-radius: 10px;
   background-color: ${({ theme }) => theme.color.WHITE};
@@ -60,24 +60,6 @@ export const TeamName = css`
 export const MenuWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 12px;
-`;
-
-export const EditWrapper = styled.div`
-  cursor: pointer;
-`;
-
-export const DeleteWrapper = styled.div`
-  cursor: pointer;
-`;
-
-export const CloseWrapper = styled.div`
-  display: flex;
-  align-items: center;
-
-  padding-left: 6px;
-
-  cursor: pointer;
 `;
 
 export const PeriodWrapper = styled.div`

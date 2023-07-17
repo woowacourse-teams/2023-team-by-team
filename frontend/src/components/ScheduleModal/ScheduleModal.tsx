@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import Modal from '~/components/common/Modal/Modal';
 import Text from '~/components/common/Text/Text';
 import { useModal } from '~/hooks/useModal';
@@ -10,10 +11,10 @@ interface ScheduleModalProps {
   targetRef: React.RefObject<HTMLDivElement>;
 }
 const ScheduleModal = (props: ScheduleModalProps) => {
-  const { id, targetRef } = props;
+  const { targetRef } = props;
   const { closeModal } = useModal();
 
-  const modalLocation: React.CSSProperties = {
+  const modalLocation: CSSProperties = {
     position: 'absolute',
     top: `${targetRef.current?.getBoundingClientRect().bottom}px`,
     left: `${targetRef.current?.getBoundingClientRect().left}px`,
@@ -32,15 +33,15 @@ const ScheduleModal = (props: ScheduleModalProps) => {
             </Text>
           </S.TeamWrapper>
           <S.MenuWrapper>
-            <S.EditWrapper>
+            <Button size="sm" variant="plain">
               <EditIcon />
-            </S.EditWrapper>
-            <S.DeleteWrapper>
+            </Button>
+            <Button size="sm" variant="plain">
               <DeleteIcon />
-            </S.DeleteWrapper>
-            <S.CloseWrapper>
-              <CloseIcon onClick={closeModal} />
-            </S.CloseWrapper>
+            </Button>
+            <Button size="sm" variant="plain" onClick={closeModal}>
+              <CloseIcon />
+            </Button>
           </S.MenuWrapper>
         </S.Header>
         <Text as="h4">1차 데모데이</Text>
