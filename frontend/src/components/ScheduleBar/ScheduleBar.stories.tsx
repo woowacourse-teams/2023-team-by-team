@@ -13,6 +13,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    color: 'red',
+    startPosition: 3,
+    duration: 2,
   },
 };

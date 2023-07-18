@@ -1,13 +1,21 @@
 import * as S from './ScheduleBar.styled';
 
-interface ScheduleBarProps {
-  color: string;
+export interface ScheduleBarProps {
+  startPosition: number;
+  duration: number;
+  color?: string;
 }
 
 const ScheduleBar = (props: ScheduleBarProps) => {
-  const { color = 'red' } = props;
+  const { startPosition, duration, color = 'red' } = props;
 
-  return <S.Wrapper color={color} />;
+  return (
+    <S.Wrapper
+      startPosition={startPosition}
+      duration={duration}
+      color={color}
+    />
+  );
 };
 
 export default ScheduleBar;

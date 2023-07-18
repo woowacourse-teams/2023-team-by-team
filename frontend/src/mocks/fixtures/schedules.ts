@@ -5,7 +5,7 @@ export const schedules: Schedule[] = [
     id: 0,
     title: 'test0',
     startDateTime: '2023-07-13 00:00',
-    endDateTime: '2023-07-17 00:00',
+    endDateTime: '2023-07-14 23:59',
   },
   {
     id: 1,
@@ -36,5 +36,17 @@ export const schedules: Schedule[] = [
     title: 'test5',
     startDateTime: '2023-07-28 05:00',
     endDateTime: '2023-07-28 05:00',
+  },
+  {
+    id: 6,
+    title: 'test5',
+    startDateTime: '2023-07-31 05:00',
+    endDateTime: '2023-08-02 05:00',
+  },
+  {
+    id: 7,
+    title: 'test5',
+    startDateTime: '2023-06-30 05:00',
+    endDateTime: '2023-07-02 05:00',
   },
 ];

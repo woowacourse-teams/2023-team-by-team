@@ -4,10 +4,17 @@ import DateCell from '~/components/Calendar/DateCell/DateCell';
 import { ArrowLeftIcon, ArrowRightIcon } from '~/assets/svg';
 import useCalendar from '~/hooks/useCalendar';
 import * as S from './Calendar.styled';
+import ScheduleBar from '~/components/ScheduleBar/ScheduleBar';
+import type { Schedule } from '~/types/schedule';
 
 const DAYS_OF_WEEK = ['일', '월', '화', '수', '목', '금', '토'] as const;
 
-const Calendar = () => {
+interface CalendarProps {
+  schedules: Schedule[];
+}
+
+const Calendar = (props: CalendarProps) => {
+  const { schedules } = props;
   const {
     year,
     month,
@@ -58,7 +65,33 @@ const Calendar = () => {
                     );
                   })}
                 </S.DateView>
-                <S.ScheduleBarContainer></S.ScheduleBarContainer>
+                <S.ScheduleBarContainer>
+                  {schedules.map((schedule) => {
+                    const { id, title, startDateTime, endDateTime } = schedule;
+
+                    const calcDuration = (start: Date, end: Date) => {
+                      const diff = start.getTime() - end.getTime();
+
+                      return Math.abs(diff / (1000 * 60 * 60 * 24)) + 1;
+                    };
+
+                    const [startDate] = startDateTime.split(' ');
+                    const [endDate] = endDateTime.split(' ');
+
+                    const duration = calcDuration(
+                      new Date(startDate),
+                      new Date(endDate),
+                    );
+
+                    return (
+                      <ScheduleBar
+                        key={id}
+                        startPosition={new Date(startDate).getDay()}
+                        duration={duration}
+                      />
+                    );
+                  })}
+                </S.ScheduleBarContainer>
               </>
             );
           })}
