@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import Modal from '../common/Modal/Modal';
 import Button from '../common/Button/Button';
 import { useModal } from '~/hooks/useModal';
 import ScheduleAddModal from './ScheduleAddModal';
