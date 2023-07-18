@@ -1,4 +1,4 @@
-import { styled } from 'styled-components';
+import { css, styled } from 'styled-components';
 
 export const CalendarHeader = styled.div`
   display: flex;
@@ -62,4 +62,9 @@ export const DateView = styled.div`
 
 export const ScheduleBarContainer = styled.div`
   position: relative;
+`;
+
+export const calendarTitle = css`
+  font-size: 28px;
+  font-weight: 600;
 `;

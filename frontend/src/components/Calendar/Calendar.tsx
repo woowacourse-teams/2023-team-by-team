@@ -27,12 +27,7 @@ const Calendar = () => {
         >
           <ArrowLeftIcon />
         </Button>
-        <Text
-          css={css`
-            font-size: 28px;
-            font-weight: 600;
-          `}
-        >
+        <Text css={S.calendarTitle}>
           {year}년 {month + 1}월
         </Text>
         <Button
