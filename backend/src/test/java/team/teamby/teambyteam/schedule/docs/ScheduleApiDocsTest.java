@@ -12,10 +12,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
+import team.teamby.teambyteam.member.configuration.MemberInterceptor;
 import team.teamby.teambyteam.schedule.application.ScheduleService;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
-import team.teamby.teambyteam.schedule.presentation.ScheduleController;
+import team.teamby.teambyteam.schedule.presentation.TeamPlaceScheduleController;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
@@ -33,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static team.teamby.teambyteam.fixtures.ScheduleFixtures.Schedule1_N_Hour;
 
 @AutoConfigureRestDocs
-@WebMvcTest(ScheduleController.class)
+@WebMvcTest(TeamPlaceScheduleController.class)
 public class ScheduleApiDocsTest {
 
     private static final String AUTHORIZATION_HEADER_KEY = HttpHeaders.AUTHORIZATION;
@@ -48,6 +50,9 @@ public class ScheduleApiDocsTest {
     @MockBean
     private ScheduleService scheduleService;
 
+    @MockBean
+    private MemberInterceptor memberInterceptor;
+
     @Test
     @DisplayName("일정 등록 문서화")
     void registerScheduleDocs() throws Exception {
@@ -57,6 +62,8 @@ public class ScheduleApiDocsTest {
         final Long registeredId = 1L;
         given(scheduleService.register(request, teamPlaceId))
                 .willReturn(registeredId);
+        given(memberInterceptor.preHandle(any(), any(), any()))
+                .willReturn(true);
 
         // when & then
         mockMvc.perform(post("/api/team-place/{teamPlaceId}/calendar/schedules", teamPlaceId)
