@@ -77,16 +77,10 @@ export const TimeSelectContainer = styled.div`
   column-gap: 10px;
 `;
 
-export const Input = styled.input<InputProps>`
-  width: ${({ width }) => width};
-  height: 40px;
-  padding: 6px;
-  margin-right: ${({ marginright }) => marginright};
-
-  border: 1px solid ${({ theme }) => theme.color.GRAY200};
+export const dateTimeLocalInputStyles = css`
+  margin-right: 30px;
 
   text-align: center;
-  font-size: 14px;
 `;
 
 export const TeamNameContainer = styled.div`
