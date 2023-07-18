@@ -17,8 +17,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import team.teamby.teambyteam.common.AcceptanceTest;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
+import team.teamby.teambyteam.schedule.application.dto.ScheduleResponse;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -39,7 +41,7 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
 
     @Nested
     @DisplayName("팀플레이스 내 특정 일정 조회")
-    class FindTest {
+    class FindTeamPlaceSpecificSchedule {
 
         @Test
         @DisplayName("팀에서 아이디를 가지고 특정 일정을 조회한다.")
@@ -85,6 +87,69 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
 
             // then
             assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+        }
+    }
+
+    @Nested
+    @DisplayName("팀플래이스 내 기간 일정 조회 시")
+    class FindTeamPlaceScheduleInPeriod {
+
+        @Test
+        @DisplayName("기간으로 조회 성공한다.")
+        void success() {
+            // given
+            final Long teamPlaceId = 3L;
+            final int year = 2023;
+            final int month = 7;
+
+            // when
+            final ExtractableResponse<Response> response = requestTeamPlaceSchedulesInPeriod(teamPlaceId, year, month);
+            final List<ScheduleResponse> schedules = response.jsonPath().getList("schedules", ScheduleResponse.class);
+
+            //then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+                softly.assertThat(schedules.get(0).title()).isEqualTo("3번 팀플 B");
+                softly.assertThat(schedules.get(1).title()).isEqualTo("3번 팀플 C");
+                softly.assertThat(schedules.get(2).title()).isEqualTo("3번 팀플 D");
+            });
+        }
+
+        @Test
+        @DisplayName("요청에 패스쿼리가 누락되면 조회에 실패한다.")
+        void failWithMissingQuery() {
+            // given
+            final Long teamPlaceId = 3L;
+            final int month = 7;
+
+            // when
+            final ExtractableResponse<Response> response = requestTeamPlaceSchedulesInPeriod(teamPlaceId, null, month);
+
+            //then
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        }
+
+        @Test
+        @DisplayName("기간 요쳥에 잘못된 형식으로 요쳥되면 조회에 실패한다.")
+        void failWithWrongQuery() {
+            // given
+            final Long teamPlaceId = 3L;
+            final String year = "y2023";
+            final int month = 7;
+
+            // when
+            final ExtractableResponse<Response> response = RestAssured.given().log().all()
+                    .header(new Header("Authorization", JWT_PREFIX + JWT_TOKEN))
+                    .pathParam("teamPlaceId", teamPlaceId)
+                    .queryParam("year", year)
+                    .queryParam("month", month)
+                    .when().log().all()
+                    .get("/api/team-place/{teamPlaceId}/calendar/schedules")
+                    .then().log().all()
+                    .extract();
+
+            //then
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         }
     }
 
@@ -192,6 +257,18 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
                 .header(new Header("Authorization", JWT_PREFIX + JWT_TOKEN))
                 .when().log().all()
                 .get("/api/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}", teamPlaceId, scheduleId)
+                .then().log().all()
+                .extract();
+    }
+
+    private ExtractableResponse<Response> requestTeamPlaceSchedulesInPeriod(final Long teamPlaceId, final Integer year, final Integer month) {
+        return RestAssured.given().log().all()
+                .header(new Header("Authorization", JWT_PREFIX + JWT_TOKEN))
+                .pathParam("teamPlaceId", teamPlaceId)
+                .queryParam("year", year)
+                .queryParam("month", month)
+                .when().log().all()
+                .get("/api/team-place/{teamPlaceId}/calendar/schedules")
                 .then().log().all()
                 .extract();
     }
