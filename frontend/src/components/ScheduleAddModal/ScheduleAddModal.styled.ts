@@ -1,10 +1,5 @@
 import { styled, css } from 'styled-components';
 
-interface InputProps {
-  width: string;
-  marginright?: string;
-}
-
 export const Backdrop = styled.div`
   position: fixed;
   top: 0;
@@ -44,26 +39,10 @@ export const Header = styled.div`
   border-bottom: ${({ theme }) => `1px solid ${theme.color.GRAY300}`};
 `;
 
-export const closeButtonStyles = css`
-  width: 22px;
-  height: 38px;
-  padding: 8px 0;
-`;
-
 export const TitleWrapper = styled.div`
   width: 100%;
   height: 51px;
   margin-bottom: 28px;
-`;
-
-export const titleStyles = css`
-  padding: 10px 20px;
-
-  border: none;
-  border-radius: 10px;
-  background-color: ${({ theme }) => theme.color.GRAY200};
-
-  font-size: 24px;
 `;
 
 export const TimeSelectContainer = styled.div`
@@ -75,12 +54,6 @@ export const TimeSelectContainer = styled.div`
   margin-bottom: 28px;
 
   column-gap: 10px;
-`;
-
-export const dateTimeLocalInputStyles = css`
-  margin-right: 30px;
-
-  text-align: center;
 `;
 
 export const TeamNameContainer = styled.div`
@@ -100,15 +73,6 @@ export const Circle = styled.div`
   background-color: ${({ theme }) => theme.color.PRIMARY};
 `;
 
-export const teamPlaceNameStyles = css`
-  overflow: hidden;
-
-  max-width: 250px;
-
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
-
 export const ControlButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -121,4 +85,35 @@ export const ControlButtonWrapper = styled.div`
 export const CheckBox = styled.input`
   width: 25px;
   height: 25px;
+`;
+
+export const title = css`
+  padding: 10px 20px;
+
+  border: none;
+  border-radius: 10px;
+  background-color: ${({ theme }) => theme.color.GRAY200};
+
+  font-size: 24px;
+`;
+
+export const closeButton = css`
+  width: 22px;
+  height: 38px;
+  padding: 8px 0;
+`;
+
+export const dateTimeLocalInput = css`
+  margin-right: 30px;
+
+  text-align: center;
+`;
+
+export const teamPlaceName = css`
+  overflow: hidden;
+
+  max-width: 250px;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;

@@ -23,7 +23,7 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
             variant="plain"
             type="button"
             onClick={closeModal}
-            css={S.closeButtonStyles}
+            css={S.closeButton}
             aria-label="닫기"
           >
             <CloseIcon />
@@ -34,7 +34,7 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
             width="100%"
             height="100%"
             placeholder="일정 제목"
-            css={S.titleStyles}
+            css={S.title}
           />
         </S.TitleWrapper>
 
@@ -46,7 +46,7 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
             width="220px"
             height="40px"
             type="datetime-local"
-            css={S.dateTimeLocalInputStyles}
+            css={S.dateTimeLocalInput}
           />
           <Text size="xxl" weight="bold">
             종일
@@ -61,12 +61,12 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
             width="220px"
             height="40px"
             type="datetime-local"
-            css={S.dateTimeLocalInputStyles}
+            css={S.dateTimeLocalInput}
           />
         </S.TimeSelectContainer>
         <S.TeamNameContainer title={teamPlaceName}>
           <S.Circle />
-          <Text css={S.teamPlaceNameStyles}>{teamPlaceName}</Text>
+          <Text css={S.teamPlaceName}>{teamPlaceName}</Text>
         </S.TeamNameContainer>
         <S.ControlButtonWrapper>
           <Button variant="primary" onClick={closeModal}>
