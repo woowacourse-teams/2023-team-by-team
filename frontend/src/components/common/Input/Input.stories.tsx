@@ -17,8 +17,8 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    width: '200px',
-    height: '50px',
+    width: '150px',
+    height: '40px',
     placeholder: '예시 인풋입니다',
   },
 };
