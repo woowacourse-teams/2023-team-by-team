@@ -44,7 +44,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = {ScheduleException.TeamAccessForbidden.class})
-    public ResponseEntity<String> handleCustomForbiddenException(final ScheduleException exception) {
+    public ResponseEntity<String> handleCustomForbiddenException(final RuntimeException exception) {
         final String message = exception.getMessage();
         log.warn(message, exception);
 
@@ -53,7 +53,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = {ScheduleException.SpanWrongOrderException.class})
-    public ResponseEntity<String> handleCustomBadRequestException(final ScheduleException exception) {
+    public ResponseEntity<String> handleCustomBadRequestException(final RuntimeException exception) {
         final String message = exception.getMessage();
         log.warn(message, exception);
 
