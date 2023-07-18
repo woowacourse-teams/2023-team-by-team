@@ -42,8 +42,7 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
           <Text size="xxl" weight="bold">
             일정 시작
           </Text>
-          <S.Input type="date" width="100px" />
-          <S.Input width="80px" marginright="40px" />
+          <S.Input type="datetime-local" width="220px" />
           <Text size="xxl" weight="bold">
             종일
           </Text>
@@ -53,8 +52,7 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
           <Text size="xxl" weight="bold">
             일정 마감
           </Text>
-          <S.Input type="date" width="100px" />
-          <S.Input width="80px" />
+          <S.Input type="datetime-local" width="220px" />
         </S.TimeSelectContainer>
         <S.TeamNameContainer>
           <S.Circle title={teamPlaceLabel} />
