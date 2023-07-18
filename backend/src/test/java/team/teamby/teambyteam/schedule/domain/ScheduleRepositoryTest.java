@@ -33,10 +33,11 @@ class ScheduleRepositoryTest {
 
         //then
         SoftAssertions.assertSoftly(softly -> {
-            softly.assertThat(schedules).hasSize(3);
+            softly.assertThat(schedules).hasSize(4);
             softly.assertThat(schedules.get(0).getTitle().getValue()).isEqualTo("3번 팀플 B");
             softly.assertThat(schedules.get(1).getTitle().getValue()).isEqualTo("3번 팀플 C");
-            softly.assertThat(schedules.get(2).getTitle().getValue()).isEqualTo("3번 팀플 D");
+            softly.assertThat(schedules.get(2).getTitle().getValue()).isEqualTo("3번 팀플 E");
+            softly.assertThat(schedules.get(3).getTitle().getValue()).isEqualTo("3번 팀플 D");
         });
     }
 }

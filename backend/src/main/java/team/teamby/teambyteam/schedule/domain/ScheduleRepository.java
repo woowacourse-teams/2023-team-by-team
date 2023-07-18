@@ -11,7 +11,8 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     @Query("SELECT s FROM Schedule s " +
             "WHERE s.teamPlaceId = :teamPlaceId " +
             "AND s.span.startDateTime < :lastDateTime " +
-            "AND s.span.endDateTime > :firstDateTime"
+            "AND s.span.endDateTime > :firstDateTime " +
+            "ORDER BY s.span.startDateTime ASC"
     )
     List<Schedule> findAllByTeamPlaceInPeriod(
             Long teamPlaceId,

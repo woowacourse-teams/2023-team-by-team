@@ -94,10 +94,11 @@ class ScheduleServiceTest {
 
             //then
             SoftAssertions.assertSoftly(softly -> {
-                softly.assertThat(scheduleResponses).hasSize(3);
+                softly.assertThat(scheduleResponses).hasSize(4);
                 softly.assertThat(scheduleResponses.get(0).title()).isEqualTo("3번 팀플 B");
                 softly.assertThat(scheduleResponses.get(1).title()).isEqualTo("3번 팀플 C");
-                softly.assertThat(scheduleResponses.get(2).title()).isEqualTo("3번 팀플 D");
+                softly.assertThat(scheduleResponses.get(2).title()).isEqualTo("3번 팀플 E");
+                softly.assertThat(scheduleResponses.get(3).title()).isEqualTo("3번 팀플 D");
             });
         }
 

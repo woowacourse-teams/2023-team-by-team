@@ -111,7 +111,8 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
                 softly.assertThat(schedules.get(0).title()).isEqualTo("3번 팀플 B");
                 softly.assertThat(schedules.get(1).title()).isEqualTo("3번 팀플 C");
-                softly.assertThat(schedules.get(2).title()).isEqualTo("3번 팀플 D");
+                softly.assertThat(schedules.get(2).title()).isEqualTo("3번 팀플 E");
+                softly.assertThat(schedules.get(3).title()).isEqualTo("3번 팀플 D");
             });
         }
 
