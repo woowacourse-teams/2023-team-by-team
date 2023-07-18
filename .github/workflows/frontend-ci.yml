@@ -1,0 +1,46 @@
+name: frontend-ci
+
+on:
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - frontend/**
+
+jobs:
+  unit-test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+    env:
+      working-directory: ./frontend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Cache
+        uses: actions/cache@v3
+        id: cache
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+        if: steps.cache.outputs.cache-hit != 'true'
+        working-directory: ${{ env.working-directory }}
+
+      - name: Run unit test
+        run: npm run test:ci
+        working-directory: ${{ env.working-directory }}
