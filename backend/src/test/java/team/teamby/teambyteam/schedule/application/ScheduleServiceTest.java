@@ -135,7 +135,7 @@ class ScheduleServiceTest {
         void success() {
             // given
             Long teamPlaceId = 1L;
-            ScheduleRegisterRequest request = ScheduleFixtures.팀플_1번_N시간_일정.REQUEST;
+            ScheduleRegisterRequest request = ScheduleFixtures.Schedule1_N_Hour.REQUEST;
 
             // when
             Long registeredId = scheduleService.register(request, teamPlaceId);
@@ -166,7 +166,7 @@ class ScheduleServiceTest {
 
             // when & then
             assertThatThrownBy(() -> scheduleService.delete(existTramPlaceId, notExistScheduleId))
-                    .isInstanceOf(ScheduleException.NotFoundException.class)
+                    .isInstanceOf(ScheduleException.ScheduleNotFoundException.class)
                     .hasMessage("ID에 해당하는 일정을 찾을 수 없습니다.");
         }
     }

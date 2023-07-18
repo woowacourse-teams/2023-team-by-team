@@ -70,7 +70,7 @@ public class ScheduleService {
 
     private void checkScheduleExist(final Long scheduleId) {
         if (notExistSchedule(scheduleId)) {
-            throw new ScheduleException.NotFoundException("ID에 해당하는 일정을 찾을 수 없습니다.");
+            throw new ScheduleException.ScheduleNotFoundException("ID에 해당하는 일정을 찾을 수 없습니다.");
         }
     }
 
