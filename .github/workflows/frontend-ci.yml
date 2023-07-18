@@ -22,23 +22,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup Node
+      - name: Setup node with cache
         uses: actions/setup-node@v3
         with:
           node-version: 18
-
-      - name: Cache
-        uses: actions/cache@v3
-        id: cache
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
 
       - name: Install dependencies
         run: npm ci
-        if: steps.cache.outputs.cache-hit != 'true'
         working-directory: ${{ env.working-directory }}
 
       - name: Run unit test
