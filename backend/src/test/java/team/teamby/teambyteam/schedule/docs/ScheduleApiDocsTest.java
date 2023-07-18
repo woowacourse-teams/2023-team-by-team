@@ -32,6 +32,7 @@ import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -220,6 +221,199 @@ public class ScheduleApiDocsTest {
                     .andExpect(status().isBadRequest())
                     .andDo(print())
                     .andDo(document("schedules/register/failSpanWrongOrder",
+                                    preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint())
+                            )
+                    );
+        }
+    }
+
+    @Nested
+    @DisplayName("일정 수정 문서화")
+    class UpdateScheduleDocs {
+
+        @Test
+        @DisplayName("일정 수정 성공")
+        void success() throws Exception {
+            // given
+            final ScheduleUpdateRequest request = Schedule1_N_Hour.UPDATE_REQUEST;
+            final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
+            final Long id = Schedule1_N_Hour.ID;
+            willDoNothing().given(scheduleService).update(request, teamPlaceId, id);
+            given(memberInterceptor.preHandle(any(), any(), any()))
+                    .willReturn(true);
+
+            // when & then
+            mockMvc.perform(patch("/api/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}", teamPlaceId, id)
+                            .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isOk())
+                    .andDo(print())
+                    .andDo(document("schedules/update/success",
+                                    preprocessRequest(prettyPrint()),
+                                    pathParameters(
+                                            parameterWithName("teamPlaceId").description("멤버가 속한 팀 플레이스 ID"),
+                                            parameterWithName("scheduleId").description("수정할 일정 ID")
+                                    ),
+                                    requestHeaders(
+                                            headerWithName(AUTHORIZATION_HEADER_KEY).description("사용자 JWT 인증 정보")
+                                    ),
+                                    requestFields(
+                                            fieldWithPath("title").type(JsonFieldType.STRING).description("수정할 일정 제목"),
+                                            fieldWithPath("startDateTime").type(JsonFieldType.STRING).description("수정할 일정의 시작 일시(형식 : yyyy-MM-dd HH:mm)"),
+                                            fieldWithPath("endDateTime").type(JsonFieldType.STRING).description("수정할 일정의 종료 일시(형식 : yyyy-MM-dd HH:mm)")
+                                    )
+                            )
+                    );
+
+        }
+
+        @Test
+        @DisplayName("제목이 빈 값이면 실패")
+        void failBlankTitle() throws Exception {
+            // given
+            final Long id = Schedule1_N_Hour.ID;
+            final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
+            final String blankTitle = " ";
+            ScheduleUpdateRequest request = new ScheduleUpdateRequest(blankTitle, Schedule1_N_Hour.START_DATE_TIME, Schedule1_N_Hour.END_DATE_TIME);
+            willThrow(new ScheduleException.TitleBlankException("제목은 빈 값일 수 없습니다."))
+                    .given(scheduleService)
+                    .update(any(ScheduleUpdateRequest.class), eq(teamPlaceId), eq(id));
+
+            given(memberInterceptor.preHandle(any(), any(), any()))
+                    .willReturn(true);
+
+            // when & then
+            mockMvc.perform(patch("/api/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}", teamPlaceId, id)
+                            .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isBadRequest())
+                    .andDo(print())
+                    .andDo(document("schedules/update/failBlankTitle",
+                                    preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint())
+                            )
+                    );
+        }
+
+        @Test
+        @DisplayName("잘못된 날짜 형식이면 실패")
+        void failWrongDateTimeType() throws Exception {
+            // given
+            final Long id = Schedule1_N_Hour.ID;
+            final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
+            final String wrongStartDateTime = "2023:07:12 10:00";
+            final String correctEndDateTimeType = "2023-07-12 18:00";
+
+            final Map<String, String> requestMap = new HashMap<>();
+            requestMap.put(REQUEST_TITLE_KEY, Schedule1_N_Hour.TITLE);
+            requestMap.put(REQUEST_START_DATE_TIME_KEY, wrongStartDateTime);
+            requestMap.put(REQUEST_END_DATE_KEY, correctEndDateTimeType);
+
+            willThrow(DateTimeParseException.class)
+                    .given(scheduleService)
+                    .update(any(ScheduleUpdateRequest.class), eq(teamPlaceId), eq(id));
+
+            given(memberInterceptor.preHandle(any(), any(), any()))
+                    .willReturn(true);
+
+            // when & then
+            mockMvc.perform(patch("/api/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}", teamPlaceId, id)
+                            .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(requestMap)))
+                    .andExpect(status().isBadRequest())
+                    .andDo(print())
+                    .andDo(document("schedules/update/failWrongDateTimeType",
+                                    preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint())
+                            )
+                    );
+        }
+
+        @Test
+        @DisplayName("없는 팀 플레이스 ID면 실패")
+        void failNotExistTeamPlaceId() throws Exception {
+            // given
+            final Long id = Schedule1_N_Hour.ID;
+            final Long notExistTeamPlaceId = -1L;
+            ScheduleRegisterRequest request = Schedule1_N_Hour.REQUEST;
+            willThrow(new TeamPlaceException.NotFoundException("ID에 해당하는 팀 플레이스를 찾을 수 없습니다."))
+                    .given(scheduleService)
+                    .update(any(), eq(notExistTeamPlaceId), eq(id));
+
+            given(memberInterceptor.preHandle(any(), any(), any()))
+                    .willReturn(true);
+
+            // when & then
+            mockMvc.perform(patch("/api/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}", notExistTeamPlaceId, id)
+                            .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isNotFound())
+                    .andDo(print())
+                    .andDo(document("schedules/update/failNotExistTeamPlaceId",
+                                    preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint())
+                            )
+                    );
+        }
+
+        @Test
+        @DisplayName("시작 일자와 종료 일자의 순서가 맞지 않으면 실패")
+        void failSpanWrongOrder() throws Exception {
+            // given
+            final Long id = Schedule1_N_Hour.ID;
+            final String title = ScheduleFixtures.Schedule1_N_Hour.TITLE;
+            final Long teamPlaceId = ScheduleFixtures.Schedule1_N_Hour.TEAM_PLACE_ID;
+            final LocalDateTime startDateTime = ScheduleFixtures.Schedule1_N_Hour.START_DATE_TIME;
+            final LocalDateTime wrongEndDateTime = ScheduleFixtures.Schedule1_N_Hour.START_DATE_TIME.minusDays(1);
+            final ScheduleUpdateRequest request = new ScheduleUpdateRequest(title, startDateTime, wrongEndDateTime);
+
+            willThrow(new ScheduleException.SpanWrongOrderException("시작 일자가 종료 일자보다 이후일 수 없습니다."))
+                    .given(scheduleService)
+                    .update(request, teamPlaceId, id);
+            given(memberInterceptor.preHandle(any(), any(), any()))
+                    .willReturn(true);
+
+            // when & then
+            mockMvc.perform(patch("/api/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}", teamPlaceId, id)
+                            .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isBadRequest())
+                    .andDo(print())
+                    .andDo(document("schedules/update/failSpanWrongOrder",
+                                    preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint())
+                            )
+                    );
+        }
+
+        @Test
+        @DisplayName("없는 일정 ID면 실패")
+        void failNotExistScheduleId() throws Exception {
+            // given
+            final Long notExistScheduleId = -1L;
+            final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
+            ScheduleRegisterRequest request = Schedule1_N_Hour.REQUEST;
+            willThrow(new ScheduleException.ScheduleNotFoundException("ID에 해당하는 일정을 찾을 수 없습니다."))
+                    .given(scheduleService)
+                    .update(any(), eq(teamPlaceId), eq(notExistScheduleId));
+
+            given(memberInterceptor.preHandle(any(), any(), any()))
+                    .willReturn(true);
+
+            // when & then
+            mockMvc.perform(patch("/api/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}", teamPlaceId, notExistScheduleId)
+                            .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isNotFound())
+                    .andDo(print())
+                    .andDo(document("schedules/update/failNotExistScheduleId",
                                     preprocessRequest(prettyPrint()),
                                     preprocessResponse(prettyPrint())
                             )
