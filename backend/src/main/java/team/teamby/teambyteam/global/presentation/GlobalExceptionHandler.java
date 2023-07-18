@@ -53,7 +53,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = {ScheduleException.SpanWrongOrderException.class})
-    public ResponseEntity<String> handleSpanWrongOrderException(final ScheduleException exception) {
+    public ResponseEntity<String> handleCustomBadRequestException(final ScheduleException exception) {
         final String message = exception.getMessage();
         log.warn(message, exception);
 
