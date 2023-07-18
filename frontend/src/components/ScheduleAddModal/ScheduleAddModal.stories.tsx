@@ -23,11 +23,11 @@ export const Default: Story = {
     return (
       <>
         <Button onClick={openModal}>모달 열기</Button>
-        <ScheduleAddModal teamPlaceLabel="Woowacourse TeamByTeam Corporation" />
+        <ScheduleAddModal teamPlaceName="Woowacourse TeamByTeam Corporation" />
       </>
     );
   },
   args: {
-    teamPlaceLabel: '',
+    teamPlaceName: '',
   },
 };

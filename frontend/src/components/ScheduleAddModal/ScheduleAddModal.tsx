@@ -7,11 +7,11 @@ import Button from '../common/Button/Button';
 import Input from '../common/Input/Input';
 
 interface ScheduleAddModalProps {
-  teamPlaceLabel: string;
+  teamPlaceName: string;
 }
 
 const ScheduleAddModal = (props: ScheduleAddModalProps) => {
-  const { teamPlaceLabel } = props;
+  const { teamPlaceName } = props;
   const { closeModal } = useModal();
 
   return (
@@ -64,9 +64,9 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
             css={S.dateTimeLocalInputStyles}
           />
         </S.TimeSelectContainer>
-        <S.TeamNameContainer>
-          <S.Circle title={teamPlaceLabel} />
-          <Text css={S.teamPlaceNameStyles}>{teamPlaceLabel}</Text>
+        <S.TeamNameContainer title={teamPlaceName}>
+          <S.Circle />
+          <Text css={S.teamPlaceNameStyles}>{teamPlaceName}</Text>
         </S.TeamNameContainer>
         <S.ControlButtonWrapper>
           <Button variant="primary" onClick={closeModal}>
