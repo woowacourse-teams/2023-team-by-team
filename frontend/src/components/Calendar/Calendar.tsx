@@ -1,4 +1,3 @@
-import { css } from 'styled-components';
 import Text from '~/components/common/Text/Text';
 import Button from '~/components/common/Button/Button';
 import DateCell from '~/components/Calendar/DateCell/DateCell';
