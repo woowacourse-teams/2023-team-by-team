@@ -18,8 +18,13 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
       <S.Backdrop onClick={closeModal} />
       <S.Container>
         <S.Header>
-          <S.CloseButton variant="plain" type="button" onClick={closeModal}>
-            <CloseIcon aria-label="닫기" />
+          <S.CloseButton
+            variant="plain"
+            type="button"
+            onClick={closeModal}
+            aria-label="닫기"
+          >
+            <CloseIcon />
           </S.CloseButton>
         </S.Header>
         <S.TitleInput placeholder="일정 제목" />
