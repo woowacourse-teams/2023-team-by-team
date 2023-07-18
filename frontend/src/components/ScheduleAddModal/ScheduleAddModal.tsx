@@ -4,6 +4,7 @@ import { CloseIcon } from '~/assets/svg';
 import Modal from '~/components/common/Modal/Modal';
 import Text from '../common/Text/Text';
 import Button from '../common/Button/Button';
+import Input from '../common/Input/Input';
 
 interface ScheduleAddModalProps {
   teamPlaceLabel: string;
@@ -18,17 +19,26 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
       <S.Backdrop onClick={closeModal} />
       <S.Container>
         <S.Header>
-          <S.CloseButton
+          <Button
             variant="plain"
             type="button"
             onClick={closeModal}
+            css={S.closeButtonStyles}
             aria-label="닫기"
           >
             <CloseIcon />
-          </S.CloseButton>
+          </Button>
         </S.Header>
-        <S.TitleInput placeholder="일정 제목" />
-        <S.TimeSelectMenu>
+        <S.TitleWrapper>
+          <Input
+            width="100%"
+            height="100%"
+            placeholder="일정 제목"
+            css={S.titleStyles}
+          />
+        </S.TitleWrapper>
+
+        <S.TimeSelectContainer>
           <Text size="xxl" weight="bold">
             일정 시작
           </Text>
@@ -38,23 +48,23 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
             종일
           </Text>
           <S.CheckBox type="checkbox" />
-        </S.TimeSelectMenu>
-        <S.TimeSelectMenu>
+        </S.TimeSelectContainer>
+        <S.TimeSelectContainer>
           <Text size="xxl" weight="bold">
             일정 마감
           </Text>
           <S.Input type="date" width="100px" />
           <S.Input width="80px" />
-        </S.TimeSelectMenu>
-        <S.TeamLabel>
+        </S.TimeSelectContainer>
+        <S.TeamNameContainer>
           <S.Circle title={teamPlaceLabel} />
-          <S.TeamPlaceLabelText>{teamPlaceLabel}</S.TeamPlaceLabelText>
-        </S.TeamLabel>
-        <S.ButtonMenu>
+          <Text css={S.teamPlaceNameStyles}>{teamPlaceLabel}</Text>
+        </S.TeamNameContainer>
+        <S.ControlButtonWrapper>
           <Button variant="primary" onClick={closeModal}>
             등록
           </Button>
-        </S.ButtonMenu>
+        </S.ControlButtonWrapper>
       </S.Container>
     </Modal>
   );

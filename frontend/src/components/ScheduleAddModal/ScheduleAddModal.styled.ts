@@ -1,6 +1,4 @@
-import { styled } from 'styled-components';
-import Button from '~/components/common/Button/Button';
-import Text from '~/components/common/Text/Text';
+import { styled, css } from 'styled-components';
 
 interface InputProps {
   width: string;
@@ -46,17 +44,20 @@ export const Header = styled.div`
   border-bottom: ${({ theme }) => `1px solid ${theme.color.GRAY300}`};
 `;
 
-export const CloseButton = styled(Button)`
+export const closeButtonStyles = css`
   width: 22px;
   height: 38px;
   padding: 8px 0;
 `;
 
-export const TitleInput = styled.input`
+export const TitleWrapper = styled.div`
   width: 100%;
   height: 51px;
-  padding: 10px 20px;
   margin-bottom: 28px;
+`;
+
+export const titleStyles = css`
+  padding: 10px 20px;
 
   border: none;
   border-radius: 10px;
@@ -65,7 +66,7 @@ export const TitleInput = styled.input`
   font-size: 24px;
 `;
 
-export const TimeSelectMenu = styled.div`
+export const TimeSelectContainer = styled.div`
   display: flex;
   align-items: center;
 
@@ -88,7 +89,7 @@ export const Input = styled.input<InputProps>`
   font-size: 14px;
 `;
 
-export const TeamLabel = styled.div`
+export const TeamNameContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 5px;
@@ -105,7 +106,7 @@ export const Circle = styled.div`
   background-color: ${({ theme }) => theme.color.PRIMARY};
 `;
 
-export const TeamPlaceLabelText = styled(Text)`
+export const teamPlaceNameStyles = css`
   overflow: hidden;
 
   max-width: 250px;
@@ -114,7 +115,7 @@ export const TeamPlaceLabelText = styled(Text)`
   white-space: nowrap;
 `;
 
-export const ButtonMenu = styled.div`
+export const ControlButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
 
