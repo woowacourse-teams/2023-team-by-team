@@ -5,6 +5,8 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
@@ -12,12 +14,17 @@ import org.springframework.transaction.annotation.Transactional;
 import team.teamby.teambyteam.fixtures.ScheduleFixtures;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleResponse;
+import team.teamby.teambyteam.schedule.application.dto.ScheduleUpdateRequest;
+import team.teamby.teambyteam.schedule.domain.Schedule;
+import team.teamby.teambyteam.schedule.domain.ScheduleRepository;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
 import java.time.LocalDateTime;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static team.teamby.teambyteam.fixtures.ScheduleFixtures.Schedule1_N_Hour;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @Transactional
@@ -27,6 +34,8 @@ class ScheduleServiceTest {
     @Autowired
     private ScheduleService scheduleService;
 
+    @Autowired
+    private ScheduleRepository scheduleRepository;
 
     @Nested
     @DisplayName("일정 정보 조회시")
@@ -123,6 +132,90 @@ class ScheduleServiceTest {
             assertThatThrownBy(() -> scheduleService.register(request, notExistTeamPlaceId))
                     .isInstanceOf(TeamPlaceException.NotFoundException.class)
                     .hasMessage("ID에 해당하는 팀 플레이스를 찾을 수 없습니다.");
+        }
+    }
+
+    @Nested
+    @DisplayName("일정 수정 시")
+    class UpdateSchedule {
+
+        @Test
+        @DisplayName("일정 수정에 성공한다.")
+        void success() {
+            // given
+            final Long id = Schedule1_N_Hour.ID;
+            final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
+            final ScheduleUpdateRequest request = Schedule1_N_Hour.UPDATE_REQUEST;
+
+            // when
+            scheduleService.update(request, teamPlaceId, id);
+            final Schedule updatedSchedule = scheduleRepository.findById(id).get();
+
+            // then
+            assertThat(updatedSchedule).usingRecursiveComparison()
+                    .isEqualTo(Schedule1_N_Hour.UPDATE_ENTITY());
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {"", " ", "    "})
+        @DisplayName("일정 수정 시 수정할 일정 제목이 빈 값이면 예외가 발생한다.")
+        void failUpdateTitleBlank(String titleToUpdate) {
+            // given
+            final Long id = Schedule1_N_Hour.ID;
+            final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
+            final LocalDateTime startDateTime = Schedule1_N_Hour.START_DATE_TIME;
+            final LocalDateTime endDateTime = Schedule1_N_Hour.END_DATE_TIME;
+            final ScheduleUpdateRequest request = new ScheduleUpdateRequest(titleToUpdate, startDateTime, endDateTime);
+
+            // when & then
+            assertThatThrownBy(() -> scheduleService.update(request, teamPlaceId, id))
+                    .isInstanceOf(ScheduleException.TitleBlankException.class)
+                    .hasMessage("일정의 제목은 빈 칸일 수 없습니다.");
+        }
+
+        @Test
+        @DisplayName("일정 수정 시 Span 순서가 맞지 않으면 예외가 발생한다.")
+        void failSpanWrongOrder() {
+            // given
+            final Long id = Schedule1_N_Hour.ID;
+            final String title = Schedule1_N_Hour.TITLE;
+            final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
+            final LocalDateTime startDateTime = Schedule1_N_Hour.START_DATE_TIME;
+            final LocalDateTime wrongEndDateTime = Schedule1_N_Hour.START_DATE_TIME.minusDays(1);
+            final ScheduleUpdateRequest request = new ScheduleUpdateRequest(title, startDateTime, wrongEndDateTime);
+
+            // when & then
+            assertThatThrownBy(() -> scheduleService.update(request, teamPlaceId, id))
+                    .isInstanceOf(ScheduleException.SpanWrongOrderException.class)
+                    .hasMessage("시작 일자가 종료 일자보다 이후일 수 없습니다.");
+        }
+
+        @Test
+        @DisplayName("일정 수정 시 팀 플레이스 ID에 해당하는 팀 플레이스가 존재하지 않으면 예외가 발생한다.")
+        void failTeamPlaceNotExistById() {
+            // given
+            final Long id = Schedule1_N_Hour.ID;
+            final ScheduleUpdateRequest request = Schedule1_N_Hour.UPDATE_REQUEST;
+            final Long notExistTeamPlaceId = -1L;
+
+            // when & then
+            assertThatThrownBy(() -> scheduleService.update(request, notExistTeamPlaceId, id))
+                    .isInstanceOf(TeamPlaceException.NotFoundException.class)
+                    .hasMessage("ID에 해당하는 팀 플레이스를 찾을 수 없습니다.");
+        }
+
+        @Test
+        @DisplayName("일정 수정 시 수정할 일정 ID에 해당하는 일정이 존재하지 않으면 예외가 발생한다.")
+        void failScheduleNotExistById() {
+            // given
+            final Long notExistScheduleId = -1L;
+            final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
+            final ScheduleUpdateRequest request = Schedule1_N_Hour.UPDATE_REQUEST;
+
+            // when & then
+            assertThatThrownBy(() -> scheduleService.update(request, teamPlaceId, notExistScheduleId))
+                    .isInstanceOf(ScheduleException.ScheduleNotFoundException.class)
+                    .hasMessage("ID에 해당하는 일정을 찾을 수 없습니다.");
         }
     }
 }

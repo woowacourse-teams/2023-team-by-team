@@ -23,4 +23,11 @@ public class ScheduleException extends RuntimeException {
             super(message);
         }
     }
+
+    public static class TitleBlankException extends ScheduleException {
+
+        public TitleBlankException(final String message) {
+            super(message);
+        }
+    }
 }
