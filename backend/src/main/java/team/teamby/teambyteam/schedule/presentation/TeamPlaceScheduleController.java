@@ -51,4 +51,13 @@ public class TeamPlaceScheduleController {
         scheduleService.update(scheduleUpdateRequest, teamPlaceId, scheduleId);
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/{teamPlaceId}/calendar/schedules/{scheduleId}")
+    public ResponseEntity<Void> delete(
+            @PathVariable final Long teamPlaceId,
+            @PathVariable final Long scheduleId) {
+
+        scheduleService.delete(teamPlaceId, scheduleId);
+        return ResponseEntity.noContent().build();
+    }
 }

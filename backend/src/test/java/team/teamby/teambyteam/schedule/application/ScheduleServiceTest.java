@@ -1,6 +1,5 @@
 package team.teamby.teambyteam.schedule.application;
 
-import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -102,7 +101,7 @@ class ScheduleServiceTest {
             final Long registeredId = scheduleService.register(request, teamPlaceId);
 
             // then
-            Assertions.assertThat(registeredId).isNotNull();
+            assertThat(registeredId).isNotNull();
         }
 
         @Test
@@ -214,6 +213,51 @@ class ScheduleServiceTest {
 
             // when & then
             assertThatThrownBy(() -> scheduleService.update(request, teamPlaceId, notExistScheduleId))
+                    .isInstanceOf(ScheduleException.ScheduleNotFoundException.class)
+                    .hasMessage("ID에 해당하는 일정을 찾을 수 없습니다.");
+        }
+    }
+
+    @Nested
+    @DisplayName("일정 삭제 시")
+    class DeleteSchedule {
+
+        @Test
+        @DisplayName("일정 삭제에 성공한다.")
+        void success() {
+            // given
+            final Long teamPlaceId = 1L;
+            final ScheduleRegisterRequest request = ScheduleFixtures.Schedule1_N_Hour.REQUEST;
+
+            // when
+            final Long registeredId = scheduleService.register(request, teamPlaceId);
+
+            // then
+            assertThat(registeredId).isNotNull();
+        }
+
+        @Test
+        @DisplayName("일정 등록 시 팀 플레이스 ID에 해당하는 팀 플레이스가 존재하지 않으면 예외가 발생한다.")
+        void failTeamPlaceNotExistById() {
+            // given
+            final Long notExistTramPlaceId = -1L;
+            final Long existScheduleId = 1L;
+
+            // when & then
+            assertThatThrownBy(() -> scheduleService.delete(notExistTramPlaceId, existScheduleId))
+                    .isInstanceOf(TeamPlaceException.NotFoundException.class)
+                    .hasMessage("ID에 해당하는 팀 플레이스를 찾을 수 없습니다.");
+        }
+
+        @Test
+        @DisplayName("일정 삭제 시 존재하지 않는 일정 Id면 실패한다.")
+        void failScheduleNotExistById() {
+            // given
+            final Long existTramPlaceId = 1L;
+            final Long notExistScheduleId = -1L;
+
+            // when & then
+            assertThatThrownBy(() -> scheduleService.delete(existTramPlaceId, notExistScheduleId))
                     .isInstanceOf(ScheduleException.ScheduleNotFoundException.class)
                     .hasMessage("ID에 해당하는 일정을 찾을 수 없습니다.");
         }
