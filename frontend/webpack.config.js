@@ -1,5 +1,6 @@
 const { join, resolve } = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const DotenvWebpack = require('dotenv-webpack');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -39,5 +40,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: join(__dirname, './public/index.html'),
     }),
+    new DotenvWebpack(),
   ],
 };
