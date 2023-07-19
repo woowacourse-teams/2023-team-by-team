@@ -55,6 +55,7 @@
     "webpack-dev-server": "^4.15.1"
   },
   "dependencies": {
+    "@tanstack/react-query": "^4.29.25",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.14.1",
