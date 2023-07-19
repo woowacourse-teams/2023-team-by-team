@@ -2,4 +2,4 @@
 . "$(dirname "$0")/_/husky.sh"
 
 cd frontend
-npx.cmd lint-staged
+npx lint-staged
