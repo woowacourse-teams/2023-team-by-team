@@ -38,3 +38,6 @@ out/
 
 ### REST Docs ###
 src/main/resources/static/docs/
+
+### PROPERTY ###
+src/main/resources/*-*.yml
