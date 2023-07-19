@@ -6,9 +6,12 @@ interface WrapperProps {
 }
 
 export const Wrapper = styled.div<WrapperProps>`
+  padding: 12px 12px 0 0;
+
   color: ${({ isSaturday, isSunday, theme }) => {
     if (isSunday) return theme.color.RED;
-    if (isSaturday) return theme.color.PRIMARY;
+    if (isSaturday) return theme.color.PURPLE;
     return theme.color.BLACK;
   }};
+  text-align: right;
 `;

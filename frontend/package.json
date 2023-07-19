@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "test": "jest --watchAll",
+    "test:ci": "jest --ci",
     "start": "webpack serve --open",
     "build": "webpack --mode production",
     "storybook": "storybook dev -p 6006",

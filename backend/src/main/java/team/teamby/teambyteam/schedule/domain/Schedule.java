@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -34,5 +36,12 @@ public class Schedule {
 
     public boolean isScheduleOfTeam(final Long teamPlaceId) {
         return Objects.equals(teamPlaceId, this.teamPlaceId);
+    }
+
+    public void change(final String titleToUpdate,
+                       final LocalDateTime startDateTimeToUpdate,
+                       final LocalDateTime endDateTimeToUpdate) {
+        this.title = title.change(titleToUpdate);
+        this.span = span.change(startDateTimeToUpdate, endDateTimeToUpdate);
     }
 }

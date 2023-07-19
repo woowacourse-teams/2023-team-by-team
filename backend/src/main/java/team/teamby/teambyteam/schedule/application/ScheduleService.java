@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleResponse;
 import team.teamby.teambyteam.schedule.application.dto.SchedulesResponse;
+import team.teamby.teambyteam.schedule.application.dto.ScheduleUpdateRequest;
 import team.teamby.teambyteam.schedule.domain.Schedule;
 import team.teamby.teambyteam.schedule.domain.ScheduleRepository;
 import team.teamby.teambyteam.schedule.domain.Span;
@@ -17,7 +18,6 @@ import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
 @Service
@@ -86,5 +86,31 @@ public class ScheduleService {
                 .findAllByTeamPlaceIn(teamPlaceId, startDateTime, endDateTime);
 
         return SchedulesResponse.of(schedules);
+    }
+
+    public void update(final ScheduleUpdateRequest scheduleUpdateRequest, final Long teamPlaceId, final Long scheduleId) {
+        checkTeamPlaceExist(teamPlaceId);
+
+        final Schedule schedule = scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new ScheduleException.ScheduleNotFoundException("ID에 해당하는 일정을 찾을 수 없습니다."));
+
+        schedule.change(scheduleUpdateRequest.title(),
+                scheduleUpdateRequest.startDateTime(), scheduleUpdateRequest.endDateTime());
+    }
+
+    public void delete(final Long teamPlaceId, final Long scheduleId) {
+        checkTeamPlaceExist(teamPlaceId);
+        checkScheduleExist(scheduleId);
+        scheduleRepository.deleteById(scheduleId);
+    }
+
+    private void checkScheduleExist(final Long scheduleId) {
+        if (notExistSchedule(scheduleId)) {
+            throw new ScheduleException.ScheduleNotFoundException("ID에 해당하는 일정을 찾을 수 없습니다.");
+        }
+    }
+
+    private boolean notExistSchedule(final Long scheduleId) {
+        return !scheduleRepository.existsById(scheduleId);
     }
 }

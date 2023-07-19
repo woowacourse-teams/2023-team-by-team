@@ -4,6 +4,7 @@ const color = {
   WHITE: '#fff',
   BLACK: '#000',
   RED: '#FF5B5B',
+  PURPLE: '#6E61ff',
 
   GRAY100: '#f2f4f6',
   GRAY200: '#e5e8eb',

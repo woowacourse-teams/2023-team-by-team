@@ -44,11 +44,20 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = {ScheduleException.TeamAccessForbidden.class})
-    public ResponseEntity<String> handleCustomForbiddenException(final ScheduleException exception) {
+    public ResponseEntity<String> handleCustomForbiddenException(final RuntimeException exception) {
         final String message = exception.getMessage();
         log.warn(message, exception);
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(message);
+    }
+
+    @ExceptionHandler(value = {ScheduleException.SpanWrongOrderException.class})
+    public ResponseEntity<String> handleCustomBadRequestException(final RuntimeException exception) {
+        final String message = exception.getMessage();
+        log.warn(message, exception);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(message);
     }
 }
