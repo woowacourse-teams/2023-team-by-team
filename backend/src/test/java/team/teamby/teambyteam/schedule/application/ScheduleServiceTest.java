@@ -107,8 +107,8 @@ class ScheduleServiceTest {
         void findAllInPeriodWith0Schedule() {
             // given
             final Long teamPlaceId = 3L;
-            final int year = 2023;
-            final int month = 5;
+            final int year = 1000;
+            final int month = 7;
 
             // when
             final SchedulesResponse schedulesResponse = scheduleService.findScheduleIn(teamPlaceId, year, month);
@@ -118,6 +118,25 @@ class ScheduleServiceTest {
             assertThat(scheduleResponses).hasSize(0);
         }
 
+        @Test
+        @DisplayName("첫날과 마지막날 일정이 정상적으로 조회 된다.")
+        void firstAndLastDateScheduleFind() {
+            // given
+            final Long teamPlaceId = 3L;
+            final int year = 2023;
+            final int month = 5;
+
+            // when
+            final SchedulesResponse schedulesResponse = scheduleService.findScheduleIn(teamPlaceId, year, month);
+            final List<ScheduleResponse> scheduleResponses = schedulesResponse.schedules();
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(scheduleResponses).hasSize(2);
+                softly.assertThat(scheduleResponses.get(0).title()).isEqualTo("3번 팀플 5월 첫날");
+                softly.assertThat(scheduleResponses.get(1).title()).isEqualTo("3번 팀플 5월 마지막날");
+            });
+        }
     }
 
     @Nested

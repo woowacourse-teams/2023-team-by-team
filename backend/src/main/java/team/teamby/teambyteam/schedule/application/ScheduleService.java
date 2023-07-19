@@ -25,8 +25,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ScheduleService {
 
+    private static final int FIRST_DAY_OF_MONTH = 1;
     private static final LocalTime START_TIME_OF_DAY = LocalTime.of(0, 0, 0);
-    private static final LocalTime END_TIME_OF_DAY = LocalTime.of(23, 59, 59);
+    public static final int NEXT_MONTH_OFFSET = 1;
 
     private final ScheduleRepository scheduleRepository;
     private final TeamPlaceRepository teamPlaceRepository;
@@ -76,13 +77,13 @@ public class ScheduleService {
         // TODO: 상의해보기 - 팀플레이스 소속 멤버 검증시 팀플레이스 아이디가 검증이 될 건데 해당 붑ㄴ에 대한 재 검증이 필요한가?
         checkTeamPlaceExist(teamPlaceId);
 
-        final LocalDate startDate = LocalDate.of(targetYear, targetMonth, 1);
-        final LocalDate endDAte = startDate.with(TemporalAdjusters.lastDayOfMonth());
+        final LocalDate startDate = LocalDate.of(targetYear, targetMonth, FIRST_DAY_OF_MONTH);
+        final LocalDate endDAte = startDate.plusMonths(NEXT_MONTH_OFFSET).withDayOfMonth(FIRST_DAY_OF_MONTH);
         final LocalDateTime startDateTime = LocalDateTime.of(startDate, START_TIME_OF_DAY);
-        final LocalDateTime endDateTime = LocalDateTime.of(endDAte, END_TIME_OF_DAY);
+        final LocalDateTime endDateTime = LocalDateTime.of(endDAte, START_TIME_OF_DAY);
 
         final List<Schedule> schedules = scheduleRepository
-                .findAllByTeamPlaceInPeriod(teamPlaceId, startDateTime, endDateTime);
+                .findAllByTeamPlaceIn(teamPlaceId, startDateTime, endDateTime);
 
         return SchedulesResponse.of(schedules);
     }

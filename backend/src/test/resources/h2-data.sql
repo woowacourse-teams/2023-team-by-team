@@ -50,3 +50,6 @@ INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALU
 INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALUES ('3번 팀플 D', 3, '2023-07-29 10:00:00' ,'2023-08-30 12:00:00');
 INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALUES ('3번 팀플 E', 3, '2023-07-28 10:00:00' ,'2023-08-30 12:00:00');
 INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALUES ('3번 팀플 F', 3, '2023-08-14 10:00:00' ,'2023-08-17 12:00:00');
+INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALUES ('3번 팀플 5월 첫날', 3, '2023-05-01 00:00:00' ,'2023-05-01 12:00:00');
+INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALUES ('3번 팀플 5월 마지막날', 3, '2023-05-31 00:00:00' ,'2023-05-31 23:59:59');
+INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALUES ('3번 팀플 6월 첫날', 3, '2023-06-01 00:00:00' ,'2023-06-01 12:00:00');

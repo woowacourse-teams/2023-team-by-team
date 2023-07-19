@@ -26,10 +26,10 @@ class ScheduleRepositoryTest {
         // given
         final Long teamPlaceId = 3L;
         final LocalDateTime firstDateTime = LocalDateTime.of(2023, 7, 1, 0, 0);
-        final LocalDateTime endDateTime = LocalDateTime.of(2023, 7, 31, 23, 59);
+        final LocalDateTime endDateTime = LocalDateTime.of(2023, 8, 1, 0, 0);
 
         // when
-        final List<Schedule> schedules = scheduleRepository.findAllByTeamPlaceInPeriod(teamPlaceId, firstDateTime, endDateTime);
+        final List<Schedule> schedules = scheduleRepository.findAllByTeamPlaceIn(teamPlaceId, firstDateTime, endDateTime);
 
         //then
         SoftAssertions.assertSoftly(softly -> {

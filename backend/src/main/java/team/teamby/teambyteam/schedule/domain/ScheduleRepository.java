@@ -8,13 +8,21 @@ import java.util.List;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
+    /**
+     * Find All TeamPlace schedules in range
+     *
+     * @param teamPlaceId teamPlaceId for the schedule
+     * @param firstDateTime first-date-time of the period (Inclusive)
+     * @param lastDateTime last=date-time of the period (Exclusive)
+     * @return List of the Schedules. If there is no Schedule, it will return the List with size 0.
+     */
     @Query("SELECT s FROM Schedule s " +
             "WHERE s.teamPlaceId = :teamPlaceId " +
             "AND s.span.startDateTime < :lastDateTime " +
-            "AND s.span.endDateTime > :firstDateTime " +
+            "AND s.span.endDateTime >= :firstDateTime " +
             "ORDER BY s.span.startDateTime ASC"
     )
-    List<Schedule> findAllByTeamPlaceInPeriod(
+    List<Schedule> findAllByTeamPlaceIn(
             Long teamPlaceId,
             LocalDateTime firstDateTime,
             LocalDateTime lastDateTime
