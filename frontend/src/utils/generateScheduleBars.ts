@@ -15,6 +15,7 @@ type CalendarObject = Record<string, Position>;
  * 이 유틸 함수는 가공 전의 스케줄 데이터를 받고, 이를 즉시 랜더링이 가능한 바 형태로 내보내는 역할을 수행합니다.
  * - 스케줄 바를 한 줄에 랜더링할 수 있도록 여러 줄에 걸친 스케줄을 여러 개의 작은 스케줄로 쪼갭니다.
  * - 스케줄이 중첩될 경우 겹치지 않는 적절한 위치에 랜더링할 수 있도록 level 값을 포함하여 제공합니다.
+ * - 잘리는 일정이나 잘못된 일정이 있는 경우도 처리가 가능합니다.
  *
  * @param year - 스케줄 바를 표시할 연도
  * @param month - 스케줄 바를 표시할 월
@@ -33,10 +34,10 @@ export const generateScheduleBars = (
     schedules,
     calendarObject,
   );
-  const slicedScheduleBars = sliceScheduleBars(rawScheduleBars);
-  const leveledScheduleBars = giveLevelToScheduleBars(slicedScheduleBars);
+  const leveledScheduleBars = giveLevelToScheduleBars(rawScheduleBars);
+  const slicedScheduleBars = sliceScheduleBars(leveledScheduleBars);
 
-  return leveledScheduleBars;
+  return slicedScheduleBars;
 };
 
 const getFirstLastDateOfCalendar = (year: number, month: number) => {
@@ -106,9 +107,8 @@ const generateRawScheduleBars = (
     );
 
     if (startDate <= endDate) {
-      const duration = calcDuration(startDateTime, endDateTime);
+      const duration = calcDuration(startDate, endDate);
       const id = crypto.randomUUID();
-      const randomColor = Math.floor(Math.random() * 16777215).toString(16);
       const { row, column } = calendarObject[formatDate(startDate)];
 
       rawScheduleBars.push({
@@ -119,7 +119,7 @@ const generateRawScheduleBars = (
         column,
         duration,
         level: 0,
-        color: `#${randomColor}`,
+        color: '#000',
       });
     }
   });
@@ -127,12 +127,13 @@ const generateRawScheduleBars = (
   return rawScheduleBars;
 };
 
-const calcDuration = (
-  start: Schedule['startDateTime'],
-  end: Schedule['endDateTime'],
-) => {
-  const [startDate] = start.split(' ');
-  const [endDate] = end.split(' ');
+const calcDuration = (start: Date, end: Date) => {
+  const startDate = new Date(
+    start.getFullYear(),
+    start.getMonth(),
+    start.getDate(),
+  );
+  const endDate = new Date(end.getFullYear(), end.getMonth(), end.getDate());
   const diff = new Date(startDate).getTime() - new Date(endDate).getTime();
 
   return Math.abs(diff / ONE_DAY) + 1;
@@ -185,25 +186,23 @@ const sliceScheduleBars = (rawScheduleBars: ScheduleBarProps[]) => {
 
 const giveLevelToScheduleBars = (scheduleBars: ScheduleBarProps[]) => {
   const leveledScheduleBars: ScheduleBarProps[] = [];
-  const lastIndexes: number[][] = Array.from({ length: CALENDAR.ROW_SIZE }).map(
-    () => [],
-  );
+  const lastIndexes: number[] = [];
   const sortedScheduleBars = sortScheduleBars(scheduleBars);
 
   sortedScheduleBars.forEach((scheduleBar) => {
     const { row, column, duration } = scheduleBar;
-    const level = lastIndexes[row].findIndex(
-      (lastIndex: number) => lastIndex < column,
+    const level = lastIndexes.findIndex(
+      (lastIndex: number) => lastIndex < row * CALENDAR.COLUMN_SIZE + column,
     );
 
     if (level === -1) {
-      lastIndexes[row].push(column + duration - 1);
+      lastIndexes.push(row * CALENDAR.COLUMN_SIZE + column + duration - 1);
       leveledScheduleBars.push({
         ...scheduleBar,
-        level: lastIndexes[row].length - 1,
+        level: lastIndexes.length - 1,
       });
     } else {
-      lastIndexes[row][level] = column + duration - 1;
+      lastIndexes[level] = row * CALENDAR.COLUMN_SIZE + column + duration - 1;
       leveledScheduleBars.push({
         ...scheduleBar,
         level,
