@@ -1,21 +1,34 @@
 import { css, styled } from 'styled-components';
 
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  height: 100%;
+
+  padding: 0 10px;
+`;
+
 export const CalendarHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  width: 280px;
-  margin: 0 auto;
 `;
 
-export const CalendarBody = styled.div`
-  margin-top: 24px;
+export const ButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
 `;
 
 export const DaysOfWeek = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+
+  height: 24px;
+
+  border-bottom: 2px solid ${({ theme }) => theme.color.GRAY200};
 `;
 
 export const DayOfWeek = styled.div`
@@ -23,7 +36,7 @@ export const DayOfWeek = styled.div`
   justify-content: center;
   align-items: center;
 
-  height: 32px;
+  height: 16px;
 
   &:nth-child(1) {
     color: ${({ theme }) => theme.color.RED};
@@ -34,29 +47,18 @@ export const DayOfWeek = styled.div`
   }
 `;
 
-export const DateContainer = styled.div`
-  & > div:nth-last-child(2) {
-    & > div {
-      border-bottom: none;
-    }
-  }
-`;
-
 export const DateView = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-
-  height: 120px;
+  grid-auto-rows: 110px;
 
   background-color: ${({ theme }) => theme.color.WHITE};
+
+  border-left: 2px solid ${({ theme }) => theme.color.GRAY200};
 
   & > div {
     border-right: 2px solid ${({ theme }) => theme.color.GRAY200};
     border-bottom: 2px solid ${({ theme }) => theme.color.GRAY200};
-  }
-
-  & > div:nth-child(7n) {
-    border-right: none;
   }
 `;
 
@@ -65,6 +67,6 @@ export const ScheduleBarContainer = styled.div`
 `;
 
 export const calendarTitle = css`
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 600;
 `;
