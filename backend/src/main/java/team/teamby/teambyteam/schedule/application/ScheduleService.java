@@ -78,9 +78,9 @@ public class ScheduleService {
         checkTeamPlaceExist(teamPlaceId);
 
         final LocalDate startDate = LocalDate.of(targetYear, targetMonth, FIRST_DAY_OF_MONTH);
-        final LocalDate endDAte = startDate.plusMonths(NEXT_MONTH_OFFSET).withDayOfMonth(FIRST_DAY_OF_MONTH);
+        final LocalDate endDate = startDate.plusMonths(NEXT_MONTH_OFFSET).withDayOfMonth(FIRST_DAY_OF_MONTH);
         final LocalDateTime startDateTime = LocalDateTime.of(startDate, START_TIME_OF_DAY);
-        final LocalDateTime endDateTime = LocalDateTime.of(endDAte, START_TIME_OF_DAY);
+        final LocalDateTime endDateTime = LocalDateTime.of(endDate, START_TIME_OF_DAY);
 
         final List<Schedule> schedules = scheduleRepository
                 .findAllByTeamPlaceIn(teamPlaceId, startDateTime, endDateTime);

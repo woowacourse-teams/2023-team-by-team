@@ -117,7 +117,7 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
         }
 
         @Test
-        @DisplayName("요청에 패스쿼리가 누락되면 조회에 실패한다.")
+        @DisplayName("요청에 날짜 정보가 누락되면 조회에 실패한다.")
         void failWithMissingQuery() {
             // given
             final Long teamPlaceId = 3L;
