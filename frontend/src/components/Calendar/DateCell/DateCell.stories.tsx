@@ -12,5 +12,5 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: { rawDate: new Date() },
+  args: { rawDate: new Date(), currentMonth: 0 },
 };

@@ -9,6 +9,7 @@ import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.schedule.application.ScheduleService;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleResponse;
+import team.teamby.teambyteam.schedule.application.dto.ScheduleUpdateRequest;
 
 import java.net.URI;
 
@@ -39,6 +40,16 @@ public class TeamPlaceScheduleController {
         final Long registeredId = scheduleService.register(scheduleRegisterRequest, teamPlaceId);
         final URI location = URI.create("/api/team-place/" + teamPlaceId + "/calendar/schedules/" + registeredId);
         return ResponseEntity.created(location).build();
+    }
+
+    @PatchMapping("/{teamPlaceId}/calendar/schedules/{scheduleId}")
+    public ResponseEntity<Void> update(
+            @RequestBody @Valid final ScheduleUpdateRequest scheduleUpdateRequest,
+            @PathVariable final Long teamPlaceId,
+            @PathVariable final Long scheduleId) {
+
+        scheduleService.update(scheduleUpdateRequest, teamPlaceId, scheduleId);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{teamPlaceId}/calendar/schedules/{scheduleId}")
