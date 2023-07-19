@@ -208,7 +208,7 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
             final Long scheduleId = Schedule1_N_Hour.ID;
 
             // when
-            ExtractableResponse<Response> deleteScheduleResponse = deleteSchedule(teamPlaceId, scheduleId);
+            final ExtractableResponse<Response> deleteScheduleResponse = deleteSchedule(teamPlaceId, scheduleId);
 
             // then
             assertSoftly(softly -> {
@@ -224,7 +224,7 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
             final Long existScheduleId = Schedule1_N_Hour.ID;
 
             // when
-            ExtractableResponse<Response> notExistTeamPlaceIdDeleteScheduleResponse = deleteSchedule(notExistTeamPlaceId, existScheduleId);
+            final ExtractableResponse<Response> notExistTeamPlaceIdDeleteScheduleResponse = deleteSchedule(notExistTeamPlaceId, existScheduleId);
 
             // then
             assertSoftly(softly -> {
@@ -241,7 +241,7 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
             final Long notExistScheduleId = -1L;
 
             // when
-            ExtractableResponse<Response> notExistScheduleIdDeleteResponse = deleteSchedule(existTeamPlaceId, notExistScheduleId);
+            final ExtractableResponse<Response> notExistScheduleIdDeleteResponse = deleteSchedule(existTeamPlaceId, notExistScheduleId);
 
             // then
             assertSoftly(softly -> {

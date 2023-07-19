@@ -24,7 +24,7 @@ public class ScheduleRepositoryTest {
     @DisplayName("일정이 존재하면 true, 존재하지 않으면 false를 반환한다.")
     void isExistById(Long scheduleId, boolean expected) {
         // when
-        boolean actual = scheduleRepository.existsById(scheduleId);
+        final boolean actual = scheduleRepository.existsById(scheduleId);
 
         // then
         assertThat(actual).isEqualTo(expected);
@@ -37,9 +37,9 @@ public class ScheduleRepositoryTest {
         final long id = 1L;
 
         // when
-        boolean before = scheduleRepository.existsById(id);
+        final boolean before = scheduleRepository.existsById(id);
         scheduleRepository.deleteById(id);
-        boolean after = scheduleRepository.existsById(id);
+        final boolean after = scheduleRepository.existsById(id);
 
         // then
         assertThat(before).isTrue();

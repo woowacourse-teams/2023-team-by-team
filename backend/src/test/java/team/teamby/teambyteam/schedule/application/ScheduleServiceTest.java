@@ -1,6 +1,5 @@
 package team.teamby.teambyteam.schedule.application;
 
-import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -17,6 +16,7 @@ import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
 import java.time.LocalDateTime;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
@@ -93,7 +93,7 @@ class ScheduleServiceTest {
             final Long registeredId = scheduleService.register(request, teamPlaceId);
 
             // then
-            Assertions.assertThat(registeredId).isNotNull();
+            assertThat(registeredId).isNotNull();
         }
 
         @Test
@@ -134,22 +134,22 @@ class ScheduleServiceTest {
         @DisplayName("일정 삭제에 성공한다.")
         void success() {
             // given
-            Long teamPlaceId = 1L;
-            ScheduleRegisterRequest request = ScheduleFixtures.Schedule1_N_Hour.REQUEST;
+            final Long teamPlaceId = 1L;
+            final ScheduleRegisterRequest request = ScheduleFixtures.Schedule1_N_Hour.REQUEST;
 
             // when
-            Long registeredId = scheduleService.register(request, teamPlaceId);
+            final Long registeredId = scheduleService.register(request, teamPlaceId);
 
             // then
-            Assertions.assertThat(registeredId).isNotNull();
+            assertThat(registeredId).isNotNull();
         }
 
         @Test
         @DisplayName("일정 등록 시 팀 플레이스 ID에 해당하는 팀 플레이스가 존재하지 않으면 예외가 발생한다.")
         void failTeamPlaceNotExistById() {
             // given
-            Long notExistTramPlaceId = -1L;
-            Long existScheduleId = 1L;
+            final Long notExistTramPlaceId = -1L;
+            final Long existScheduleId = 1L;
 
             // when & then
             assertThatThrownBy(() -> scheduleService.delete(notExistTramPlaceId, existScheduleId))
@@ -161,8 +161,8 @@ class ScheduleServiceTest {
         @DisplayName("일정 삭제 시 존재하지 않는 일정 Id면 실패한다.")
         void failScheduleNotExistById() {
             // given
-            Long existTramPlaceId = 1L;
-            Long notExistScheduleId = -1L;
+            final Long existTramPlaceId = 1L;
+            final Long notExistScheduleId = -1L;
 
             // when & then
             assertThatThrownBy(() -> scheduleService.delete(existTramPlaceId, notExistScheduleId))
