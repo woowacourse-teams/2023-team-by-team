@@ -6,6 +6,7 @@ import useCalendar from '~/hooks/useCalendar';
 import * as S from './Calendar.styled';
 import ScheduleBar from '~/components/ScheduleBar/ScheduleBar';
 import type { Schedule } from '~/types/schedule';
+import { generateScheduleBars } from '~/utils/generateScheduleBars';
 
 const DAYS_OF_WEEK = ['일', '월', '화', '수', '목', '금', '토'] as const;
 
@@ -22,6 +23,8 @@ const Calendar = (props: CalendarProps) => {
 
     handlers: { handlePrevButtonClick, handleNextButtonClick },
   } = useCalendar();
+
+  const scheduleBars = generateScheduleBars(year, month, schedules);
 
   return (
     <>
@@ -51,9 +54,21 @@ const Calendar = (props: CalendarProps) => {
           })}
         </S.DaysOfWeek>
         <S.DateContainer>
-          {calendar.map((week) => {
+          {calendar.map((week, rowIndex) => {
             return (
               <>
+                <S.ScheduleBarContainer>
+                  {scheduleBars.map((scheduleBar) => {
+                    const { id, row, ...rest } = scheduleBar;
+
+                    if (row === rowIndex)
+                      return (
+                        <ScheduleBar key={id} id={id} row={row} {...rest} />
+                      );
+
+                    return null;
+                  })}
+                </S.ScheduleBarContainer>
                 <S.DateView>
                   {week.map((day) => {
                     return (
@@ -65,33 +80,6 @@ const Calendar = (props: CalendarProps) => {
                     );
                   })}
                 </S.DateView>
-                <S.ScheduleBarContainer>
-                  {schedules.map((schedule) => {
-                    const { id, title, startDateTime, endDateTime } = schedule;
-
-                    const calcDuration = (start: Date, end: Date) => {
-                      const diff = start.getTime() - end.getTime();
-
-                      return Math.abs(diff / (1000 * 60 * 60 * 24)) + 1;
-                    };
-
-                    const [startDate] = startDateTime.split(' ');
-                    const [endDate] = endDateTime.split(' ');
-
-                    const duration = calcDuration(
-                      new Date(startDate),
-                      new Date(endDate),
-                    );
-
-                    return (
-                      <ScheduleBar
-                        key={id}
-                        startPosition={new Date(startDate).getDay()}
-                        duration={duration}
-                      />
-                    );
-                  })}
-                </S.ScheduleBarContainer>
               </>
             );
           })}

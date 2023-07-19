@@ -46,7 +46,7 @@ export const DateView = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
 
-  height: 102px;
+  height: 120px;
 
   background-color: ${({ theme }) => theme.color.WHITE};
 
