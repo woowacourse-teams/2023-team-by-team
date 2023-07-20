@@ -28,4 +28,6 @@ export const Wrapper = styled.div<WrapperProps>`
     if (isSaturday) return theme.color.PURPLE;
     return theme.color.BLACK;
   }};
+
+  cursor: pointer;
 `;

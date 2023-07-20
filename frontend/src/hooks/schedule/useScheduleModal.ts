@@ -11,7 +11,7 @@ export const useScheduleModal = () => {
   });
   const { openModal } = useModal();
 
-  const onScheduleModalOpen = ({
+  const handleScheduleModalOpen = ({
     scheduleId,
     row,
     column,
@@ -31,6 +31,6 @@ export const useScheduleModal = () => {
   return {
     modalPosition,
     modalScheduleId,
-    handlers: { onScheduleModalOpen },
+    handlers: { handleScheduleModalOpen },
   };
 };
