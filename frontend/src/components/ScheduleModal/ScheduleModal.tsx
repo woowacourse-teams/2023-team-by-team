@@ -13,10 +13,11 @@ import { useDeleteSchedule } from '~/hooks/queries/useDeleteSchedule';
 interface ScheduleModalProps {
   scheduleId: number;
   position: SchedulePosition;
+  onOpenScheduleEditModal: () => void;
 }
 
 const ScheduleModal = (props: ScheduleModalProps) => {
-  const { scheduleId, position } = props;
+  const { scheduleId, position, onOpenScheduleEditModal } = props;
   const { closeModal } = useModal();
   const { scheduleById } = useFetchScheduleById(1, scheduleId);
   const { mutateScheduleDelete } = useDeleteSchedule(1, scheduleId);
@@ -53,7 +54,7 @@ const ScheduleModal = (props: ScheduleModalProps) => {
             </div>
           </S.TeamWrapper>
           <S.MenuWrapper>
-            <Button size="sm" variant="plain">
+            <Button size="sm" variant="plain" onClick={onOpenScheduleEditModal}>
               <EditIcon />
             </Button>
             <Button size="sm" variant="plain" onClick={handleScheduleDelete}>

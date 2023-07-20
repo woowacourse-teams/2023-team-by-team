@@ -7,9 +7,8 @@ export const CALENDAR = {
   COLUMN_SIZE: 7,
 } as const;
 
-export const MODAL_TYPE = {
+export const MODAL_OPEN_TYPE = {
   ADD: 'add',
   VIEW: 'view',
+  EDIT: 'edit',
 } as const;
-
-export const MODAL_TYPE_LIST = [MODAL_TYPE.ADD, MODAL_TYPE.VIEW] as const;
