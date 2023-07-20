@@ -19,8 +19,8 @@ export const http = {
   post: async (url: RequestInfo | URL, body: unknown) => {
     const response = await fetch(url, {
       method: 'POST',
-      body: JSON.stringify(body),
       ...options,
+      body: JSON.stringify(body),
     });
 
     if (!response.ok) {
@@ -33,8 +33,8 @@ export const http = {
   patch: async (url: RequestInfo | URL, body: unknown) => {
     const response = await fetch(url, {
       method: 'PATCH',
-      body: JSON.stringify(body),
       ...options,
+      body: JSON.stringify(body),
     });
 
     if (!response.ok) {
