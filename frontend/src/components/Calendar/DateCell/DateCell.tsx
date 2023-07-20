@@ -22,6 +22,7 @@ const DateCell = (props: DateCellProps) => {
     <S.Wrapper isSunday={isSunday} isSaturday={isSaturday} size={size}>
       <Text
         css={css`
+          font-size: 12px;
           opacity: ${isCurrentMonth ? 1 : 0.3};
         `}
       >

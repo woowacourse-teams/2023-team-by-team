@@ -70,3 +70,19 @@ export const calendarTitle = css`
   font-size: 24px;
   font-weight: 600;
 `;
+
+export const scheduleAddButton = css`
+  position: absolute;
+  right: 1em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 30px;
+  height: 30px;
+  padding: 4px;
+
+  font-size: 24px;
+
+  margin-left: auto;
+`;
