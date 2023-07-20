@@ -10,6 +10,10 @@ export const useDeleteSchedule = (teamPlaceId: number, scheduleId: number) => {
       onSuccess: () => {
         queryClient.refetchQueries({ queryKey: ['schedules'] });
       },
+      onError: () => {
+        alert('오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+        throw new Error();
+      },
     },
   );
 
