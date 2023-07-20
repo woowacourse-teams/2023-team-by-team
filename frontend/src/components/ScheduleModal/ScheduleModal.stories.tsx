@@ -40,14 +40,39 @@ export const Default: Story = {
             </div>
           );
         })}
-        <ScheduleModal targetRef={targetRef} id={1} />
+        <ScheduleModal
+          schedule={{
+            id: 0,
+            title: 'test0',
+            startDateTime: '2023-07-13 00:00',
+            endDateTime: '2023-07-14 23:59',
+          }}
+          position={{
+            row: 0,
+            column: 0,
+            level: 0,
+          }}
+          handleScheduleDelete={() => {
+            alert('click');
+          }}
+        />
       </>
     );
   },
   args: {
-    id: 1,
-    // eslint-disable-next-line
-    //@ts-ignore
-    targetRef: null,
+    schedule: {
+      id: 0,
+      title: 'test0',
+      startDateTime: '2023-07-13 00:00',
+      endDateTime: '2023-07-14 23:59',
+    },
+    position: {
+      row: 0,
+      column: 0,
+      level: 0,
+    },
+    handleScheduleDelete: () => {
+      alert('click');
+    },
   },
 };
