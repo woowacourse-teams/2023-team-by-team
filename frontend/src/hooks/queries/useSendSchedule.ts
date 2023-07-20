@@ -2,10 +2,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { sendSchedule } from '~/apis/schedule';
 import type { ScheduleWithoutId } from '~/types/schedule';
 
-export const useSendSchedule = (teamPlaceId: number) => {
+export const useSendSchedule = () => {
   const queryClient = useQueryClient();
   const { mutate } = useMutation(
-    (body: ScheduleWithoutId) => sendSchedule(teamPlaceId, body),
+    ({ teamPlaceId, body }: { teamPlaceId: number; body: ScheduleWithoutId }) =>
+      sendSchedule(teamPlaceId, body),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['schedules']);

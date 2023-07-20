@@ -36,6 +36,9 @@ export const Default: Story = {
             column: 0,
             level: 0,
           }}
+          onOpenScheduleEditModal={() => {
+            console.log('onOpenScheduleEditModal');
+          }}
         />
       </>
     );

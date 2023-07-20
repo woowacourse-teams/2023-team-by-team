@@ -6,7 +6,12 @@ let schedules = [...scheduleData];
 export const calendarHandlers = [
   //팀플레이스 일정 기간 조회
   rest.get(`/api/team-place/:teamPlaceId/calendar/schedules`, (_, res, ctx) => {
-    return res(ctx.status(200), ctx.json(schedules));
+    return res(
+      ctx.status(200),
+      ctx.json({
+        schedules,
+      }),
+    );
   }),
 
   //팀플레이스 특정 일정 조회

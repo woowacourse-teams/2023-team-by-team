@@ -1,19 +1,20 @@
+import { Fragment, useState } from 'react';
 import Text from '~/components/common/Text/Text';
 import Button from '~/components/common/Button/Button';
 import DateCell from '~/components/Calendar/DateCell/DateCell';
-import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from '~/assets/svg';
-import useCalendar from '~/hooks/useCalendar';
-import * as S from './Calendar.styled';
-import ScheduleBar from '~/components/ScheduleBar/ScheduleBar';
-import { generateScheduleBars } from '~/utils/generateScheduleBars';
 import ScheduleModal from '~/components/ScheduleModal/ScheduleModal';
-import { useScheduleModal } from '~/hooks/schedule/useScheduleModal';
-import { useModal } from '~/hooks/useModal';
-import { DAYS_OF_WEEK, MODAL_TYPE } from '~/constants/calendar';
+import ScheduleBar from '~/components/ScheduleBar/ScheduleBar';
 import ScheduleAddModal from '~/components/ScheduleAddModal/ScheduleAddModal';
+import ScheduleEditModal from '~/components/ScheduleEditModal/ScheduleEditModal';
+import * as S from './Calendar.styled';
+import useCalendar from '~/hooks/useCalendar';
+import { useScheduleModal } from '~/hooks/schedule/useScheduleModal';
 import { useFetchSchedules } from '~/hooks/queries/useFetchSchedules';
-import { useState } from 'react';
-import type { Modal } from '~/types/schedule';
+import { useModal } from '~/hooks/useModal';
+import { generateScheduleBars } from '~/utils/generateScheduleBars';
+import { DAYS_OF_WEEK, MODAL_OPEN_TYPE } from '~/constants/calendar';
+import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from '~/assets/svg';
+import type { ModalOpenType } from '~/types/schedule';
 
 const Calendar = () => {
   const {
@@ -22,23 +23,24 @@ const Calendar = () => {
     calendar,
     handlers: { handlePrevButtonClick, handleNextButtonClick },
   } = useCalendar();
-  const { schedules } = useFetchSchedules(1, year, month);
+  const schedules = useFetchSchedules(1, year, month + 1);
   const { isModalOpen, openModal } = useModal();
   const {
     modalScheduleId,
     modalPosition,
     handlers: { handleScheduleModalOpen },
   } = useScheduleModal();
-
-  const [modalType, setModalType] = useState<Modal>(MODAL_TYPE.ADD);
+  const [modalType, setModalType] = useState<ModalOpenType>(
+    MODAL_OPEN_TYPE.ADD,
+  );
 
   if (schedules === undefined) {
     return null;
   }
   const scheduleBars = generateScheduleBars(year, month, schedules);
 
-  const handleAddModalOpen = () => {
-    setModalType(MODAL_TYPE.ADD);
+  const handleModalOpen = (modalOpenType: ModalOpenType) => {
+    setModalType(() => modalOpenType);
     openModal();
   };
 
@@ -64,7 +66,10 @@ const Calendar = () => {
             >
               <ArrowRightIcon />
             </Button>
-            <Button css={S.scheduleAddButton} onClick={handleAddModalOpen}>
+            <Button
+              css={S.scheduleAddButton}
+              onClick={() => handleModalOpen(MODAL_OPEN_TYPE.ADD)}
+            >
               <PlusIcon />
             </Button>
           </S.ButtonContainer>
@@ -78,22 +83,18 @@ const Calendar = () => {
           <div>
             {calendar.map((week, rowIndex) => {
               return (
-                <>
+                <Fragment key={rowIndex}>
                   <S.ScheduleBarContainer>
                     {scheduleBars.map((scheduleBar) => {
-                      const { id, row, column, level, scheduleId, ...rest } =
+                      const { id, scheduleId, row, column, level } =
                         scheduleBar;
 
                       if (row === rowIndex)
                         return (
                           <ScheduleBar
-                            id={id}
-                            scheduleId={scheduleId}
-                            row={row}
-                            column={column}
-                            level={level}
+                            key={id}
                             onScheduleModalOpen={() => {
-                              setModalType(MODAL_TYPE.VIEW);
+                              setModalType(() => MODAL_OPEN_TYPE.VIEW);
                               handleScheduleModalOpen({
                                 scheduleId,
                                 row,
@@ -101,7 +102,7 @@ const Calendar = () => {
                                 level,
                               });
                             }}
-                            {...rest}
+                            {...scheduleBar}
                           />
                         );
 
@@ -115,22 +116,35 @@ const Calendar = () => {
                           key={day.toISOString()}
                           rawDate={day}
                           currentMonth={month}
-                          onClick={handleAddModalOpen}
+                          onClick={() => handleModalOpen(MODAL_OPEN_TYPE.ADD)}
                         />
                       );
                     })}
                   </S.DateView>
-                </>
+                </Fragment>
               );
             })}
           </div>
         </div>
       </S.Container>
-      {isModalOpen && modalType === MODAL_TYPE.ADD && (
+      {isModalOpen && modalType === MODAL_OPEN_TYPE.ADD && (
         <ScheduleAddModal teamPlaceName="팀바팀" />
       )}
-      {isModalOpen && modalType === MODAL_TYPE.VIEW && (
-        <ScheduleModal scheduleId={modalScheduleId} position={modalPosition} />
+      {isModalOpen && modalType === MODAL_OPEN_TYPE.VIEW && (
+        <ScheduleModal
+          scheduleId={modalScheduleId}
+          position={modalPosition}
+          onOpenScheduleEditModal={() => handleModalOpen(MODAL_OPEN_TYPE.EDIT)}
+        />
+      )}
+      {isModalOpen && modalType === MODAL_OPEN_TYPE.EDIT && (
+        <ScheduleEditModal
+          teamPlaceName="팀바팀"
+          scheduleId={modalScheduleId}
+          initialSchedule={schedules.find(
+            (schedule) => schedule.id === modalScheduleId,
+          )}
+        />
       )}
     </>
   );

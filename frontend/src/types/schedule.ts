@@ -1,4 +1,4 @@
-import type { MODAL_TYPE_LIST } from '~/constants/calendar';
+import type { MODAL_OPEN_TYPE } from '~/constants/calendar';
 
 export interface Schedule {
   id: number;
@@ -20,4 +20,5 @@ export interface SchedulePosition extends Position {
   level: number;
 }
 
-export type Modal = (typeof MODAL_TYPE_LIST)[number];
+export type ModalOpenType =
+  (typeof MODAL_OPEN_TYPE)[keyof typeof MODAL_OPEN_TYPE];

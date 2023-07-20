@@ -1,3 +1,8 @@
+const BASE_URL =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:3000'
+    : 'http://3.36.59.136:80';
+
 const options = {
   headers: {
     'Content-Type': 'application/json',
@@ -7,7 +12,7 @@ const options = {
 
 export const http = {
   get: async <T>(url: RequestInfo | URL): Promise<T> => {
-    const response = await fetch(url, options);
+    const response = await fetch(`${BASE_URL}${url}`, options);
 
     if (!response.ok) {
       throw new Error('네트워크 통신 중 에러가 발생했습니다.');
@@ -17,7 +22,7 @@ export const http = {
   },
 
   post: async (url: RequestInfo | URL, body: unknown) => {
-    const response = await fetch(url, {
+    const response = await fetch(`${BASE_URL}${url}`, {
       method: 'POST',
       ...options,
       body: JSON.stringify(body),
@@ -31,7 +36,7 @@ export const http = {
   },
 
   patch: async (url: RequestInfo | URL, body: unknown) => {
-    const response = await fetch(url, {
+    const response = await fetch(`${BASE_URL}${url}`, {
       method: 'PATCH',
       ...options,
       body: JSON.stringify(body),
@@ -45,7 +50,7 @@ export const http = {
   },
 
   delete: async (url: RequestInfo | URL) => {
-    const response = await fetch(url, {
+    const response = await fetch(`${BASE_URL}${url}`, {
       method: 'DELETE',
       ...options,
     });
