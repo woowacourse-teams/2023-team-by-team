@@ -47,7 +47,7 @@ const IntegratedCalendar = () => {
           </Button>
         </div>
       </S.CalendarHeader>
-      <S.CalendarBody>
+      <div>
         <S.DaysOfWeek>
           {DAYS_OF_WEEK.map((day) => {
             return <S.DayOfWeek key={day}>{day}</S.DayOfWeek>;
@@ -74,7 +74,7 @@ const IntegratedCalendar = () => {
             );
           })}
         </div>
-      </S.CalendarBody>
+      </div>
     </S.Container>
   );
 };

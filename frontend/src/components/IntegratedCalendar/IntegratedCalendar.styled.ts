@@ -15,10 +15,6 @@ export const CalendarHeader = styled.div`
   padding: 4px 10px 0 10px;
 `;
 
-export const CalendarBody = styled.div`
-  /* margin-top: 16px; */
-`;
-
 export const DaysOfWeek = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
