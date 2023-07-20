@@ -1,3 +1,5 @@
+import type { MODAL_TYPE_LIST } from '~/constants/calendar';
+
 export interface Schedule {
   id: number;
   title: string;
@@ -17,3 +19,5 @@ export interface Position {
 export interface SchedulePosition extends Position {
   level: number;
 }
+
+export type Modal = (typeof MODAL_TYPE_LIST)[number];
