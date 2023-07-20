@@ -26,3 +26,14 @@ export const deleteSchedule = (teamPlaceId: number, scheduleId: number) => {
 export const sendSchedule = (teamPlaceId: number, body: ScheduleWithoutId) => {
   return http.post(`/api/team-place/${teamPlaceId}/calendar/schedules`, body);
 };
+
+export const modifySchedule = (
+  teamPlaceId: number,
+  scheduleId: number,
+  body: ScheduleWithoutId,
+) => {
+  return http.patch(
+    `/api/team-place/${teamPlaceId}/calendar/schedules/${scheduleId}`,
+    body,
+  );
+};
