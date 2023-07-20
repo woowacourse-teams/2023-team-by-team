@@ -8,8 +8,7 @@ export const useDeleteSchedule = (teamPlaceId: number, scheduleId: number) => {
     () => deleteSchedule(teamPlaceId, scheduleId),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['schedules'] });
-        queryClient.invalidateQueries({ queryKey: ['schedule'] });
+        queryClient.refetchQueries({ queryKey: ['schedules'] });
       },
     },
   );

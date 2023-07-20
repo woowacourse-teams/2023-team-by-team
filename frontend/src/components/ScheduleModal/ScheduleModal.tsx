@@ -17,9 +17,8 @@ const ScheduleModal = (props: ScheduleModalProps) => {
   const { schedule, handleScheduleDelete, position } = props;
   const { closeModal } = useModal();
 
-  const { id, title, startDateTime, endDateTime } = schedule;
+  const { title, startDateTime, endDateTime } = schedule;
 
-  console.log(position);
   const modalLocation: CSSProperties = {
     position: 'absolute',
     top:

@@ -10,7 +10,7 @@ import { generateScheduleBars } from '~/utils/generateScheduleBars';
 import { useModal } from '~/hooks/useModal';
 import { useEffect, useState } from 'react';
 import ScheduleModal from '~/components/ScheduleModal/ScheduleModal';
-import { useFetchScheduleById } from '~/hooks/queries/useFetchSchedule';
+import { useFetchScheduleById } from '~/hooks/queries/useFetchScheduleById';
 import { useDeleteSchedule } from '~/hooks/queries/useDeleteSchedule';
 
 const DAYS_OF_WEEK = ['일', '월', '화', '수', '목', '금', '토'] as const;
