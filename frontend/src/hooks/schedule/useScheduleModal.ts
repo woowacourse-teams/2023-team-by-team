@@ -22,7 +22,7 @@ export const useScheduleModal = (scheduleBars: ScheduleBar[]) => {
     setModalScheduleId(scheduleBars[0].scheduleId);
   }, []);
 
-  const handleScheduleModalOpen = (
+  const onScheduleModalOpen = (
     scheduleId: number,
     row: number,
     column: number,
@@ -42,9 +42,6 @@ export const useScheduleModal = (scheduleBars: ScheduleBar[]) => {
     modalPosition,
     scheduleById,
 
-    handlers: {
-      handleScheduleModalOpen,
-      onScheduleDelete,
-    },
+    handlers: { onScheduleModalOpen, onScheduleDelete },
   };
 };

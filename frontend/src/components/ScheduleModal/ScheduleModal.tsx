@@ -11,10 +11,10 @@ import type { Schedule, SchedulePosition } from '~/types/schedule';
 interface ScheduleModalProps {
   schedule: Schedule;
   position: SchedulePosition;
-  handleScheduleDelete: () => void;
+  onScheduleDelete: () => void;
 }
 const ScheduleModal = (props: ScheduleModalProps) => {
-  const { schedule, handleScheduleDelete, position } = props;
+  const { schedule, onScheduleDelete, position } = props;
   const { closeModal } = useModal();
 
   const { title, startDateTime, endDateTime } = schedule;
@@ -49,7 +49,7 @@ const ScheduleModal = (props: ScheduleModalProps) => {
             <Button size="sm" variant="plain">
               <EditIcon />
             </Button>
-            <Button size="sm" variant="plain" onClick={handleScheduleDelete}>
+            <Button size="sm" variant="plain" onClick={onScheduleDelete}>
               <DeleteIcon />
             </Button>
             <Button size="sm" variant="plain" onClick={closeModal}>

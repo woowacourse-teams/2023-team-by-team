@@ -12,13 +12,18 @@ export interface ScheduleBar {
 }
 
 interface ScheduleBarProps extends ScheduleBar {
-  handleClick: () => void;
+  onScheduleModalOpen: () => void;
 }
 
 const ScheduleBar = (props: ScheduleBarProps) => {
-  const { color = 'red', title, handleClick, ...rest } = props;
+  const { color = 'red', title, onScheduleModalOpen, ...rest } = props;
   return (
-    <S.Wrapper color={color} title={title} onClick={handleClick} {...rest} />
+    <S.Wrapper
+      color={color}
+      title={title}
+      onClick={onScheduleModalOpen}
+      {...rest}
+    />
   );
 };
 

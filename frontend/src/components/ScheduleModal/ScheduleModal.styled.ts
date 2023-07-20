@@ -18,6 +18,7 @@ export const Container = styled.div`
     0 15px 25px #1b1d1f33,
     0 5px 10px #1b1d1f1f;
 `;
+
 export const Backdrop = styled.div`
   position: fixed;
   top: 0;

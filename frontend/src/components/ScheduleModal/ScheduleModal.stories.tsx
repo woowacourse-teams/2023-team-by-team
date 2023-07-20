@@ -16,26 +16,16 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   render: () => {
     const { openModal } = useModal();
-    const refs = arrayOf(5).map(() => useRef(null));
 
-    const [targetRef, setTargetRef] = useState<React.RefObject<HTMLDivElement>>(
-      refs[0],
-    );
-
-    const handleOpen = (index: number) => {
+    const handleOpen = () => {
       openModal();
-      setTargetRef(refs[index]);
     };
 
     return (
       <>
         {arrayOf(5).map((_, index) => {
           return (
-            <div
-              key={index}
-              ref={refs[index]}
-              onClick={() => handleOpen(index)}
-            >
+            <div key={index} onClick={() => handleOpen()}>
               모달 열기
             </div>
           );
@@ -52,7 +42,7 @@ export const Default: Story = {
             column: 0,
             level: 0,
           }}
-          handleScheduleDelete={() => {
+          onScheduleDelete={() => {
             alert('click');
           }}
         />
@@ -71,7 +61,7 @@ export const Default: Story = {
       column: 0,
       level: 0,
     },
-    handleScheduleDelete: () => {
+    onScheduleDelete: () => {
       alert('click');
     },
   },
