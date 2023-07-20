@@ -20,9 +20,6 @@ export const Default: Story = {
     column: 2,
     duration: 3,
     level: 0,
-    // eslint-disable-next-line
-    //@ts-ignore
-    ref: null,
     handleClick: () => console.log('click'),
   },
 };
