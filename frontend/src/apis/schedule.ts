@@ -11,6 +11,18 @@ export const fetchSchedules = (
   );
 };
 
+export const fetchScheduleById = (teamPlaceId: number, scheduleId: number) => {
+  return http.get<Schedule>(
+    `/api/team-place/${teamPlaceId}/calendar/schedules/${scheduleId}`,
+  );
+};
+
+export const deleteSchedule = (teamPlaceId: number, scheduleId: number) => {
+  return http.delete(
+    `/api/team-place/${teamPlaceId}/calendar/schedules/${scheduleId}`,
+  );
+};
+
 export const sendSchedule = (teamPlaceId: number, body: ScheduleWithoutId) => {
   return http.post(`/api/team-place/${teamPlaceId}/calendar/schedules`, body);
 };

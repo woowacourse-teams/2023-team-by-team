@@ -7,4 +7,13 @@ export interface Schedule {
 
 export type ScheduleWithoutId = Omit<Schedule, 'id'>;
 
-type YYYYMMDDHHMM = `${string}-${string}-${string} ${string}:${string}`;
+export type YYYYMMDDHHMM = `${string}-${string}-${string} ${string}:${string}`;
+
+export interface Position {
+  row: number;
+  column: number;
+}
+
+export interface SchedulePosition extends Position {
+  level: number;
+}

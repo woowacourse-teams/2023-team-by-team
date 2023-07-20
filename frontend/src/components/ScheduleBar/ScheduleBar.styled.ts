@@ -17,7 +17,9 @@ export const Inner = styled.div<Pick<ScheduleBarProps, 'color' | 'level'>>`
   height: 100%;
 
   background-color: ${({ color }) => color};
+  border-radius: 4px;
+
   filter: brightness(${({ level }) => 1 + level * 0.5});
 
-  border-radius: 4px;
+  cursor: pointer;
 `;

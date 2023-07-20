@@ -1,12 +1,7 @@
 import type { ScheduleBarProps } from '~/components/ScheduleBar/ScheduleBar';
 import { CALENDAR, ONE_DAY } from '~/constants/calendar';
-import type { Schedule } from '~/types/schedule';
+import type { Position, Schedule } from '~/types/schedule';
 import { parseDate } from '~/utils/parseDate';
-
-interface Position {
-  row: number;
-  column: number;
-}
 
 type CalendarObject = Record<string, Position>;
 

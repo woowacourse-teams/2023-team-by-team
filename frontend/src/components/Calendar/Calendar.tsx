@@ -6,21 +6,27 @@ import useCalendar from '~/hooks/useCalendar';
 import * as S from './Calendar.styled';
 import ScheduleBar from '~/components/ScheduleBar/ScheduleBar';
 import { generateScheduleBars } from '~/utils/generateScheduleBars';
-import { useSchedules } from '~/hooks/queries/useSchedules';
-import { DAYS_OF_WEEK } from '~/constants/calendar';
+import ScheduleModal from '~/components/ScheduleModal/ScheduleModal';
+import { useScheduleModal } from '~/hooks/schedule/useScheduleModal';
 import { useModal } from '~/hooks/useModal';
+import { DAYS_OF_WEEK } from '~/constants/calendar';
 import ScheduleAddModal from '~/components/ScheduleAddModal/ScheduleAddModal';
+import { useFetchSchedules } from '~/hooks/queries/useFetchSchedules';
 
 const Calendar = () => {
   const {
     year,
     month,
     calendar,
-
     handlers: { handlePrevButtonClick, handleNextButtonClick },
   } = useCalendar();
-  const { schedules } = useSchedules(1, year, month);
+  const { schedules } = useFetchSchedules(1, year, month);
   const { isModalOpen, openModal } = useModal();
+  const {
+    modalScheduleId,
+    modalPosition,
+    handlers: { onScheduleModalOpen },
+  } = useScheduleModal();
 
   if (schedules === undefined) {
     return null;
@@ -67,11 +73,27 @@ const Calendar = () => {
                 <>
                   <S.ScheduleBarContainer>
                     {scheduleBars.map((scheduleBar) => {
-                      const { id, row, ...rest } = scheduleBar;
+                      const { id, row, column, level, scheduleId, ...rest } =
+                        scheduleBar;
 
                       if (row === rowIndex)
                         return (
-                          <ScheduleBar key={id} id={id} row={row} {...rest} />
+                          <ScheduleBar
+                            id={id}
+                            scheduleId={scheduleId}
+                            row={row}
+                            column={column}
+                            level={level}
+                            onScheduleModalOpen={() =>
+                              onScheduleModalOpen({
+                                scheduleId,
+                                row,
+                                column,
+                                level,
+                              })
+                            }
+                            {...rest}
+                          />
                         );
 
                       return null;
@@ -95,6 +117,9 @@ const Calendar = () => {
         </div>
       </S.Container>
       {isModalOpen && <ScheduleAddModal teamPlaceName="팀바팀" />}
+      {isModalOpen && (
+        <ScheduleModal scheduleId={modalScheduleId} position={modalPosition} />
+      )}
     </>
   );
 };
