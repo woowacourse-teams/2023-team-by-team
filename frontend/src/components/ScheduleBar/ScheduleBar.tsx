@@ -12,7 +12,7 @@ export interface ScheduleBarProps {
 }
 
 const ScheduleBar = (props: ScheduleBarProps) => {
-  const { color = 'red', title, ...rest } = props;
+  const { color = '#516FFF', title, ...rest } = props;
 
   return (
     <S.Wrapper
@@ -20,7 +20,9 @@ const ScheduleBar = (props: ScheduleBarProps) => {
       title={title}
       {...rest}
       onClick={() => alert(title)}
-    />
+    >
+      <S.Inner color={color} {...rest} />
+    </S.Wrapper>
   );
 };
 
