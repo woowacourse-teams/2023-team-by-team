@@ -9,9 +9,11 @@ import { generateScheduleBars } from '~/utils/generateScheduleBars';
 import ScheduleModal from '~/components/ScheduleModal/ScheduleModal';
 import { useScheduleModal } from '~/hooks/schedule/useScheduleModal';
 import { useModal } from '~/hooks/useModal';
-import { DAYS_OF_WEEK } from '~/constants/calendar';
+import { DAYS_OF_WEEK, MODAL_TYPE } from '~/constants/calendar';
 import ScheduleAddModal from '~/components/ScheduleAddModal/ScheduleAddModal';
 import { useFetchSchedules } from '~/hooks/queries/useFetchSchedules';
+import { useState } from 'react';
+import type { Modal } from '~/types/schedule';
 
 const Calendar = () => {
   const {
@@ -25,14 +27,20 @@ const Calendar = () => {
   const {
     modalScheduleId,
     modalPosition,
-    handlers: { onScheduleModalOpen },
+    handlers: { handleScheduleModalOpen },
   } = useScheduleModal();
+
+  const [modalType, setModalType] = useState<Modal>(MODAL_TYPE.ADD);
 
   if (schedules === undefined) {
     return null;
   }
-
   const scheduleBars = generateScheduleBars(year, month, schedules);
+
+  const handleAddModalOpen = () => {
+    setModalType(MODAL_TYPE.ADD);
+    openModal();
+  };
 
   return (
     <>
@@ -56,7 +64,7 @@ const Calendar = () => {
             >
               <ArrowRightIcon />
             </Button>
-            <Button css={S.scheduleAddButton} onClick={openModal}>
+            <Button css={S.scheduleAddButton} onClick={handleAddModalOpen}>
               <PlusIcon />
             </Button>
           </S.ButtonContainer>
@@ -84,14 +92,15 @@ const Calendar = () => {
                             row={row}
                             column={column}
                             level={level}
-                            onScheduleModalOpen={() =>
-                              onScheduleModalOpen({
+                            onScheduleModalOpen={() => {
+                              setModalType(MODAL_TYPE.VIEW);
+                              handleScheduleModalOpen({
                                 scheduleId,
                                 row,
                                 column,
                                 level,
-                              })
-                            }
+                              });
+                            }}
                             {...rest}
                           />
                         );
@@ -106,6 +115,7 @@ const Calendar = () => {
                           key={day.toISOString()}
                           rawDate={day}
                           currentMonth={month}
+                          onClick={handleAddModalOpen}
                         />
                       );
                     })}
@@ -116,8 +126,10 @@ const Calendar = () => {
           </div>
         </div>
       </S.Container>
-      {isModalOpen && <ScheduleAddModal teamPlaceName="팀바팀" />}
-      {isModalOpen && (
+      {isModalOpen && modalType === MODAL_TYPE.ADD && (
+        <ScheduleAddModal teamPlaceName="팀바팀" />
+      )}
+      {isModalOpen && modalType === MODAL_TYPE.VIEW && (
         <ScheduleModal scheduleId={modalScheduleId} position={modalPosition} />
       )}
     </>

@@ -7,11 +7,12 @@ import type { DateCellSize } from '~/types/size';
 interface DateCellProps {
   rawDate: Date;
   currentMonth: number;
+  onClick?: () => void;
   size?: DateCellSize;
 }
 
 const DateCell = (props: DateCellProps) => {
-  const { rawDate, currentMonth, size = 'lg' } = props;
+  const { rawDate, currentMonth, size = 'lg', onClick } = props;
   const { date, day } = parseDate(rawDate);
 
   const isSunday = day === 0;
@@ -19,7 +20,12 @@ const DateCell = (props: DateCellProps) => {
   const isCurrentMonth = rawDate.getMonth() === currentMonth;
 
   return (
-    <S.Wrapper isSunday={isSunday} isSaturday={isSaturday} size={size}>
+    <S.Wrapper
+      isSunday={isSunday}
+      isSaturday={isSaturday}
+      size={size}
+      onClick={onClick}
+    >
       <Text
         css={css`
           font-size: 12px;
