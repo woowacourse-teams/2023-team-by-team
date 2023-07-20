@@ -6,32 +6,39 @@ import * as S from './ScheduleModal.styled';
 import { CloseIcon, DeleteIcon, EditIcon } from '~/assets/svg';
 import Button from '~/components/common/Button/Button';
 import { formatDateTime } from '~/utils/formatDateTime';
-import type { Schedule, SchedulePosition } from '~/types/schedule';
+import type { SchedulePosition } from '~/types/schedule';
+import { useFetchScheduleById } from '~/hooks/queries/useFetchScheduleById';
+import { useDeleteSchedule } from '~/hooks/queries/useDeleteSchedule';
 
 interface ScheduleModalProps {
-  schedule: Schedule;
+  scheduleId: number;
   position: SchedulePosition;
-  onScheduleDelete: () => void;
 }
+
 const ScheduleModal = (props: ScheduleModalProps) => {
-  const { schedule, onScheduleDelete, position } = props;
+  const { scheduleId, position } = props;
   const { closeModal } = useModal();
+  const { scheduleById } = useFetchScheduleById(1, scheduleId);
+  const { mutateScheduleDelete } = useDeleteSchedule(1, scheduleId);
 
-  const { title, startDateTime, endDateTime } = schedule;
+  if (scheduleById === undefined) return;
 
+  const { title, startDateTime, endDateTime } = scheduleById;
+  const { row, column, level } = position;
   const modalLocation: CSSProperties = {
     position: 'absolute',
-    top:
-      position.row < 3
-        ? `${(position.row + 1) * 120 + position.level * 18 + 60}px`
-        : 'none',
-    bottom:
-      position.row >= 3
-        ? `${(6 - position.row) * 120 - position.level * 18}px`
-        : 'none',
-    left: position.column < 3 ? `${(position.column * 100) / 7}%` : 'none',
-    right:
-      position.column >= 3 ? `${((6 - position.column) * 100) / 7}%` : 'none',
+    top: row < 3 ? `${(row + 1) * 120 + level * 18 + 60}px` : 'none',
+    bottom: row >= 3 ? `${(6 - row) * 120 - level * 18}px` : 'none',
+    left: column < 3 ? `${(column * 100) / 7}%` : 'none',
+    right: column >= 3 ? `${((6 - column) * 100) / 7}%` : 'none',
+  };
+
+  const handleScheduleDelete = () => {
+    if (confirm('일정을 삭제하시겠어요?')) {
+      mutateScheduleDelete(undefined, {
+        onSuccess: () => closeModal(),
+      });
+    }
   };
 
   return (
@@ -49,7 +56,7 @@ const ScheduleModal = (props: ScheduleModalProps) => {
             <Button size="sm" variant="plain">
               <EditIcon />
             </Button>
-            <Button size="sm" variant="plain" onClick={onScheduleDelete}>
+            <Button size="sm" variant="plain" onClick={handleScheduleDelete}>
               <DeleteIcon />
             </Button>
             <Button size="sm" variant="plain" onClick={closeModal}>

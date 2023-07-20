@@ -9,6 +9,7 @@ import type { Schedule } from '~/types/schedule';
 import { generateScheduleBars } from '~/utils/generateScheduleBars';
 import ScheduleModal from '~/components/ScheduleModal/ScheduleModal';
 import { useScheduleModal } from '~/hooks/schedule/useScheduleModal';
+import { useModal } from '~/hooks/useModal';
 
 const DAYS_OF_WEEK = ['일', '월', '화', '수', '목', '금', '토'] as const;
 
@@ -26,10 +27,11 @@ const Calendar = (props: CalendarProps) => {
   } = useCalendar();
   const scheduleBars = generateScheduleBars(year, month, schedules);
   const {
+    modalScheduleId,
     modalPosition,
-    scheduleById,
-    handlers: { onScheduleModalOpen, onScheduleDelete },
-  } = useScheduleModal(scheduleBars);
+    handlers: { onScheduleModalOpen },
+  } = useScheduleModal();
+  const { isModalOpen } = useModal();
 
   return (
     <>
@@ -75,7 +77,12 @@ const Calendar = (props: CalendarProps) => {
                           column={column}
                           level={level}
                           onScheduleModalOpen={() =>
-                            onScheduleModalOpen(scheduleId, row, column, level)
+                            onScheduleModalOpen({
+                              scheduleId,
+                              row,
+                              column,
+                              level,
+                            })
                           }
                           {...rest}
                         />
@@ -100,12 +107,8 @@ const Calendar = (props: CalendarProps) => {
           })}
         </S.DateContainer>
       </S.CalendarBody>
-      {scheduleById && (
-        <ScheduleModal
-          schedule={scheduleById}
-          position={modalPosition}
-          onScheduleDelete={onScheduleDelete}
-        />
+      {isModalOpen && (
+        <ScheduleModal scheduleId={modalScheduleId} position={modalPosition} />
       )}
     </>
   );

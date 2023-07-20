@@ -1,47 +1,36 @@
-import { useEffect, useState } from 'react';
-import type { ScheduleBar } from '~/components/ScheduleBar/ScheduleBar';
-import { useDeleteSchedule } from '~/hooks/queries/useDeleteSchedule';
-import { useFetchScheduleById } from '~/hooks/queries/useFetchScheduleById';
+import { useState } from 'react';
 import { useModal } from '~/hooks/useModal';
 import type { SchedulePosition } from '~/types/schedule';
 
-export const useScheduleModal = (scheduleBars: ScheduleBar[]) => {
-  const [modalScheduleId, setModalScheduleId] = useState<number>(
-    scheduleBars[0].scheduleId,
-  );
+export const useScheduleModal = () => {
+  const [modalScheduleId, setModalScheduleId] = useState(0);
   const [modalPosition, setModalPosition] = useState<SchedulePosition>({
     row: 0,
     column: 0,
     level: 0,
   });
-  const { openModal, closeModal } = useModal();
-  const { scheduleById } = useFetchScheduleById(1, modalScheduleId);
-  const { mutateScheduleDelete } = useDeleteSchedule(1, modalScheduleId);
+  const { openModal } = useModal();
 
-  useEffect(() => {
-    setModalScheduleId(scheduleBars[0].scheduleId);
-  }, []);
-
-  const onScheduleModalOpen = (
-    scheduleId: number,
-    row: number,
-    column: number,
-    level: number,
-  ) => {
-    setModalScheduleId(scheduleId);
-    setModalPosition({ row, column, level });
+  const onScheduleModalOpen = ({
+    scheduleId,
+    row,
+    column,
+    level,
+  }: SchedulePosition & { scheduleId: number }) => {
+    setModalScheduleId(() => scheduleId);
+    setModalPosition(() => {
+      return {
+        row,
+        column,
+        level,
+      };
+    });
     openModal();
-  };
-
-  const onScheduleDelete = () => {
-    closeModal();
-    mutateScheduleDelete();
   };
 
   return {
     modalPosition,
-    scheduleById,
-
-    handlers: { onScheduleModalOpen, onScheduleDelete },
+    modalScheduleId,
+    handlers: { onScheduleModalOpen },
   };
 };
