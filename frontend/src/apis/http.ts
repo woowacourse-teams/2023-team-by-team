@@ -13,16 +13,16 @@ export const http = {
   post: (url: RequestInfo | URL, body: unknown) => {
     return fetch(url, {
       method: 'POST',
-      body: JSON.stringify(body),
       ...options,
+      body: JSON.stringify(body),
     }).then((response) => response.json());
   },
 
   patch: (url: RequestInfo | URL, body: unknown) => {
     return fetch(url, {
       method: 'PATCH',
-      body: JSON.stringify(body),
       ...options,
+      body: JSON.stringify(body),
     }).then((response) => response.json());
   },
 
