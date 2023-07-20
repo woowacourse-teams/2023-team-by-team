@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
-import type { ScheduleBarProps } from '~/components/ScheduleBar/ScheduleBar';
+import type { ScheduleBar } from '~/components/ScheduleBar/ScheduleBar';
 
-export const Wrapper = styled.div<ScheduleBarProps>`
+export const Wrapper = styled.div<ScheduleBar>`
   position: absolute;
 
   top: ${({ level }) => level * 18 + 36}px;
@@ -10,4 +10,6 @@ export const Wrapper = styled.div<ScheduleBarProps>`
   height: 16px;
 
   background-color: ${({ color }) => color};
+
+  cursor: pointer;
 `;

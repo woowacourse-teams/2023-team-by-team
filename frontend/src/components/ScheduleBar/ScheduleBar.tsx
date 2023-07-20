@@ -1,6 +1,6 @@
 import * as S from './ScheduleBar.styled';
 
-export interface ScheduleBarProps {
+export interface ScheduleBar {
   id: string;
   scheduleId: number;
   title: string;
@@ -11,16 +11,14 @@ export interface ScheduleBarProps {
   color?: string;
 }
 
-const ScheduleBar = (props: ScheduleBarProps) => {
-  const { color = 'red', title, ...rest } = props;
+interface ScheduleBarProps extends ScheduleBar {
+  handleClick: () => void;
+}
 
+const ScheduleBar = (props: ScheduleBarProps) => {
+  const { color = 'red', title, handleClick, ...rest } = props;
   return (
-    <S.Wrapper
-      color={color}
-      title={title}
-      {...rest}
-      onClick={() => alert(title)}
-    />
+    <S.Wrapper color={color} title={title} onClick={handleClick} {...rest} />
   );
 };
 
