@@ -5,6 +5,7 @@
 name: backend Java CD with Gradle
 
 on:
+  workflow_dispatch:
   pull_request:
     types:
       - closed
@@ -21,7 +22,7 @@ permissions:
 
 jobs:
   build-and-upload:
-    if: github.event.pull_request.merged == true
+#     if: github.event.pull_request.merged == true
     runs-on: ubuntu-22.04
     env:
       DEV_PROPERTY: ${{ secrets.DEV_PROPERTY }}
@@ -32,7 +33,7 @@ jobs:
       
     - name: Change property to dev env
       run: |
-        echo echo "$DEV_PROPERTY" > src/main/resources/application.yml
+        echo "$DEV_PROPERTY" > src/main/resources/application.yml
     
     - name: Set up JDK 17
       uses: actions/setup-java@v3
@@ -67,6 +68,9 @@ jobs:
     env:
       DEV_DEPLOY_SCRIPT: ${{ secrets.DEV_DEPLOY_SCRIPT }}
     steps:
+      - name: Remove previous version jar
+        working-directory: ./backend/dev/
+        run: rm -f team-by-team-*.jar
 
       - name: Download jar file from artifact
         uses: actions/download-artifact@v3
