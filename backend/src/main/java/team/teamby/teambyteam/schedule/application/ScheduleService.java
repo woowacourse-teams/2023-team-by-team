@@ -53,6 +53,7 @@ public class ScheduleService {
         return !teamPlaceRepository.existsById(teamPlaceId);
     }
 
+    @Transactional(readOnly = true)
     public ScheduleResponse findSchedule(final Long scheduleId, final Long teamPlaceId) {
         checkTeamPlaceExist(teamPlaceId);
 
@@ -73,6 +74,7 @@ public class ScheduleService {
         return !schedule.isScheduleOfTeam(teamPlaceId);
     }
 
+    @Transactional(readOnly = true)
     public SchedulesResponse findScheduleInPeriod(final Long teamPlaceId, final int targetYear, final int targetMonth) {
         // TODO: 상의해보기 - 팀플레이스 소속 멤버 검증시 팀플레이스 아이디가 검증이 될 건데 해당 붑ㄴ에 대한 재 검증이 필요한가?
         checkTeamPlaceExist(teamPlaceId);
