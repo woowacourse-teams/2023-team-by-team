@@ -22,6 +22,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -31,6 +32,8 @@ public class ScheduleService {
     private static final int FIRST_DAY_OF_MONTH = 1;
     private static final LocalTime START_TIME_OF_DAY = LocalTime.of(0, 0, 0);
     public static final int NEXT_MONTH_OFFSET = 1;
+    public static final Integer START_DATE_TIME_KEY = 1;
+    public static final Integer END_DATE_TIME_KEY = 2;
 
     private final MemberRepository memberRepository;
     private final ScheduleRepository scheduleRepository;
@@ -83,15 +86,21 @@ public class ScheduleService {
         // TODO: 상의해보기 - 팀플레이스 소속 멤버 검증시 팀플레이스 아이디가 검증이 될 건데 해당 붑ㄴ에 대한 재 검증이 필요한가?
         checkTeamPlaceExist(teamPlaceId);
 
-        final LocalDate startDate = LocalDate.of(targetYear, targetMonth, FIRST_DAY_OF_MONTH);
-        final LocalDate endDate = startDate.plusMonths(NEXT_MONTH_OFFSET).withDayOfMonth(FIRST_DAY_OF_MONTH);
-        final LocalDateTime startDateTime = LocalDateTime.of(startDate, START_TIME_OF_DAY);
-        final LocalDateTime endDateTime = LocalDateTime.of(endDate, START_TIME_OF_DAY);
-
+        final Map<Integer, LocalDateTime> period = calculatePeriod(targetYear, targetMonth);
         final List<Schedule> schedules = scheduleRepository
-                .findAllByTeamPlaceIdAndPeriod(teamPlaceId, startDateTime, endDateTime);
+                .findAllByTeamPlaceIdAndPeriod(teamPlaceId, period.get(START_DATE_TIME_KEY), period.get(END_DATE_TIME_KEY));
 
         return SchedulesResponse.of(schedules);
+    }
+
+    public Map<Integer, LocalDateTime> calculatePeriod(final int year, final int month) {
+        final LocalDate startDate = LocalDate.of(year, month, FIRST_DAY_OF_MONTH);
+        final LocalDate endDate = startDate.plusMonths(NEXT_MONTH_OFFSET).withDayOfMonth(FIRST_DAY_OF_MONTH);
+
+        return Map.ofEntries(
+                Map.entry(START_DATE_TIME_KEY, LocalDateTime.of(startDate, START_TIME_OF_DAY)),
+                Map.entry(END_DATE_TIME_KEY, LocalDateTime.of(endDate, START_TIME_OF_DAY))
+        );
     }
 
     @Transactional(readOnly = true)
@@ -108,12 +117,9 @@ public class ScheduleService {
                 .map(TeamPlace::getId)
                 .toList();
 
-        final LocalDate startDate = LocalDate.of(targetYear, targetMonth, FIRST_DAY_OF_MONTH);
-        final LocalDate endDate = startDate.plusMonths(NEXT_MONTH_OFFSET).withDayOfMonth(FIRST_DAY_OF_MONTH);
-        final LocalDateTime startDateTime = LocalDateTime.of(startDate, START_TIME_OF_DAY);
-        final LocalDateTime endDateTime = LocalDateTime.of(endDate, START_TIME_OF_DAY);
-
-        final List<Schedule> schedules = scheduleRepository.findAllByTeamPlaceIdAndPeriod(participatedTeamPlaceIds, startDateTime, endDateTime);
+        final Map<Integer, LocalDateTime> period = calculatePeriod(targetYear, targetMonth);
+        final List<Schedule> schedules = scheduleRepository
+                .findAllByTeamPlaceIdAndPeriod(participatedTeamPlaceIds, period.get(START_DATE_TIME_KEY), period.get(END_DATE_TIME_KEY));
 
         return SchedulesWithTeamPlaceIdResponse.of(schedules);
     }
