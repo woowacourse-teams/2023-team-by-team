@@ -73,7 +73,7 @@ public class ScheduleService {
         return !schedule.isScheduleOfTeam(teamPlaceId);
     }
 
-    public SchedulesResponse findScheduleIn(final Long teamPlaceId, final int targetYear, final int targetMonth) {
+    public SchedulesResponse findScheduleInPeriod(final Long teamPlaceId, final int targetYear, final int targetMonth) {
         // TODO: 상의해보기 - 팀플레이스 소속 멤버 검증시 팀플레이스 아이디가 검증이 될 건데 해당 붑ㄴ에 대한 재 검증이 필요한가?
         checkTeamPlaceExist(teamPlaceId);
 
@@ -83,7 +83,7 @@ public class ScheduleService {
         final LocalDateTime endDateTime = LocalDateTime.of(endDate, START_TIME_OF_DAY);
 
         final List<Schedule> schedules = scheduleRepository
-                .findAllByTeamPlaceIn(teamPlaceId, startDateTime, endDateTime);
+                .findAllByTeamPlaceIdAndPeriod(teamPlaceId, startDateTime, endDateTime);
 
         return SchedulesResponse.of(schedules);
     }

@@ -35,7 +35,7 @@ public class TeamPlaceScheduleController {
             @RequestParam final Integer year,
             @RequestParam final Integer month
     ) {
-        final SchedulesResponse responseBody = scheduleService.findScheduleIn(teamPlaceId, year, month);
+        final SchedulesResponse responseBody = scheduleService.findScheduleInPeriod(teamPlaceId, year, month);
 
         return ResponseEntity.ok(responseBody);
     }

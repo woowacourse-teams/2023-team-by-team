@@ -22,7 +22,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
             "AND s.span.endDateTime >= :firstDateTime " +
             "ORDER BY s.span.startDateTime ASC"
     )
-    List<Schedule> findAllByTeamPlaceIn(
+    List<Schedule> findAllByTeamPlaceIdAndPeriod(
             Long teamPlaceId,
             LocalDateTime firstDateTime,
             LocalDateTime lastDateTime

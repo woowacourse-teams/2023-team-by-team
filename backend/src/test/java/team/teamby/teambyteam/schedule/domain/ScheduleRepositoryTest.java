@@ -32,7 +32,7 @@ public class ScheduleRepositoryTest {
         final LocalDateTime endDateTime = LocalDateTime.of(2023, 8, 1, 0, 0);
 
         // when
-        final List<Schedule> schedules = scheduleRepository.findAllByTeamPlaceIn(teamPlaceId, firstDateTime, endDateTime);
+        final List<Schedule> schedules = scheduleRepository.findAllByTeamPlaceIdAndPeriod(teamPlaceId, firstDateTime, endDateTime);
 
         //then
         SoftAssertions.assertSoftly(softly -> {

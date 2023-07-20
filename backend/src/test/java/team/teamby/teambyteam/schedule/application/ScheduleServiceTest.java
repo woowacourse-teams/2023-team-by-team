@@ -96,7 +96,7 @@ public class ScheduleServiceTest {
             final int month = 7;
 
             // when
-            final SchedulesResponse schedulesResponse = scheduleService.findScheduleIn(teamPlaceId, year, month);
+            final SchedulesResponse schedulesResponse = scheduleService.findScheduleInPeriod(teamPlaceId, year, month);
             final List<ScheduleResponse> scheduleResponses = schedulesResponse.schedules();
 
             //then
@@ -118,7 +118,7 @@ public class ScheduleServiceTest {
             final int month = 7;
 
             // when
-            final SchedulesResponse schedulesResponse = scheduleService.findScheduleIn(teamPlaceId, year, month);
+            final SchedulesResponse schedulesResponse = scheduleService.findScheduleInPeriod(teamPlaceId, year, month);
             final List<ScheduleResponse> scheduleResponses = schedulesResponse.schedules();
 
             //then
@@ -134,7 +134,7 @@ public class ScheduleServiceTest {
             final int month = 5;
 
             // when
-            final SchedulesResponse schedulesResponse = scheduleService.findScheduleIn(teamPlaceId, year, month);
+            final SchedulesResponse schedulesResponse = scheduleService.findScheduleInPeriod(teamPlaceId, year, month);
             final List<ScheduleResponse> scheduleResponses = schedulesResponse.schedules();
 
             //then
