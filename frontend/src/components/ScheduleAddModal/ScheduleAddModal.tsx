@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import * as S from './ScheduleAddModal.styled';
 import { useModal } from '~/hooks/useModal';
 import { CloseIcon } from '~/assets/svg';
@@ -6,9 +5,7 @@ import Modal from '~/components/common/Modal/Modal';
 import Text from '../common/Text/Text';
 import Button from '../common/Button/Button';
 import Input from '../common/Input/Input';
-import { useSendSchedule } from '~/hooks/queries/useSendSchedule';
-import type { ChangeEventHandler, FormEventHandler } from 'react';
-import type { ScheduleWithoutId } from '~/types/schedule';
+import useScheduleAddModal from '~/hooks/schedule/useScheduleAddModal';
 
 interface ScheduleAddModalProps {
   teamPlaceName: string;
@@ -17,46 +14,10 @@ interface ScheduleAddModalProps {
 const ScheduleAddModal = (props: ScheduleAddModalProps) => {
   const { teamPlaceName } = props;
   const { closeModal } = useModal();
-  const [schedule, setSchedule] = useState({
-    title: '',
-    startDateTime: '2023-07-20T00:00',
-    endDateTime: '2023-07-20T00:00',
-  });
-  const { mutateSendSchedule } = useSendSchedule(1);
-
-  const handleScheduleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const { name, value } = e.target;
-
-    setSchedule((prev) => {
-      return {
-        ...prev,
-        [name]: value,
-      };
-    });
-  };
-
-  const handleScheduleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-
-    const { startDateTime, endDateTime } = schedule;
-
-    mutateSendSchedule(
-      {
-        ...schedule,
-        startDateTime: startDateTime.replace(
-          'T',
-          ' ',
-        ) as ScheduleWithoutId['startDateTime'],
-        endDateTime: endDateTime.replace(
-          'T',
-          ' ',
-        ) as ScheduleWithoutId['startDateTime'],
-      },
-      {
-        onSuccess: () => closeModal(),
-      },
-    );
-  };
+  const {
+    schedule,
+    handlers: { handleScheduleChange, handleScheduleSubmit },
+  } = useScheduleAddModal();
 
   return (
     <Modal>
