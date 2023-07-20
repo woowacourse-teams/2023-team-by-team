@@ -1,4 +1,4 @@
-import type { ScheduleBar } from '~/components/ScheduleBar/ScheduleBar';
+import type { ScheduleBarProps } from '~/components/ScheduleBar/ScheduleBar';
 import { CALENDAR, ONE_DAY } from '~/constants/calendar';
 import type { Position, Schedule } from '~/types/schedule';
 import { parseDate } from '~/utils/parseDate';
@@ -85,7 +85,7 @@ const generateRawScheduleBars = (
   schedules: Schedule[],
   calendarObject: CalendarObject,
 ) => {
-  const rawScheduleBars: ScheduleBar[] = [];
+  const rawScheduleBars: ScheduleBarProps[] = [];
 
   schedules.forEach((schedule) => {
     const { startDateTime, endDateTime, id: scheduleId, title } = schedule;
@@ -134,7 +134,7 @@ const calcDuration = (start: Date, end: Date) => {
   return Math.abs(diff / ONE_DAY) + 1;
 };
 
-const sortScheduleBars = (scheduleBars: ScheduleBar[]) => {
+const sortScheduleBars = (scheduleBars: ScheduleBarProps[]) => {
   return [...scheduleBars].sort((a, b) => {
     if (a.row !== b.row) {
       return a.row - b.row;
@@ -148,8 +148,8 @@ const sortScheduleBars = (scheduleBars: ScheduleBar[]) => {
   });
 };
 
-const sliceScheduleBars = (rawScheduleBars: ScheduleBar[]) => {
-  const slicedScheduleBars: ScheduleBar[] = [];
+const sliceScheduleBars = (rawScheduleBars: ScheduleBarProps[]) => {
+  const slicedScheduleBars: ScheduleBarProps[] = [];
 
   rawScheduleBars.forEach((scheduleBar) => {
     const { row, column, duration } = scheduleBar;
@@ -179,8 +179,8 @@ const sliceScheduleBars = (rawScheduleBars: ScheduleBar[]) => {
   return slicedScheduleBars;
 };
 
-const giveLevelToScheduleBars = (scheduleBars: ScheduleBar[]) => {
-  const leveledScheduleBars: ScheduleBar[] = [];
+const giveLevelToScheduleBars = (scheduleBars: ScheduleBarProps[]) => {
+  const leveledScheduleBars: ScheduleBarProps[] = [];
   const lastIndexes: number[] = [];
   const sortedScheduleBars = sortScheduleBars(scheduleBars);
 

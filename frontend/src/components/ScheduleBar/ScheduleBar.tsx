@@ -1,6 +1,6 @@
 import * as S from './ScheduleBar.styled';
 
-export interface ScheduleBar {
+export interface ScheduleBarProps {
   id: string;
   scheduleId: number;
   title: string;
@@ -9,10 +9,7 @@ export interface ScheduleBar {
   duration: number;
   level: number;
   color?: string;
-}
-
-interface ScheduleBarProps extends ScheduleBar {
-  onScheduleModalOpen: () => void;
+  onScheduleModalOpen?: () => void;
 }
 
 const ScheduleBar = (props: ScheduleBarProps) => {
