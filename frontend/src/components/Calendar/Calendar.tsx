@@ -22,17 +22,17 @@ const Calendar = () => {
   } = useCalendar();
   const { schedules } = useFetchSchedules(1, year, month);
   const { isModalOpen, openModal } = useModal();
+  const {
+    modalScheduleId,
+    modalPosition,
+    handlers: { onScheduleModalOpen },
+  } = useScheduleModal();
 
   if (schedules === undefined) {
     return null;
   }
 
   const scheduleBars = generateScheduleBars(year, month, schedules);
-  const {
-    modalScheduleId,
-    modalPosition,
-    handlers: { onScheduleModalOpen },
-  } = useScheduleModal();
 
   return (
     <>
