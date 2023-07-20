@@ -4,11 +4,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import team.teamby.teambyteam.member.configuration.AuthPrincipal;
-import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.schedule.application.ScheduleService;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleResponse;
+import team.teamby.teambyteam.schedule.application.dto.SchedulesResponse;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleUpdateRequest;
 
 import java.net.URI;
@@ -22,11 +21,21 @@ public class TeamPlaceScheduleController {
 
     @GetMapping("/{teamPlaceId}/calendar/schedules/{scheduleId}")
     public ResponseEntity<ScheduleResponse> findSpecificSchedule(
-            @AuthPrincipal final MemberEmailDto memberEmailDto,
-            @PathVariable("teamPlaceId") final Long teamPlaceId,
-            @PathVariable("scheduleId") final Long scheduleId
+            @PathVariable final Long teamPlaceId,
+            @PathVariable final Long scheduleId
     ) {
         final ScheduleResponse responseBody = scheduleService.findSchedule(scheduleId, teamPlaceId);
+
+        return ResponseEntity.ok(responseBody);
+    }
+
+    @GetMapping("/{teamPlaceId}/calendar/schedules")
+    public ResponseEntity<SchedulesResponse> findSchedulesInPeriod(
+            @PathVariable final Long teamPlaceId,
+            @RequestParam final Integer year,
+            @RequestParam final Integer month
+    ) {
+        final SchedulesResponse responseBody = scheduleService.findScheduleInPeriod(teamPlaceId, year, month);
 
         return ResponseEntity.ok(responseBody);
     }
