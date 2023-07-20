@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleResponse;
+import team.teamby.teambyteam.schedule.application.dto.SchedulesResponse;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleUpdateRequest;
 import team.teamby.teambyteam.schedule.domain.Schedule;
 import team.teamby.teambyteam.schedule.domain.ScheduleRepository;
@@ -14,10 +15,19 @@ import team.teamby.teambyteam.schedule.exception.ScheduleException;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceRepository;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class ScheduleService {
+
+    private static final int FIRST_DAY_OF_MONTH = 1;
+    private static final LocalTime START_TIME_OF_DAY = LocalTime.of(0, 0, 0);
+    public static final int NEXT_MONTH_OFFSET = 1;
 
     private final ScheduleRepository scheduleRepository;
     private final TeamPlaceRepository teamPlaceRepository;
@@ -43,6 +53,7 @@ public class ScheduleService {
         return !teamPlaceRepository.existsById(teamPlaceId);
     }
 
+    @Transactional(readOnly = true)
     public ScheduleResponse findSchedule(final Long scheduleId, final Long teamPlaceId) {
         checkTeamPlaceExist(teamPlaceId);
 
@@ -61,6 +72,22 @@ public class ScheduleService {
 
     private boolean isNotScheduleOfTeam(final Long teamPlaceId, final Schedule schedule) {
         return !schedule.isScheduleOfTeam(teamPlaceId);
+    }
+
+    @Transactional(readOnly = true)
+    public SchedulesResponse findScheduleInPeriod(final Long teamPlaceId, final int targetYear, final int targetMonth) {
+        // TODO: 상의해보기 - 팀플레이스 소속 멤버 검증시 팀플레이스 아이디가 검증이 될 건데 해당 붑ㄴ에 대한 재 검증이 필요한가?
+        checkTeamPlaceExist(teamPlaceId);
+
+        final LocalDate startDate = LocalDate.of(targetYear, targetMonth, FIRST_DAY_OF_MONTH);
+        final LocalDate endDate = startDate.plusMonths(NEXT_MONTH_OFFSET).withDayOfMonth(FIRST_DAY_OF_MONTH);
+        final LocalDateTime startDateTime = LocalDateTime.of(startDate, START_TIME_OF_DAY);
+        final LocalDateTime endDateTime = LocalDateTime.of(endDate, START_TIME_OF_DAY);
+
+        final List<Schedule> schedules = scheduleRepository
+                .findAllByTeamPlaceIdAndPeriod(teamPlaceId, startDateTime, endDateTime);
+
+        return SchedulesResponse.of(schedules);
     }
 
     public void update(final ScheduleUpdateRequest scheduleUpdateRequest, final Long teamPlaceId, final Long scheduleId) {

@@ -43,3 +43,13 @@ INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALU
 INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALUES ('2번 팀플 N일 일정', 2, '2023-07-14 10:00:00' ,'2023-07-17 12:00:00');
 INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALUES ('2번 팀플 과거 일정', 2, TIMESTAMPADD(DAY, -2, CURRENT_TIMESTAMP()), TIMESTAMPADD(DAY, -1, CURRENT_TIMESTAMP()));
 INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALUES ('2번 팀플 미래 일정', 2, TIMESTAMPADD(DAY, 3, CURRENT_TIMESTAMP()), TIMESTAMPADD(DAY, 5, CURRENT_TIMESTAMP()));
+
+INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALUES ('3번 팀플 A', 3, '2023-06-14 10:00:00' ,'2023-06-17 12:00:00');
+INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALUES ('3번 팀플 B', 3, '2023-06-25 10:00:00' ,'2023-07-02 12:00:00');
+INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALUES ('3번 팀플 C', 3, '2023-07-01 10:00:00' ,'2023-07-01 12:00:00');
+INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALUES ('3번 팀플 D', 3, '2023-07-29 10:00:00' ,'2023-08-30 12:00:00');
+INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALUES ('3번 팀플 E', 3, '2023-07-28 10:00:00' ,'2023-08-30 12:00:00');
+INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALUES ('3번 팀플 F', 3, '2023-08-14 10:00:00' ,'2023-08-17 12:00:00');
+INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALUES ('3번 팀플 5월 첫날', 3, '2023-05-01 00:00:00' ,'2023-05-01 12:00:00');
+INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALUES ('3번 팀플 5월 마지막날', 3, '2023-05-31 00:00:00' ,'2023-05-31 23:59:59');
+INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALUES ('3번 팀플 6월 첫날', 3, '2023-06-01 00:00:00' ,'2023-06-01 12:00:00');
