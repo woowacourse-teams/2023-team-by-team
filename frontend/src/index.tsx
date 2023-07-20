@@ -8,6 +8,7 @@ import GlobalStyle from '~/styles/GlobalStyle';
 import { theme } from './styles/theme';
 import { worker } from '~/mocks/browser';
 import { ModalProvider } from '~/components/common/Modal/ModalContext';
+import TeamCalendarPage from '~/components/pages/TeamCalendarPage/TeamCalendarPage';
 
 if (process.env.NODE_ENV === 'development') {
   worker.start();
@@ -17,6 +18,12 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
+    children: [
+      {
+        path: '',
+        element: <TeamCalendarPage />,
+      },
+    ],
   },
 ]);
 

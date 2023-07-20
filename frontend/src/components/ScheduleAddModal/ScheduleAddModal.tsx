@@ -5,6 +5,7 @@ import Modal from '~/components/common/Modal/Modal';
 import Text from '../common/Text/Text';
 import Button from '../common/Button/Button';
 import Input from '../common/Input/Input';
+import useScheduleAddModal from '~/hooks/schedule/useScheduleAddModal';
 
 interface ScheduleAddModalProps {
   teamPlaceName: string;
@@ -13,6 +14,10 @@ interface ScheduleAddModalProps {
 const ScheduleAddModal = (props: ScheduleAddModalProps) => {
   const { teamPlaceName } = props;
   const { closeModal } = useModal();
+  const {
+    schedule,
+    handlers: { handleScheduleChange, handleScheduleSubmit },
+  } = useScheduleAddModal();
 
   return (
     <Modal>
@@ -35,44 +40,56 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
             height="100%"
             placeholder="일정 제목"
             css={S.title}
+            name="title"
+            value={schedule['title']}
+            required
+            onChange={handleScheduleChange}
           />
         </S.TitleWrapper>
 
-        <S.TimeSelectContainer>
-          <Text size="xxl" weight="bold">
-            일정 시작
-          </Text>
-          <Input
-            width="220px"
-            height="40px"
-            type="datetime-local"
-            css={S.dateTimeLocalInput}
-          />
-          <Text size="xxl" weight="bold">
-            종일
-          </Text>
-          <S.CheckBox type="checkbox" />
-        </S.TimeSelectContainer>
-        <S.TimeSelectContainer>
-          <Text size="xxl" weight="bold">
-            일정 마감
-          </Text>
-          <Input
-            width="220px"
-            height="40px"
-            type="datetime-local"
-            css={S.dateTimeLocalInput}
-          />
-        </S.TimeSelectContainer>
-        <S.TeamNameContainer title={teamPlaceName}>
-          <S.Circle />
-          <Text css={S.teamPlaceName}>{teamPlaceName}</Text>
-        </S.TeamNameContainer>
-        <S.ControlButtonWrapper>
-          <Button variant="primary" onClick={closeModal}>
-            등록
-          </Button>
-        </S.ControlButtonWrapper>
+        <form onSubmit={handleScheduleSubmit}>
+          <S.TimeSelectContainer>
+            <Text size="xxl" weight="bold">
+              일정 시작
+            </Text>
+            <Input
+              width="220px"
+              height="40px"
+              type="datetime-local"
+              css={S.dateTimeLocalInput}
+              name="startDateTime"
+              value={schedule['startDateTime']}
+              onChange={handleScheduleChange}
+              required
+            />
+            <Text size="xxl" weight="bold">
+              종일
+            </Text>
+            <S.CheckBox type="checkbox" />
+          </S.TimeSelectContainer>
+          <S.TimeSelectContainer>
+            <Text size="xxl" weight="bold">
+              일정 마감
+            </Text>
+            <Input
+              width="220px"
+              height="40px"
+              type="datetime-local"
+              css={S.dateTimeLocalInput}
+              name="endDateTime"
+              value={schedule['endDateTime']}
+              onChange={handleScheduleChange}
+              required
+            />
+          </S.TimeSelectContainer>
+          <S.TeamNameContainer title={teamPlaceName}>
+            <S.Circle />
+            <Text css={S.teamPlaceName}>{teamPlaceName}</Text>
+          </S.TeamNameContainer>
+          <S.ControlButtonWrapper>
+            <Button variant="primary">등록</Button>
+          </S.ControlButtonWrapper>
+        </form>
       </S.Container>
     </Modal>
   );

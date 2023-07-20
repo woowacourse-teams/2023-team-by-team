@@ -114,7 +114,6 @@ const generateRawScheduleBars = (
         column,
         duration,
         level: 0,
-        color: '#000',
       });
     }
   });

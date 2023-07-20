@@ -1,5 +1,5 @@
 import { http } from '~/apis/http';
-import type { Schedule } from '~/types/schedule';
+import type { Schedule, ScheduleWithoutId } from '~/types/schedule';
 
 export const fetchSchedules = (
   teamPlaceId: number,
@@ -21,4 +21,8 @@ export const deleteSchedule = (teamPlaceId: number, scheduleId: number) => {
   return http.delete(
     `/api/team-place/${teamPlaceId}/calendar/schedules/${scheduleId}`,
   );
+};
+
+export const sendSchedule = (teamPlaceId: number, body: ScheduleWithoutId) => {
+  return http.post(`/api/team-place/${teamPlaceId}/calendar/schedules`, body);
 };

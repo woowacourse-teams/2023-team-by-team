@@ -13,14 +13,17 @@ export interface ScheduleBarProps {
 }
 
 const ScheduleBar = (props: ScheduleBarProps) => {
-  const { color = 'red', title, onScheduleModalOpen, ...rest } = props;
+  const { color = 'r#516FFF', title, onScheduleModalOpen, ...rest } = props;
+
   return (
     <S.Wrapper
       color={color}
       title={title}
       onClick={onScheduleModalOpen}
       {...rest}
-    />
+    >
+      <S.Inner color={color} {...rest} />
+    </S.Wrapper>
   );
 };
 

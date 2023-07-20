@@ -1,23 +1,13 @@
-import { styled } from 'styled-components';
-import Calendar from '~/components/Calendar/Calendar';
-import { useFetchSchedules } from '~/hooks/queries/useFetchSchedules';
+import { Outlet } from 'react-router-dom';
+import Header from '~/components/common/Header/Header';
 
 const App = () => {
-  const { schedules } = useFetchSchedules(1, 2023, 7);
-
-  if (schedules === undefined) {
-    return null;
-  }
-
   return (
-    <Container>
-      <Calendar schedules={schedules} />
-    </Container>
+    <>
+      <Header />
+      <Outlet />
+    </>
   );
 };
-
-const Container = styled.div`
-  color: ${({ theme }) => theme.color.BLACK};
-`;
 
 export default App;
