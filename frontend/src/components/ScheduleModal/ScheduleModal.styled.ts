@@ -45,14 +45,6 @@ export const TeamColor = styled.div`
   background-color: ${({ theme }) => theme.color.PRIMARY};
 `;
 
-export const TeamName = css`
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-
-  max-width: 200px;
-`;
-
 export const MenuWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -64,7 +56,15 @@ export const PeriodWrapper = styled.div`
   gap: 2px;
 `;
 
-export const Button = css`
+export const teamName = css`
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  max-width: 200px;
+`;
+
+export const closeButton = css`
   display: flex;
   justify-content: center;
   align-items: center;
