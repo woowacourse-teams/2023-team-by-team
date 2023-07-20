@@ -5,13 +5,10 @@ import { ArrowLeftIcon, ArrowRightIcon } from '~/assets/svg';
 import useCalendar from '~/hooks/useCalendar';
 import * as S from './Calendar.styled';
 import ScheduleBar from '~/components/ScheduleBar/ScheduleBar';
-import type { Schedule, SchedulePosition } from '~/types/schedule';
+import type { Schedule } from '~/types/schedule';
 import { generateScheduleBars } from '~/utils/generateScheduleBars';
-import { useModal } from '~/hooks/useModal';
-import { useEffect, useState } from 'react';
 import ScheduleModal from '~/components/ScheduleModal/ScheduleModal';
-import { useFetchScheduleById } from '~/hooks/queries/useFetchScheduleById';
-import { useDeleteSchedule } from '~/hooks/queries/useDeleteSchedule';
+import { useScheduleModal } from '~/hooks/useScheduleModal';
 
 const DAYS_OF_WEEK = ['일', '월', '화', '수', '목', '금', '토'] as const;
 
@@ -27,40 +24,12 @@ const Calendar = (props: CalendarProps) => {
     calendar,
     handlers: { handlePrevButtonClick, handleNextButtonClick },
   } = useCalendar();
-
-  const { openModal, closeModal } = useModal();
   const scheduleBars = generateScheduleBars(year, month, schedules);
-
-  const [modalScheduleId, setModalScheduleId] = useState<number>(
-    scheduleBars[0].scheduleId,
-  );
-
-  const { scheduleById } = useFetchScheduleById(1, modalScheduleId);
-  const { mutateScheduleDelete } = useDeleteSchedule(1, modalScheduleId);
-  const [modalPosition, setModalPosition] = useState<SchedulePosition>({
-    row: 0,
-    column: 0,
-    level: 0,
-  });
-
-  useEffect(() => {
-    setModalScheduleId(scheduleBars[0].scheduleId);
-  }, []);
-  const handleScheduleModalOpen = (
-    scheduleId: number,
-    row: number,
-    column: number,
-    level: number,
-  ) => {
-    setModalScheduleId(scheduleId);
-    setModalPosition({ row, column, level });
-    openModal();
-  };
-
-  const onScheduleDelete = () => {
-    closeModal();
-    mutateScheduleDelete();
-  };
+  const {
+    modalPosition,
+    scheduleById,
+    handlers: { handleScheduleModalOpen, onScheduleDelete },
+  } = useScheduleModal(scheduleBars);
 
   return (
     <>
