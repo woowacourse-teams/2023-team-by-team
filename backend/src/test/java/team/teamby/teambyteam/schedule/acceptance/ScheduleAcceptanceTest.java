@@ -88,6 +88,20 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
             // then
             assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
         }
+
+        @Test
+        @DisplayName("멤버가 소유하지 않은 팀플레이스의 특정 일정을 조회하면 실패한다.")
+        void failMemberHasNotTeamPlaceSchedule() {
+            // given
+            final Long teamPlaceId = 2L;
+            final Long wrongScheduleId = 7L;
+
+            // when
+            final ExtractableResponse<Response> response = requestSpecificSchedule(wrongScheduleId, teamPlaceId);
+
+            // then
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+        }
     }
 
     @Nested

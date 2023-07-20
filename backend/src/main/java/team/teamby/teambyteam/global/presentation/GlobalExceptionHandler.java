@@ -43,7 +43,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
     }
 
-    @ExceptionHandler(value = {ScheduleException.TeamAccessForbidden.class})
+    @ExceptionHandler(value = {ScheduleException.TeamAccessForbidden.class, TeamPlaceException.TeamPlaceAccessForbidden.class})
     public ResponseEntity<String> handleCustomForbiddenException(final RuntimeException exception) {
         final String message = exception.getMessage();
         log.warn(message, exception);
