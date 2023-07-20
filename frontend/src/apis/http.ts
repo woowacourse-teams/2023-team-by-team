@@ -6,30 +6,54 @@ const options = {
 };
 
 export const http = {
-  get: <T>(url: RequestInfo | URL): Promise<T> => {
-    return fetch(url, options).then((response) => response.json());
+  get: async <T>(url: RequestInfo | URL): Promise<T> => {
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error('네트워크 통신 중 에러가 발생했습니다.');
+    }
+
+    return response.json();
   },
 
-  post: (url: RequestInfo | URL, body: unknown) => {
-    return fetch(url, {
+  post: async (url: RequestInfo | URL, body: unknown) => {
+    const response = await fetch(url, {
       method: 'POST',
       body: JSON.stringify(body),
       ...options,
-    }).then((response) => response.json());
+    });
+
+    if (!response.ok) {
+      throw new Error('네트워크 통신 중 에러가 발생했습니다.');
+    }
+
+    return response;
   },
 
-  patch: (url: RequestInfo | URL, body: unknown) => {
-    return fetch(url, {
+  patch: async (url: RequestInfo | URL, body: unknown) => {
+    const response = await fetch(url, {
       method: 'PATCH',
       body: JSON.stringify(body),
       ...options,
-    }).then((response) => response.json());
+    });
+
+    if (!response.ok) {
+      throw new Error('네트워크 통신 중 에러가 발생했습니다.');
+    }
+
+    return response;
   },
 
-  delete: (url: RequestInfo | URL) => {
-    return fetch(url, {
+  delete: async (url: RequestInfo | URL) => {
+    const response = await fetch(url, {
       method: 'DELETE',
       ...options,
-    }).then((response) => response.json());
+    });
+
+    if (!response.ok) {
+      throw new Error('네트워크 통신 중 에러가 발생했습니다.');
+    }
+
+    return response;
   },
 };
