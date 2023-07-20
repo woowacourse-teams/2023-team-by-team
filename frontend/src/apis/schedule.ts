@@ -6,7 +6,9 @@ export const fetchSchedules = (
   year: number,
   month: number,
 ) => {
-  return http.get<Schedule[]>(
+  return http.get<{
+    schedules: Schedule[];
+  }>(
     `/api/team-place/${teamPlaceId}/calendar/schedules?year=${year}&month=${month}`,
   );
 };

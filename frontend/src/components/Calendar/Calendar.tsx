@@ -23,7 +23,7 @@ const Calendar = () => {
     calendar,
     handlers: { handlePrevButtonClick, handleNextButtonClick },
   } = useCalendar();
-  const { schedules } = useFetchSchedules(1, year, month);
+  const schedules = useFetchSchedules(1, year, month + 1);
   const { isModalOpen, openModal } = useModal();
   const {
     modalScheduleId,
