@@ -11,7 +11,7 @@ const useScheduleAddModal = () => {
     endDateTime: '2023-07-20T00:00',
   });
   const { closeModal } = useModal();
-  const { mutateSendSchedule } = useSendSchedule(1);
+  const { mutateSendSchedule } = useSendSchedule();
 
   const handleScheduleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const { name, value } = e.target;
@@ -27,19 +27,22 @@ const useScheduleAddModal = () => {
   const handleScheduleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
-    const { startDateTime, endDateTime } = schedule;
+    const { title, startDateTime, endDateTime } = schedule;
 
     mutateSendSchedule(
       {
-        ...schedule,
-        startDateTime: startDateTime.replace(
-          'T',
-          ' ',
-        ) as ScheduleWithoutId['startDateTime'],
-        endDateTime: endDateTime.replace(
-          'T',
-          ' ',
-        ) as ScheduleWithoutId['startDateTime'],
+        teamPlaceId: 1,
+        body: {
+          title,
+          startDateTime: startDateTime.replace(
+            'T',
+            ' ',
+          ) as ScheduleWithoutId['startDateTime'],
+          endDateTime: endDateTime.replace(
+            'T',
+            ' ',
+          ) as ScheduleWithoutId['startDateTime'],
+        },
       },
       {
         onSuccess: () => closeModal(),
