@@ -4,7 +4,7 @@ import ScheduleModal from '~/components/ScheduleModal/ScheduleModal';
 import { arrayOf } from '~/utils/arrayOf';
 
 const meta = {
-  title: 'ScheduleModal',
+  title: 'Schedule/ScheduleModal',
   component: ScheduleModal,
 } satisfies Meta<typeof ScheduleModal>;
 
