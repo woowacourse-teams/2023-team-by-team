@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ScheduleMoreCell } from '~/components/ScheduleMoreCell/ScheduleMoreCell';
+import ScheduleMoreCell from '~/components/ScheduleMoreCell/ScheduleMoreCell';
 
 const meta = {
   title: 'Schedule/ScheduleMoreCell',

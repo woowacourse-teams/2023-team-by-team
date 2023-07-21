@@ -15,8 +15,8 @@ import { generateScheduleBars } from '~/utils/generateScheduleBars';
 import { DAYS_OF_WEEK, MODAL_OPEN_TYPE } from '~/constants/calendar';
 import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from '~/assets/svg';
 import type { ModalOpenType } from '~/types/schedule';
-import { ScheduleMoreCell } from '~/components/ScheduleMoreCell/ScheduleMoreCell';
 import { arrayOf } from '~/utils/arrayOf';
+import ScheduleMoreCell from '~/components/ScheduleMoreCell/ScheduleMoreCell';
 
 const Calendar = () => {
   const {

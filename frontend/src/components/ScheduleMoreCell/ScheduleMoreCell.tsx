@@ -6,7 +6,7 @@ interface ScheduleMoreCellProps extends Pick<Position, 'column'> {
   onClick?: () => void;
 }
 
-export const ScheduleMoreCell = (props: ScheduleMoreCellProps) => {
+const ScheduleMoreCell = (props: ScheduleMoreCellProps) => {
   const { column } = props;
   return (
     <S.Wrapper column={column}>
@@ -16,3 +16,5 @@ export const ScheduleMoreCell = (props: ScheduleMoreCellProps) => {
     </S.Wrapper>
   );
 };
+
+export default ScheduleMoreCell;
