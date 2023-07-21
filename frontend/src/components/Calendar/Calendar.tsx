@@ -15,6 +15,8 @@ import { generateScheduleBars } from '~/utils/generateScheduleBars';
 import { DAYS_OF_WEEK, MODAL_OPEN_TYPE } from '~/constants/calendar';
 import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from '~/assets/svg';
 import type { ModalOpenType } from '~/types/schedule';
+import { ScheduleMoreCell } from '~/components/ScheduleMoreCell/ScheduleMoreCell';
+import { arrayOf } from '~/utils/arrayOf';
 
 const Calendar = () => {
   const {
@@ -86,8 +88,15 @@ const Calendar = () => {
                 <Fragment key={rowIndex}>
                   <S.ScheduleBarContainer>
                     {scheduleBars.map((scheduleBar) => {
-                      const { id, scheduleId, row, column, level } =
+                      const { id, scheduleId, row, column, level, duration } =
                         scheduleBar;
+                      if (row === rowIndex && level > 2)
+                        return arrayOf(duration).map((_, index) => (
+                          <ScheduleMoreCell
+                            key={id + index}
+                            column={column + index}
+                          />
+                        ));
 
                       if (row === rowIndex)
                         return (
