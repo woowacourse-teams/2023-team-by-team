@@ -415,7 +415,7 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
 
     @Nested
     @DisplayName("개인 일정 조회를 한다")
-    class MyCalendar {
+    class MyCalendarFindSchedule {
 
         @Test
         @DisplayName("기간으로 조회 성공한다.")
