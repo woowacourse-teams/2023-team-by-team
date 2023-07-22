@@ -14,8 +14,11 @@ import { useModal } from '~/hooks/useModal';
 import { generateScheduleBars } from '~/utils/generateScheduleBars';
 import { DAYS_OF_WEEK, MODAL_OPEN_TYPE } from '~/constants/calendar';
 import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from '~/assets/svg';
+<<<<<<< HEAD
 import { arrayOf } from '~/utils/arrayOf';
 import ScheduleMoreCell from '~/components/ScheduleMoreCell/ScheduleMoreCell';
+=======
+>>>>>>> b43eeac (feat: 하루 일정 모달과 일정 조회 모달 연결)
 import type { Position, ModalOpenType } from '~/types/schedule';
 import type { MouseEventHandler } from 'react';
 import DayScheduleModal from '~/components/DayScheduleModal/DayScheduleModal';

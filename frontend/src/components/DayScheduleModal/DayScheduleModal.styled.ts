@@ -11,6 +11,7 @@ export const Backdrop = styled.div`
 
 export const Container = styled.div`
   display: flex;
+  position: absolute;
   flex-direction: column;
   z-index: ${({ theme }) => theme.zIndex.MODAL};
 
