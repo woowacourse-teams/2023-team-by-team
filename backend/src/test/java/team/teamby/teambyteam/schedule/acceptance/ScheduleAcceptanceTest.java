@@ -65,6 +65,7 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
             });
         }
 
+        @Test
         @DisplayName("존재하지 않는 일정 조회시도시 실패한다.")
         void failGetScheduleWhichIsNotExist() {
             // given
