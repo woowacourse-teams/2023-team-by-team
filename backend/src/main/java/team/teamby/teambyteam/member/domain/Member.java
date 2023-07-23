@@ -3,6 +3,7 @@ package team.teamby.teambyteam.member.domain;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.domain.vo.Name;
@@ -10,6 +11,7 @@ import team.teamby.teambyteam.member.domain.vo.ProfileImageUrl;
 
 import java.util.List;
 
+@Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor

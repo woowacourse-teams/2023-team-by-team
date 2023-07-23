@@ -18,4 +18,10 @@ public class TeamPlaceException extends RuntimeException {
             super(message);
         }
     }
+
+    public static class TeamPlaceAccessForbidden extends TeamPlaceException {
+        public TeamPlaceAccessForbidden(final String message) {
+            super(message);
+        }
+    }
 }
