@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.domain.vo.Name;
 import team.teamby.teambyteam.member.domain.vo.ProfileImageUrl;
+import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
 import java.util.List;
 
@@ -44,5 +45,11 @@ public class Member {
         this.email = email;
         this.profileImageUrl = profileImageUrl;
         this.memberTeamPlaces = memberTeamPlaces;
+    }
+
+    public List<TeamPlace> getTeamPlaces() {
+        return getMemberTeamPlaces().stream()
+                .map(MemberTeamPlace::getTeamPlace)
+                .toList();
     }
 }

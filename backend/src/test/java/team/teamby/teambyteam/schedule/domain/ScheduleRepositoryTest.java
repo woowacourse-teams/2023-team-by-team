@@ -44,6 +44,28 @@ public class ScheduleRepositoryTest {
         });
     }
 
+    @Test
+    @DisplayName("특정 기간 내 팀플레이스 일정을 조회한다.")
+    void findMultipleTeamPlaceScheduleInRange() {
+        // given
+        final List<Long> teamPlaceId = List.of(2L, 3L);
+        final LocalDateTime firstDateTime = LocalDateTime.of(2023, 6, 1, 0, 0);
+        final LocalDateTime endDateTime = LocalDateTime.of(2023, 7, 1, 0, 0);
+
+        // when
+        final List<Schedule> schedules = scheduleRepository.findAllByTeamPlaceIdAndPeriod(teamPlaceId, firstDateTime, endDateTime);
+
+        //then
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(schedules).hasSize(5);
+            softly.assertThat(schedules.get(0).getTitle().getValue()).isEqualTo("3번 팀플 6월 첫날");
+            softly.assertThat(schedules.get(1).getTitle().getValue()).isEqualTo("2번 팀플 6월 첫날");
+            softly.assertThat(schedules.get(2).getTitle().getValue()).isEqualTo("3번 팀플 A");
+            softly.assertThat(schedules.get(3).getTitle().getValue()).isEqualTo("2번 팀플 6월 어느날");
+            softly.assertThat(schedules.get(4).getTitle().getValue()).isEqualTo("3번 팀플 B");
+        });
+    }
+
     @ParameterizedTest
     @CsvSource(value = {"-1:false", "1:true"}, delimiter = ':')
     @DisplayName("일정이 존재하면 true, 존재하지 않으면 false를 반환한다.")

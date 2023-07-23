@@ -3,21 +3,18 @@ package team.teamby.teambyteam.schedule.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
-import team.teamby.teambyteam.schedule.application.dto.ScheduleResponse;
-import team.teamby.teambyteam.schedule.application.dto.SchedulesResponse;
-import team.teamby.teambyteam.schedule.application.dto.ScheduleUpdateRequest;
-import team.teamby.teambyteam.schedule.domain.Schedule;
-import team.teamby.teambyteam.schedule.domain.ScheduleRepository;
-import team.teamby.teambyteam.schedule.domain.Span;
-import team.teamby.teambyteam.schedule.domain.Title;
+import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
+import team.teamby.teambyteam.member.domain.Member;
+import team.teamby.teambyteam.member.domain.MemberRepository;
+import team.teamby.teambyteam.member.domain.vo.Email;
+import team.teamby.teambyteam.member.exception.MemberException;
+import team.teamby.teambyteam.schedule.application.dto.*;
+import team.teamby.teambyteam.schedule.domain.*;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
+import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceRepository;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -25,10 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ScheduleService {
 
-    private static final int FIRST_DAY_OF_MONTH = 1;
-    private static final LocalTime START_TIME_OF_DAY = LocalTime.of(0, 0, 0);
-    public static final int NEXT_MONTH_OFFSET = 1;
-
+    private final MemberRepository memberRepository;
     private final ScheduleRepository scheduleRepository;
     private final TeamPlaceRepository teamPlaceRepository;
 
@@ -79,15 +73,32 @@ public class ScheduleService {
         // TODO: 상의해보기 - 팀플레이스 소속 멤버 검증시 팀플레이스 아이디가 검증이 될 건데 해당 붑ㄴ에 대한 재 검증이 필요한가?
         checkTeamPlaceExist(teamPlaceId);
 
-        final LocalDate startDate = LocalDate.of(targetYear, targetMonth, FIRST_DAY_OF_MONTH);
-        final LocalDate endDate = startDate.plusMonths(NEXT_MONTH_OFFSET).withDayOfMonth(FIRST_DAY_OF_MONTH);
-        final LocalDateTime startDateTime = LocalDateTime.of(startDate, START_TIME_OF_DAY);
-        final LocalDateTime endDateTime = LocalDateTime.of(endDate, START_TIME_OF_DAY);
-
+        final CalendarPeriod period = CalendarPeriod.of(targetYear, targetMonth);
         final List<Schedule> schedules = scheduleRepository
-                .findAllByTeamPlaceIdAndPeriod(teamPlaceId, startDateTime, endDateTime);
+                .findAllByTeamPlaceIdAndPeriod(teamPlaceId, period.startDateTime(), period.endDatetime());
 
         return SchedulesResponse.of(schedules);
+    }
+
+    @Transactional(readOnly = true)
+    public SchedulesWithTeamPlaceIdResponse findScheduleInPeriod(
+            final MemberEmailDto memberEmailDto,
+            final int targetYear,
+            final int targetMonth
+    ) {
+        final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
+                .orElseThrow(() -> new MemberException.MemberNotFoundException("사용자를 찾을 수 없습니다."));
+
+        final List<Long> participatedTeamPlaceIds = member.getTeamPlaces()
+                .stream()
+                .map(TeamPlace::getId)
+                .toList();
+
+        final CalendarPeriod period = CalendarPeriod.of(targetYear, targetMonth);
+        final List<Schedule> schedules = scheduleRepository
+                .findAllByTeamPlaceIdAndPeriod(participatedTeamPlaceIds, period.startDateTime(), period.endDatetime());
+
+        return SchedulesWithTeamPlaceIdResponse.of(schedules);
     }
 
     public void update(final ScheduleUpdateRequest scheduleUpdateRequest, final Long teamPlaceId, final Long scheduleId) {

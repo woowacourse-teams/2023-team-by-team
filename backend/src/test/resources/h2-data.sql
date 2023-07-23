@@ -43,6 +43,8 @@ INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALU
 INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALUES ('2번 팀플 N일 일정', 2, '2023-07-14 10:00:00' ,'2023-07-17 12:00:00');
 INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALUES ('2번 팀플 과거 일정', 2, TIMESTAMPADD(DAY, -2, CURRENT_TIMESTAMP()), TIMESTAMPADD(DAY, -1, CURRENT_TIMESTAMP()));
 INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALUES ('2번 팀플 미래 일정', 2, TIMESTAMPADD(DAY, 3, CURRENT_TIMESTAMP()), TIMESTAMPADD(DAY, 5, CURRENT_TIMESTAMP()));
+INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALUES ('2번 팀플 6월 첫날', 2, '2023-06-01 10:00:00' ,'2023-06-01 20:00:00');
+INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALUES ('2번 팀플 6월 어느날', 2, '2023-06-24 10:00:00' ,'2023-06-26 12:00:00');
 
 INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALUES ('3번 팀플 A', 3, '2023-06-14 10:00:00' ,'2023-06-17 12:00:00');
 INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALUES ('3번 팀플 B', 3, '2023-06-25 10:00:00' ,'2023-07-02 12:00:00');
@@ -53,3 +55,6 @@ INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALU
 INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALUES ('3번 팀플 5월 첫날', 3, '2023-05-01 00:00:00' ,'2023-05-01 12:00:00');
 INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALUES ('3번 팀플 5월 마지막날', 3, '2023-05-31 00:00:00' ,'2023-05-31 23:59:59');
 INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALUES ('3번 팀플 6월 첫날', 3, '2023-06-01 00:00:00' ,'2023-06-01 12:00:00');
+
+INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALUES ('1번 팀플 6월 일정', 1, '2023-06-12 10:00:00' ,'2023-06-12 18:00:00');
+INSERT INTO schedule (title, team_place_id, start_date_time, end_date_time) VALUES ('1번 팀플 장기 일정', 1, '2023-06-22 10:00:00' ,'2023-08-12 18:00:00');
