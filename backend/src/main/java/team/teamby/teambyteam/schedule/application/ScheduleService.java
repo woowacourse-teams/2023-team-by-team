@@ -73,7 +73,7 @@ public class ScheduleService {
         // TODO: 상의해보기 - 팀플레이스 소속 멤버 검증시 팀플레이스 아이디가 검증이 될 건데 해당 붑ㄴ에 대한 재 검증이 필요한가?
         checkTeamPlaceExist(teamPlaceId);
 
-        final CalendarPeriod period = CalendarPeriod.of(targetYear, targetMonth);
+        final CalendarPeriod period = CalendarPeriod.createPeriod(targetYear, targetMonth);
         final List<Schedule> schedules = scheduleRepository
                 .findAllByTeamPlaceIdAndPeriod(teamPlaceId, period.startDateTime(), period.endDatetime());
 
@@ -94,7 +94,7 @@ public class ScheduleService {
                 .map(TeamPlace::getId)
                 .toList();
 
-        final CalendarPeriod period = CalendarPeriod.of(targetYear, targetMonth);
+        final CalendarPeriod period = CalendarPeriod.createPeriod(targetYear, targetMonth);
         final List<Schedule> schedules = scheduleRepository
                 .findAllByTeamPlaceIdAndPeriod(participatedTeamPlaceIds, period.startDateTime(), period.endDatetime());
 

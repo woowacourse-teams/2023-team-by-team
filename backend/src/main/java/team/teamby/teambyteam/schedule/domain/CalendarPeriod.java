@@ -12,7 +12,7 @@ public record CalendarPeriod(
     private static final LocalTime START_TIME_OF_DAY = LocalTime.of(0, 0, 0);
     public static final int NEXT_MONTH_OFFSET = 1;
 
-    public static CalendarPeriod of(final int year, final int month) {
+    public static CalendarPeriod createPeriod(final int year, final int month) {
         final LocalDate startDate = LocalDate.of(year, month, FIRST_DAY_OF_MONTH);
         final LocalDate endDate = startDate.plusMonths(NEXT_MONTH_OFFSET).withDayOfMonth(FIRST_DAY_OF_MONTH);
 
