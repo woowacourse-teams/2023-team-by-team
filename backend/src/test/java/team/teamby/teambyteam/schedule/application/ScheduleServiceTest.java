@@ -1,6 +1,5 @@
 package team.teamby.teambyteam.schedule.application;
 
-import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -18,11 +17,13 @@ import team.teamby.teambyteam.schedule.domain.ScheduleRepository;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
+import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static team.teamby.teambyteam.fixtures.ScheduleFixtures.Schedule1_N_Hour;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
@@ -51,7 +52,7 @@ public class ScheduleServiceTest {
             final ScheduleResponse scheduleResponse = scheduleService.findSchedule(scheduleId, teamPlaceId);
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(scheduleResponse.title()).isEqualTo("1번 팀플 N시간 일정");
                 softly.assertThat(scheduleResponse.startDateTime()).isEqualTo("2023-07-12 10:00");
                 softly.assertThat(scheduleResponse.endDateTime()).isEqualTo("2023-07-12 18:00");
@@ -98,7 +99,7 @@ public class ScheduleServiceTest {
             final List<ScheduleResponse> scheduleResponses = schedulesResponse.schedules();
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(scheduleResponses).hasSize(4);
                 softly.assertThat(scheduleResponses.get(0).title()).isEqualTo("3번 팀플 B");
                 softly.assertThat(scheduleResponses.get(1).title()).isEqualTo("3번 팀플 C");
@@ -136,11 +137,120 @@ public class ScheduleServiceTest {
             final List<ScheduleResponse> scheduleResponses = schedulesResponse.schedules();
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(scheduleResponses).hasSize(2);
                 softly.assertThat(scheduleResponses.get(0).title()).isEqualTo("3번 팀플 5월 첫날");
                 softly.assertThat(scheduleResponses.get(1).title()).isEqualTo("3번 팀플 5월 마지막날");
             });
+        }
+    }
+    
+    @Nested
+    @DisplayName("팀 캘린더 하루 일정 조회 시")
+    class FindTeamCalendarDailySchedule {
+        
+        @Test
+        @DisplayName("팀 캘린더 하루 일정 조회를 성공한다.")
+        void success() {
+            // given
+            final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
+            final int year = Schedule1_N_Hour.START_DATE_TIME.getYear();
+            final int month = Schedule1_N_Hour.START_DATE_TIME.getMonthValue();
+            final int day = Schedule1_N_Hour.START_DATE_TIME.getDayOfMonth();
+
+            // when
+            final SchedulesResponse dailySchedulesResponse =
+                    scheduleService.findDailyTeamCalendarSchedule(teamPlaceId, year, month, day);
+            final List<ScheduleResponse> dailyTeamCalendarSchedulesResponses = dailySchedulesResponse.schedules();
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(dailyTeamCalendarSchedulesResponses).hasSize(2);
+                softly.assertThat(dailyTeamCalendarSchedulesResponses.stream()
+                        .map(ScheduleResponse::title))
+                        .containsExactly("1번 팀플 종일 일정", "1번 팀플 N시간 일정");
+            });
+        }
+
+        @Nested
+        @DisplayName("날짜 형식이 잘못되면 예외가 발생한다.")
+        class failWrongDateTimeType {
+
+            @Test
+            @DisplayName("잘못된 연도 형식일 경우")
+            void wrongYear() {
+                // given
+                final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
+                final int wrongYear = Integer.MAX_VALUE;
+                final int month = 7;
+                final int day = 12;
+
+                // when & then
+                assertThatThrownBy(() -> scheduleService.findDailyTeamCalendarSchedule(teamPlaceId, wrongYear, month, day))
+                        .isInstanceOf(DateTimeException.class)
+                        .hasMessageContaining("Invalid value for Year (valid values -999999999 - 999999999)");
+            }
+
+            @Test
+            @DisplayName("잘못된 월 형식일 경우")
+            void wrongMonth() {
+                // given
+                final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
+                final int year = 2023;
+                final int wrongMonth = -1;
+                final int day = 12;
+
+                // when & then
+                assertThatThrownBy(() -> scheduleService.findDailyTeamCalendarSchedule(teamPlaceId, year, wrongMonth, day))
+                        .isInstanceOf(DateTimeException.class)
+                        .hasMessageContaining("Invalid value for MonthOfYear (valid values 1 - 12)");
+            }
+
+            @Test
+            @DisplayName("잘못된 일 형식일 경우")
+            void wrongDay() {
+                // given
+                final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
+                final int year = 2023;
+                final int month = 7;
+                final int wrongDay = -1;
+
+                // when & then
+                assertThatThrownBy(() -> scheduleService.findDailyTeamCalendarSchedule(teamPlaceId, year, month, wrongDay))
+                        .isInstanceOf(DateTimeException.class)
+                        .hasMessageContaining("Invalid value for DayOfMonth (valid values 1 - 28/31)");
+            }
+        }
+
+        @Test
+        @DisplayName("조회한 팀 캘린더 하루 일정이 없으면 빈 리스트가 반환된다.")
+        void successNotExistSchedule() {
+            // given
+            final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
+            final int year = 1000;
+            final int month = 1;
+            final int day = 1;
+
+            // when
+            SchedulesResponse schedules = scheduleService.findDailyTeamCalendarSchedule(teamPlaceId, year, month, day);
+
+            // then
+            assertThat(schedules.schedules()).hasSize(0);
+        }
+
+        @Test
+        @DisplayName("조회할 팀 플레이스가 존재하지 않으면 예외가 발생한다.")
+        void failTeamPlaceNotExist() {
+            // given
+            final Long notExistTeamPlaceId = -1L;
+            final int year = Schedule1_N_Hour.START_DATE_TIME.getYear();
+            final int month = Schedule1_N_Hour.START_DATE_TIME.getMonthValue();
+            final int day = Schedule1_N_Hour.START_DATE_TIME.getDayOfMonth();
+
+            // when & then
+            assertThatThrownBy(() -> scheduleService.findDailyTeamCalendarSchedule(notExistTeamPlaceId, year, month, day))
+                    .isInstanceOf(TeamPlaceException.NotFoundException.class)
+                    .hasMessage("ID에 해당하는 팀 플레이스를 찾을 수 없습니다.");
         }
     }
 
@@ -162,7 +272,7 @@ public class ScheduleServiceTest {
             final List<ScheduleWithTeamPlaceIdResponse> scheduleResponses = scheduleInPeriod.schedules();
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(scheduleResponses).hasSize(5);
                 softly.assertThat(scheduleResponses.get(0).title()).isEqualTo("3번 팀플 6월 첫날");
                 softly.assertThat(scheduleResponses.get(1).title()).isEqualTo("2번 팀플 6월 첫날");

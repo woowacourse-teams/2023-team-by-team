@@ -81,6 +81,22 @@ public class ScheduleService {
     }
 
     @Transactional(readOnly = true)
+    public SchedulesResponse findDailyTeamCalendarSchedule(
+            final Long teamPlaceId,
+            final int targetYear,
+            final int targetMonth,
+            final int targetDay
+    ) {
+        checkTeamPlaceExist(teamPlaceId);
+
+        final CalendarPeriod dailyPeriod = CalendarPeriod.createDailyPeriod(targetYear, targetMonth, targetDay);
+        final List<Schedule> dailySchedules = scheduleRepository
+                .findAllByTeamPlaceIdAndDailyPeriod(teamPlaceId, dailyPeriod.startDateTime(), dailyPeriod.endDatetime());
+
+        return SchedulesResponse.of(dailySchedules);
+    }
+
+    @Transactional(readOnly = true)
     public SchedulesWithTeamPlaceIdResponse findScheduleInPeriod(
             final MemberEmailDto memberEmailDto,
             final int targetYear,
