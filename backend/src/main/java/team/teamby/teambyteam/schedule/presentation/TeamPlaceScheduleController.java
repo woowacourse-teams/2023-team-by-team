@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import team.teamby.teambyteam.schedule.application.ScheduleService;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleResponse;
-import team.teamby.teambyteam.schedule.application.dto.SchedulesResponse;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleUpdateRequest;
+import team.teamby.teambyteam.schedule.application.dto.SchedulesResponse;
 
 import java.net.URI;
 
@@ -38,6 +38,18 @@ public class TeamPlaceScheduleController {
         final SchedulesResponse responseBody = scheduleService.findScheduleInPeriod(teamPlaceId, year, month);
 
         return ResponseEntity.ok(responseBody);
+    }
+
+    @GetMapping("/{teamPlaceId}/calendar/daily-schedules")
+    public ResponseEntity<SchedulesResponse> findDailySchedule(
+            @PathVariable final Long teamPlaceId,
+            @RequestParam final Integer year,
+            @RequestParam final Integer month,
+            @RequestParam final Integer day
+    ) {
+        final SchedulesResponse response = scheduleService.findDailyTeamCalendarSchedule(teamPlaceId, year, month, day);
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/{teamPlaceId}/calendar/schedules")

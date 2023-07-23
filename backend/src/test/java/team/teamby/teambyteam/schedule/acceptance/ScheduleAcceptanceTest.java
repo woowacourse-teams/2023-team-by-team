@@ -173,6 +173,131 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
     }
 
     @Nested
+    @DisplayName("팀 캘린더 하루 일정 조회 시")
+    class FindTeamCalendarDailySchedule {
+
+        @Test
+        @DisplayName("팀 캘린더 하루 일정 조회에 성공한다.")
+        void success() {
+            // given
+            final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
+            final int year = Schedule1_N_Hour.START_DATE_TIME.getYear();
+            final int month = Schedule1_N_Hour.START_DATE_TIME.getMonthValue();
+            final int day = Schedule1_N_Hour.START_DATE_TIME.getDayOfMonth();
+
+            // when
+            final ExtractableResponse<Response> response = requestTeamCalendarDailySchedule(teamPlaceId, year, month, day);
+            final List<ScheduleResponse> schedules = response.jsonPath().getList("schedules", ScheduleResponse.class);
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+                softly.assertThat(schedules.stream()
+                                .map(ScheduleResponse::title))
+                        .containsExactly("1번 팀플 종일 일정", "1번 팀플 N시간 일정");
+            });
+        }
+
+        @Test
+        @DisplayName("조회한 팀 캘린더 하루 일정이 없으면 빈 리스트가 반환된다.")
+        void successNotExistSchedule() {
+            // given
+            final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
+            final int year = 1000;
+            final int month = 1;
+            final int day = 1;
+
+            // when
+            final ExtractableResponse<Response> response = requestTeamCalendarDailySchedule(teamPlaceId, year, month, day);
+            final List<ScheduleResponse> schedules = response.jsonPath().getList("schedules", ScheduleResponse.class);
+
+            // then
+            assertThat(schedules).hasSize(0);
+        }
+
+        @Test
+        @DisplayName("조회할 팀 플레이스가 존재하지 않으면 조회에 실패한다.")
+        void failTeamPlaceNotExist() {
+            // given
+            final Long notExistTeamPlaceId = -1L;
+            final int year = Schedule1_N_Hour.START_DATE_TIME.getYear();
+            final int month = Schedule1_N_Hour.START_DATE_TIME.getMonthValue();
+            final int day = Schedule1_N_Hour.START_DATE_TIME.getDayOfMonth();
+
+            // when
+            final ExtractableResponse<Response> response = requestTeamCalendarDailySchedule(notExistTeamPlaceId, year, month, day);
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
+                softly.assertThat(response.body().asString()).isEqualTo("ID에 해당하는 팀 플레이스를 찾을 수 없습니다.");
+            });
+        }
+
+        @Nested
+        @DisplayName("기간 요쳥에 잘못된 형식으로 요쳥되면 조회에 실패한다.")
+        class failWithWrongDateTimeType {
+
+            @Test
+            @DisplayName("잘못된 연도 형식일 경우")
+            void wrongYear() {
+                // given
+                final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
+                final int wrongYear = Integer.MAX_VALUE;
+                final int month = 7;
+                final int day = 12;
+
+                // when
+                ExtractableResponse<Response> wrongDayResponse = requestTeamCalendarDailySchedule(teamPlaceId, wrongYear, month, day);
+
+                // then
+                assertSoftly(softly -> {
+                    softly.assertThat(wrongDayResponse.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+                    softly.assertThat(wrongDayResponse.body().asString()).isEqualTo("DateTime 형식이 잘못되었습니다. 서버 관리자에게 문의해주세요.");
+                });
+            }
+
+            @Test
+            @DisplayName("잘못된 월 형식일 경우")
+            void wrongMonth() {
+                // given
+                final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
+                final int year = 2023;
+                final int wrongMonth = -1;
+                final int day = 12;
+
+                // when
+                ExtractableResponse<Response> wrongDayResponse = requestTeamCalendarDailySchedule(teamPlaceId, year, wrongMonth, day);
+
+                // then
+                assertSoftly(softly -> {
+                    softly.assertThat(wrongDayResponse.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+                    softly.assertThat(wrongDayResponse.body().asString()).isEqualTo("DateTime 형식이 잘못되었습니다. 서버 관리자에게 문의해주세요.");
+                });
+            }
+
+            @Test
+            @DisplayName("잘못된 일 형식일 경우")
+            void wrongDay() {
+                // given
+                final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
+                final int year = 2023;
+                final int month = 7;
+                final int wrongDay = -1;
+
+                // when
+                ExtractableResponse<Response> wrongDayResponse = requestTeamCalendarDailySchedule(teamPlaceId, year, month, wrongDay);
+
+                // then
+                assertSoftly(softly -> {
+                    softly.assertThat(wrongDayResponse.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+                    softly.assertThat(wrongDayResponse.body().asString()).isEqualTo("DateTime 형식이 잘못되었습니다. 서버 관리자에게 문의해주세요.");
+                });
+            }
+        }
+    }
+
+    @Nested
     @DisplayName("일정 등록 시")
     class RegisterSchedule {
 
@@ -484,6 +609,19 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
                 .queryParam("month", month)
                 .when().log().all()
                 .get("/api/team-place/{teamPlaceId}/calendar/schedules")
+                .then().log().all()
+                .extract();
+    }
+
+    private ExtractableResponse<Response> requestTeamCalendarDailySchedule(final Long teamPlaceId, final int year, final int month, final int day) {
+        return RestAssured.given().log().all()
+                .header(new Header("Authorization", JWT_PREFIX + JWT_TOKEN))
+                .pathParam("teamPlaceId", teamPlaceId)
+                .queryParam("year", year)
+                .queryParam("month", month)
+                .queryParam("day", day)
+                .when().log().all()
+                .get("/api/team-place/{teamPlaceId}/calendar/daily-schedules")
                 .then().log().all()
                 .extract();
     }
