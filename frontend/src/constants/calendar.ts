@@ -6,3 +6,9 @@ export const CALENDAR = {
   ROW_SIZE: 6,
   COLUMN_SIZE: 7,
 } as const;
+
+export const MODAL_OPEN_TYPE = {
+  ADD: 'add',
+  VIEW: 'view',
+  EDIT: 'edit',
+} as const;

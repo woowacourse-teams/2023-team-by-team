@@ -39,13 +39,13 @@ export const schedules: Schedule[] = [
   },
   {
     id: 6,
-    title: 'test5',
+    title: 'test6',
     startDateTime: '2023-07-31 05:00',
     endDateTime: '2023-08-02 05:00',
   },
   {
     id: 7,
-    title: 'test5',
+    title: 'test7',
     startDateTime: '2023-06-30 05:00',
     endDateTime: '2023-07-02 05:00',
   },

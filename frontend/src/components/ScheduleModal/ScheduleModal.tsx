@@ -2,22 +2,44 @@ import type { CSSProperties } from 'react';
 import Modal from '~/components/common/Modal/Modal';
 import Text from '~/components/common/Text/Text';
 import { useModal } from '~/hooks/useModal';
-import * as S from './Schedule.styled';
+import * as S from './ScheduleModal.styled';
 import { CloseIcon, DeleteIcon, EditIcon } from '~/assets/svg';
 import Button from '~/components/common/Button/Button';
+import { formatDateTime } from '~/utils/formatDateTime';
+import type { SchedulePosition } from '~/types/schedule';
+import { useFetchScheduleById } from '~/hooks/queries/useFetchScheduleById';
+import { useDeleteSchedule } from '~/hooks/queries/useDeleteSchedule';
 
 interface ScheduleModalProps {
-  id: number;
-  targetRef: React.RefObject<HTMLDivElement>;
+  scheduleId: number;
+  position: SchedulePosition;
+  onOpenScheduleEditModal: () => void;
 }
-const ScheduleModal = (props: ScheduleModalProps) => {
-  const { targetRef } = props;
-  const { closeModal } = useModal();
 
+const ScheduleModal = (props: ScheduleModalProps) => {
+  const { scheduleId, position, onOpenScheduleEditModal } = props;
+  const { closeModal } = useModal();
+  const { scheduleById } = useFetchScheduleById(1, scheduleId);
+  const { mutateScheduleDelete } = useDeleteSchedule(scheduleId);
+
+  if (scheduleById === undefined) return;
+
+  const { title, startDateTime, endDateTime } = scheduleById;
+  const { row, column, level } = position;
   const modalLocation: CSSProperties = {
     position: 'absolute',
-    top: `${targetRef.current?.getBoundingClientRect().bottom}px`,
-    left: `${targetRef.current?.getBoundingClientRect().left}px`,
+    top: row < 3 ? `${(row + 1) * 120 + level * 18 + 60}px` : 'none',
+    bottom: row >= 3 ? `${(6 - row) * 120 - level * 18}px` : 'none',
+    left: column < 3 ? `${(column * 100) / 7}%` : 'none',
+    right: column >= 3 ? `${((6 - column) * 100) / 7}%` : 'none',
+  };
+
+  const handleScheduleDelete = () => {
+    if (confirm('일정을 삭제하시겠어요?')) {
+      mutateScheduleDelete(1, {
+        onSuccess: () => closeModal(),
+      });
+    }
   };
 
   return (
@@ -27,22 +49,15 @@ const ScheduleModal = (props: ScheduleModalProps) => {
         <S.Header>
           <S.TeamWrapper>
             <S.TeamColor />
-            <p
-              title={
-                '현대사회와 범죄 5조현대사회와 범죄 5조현대사회와 범죄5조현대사회와 범죄 5조현대사회와 범죄 5조'
-              }
-            >
-              <Text css={S.TeamName}>
-                현대사회와 범죄 5조현대사회와 범죄 5조현대사회와
-                범죄5조현대사회와 범죄 5조현대사회와 범죄 5조
-              </Text>
-            </p>
+            <div title={'현대사회와 범죄 5조'}>
+              <Text css={S.teamName}>현대사회와 범죄 5조</Text>
+            </div>
           </S.TeamWrapper>
           <S.MenuWrapper>
-            <Button size="sm" variant="plain">
+            <Button size="sm" variant="plain" onClick={onOpenScheduleEditModal}>
               <EditIcon />
             </Button>
-            <Button size="sm" variant="plain">
+            <Button size="sm" variant="plain" onClick={handleScheduleDelete}>
               <DeleteIcon />
             </Button>
             <Button size="sm" variant="plain" onClick={closeModal}>
@@ -50,16 +65,16 @@ const ScheduleModal = (props: ScheduleModalProps) => {
             </Button>
           </S.MenuWrapper>
         </S.Header>
-        <Text as="h4">1차 데모데이</Text>
+        <Text as="h4">{title}</Text>
         <S.PeriodWrapper>
-          <Text size="lg">07월 13일 15:00</Text>
+          <Text size="lg">{formatDateTime(startDateTime)}</Text>
           <Text size="lg">~</Text>
-          <Text size="lg">07월 13일 19:00</Text>
+          <Text size="lg">{formatDateTime(endDateTime)}</Text>
         </S.PeriodWrapper>
         <Button
           type="button"
           variant="primary"
-          css={S.Button}
+          css={S.closeButton}
           onClick={closeModal}
         >
           확인

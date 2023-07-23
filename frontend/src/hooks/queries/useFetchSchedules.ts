@@ -1,14 +1,18 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchSchedules } from '~/apis/schedule';
 
-export const useSchedules = (
+export const useFetchSchedules = (
   teamPlaceId: number,
   year: number,
   month: number,
 ) => {
-  const { data: schedules } = useQuery(['schedules'], () =>
+  const { data } = useQuery(['schedules', year, month], () =>
     fetchSchedules(teamPlaceId, year, month),
   );
 
-  return { schedules };
+  if (data === undefined) return [];
+
+  const { schedules } = data;
+
+  return schedules;
 };

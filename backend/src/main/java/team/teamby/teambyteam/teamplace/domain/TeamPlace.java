@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
+import team.teamby.teambyteam.member.domain.vo.Email;
 
 import java.util.List;
 
@@ -28,5 +29,12 @@ public class TeamPlace {
     public TeamPlace(final Name name, final List<MemberTeamPlace> memberTeamPlaces) {
         this.name = name;
         this.memberTeamPlaces = memberTeamPlaces;
+    }
+
+    public boolean hasMemberByMemberEmail(final Email email) {
+        return memberTeamPlaces.stream()
+                .anyMatch(memberTeamPlace -> memberTeamPlace.getMember()
+                        .getEmail()
+                        .equals(email));
     }
 }

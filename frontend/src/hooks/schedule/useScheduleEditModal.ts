@@ -1,27 +1,25 @@
-import { useState } from 'react';
-import { useSendSchedule } from '~/hooks/queries/useSendSchedule';
-import { useModal } from '~/hooks/useModal';
 import type { ChangeEventHandler, FormEventHandler } from 'react';
-import type { ScheduleWithoutId } from '~/types/schedule';
+import { useState } from 'react';
+import { useModifySchedule } from '~/hooks/queries/useModifySchedule';
+import { useModal } from '~/hooks/useModal';
+import type { Schedule, ScheduleWithoutId } from '~/types/schedule';
 
-const useScheduleAddModal = () => {
+const useScheduleEditModal = (
+  scheduleId: Schedule['id'],
+  initialSchedule?: Schedule,
+) => {
   const [schedule, setSchedule] = useState({
-    title: '',
-    startDateTime: '2023-07-20T00:00',
-    endDateTime: '2023-07-20T00:00',
+    title: initialSchedule?.title,
+    startDateTime: initialSchedule?.startDateTime,
+    endDateTime: initialSchedule?.endDateTime,
   });
   const { closeModal } = useModal();
-  const { mutateSendSchedule } = useSendSchedule();
+  const { mutateModifySchedule } = useModifySchedule(scheduleId);
 
   const handleScheduleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const { name, value } = e.target;
 
-    setSchedule((prev) => {
-      return {
-        ...prev,
-        [name]: value,
-      };
-    });
+    setSchedule((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleScheduleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
@@ -29,7 +27,14 @@ const useScheduleAddModal = () => {
 
     const { title, startDateTime, endDateTime } = schedule;
 
-    mutateSendSchedule(
+    if (
+      typeof title !== 'string' ||
+      typeof startDateTime !== 'string' ||
+      typeof endDateTime !== 'string'
+    )
+      return;
+
+    mutateModifySchedule(
       {
         teamPlaceId: 1,
         body: {
@@ -41,7 +46,7 @@ const useScheduleAddModal = () => {
           endDateTime: endDateTime.replace(
             'T',
             ' ',
-          ) as ScheduleWithoutId['startDateTime'],
+          ) as ScheduleWithoutId['endDateTime'],
         },
       },
       {
@@ -60,4 +65,4 @@ const useScheduleAddModal = () => {
   };
 };
 
-export default useScheduleAddModal;
+export default useScheduleEditModal;

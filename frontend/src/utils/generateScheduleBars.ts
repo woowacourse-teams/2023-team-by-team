@@ -1,12 +1,8 @@
 import type { ScheduleBarProps } from '~/components/ScheduleBar/ScheduleBar';
 import { CALENDAR, ONE_DAY } from '~/constants/calendar';
-import type { Schedule } from '~/types/schedule';
+import type { Position, Schedule } from '~/types/schedule';
 import { parseDate } from '~/utils/parseDate';
-
-interface Position {
-  row: number;
-  column: number;
-}
+import { generateUuid } from '~/utils/generateUuid';
 
 type CalendarObject = Record<string, Position>;
 
@@ -108,7 +104,7 @@ const generateRawScheduleBars = (
 
     if (startDate <= endDate) {
       const duration = calcDuration(startDate, endDate);
-      const id = crypto.randomUUID();
+      const id = generateUuid();
       const { row, column } = calendarObject[formatDate(startDate)];
 
       rawScheduleBars.push({
@@ -119,7 +115,6 @@ const generateRawScheduleBars = (
         column,
         duration,
         level: 0,
-        color: '#000',
       });
     }
   });

@@ -18,6 +18,7 @@ export const Container = styled.div`
     0 15px 25px #1b1d1f33,
     0 5px 10px #1b1d1f1f;
 `;
+
 export const Backdrop = styled.div`
   position: fixed;
   top: 0;
@@ -45,14 +46,6 @@ export const TeamColor = styled.div`
   background-color: ${({ theme }) => theme.color.PRIMARY};
 `;
 
-export const TeamName = css`
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-
-  max-width: 200px;
-`;
-
 export const MenuWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -64,7 +57,15 @@ export const PeriodWrapper = styled.div`
   gap: 2px;
 `;
 
-export const Button = css`
+export const teamName = css`
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  max-width: 200px;
+`;
+
+export const closeButton = css`
   display: flex;
   justify-content: center;
   align-items: center;

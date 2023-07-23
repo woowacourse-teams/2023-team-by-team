@@ -1,3 +1,5 @@
+import type { MODAL_OPEN_TYPE } from '~/constants/calendar';
+
 export interface Schedule {
   id: number;
   title: string;
@@ -7,4 +9,16 @@ export interface Schedule {
 
 export type ScheduleWithoutId = Omit<Schedule, 'id'>;
 
-type YYYYMMDDHHMM = `${string}-${string}-${string} ${string}:${string}`;
+export type YYYYMMDDHHMM = `${string}-${string}-${string} ${string}:${string}`;
+
+export interface Position {
+  row: number;
+  column: number;
+}
+
+export interface SchedulePosition extends Position {
+  level: number;
+}
+
+export type ModalOpenType =
+  (typeof MODAL_OPEN_TYPE)[keyof typeof MODAL_OPEN_TYPE];

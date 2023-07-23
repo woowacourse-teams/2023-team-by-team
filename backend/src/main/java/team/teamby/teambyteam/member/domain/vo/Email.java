@@ -3,6 +3,7 @@ package team.teamby.teambyteam.member.domain.vo;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.teamby.teambyteam.member.exception.MemberException;
@@ -10,6 +11,7 @@ import team.teamby.teambyteam.member.exception.MemberException;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
+@EqualsAndHashCode
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
