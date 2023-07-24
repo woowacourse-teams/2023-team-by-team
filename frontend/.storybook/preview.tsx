@@ -5,6 +5,7 @@ import { handlers } from '../src/mocks/handlers/index';
 import { theme } from '../src/styles/theme';
 import GlobalStyle from '../src/styles/GlobalStyle';
 import { ModalProvider } from '../src/components/common/Modal/ModalContext';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { Preview } from '@storybook/react';
 
 initialize();
@@ -22,14 +23,18 @@ const preview: Preview = {
   },
 };
 
+const queryClient = new QueryClient();
+
 export const decorators = [
   (Story) => (
-    <ThemeProvider theme={theme}>
-      <ModalProvider>
-        <GlobalStyle />
-        <Story />
-      </ModalProvider>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={theme}>
+        <ModalProvider>
+          <GlobalStyle />
+          <Story />
+        </ModalProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
   ),
   mswDecorator,
 ];
