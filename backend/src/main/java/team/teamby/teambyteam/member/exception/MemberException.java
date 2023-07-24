@@ -21,20 +21,20 @@ public class MemberException extends RuntimeException {
     }
 
     public static class EmailRegexException extends MemberException {
-        public EmailRegexException(final String message) {
-            super(message);
+        public EmailRegexException() {
+            super("정해진 이메일의 양식이 아닙니다.");
         }
     }
 
     public static class MemberNotFoundException extends MemberException {
-        public MemberNotFoundException(final String message) {
-            super(message);
+        public MemberNotFoundException() {
+            super("조회한 멤버가 존재하지 않습니다.");
         }
     }
 
     public static class UnSupportAuthenticationException extends MemberException {
-        public UnSupportAuthenticationException(final String message) {
-            super(message);
+        public UnSupportAuthenticationException() {
+            super("지원하지 않는 인증 방식입니다.");
         }
     }
 }

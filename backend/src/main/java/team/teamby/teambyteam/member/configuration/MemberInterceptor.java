@@ -28,7 +28,7 @@ public final class MemberInterceptor implements HandlerInterceptor {
         final String token = extractToken(request);
         final String email = extractEmailFromToken(token);
         if (notExistsByEmail(email)) {
-            throw new MemberException.MemberNotFoundException("멤버 조회 실패");
+            throw new MemberException.MemberNotFoundException();
         }
         return true;
     }
@@ -42,7 +42,7 @@ public final class MemberInterceptor implements HandlerInterceptor {
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(PREFIX_BEARER)) {
             return bearerToken.substring(PREFIX_BEARER.length());
         }
-        throw new MemberException.UnSupportAuthenticationException("지원하지 않는 인증 방식입니다.");
+        throw new MemberException.UnSupportAuthenticationException();
     }
 
     public String extractEmailFromToken(String token) {

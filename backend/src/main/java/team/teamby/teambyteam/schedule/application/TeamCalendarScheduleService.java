@@ -70,7 +70,7 @@ public class TeamCalendarScheduleService {
     public SchedulesResponse findScheduleInPeriod(final Long teamPlaceId, final int targetYear, final int targetMonth) {
         checkTeamPlaceExist(teamPlaceId);
 
-        final CalendarPeriod period = CalendarPeriod.createPeriod(targetYear, targetMonth);
+        final CalendarPeriod period = CalendarPeriod.of(targetYear, targetMonth);
         final List<Schedule> schedules = scheduleRepository
                 .findAllByTeamPlaceIdAndPeriod(teamPlaceId, period.startDateTime(), period.endDatetime());
 
