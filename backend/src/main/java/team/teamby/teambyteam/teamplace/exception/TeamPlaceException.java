@@ -21,14 +21,14 @@ public class TeamPlaceException extends RuntimeException {
 
     public static class NotFoundException extends TeamPlaceException {
 
-        public NotFoundException(final String message) {
-            super(message);
+        public NotFoundException() {
+            super("조회한 팀 플레이스가 존재하지 않습니다.");
         }
     }
 
     public static class TeamPlaceAccessForbidden extends TeamPlaceException {
-        public TeamPlaceAccessForbidden(final String message) {
-            super(message);
+        public TeamPlaceAccessForbidden() {
+            super("접근할 수 없는 팀플레이스입니다.");
         }
     }
 }

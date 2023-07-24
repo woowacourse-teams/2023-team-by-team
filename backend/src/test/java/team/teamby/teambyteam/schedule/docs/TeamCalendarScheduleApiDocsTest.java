@@ -186,7 +186,7 @@ public class TeamCalendarScheduleApiDocsTest {
             // given
             final Long notExistTeamPlaceId = -1L;
             ScheduleRegisterRequest request = Schedule1_N_Hour.REQUEST;
-            willThrow(new TeamPlaceException.NotFoundException("ID에 해당하는 팀 플레이스를 찾을 수 없습니다."))
+            willThrow(new TeamPlaceException.NotFoundException())
                     .given(teamCalendarScheduleService)
                     .register(any(), eq(notExistTeamPlaceId));
 
@@ -360,7 +360,7 @@ public class TeamCalendarScheduleApiDocsTest {
             final Long id = Schedule1_N_Hour.ID;
             final Long notExistTeamPlaceId = -1L;
             ScheduleRegisterRequest request = Schedule1_N_Hour.REQUEST;
-            willThrow(new TeamPlaceException.NotFoundException("ID에 해당하는 팀 플레이스를 찾을 수 없습니다."))
+            willThrow(new TeamPlaceException.NotFoundException())
                     .given(teamCalendarScheduleService)
                     .update(any(), eq(notExistTeamPlaceId), eq(id));
 

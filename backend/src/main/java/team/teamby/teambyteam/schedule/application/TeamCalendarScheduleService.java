@@ -37,7 +37,7 @@ public class TeamCalendarScheduleService {
 
     private void checkTeamPlaceExist(final Long teamPlaceId) {
         if (notExistTeamPlace(teamPlaceId)) {
-            throw new TeamPlaceException.NotFoundException("ID에 해당하는 팀 플레이스를 찾을 수 없습니다.");
+            throw new TeamPlaceException.NotFoundException();
         }
     }
 

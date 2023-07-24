@@ -295,7 +295,7 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
             // when & then
             assertThatThrownBy(() -> teamCalendarScheduleService.register(request, notExistTeamPlaceId))
                     .isInstanceOf(TeamPlaceException.NotFoundException.class)
-                    .hasMessage("ID에 해당하는 팀 플레이스를 찾을 수 없습니다.");
+                    .hasMessage("조회한 팀 플레이스가 존재하지 않습니다.");
         }
     }
 
@@ -365,7 +365,7 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
             // when & then
             assertThatThrownBy(() -> teamCalendarScheduleService.update(request, notExistTeamPlaceId, id))
                     .isInstanceOf(TeamPlaceException.NotFoundException.class)
-                    .hasMessage("ID에 해당하는 팀 플레이스를 찾을 수 없습니다.");
+                    .hasMessage("조회한 팀 플레이스가 존재하지 않습니다.");
         }
 
         @Test
@@ -411,7 +411,7 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
             // when & then
             assertThatThrownBy(() -> teamCalendarScheduleService.delete(notExistTramPlaceId, existScheduleId))
                     .isInstanceOf(TeamPlaceException.NotFoundException.class)
-                    .hasMessage("ID에 해당하는 팀 플레이스를 찾을 수 없습니다.");
+                    .hasMessage("조회한 팀 플레이스가 존재하지 않습니다.");
         }
 
         @Test
