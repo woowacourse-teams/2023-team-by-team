@@ -30,7 +30,7 @@ public class Span {
 
     private void validateDateTimeOrder(final LocalDateTime startDateTime, final LocalDateTime endDateTime) {
         if (startDateTime.isAfter(endDateTime)) {
-            throw new ScheduleException.SpanWrongOrderException("시작 일자가 종료 일자보다 이후일 수 없습니다.");
+            throw new ScheduleException.SpanWrongOrderException();
         }
     }
 

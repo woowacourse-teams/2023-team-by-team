@@ -547,7 +547,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             // then
             assertSoftly(softly -> {
                 softly.assertThat(notExistScheduleIdDeleteResponse.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
-                softly.assertThat(notExistScheduleIdDeleteResponse.body().asString()).isEqualTo("ID에 해당하는 일정을 찾을 수 없습니다.");
+                softly.assertThat(notExistScheduleIdDeleteResponse.body().asString()).isEqualTo("조회한 일정이 존재하지 않습니다.");
             });
         }
     }
