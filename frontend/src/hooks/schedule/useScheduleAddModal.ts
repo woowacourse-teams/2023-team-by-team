@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useSendSchedule } from '~/hooks/queries/useSendSchedule';
 import { useModal } from '~/hooks/useModal';
+import { formatISOString } from '~/utils/formatISOString';
+import { isYYYYMMDDHHMM } from '~/types/typeGuard';
 import type { ChangeEventHandler, FormEventHandler } from 'react';
-import type { ScheduleWithoutId } from '~/types/schedule';
 
 const useScheduleAddModal = () => {
   const [schedule, setSchedule] = useState({
@@ -28,20 +29,23 @@ const useScheduleAddModal = () => {
     e.preventDefault();
 
     const { title, startDateTime, endDateTime } = schedule;
+    const formattedStartDateTime = formatISOString(startDateTime);
+    const formattedEndDateTime = formatISOString(endDateTime);
+
+    if (
+      !isYYYYMMDDHHMM(formattedStartDateTime) ||
+      !isYYYYMMDDHHMM(formattedEndDateTime)
+    ) {
+      return;
+    }
 
     mutateSendSchedule(
       {
         teamPlaceId: 1,
         body: {
           title,
-          startDateTime: startDateTime.replace(
-            'T',
-            ' ',
-          ) as ScheduleWithoutId['startDateTime'],
-          endDateTime: endDateTime.replace(
-            'T',
-            ' ',
-          ) as ScheduleWithoutId['startDateTime'],
+          startDateTime: formattedStartDateTime,
+          endDateTime: formattedEndDateTime,
         },
       },
       {
