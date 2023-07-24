@@ -37,7 +37,7 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
     private ObjectMapper objectMapper;
 
     private static final String JWT_PREFIX = "Bearer ";
-    private static final String JWT_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiZW1haWwiOiJhYmNkQGdtYWlsLmNvbSIsImlhdCI6MTUxNjIzOTAyMn0.2Amns5eXoGSqLw5KW-i22lH3S85-wfNd3j6Zs2z2Fg4";
+    private static final String JWT_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiZW1haWwiOiJhYmNkQGdtYWlsLmNvbSIsImlhdCI6MTUxNjIzOTAyMn0.pKIcISxHAsLfzJblY50592nruhvzFpds5Ck4acewrhM";
     private static final String REQUEST_TITLE_KEY = "title";
     private static final String REQUEST_START_DATE_TIME_KEY = "startDateTime";
     private static final String REQUEST_END_DATE_KEY = "endDateTime";
