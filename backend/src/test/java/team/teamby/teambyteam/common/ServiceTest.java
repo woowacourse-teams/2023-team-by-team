@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @Transactional
-@Sql(value = {"/h2-reset-pk.sql", "/h2-data.sql"})
+@Sql(value = {"/h2-truncate.sql", "/h2-data.sql"})
 public abstract class ServiceTest {
 
 

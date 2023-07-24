@@ -6,6 +6,6 @@ import org.springframework.test.context.jdbc.Sql;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Sql(value = {"/h2-reset-pk.sql", "/h2-data.sql"})
+@Sql(value = {"/h2-truncate.sql", "/h2-data.sql"})
 public abstract class RepositoryTest {
 }
