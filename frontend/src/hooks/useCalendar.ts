@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { CALENDAR } from '~/constants/calendar';
 import { arrayOf } from '~/utils/arrayOf';
 import { parseDate } from '~/utils/parseDate';
 
@@ -16,8 +17,8 @@ const useCalendar = () => {
   };
 
   const createCalendar = (year: number, month: number) =>
-    arrayOf(6).map((weekIndex) =>
-      arrayOf(7).map((dayIndex) => {
+    arrayOf(CALENDAR.ROW_SIZE).map((weekIndex) =>
+      arrayOf(CALENDAR.COLUMN_SIZE).map((dayIndex) => {
         const day = weekIndex * 7 + dayIndex - startDayOfMonth + 1;
         const date = new Date(year, month, day);
 
