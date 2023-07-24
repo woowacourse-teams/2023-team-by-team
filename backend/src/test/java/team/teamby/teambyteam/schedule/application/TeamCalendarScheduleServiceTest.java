@@ -6,9 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.transaction.annotation.Transactional;
+import team.teamby.teambyteam.common.ServiceTest;
 import team.teamby.teambyteam.fixtures.ScheduleFixtures;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleResponse;
@@ -28,10 +26,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static team.teamby.teambyteam.fixtures.ScheduleFixtures.Schedule1_N_Hour;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@Transactional
-@Sql({"/h2-reset-pk.sql", "/h2-data.sql"})
-public class TeamCalendarScheduleServiceTest {
+public class TeamCalendarScheduleServiceTest extends ServiceTest {
 
     @Autowired
     private TeamCalendarScheduleService teamCalendarScheduleService;
@@ -150,7 +145,7 @@ public class TeamCalendarScheduleServiceTest {
     @Nested
     @DisplayName("팀 캘린더 하루 일정 조회 시")
     class FindTeamCalendarDailySchedule {
-        
+
         @Test
         @DisplayName("팀 캘린더 하루 일정 조회를 성공한다.")
         void success() {
@@ -255,8 +250,6 @@ public class TeamCalendarScheduleServiceTest {
                     .hasMessage("ID에 해당하는 팀 플레이스를 찾을 수 없습니다.");
         }
     }
-
-
 
     @Nested
     @DisplayName("일정 등록 시")
