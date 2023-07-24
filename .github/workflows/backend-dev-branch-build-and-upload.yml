@@ -5,7 +5,6 @@
 name: backend Java CD with Gradle
 
 on:
-  workflow_dispatch:
   pull_request:
     types:
       - closed
@@ -22,7 +21,7 @@ permissions:
 
 jobs:
   build-and-upload:
-    # if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-22.04
     
     steps:
