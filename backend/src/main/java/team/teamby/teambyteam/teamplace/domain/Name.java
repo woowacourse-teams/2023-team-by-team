@@ -1,16 +1,18 @@
 package team.teamby.teambyteam.teamplace.domain;
 
-import java.util.Objects;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
+import java.util.Objects;
+
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode
 @Getter
 public class Name {
 
