@@ -14,11 +14,8 @@ import { useModal } from '~/hooks/useModal';
 import { generateScheduleBars } from '~/utils/generateScheduleBars';
 import { DAYS_OF_WEEK, MODAL_OPEN_TYPE } from '~/constants/calendar';
 import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from '~/assets/svg';
-<<<<<<< HEAD
 import { arrayOf } from '~/utils/arrayOf';
 import ScheduleMoreCell from '~/components/ScheduleMoreCell/ScheduleMoreCell';
-=======
->>>>>>> b43eeac (feat: 하루 일정 모달과 일정 조회 모달 연결)
 import type { Position, ModalOpenType } from '~/types/schedule';
 import DailyScheduleModal from '~/components/DailyScheduleModal/DailyScheduleModal';
 
@@ -39,8 +36,8 @@ const Calendar = () => {
   const [modalType, setModalType] = useState<ModalOpenType>(
     MODAL_OPEN_TYPE.ADD,
   );
-  const [dayModalDate, setDayModalDate] = useState<Date>(new Date());
-  const [dayModalPosition, setDayModalPosition] = useState<Position>({
+  const [dailyModalDate, setDailyModalDate] = useState<Date>(new Date());
+  const [dailyModalPosition, setDayModalPosition] = useState<Position>({
     row: 0,
     column: 0,
   });
@@ -53,7 +50,7 @@ const Calendar = () => {
 
   const handleDayScheduleModalOpen = (day: Date, row: number, col: number) => {
     setModalType(() => MODAL_OPEN_TYPE.DAILY);
-    setDayModalDate(() => day);
+    setDailyModalDate(() => day);
     setDayModalPosition({
       row,
       column: col,
@@ -176,8 +173,8 @@ const Calendar = () => {
       )}
       {isModalOpen && modalType === MODAL_OPEN_TYPE.DAILY && (
         <DailyScheduleModal
-          rawDate={dayModalDate}
-          position={dayModalPosition}
+          rawDate={dailyModalDate}
+          position={dailyModalPosition}
           onScheduleModalOpen={handleScheduleModalOpen}
           onSetModalType={() => setModalType(() => MODAL_OPEN_TYPE.VIEW)}
         />
