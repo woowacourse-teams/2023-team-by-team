@@ -24,7 +24,7 @@ export const Default: Story = {
           rawDate={new Date()}
           position={{ row: 0, column: 0 }}
           onScheduleModalOpen={({ scheduleId, row, column, level }) =>
-            console.log(scheduleId, row, column, level)
+            alert(`${scheduleId}, ${row}, ${column}, ${level}`)
           }
         />
       </>
@@ -39,9 +39,9 @@ export const Default: Story = {
     }: SchedulePosition & {
       scheduleId: number;
     }) => {
-      console.log(scheduleId, row, column, level);
+      alert(`${scheduleId}, ${row}, ${column}, ${level}`);
     },
-    onSetModalType: () => console.log('hi'),
+    onSetModalType: () => alert('hi'),
     position: { row: 0, column: 0 },
     rawDate: new Date(),
   },

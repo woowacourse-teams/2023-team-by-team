@@ -5,7 +5,7 @@ import { CloseIcon } from '~/assets/svg';
 import Button from '~/components/common/Button/Button';
 import Text from '~/components/common/Text/Text';
 import { parseDate } from '~/utils/parseDate';
-import { useFetchOneDaySchedules } from '~/hooks/queries/useFetchOneDaySchedules';
+import { useFetchDailySchedules } from '~/hooks/queries/useFetchDailySchedules';
 import type { Position, SchedulePosition } from '~/types/schedule';
 import type { CSSProperties } from 'react';
 
@@ -37,7 +37,7 @@ const DailyScheduleModal = (props: DailyScheduleModalProps) => {
   const { closeModal } = useModal();
   const { year, month, date } = parseDate(rawDate);
 
-  const schedules = useFetchOneDaySchedules(1, year, month, date);
+  const schedules = useFetchDailySchedules(1, year, month, date);
 
   const modalLocation: CSSProperties = {
     top: row < 3 ? `${(row + 2) * 118}px` : 'none',
@@ -45,6 +45,7 @@ const DailyScheduleModal = (props: DailyScheduleModalProps) => {
     left: column < 3 ? `${(column * 100) / 7}%` : 'none',
     right: column >= 3 ? `${((6 - column) * 100) / 7}%` : 'none',
   };
+
   return (
     <Modal>
       <S.Backdrop onClick={closeModal} />
@@ -64,9 +65,10 @@ const DailyScheduleModal = (props: DailyScheduleModalProps) => {
           </Button>
         </S.Header>
         <S.ScheduleWrapper>
-          {schedules.length ? (
+          {schedules.length !== 0 ? (
             schedules.map((schedule, index) => {
               const { id, title } = schedule;
+
               return (
                 <S.ScheduleBox
                   key={index}
