@@ -19,7 +19,7 @@ import team.teamby.teambyteam.schedule.application.ScheduleService;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleUpdateRequest;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
-import team.teamby.teambyteam.schedule.presentation.TeamPlaceScheduleController;
+import team.teamby.teambyteam.schedule.presentation.TeamCalendarScheduleController;
 import team.teamby.teambyteam.teamplace.configuration.TeamPlaceInterceptor;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
@@ -46,7 +46,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static team.teamby.teambyteam.fixtures.ScheduleFixtures.Schedule1_N_Hour;
 
 @AutoConfigureRestDocs
-@WebMvcTest(TeamPlaceScheduleController.class)
+@WebMvcTest(TeamCalendarScheduleController.class)
 public class ScheduleApiDocsTest {
 
     private static final String AUTHORIZATION_HEADER_KEY = HttpHeaders.AUTHORIZATION;

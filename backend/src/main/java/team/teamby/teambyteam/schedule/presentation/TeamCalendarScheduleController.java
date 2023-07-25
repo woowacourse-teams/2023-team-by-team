@@ -15,7 +15,7 @@ import java.net.URI;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/team-place")
-public class TeamPlaceScheduleController {
+public class TeamCalendarScheduleController {
 
     private final ScheduleService scheduleService;
 
