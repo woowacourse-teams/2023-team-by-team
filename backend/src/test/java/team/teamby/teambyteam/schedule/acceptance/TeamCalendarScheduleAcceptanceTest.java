@@ -238,7 +238,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
         class failWithWrongDateTimeType {
 
             @Test
-            @DisplayName("잘못된 연도 형식일 경우")
+            @DisplayName("잘못된 연도 형식일 경우 실패한다.")
             void wrongYear() {
                 // given
                 final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
@@ -257,7 +257,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             }
 
             @Test
-            @DisplayName("잘못된 월 형식일 경우")
+            @DisplayName("잘못된 월 형식일 경우 실패한다.")
             void wrongMonth() {
                 // given
                 final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
@@ -276,7 +276,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             }
 
             @Test
-            @DisplayName("잘못된 일 형식일 경우")
+            @DisplayName("잘못된 일 형식일 경우 실패한다.")
             void wrongDay() {
                 // given
                 final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
