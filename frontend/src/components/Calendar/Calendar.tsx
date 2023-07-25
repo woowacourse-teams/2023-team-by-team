@@ -20,7 +20,7 @@ import ScheduleMoreCell from '~/components/ScheduleMoreCell/ScheduleMoreCell';
 =======
 >>>>>>> b43eeac (feat: 하루 일정 모달과 일정 조회 모달 연결)
 import type { Position, ModalOpenType } from '~/types/schedule';
-import DayScheduleModal from '~/components/DailyScheduleModal/DailyScheduleModal';
+import DailyScheduleModal from '~/components/DailyScheduleModal/DailyScheduleModal';
 
 const Calendar = () => {
   const {
@@ -175,7 +175,7 @@ const Calendar = () => {
         />
       )}
       {isModalOpen && modalType === MODAL_OPEN_TYPE.DAILY && (
-        <DayScheduleModal
+        <DailyScheduleModal
           rawDate={dayModalDate}
           position={dayModalPosition}
           onScheduleModalOpen={handleScheduleModalOpen}
