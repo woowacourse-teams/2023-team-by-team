@@ -229,7 +229,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             // then
             assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
-                softly.assertThat(response.body().asString()).isEqualTo("ID에 해당하는 팀 플레이스를 찾을 수 없습니다.");
+                softly.assertThat(response.body().asString()).isEqualTo("조회한 팀 플레이스가 존재하지 않습니다.");
             });
         }
 

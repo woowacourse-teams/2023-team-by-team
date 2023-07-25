@@ -86,7 +86,7 @@ public class TeamCalendarScheduleService {
     ) {
         checkTeamPlaceExist(teamPlaceId);
 
-        final CalendarPeriod dailyPeriod = CalendarPeriod.createDailyPeriod(targetYear, targetMonth, targetDay);
+        final CalendarPeriod dailyPeriod = CalendarPeriod.of(targetYear, targetMonth, targetDay);
         final List<Schedule> dailySchedules = scheduleRepository
                 .findAllByTeamPlaceIdAndDailyPeriod(teamPlaceId, dailyPeriod.startDateTime(), dailyPeriod.endDatetime());
 

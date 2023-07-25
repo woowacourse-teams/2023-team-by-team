@@ -247,7 +247,7 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
             // when & then
             assertThatThrownBy(() -> teamCalendarScheduleService.findDailySchedule(notExistTeamPlaceId, year, month, day))
                     .isInstanceOf(TeamPlaceException.NotFoundException.class)
-                    .hasMessage("ID에 해당하는 팀 플레이스를 찾을 수 없습니다.");
+                    .hasMessage("조회한 팀 플레이스가 존재하지 않습니다.");
         }
     }
 
@@ -317,6 +317,7 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
 
             // then
             assertThat(updatedSchedule).usingRecursiveComparison()
+                    .ignoringFields("id")
                     .isEqualTo(Schedule1_N_Hour.UPDATE_ENTITY());
         }
 

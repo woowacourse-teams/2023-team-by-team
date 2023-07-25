@@ -24,11 +24,11 @@ public class ScheduleFixtures {
         public static final ScheduleUpdateRequest UPDATE_REQUEST = new ScheduleUpdateRequest(UPDATE_TITLE, START_DATE_TIME, UPDATE_END_DATE_TIME);
 
         public static Schedule ENTITY() {
-            return new Schedule(ID, TEAM_PLACE_ID, new Title(TITLE), new Span(START_DATE_TIME, END_DATE_TIME));
+            return new Schedule(TEAM_PLACE_ID, new Title(TITLE), new Span(START_DATE_TIME, END_DATE_TIME));
         }
 
         public static Schedule UPDATE_ENTITY() {
-            return new Schedule(ID, TEAM_PLACE_ID, new Title(UPDATE_TITLE), new Span(START_DATE_TIME, UPDATE_END_DATE_TIME));
+            return new Schedule(TEAM_PLACE_ID, new Title(UPDATE_TITLE), new Span(START_DATE_TIME, UPDATE_END_DATE_TIME));
         }
     }
 }
