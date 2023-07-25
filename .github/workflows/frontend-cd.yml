@@ -58,7 +58,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: FrontendApplication
-          path: frontend/dev/
+          path: frontend/dev/dist
 
       - name: Deploy to WAS
         working-directory: ./frontend/dev/
