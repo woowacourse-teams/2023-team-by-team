@@ -1,13 +1,12 @@
 name: frontend-cd
 
 on:
-  push:
-  # pull_request:
-  #  types:
-  #    - closed
-  #  branches: ['develop']
-  #  paths:
-  #    - 'frontend/**'
+  pull_request:
+  types:
+    - closed
+  branches: ['develop']
+  paths:
+    - 'frontend/**'
 
 defaults:
   run:
@@ -18,7 +17,7 @@ permissions:
 
 jobs:
   build-and-upload:
-    # if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-22.04
 
     steps:
