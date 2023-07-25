@@ -10,8 +10,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 import team.teamby.teambyteam.fixtures.ScheduleFixtures;
-import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
-import team.teamby.teambyteam.schedule.application.dto.*;
+import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
+import team.teamby.teambyteam.schedule.application.dto.ScheduleResponse;
+import team.teamby.teambyteam.schedule.application.dto.ScheduleUpdateRequest;
+import team.teamby.teambyteam.schedule.application.dto.SchedulesResponse;
 import team.teamby.teambyteam.schedule.domain.Schedule;
 import team.teamby.teambyteam.schedule.domain.ScheduleRepository;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
@@ -29,17 +31,17 @@ import static team.teamby.teambyteam.fixtures.ScheduleFixtures.Schedule1_N_Hour;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @Transactional
 @Sql({"/h2-reset-pk.sql", "/h2-data.sql"})
-public class ScheduleServiceTest {
+public class TeamCalendarScheduleServiceTest {
 
     @Autowired
-    private ScheduleService scheduleService;
+    private TeamCalendarScheduleService teamCalendarScheduleService;
 
     @Autowired
     private ScheduleRepository scheduleRepository;
 
     @Nested
-    @DisplayName("팀플레이스 일정 정보 조회시")
-    class FindScheduleInTeamPlace {
+    @DisplayName("팀 캘린더 일정 정보 조회시")
+    class FindScheduleInTeamCalendar {
 
         @Test
         @DisplayName("특정 일정의 정보를 조회한다.")
@@ -49,7 +51,7 @@ public class ScheduleServiceTest {
             final Long teamPlaceId = 1L;
 
             // when
-            final ScheduleResponse scheduleResponse = scheduleService.findSchedule(scheduleId, teamPlaceId);
+            final ScheduleResponse scheduleResponse = teamCalendarScheduleService.findSchedule(scheduleId, teamPlaceId);
 
             //then
             assertSoftly(softly -> {
@@ -67,7 +69,7 @@ public class ScheduleServiceTest {
             final Long teamPlaceId = 1L;
 
             // when & then
-            assertThatThrownBy(() -> scheduleService.findSchedule(wrongScheduleId, teamPlaceId))
+            assertThatThrownBy(() -> teamCalendarScheduleService.findSchedule(wrongScheduleId, teamPlaceId))
                     .isInstanceOf(ScheduleException.ScheduleNotFoundException.class)
                     .hasMessage("조회한 일정이 존재하지 않습니다.");
 
@@ -81,13 +83,13 @@ public class ScheduleServiceTest {
             final Long otherTeamId = 2L;
 
             // when & then
-            assertThatThrownBy(() -> scheduleService.findSchedule(scheduleId, otherTeamId))
+            assertThatThrownBy(() -> teamCalendarScheduleService.findSchedule(scheduleId, otherTeamId))
                     .isInstanceOf(ScheduleException.TeamAccessForbidden.class)
                     .hasMessage("해당 팀플레이스에 일정을 조회할 권한이 없습니다.");
         }
 
         @Test
-        @DisplayName("팀플레이스에서 특정 기간 내 일정들을 조회한다.")
+        @DisplayName("팀 캘린더에서 특정 기간 내 일정들을 조회한다.")
         void findAllInPeriod() {
             // given
             final Long teamPlaceId = 3L;
@@ -95,7 +97,7 @@ public class ScheduleServiceTest {
             final int month = 7;
 
             // when
-            final SchedulesResponse schedulesResponse = scheduleService.findScheduleInPeriod(teamPlaceId, year, month);
+            final SchedulesResponse schedulesResponse = teamCalendarScheduleService.findScheduleInPeriod(teamPlaceId, year, month);
             final List<ScheduleResponse> scheduleResponses = schedulesResponse.schedules();
 
             //then
@@ -109,7 +111,7 @@ public class ScheduleServiceTest {
         }
 
         @Test
-        @DisplayName("팀플레이스에서 일정이 없는 기간 내 일정들을 조회한다.")
+        @DisplayName("팀 캘린더에서 일정이 없는 기간 내 일정들을 조회한다.")
         void findAllInPeriodWith0Schedule() {
             // given
             final Long teamPlaceId = 3L;
@@ -117,7 +119,7 @@ public class ScheduleServiceTest {
             final int month = 7;
 
             // when
-            final SchedulesResponse schedulesResponse = scheduleService.findScheduleInPeriod(teamPlaceId, year, month);
+            final SchedulesResponse schedulesResponse = teamCalendarScheduleService.findScheduleInPeriod(teamPlaceId, year, month);
             final List<ScheduleResponse> scheduleResponses = schedulesResponse.schedules();
 
             //then
@@ -133,7 +135,7 @@ public class ScheduleServiceTest {
             final int month = 5;
 
             // when
-            final SchedulesResponse schedulesResponse = scheduleService.findScheduleInPeriod(teamPlaceId, year, month);
+            final SchedulesResponse schedulesResponse = teamCalendarScheduleService.findScheduleInPeriod(teamPlaceId, year, month);
             final List<ScheduleResponse> scheduleResponses = schedulesResponse.schedules();
 
             //then
@@ -160,7 +162,7 @@ public class ScheduleServiceTest {
 
             // when
             final SchedulesResponse dailySchedulesResponse =
-                    scheduleService.findDailyTeamCalendarSchedule(teamPlaceId, year, month, day);
+                    teamCalendarScheduleService.findDailySchedule(teamPlaceId, year, month, day);
             final List<ScheduleResponse> dailyTeamCalendarSchedulesResponses = dailySchedulesResponse.schedules();
 
             // then
@@ -186,7 +188,7 @@ public class ScheduleServiceTest {
                 final int day = 12;
 
                 // when & then
-                assertThatThrownBy(() -> scheduleService.findDailyTeamCalendarSchedule(teamPlaceId, wrongYear, month, day))
+                assertThatThrownBy(() -> teamCalendarScheduleService.findDailySchedule(teamPlaceId, wrongYear, month, day))
                         .isInstanceOf(DateTimeException.class)
                         .hasMessageContaining("Invalid value for Year (valid values -999999999 - 999999999)");
             }
@@ -201,7 +203,7 @@ public class ScheduleServiceTest {
                 final int day = 12;
 
                 // when & then
-                assertThatThrownBy(() -> scheduleService.findDailyTeamCalendarSchedule(teamPlaceId, year, wrongMonth, day))
+                assertThatThrownBy(() -> teamCalendarScheduleService.findDailySchedule(teamPlaceId, year, wrongMonth, day))
                         .isInstanceOf(DateTimeException.class)
                         .hasMessageContaining("Invalid value for MonthOfYear (valid values 1 - 12)");
             }
@@ -216,7 +218,7 @@ public class ScheduleServiceTest {
                 final int wrongDay = -1;
 
                 // when & then
-                assertThatThrownBy(() -> scheduleService.findDailyTeamCalendarSchedule(teamPlaceId, year, month, wrongDay))
+                assertThatThrownBy(() -> teamCalendarScheduleService.findDailySchedule(teamPlaceId, year, month, wrongDay))
                         .isInstanceOf(DateTimeException.class)
                         .hasMessageContaining("Invalid value for DayOfMonth (valid values 1 - 28/31)");
             }
@@ -232,7 +234,7 @@ public class ScheduleServiceTest {
             final int day = 1;
 
             // when
-            SchedulesResponse schedules = scheduleService.findDailyTeamCalendarSchedule(teamPlaceId, year, month, day);
+            SchedulesResponse schedules = teamCalendarScheduleService.findDailySchedule(teamPlaceId, year, month, day);
 
             // then
             assertThat(schedules.schedules()).hasSize(0);
@@ -248,41 +250,13 @@ public class ScheduleServiceTest {
             final int day = Schedule1_N_Hour.START_DATE_TIME.getDayOfMonth();
 
             // when & then
-            assertThatThrownBy(() -> scheduleService.findDailyTeamCalendarSchedule(notExistTeamPlaceId, year, month, day))
+            assertThatThrownBy(() -> teamCalendarScheduleService.findDailySchedule(notExistTeamPlaceId, year, month, day))
                     .isInstanceOf(TeamPlaceException.NotFoundException.class)
                     .hasMessage("ID에 해당하는 팀 플레이스를 찾을 수 없습니다.");
         }
     }
 
-    @Nested
-    @DisplayName("통합 캘린더 정보 조회 시")
-    class FindSchedulesByUser {
 
-        @Test
-        @DisplayName("통합 캘린더 정보조회를 성공한다.")
-        void success() {
-            // given
-            // member who participate in team 2, 3
-            final MemberEmailDto memberEmailDto = new MemberEmailDto("dfg345@gmail.com");
-            final int year = 2023;
-            final int month = 6;
-
-            // when
-            final SchedulesWithTeamPlaceIdResponse scheduleInPeriod = scheduleService.findScheduleInPeriod(memberEmailDto, year, month);
-            final List<ScheduleWithTeamPlaceIdResponse> scheduleResponses = scheduleInPeriod.schedules();
-
-            //then
-            assertSoftly(softly -> {
-                softly.assertThat(scheduleResponses).hasSize(5);
-                softly.assertThat(scheduleResponses.get(0).title()).isEqualTo("3번 팀플 6월 첫날");
-                softly.assertThat(scheduleResponses.get(1).title()).isEqualTo("2번 팀플 6월 첫날");
-                softly.assertThat(scheduleResponses.get(2).title()).isEqualTo("3번 팀플 A");
-                softly.assertThat(scheduleResponses.get(3).title()).isEqualTo("2번 팀플 6월 어느날");
-                softly.assertThat(scheduleResponses.get(4).title()).isEqualTo("3번 팀플 B");
-            });
-        }
-
-    }
 
     @Nested
     @DisplayName("일정 등록 시")
@@ -296,7 +270,7 @@ public class ScheduleServiceTest {
             final ScheduleRegisterRequest request = ScheduleFixtures.Schedule1_N_Hour.REQUEST;
 
             // when
-            final Long registeredId = scheduleService.register(request, teamPlaceId);
+            final Long registeredId = teamCalendarScheduleService.register(request, teamPlaceId);
 
             // then
             assertThat(registeredId).isNotNull();
@@ -313,7 +287,7 @@ public class ScheduleServiceTest {
             final ScheduleRegisterRequest request = new ScheduleRegisterRequest(title, startDateTime, wrongEndDateTime);
 
             // when & then
-            assertThatThrownBy(() -> scheduleService.register(request, teamPlaceId))
+            assertThatThrownBy(() -> teamCalendarScheduleService.register(request, teamPlaceId))
                     .isInstanceOf(ScheduleException.SpanWrongOrderException.class)
                     .hasMessage("시작 일자가 종료 일자보다 이후일 수 없습니다.");
         }
@@ -326,7 +300,7 @@ public class ScheduleServiceTest {
             final Long notExistTeamPlaceId = -1L;
 
             // when & then
-            assertThatThrownBy(() -> scheduleService.register(request, notExistTeamPlaceId))
+            assertThatThrownBy(() -> teamCalendarScheduleService.register(request, notExistTeamPlaceId))
                     .isInstanceOf(TeamPlaceException.NotFoundException.class)
                     .hasMessage("ID에 해당하는 팀 플레이스를 찾을 수 없습니다.");
         }
@@ -345,7 +319,7 @@ public class ScheduleServiceTest {
             final ScheduleUpdateRequest request = Schedule1_N_Hour.UPDATE_REQUEST;
 
             // when
-            scheduleService.update(request, teamPlaceId, id);
+            teamCalendarScheduleService.update(request, teamPlaceId, id);
             final Schedule updatedSchedule = scheduleRepository.findById(id).get();
 
             // then
@@ -365,7 +339,7 @@ public class ScheduleServiceTest {
             final ScheduleUpdateRequest request = new ScheduleUpdateRequest(titleToUpdate, startDateTime, endDateTime);
 
             // when & then
-            assertThatThrownBy(() -> scheduleService.update(request, teamPlaceId, id))
+            assertThatThrownBy(() -> teamCalendarScheduleService.update(request, teamPlaceId, id))
                     .isInstanceOf(ScheduleException.TitleBlankException.class)
                     .hasMessage("일정의 제목은 빈 칸일 수 없습니다.");
         }
@@ -382,7 +356,7 @@ public class ScheduleServiceTest {
             final ScheduleUpdateRequest request = new ScheduleUpdateRequest(title, startDateTime, wrongEndDateTime);
 
             // when & then
-            assertThatThrownBy(() -> scheduleService.update(request, teamPlaceId, id))
+            assertThatThrownBy(() -> teamCalendarScheduleService.update(request, teamPlaceId, id))
                     .isInstanceOf(ScheduleException.SpanWrongOrderException.class)
                     .hasMessage("시작 일자가 종료 일자보다 이후일 수 없습니다.");
         }
@@ -396,7 +370,7 @@ public class ScheduleServiceTest {
             final Long notExistTeamPlaceId = -1L;
 
             // when & then
-            assertThatThrownBy(() -> scheduleService.update(request, notExistTeamPlaceId, id))
+            assertThatThrownBy(() -> teamCalendarScheduleService.update(request, notExistTeamPlaceId, id))
                     .isInstanceOf(TeamPlaceException.NotFoundException.class)
                     .hasMessage("ID에 해당하는 팀 플레이스를 찾을 수 없습니다.");
         }
@@ -410,7 +384,7 @@ public class ScheduleServiceTest {
             final ScheduleUpdateRequest request = Schedule1_N_Hour.UPDATE_REQUEST;
 
             // when & then
-            assertThatThrownBy(() -> scheduleService.update(request, teamPlaceId, notExistScheduleId))
+            assertThatThrownBy(() -> teamCalendarScheduleService.update(request, teamPlaceId, notExistScheduleId))
                     .isInstanceOf(ScheduleException.ScheduleNotFoundException.class)
                     .hasMessage("ID에 해당하는 일정을 찾을 수 없습니다.");
         }
@@ -428,7 +402,7 @@ public class ScheduleServiceTest {
             final ScheduleRegisterRequest request = ScheduleFixtures.Schedule1_N_Hour.REQUEST;
 
             // when
-            final Long registeredId = scheduleService.register(request, teamPlaceId);
+            final Long registeredId = teamCalendarScheduleService.register(request, teamPlaceId);
 
             // then
             assertThat(registeredId).isNotNull();
@@ -442,7 +416,7 @@ public class ScheduleServiceTest {
             final Long existScheduleId = 1L;
 
             // when & then
-            assertThatThrownBy(() -> scheduleService.delete(notExistTramPlaceId, existScheduleId))
+            assertThatThrownBy(() -> teamCalendarScheduleService.delete(notExistTramPlaceId, existScheduleId))
                     .isInstanceOf(TeamPlaceException.NotFoundException.class)
                     .hasMessage("ID에 해당하는 팀 플레이스를 찾을 수 없습니다.");
         }
@@ -455,7 +429,7 @@ public class ScheduleServiceTest {
             final Long notExistScheduleId = -1L;
 
             // when & then
-            assertThatThrownBy(() -> scheduleService.delete(existTramPlaceId, notExistScheduleId))
+            assertThatThrownBy(() -> teamCalendarScheduleService.delete(existTramPlaceId, notExistScheduleId))
                     .isInstanceOf(ScheduleException.ScheduleNotFoundException.class)
                     .hasMessage("ID에 해당하는 일정을 찾을 수 없습니다.");
         }

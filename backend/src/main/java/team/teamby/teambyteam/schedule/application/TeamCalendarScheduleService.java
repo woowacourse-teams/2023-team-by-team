@@ -3,15 +3,13 @@ package team.teamby.teambyteam.schedule.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
-import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberRepository;
-import team.teamby.teambyteam.member.domain.vo.Email;
-import team.teamby.teambyteam.member.exception.MemberException;
-import team.teamby.teambyteam.schedule.application.dto.*;
+import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
+import team.teamby.teambyteam.schedule.application.dto.ScheduleResponse;
+import team.teamby.teambyteam.schedule.application.dto.ScheduleUpdateRequest;
+import team.teamby.teambyteam.schedule.application.dto.SchedulesResponse;
 import team.teamby.teambyteam.schedule.domain.*;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
-import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceRepository;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
@@ -20,7 +18,7 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ScheduleService {
+public class TeamCalendarScheduleService {
 
     private final MemberRepository memberRepository;
     private final ScheduleRepository scheduleRepository;
@@ -70,7 +68,6 @@ public class ScheduleService {
 
     @Transactional(readOnly = true)
     public SchedulesResponse findScheduleInPeriod(final Long teamPlaceId, final int targetYear, final int targetMonth) {
-        // TODO: 상의해보기 - 팀플레이스 소속 멤버 검증시 팀플레이스 아이디가 검증이 될 건데 해당 붑ㄴ에 대한 재 검증이 필요한가?
         checkTeamPlaceExist(teamPlaceId);
 
         final CalendarPeriod period = CalendarPeriod.createPeriod(targetYear, targetMonth);
@@ -81,7 +78,7 @@ public class ScheduleService {
     }
 
     @Transactional(readOnly = true)
-    public SchedulesResponse findDailyTeamCalendarSchedule(
+    public SchedulesResponse findDailySchedule(
             final Long teamPlaceId,
             final int targetYear,
             final int targetMonth,
@@ -94,27 +91,6 @@ public class ScheduleService {
                 .findAllByTeamPlaceIdAndDailyPeriod(teamPlaceId, dailyPeriod.startDateTime(), dailyPeriod.endDatetime());
 
         return SchedulesResponse.of(dailySchedules);
-    }
-
-    @Transactional(readOnly = true)
-    public SchedulesWithTeamPlaceIdResponse findScheduleInPeriod(
-            final MemberEmailDto memberEmailDto,
-            final int targetYear,
-            final int targetMonth
-    ) {
-        final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(() -> new MemberException.MemberNotFoundException("사용자를 찾을 수 없습니다."));
-
-        final List<Long> participatedTeamPlaceIds = member.getTeamPlaces()
-                .stream()
-                .map(TeamPlace::getId)
-                .toList();
-
-        final CalendarPeriod period = CalendarPeriod.createPeriod(targetYear, targetMonth);
-        final List<Schedule> schedules = scheduleRepository
-                .findAllByTeamPlaceIdAndPeriod(participatedTeamPlaceIds, period.startDateTime(), period.endDatetime());
-
-        return SchedulesWithTeamPlaceIdResponse.of(schedules);
     }
 
     public void update(final ScheduleUpdateRequest scheduleUpdateRequest, final Long teamPlaceId, final Long scheduleId) {

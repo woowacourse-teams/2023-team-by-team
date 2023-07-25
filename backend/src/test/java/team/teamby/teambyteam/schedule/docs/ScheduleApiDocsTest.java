@@ -15,7 +15,7 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import team.teamby.teambyteam.fixtures.ScheduleFixtures;
 import team.teamby.teambyteam.member.configuration.MemberInterceptor;
-import team.teamby.teambyteam.schedule.application.ScheduleService;
+import team.teamby.teambyteam.schedule.application.TeamCalendarScheduleService;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleUpdateRequest;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
@@ -62,7 +62,7 @@ public class ScheduleApiDocsTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private ScheduleService scheduleService;
+    private TeamCalendarScheduleService teamCalendarScheduleService;
 
     @MockBean
     private MemberInterceptor memberInterceptor;
@@ -81,7 +81,7 @@ public class ScheduleApiDocsTest {
             final ScheduleRegisterRequest request = Schedule1_N_Hour.REQUEST;
             final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
             final Long registeredId = 1L;
-            given(scheduleService.register(request, teamPlaceId))
+            given(teamCalendarScheduleService.register(request, teamPlaceId))
                     .willReturn(registeredId);
             given(memberInterceptor.preHandle(any(), any(), any()))
                     .willReturn(true);
@@ -122,7 +122,7 @@ public class ScheduleApiDocsTest {
             final String blankTitle = " ";
             ScheduleUpdateRequest request = new ScheduleUpdateRequest(blankTitle, Schedule1_N_Hour.START_DATE_TIME, Schedule1_N_Hour.END_DATE_TIME);
             willThrow(new ScheduleException.TitleBlankException("제목은 빈 값일 수 없습니다."))
-                    .given(scheduleService)
+                    .given(teamCalendarScheduleService)
                     .register(any(ScheduleRegisterRequest.class), eq(teamPlaceId));
 
             given(memberInterceptor.preHandle(any(), any(), any()))
@@ -158,7 +158,7 @@ public class ScheduleApiDocsTest {
             requestMap.put(REQUEST_END_DATE_KEY, correctEndDateTimeType);
 
             willThrow(DateTimeParseException.class)
-                    .given(scheduleService)
+                    .given(teamCalendarScheduleService)
                     .register(any(ScheduleRegisterRequest.class), eq(teamPlaceId));
 
             given(memberInterceptor.preHandle(any(), any(), any()))
@@ -187,7 +187,7 @@ public class ScheduleApiDocsTest {
             final Long notExistTeamPlaceId = -1L;
             ScheduleRegisterRequest request = Schedule1_N_Hour.REQUEST;
             willThrow(new TeamPlaceException.NotFoundException("ID에 해당하는 팀 플레이스를 찾을 수 없습니다."))
-                    .given(scheduleService)
+                    .given(teamCalendarScheduleService)
                     .register(any(), eq(notExistTeamPlaceId));
 
             given(memberInterceptor.preHandle(any(), any(), any()))
@@ -220,7 +220,7 @@ public class ScheduleApiDocsTest {
             final ScheduleRegisterRequest request = new ScheduleRegisterRequest(title, startDateTime, wrongEndDateTime);
 
             willThrow(new ScheduleException.SpanWrongOrderException("시작 일자가 종료 일자보다 이후일 수 없습니다."))
-                    .given(scheduleService)
+                    .given(teamCalendarScheduleService)
                     .register(request, teamPlaceId);
             given(memberInterceptor.preHandle(any(), any(), any()))
                     .willReturn(true);
@@ -253,7 +253,7 @@ public class ScheduleApiDocsTest {
             final ScheduleUpdateRequest request = Schedule1_N_Hour.UPDATE_REQUEST;
             final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
             final Long id = Schedule1_N_Hour.ID;
-            willDoNothing().given(scheduleService).update(request, teamPlaceId, id);
+            willDoNothing().given(teamCalendarScheduleService).update(request, teamPlaceId, id);
             given(memberInterceptor.preHandle(any(), any(), any()))
                     .willReturn(true);
             given(teamPlaceInterceptor.preHandle(any(), any(), any()))
@@ -294,7 +294,7 @@ public class ScheduleApiDocsTest {
             final String blankTitle = " ";
             ScheduleUpdateRequest request = new ScheduleUpdateRequest(blankTitle, Schedule1_N_Hour.START_DATE_TIME, Schedule1_N_Hour.END_DATE_TIME);
             willThrow(new ScheduleException.TitleBlankException("제목은 빈 값일 수 없습니다."))
-                    .given(scheduleService)
+                    .given(teamCalendarScheduleService)
                     .update(any(ScheduleUpdateRequest.class), eq(teamPlaceId), eq(id));
 
             given(memberInterceptor.preHandle(any(), any(), any()))
@@ -331,7 +331,7 @@ public class ScheduleApiDocsTest {
             requestMap.put(REQUEST_END_DATE_KEY, correctEndDateTimeType);
 
             willThrow(DateTimeParseException.class)
-                    .given(scheduleService)
+                    .given(teamCalendarScheduleService)
                     .update(any(ScheduleUpdateRequest.class), eq(teamPlaceId), eq(id));
 
             given(memberInterceptor.preHandle(any(), any(), any()))
@@ -361,7 +361,7 @@ public class ScheduleApiDocsTest {
             final Long notExistTeamPlaceId = -1L;
             ScheduleRegisterRequest request = Schedule1_N_Hour.REQUEST;
             willThrow(new TeamPlaceException.NotFoundException("ID에 해당하는 팀 플레이스를 찾을 수 없습니다."))
-                    .given(scheduleService)
+                    .given(teamCalendarScheduleService)
                     .update(any(), eq(notExistTeamPlaceId), eq(id));
 
             given(memberInterceptor.preHandle(any(), any(), any()))
@@ -395,7 +395,7 @@ public class ScheduleApiDocsTest {
             final ScheduleUpdateRequest request = new ScheduleUpdateRequest(title, startDateTime, wrongEndDateTime);
 
             willThrow(new ScheduleException.SpanWrongOrderException("시작 일자가 종료 일자보다 이후일 수 없습니다."))
-                    .given(scheduleService)
+                    .given(teamCalendarScheduleService)
                     .update(request, teamPlaceId, id);
             given(memberInterceptor.preHandle(any(), any(), any()))
                     .willReturn(true);
@@ -424,7 +424,7 @@ public class ScheduleApiDocsTest {
             final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
             ScheduleRegisterRequest request = Schedule1_N_Hour.REQUEST;
             willThrow(new ScheduleException.ScheduleNotFoundException("ID에 해당하는 일정을 찾을 수 없습니다."))
-                    .given(scheduleService)
+                    .given(teamCalendarScheduleService)
                     .update(any(), eq(teamPlaceId), eq(notExistScheduleId));
 
             given(memberInterceptor.preHandle(any(), any(), any()))

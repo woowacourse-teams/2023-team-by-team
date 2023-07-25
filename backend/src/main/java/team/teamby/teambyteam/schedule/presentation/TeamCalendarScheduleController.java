@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import team.teamby.teambyteam.schedule.application.ScheduleService;
+import team.teamby.teambyteam.schedule.application.TeamCalendarScheduleService;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleResponse;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleUpdateRequest;
@@ -17,14 +17,14 @@ import java.net.URI;
 @RequestMapping("/api/team-place")
 public class TeamCalendarScheduleController {
 
-    private final ScheduleService scheduleService;
+    private final TeamCalendarScheduleService teamCalendarScheduleService;
 
     @GetMapping("/{teamPlaceId}/calendar/schedules/{scheduleId}")
     public ResponseEntity<ScheduleResponse> findSpecificSchedule(
             @PathVariable final Long teamPlaceId,
             @PathVariable final Long scheduleId
     ) {
-        final ScheduleResponse responseBody = scheduleService.findSchedule(scheduleId, teamPlaceId);
+        final ScheduleResponse responseBody = teamCalendarScheduleService.findSchedule(scheduleId, teamPlaceId);
 
         return ResponseEntity.ok(responseBody);
     }
@@ -35,7 +35,7 @@ public class TeamCalendarScheduleController {
             @RequestParam final Integer year,
             @RequestParam final Integer month
     ) {
-        final SchedulesResponse responseBody = scheduleService.findScheduleInPeriod(teamPlaceId, year, month);
+        final SchedulesResponse responseBody = teamCalendarScheduleService.findScheduleInPeriod(teamPlaceId, year, month);
 
         return ResponseEntity.ok(responseBody);
     }
@@ -47,7 +47,7 @@ public class TeamCalendarScheduleController {
             @RequestParam final Integer month,
             @RequestParam final Integer day
     ) {
-        final SchedulesResponse response = scheduleService.findDailyTeamCalendarSchedule(teamPlaceId, year, month, day);
+        final SchedulesResponse response = teamCalendarScheduleService.findDailySchedule(teamPlaceId, year, month, day);
 
         return ResponseEntity.ok(response);
     }
@@ -58,7 +58,7 @@ public class TeamCalendarScheduleController {
             @PathVariable final Long teamPlaceId
     ) {
 
-        final Long registeredId = scheduleService.register(scheduleRegisterRequest, teamPlaceId);
+        final Long registeredId = teamCalendarScheduleService.register(scheduleRegisterRequest, teamPlaceId);
         final URI location = URI.create("/api/team-place/" + teamPlaceId + "/calendar/schedules/" + registeredId);
         return ResponseEntity.created(location).build();
     }
@@ -69,7 +69,7 @@ public class TeamCalendarScheduleController {
             @PathVariable final Long teamPlaceId,
             @PathVariable final Long scheduleId) {
 
-        scheduleService.update(scheduleUpdateRequest, teamPlaceId, scheduleId);
+        teamCalendarScheduleService.update(scheduleUpdateRequest, teamPlaceId, scheduleId);
         return ResponseEntity.ok().build();
     }
 
@@ -78,7 +78,7 @@ public class TeamCalendarScheduleController {
             @PathVariable final Long teamPlaceId,
             @PathVariable final Long scheduleId) {
 
-        scheduleService.delete(teamPlaceId, scheduleId);
+        teamCalendarScheduleService.delete(teamPlaceId, scheduleId);
         return ResponseEntity.noContent().build();
     }
 }
