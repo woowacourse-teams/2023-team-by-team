@@ -10,6 +10,7 @@ import team.teamby.teambyteam.member.domain.vo.Name;
 import team.teamby.teambyteam.member.domain.vo.ProfileImageUrl;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -38,13 +39,12 @@ public class Member {
     public Member(
             final Name name,
             final Email email,
-            final ProfileImageUrl profileImageUrl,
-            final List<MemberTeamPlace> memberTeamPlaces
+            final ProfileImageUrl profileImageUrl
     ) {
         this.name = name;
         this.email = email;
         this.profileImageUrl = profileImageUrl;
-        this.memberTeamPlaces = memberTeamPlaces;
+        this.memberTeamPlaces = new ArrayList<>();
     }
 
     public List<TeamPlace> getTeamPlaces() {
