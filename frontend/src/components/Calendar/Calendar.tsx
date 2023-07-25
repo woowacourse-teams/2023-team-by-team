@@ -37,7 +37,7 @@ const Calendar = () => {
     MODAL_OPEN_TYPE.ADD,
   );
   const [dailyModalDate, setDailyModalDate] = useState<Date>(new Date());
-  const [dailyModalPosition, setDayModalPosition] = useState<Position>({
+  const [dailyModalPosition, setDailyModalPosition] = useState<Position>({
     row: 0,
     column: 0,
   });
@@ -48,10 +48,14 @@ const Calendar = () => {
     openModal();
   };
 
-  const handleDayScheduleModalOpen = (day: Date, row: number, col: number) => {
+  const handleDailyScheduleModalOpen = (
+    day: Date,
+    row: number,
+    col: number,
+  ) => {
     setModalType(() => MODAL_OPEN_TYPE.DAILY);
     setDailyModalDate(() => day);
-    setDayModalPosition({
+    setDailyModalPosition({
       row,
       column: col,
     });
@@ -140,7 +144,11 @@ const Calendar = () => {
                           onClick={() => handleModalOpen(MODAL_OPEN_TYPE.ADD)}
                           onDayClick={(e) => {
                             e.stopPropagation();
-                            handleDayScheduleModalOpen(day, rowIndex, colIndex);
+                            handleDailyScheduleModalOpen(
+                              day,
+                              rowIndex,
+                              colIndex,
+                            );
                           }}
                         />
                       );
