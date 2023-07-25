@@ -8,6 +8,9 @@ interface WrapperProps {
 }
 
 export const Wrapper = styled.div<WrapperProps>`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
   ${({ size }) => {
     if (size === 'sm')
       return css`
@@ -18,7 +21,7 @@ export const Wrapper = styled.div<WrapperProps>`
     if (size === 'md') return css``;
     if (size === 'lg')
       return css`
-        padding: 8px 8px 0 0;
+        padding: 2px 2px 0 0;
         text-align: right;
       `;
   }};
@@ -30,4 +33,18 @@ export const Wrapper = styled.div<WrapperProps>`
   }};
 
   cursor: pointer;
+`;
+
+export const TeamColorBadge = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.color.GRAY300};
+  }
 `;

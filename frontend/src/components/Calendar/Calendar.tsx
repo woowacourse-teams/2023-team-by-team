@@ -14,9 +14,10 @@ import { useModal } from '~/hooks/useModal';
 import { generateScheduleBars } from '~/utils/generateScheduleBars';
 import { DAYS_OF_WEEK, MODAL_OPEN_TYPE } from '~/constants/calendar';
 import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from '~/assets/svg';
-import type { ModalOpenType } from '~/types/schedule';
 import { arrayOf } from '~/utils/arrayOf';
 import ScheduleMoreCell from '~/components/ScheduleMoreCell/ScheduleMoreCell';
+import type { Position, ModalOpenType } from '~/types/schedule';
+import DailyScheduleModal from '~/components/DailyScheduleModal/DailyScheduleModal';
 
 const Calendar = () => {
   const {
@@ -35,14 +36,29 @@ const Calendar = () => {
   const [modalType, setModalType] = useState<ModalOpenType>(
     MODAL_OPEN_TYPE.ADD,
   );
-
-  if (schedules === undefined) {
-    return null;
-  }
+  const [dailyModalDate, setDailyModalDate] = useState<Date>(new Date());
+  const [dailyModalPosition, setDailyModalPosition] = useState<Position>({
+    row: 0,
+    column: 0,
+  });
   const scheduleBars = generateScheduleBars(year, month, schedules);
 
   const handleModalOpen = (modalOpenType: ModalOpenType) => {
     setModalType(() => modalOpenType);
+    openModal();
+  };
+
+  const handleDailyScheduleModalOpen = (
+    day: Date,
+    row: number,
+    col: number,
+  ) => {
+    setModalType(() => MODAL_OPEN_TYPE.DAILY);
+    setDailyModalDate(() => day);
+    setDailyModalPosition({
+      row,
+      column: col,
+    });
     openModal();
   };
 
@@ -119,13 +135,21 @@ const Calendar = () => {
                     })}
                   </S.ScheduleBarContainer>
                   <S.DateView>
-                    {week.map((day) => {
+                    {week.map((day, colIndex) => {
                       return (
                         <DateCell
                           key={day.toISOString()}
                           rawDate={day}
                           currentMonth={month}
                           onClick={() => handleModalOpen(MODAL_OPEN_TYPE.ADD)}
+                          onDayClick={(e) => {
+                            e.stopPropagation();
+                            handleDailyScheduleModalOpen(
+                              day,
+                              rowIndex,
+                              colIndex,
+                            );
+                          }}
                         />
                       );
                     })}
@@ -153,6 +177,14 @@ const Calendar = () => {
           initialSchedule={schedules.find(
             (schedule) => schedule.id === modalScheduleId,
           )}
+        />
+      )}
+      {isModalOpen && modalType === MODAL_OPEN_TYPE.DAILY && (
+        <DailyScheduleModal
+          rawDate={dailyModalDate}
+          position={dailyModalPosition}
+          onScheduleModalOpen={handleScheduleModalOpen}
+          onSetModalType={() => setModalType(() => MODAL_OPEN_TYPE.VIEW)}
         />
       )}
     </>

@@ -5,12 +5,15 @@ export const fetchSchedules = (
   teamPlaceId: number,
   year: number,
   month: number,
+  day?: number,
 ) => {
+  const query = day
+    ? `year=${year}&month=${month}&day=${day}`
+    : `year=${year}&month=${month}`;
+
   return http.get<{
     schedules: Schedule[];
-  }>(
-    `/api/team-place/${teamPlaceId}/calendar/schedules?year=${year}&month=${month}`,
-  );
+  }>(`/api/team-place/${teamPlaceId}/calendar/schedules?${query}`);
 };
 
 export const fetchScheduleById = (teamPlaceId: number, scheduleId: number) => {
