@@ -55,7 +55,7 @@ public class ScheduleService {
                 .orElseThrow(() -> new ScheduleException.ScheduleNotFoundException("조회한 일정이 존재하지 않습니다."));
         validateScheduleOwnerTeam(teamPlaceId, schedule);
 
-        return ScheduleResponse.of(schedule);
+        return ScheduleResponse.from(schedule);
     }
 
     private void validateScheduleOwnerTeam(final Long teamPlaceId, final Schedule schedule) {
