@@ -47,7 +47,7 @@ import static team.teamby.teambyteam.fixtures.ScheduleFixtures.Schedule1_N_Hour;
 
 @AutoConfigureRestDocs
 @WebMvcTest(TeamCalendarScheduleController.class)
-public class ScheduleApiDocsTest {
+public class TeamCalendarScheduleApiDocsTest {
 
     private static final String AUTHORIZATION_HEADER_KEY = HttpHeaders.AUTHORIZATION;
     private static final String AUTHORIZATION_HEADER_VALUE = "Bearer aaaa.bbbb.cccc";

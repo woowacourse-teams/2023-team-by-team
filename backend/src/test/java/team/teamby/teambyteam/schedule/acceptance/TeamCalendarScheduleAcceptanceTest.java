@@ -20,7 +20,6 @@ import team.teamby.teambyteam.fixtures.ScheduleFixtures;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleResponse;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleUpdateRequest;
-import team.teamby.teambyteam.schedule.application.dto.ScheduleWithTeamPlaceIdResponse;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -31,7 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static team.teamby.teambyteam.fixtures.ScheduleFixtures.Schedule1_N_Hour;
 
-public class ScheduleAcceptanceTest extends AcceptanceTest {
+public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -43,7 +42,7 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
     private static final String REQUEST_END_DATE_KEY = "endDateTime";
 
     @Nested
-    @DisplayName("팀플레이스 내 특정 일정 조회")
+    @DisplayName("팀 캘린더 내 특정 일정 조회")
     class FindTeamPlaceSpecificSchedule {
 
         @Test
@@ -109,8 +108,8 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
     }
 
     @Nested
-    @DisplayName("팀플래이스 내 기간 일정 조회 시")
-    class FindTeamPlaceScheduleInPeriod {
+    @DisplayName("팀 캘린더 내 기간 일정 조회 시")
+    class FindTeamCalendarScheduleInPeriod {
 
         @Test
         @DisplayName("기간으로 조회 성공한다.")
@@ -553,34 +552,6 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
         }
     }
 
-    @Nested
-    @DisplayName("개인 일정 조회를 한다")
-    class MyCalendarFindSchedule {
-
-        @Test
-        @DisplayName("기간으로 조회 성공한다.")
-        void success() {
-            // given
-            final int year = 2023;
-            final int month = 6;
-
-            // when
-            final ExtractableResponse<Response> response = requestMySchedulesInPeriod(year, month);
-            final List<ScheduleWithTeamPlaceIdResponse> schedules = response.jsonPath().getList("schedules", ScheduleWithTeamPlaceIdResponse.class);
-
-            //then
-            assertSoftly(softly -> {
-                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-                softly.assertThat(schedules).hasSize(5);
-                softly.assertThat(schedules.get(0).title()).isEqualTo("3번 팀플 6월 첫날");
-                softly.assertThat(schedules.get(1).title()).isEqualTo("1번 팀플 6월 일정");
-                softly.assertThat(schedules.get(2).title()).isEqualTo("3번 팀플 A");
-                softly.assertThat(schedules.get(3).title()).isEqualTo("1번 팀플 장기 일정");
-                softly.assertThat(schedules.get(4).title()).isEqualTo("3번 팀플 B");
-            });
-        }
-
-    }
 
     private ExtractableResponse<Response> registerScheduleRequest(final Long teamPlaceId, final ScheduleRegisterRequest request) {
         return RestAssured.given().log().all()
@@ -622,17 +593,6 @@ public class ScheduleAcceptanceTest extends AcceptanceTest {
                 .queryParam("day", day)
                 .when().log().all()
                 .get("/api/team-place/{teamPlaceId}/calendar/daily-schedules")
-                .then().log().all()
-                .extract();
-    }
-
-    private ExtractableResponse<Response> requestMySchedulesInPeriod(final Integer year, final Integer month) {
-        return RestAssured.given().log().all()
-                .header(new Header("Authorization", JWT_PREFIX + JWT_TOKEN))
-                .queryParam("year", year)
-                .queryParam("month", month)
-                .when().log().all()
-                .get("/api/my-calendar/schedules")
                 .then().log().all()
                 .extract();
     }
