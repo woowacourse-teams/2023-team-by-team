@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import IntegratedCalendar from '~/components/IntegratedCalendar/IntegratedCalendar';
 
 const meta = {
-  title: 'Calender/IntegratedCalendar',
+  title: 'Calendar/IntegratedCalendar',
   component: IntegratedCalendar,
   tags: ['autodocs'],
 } satisfies Meta<typeof IntegratedCalendar>;
