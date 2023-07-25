@@ -1,5 +1,5 @@
 import { useModal } from '~/hooks/useModal';
-import * as S from './DayScheduleModal.styled';
+import * as S from './DailyScheduleModal.styled';
 import Modal from '~/components/common/Modal/Modal';
 import { CloseIcon } from '~/assets/svg';
 import Button from '~/components/common/Button/Button';
@@ -9,7 +9,7 @@ import { useFetchOneDaySchedules } from '~/hooks/queries/useFetchOneDaySchedules
 import type { Position, SchedulePosition } from '~/types/schedule';
 import type { CSSProperties } from 'react';
 
-export interface DayScheduleModalProps {
+export interface DailyScheduleModalProps {
   position: Position;
   rawDate: Date;
   onScheduleModalOpen: ({
@@ -24,7 +24,7 @@ export interface DayScheduleModalProps {
   color?: string;
 }
 
-const DayScheduleModal = (props: DayScheduleModalProps) => {
+const DailyScheduleModal = (props: DailyScheduleModalProps) => {
   const {
     color = '#516FFF',
     rawDate,
@@ -99,4 +99,4 @@ const DayScheduleModal = (props: DayScheduleModalProps) => {
   );
 };
 
-export default DayScheduleModal;
+export default DailyScheduleModal;

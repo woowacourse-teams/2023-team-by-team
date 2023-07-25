@@ -20,8 +20,7 @@ import ScheduleMoreCell from '~/components/ScheduleMoreCell/ScheduleMoreCell';
 =======
 >>>>>>> b43eeac (feat: 하루 일정 모달과 일정 조회 모달 연결)
 import type { Position, ModalOpenType } from '~/types/schedule';
-import type { MouseEventHandler } from 'react';
-import DayScheduleModal from '~/components/DayScheduleModal/DayScheduleModal';
+import DayScheduleModal from '~/components/DailyScheduleModal/DailyScheduleModal';
 
 const Calendar = () => {
   const {
@@ -52,13 +51,8 @@ const Calendar = () => {
     openModal();
   };
 
-  const handleStopPropagation: MouseEventHandler<HTMLDivElement> = (event) => {
-    event.stopPropagation();
-    console.log('click');
-  };
-
   const handleDayScheduleModalOpen = (day: Date, row: number, col: number) => {
-    setModalType(() => MODAL_OPEN_TYPE.ONE_DAY);
+    setModalType(() => MODAL_OPEN_TYPE.DAILY);
     setDayModalDate(() => day);
     setDayModalPosition({
       row,
@@ -148,7 +142,7 @@ const Calendar = () => {
                           currentMonth={month}
                           onClick={() => handleModalOpen(MODAL_OPEN_TYPE.ADD)}
                           onDayClick={(e) => {
-                            handleStopPropagation(e);
+                            e.stopPropagation();
                             handleDayScheduleModalOpen(day, rowIndex, colIndex);
                           }}
                         />
@@ -180,7 +174,7 @@ const Calendar = () => {
           )}
         />
       )}
-      {isModalOpen && modalType === MODAL_OPEN_TYPE.ONE_DAY && (
+      {isModalOpen && modalType === MODAL_OPEN_TYPE.DAILY && (
         <DayScheduleModal
           rawDate={dayModalDate}
           position={dayModalPosition}

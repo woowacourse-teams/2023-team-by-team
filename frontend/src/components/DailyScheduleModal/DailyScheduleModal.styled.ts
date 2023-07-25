@@ -1,5 +1,5 @@
 import { css, styled } from 'styled-components';
-import type { DayScheduleModalProps } from '~/components/DayScheduleModal/DayScheduleModal';
+import type { DailyScheduleModalProps } from '~/components/DailyScheduleModal/DailyScheduleModal';
 
 export const Backdrop = styled.div`
   position: fixed;
@@ -54,7 +54,7 @@ export const ScheduleWrapper = styled.div`
   gap: 10px;
 `;
 
-export const ScheduleBox = styled.div<Pick<DayScheduleModalProps, 'color'>>`
+export const ScheduleBox = styled.div<Pick<DailyScheduleModalProps, 'color'>>`
   display: flex;
   justify-content: center;
   align-items: center;

@@ -11,5 +11,5 @@ export const MODAL_OPEN_TYPE = {
   ADD: 'add',
   VIEW: 'view',
   EDIT: 'edit',
-  ONE_DAY: 'oneDay',
+  DAILY: 'daily',
 } as const;

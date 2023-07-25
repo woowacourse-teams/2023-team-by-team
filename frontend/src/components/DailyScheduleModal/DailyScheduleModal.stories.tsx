@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import DayScheduleModal from '~/components/DayScheduleModal/DayScheduleModal';
+import DailyScheduleModal from '~/components/DailyScheduleModal/DailyScheduleModal';
 import Button from '~/components/common/Button/Button';
 import { useModal } from '~/hooks/useModal';
 import type { SchedulePosition } from '~/types/schedule';
 
 const meta = {
-  title: 'DayScheduleModal',
-  component: DayScheduleModal,
-} satisfies Meta<typeof DayScheduleModal>;
+  title: 'DailyScheduleModal',
+  component: DailyScheduleModal,
+} satisfies Meta<typeof DailyScheduleModal>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -19,7 +19,7 @@ export const Default: Story = {
     return (
       <>
         <Button onClick={openModal}>모달 열기</Button>
-        <DayScheduleModal
+        <DailyScheduleModal
           onSetModalType={() => console.log('hi')}
           rawDate={new Date()}
           position={{ row: 0, column: 0 }}
