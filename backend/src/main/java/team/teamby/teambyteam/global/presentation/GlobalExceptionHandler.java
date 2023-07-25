@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
+import java.time.DateTimeException;
 import java.time.format.DateTimeParseException;
 
 @RestControllerAdvice
@@ -25,8 +26,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(defaultErrorMessage);
     }
 
-    @ExceptionHandler(DateTimeParseException.class)
-    public ResponseEntity<String> handleDateTimeParseException(final DateTimeParseException exception) {
+    @ExceptionHandler(value = {
+            DateTimeParseException.class,
+            DateTimeException.class
+    })
+    public ResponseEntity<String> handleDateTimeParseException(final DateTimeException exception) {
         log.warn(exception.getMessage(), exception);
 
         return ResponseEntity.badRequest().body("DateTime 형식이 잘못되었습니다. 서버 관리자에게 문의해주세요.");
