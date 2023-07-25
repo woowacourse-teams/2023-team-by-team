@@ -93,7 +93,7 @@ const Calendar = () => {
                         return (
                           <ScheduleBar
                             key={id}
-                            onScheduleModalOpen={() => {
+                            onClick={() => {
                               setModalType(() => MODAL_OPEN_TYPE.VIEW);
                               handleScheduleModalOpen({
                                 scheduleId,

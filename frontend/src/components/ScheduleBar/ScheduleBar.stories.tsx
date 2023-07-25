@@ -20,6 +20,6 @@ export const Default: Story = {
     column: 2,
     duration: 3,
     level: 0,
-    onScheduleModalOpen: () => console.log('click'),
+    onClick: () => alert('clicked!'),
   },
 };

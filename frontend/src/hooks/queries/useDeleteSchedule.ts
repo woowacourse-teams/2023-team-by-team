@@ -18,5 +18,5 @@ export const useDeleteSchedule = (scheduleId: number) => {
     },
   );
 
-  return { mutateScheduleDelete: mutate };
+  return { mutateDeleteSchedule: mutate };
 };

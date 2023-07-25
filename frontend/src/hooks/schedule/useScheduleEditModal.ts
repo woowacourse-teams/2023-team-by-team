@@ -2,7 +2,9 @@ import type { ChangeEventHandler, FormEventHandler } from 'react';
 import { useState } from 'react';
 import { useModifySchedule } from '~/hooks/queries/useModifySchedule';
 import { useModal } from '~/hooks/useModal';
-import type { Schedule, ScheduleWithoutId } from '~/types/schedule';
+import { isYYYYMMDDHHMM } from '~/types/typeGuard';
+import { formatISOString } from '~/utils/formatISOString';
+import type { Schedule } from '~/types/schedule';
 
 const useScheduleEditModal = (
   scheduleId: Schedule['id'],
@@ -34,19 +36,23 @@ const useScheduleEditModal = (
     )
       return;
 
+    const formattedStartDateTime = formatISOString(startDateTime);
+    const formattedEndDateTime = formatISOString(endDateTime);
+
+    if (
+      !isYYYYMMDDHHMM(formattedStartDateTime) ||
+      !isYYYYMMDDHHMM(formattedEndDateTime)
+    ) {
+      return;
+    }
+
     mutateModifySchedule(
       {
         teamPlaceId: 1,
         body: {
           title,
-          startDateTime: startDateTime.replace(
-            'T',
-            ' ',
-          ) as ScheduleWithoutId['startDateTime'],
-          endDateTime: endDateTime.replace(
-            'T',
-            ' ',
-          ) as ScheduleWithoutId['endDateTime'],
+          startDateTime: formattedStartDateTime,
+          endDateTime: formattedEndDateTime,
         },
       },
       {

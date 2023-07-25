@@ -20,7 +20,7 @@ const ScheduleModal = (props: ScheduleModalProps) => {
   const { scheduleId, position, onOpenScheduleEditModal } = props;
   const { closeModal } = useModal();
   const { scheduleById } = useFetchScheduleById(1, scheduleId);
-  const { mutateScheduleDelete } = useDeleteSchedule(scheduleId);
+  const { mutateDeleteSchedule } = useDeleteSchedule(scheduleId);
 
   if (scheduleById === undefined) return;
 
@@ -36,7 +36,7 @@ const ScheduleModal = (props: ScheduleModalProps) => {
 
   const handleScheduleDelete = () => {
     if (confirm('일정을 삭제하시겠어요?')) {
-      mutateScheduleDelete(1, {
+      mutateDeleteSchedule(1, {
         onSuccess: () => closeModal(),
       });
     }
