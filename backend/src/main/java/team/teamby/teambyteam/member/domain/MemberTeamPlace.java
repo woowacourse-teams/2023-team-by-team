@@ -1,13 +1,13 @@
 package team.teamby.teambyteam.member.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
 @Getter
 @Entity
-@AllArgsConstructor
+@NoArgsConstructor
 public class MemberTeamPlace {
 
     @Id
@@ -21,9 +21,6 @@ public class MemberTeamPlace {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private TeamPlace teamPlace;
-
-    public MemberTeamPlace() {
-    }
 
     public void setMemberAndTeamPlace(final Member member, final TeamPlace teamPlace) {
         this.member = member;
