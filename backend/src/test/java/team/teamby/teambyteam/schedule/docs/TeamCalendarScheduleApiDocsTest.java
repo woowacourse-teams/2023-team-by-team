@@ -2,6 +2,7 @@ package team.teamby.teambyteam.schedule.docs;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -47,6 +49,9 @@ import static team.teamby.teambyteam.fixtures.ScheduleFixtures.Schedule1_N_Hour;
 
 @AutoConfigureRestDocs
 @WebMvcTest(TeamCalendarScheduleController.class)
+@MockBean(value = {
+        JpaMetamodelMappingContext.class
+})
 public class TeamCalendarScheduleApiDocsTest {
 
     private static final String AUTHORIZATION_HEADER_KEY = HttpHeaders.AUTHORIZATION;
@@ -70,6 +75,14 @@ public class TeamCalendarScheduleApiDocsTest {
     @MockBean
     private TeamPlaceInterceptor teamPlaceInterceptor;
 
+    @BeforeEach
+    void setup() throws Exception {
+            given(memberInterceptor.preHandle(any(), any(), any()))
+                    .willReturn(true);
+            given(teamPlaceInterceptor.preHandle(any(), any(), any()))
+                    .willReturn(true);
+    }
+
     @Nested
     @DisplayName("일정 등록 문서화")
     class RegisterScheduleDocs {
@@ -83,10 +96,6 @@ public class TeamCalendarScheduleApiDocsTest {
             final Long registeredId = 1L;
             given(teamCalendarScheduleService.register(request, teamPlaceId))
                     .willReturn(registeredId);
-            given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
-            given(teamPlaceInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
 
             // when & then
             mockMvc.perform(post("/api/team-place/{teamPlaceId}/calendar/schedules", teamPlaceId)
@@ -125,10 +134,6 @@ public class TeamCalendarScheduleApiDocsTest {
                     .given(teamCalendarScheduleService)
                     .register(any(ScheduleRegisterRequest.class), eq(teamPlaceId));
 
-            given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
-            given(teamPlaceInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
 
             // when & then
             mockMvc.perform(post("/api/team-place/{teamPlaceId}/calendar/schedules", teamPlaceId)
@@ -161,10 +166,6 @@ public class TeamCalendarScheduleApiDocsTest {
                     .given(teamCalendarScheduleService)
                     .register(any(ScheduleRegisterRequest.class), eq(teamPlaceId));
 
-            given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
-            given(teamPlaceInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
 
             // when & then
             mockMvc.perform(post("/api/team-place/{teamPlaceId}/calendar/schedules", teamPlaceId)
@@ -190,10 +191,6 @@ public class TeamCalendarScheduleApiDocsTest {
                     .given(teamCalendarScheduleService)
                     .register(any(), eq(notExistTeamPlaceId));
 
-            given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
-            given(teamPlaceInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
 
             // when & then
             mockMvc.perform(post("/api/team-place/{teamPlaceId}/calendar/schedules", notExistTeamPlaceId)
@@ -222,10 +219,6 @@ public class TeamCalendarScheduleApiDocsTest {
             willThrow(new ScheduleException.SpanWrongOrderException())
                     .given(teamCalendarScheduleService)
                     .register(request, teamPlaceId);
-            given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
-            given(teamPlaceInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
 
             // when & then
             mockMvc.perform(post("/api/team-place/{teamPlaceId}/calendar/schedules", teamPlaceId)
@@ -254,10 +247,6 @@ public class TeamCalendarScheduleApiDocsTest {
             final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
             final Long id = Schedule1_N_Hour.ID;
             willDoNothing().given(teamCalendarScheduleService).update(request, teamPlaceId, id);
-            given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
-            given(teamPlaceInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
 
             // when & then
             mockMvc.perform(patch("/api/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}", teamPlaceId, id)
@@ -297,10 +286,6 @@ public class TeamCalendarScheduleApiDocsTest {
                     .given(teamCalendarScheduleService)
                     .update(any(ScheduleUpdateRequest.class), eq(teamPlaceId), eq(id));
 
-            given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
-            given(teamPlaceInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
 
             // when & then
             mockMvc.perform(patch("/api/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}", teamPlaceId, id)
@@ -334,10 +319,6 @@ public class TeamCalendarScheduleApiDocsTest {
                     .given(teamCalendarScheduleService)
                     .update(any(ScheduleUpdateRequest.class), eq(teamPlaceId), eq(id));
 
-            given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
-            given(teamPlaceInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
 
             // when & then
             mockMvc.perform(patch("/api/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}", teamPlaceId, id)
@@ -364,10 +345,6 @@ public class TeamCalendarScheduleApiDocsTest {
                     .given(teamCalendarScheduleService)
                     .update(any(), eq(notExistTeamPlaceId), eq(id));
 
-            given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
-            given(teamPlaceInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
 
             // when & then
             mockMvc.perform(patch("/api/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}", notExistTeamPlaceId, id)
@@ -397,10 +374,6 @@ public class TeamCalendarScheduleApiDocsTest {
             willThrow(new ScheduleException.SpanWrongOrderException())
                     .given(teamCalendarScheduleService)
                     .update(request, teamPlaceId, id);
-            given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
-            given(teamPlaceInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
 
             // when & then
             mockMvc.perform(patch("/api/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}", teamPlaceId, id)
@@ -427,10 +400,6 @@ public class TeamCalendarScheduleApiDocsTest {
                     .given(teamCalendarScheduleService)
                     .update(any(), eq(teamPlaceId), eq(notExistScheduleId));
 
-            given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
-            given(teamPlaceInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
 
             // when & then
             mockMvc.perform(patch("/api/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}", teamPlaceId, notExistScheduleId)
