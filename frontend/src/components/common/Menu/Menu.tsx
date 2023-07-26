@@ -16,11 +16,20 @@ const Menu = (props: MenuProps) => {
     setIsOpen((prev) => !prev);
   };
 
-  useClickOutside(menuRef, handleMenuOpen);
+  useClickOutside(menuRef, (e: Event) => {
+    const { target } = e;
+
+    if (target instanceof HTMLButtonElement) {
+      return;
+    }
+
+    handleMenuOpen();
+  });
 
   return (
     <>
       <Button
+        type="button"
         aria-haspopup="true"
         aria-expanded={isOpen}
         onClick={handleMenuOpen}

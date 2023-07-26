@@ -3,12 +3,12 @@ import type { RefObject, MutableRefObject } from 'react';
 
 const useClickOutside = <T extends HTMLElement>(
   ref: RefObject<T> | MutableRefObject<T>,
-  callback: () => void,
+  callback: EventListener,
 ) => {
   useEffect(() => {
     const handleClickOutside = (e: Event) => {
       if (ref.current && !ref.current.contains(e.target as Node)) {
-        callback();
+        callback(e);
       }
     };
 
