@@ -31,14 +31,14 @@ public class MyCalendarScheduleService {
             final int targetMonth
     ) {
         final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(() -> new MemberException.MemberNotFoundException("사용자를 찾을 수 없습니다."));
+                .orElseThrow(MemberException.MemberNotFoundException::new);
 
         final List<Long> participatedTeamPlaceIds = member.getTeamPlaces()
                 .stream()
                 .map(TeamPlace::getId)
                 .toList();
 
-        final CalendarPeriod period = CalendarPeriod.createPeriod(targetYear, targetMonth);
+        final CalendarPeriod period = CalendarPeriod.of(targetYear, targetMonth);
         final List<Schedule> schedules = scheduleRepository
                 .findAllByTeamPlaceIdAndPeriod(participatedTeamPlaceIds, period.startDateTime(), period.endDatetime());
 

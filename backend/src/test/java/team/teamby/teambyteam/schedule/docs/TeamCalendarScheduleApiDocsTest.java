@@ -121,7 +121,7 @@ public class TeamCalendarScheduleApiDocsTest {
             final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
             final String blankTitle = " ";
             ScheduleUpdateRequest request = new ScheduleUpdateRequest(blankTitle, Schedule1_N_Hour.START_DATE_TIME, Schedule1_N_Hour.END_DATE_TIME);
-            willThrow(new ScheduleException.TitleBlankException("제목은 빈 값일 수 없습니다."))
+            willThrow(new ScheduleException.TitleBlankException())
                     .given(teamCalendarScheduleService)
                     .register(any(ScheduleRegisterRequest.class), eq(teamPlaceId));
 
@@ -186,7 +186,7 @@ public class TeamCalendarScheduleApiDocsTest {
             // given
             final Long notExistTeamPlaceId = -1L;
             ScheduleRegisterRequest request = Schedule1_N_Hour.REQUEST;
-            willThrow(new TeamPlaceException.NotFoundException("ID에 해당하는 팀 플레이스를 찾을 수 없습니다."))
+            willThrow(new TeamPlaceException.NotFoundException())
                     .given(teamCalendarScheduleService)
                     .register(any(), eq(notExistTeamPlaceId));
 
@@ -219,7 +219,7 @@ public class TeamCalendarScheduleApiDocsTest {
             final LocalDateTime wrongEndDateTime = ScheduleFixtures.Schedule1_N_Hour.START_DATE_TIME.minusDays(1);
             final ScheduleRegisterRequest request = new ScheduleRegisterRequest(title, startDateTime, wrongEndDateTime);
 
-            willThrow(new ScheduleException.SpanWrongOrderException("시작 일자가 종료 일자보다 이후일 수 없습니다."))
+            willThrow(new ScheduleException.SpanWrongOrderException())
                     .given(teamCalendarScheduleService)
                     .register(request, teamPlaceId);
             given(memberInterceptor.preHandle(any(), any(), any()))
@@ -293,7 +293,7 @@ public class TeamCalendarScheduleApiDocsTest {
             final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
             final String blankTitle = " ";
             ScheduleUpdateRequest request = new ScheduleUpdateRequest(blankTitle, Schedule1_N_Hour.START_DATE_TIME, Schedule1_N_Hour.END_DATE_TIME);
-            willThrow(new ScheduleException.TitleBlankException("제목은 빈 값일 수 없습니다."))
+            willThrow(new ScheduleException.TitleBlankException())
                     .given(teamCalendarScheduleService)
                     .update(any(ScheduleUpdateRequest.class), eq(teamPlaceId), eq(id));
 
@@ -360,7 +360,7 @@ public class TeamCalendarScheduleApiDocsTest {
             final Long id = Schedule1_N_Hour.ID;
             final Long notExistTeamPlaceId = -1L;
             ScheduleRegisterRequest request = Schedule1_N_Hour.REQUEST;
-            willThrow(new TeamPlaceException.NotFoundException("ID에 해당하는 팀 플레이스를 찾을 수 없습니다."))
+            willThrow(new TeamPlaceException.NotFoundException())
                     .given(teamCalendarScheduleService)
                     .update(any(), eq(notExistTeamPlaceId), eq(id));
 
@@ -394,7 +394,7 @@ public class TeamCalendarScheduleApiDocsTest {
             final LocalDateTime wrongEndDateTime = ScheduleFixtures.Schedule1_N_Hour.START_DATE_TIME.minusDays(1);
             final ScheduleUpdateRequest request = new ScheduleUpdateRequest(title, startDateTime, wrongEndDateTime);
 
-            willThrow(new ScheduleException.SpanWrongOrderException("시작 일자가 종료 일자보다 이후일 수 없습니다."))
+            willThrow(new ScheduleException.SpanWrongOrderException())
                     .given(teamCalendarScheduleService)
                     .update(request, teamPlaceId, id);
             given(memberInterceptor.preHandle(any(), any(), any()))
@@ -423,7 +423,7 @@ public class TeamCalendarScheduleApiDocsTest {
             final Long notExistScheduleId = -1L;
             final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
             ScheduleRegisterRequest request = Schedule1_N_Hour.REQUEST;
-            willThrow(new ScheduleException.ScheduleNotFoundException("ID에 해당하는 일정을 찾을 수 없습니다."))
+            willThrow(new ScheduleException.ScheduleNotFoundException())
                     .given(teamCalendarScheduleService)
                     .update(any(), eq(teamPlaceId), eq(notExistScheduleId));
 

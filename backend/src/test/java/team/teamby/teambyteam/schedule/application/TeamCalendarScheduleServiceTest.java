@@ -6,9 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.transaction.annotation.Transactional;
+import team.teamby.teambyteam.common.ServiceTest;
 import team.teamby.teambyteam.fixtures.ScheduleFixtures;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleResponse;
@@ -28,10 +26,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static team.teamby.teambyteam.fixtures.ScheduleFixtures.Schedule1_N_Hour;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@Transactional
-@Sql({"/h2-reset-pk.sql", "/h2-data.sql"})
-public class TeamCalendarScheduleServiceTest {
+public class TeamCalendarScheduleServiceTest extends ServiceTest {
 
     @Autowired
     private TeamCalendarScheduleService teamCalendarScheduleService;
@@ -150,7 +145,7 @@ public class TeamCalendarScheduleServiceTest {
     @Nested
     @DisplayName("팀 캘린더 하루 일정 조회 시")
     class FindTeamCalendarDailySchedule {
-        
+
         @Test
         @DisplayName("팀 캘린더 하루 일정 조회를 성공한다.")
         void success() {
@@ -252,11 +247,9 @@ public class TeamCalendarScheduleServiceTest {
             // when & then
             assertThatThrownBy(() -> teamCalendarScheduleService.findDailySchedule(notExistTeamPlaceId, year, month, day))
                     .isInstanceOf(TeamPlaceException.NotFoundException.class)
-                    .hasMessage("ID에 해당하는 팀 플레이스를 찾을 수 없습니다.");
+                    .hasMessage("조회한 팀 플레이스가 존재하지 않습니다.");
         }
     }
-
-
 
     @Nested
     @DisplayName("일정 등록 시")
@@ -302,7 +295,7 @@ public class TeamCalendarScheduleServiceTest {
             // when & then
             assertThatThrownBy(() -> teamCalendarScheduleService.register(request, notExistTeamPlaceId))
                     .isInstanceOf(TeamPlaceException.NotFoundException.class)
-                    .hasMessage("ID에 해당하는 팀 플레이스를 찾을 수 없습니다.");
+                    .hasMessage("조회한 팀 플레이스가 존재하지 않습니다.");
         }
     }
 
@@ -324,6 +317,7 @@ public class TeamCalendarScheduleServiceTest {
 
             // then
             assertThat(updatedSchedule).usingRecursiveComparison()
+                    .ignoringFields("id")
                     .isEqualTo(Schedule1_N_Hour.UPDATE_ENTITY());
         }
 
@@ -372,7 +366,7 @@ public class TeamCalendarScheduleServiceTest {
             // when & then
             assertThatThrownBy(() -> teamCalendarScheduleService.update(request, notExistTeamPlaceId, id))
                     .isInstanceOf(TeamPlaceException.NotFoundException.class)
-                    .hasMessage("ID에 해당하는 팀 플레이스를 찾을 수 없습니다.");
+                    .hasMessage("조회한 팀 플레이스가 존재하지 않습니다.");
         }
 
         @Test
@@ -386,7 +380,7 @@ public class TeamCalendarScheduleServiceTest {
             // when & then
             assertThatThrownBy(() -> teamCalendarScheduleService.update(request, teamPlaceId, notExistScheduleId))
                     .isInstanceOf(ScheduleException.ScheduleNotFoundException.class)
-                    .hasMessage("ID에 해당하는 일정을 찾을 수 없습니다.");
+                    .hasMessage("조회한 일정이 존재하지 않습니다.");
         }
     }
 
@@ -418,7 +412,7 @@ public class TeamCalendarScheduleServiceTest {
             // when & then
             assertThatThrownBy(() -> teamCalendarScheduleService.delete(notExistTramPlaceId, existScheduleId))
                     .isInstanceOf(TeamPlaceException.NotFoundException.class)
-                    .hasMessage("ID에 해당하는 팀 플레이스를 찾을 수 없습니다.");
+                    .hasMessage("조회한 팀 플레이스가 존재하지 않습니다.");
         }
 
         @Test
@@ -431,7 +425,7 @@ public class TeamCalendarScheduleServiceTest {
             // when & then
             assertThatThrownBy(() -> teamCalendarScheduleService.delete(existTramPlaceId, notExistScheduleId))
                     .isInstanceOf(ScheduleException.ScheduleNotFoundException.class)
-                    .hasMessage("ID에 해당하는 일정을 찾을 수 없습니다.");
+                    .hasMessage("조회한 일정이 존재하지 않습니다.");
         }
     }
 }

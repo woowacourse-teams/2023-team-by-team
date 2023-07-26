@@ -1,8 +1,9 @@
-package team.teamby.teambyteam.schedule.domain;
+package team.teamby.teambyteam.schedule.domain.vo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 
 @Embeddable
 @Getter
+@EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Span {
 
@@ -28,7 +30,7 @@ public class Span {
 
     private void validateDateTimeOrder(final LocalDateTime startDateTime, final LocalDateTime endDateTime) {
         if (startDateTime.isAfter(endDateTime)) {
-            throw new ScheduleException.SpanWrongOrderException("시작 일자가 종료 일자보다 이후일 수 없습니다.");
+            throw new ScheduleException.SpanWrongOrderException();
         }
     }
 

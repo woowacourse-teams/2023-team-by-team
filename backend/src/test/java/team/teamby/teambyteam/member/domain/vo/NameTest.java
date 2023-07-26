@@ -31,7 +31,7 @@ class NameTest {
         // when & then
         Assertions.assertThatThrownBy(() -> new Name(overLengthName))
                 .isInstanceOf(MemberException.NameLengthException.class)
-                .hasMessage("입력한 길이가 최대 이름 길이인 " + maxLength + "를 초과했습니다.");
+                .hasMessage("멤버 이름의 길이가 최대 이름 길이를 초과했습니다.");
     }
 
     @ParameterizedTest
@@ -40,7 +40,7 @@ class NameTest {
     void failNameIsBlank(final String blankName) {
         // when & then
         Assertions.assertThatThrownBy(() -> new Name(blankName))
-                .isInstanceOf(MemberException.NameLengthException.class)
-                .hasMessage("멤버 이름은 공백을 제외한 1자 이상이어야 합니다.");
+                .isInstanceOf(MemberException.NameBlankException.class)
+                .hasMessage("멤버 이름은 공백을 제외한 1자 이상이어야합니다.");
     }
 }

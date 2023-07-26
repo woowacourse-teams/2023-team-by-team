@@ -229,7 +229,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             // then
             assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
-                softly.assertThat(response.body().asString()).isEqualTo("ID에 해당하는 팀 플레이스를 찾을 수 없습니다.");
+                softly.assertThat(response.body().asString()).isEqualTo("조회한 팀 플레이스가 존재하지 않습니다.");
             });
         }
 
@@ -390,7 +390,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             // then
             assertSoftly(softly -> {
                 softly.assertThat(notExistTeamPlaceIdRequest.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
-                softly.assertThat(notExistTeamPlaceIdRequest.body().asString()).isEqualTo("ID에 해당하는 팀 플레이스를 찾을 수 없습니다.");
+                softly.assertThat(notExistTeamPlaceIdRequest.body().asString()).isEqualTo("조회한 팀 플레이스가 존재하지 않습니다.");
             });
         }
 
@@ -482,7 +482,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             // then
             assertSoftly(softly -> {
                 softly.assertThat(notExistTeamPlaceIdRequest.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
-                softly.assertThat(notExistTeamPlaceIdRequest.body().asString()).isEqualTo("ID에 해당하는 팀 플레이스를 찾을 수 없습니다.");
+                softly.assertThat(notExistTeamPlaceIdRequest.body().asString()).isEqualTo("조회한 팀 플레이스가 존재하지 않습니다.");
             });
         }
 
@@ -530,7 +530,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             // then
             assertSoftly(softly -> {
                 softly.assertThat(notExistTeamPlaceIdDeleteScheduleResponse.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
-                softly.assertThat(notExistTeamPlaceIdDeleteScheduleResponse.body().asString()).isEqualTo("ID에 해당하는 팀 플레이스를 찾을 수 없습니다.");
+                softly.assertThat(notExistTeamPlaceIdDeleteScheduleResponse.body().asString()).isEqualTo("조회한 팀 플레이스가 존재하지 않습니다.");
             });
         }
 
@@ -547,7 +547,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             // then
             assertSoftly(softly -> {
                 softly.assertThat(notExistScheduleIdDeleteResponse.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
-                softly.assertThat(notExistScheduleIdDeleteResponse.body().asString()).isEqualTo("ID에 해당하는 일정을 찾을 수 없습니다.");
+                softly.assertThat(notExistScheduleIdDeleteResponse.body().asString()).isEqualTo("조회한 일정이 존재하지 않습니다.");
             });
         }
     }

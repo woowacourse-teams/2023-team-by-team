@@ -8,7 +8,11 @@ import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleResponse;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleUpdateRequest;
 import team.teamby.teambyteam.schedule.application.dto.SchedulesResponse;
-import team.teamby.teambyteam.schedule.domain.*;
+import team.teamby.teambyteam.schedule.domain.CalendarPeriod;
+import team.teamby.teambyteam.schedule.domain.Schedule;
+import team.teamby.teambyteam.schedule.domain.ScheduleRepository;
+import team.teamby.teambyteam.schedule.domain.vo.Span;
+import team.teamby.teambyteam.schedule.domain.vo.Title;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceRepository;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
@@ -37,7 +41,7 @@ public class TeamCalendarScheduleService {
 
     private void checkTeamPlaceExist(final Long teamPlaceId) {
         if (notExistTeamPlace(teamPlaceId)) {
-            throw new TeamPlaceException.NotFoundException("ID에 해당하는 팀 플레이스를 찾을 수 없습니다.");
+            throw new TeamPlaceException.NotFoundException();
         }
     }
 
@@ -50,7 +54,7 @@ public class TeamCalendarScheduleService {
         checkTeamPlaceExist(teamPlaceId);
 
         final Schedule schedule = scheduleRepository.findById(scheduleId)
-                .orElseThrow(() -> new ScheduleException.ScheduleNotFoundException("조회한 일정이 존재하지 않습니다."));
+                .orElseThrow(ScheduleException.ScheduleNotFoundException::new);
         validateScheduleOwnerTeam(teamPlaceId, schedule);
 
         return ScheduleResponse.from(schedule);
@@ -58,7 +62,7 @@ public class TeamCalendarScheduleService {
 
     private void validateScheduleOwnerTeam(final Long teamPlaceId, final Schedule schedule) {
         if (isNotScheduleOfTeam(teamPlaceId, schedule)) {
-            throw new ScheduleException.TeamAccessForbidden("해당 팀플레이스에 일정을 조회할 권한이 없습니다.");
+            throw new ScheduleException.TeamAccessForbidden();
         }
     }
 
@@ -70,7 +74,7 @@ public class TeamCalendarScheduleService {
     public SchedulesResponse findScheduleInPeriod(final Long teamPlaceId, final int targetYear, final int targetMonth) {
         checkTeamPlaceExist(teamPlaceId);
 
-        final CalendarPeriod period = CalendarPeriod.createPeriod(targetYear, targetMonth);
+        final CalendarPeriod period = CalendarPeriod.of(targetYear, targetMonth);
         final List<Schedule> schedules = scheduleRepository
                 .findAllByTeamPlaceIdAndPeriod(teamPlaceId, period.startDateTime(), period.endDatetime());
 
@@ -86,7 +90,7 @@ public class TeamCalendarScheduleService {
     ) {
         checkTeamPlaceExist(teamPlaceId);
 
-        final CalendarPeriod dailyPeriod = CalendarPeriod.createDailyPeriod(targetYear, targetMonth, targetDay);
+        final CalendarPeriod dailyPeriod = CalendarPeriod.of(targetYear, targetMonth, targetDay);
         final List<Schedule> dailySchedules = scheduleRepository
                 .findAllByTeamPlaceIdAndDailyPeriod(teamPlaceId, dailyPeriod.startDateTime(), dailyPeriod.endDatetime());
 
@@ -97,7 +101,7 @@ public class TeamCalendarScheduleService {
         checkTeamPlaceExist(teamPlaceId);
 
         final Schedule schedule = scheduleRepository.findById(scheduleId)
-                .orElseThrow(() -> new ScheduleException.ScheduleNotFoundException("ID에 해당하는 일정을 찾을 수 없습니다."));
+                .orElseThrow(ScheduleException.ScheduleNotFoundException::new);
 
         schedule.change(scheduleUpdateRequest.title(),
                 scheduleUpdateRequest.startDateTime(), scheduleUpdateRequest.endDateTime());
@@ -111,7 +115,7 @@ public class TeamCalendarScheduleService {
 
     private void checkScheduleExist(final Long scheduleId) {
         if (notExistSchedule(scheduleId)) {
-            throw new ScheduleException.ScheduleNotFoundException("ID에 해당하는 일정을 찾을 수 없습니다.");
+            throw new ScheduleException.ScheduleNotFoundException();
         }
     }
 

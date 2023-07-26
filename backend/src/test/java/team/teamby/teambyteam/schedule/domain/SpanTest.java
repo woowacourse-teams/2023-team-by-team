@@ -2,6 +2,7 @@ package team.teamby.teambyteam.schedule.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import team.teamby.teambyteam.schedule.domain.vo.Span;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
 
 import java.time.LocalDateTime;

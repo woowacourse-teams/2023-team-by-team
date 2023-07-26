@@ -2,7 +2,6 @@ package team.teamby.teambyteam.member.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.teamby.teambyteam.member.domain.vo.Email;
@@ -10,12 +9,12 @@ import team.teamby.teambyteam.member.domain.vo.Name;
 import team.teamby.teambyteam.member.domain.vo.ProfileImageUrl;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Member {
 
     @Id
@@ -38,13 +37,12 @@ public class Member {
     public Member(
             final Name name,
             final Email email,
-            final ProfileImageUrl profileImageUrl,
-            final List<MemberTeamPlace> memberTeamPlaces
+            final ProfileImageUrl profileImageUrl
     ) {
         this.name = name;
         this.email = email;
         this.profileImageUrl = profileImageUrl;
-        this.memberTeamPlaces = memberTeamPlaces;
+        this.memberTeamPlaces = new ArrayList<>();
     }
 
     public List<TeamPlace> getTeamPlaces() {

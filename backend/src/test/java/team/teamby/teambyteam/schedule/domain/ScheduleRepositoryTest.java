@@ -5,10 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.jdbc.Sql;
+import team.teamby.teambyteam.common.RepositoryTest;
 import team.teamby.teambyteam.fixtures.ScheduleFixtures;
+import team.teamby.teambyteam.schedule.domain.vo.Title;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,10 +15,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Sql(value = {"/h2-reset-pk.sql", "/h2-data.sql"})
-public class ScheduleRepositoryTest {
+public class ScheduleRepositoryTest extends RepositoryTest {
 
     @Autowired
     private ScheduleRepository scheduleRepository;
