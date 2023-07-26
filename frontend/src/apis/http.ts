@@ -1,7 +1,7 @@
 const BASE_URL =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:3000'
-    : 'http://3.36.59.136:80';
+    : process.env.REACT_APP_BASE_URL;
 
 const options = {
   headers: {
