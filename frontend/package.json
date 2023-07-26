@@ -7,7 +7,7 @@
     "test": "jest --watchAll",
     "test:ci": "jest --ci",
     "start": "webpack serve --open",
-    "build": "webpack --mode production",
+    "build": "cross-env NODE_ENV=production webpack",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "prepare": "cd .. && husky install frontend/.husky && cd frontend"
@@ -34,6 +34,7 @@
     "@types/styled-components": "^5.1.26",
     "@typescript-eslint/eslint-plugin": "^5.61.0",
     "@typescript-eslint/parser": "^5.61.0",
+    "cross-env": "^7.0.3",
     "dotenv-webpack": "^8.0.1",
     "eslint": "^8.44.0",
     "eslint-config-prettier": "^8.8.0",
