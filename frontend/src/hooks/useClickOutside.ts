@@ -20,8 +20,6 @@ const useClickOutside = <T extends HTMLElement>(
       document.removeEventListener('touchstart', handleClickOutside);
     };
   }, [callback, ref]);
-
-  return;
 };
 
 export default useClickOutside;
