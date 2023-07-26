@@ -3,12 +3,13 @@ package team.teamby.teambyteam.member.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team.teamby.teambyteam.global.domain.BaseEntity;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
 @Getter
 @Entity
 @NoArgsConstructor
-public class MemberTeamPlace {
+public class MemberTeamPlace extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

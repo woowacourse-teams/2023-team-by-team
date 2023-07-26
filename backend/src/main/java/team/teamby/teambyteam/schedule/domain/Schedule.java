@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team.teamby.teambyteam.global.domain.BaseEntity;
 import team.teamby.teambyteam.schedule.domain.vo.Span;
 import team.teamby.teambyteam.schedule.domain.vo.Title;
 
@@ -13,7 +14,7 @@ import java.util.Objects;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Schedule {
+public class Schedule extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -317,7 +317,7 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
 
             // then
             assertThat(updatedSchedule).usingRecursiveComparison()
-                    .ignoringFields("id")
+                    .ignoringFields("id", "createdAt", "updatedAt")
                     .isEqualTo(Schedule1_N_Hour.UPDATE_ENTITY());
         }
 
