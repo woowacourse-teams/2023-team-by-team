@@ -1,7 +1,7 @@
-const BASE_URL =
-  process.env.NODE_ENV === 'development'
-    ? 'http://localhost:3000'
-    : process.env.REACT_APP_BASE_URL;
+// const BASE_URL =
+//   process.env.NODE_ENV === 'development'
+//     ? 'http://localhost:3000'
+//     : process.env.REACT_APP_BASE_URL;
 
 const options = {
   headers: {
@@ -12,7 +12,7 @@ const options = {
 
 export const http = {
   get: async <T>(url: RequestInfo | URL): Promise<T> => {
-    const response = await fetch(`${BASE_URL}${url}`, options);
+    const response = await fetch(url, options);
 
     if (!response.ok) {
       throw new Error('네트워크 통신 중 에러가 발생했습니다.');
@@ -22,7 +22,7 @@ export const http = {
   },
 
   post: async (url: RequestInfo | URL, body: unknown) => {
-    const response = await fetch(`${BASE_URL}${url}`, {
+    const response = await fetch(url, {
       method: 'POST',
       ...options,
       body: JSON.stringify(body),
@@ -36,7 +36,7 @@ export const http = {
   },
 
   patch: async (url: RequestInfo | URL, body: unknown) => {
-    const response = await fetch(`${BASE_URL}${url}`, {
+    const response = await fetch(url, {
       method: 'PATCH',
       ...options,
       body: JSON.stringify(body),
@@ -50,7 +50,7 @@ export const http = {
   },
 
   delete: async (url: RequestInfo | URL) => {
-    const response = await fetch(`${BASE_URL}${url}`, {
+    const response = await fetch(url, {
       method: 'DELETE',
       ...options,
     });
