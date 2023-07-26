@@ -16,11 +16,19 @@ const Menu = (props: MenuProps) => {
 
   return (
     <>
-      <Button onClick={handleMenuOpen}>메뉴 열기</Button>
+      <Button
+        aria-haspopup="true"
+        aria-expanded={isOpen}
+        onClick={handleMenuOpen}
+      >
+        메뉴 열기
+      </Button>
       {isOpen && (
-        <S.MenuWrapper>
+        <S.MenuWrapper role="menu">
           {menuItems.map((menuItem) => (
-            <S.MenuItem key={menuItem}>{menuItem}</S.MenuItem>
+            <S.MenuItem role="menuitem" key={menuItem}>
+              {menuItem}
+            </S.MenuItem>
           ))}
         </S.MenuWrapper>
       )}
