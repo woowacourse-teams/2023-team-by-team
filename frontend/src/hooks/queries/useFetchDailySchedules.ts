@@ -8,7 +8,7 @@ export const useFetchDailySchedules = (
   day: number,
 ) => {
   const { data } = useQuery(['dailySchedules', year, month, day], () =>
-    fetchSchedules(teamPlaceId, year, month, day),
+    fetchSchedules(teamPlaceId, year, month + 1, day),
   );
 
   if (data === undefined) return [];
