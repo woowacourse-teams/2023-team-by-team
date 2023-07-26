@@ -1,8 +1,3 @@
-// const BASE_URL =
-//   process.env.NODE_ENV === 'development'
-//     ? 'http://localhost:3000'
-//     : process.env.REACT_APP_BASE_URL;
-
 const options = {
   headers: {
     'Content-Type': 'application/json',
