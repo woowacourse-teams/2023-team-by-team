@@ -9,7 +9,7 @@ public record SchedulesResponse(
 ) {
     public static SchedulesResponse of(final List<Schedule> schedules) {
         return new SchedulesResponse(schedules.stream()
-                .map(ScheduleResponse::of)
+                .map(ScheduleResponse::from)
                 .toList()
         );
     }

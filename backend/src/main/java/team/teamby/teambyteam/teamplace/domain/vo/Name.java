@@ -1,16 +1,18 @@
-package team.teamby.teambyteam.teamplace.domain;
-
-import java.util.Objects;
+package team.teamby.teambyteam.teamplace.domain.vo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
+import java.util.Objects;
+
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode
 @Getter
 public class Name {
 
@@ -29,10 +31,10 @@ public class Name {
             throw new NullPointerException("팀 플레이스 이름은 null일 수 없습니다.");
         }
         if (value.length() > MAX_LENGTH) {
-            throw new TeamPlaceException.NameLengthException("입력한 길이가 최대 이름 길이인 " + MAX_LENGTH + "를 초과했습니다.");
+            throw new TeamPlaceException.NameLengthException();
         }
         if (value.isBlank()) {
-            throw new TeamPlaceException.NameLengthException("팀 플레이스 이름은 공백을 제외한 1자 이상이어야 합니다.");
+            throw new TeamPlaceException.NameBlankException();
         }
     }
 }

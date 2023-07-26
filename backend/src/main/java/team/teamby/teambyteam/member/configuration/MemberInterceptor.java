@@ -24,7 +24,7 @@ public final class MemberInterceptor implements HandlerInterceptor {
         final String token = jwtTokenExtractor.extractToken(request);
         final String email = jwtTokenProvider.extractEmailFromToken(token);
         if (notExistsByEmail(email)) {
-            throw new MemberException.MemberNotFoundException("멤버 조회 실패");
+            throw new MemberException.MemberNotFoundException();
         }
         return true;
     }

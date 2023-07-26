@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import team.teamby.teambyteam.member.configuration.AuthPrincipal;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
-import team.teamby.teambyteam.schedule.application.ScheduleService;
+import team.teamby.teambyteam.schedule.application.MyCalendarScheduleService;
 import team.teamby.teambyteam.schedule.application.dto.SchedulesWithTeamPlaceIdResponse;
 
 @RestController
@@ -16,7 +16,7 @@ import team.teamby.teambyteam.schedule.application.dto.SchedulesWithTeamPlaceIdR
 @RequestMapping("/api/my-calendar")
 public class MyCalendarScheduleController {
 
-    private final ScheduleService scheduleService;
+    private final MyCalendarScheduleService myCalendarScheduleService;
 
     @GetMapping("/schedules")
     public ResponseEntity<SchedulesWithTeamPlaceIdResponse> findSchedulesInPeriod(
@@ -24,7 +24,7 @@ public class MyCalendarScheduleController {
             @RequestParam final Integer year,
             @RequestParam final Integer month
     ) {
-        final SchedulesWithTeamPlaceIdResponse responseBody = scheduleService.findScheduleInPeriod(memberEmailDto, year, month);
+        final SchedulesWithTeamPlaceIdResponse responseBody = myCalendarScheduleService.findScheduleInPeriod(memberEmailDto, year, month);
 
         return ResponseEntity.ok(responseBody);
     }

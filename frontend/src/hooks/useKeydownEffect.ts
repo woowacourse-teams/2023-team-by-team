@@ -18,5 +18,5 @@ export const useKeydownEffect = (
     return () => {
       document.removeEventListener('keydown', handleKeydown);
     };
-  }, []);
+  }, [callback, triggerKey]);
 };

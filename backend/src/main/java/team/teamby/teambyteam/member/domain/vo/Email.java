@@ -33,7 +33,7 @@ public class Email {
         }
 
         if (isNotMatchEmailForm(value)) {
-            throw new MemberException.EmailRegexException("정해진 이메일의 양식이 아닙니다.");
+            throw new MemberException.EmailRegexException();
         }
     }
 

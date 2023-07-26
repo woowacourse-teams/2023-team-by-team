@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import team.teamby.teambyteam.teamplace.domain.vo.Name;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -33,7 +34,7 @@ class NameTest {
         // when & then
         assertThatThrownBy(() -> new Name(overLengthName))
                 .isInstanceOf(TeamPlaceException.NameLengthException.class)
-                .hasMessage("입력한 길이가 최대 이름 길이인 " + maxLength + "를 초과했습니다.");
+                .hasMessage("팀 플레이스 이름의 길이가 최대 이름 길이를 초과했습니다.");
     }
 
     @ParameterizedTest
@@ -42,7 +43,7 @@ class NameTest {
     void failNameIsBlank(final String blankName) {
         // when & then
         assertThatThrownBy(() -> new Name(blankName))
-                .isInstanceOf(TeamPlaceException.NameLengthException.class)
-                .hasMessage("팀 플레이스 이름은 공백을 제외한 1자 이상이어야 합니다.");
+                .isInstanceOf(TeamPlaceException.NameBlankException.class)
+                .hasMessage("팀 플레이스 이름은 공백을 제외한 1자 이상이어야합니다.");
     }
 }

@@ -1,24 +1,21 @@
 package team.teamby.teambyteam.schedule.domain;
 
-import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.jdbc.Sql;
+import team.teamby.teambyteam.common.RepositoryTest;
+import team.teamby.teambyteam.fixtures.ScheduleFixtures;
+import team.teamby.teambyteam.schedule.domain.vo.Title;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Sql(value = {"/h2-reset-pk.sql", "/h2-data.sql"})
-public class ScheduleRepositoryTest {
+public class ScheduleRepositoryTest extends RepositoryTest {
 
     @Autowired
     private ScheduleRepository scheduleRepository;
@@ -35,7 +32,7 @@ public class ScheduleRepositoryTest {
         final List<Schedule> schedules = scheduleRepository.findAllByTeamPlaceIdAndPeriod(teamPlaceId, firstDateTime, endDateTime);
 
         //then
-        SoftAssertions.assertSoftly(softly -> {
+        assertSoftly(softly -> {
             softly.assertThat(schedules).hasSize(4);
             softly.assertThat(schedules.get(0).getTitle().getValue()).isEqualTo("3번 팀플 B");
             softly.assertThat(schedules.get(1).getTitle().getValue()).isEqualTo("3번 팀플 C");
@@ -56,13 +53,32 @@ public class ScheduleRepositoryTest {
         final List<Schedule> schedules = scheduleRepository.findAllByTeamPlaceIdAndPeriod(teamPlaceId, firstDateTime, endDateTime);
 
         //then
-        SoftAssertions.assertSoftly(softly -> {
+        assertSoftly(softly -> {
             softly.assertThat(schedules).hasSize(5);
             softly.assertThat(schedules.get(0).getTitle().getValue()).isEqualTo("3번 팀플 6월 첫날");
             softly.assertThat(schedules.get(1).getTitle().getValue()).isEqualTo("2번 팀플 6월 첫날");
             softly.assertThat(schedules.get(2).getTitle().getValue()).isEqualTo("3번 팀플 A");
             softly.assertThat(schedules.get(3).getTitle().getValue()).isEqualTo("2번 팀플 6월 어느날");
             softly.assertThat(schedules.get(4).getTitle().getValue()).isEqualTo("3번 팀플 B");
+        });
+    }
+
+    @Test
+    @DisplayName("팀 캘린더 하루 일정을 조회한다.")
+    void findDailyTeamCalendarSchedule() {
+        // given
+        final Long teamPlaceId = ScheduleFixtures.Schedule1_N_Hour.TEAM_PLACE_ID;
+        final LocalDateTime startDateTime = LocalDateTime.of(2023, 7, 12, 0, 0, 0);
+        final LocalDateTime endDateTime = LocalDateTime.of(2023, 7, 12, 23, 59, 59);
+
+        // when
+        final List<Schedule> schedules = scheduleRepository.findAllByTeamPlaceIdAndDailyPeriod(teamPlaceId, startDateTime, endDateTime);
+
+        // then
+        assertSoftly(softly -> {
+            softly.assertThat(schedules).hasSize(2);
+            softly.assertThat(schedules.stream().map(Schedule::getTitle).map(Title::getValue))
+                    .containsExactly("1번 팀플 종일 일정", "1번 팀플 N시간 일정");
         });
     }
 

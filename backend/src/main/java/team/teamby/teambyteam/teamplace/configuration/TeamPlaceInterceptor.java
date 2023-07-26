@@ -31,14 +31,14 @@ public final class TeamPlaceInterceptor implements HandlerInterceptor {
         final Long teamPlaceId = Long.parseLong(pathVariables.get("teamPlaceId"));
 
         if (hasNotMemberInTeamPlace(teamPlaceId, email)) {
-            throw new TeamPlaceException.TeamPlaceAccessForbidden("접근할 수 없는 팀플레이스입니다.");
+            throw new TeamPlaceException.TeamPlaceAccessForbidden();
         }
         return true;
     }
 
     private boolean hasNotMemberInTeamPlace(final Long teamPlaceId, final String email) {
         final TeamPlace teamPlace = teamPlaceRepository.findById(teamPlaceId)
-                .orElseThrow(() -> new TeamPlaceException.NotFoundException("ID에 해당하는 팀 플레이스를 찾을 수 없습니다."));
+                .orElseThrow(TeamPlaceException.NotFoundException::new);
         return !teamPlace.hasMemberByMemberEmail(new Email(email));
     }
 }

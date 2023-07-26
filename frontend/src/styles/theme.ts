@@ -6,6 +6,8 @@ const color = {
   RED: '#FF5B5B',
   PURPLE: '#6E61ff',
 
+  NAVY: '#303650',
+
   GRAY100: '#f2f4f6',
   GRAY200: '#e5e8eb',
   GRAY300: '#d1d6db',

@@ -1,4 +1,4 @@
-package team.teamby.teambyteam.schedule.domain;
+package team.teamby.teambyteam.schedule.domain.vo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -30,7 +30,7 @@ public class Title {
         }
 
         if (value.isBlank()) {
-            throw new ScheduleException.TitleBlankException("일정의 제목은 빈 칸일 수 없습니다.");
+            throw new ScheduleException.TitleBlankException();
         }
     }
 

@@ -2,6 +2,7 @@ package team.teamby.teambyteam.schedule.docs;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -9,17 +10,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import team.teamby.teambyteam.fixtures.ScheduleFixtures;
 import team.teamby.teambyteam.member.configuration.MemberInterceptor;
-import team.teamby.teambyteam.schedule.application.ScheduleService;
+import team.teamby.teambyteam.schedule.application.TeamCalendarScheduleService;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleUpdateRequest;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
-import team.teamby.teambyteam.schedule.presentation.TeamPlaceScheduleController;
+import team.teamby.teambyteam.schedule.presentation.TeamCalendarScheduleController;
 import team.teamby.teambyteam.teamplace.configuration.TeamPlaceInterceptor;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
@@ -46,8 +48,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static team.teamby.teambyteam.fixtures.ScheduleFixtures.Schedule1_N_Hour;
 
 @AutoConfigureRestDocs
-@WebMvcTest(TeamPlaceScheduleController.class)
-public class ScheduleApiDocsTest {
+@WebMvcTest(TeamCalendarScheduleController.class)
+@MockBean(value = {
+        JpaMetamodelMappingContext.class
+})
+public class TeamCalendarScheduleApiDocsTest {
 
     private static final String AUTHORIZATION_HEADER_KEY = HttpHeaders.AUTHORIZATION;
     private static final String AUTHORIZATION_HEADER_VALUE = "Bearer aaaa.bbbb.cccc";
@@ -62,13 +67,21 @@ public class ScheduleApiDocsTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private ScheduleService scheduleService;
+    private TeamCalendarScheduleService teamCalendarScheduleService;
 
     @MockBean
     private MemberInterceptor memberInterceptor;
 
     @MockBean
     private TeamPlaceInterceptor teamPlaceInterceptor;
+
+    @BeforeEach
+    void setup() throws Exception {
+            given(memberInterceptor.preHandle(any(), any(), any()))
+                    .willReturn(true);
+            given(teamPlaceInterceptor.preHandle(any(), any(), any()))
+                    .willReturn(true);
+    }
 
     @Nested
     @DisplayName("일정 등록 문서화")
@@ -81,12 +94,8 @@ public class ScheduleApiDocsTest {
             final ScheduleRegisterRequest request = Schedule1_N_Hour.REQUEST;
             final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
             final Long registeredId = 1L;
-            given(scheduleService.register(request, teamPlaceId))
+            given(teamCalendarScheduleService.register(request, teamPlaceId))
                     .willReturn(registeredId);
-            given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
-            given(teamPlaceInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
 
             // when & then
             mockMvc.perform(post("/api/team-place/{teamPlaceId}/calendar/schedules", teamPlaceId)
@@ -121,14 +130,10 @@ public class ScheduleApiDocsTest {
             final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
             final String blankTitle = " ";
             ScheduleUpdateRequest request = new ScheduleUpdateRequest(blankTitle, Schedule1_N_Hour.START_DATE_TIME, Schedule1_N_Hour.END_DATE_TIME);
-            willThrow(new ScheduleException.TitleBlankException("제목은 빈 값일 수 없습니다."))
-                    .given(scheduleService)
+            willThrow(new ScheduleException.TitleBlankException())
+                    .given(teamCalendarScheduleService)
                     .register(any(ScheduleRegisterRequest.class), eq(teamPlaceId));
 
-            given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
-            given(teamPlaceInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
 
             // when & then
             mockMvc.perform(post("/api/team-place/{teamPlaceId}/calendar/schedules", teamPlaceId)
@@ -158,13 +163,9 @@ public class ScheduleApiDocsTest {
             requestMap.put(REQUEST_END_DATE_KEY, correctEndDateTimeType);
 
             willThrow(DateTimeParseException.class)
-                    .given(scheduleService)
+                    .given(teamCalendarScheduleService)
                     .register(any(ScheduleRegisterRequest.class), eq(teamPlaceId));
 
-            given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
-            given(teamPlaceInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
 
             // when & then
             mockMvc.perform(post("/api/team-place/{teamPlaceId}/calendar/schedules", teamPlaceId)
@@ -186,14 +187,10 @@ public class ScheduleApiDocsTest {
             // given
             final Long notExistTeamPlaceId = -1L;
             ScheduleRegisterRequest request = Schedule1_N_Hour.REQUEST;
-            willThrow(new TeamPlaceException.NotFoundException("ID에 해당하는 팀 플레이스를 찾을 수 없습니다."))
-                    .given(scheduleService)
+            willThrow(new TeamPlaceException.NotFoundException())
+                    .given(teamCalendarScheduleService)
                     .register(any(), eq(notExistTeamPlaceId));
 
-            given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
-            given(teamPlaceInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
 
             // when & then
             mockMvc.perform(post("/api/team-place/{teamPlaceId}/calendar/schedules", notExistTeamPlaceId)
@@ -219,13 +216,9 @@ public class ScheduleApiDocsTest {
             final LocalDateTime wrongEndDateTime = ScheduleFixtures.Schedule1_N_Hour.START_DATE_TIME.minusDays(1);
             final ScheduleRegisterRequest request = new ScheduleRegisterRequest(title, startDateTime, wrongEndDateTime);
 
-            willThrow(new ScheduleException.SpanWrongOrderException("시작 일자가 종료 일자보다 이후일 수 없습니다."))
-                    .given(scheduleService)
+            willThrow(new ScheduleException.SpanWrongOrderException())
+                    .given(teamCalendarScheduleService)
                     .register(request, teamPlaceId);
-            given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
-            given(teamPlaceInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
 
             // when & then
             mockMvc.perform(post("/api/team-place/{teamPlaceId}/calendar/schedules", teamPlaceId)
@@ -253,11 +246,7 @@ public class ScheduleApiDocsTest {
             final ScheduleUpdateRequest request = Schedule1_N_Hour.UPDATE_REQUEST;
             final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
             final Long id = Schedule1_N_Hour.ID;
-            willDoNothing().given(scheduleService).update(request, teamPlaceId, id);
-            given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
-            given(teamPlaceInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
+            willDoNothing().given(teamCalendarScheduleService).update(request, teamPlaceId, id);
 
             // when & then
             mockMvc.perform(patch("/api/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}", teamPlaceId, id)
@@ -293,14 +282,10 @@ public class ScheduleApiDocsTest {
             final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
             final String blankTitle = " ";
             ScheduleUpdateRequest request = new ScheduleUpdateRequest(blankTitle, Schedule1_N_Hour.START_DATE_TIME, Schedule1_N_Hour.END_DATE_TIME);
-            willThrow(new ScheduleException.TitleBlankException("제목은 빈 값일 수 없습니다."))
-                    .given(scheduleService)
+            willThrow(new ScheduleException.TitleBlankException())
+                    .given(teamCalendarScheduleService)
                     .update(any(ScheduleUpdateRequest.class), eq(teamPlaceId), eq(id));
 
-            given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
-            given(teamPlaceInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
 
             // when & then
             mockMvc.perform(patch("/api/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}", teamPlaceId, id)
@@ -331,13 +316,9 @@ public class ScheduleApiDocsTest {
             requestMap.put(REQUEST_END_DATE_KEY, correctEndDateTimeType);
 
             willThrow(DateTimeParseException.class)
-                    .given(scheduleService)
+                    .given(teamCalendarScheduleService)
                     .update(any(ScheduleUpdateRequest.class), eq(teamPlaceId), eq(id));
 
-            given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
-            given(teamPlaceInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
 
             // when & then
             mockMvc.perform(patch("/api/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}", teamPlaceId, id)
@@ -360,14 +341,10 @@ public class ScheduleApiDocsTest {
             final Long id = Schedule1_N_Hour.ID;
             final Long notExistTeamPlaceId = -1L;
             ScheduleRegisterRequest request = Schedule1_N_Hour.REQUEST;
-            willThrow(new TeamPlaceException.NotFoundException("ID에 해당하는 팀 플레이스를 찾을 수 없습니다."))
-                    .given(scheduleService)
+            willThrow(new TeamPlaceException.NotFoundException())
+                    .given(teamCalendarScheduleService)
                     .update(any(), eq(notExistTeamPlaceId), eq(id));
 
-            given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
-            given(teamPlaceInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
 
             // when & then
             mockMvc.perform(patch("/api/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}", notExistTeamPlaceId, id)
@@ -394,13 +371,9 @@ public class ScheduleApiDocsTest {
             final LocalDateTime wrongEndDateTime = ScheduleFixtures.Schedule1_N_Hour.START_DATE_TIME.minusDays(1);
             final ScheduleUpdateRequest request = new ScheduleUpdateRequest(title, startDateTime, wrongEndDateTime);
 
-            willThrow(new ScheduleException.SpanWrongOrderException("시작 일자가 종료 일자보다 이후일 수 없습니다."))
-                    .given(scheduleService)
+            willThrow(new ScheduleException.SpanWrongOrderException())
+                    .given(teamCalendarScheduleService)
                     .update(request, teamPlaceId, id);
-            given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
-            given(teamPlaceInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
 
             // when & then
             mockMvc.perform(patch("/api/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}", teamPlaceId, id)
@@ -423,14 +396,10 @@ public class ScheduleApiDocsTest {
             final Long notExistScheduleId = -1L;
             final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
             ScheduleRegisterRequest request = Schedule1_N_Hour.REQUEST;
-            willThrow(new ScheduleException.ScheduleNotFoundException("ID에 해당하는 일정을 찾을 수 없습니다."))
-                    .given(scheduleService)
+            willThrow(new ScheduleException.ScheduleNotFoundException())
+                    .given(teamCalendarScheduleService)
                     .update(any(), eq(teamPlaceId), eq(notExistScheduleId));
 
-            given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
-            given(teamPlaceInterceptor.preHandle(any(), any(), any()))
-                    .willReturn(true);
 
             // when & then
             mockMvc.perform(patch("/api/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}", teamPlaceId, notExistScheduleId)

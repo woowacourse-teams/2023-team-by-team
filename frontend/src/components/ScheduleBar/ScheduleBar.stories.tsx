@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import ScheduleBar from '~/components/ScheduleBar/ScheduleBar';
 
 const meta = {
-  title: 'Calendar/ScheduleBar',
+  title: 'Schedule/ScheduleBar',
   component: ScheduleBar,
   tags: ['autodocs'],
 } satisfies Meta<typeof ScheduleBar>;
@@ -20,6 +20,6 @@ export const Default: Story = {
     column: 2,
     duration: 3,
     level: 0,
-    onScheduleModalOpen: () => console.log('click'),
+    onClick: () => alert('clicked!'),
   },
 };
