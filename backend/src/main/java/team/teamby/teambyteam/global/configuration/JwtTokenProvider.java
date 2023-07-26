@@ -38,7 +38,7 @@ public class JwtTokenProvider {
             Jws<Claims> claimsJws = getParser().parseClaimsJws(token);
         } catch (ExpiredJwtException | MalformedJwtException
                  | UnsupportedJwtException | IllegalArgumentException e) {
-            throw new MemberException.UnSupportAuthenticationException("TODO: 토큰 검증 실패");
+            throw new MemberException.UnSupportAuthenticationException();
         }
     }
 

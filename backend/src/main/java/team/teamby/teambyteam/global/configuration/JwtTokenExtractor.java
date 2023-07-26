@@ -16,6 +16,6 @@ public class JwtTokenExtractor {
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(PREFIX_BEARER)) {
             return bearerToken.substring(PREFIX_BEARER.length());
         }
-        throw new MemberException.UnSupportAuthenticationException("지원하지 않는 인증 방식입니다.");
+        throw new MemberException.UnSupportAuthenticationException();
     }
 }
