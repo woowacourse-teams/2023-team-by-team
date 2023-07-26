@@ -1,13 +1,12 @@
 name: frontend-cd
 
 on:
-  push
-  #pull_request:
-  #types:
-  # - closed
-  #branches: ['develop']
-  #paths:
-  #- 'frontend/**'
+  pull_request:
+  types:
+    - closed
+  branches: ['develop']
+  paths:
+    - 'frontend/**'
 
 defaults:
   run:
