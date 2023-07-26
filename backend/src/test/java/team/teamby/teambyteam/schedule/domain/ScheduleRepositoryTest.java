@@ -7,6 +7,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import team.teamby.teambyteam.common.RepositoryTest;
 import team.teamby.teambyteam.fixtures.ScheduleFixtures;
+import team.teamby.teambyteam.schedule.domain.vo.Title;
 
 import java.time.LocalDateTime;
 import java.util.List;

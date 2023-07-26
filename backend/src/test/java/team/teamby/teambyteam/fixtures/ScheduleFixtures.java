@@ -3,8 +3,8 @@ package team.teamby.teambyteam.fixtures;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleUpdateRequest;
 import team.teamby.teambyteam.schedule.domain.Schedule;
-import team.teamby.teambyteam.schedule.domain.Span;
-import team.teamby.teambyteam.schedule.domain.Title;
+import team.teamby.teambyteam.schedule.domain.vo.Span;
+import team.teamby.teambyteam.schedule.domain.vo.Title;
 
 import java.time.LocalDateTime;
 

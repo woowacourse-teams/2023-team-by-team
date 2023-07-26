@@ -1,4 +1,4 @@
-package team.teamby.teambyteam.schedule.domain;
+package team.teamby.teambyteam.schedule.domain.vo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team.teamby.teambyteam.schedule.domain.vo.Span;
+import team.teamby.teambyteam.schedule.domain.vo.Title;
 
 import java.time.LocalDateTime;
 import java.util.Objects;

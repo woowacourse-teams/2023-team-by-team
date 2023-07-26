@@ -1,7 +1,7 @@
 package team.teamby.teambyteam.schedule.application.dto;
 
 import team.teamby.teambyteam.schedule.domain.Schedule;
-import team.teamby.teambyteam.schedule.domain.Span;
+import team.teamby.teambyteam.schedule.domain.vo.Span;
 
 import java.time.format.DateTimeFormatter;
 

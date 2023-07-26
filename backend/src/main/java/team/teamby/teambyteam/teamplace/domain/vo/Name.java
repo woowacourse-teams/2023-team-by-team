@@ -1,4 +1,4 @@
-package team.teamby.teambyteam.teamplace.domain;
+package team.teamby.teambyteam.teamplace.domain.vo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
