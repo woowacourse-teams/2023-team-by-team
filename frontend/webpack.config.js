@@ -1,5 +1,5 @@
 const { join, resolve } = require('path');
-const { EnvironmentPlugin } = require('webpack');
+const { DefinePlugin } = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv');
 
@@ -43,6 +43,11 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: join(__dirname, './public/index.html'),
     }),
-    new EnvironmentPlugin(process.env),
+    new DefinePlugin({
+      'process.env': JSON.stringify(process.env),
+      'process.env.NODE_ENV': JSON.stringify(
+        isProduction ? 'production' : 'development',
+      ),
+    }),
   ],
 };
