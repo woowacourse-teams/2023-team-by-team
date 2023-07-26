@@ -40,6 +40,8 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: join(__dirname, './public/index.html'),
     }),
-    new DotenvWebpack(),
+    new DotenvWebpack({
+      path: './frontend/.env',
+    }),
   ],
 };
