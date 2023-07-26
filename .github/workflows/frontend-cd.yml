@@ -2,11 +2,11 @@ name: frontend-cd
 
 on:
   pull_request:
-  types:
-    - closed
-  branches: ['develop']
-  paths:
-    - 'frontend/**'
+    types:
+      - closed
+    branches: ['develop']
+    paths:
+      - 'frontend/**'
 
 defaults:
   run:
