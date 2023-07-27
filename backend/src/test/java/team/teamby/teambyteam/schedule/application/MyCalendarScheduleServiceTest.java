@@ -4,21 +4,27 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.transaction.annotation.Transactional;
+import team.teamby.teambyteam.common.ServiceTest;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
+import team.teamby.teambyteam.member.domain.Member;
+import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleWithTeamPlaceIdResponse;
 import team.teamby.teambyteam.schedule.application.dto.SchedulesWithTeamPlaceIdResponse;
+import team.teamby.teambyteam.schedule.domain.Schedule;
+import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
 import java.util.List;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
+import static team.teamby.teambyteam.common.fixtures.MemberTeamPlaceFixtures.PHILIP_ENGLISH_TEAM_PLACE;
+import static team.teamby.teambyteam.common.fixtures.MemberTeamPlaceFixtures.PHILIP_JAPANESE_TEAM_PLACE;
+import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE;
+import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE;
+import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
+import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.JAPANESE_TEAM_PLACE;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@Transactional
-@Sql({"/h2-reset-pk.sql", "/h2-data.sql"})
-public class MyCalendarScheduleServiceTest {
+public class MyCalendarScheduleServiceTest extends ServiceTest {
 
     @Autowired
     private MyCalendarScheduleService myCalendarScheduleService;
@@ -31,25 +37,38 @@ public class MyCalendarScheduleServiceTest {
         @DisplayName("내 캘린더 정보 조회를 성공한다.")
         void success() {
             // given
-            // member who participate in team 2, 3
-            final MemberEmailDto memberEmailDto = new MemberEmailDto("dfg345@gmail.com");
+            final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final TeamPlace JAPANESE_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(JAPANESE_TEAM_PLACE());
+            final MemberTeamPlace PHILIP_ENGLISH_TEAM_PLACE = PHILIP_ENGLISH_TEAM_PLACE();
+            final MemberTeamPlace PHILIP_JAPANESE_TEAM_PLACE = PHILIP_JAPANESE_TEAM_PLACE();
+
+            PHILIP_ENGLISH_TEAM_PLACE.setMemberAndTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
+            PHILIP_JAPANESE_TEAM_PLACE.setMemberAndTeamPlace(PHILIP, JAPANESE_TEAM_PLACE);
+
+            List<MemberTeamPlace> memberTeamPlaces = List.of(PHILIP_ENGLISH_TEAM_PLACE, PHILIP_JAPANESE_TEAM_PLACE);
+            testFixtureBuilder.buildMemberTeamPlaces(memberTeamPlaces);
+
+            List<Schedule> expectedSchedules = List.of(
+                    MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE(ENGLISH_TEAM_PLACE.getId()),
+                    MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(JAPANESE_TEAM_PLACE.getId())
+            );
+            testFixtureBuilder.buildSchedules(expectedSchedules);
+
+            final MemberEmailDto memberEmailDto = new MemberEmailDto(PHILIP.getEmail().getValue());
             final int year = 2023;
-            final int month = 6;
+            final int month = 7;
 
             // when
-            final SchedulesWithTeamPlaceIdResponse scheduleInPeriod =  myCalendarScheduleService.findScheduleInPeriod(memberEmailDto, year, month);
+            final SchedulesWithTeamPlaceIdResponse scheduleInPeriod = myCalendarScheduleService.findScheduleInPeriod(memberEmailDto, year, month);
             final List<ScheduleWithTeamPlaceIdResponse> scheduleResponses = scheduleInPeriod.schedules();
 
             //then
             assertSoftly(softly -> {
-                softly.assertThat(scheduleResponses).hasSize(5);
-                softly.assertThat(scheduleResponses.get(0).title()).isEqualTo("3번 팀플 6월 첫날");
-                softly.assertThat(scheduleResponses.get(1).title()).isEqualTo("2번 팀플 6월 첫날");
-                softly.assertThat(scheduleResponses.get(2).title()).isEqualTo("3번 팀플 A");
-                softly.assertThat(scheduleResponses.get(3).title()).isEqualTo("2번 팀플 6월 어느날");
-                softly.assertThat(scheduleResponses.get(4).title()).isEqualTo("3번 팀플 B");
+                softly.assertThat(scheduleResponses).hasSize(2);
+                softly.assertThat(scheduleResponses.get(0).title()).isEqualTo(expectedSchedules.get(0).getTitle().getValue());
+                softly.assertThat(scheduleResponses.get(1).title()).isEqualTo(expectedSchedules.get(1).getTitle().getValue());
             });
         }
-
     }
 }
