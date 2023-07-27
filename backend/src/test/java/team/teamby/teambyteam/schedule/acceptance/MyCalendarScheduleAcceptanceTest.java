@@ -18,7 +18,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 public class MyCalendarScheduleAcceptanceTest extends AcceptanceTest {
 
     private static final String JWT_PREFIX = "Bearer ";
-    private static final String JWT_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiZW1haWwiOiJhYmNkQGdtYWlsLmNvbSIsImlhdCI6MTUxNjIzOTAyMn0.pKIcISxHAsLfzJblY50592nruhvzFpds5Ck4acewrhM";
+    private static final String JWT_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImFiY2RAZ21haWwuY29tIiwiaWF0IjoxNjkwNDMxMTMyLCJleHAiOjE2OTA0MzE0OTJ9.67CDacXFXJk_GSAqPWerQxQzhLHj8GPikvSFHPfVQdM";
 
     @Nested
     @DisplayName("내 캘린더 일정 조회를 한다")
