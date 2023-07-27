@@ -20,4 +20,4 @@ spring:
 
 jwt:
   secret: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-  expiration: 3600000
+  expiration: 10800000
