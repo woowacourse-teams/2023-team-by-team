@@ -1,8 +1,11 @@
 const { join, resolve } = require('path');
+const { DefinePlugin } = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const DotenvWebpack = require('dotenv-webpack');
+const Dotenv = require('dotenv');
 
 const isProduction = process.env.NODE_ENV === 'production';
+
+Dotenv.config();
 
 module.exports = {
   mode: isProduction ? 'production' : 'development',
@@ -40,6 +43,11 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: join(__dirname, './public/index.html'),
     }),
-    new DotenvWebpack(),
+    new DefinePlugin({
+      'process.env': JSON.stringify(process.env),
+      'process.env.NODE_ENV': JSON.stringify(
+        isProduction ? 'production' : 'development',
+      ),
+    }),
   ],
 };
