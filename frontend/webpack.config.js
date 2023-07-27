@@ -32,6 +32,10 @@ module.exports = {
         issuer: /\.[jt]sx?$/,
         use: ['@svgr/webpack', 'url-loader'],
       },
+      {
+        test: /\.png$/i,
+        use: ['file-loader'],
+      },
     ],
   },
   output: {
