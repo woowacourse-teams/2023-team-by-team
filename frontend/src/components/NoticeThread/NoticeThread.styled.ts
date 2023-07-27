@@ -6,6 +6,10 @@ interface BoardProps {
   height: number;
 }
 
+export const ThreadContainer = styled.div`
+  position: relative;
+`;
+
 export const Thread = styled.div<BoardProps>`
   overflow: hidden;
   display: flex;
@@ -50,3 +54,9 @@ export const PostDateContainer = styled.div`
 `;
 
 export const Content = styled.p``;
+
+export const primaryNoticeTag = css`
+  position: absolute;
+  top: 20px;
+  right: -20px;
+`;
