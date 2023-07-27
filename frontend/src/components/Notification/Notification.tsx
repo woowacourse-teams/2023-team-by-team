@@ -13,11 +13,11 @@ const Notification = (props: NotificationProps) => {
   const textSize: Extract<TextSize, 'md' | 'xl'> = size === 'md' ? 'xl' : 'md';
 
   return (
-    <S.Container color={color} size={size}>
+    <S.Wrapper color={color} size={size}>
       <Text size={textSize} weight="bold">
         {content}
       </Text>
-    </S.Container>
+    </S.Wrapper>
   );
 };
 

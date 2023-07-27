@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import type { NotificationProps } from '~/components/Notification/Notification';
 
-export const Container = styled.div<Pick<NotificationProps, 'color' | 'size'>>`
+export const Wrapper = styled.div<Pick<NotificationProps, 'color' | 'size'>>`
   display: flex;
   justify-content: center;
   align-items: center;
