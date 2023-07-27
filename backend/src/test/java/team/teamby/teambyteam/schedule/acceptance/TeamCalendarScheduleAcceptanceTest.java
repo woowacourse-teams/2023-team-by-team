@@ -592,7 +592,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
                 .queryParam("month", month)
                 .queryParam("day", day)
                 .when().log().all()
-                .get("/api/team-place/{teamPlaceId}/calendar/daily-schedules")
+                .get("/api/team-place/{teamPlaceId}/calendar/schedules")
                 .then().log().all()
                 .extract();
     }

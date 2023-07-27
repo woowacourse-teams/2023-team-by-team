@@ -29,7 +29,7 @@ public class TeamCalendarScheduleController {
         return ResponseEntity.ok(responseBody);
     }
 
-    @GetMapping("/{teamPlaceId}/calendar/schedules")
+    @GetMapping(value = "/{teamPlaceId}/calendar/schedules", params = {"year", "month"})
     public ResponseEntity<SchedulesResponse> findSchedulesInPeriod(
             @PathVariable final Long teamPlaceId,
             @RequestParam final Integer year,
@@ -40,7 +40,7 @@ public class TeamCalendarScheduleController {
         return ResponseEntity.ok(responseBody);
     }
 
-    @GetMapping("/{teamPlaceId}/calendar/daily-schedules")
+    @GetMapping(value = "/{teamPlaceId}/calendar/schedules", params = {"year", "month", "day"})
     public ResponseEntity<SchedulesResponse> findDailySchedule(
             @PathVariable final Long teamPlaceId,
             @RequestParam final Integer year,
