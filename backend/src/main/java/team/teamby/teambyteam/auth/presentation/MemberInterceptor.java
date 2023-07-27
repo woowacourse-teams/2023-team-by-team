@@ -1,12 +1,12 @@
-package team.teamby.teambyteam.member.configuration;
+package team.teamby.teambyteam.auth.presentation;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import team.teamby.teambyteam.global.configuration.JwtTokenExtractor;
-import team.teamby.teambyteam.global.configuration.JwtTokenProvider;
+import team.teamby.teambyteam.auth.jwt.JwtTokenExtractor;
+import team.teamby.teambyteam.auth.jwt.JwtTokenProvider;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.exception.MemberException;

@@ -1,9 +1,9 @@
-package team.teamby.teambyteam.global.configuration;
+package team.teamby.teambyteam.auth.jwt;
 
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import team.teamby.teambyteam.member.exception.MemberException;
+import team.teamby.teambyteam.auth.exception.AuthenticationException;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -34,9 +34,13 @@ public class JwtTokenProvider {
     }
 
     public String extractEmailFromToken(String token) {
-        validate(token);
-        final Jws<Claims> claimsJws = getParser().parseClaimsJws(token);
-        return claimsJws.getBody().get(EMAIL_KEY, String.class);
+        try {
+            validate(token);
+            final Jws<Claims> claimsJws = getParser().parseClaimsJws(token);
+            return claimsJws.getBody().get(EMAIL_KEY, String.class);
+        } catch (MissingClaimException e) {
+            throw new AuthenticationException.UnSupportAuthenticationException();
+        }
     }
 
     private JwtParser getParser() {
@@ -49,9 +53,8 @@ public class JwtTokenProvider {
         try {
             Claims claims = getParser().parseClaimsJws(token).getBody();
             validateExpiration(claims);
-        } catch (MalformedJwtException
-                 | UnsupportedJwtException | IllegalArgumentException e) {
-            throw new MemberException.UnSupportAuthenticationException();
+        } catch (MalformedJwtException | MissingClaimException | UnsupportedJwtException e) {
+            throw new AuthenticationException.UnSupportAuthenticationException();
         }
     }
 

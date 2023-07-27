@@ -31,10 +31,4 @@ public class MemberException extends RuntimeException {
             super("조회한 멤버가 존재하지 않습니다.");
         }
     }
-
-    public static class UnSupportAuthenticationException extends MemberException {
-        public UnSupportAuthenticationException() {
-            super("지원하지 않는 인증 방식입니다.");
-        }
-    }
 }

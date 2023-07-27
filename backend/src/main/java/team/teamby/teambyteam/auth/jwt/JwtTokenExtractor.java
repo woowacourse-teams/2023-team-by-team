@@ -1,10 +1,10 @@
-package team.teamby.teambyteam.global.configuration;
+package team.teamby.teambyteam.auth.jwt;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import team.teamby.teambyteam.member.exception.MemberException;
+import team.teamby.teambyteam.auth.exception.AuthenticationException;
 
 @Component
 public class JwtTokenExtractor {
@@ -16,6 +16,6 @@ public class JwtTokenExtractor {
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(PREFIX_BEARER)) {
             return bearerToken.substring(PREFIX_BEARER.length());
         }
-        throw new MemberException.UnSupportAuthenticationException();
+        throw new AuthenticationException.UnSupportAuthenticationException();
     }
 }

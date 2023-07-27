@@ -16,13 +16,13 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import team.teamby.teambyteam.fixtures.ScheduleFixtures;
-import team.teamby.teambyteam.member.configuration.MemberInterceptor;
+import team.teamby.teambyteam.auth.presentation.MemberInterceptor;
 import team.teamby.teambyteam.schedule.application.TeamCalendarScheduleService;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleUpdateRequest;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
 import team.teamby.teambyteam.schedule.presentation.TeamCalendarScheduleController;
-import team.teamby.teambyteam.teamplace.configuration.TeamPlaceInterceptor;
+import team.teamby.teambyteam.auth.presentation.TeamPlaceInterceptor;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
 import java.time.LocalDateTime;
