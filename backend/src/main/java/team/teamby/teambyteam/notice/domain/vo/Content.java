@@ -24,7 +24,7 @@ public class Content {
     @Lob
     private String value;
 
-    public Content(String value) {
+    public Content(final String value) {
         validate(value);
         this.value = value;
     }

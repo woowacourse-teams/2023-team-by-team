@@ -23,7 +23,7 @@ public class Notice extends BaseEntity {
     @Column(nullable = false, updatable = false)
     private Long teamPlaceId;
 
-    public Notice(Content content, Long teamPlaceId) {
+    public Notice(final Content content, final Long teamPlaceId) {
         this.content = content;
         this.teamPlaceId = teamPlaceId;
     }
