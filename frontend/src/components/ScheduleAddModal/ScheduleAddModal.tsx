@@ -79,6 +79,7 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
               css={S.dateTimeLocalInput}
               name="endDateTime"
               value={schedule['endDateTime']}
+              min={schedule['startDateTime']}
               onChange={handleScheduleChange}
               required
             />
