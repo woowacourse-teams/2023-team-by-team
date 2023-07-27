@@ -18,7 +18,7 @@ public class MemberFixtures {
     /**
      * EMAIL
      */
-    public static final String PHILIP_EMAIL = "piilyang.dev@tegmailst.com";
+    public static final String PHILIP_EMAIL = "piilyang.dev@gmail.com";
     public static final String ROY_EMAIL = "roy@gmail.com";
     public static final String SEONGHA_EMAIL = "seongha@naver.com";
     public static final String ENDEL_EMAIL = "abcd@gmail.com";
