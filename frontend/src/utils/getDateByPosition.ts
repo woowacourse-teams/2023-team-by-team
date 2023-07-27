@@ -1,6 +1,7 @@
+import { ONE_DAY } from '~/constants/calendar';
+
 const ROW_REGEX = /^[0-5]$/;
 const COLUMN_REGEX = /^[0-6]$/;
-const ONE_DAY = 86_400_000;
 const ERROR_MESSAGE =
   '잘못된 행 또는 열이 대입되었습니다. 입력 데이터가 아래의 조건을 지키는 지 확인해 주세요:\n- 행은 0 이상 5 이하의 정수여야 합니다.\n- 열은 0 이상 6 이하의 정수여야 합니다.';
 
