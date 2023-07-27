@@ -15,18 +15,24 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  render: () => {
-    const { openModal } = useModal();
+const SampleModal = () => {
+  const { openModal } = useModal();
 
-    return (
-      <>
-        <Button onClick={openModal}>모달 열기</Button>
-        <ScheduleAddModal teamPlaceName="Woowacourse TeamByTeam Corporation" />
-      </>
-    );
-  },
+  return (
+    <>
+      <Button onClick={openModal}>모달 열기</Button>
+      <ScheduleAddModal
+        teamPlaceName="Woowacourse TeamByTeam Corporation"
+        clickedDate={new Date()}
+      />
+    </>
+  );
+};
+
+export const Default: Story = {
+  render: () => <SampleModal />,
   args: {
     teamPlaceName: '',
+    clickedDate: new Date(),
   },
 };
