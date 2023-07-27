@@ -18,6 +18,7 @@ import { arrayOf } from '~/utils/arrayOf';
 import ScheduleMoreCell from '~/components/ScheduleMoreCell/ScheduleMoreCell';
 import type { Position, ModalOpenType } from '~/types/schedule';
 import DailyScheduleModal from '~/components/DailyScheduleModal/DailyScheduleModal';
+import { getDateByPosition } from '~/utils/getDateByPosition';
 
 const Calendar = () => {
   const {
@@ -107,12 +108,27 @@ const Calendar = () => {
                       const { id, scheduleId, row, column, level, duration } =
                         scheduleBar;
                       if (row === rowIndex && level > 2)
-                        return arrayOf(duration).map((_, index) => (
-                          <ScheduleMoreCell
-                            key={id + index}
-                            column={column + index}
-                          />
-                        ));
+                        return arrayOf(duration).map((_, index) => {
+                          const date = getDateByPosition(
+                            year,
+                            month,
+                            row,
+                            column + index,
+                          );
+                          return (
+                            <ScheduleMoreCell
+                              key={id + index}
+                              column={column + index}
+                              onClick={() =>
+                                handleDailyScheduleModalOpen(
+                                  date,
+                                  row,
+                                  column + index,
+                                )
+                              }
+                            />
+                          );
+                        });
 
                       if (row === rowIndex)
                         return (
