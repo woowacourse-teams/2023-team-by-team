@@ -2,6 +2,7 @@ package team.teamby.teambyteam.common.builder;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import team.teamby.teambyteam.feed.domain.FeedRepository;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.schedule.domain.ScheduleRepository;
@@ -22,6 +23,9 @@ public class BuilderSupporter {
     @Autowired
     private TeamPlaceRepository teamPlaceRepository;
 
+    @Autowired
+    private FeedRepository feedRepository;
+
     public ScheduleRepository scheduleRepository() {
         return scheduleRepository;
     }
@@ -36,5 +40,9 @@ public class BuilderSupporter {
 
     public TeamPlaceRepository teamPlaceRepository() {
         return teamPlaceRepository;
+    }
+
+    public FeedRepository feedRepository() {
+        return feedRepository;
     }
 }

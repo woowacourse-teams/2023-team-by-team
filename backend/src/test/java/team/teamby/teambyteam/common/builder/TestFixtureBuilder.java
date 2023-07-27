@@ -2,6 +2,7 @@ package team.teamby.teambyteam.common.builder;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import team.teamby.teambyteam.feed.domain.Feed;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.schedule.domain.Schedule;
@@ -45,5 +46,13 @@ public class TestFixtureBuilder {
 
     public List<TeamPlace> buildTeamPlaces(final List<TeamPlace> teamPlaces) {
         return bs.teamPlaceRepository().saveAll(teamPlaces);
+    }
+
+    public Feed buildFeed(final Feed feed) {
+        return bs.feedRepository().save(feed);
+    }
+
+    public List<Feed> buildFeeds(final List<Feed> feeds) {
+        return bs.feedRepository().saveAll(feeds);
     }
 }
