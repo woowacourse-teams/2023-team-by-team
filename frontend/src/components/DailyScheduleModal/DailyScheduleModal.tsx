@@ -52,7 +52,7 @@ const DailyScheduleModal = (props: DailyScheduleModalProps) => {
       <S.Container style={modalLocation}>
         <S.Header>
           <Text>
-            {month}월 {date}일
+            {month + 1}월 {date}일
           </Text>
           <Button
             variant="plain"
