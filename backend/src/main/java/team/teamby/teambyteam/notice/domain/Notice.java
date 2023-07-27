@@ -1,6 +1,11 @@
 package team.teamby.teambyteam.notice.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,8 +28,12 @@ public class Notice extends BaseEntity {
     @Column(nullable = false, updatable = false)
     private Long teamPlaceId;
 
-    public Notice(final Content content, final Long teamPlaceId) {
+    @Column(nullable = false, updatable = false)
+    private Long authorId;
+
+    public Notice(final Content content, final Long teamPlaceId, final Long authorId) {
         this.content = content;
         this.teamPlaceId = teamPlaceId;
+        this.authorId = authorId;
     }
 }
