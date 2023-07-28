@@ -9,6 +9,7 @@ import team.teamby.teambyteam.schedule.domain.Schedule;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class TestFixtureBuilder {
@@ -46,6 +47,28 @@ public class TestFixtureBuilder {
 
     public List<TeamPlace> buildTeamPlaces(final List<TeamPlace> teamPlaces) {
         return bs.teamPlaceRepository().saveAll(teamPlaces);
+    }
+
+    public MemberTeamPlace buildMemberAndTeamPlace(final Member member, final TeamPlace teamPlace) {
+        final Member savedMember = getSavedMember(member);
+        final TeamPlace savedTeamPlace = getSavedTeamPlace(teamPlace);
+        final MemberTeamPlace memberTeamPlace = new MemberTeamPlace();
+        memberTeamPlace.setMemberAndTeamPlace(savedMember, savedTeamPlace);
+        return buildMemberTeamPlace(memberTeamPlace);
+    }
+
+    private Member getSavedMember(final Member member) {
+        if (bs.memberRepository().existsByEmail(member.getEmail())) {
+            return member;
+        }
+        return buildMember(member);
+    }
+
+    private TeamPlace getSavedTeamPlace(final TeamPlace teamPlace) {
+        if (Objects.nonNull(teamPlace.getId()) && bs.teamPlaceRepository().existsById(teamPlace.getId())) {
+            return teamPlace;
+        }
+        return buildTeamPlace(teamPlace);
     }
 
     public Feed buildFeed(final Feed feed) {
