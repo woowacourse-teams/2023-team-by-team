@@ -45,8 +45,6 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
     private ObjectMapper objectMapper;
 
     private static final String JWT_PREFIX = "Bearer ";
-    private static final String JWT_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InBpaWx5YW5nLmRldkBnbWFpbC5jb20iLCJpYXQiOjE2OTA0MzEzMDIsImV4cCI6MTY5MTQzMTMwMn0.W32l9nFapiQXUuQ2WzQ8-X8PA8VsDIX1rC1X67PWcn0";
-
     private static final String REQUEST_TITLE_KEY = "title";
     private static final String REQUEST_START_DATE_TIME_KEY = "startDateTime";
     private static final String REQUEST_END_DATE_KEY = "endDateTime";
@@ -68,7 +66,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
 
             // when
             final ExtractableResponse<Response> response = FIND_SPECIFIC_SCHEDULE_REQUEST(
-                    MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId(), ENGLISH_TEAM_PLACE.getId()
+                    jwtTokenProvider.generateToken(PHILIP.getEmail().getValue()), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId(), ENGLISH_TEAM_PLACE.getId()
             );
 
             // then
@@ -94,7 +92,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
 
             // when
             final ExtractableResponse<Response> response = FIND_SPECIFIC_SCHEDULE_REQUEST(
-                    wrongScheduleId, ENGLISH_TEAM_PLACE.getId()
+                    jwtTokenProvider.generateToken(PHILIP.getEmail().getValue()), wrongScheduleId, ENGLISH_TEAM_PLACE.getId()
             );
 
             // then
@@ -118,7 +116,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
 
             // when
             final ExtractableResponse<Response> response = FIND_SPECIFIC_SCHEDULE_REQUEST(
-                    MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId(), JAPANESE_TEAM_PLACE.getId()
+                    jwtTokenProvider.generateToken(PHILIP.getEmail().getValue()), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId(), JAPANESE_TEAM_PLACE.getId()
             );
 
             // then
@@ -153,7 +151,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             final int month = startDateTime.getMonthValue();
 
             // when
-            final ExtractableResponse<Response> response = FIND_PERIOD_SCHEDULE_REQUEST(ENGLISH_TEAM_PLACE.getId(), year, month);
+            final ExtractableResponse<Response> response = FIND_PERIOD_SCHEDULE_REQUEST(jwtTokenProvider.generateToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), year, month);
             final List<ScheduleResponse> actualSchedules = response.jsonPath().getList("schedules", ScheduleResponse.class);
 
             //then
@@ -175,14 +173,10 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             PHILIP_ENGLISH_TEAM_PLACE.setMemberAndTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
             testFixtureBuilder.buildMemberTeamPlace(PHILIP_ENGLISH_TEAM_PLACE);
 
-            final List<Schedule> schedulesToSave = List.of(MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE(
-                    ENGLISH_TEAM_PLACE.getId()), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(ENGLISH_TEAM_PLACE.getId())
-            );
-            final List<Schedule> expectedSchedules = testFixtureBuilder.buildSchedules(schedulesToSave);
             final int month = 7;
 
             // when
-            final ExtractableResponse<Response> response = FIND_PERIOD_SCHEDULE_REQUEST(ENGLISH_TEAM_PLACE.getId(), null, month);
+            final ExtractableResponse<Response> response = FIND_PERIOD_SCHEDULE_REQUEST(jwtTokenProvider.generateToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), null, month);
 
             //then
             assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
@@ -203,7 +197,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
 
             // when
             final ExtractableResponse<Response> response = RestAssured.given().log().all()
-                    .header(new Header("Authorization", JWT_PREFIX + JWT_TOKEN))
+                    .header(new Header(HttpHeaders.AUTHORIZATION, JWT_PREFIX + jwtTokenProvider.generateToken(PHILIP.getEmail().getValue())))
                     .pathParam("teamPlaceId", ENGLISH_TEAM_PLACE.getId())
                     .queryParam("year", year)
                     .queryParam("month", month)
@@ -241,7 +235,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             final int day = 12;
 
             // when
-            final ExtractableResponse<Response> response = FIND_DAILY_SCHEDULE_REQUEST(ENGLISH_TEAM_PLACE.getId(), year, month, day);
+            final ExtractableResponse<Response> response = FIND_DAILY_SCHEDULE_REQUEST(jwtTokenProvider.generateToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), year, month, day);
             final List<ScheduleResponse> schedules = response.jsonPath().getList("schedules", ScheduleResponse.class);
 
             // then
@@ -268,7 +262,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             final int day = 1;
 
             // when
-            final ExtractableResponse<Response> response = FIND_DAILY_SCHEDULE_REQUEST(ENGLISH_TEAM_PLACE.getId(), year, month, day);
+            final ExtractableResponse<Response> response = FIND_DAILY_SCHEDULE_REQUEST(jwtTokenProvider.generateToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), year, month, day);
             final List<ScheduleResponse> schedules = response.jsonPath().getList("schedules", ScheduleResponse.class);
 
             // then
@@ -286,7 +280,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             final int day = 12;
 
             // when
-            final ExtractableResponse<Response> response = FIND_DAILY_SCHEDULE_REQUEST(notExistTeamPlaceId, year, month, day);
+            final ExtractableResponse<Response> response = FIND_DAILY_SCHEDULE_REQUEST(jwtTokenProvider.generateToken(PHILIP.getEmail().getValue()), notExistTeamPlaceId, year, month, day);
 
             // then
             assertSoftly(softly -> {
@@ -315,7 +309,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             final int day = 12;
 
             // when
-            ExtractableResponse<Response> wrongDayResponse = FIND_DAILY_SCHEDULE_REQUEST(ENGLISH_TEAM_PLACE.getId(), wrongYear, month, day);
+            ExtractableResponse<Response> wrongDayResponse = FIND_DAILY_SCHEDULE_REQUEST(jwtTokenProvider.generateToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), wrongYear, month, day);
 
             // then
             assertSoftly(softly -> {
@@ -339,7 +333,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             final int day = 12;
 
             // when
-            ExtractableResponse<Response> wrongDayResponse = FIND_DAILY_SCHEDULE_REQUEST(ENGLISH_TEAM_PLACE.getId(), year, wrongMonth, day);
+            ExtractableResponse<Response> wrongDayResponse = FIND_DAILY_SCHEDULE_REQUEST(jwtTokenProvider.generateToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), year, wrongMonth, day);
 
             // then
             assertSoftly(softly -> {
@@ -363,7 +357,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             final int wrongDay = -1;
 
             // when
-            ExtractableResponse<Response> wrongDayResponse = FIND_DAILY_SCHEDULE_REQUEST(ENGLISH_TEAM_PLACE.getId(), year, month, wrongDay);
+            ExtractableResponse<Response> wrongDayResponse = FIND_DAILY_SCHEDULE_REQUEST(jwtTokenProvider.generateToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), year, month, wrongDay);
 
             // then
             assertSoftly(softly -> {
@@ -388,7 +382,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             testFixtureBuilder.buildMemberTeamPlace(PHILIP_ENGLISH_TEAM_PLACE);
 
             // when
-            final ExtractableResponse<Response> successRequest = REGISTER_SCHEDULE_REQUEST(ENGLISH_TEAM_PLACE.getId(), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_REGISTER_REQUEST);
+            final ExtractableResponse<Response> successRequest = REGISTER_SCHEDULE_REQUEST(jwtTokenProvider.generateToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_REGISTER_REQUEST);
 
             // then
             assertSoftly(softly -> {
@@ -415,7 +409,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             final ScheduleRegisterRequest request = new ScheduleRegisterRequest(blankTitle, startDateTime, endDateTime);
 
             // when
-            final ExtractableResponse<Response> blankTitleRequest = REGISTER_SCHEDULE_REQUEST(ENGLISH_TEAM_PLACE.getId(), request);
+            final ExtractableResponse<Response> blankTitleRequest = REGISTER_SCHEDULE_REQUEST(jwtTokenProvider.generateToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), request);
 
             // then
             assertSoftly(softly -> {
@@ -443,7 +437,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             requestMap.put(REQUEST_END_DATE_KEY, correctEndDateTimeType);
 
             // when
-            final ExtractableResponse<Response> wrongDateTimeTypeRequest = wrongDateTimeTypeRegisterScheduleRequest(ENGLISH_TEAM_PLACE.getId(), requestMap);
+            final ExtractableResponse<Response> wrongDateTimeTypeRequest = wrongDateTimeTypeRegisterScheduleRequest(jwtTokenProvider.generateToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), requestMap);
 
             // then
             assertSoftly(softly -> {
@@ -468,7 +462,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             final ScheduleRegisterRequest request = new ScheduleRegisterRequest(title, startDateTime, wrongEndDateTime);
 
             // when & then
-            final ExtractableResponse<Response> wrongSpanOrderResponse = REGISTER_SCHEDULE_REQUEST(ENGLISH_TEAM_PLACE.getId(), request);
+            final ExtractableResponse<Response> wrongSpanOrderResponse = REGISTER_SCHEDULE_REQUEST(jwtTokenProvider.generateToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), request);
 
             // then
             assertSoftly(softly -> {
@@ -481,11 +475,11 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
         @DisplayName("없는 팀 플레이스 ID로 요청하면 실패한다.")
         void failNotExistTeamPlaceIdRequest() {
             // given
-            testFixtureBuilder.buildMember(PHILIP());
+            Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
             final Long notExistTeamPlaceId = -1L;
 
             // when
-            final ExtractableResponse<Response> notExistTeamPlaceIdRequest = REGISTER_SCHEDULE_REQUEST(notExistTeamPlaceId, MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_REGISTER_REQUEST);
+            final ExtractableResponse<Response> notExistTeamPlaceIdRequest = REGISTER_SCHEDULE_REQUEST(jwtTokenProvider.generateToken(PHILIP.getEmail().getValue()), notExistTeamPlaceId, MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_REGISTER_REQUEST);
 
             // then
             assertSoftly(softly -> {
@@ -494,9 +488,9 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             });
         }
 
-        private ExtractableResponse<Response> wrongDateTimeTypeRegisterScheduleRequest(final Long teamPlaceId, final Map<String, String> requestMap) throws JsonProcessingException {
+        private ExtractableResponse<Response> wrongDateTimeTypeRegisterScheduleRequest(final String token, final Long teamPlaceId, final Map<String, String> requestMap) throws JsonProcessingException {
             return RestAssured.given().log().all()
-                    .header("Authorization", JWT_PREFIX + JWT_TOKEN)
+                    .header(HttpHeaders.AUTHORIZATION, JWT_PREFIX + token)
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
                     .body(objectMapper.writeValueAsString(requestMap))
                     .post("/api/team-place/{teamPlaceId}/calendar/schedules", teamPlaceId)
@@ -524,7 +518,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             final ScheduleUpdateRequest request = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_UPDATE_REQUEST;
 
             // when
-            final ExtractableResponse<Response> updateScheduleResponse = UPDATE_SCHEDULE_REQUEST(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId(), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getTeamPlaceId(), request);
+            final ExtractableResponse<Response> updateScheduleResponse = UPDATE_SCHEDULE_REQUEST(jwtTokenProvider.generateToken(PHILIP.getEmail().getValue()), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId(), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getTeamPlaceId(), request);
 
             // then
             assertThat(updateScheduleResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -547,7 +541,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             final ScheduleUpdateRequest request = new ScheduleUpdateRequest(blankTitle, startDateTime, endDateTime);
 
             // when
-            final ExtractableResponse<Response> blankTitleRequest = UPDATE_SCHEDULE_REQUEST(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId(), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getTeamPlaceId(), request);
+            final ExtractableResponse<Response> blankTitleRequest = UPDATE_SCHEDULE_REQUEST(jwtTokenProvider.generateToken(PHILIP.getEmail().getValue()), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId(), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getTeamPlaceId(), request);
 
             // then
             assertSoftly(softly -> {
@@ -575,7 +569,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             requestMap.put(REQUEST_END_DATE_KEY, correctEndDateTimeType);
 
             // when
-            final ExtractableResponse<Response> wrongDateTimeTypeRequest = wrongDateTimeTypeUpdateScheduleRequest(ENGLISH_TEAM_PLACE.getId(), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId(), requestMap);
+            final ExtractableResponse<Response> wrongDateTimeTypeRequest = wrongDateTimeTypeUpdateScheduleRequest(jwtTokenProvider.generateToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId(), requestMap);
 
             // then
             assertSoftly(softly -> {
@@ -599,7 +593,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             final Long notExistTeamPlaceId = -1L;
 
             // when
-            final ExtractableResponse<Response> notExistTeamPlaceIdRequest = UPDATE_SCHEDULE_REQUEST(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId(), notExistTeamPlaceId, request);
+            final ExtractableResponse<Response> notExistTeamPlaceIdRequest = UPDATE_SCHEDULE_REQUEST(jwtTokenProvider.generateToken(PHILIP.getEmail().getValue()), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId(), notExistTeamPlaceId, request);
 
             // then
             assertSoftly(softly -> {
@@ -608,9 +602,9 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             });
         }
 
-        private ExtractableResponse<Response> wrongDateTimeTypeUpdateScheduleRequest(final Long teamPlaceId, final Long id, final Map<String, String> requestMap) throws JsonProcessingException {
+        private ExtractableResponse<Response> wrongDateTimeTypeUpdateScheduleRequest(final String token, final Long teamPlaceId, final Long id, final Map<String, String> requestMap) throws JsonProcessingException {
             return RestAssured.given().log().all()
-                    .header("Authorization", JWT_PREFIX + JWT_TOKEN)
+                    .header(HttpHeaders.AUTHORIZATION, JWT_PREFIX + token)
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
                     .body(objectMapper.writeValueAsString(requestMap))
                     .patch("/api/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}", teamPlaceId, id)
@@ -635,7 +629,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             final Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(ENGLISH_TEAM_PLACE.getId()));
 
             // when
-            final ExtractableResponse<Response> deleteScheduleResponse = DELETE_SCHEDULE_REQUEST(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getTeamPlaceId(), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId());
+            final ExtractableResponse<Response> deleteScheduleResponse = DELETE_SCHEDULE_REQUEST(jwtTokenProvider.generateToken(PHILIP.getEmail().getValue()), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getTeamPlaceId(), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId());
 
             // then
             assertThat(deleteScheduleResponse.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
@@ -655,7 +649,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             final Long notExistTeamPlaceId = -1L;
 
             // when
-            final ExtractableResponse<Response> notExistTeamPlaceIdDeleteScheduleResponse = DELETE_SCHEDULE_REQUEST(notExistTeamPlaceId, MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId());
+            final ExtractableResponse<Response> notExistTeamPlaceIdDeleteScheduleResponse = DELETE_SCHEDULE_REQUEST(jwtTokenProvider.generateToken(PHILIP.getEmail().getValue()), notExistTeamPlaceId, MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId());
 
             // then
             assertSoftly(softly -> {
@@ -678,7 +672,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             final Long notExistScheduleId = -1L;
 
             // when
-            final ExtractableResponse<Response> notExistScheduleIdDeleteResponse = DELETE_SCHEDULE_REQUEST(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getTeamPlaceId(), notExistScheduleId);
+            final ExtractableResponse<Response> notExistScheduleIdDeleteResponse = DELETE_SCHEDULE_REQUEST(jwtTokenProvider.generateToken(PHILIP.getEmail().getValue()), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getTeamPlaceId(), notExistScheduleId);
 
             // then
             assertSoftly(softly -> {
