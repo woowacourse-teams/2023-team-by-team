@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import type { InputProps } from './Input';
 
-export const Input = styled.input<InputProps>`
+export const InputWrapper = styled.input<InputProps>`
   width: ${({ width }) => width};
   height: ${({ height }) => height};
   padding: 6px;

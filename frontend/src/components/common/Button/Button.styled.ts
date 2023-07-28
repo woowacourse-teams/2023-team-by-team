@@ -27,7 +27,7 @@ const variants: Record<ButtonVariant, CSSProp> = {
   `,
 };
 
-export const Button = styled.button<ButtonProps>`
+export const ButtonWrapper = styled.button<ButtonProps>`
   font-size: 16px;
   line-height: 16px;
   text-align: center;

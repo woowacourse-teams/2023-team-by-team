@@ -11,7 +11,14 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 const Input = (props: InputProps) => {
   const { width, height, css, ...rest } = props;
 
-  return <S.Input width={width} height={height} css={css} {...rest}></S.Input>;
+  return (
+    <S.InputWrapper
+      width={width}
+      height={height}
+      css={css}
+      {...rest}
+    ></S.InputWrapper>
+  );
 };
 
 export default Input;
