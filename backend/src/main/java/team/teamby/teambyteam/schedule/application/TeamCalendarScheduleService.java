@@ -3,7 +3,6 @@ package team.teamby.teambyteam.schedule.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleResponse;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleUpdateRequest;
@@ -101,6 +100,7 @@ public class TeamCalendarScheduleService {
 
         final Schedule schedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow(ScheduleException.ScheduleNotFoundException::new);
+        validateScheduleOwnerTeam(teamPlaceId, schedule);
 
         schedule.change(scheduleUpdateRequest.title(),
                 scheduleUpdateRequest.startDateTime(), scheduleUpdateRequest.endDateTime());
@@ -108,17 +108,11 @@ public class TeamCalendarScheduleService {
 
     public void delete(final Long teamPlaceId, final Long scheduleId) {
         checkTeamPlaceExist(teamPlaceId);
-        checkScheduleExist(scheduleId);
+
+        final Schedule schedule = scheduleRepository.findById(scheduleId)
+                .orElseThrow(ScheduleException.ScheduleNotFoundException::new);
+        validateScheduleOwnerTeam(teamPlaceId, schedule);
+
         scheduleRepository.deleteById(scheduleId);
-    }
-
-    private void checkScheduleExist(final Long scheduleId) {
-        if (notExistSchedule(scheduleId)) {
-            throw new ScheduleException.ScheduleNotFoundException();
-        }
-    }
-
-    private boolean notExistSchedule(final Long scheduleId) {
-        return !scheduleRepository.existsById(scheduleId);
     }
 }
