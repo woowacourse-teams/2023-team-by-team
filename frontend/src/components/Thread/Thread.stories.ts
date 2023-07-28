@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import Thread from './Thread';
 
 const meta = {
-  title: 'Feed/Thead',
+  title: 'Feed/Thread',
   component: Thread,
   tags: ['autodocs'],
 } satisfies Meta<typeof Thread>;
