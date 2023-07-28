@@ -5,7 +5,7 @@ import { useModal } from '~/hooks/useModal';
 import type { SchedulePosition } from '~/types/schedule';
 
 const meta = {
-  title: 'DailyScheduleModal',
+  title: 'Schedule/DailyScheduleModal',
   component: DailyScheduleModal,
 } satisfies Meta<typeof DailyScheduleModal>;
 
@@ -13,23 +13,6 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  render: () => {
-    const { openModal } = useModal();
-
-    return (
-      <>
-        <Button onClick={openModal}>모달 열기</Button>
-        <DailyScheduleModal
-          onSetModalType={() => console.log('hi')}
-          rawDate={new Date()}
-          position={{ row: 0, column: 0 }}
-          onScheduleModalOpen={({ scheduleId, row, column, level }) =>
-            alert(`${scheduleId}, ${row}, ${column}, ${level}`)
-          }
-        />
-      </>
-    );
-  },
   args: {
     onScheduleModalOpen: ({
       scheduleId,
