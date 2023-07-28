@@ -1,3 +1,5 @@
+import { keyframes } from 'styled-components';
+
 const color = {
   LOGO: '#3145FF',
   PRIMARY: '#516FFF',
@@ -23,9 +25,29 @@ const zIndex = {
   MODAL: 1,
 } as const;
 
+const animation = {
+  slideUp: keyframes`
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  `,
+  slideDown: keyframes`
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(100%);
+    }  
+  `,
+};
+
 export const theme = {
   color,
   zIndex,
+  animation,
 } as const;
 
 export type Theme = typeof theme;
