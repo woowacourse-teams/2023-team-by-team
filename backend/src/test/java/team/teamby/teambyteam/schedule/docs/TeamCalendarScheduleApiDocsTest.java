@@ -15,11 +15,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
-import team.teamby.teambyteam.fixtures.ScheduleFixtures;
 import team.teamby.teambyteam.member.configuration.MemberInterceptor;
 import team.teamby.teambyteam.schedule.application.TeamCalendarScheduleService;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleUpdateRequest;
+import team.teamby.teambyteam.schedule.domain.Schedule;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
 import team.teamby.teambyteam.schedule.presentation.TeamCalendarScheduleController;
 import team.teamby.teambyteam.teamplace.configuration.TeamPlaceInterceptor;
@@ -45,7 +45,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static team.teamby.teambyteam.fixtures.ScheduleFixtures.Schedule1_N_Hour;
+import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.*;
 
 @AutoConfigureRestDocs
 @WebMvcTest(TeamCalendarScheduleController.class)
@@ -91,8 +91,8 @@ public class TeamCalendarScheduleApiDocsTest {
         @DisplayName("일정 등록 성공")
         void success() throws Exception {
             // given
-            final ScheduleRegisterRequest request = Schedule1_N_Hour.REQUEST;
-            final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
+            final Long teamPlaceId = 1L;
+            final ScheduleRegisterRequest request = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_REGISTER_REQUEST;
             final Long registeredId = 1L;
             given(teamCalendarScheduleService.register(request, teamPlaceId))
                     .willReturn(registeredId);
@@ -127,9 +127,11 @@ public class TeamCalendarScheduleApiDocsTest {
         @DisplayName("제목이 빈 값이면 실패")
         void failBlankTitle() throws Exception {
             // given
-            final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
+            final Long teamPlaceId = 1L;
             final String blankTitle = " ";
-            ScheduleUpdateRequest request = new ScheduleUpdateRequest(blankTitle, Schedule1_N_Hour.START_DATE_TIME, Schedule1_N_Hour.END_DATE_TIME);
+            LocalDateTime startDateTime = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(teamPlaceId).getSpan().getStartDateTime();
+            LocalDateTime endDateTime = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(teamPlaceId).getSpan().getEndDateTime();
+            ScheduleUpdateRequest request = new ScheduleUpdateRequest(blankTitle, startDateTime, endDateTime);
             willThrow(new ScheduleException.TitleBlankException())
                     .given(teamCalendarScheduleService)
                     .register(any(ScheduleRegisterRequest.class), eq(teamPlaceId));
@@ -153,12 +155,12 @@ public class TeamCalendarScheduleApiDocsTest {
         @DisplayName("잘못된 날짜 형식이면 실패")
         void failWrongDateTimeType() throws Exception {
             // given
-            final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
+            final Long teamPlaceId = 1L;
             final String wrongStartDateTime = "2023:07:12 10:00";
             final String correctEndDateTimeType = "2023-07-12 18:00";
 
             final Map<String, String> requestMap = new HashMap<>();
-            requestMap.put(REQUEST_TITLE_KEY, Schedule1_N_Hour.TITLE);
+            requestMap.put(REQUEST_TITLE_KEY, MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_TITLE);
             requestMap.put(REQUEST_START_DATE_TIME_KEY, wrongStartDateTime);
             requestMap.put(REQUEST_END_DATE_KEY, correctEndDateTimeType);
 
@@ -186,7 +188,7 @@ public class TeamCalendarScheduleApiDocsTest {
         void failNotExistTeamPlaceId() throws Exception {
             // given
             final Long notExistTeamPlaceId = -1L;
-            ScheduleRegisterRequest request = Schedule1_N_Hour.REQUEST;
+            final ScheduleRegisterRequest request = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_REGISTER_REQUEST;
             willThrow(new TeamPlaceException.NotFoundException())
                     .given(teamCalendarScheduleService)
                     .register(any(), eq(notExistTeamPlaceId));
@@ -210,10 +212,10 @@ public class TeamCalendarScheduleApiDocsTest {
         @DisplayName("시작 일자와 종료 일자의 순서가 맞지 않으면 실패")
         void failSpanWrongOrder() throws Exception {
             // given
-            final String title = ScheduleFixtures.Schedule1_N_Hour.TITLE;
-            final Long teamPlaceId = ScheduleFixtures.Schedule1_N_Hour.TEAM_PLACE_ID;
-            final LocalDateTime startDateTime = ScheduleFixtures.Schedule1_N_Hour.START_DATE_TIME;
-            final LocalDateTime wrongEndDateTime = ScheduleFixtures.Schedule1_N_Hour.START_DATE_TIME.minusDays(1);
+            final String title = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_TITLE;
+            final Long teamPlaceId = 1L;
+            final LocalDateTime startDateTime = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(teamPlaceId).getSpan().getStartDateTime();
+            final LocalDateTime wrongEndDateTime = startDateTime.minusDays(1);
             final ScheduleRegisterRequest request = new ScheduleRegisterRequest(title, startDateTime, wrongEndDateTime);
 
             willThrow(new ScheduleException.SpanWrongOrderException())
@@ -235,6 +237,7 @@ public class TeamCalendarScheduleApiDocsTest {
         }
     }
 
+
     @Nested
     @DisplayName("일정 수정 문서화")
     class UpdateScheduleDocs {
@@ -243,9 +246,9 @@ public class TeamCalendarScheduleApiDocsTest {
         @DisplayName("일정 수정 성공")
         void success() throws Exception {
             // given
-            final ScheduleUpdateRequest request = Schedule1_N_Hour.UPDATE_REQUEST;
-            final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
-            final Long id = Schedule1_N_Hour.ID;
+            final ScheduleUpdateRequest request = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_UPDATE_REQUEST;
+            final Long teamPlaceId = 1L;
+            final Long id = 1L;
             willDoNothing().given(teamCalendarScheduleService).update(request, teamPlaceId, id);
 
             // when & then
@@ -278,10 +281,14 @@ public class TeamCalendarScheduleApiDocsTest {
         @DisplayName("제목이 빈 값이면 실패")
         void failBlankTitle() throws Exception {
             // given
-            final Long id = Schedule1_N_Hour.ID;
-            final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
+            final Long id = 1L;
+            final Long teamPlaceId = 1L;
             final String blankTitle = " ";
-            ScheduleUpdateRequest request = new ScheduleUpdateRequest(blankTitle, Schedule1_N_Hour.START_DATE_TIME, Schedule1_N_Hour.END_DATE_TIME);
+            final Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(teamPlaceId);
+            final LocalDateTime startDateTime = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getStartDateTime();
+            final LocalDateTime endDateTime = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getEndDateTime();
+
+            ScheduleUpdateRequest request = new ScheduleUpdateRequest(blankTitle, startDateTime, endDateTime);
             willThrow(new ScheduleException.TitleBlankException())
                     .given(teamCalendarScheduleService)
                     .update(any(ScheduleUpdateRequest.class), eq(teamPlaceId), eq(id));
@@ -305,13 +312,13 @@ public class TeamCalendarScheduleApiDocsTest {
         @DisplayName("잘못된 날짜 형식이면 실패")
         void failWrongDateTimeType() throws Exception {
             // given
-            final Long id = Schedule1_N_Hour.ID;
-            final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
+            final Long id = 1L;
+            final Long teamPlaceId = 1L;
             final String wrongStartDateTime = "2023:07:12 10:00";
             final String correctEndDateTimeType = "2023-07-12 18:00";
 
             final Map<String, String> requestMap = new HashMap<>();
-            requestMap.put(REQUEST_TITLE_KEY, Schedule1_N_Hour.TITLE);
+            requestMap.put(REQUEST_TITLE_KEY, MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_TITLE);
             requestMap.put(REQUEST_START_DATE_TIME_KEY, wrongStartDateTime);
             requestMap.put(REQUEST_END_DATE_KEY, correctEndDateTimeType);
 
@@ -338,9 +345,9 @@ public class TeamCalendarScheduleApiDocsTest {
         @DisplayName("없는 팀 플레이스 ID면 실패")
         void failNotExistTeamPlaceId() throws Exception {
             // given
-            final Long id = Schedule1_N_Hour.ID;
+            final Long id = 1L;
             final Long notExistTeamPlaceId = -1L;
-            ScheduleRegisterRequest request = Schedule1_N_Hour.REQUEST;
+            final ScheduleRegisterRequest request = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_REGISTER_REQUEST;
             willThrow(new TeamPlaceException.NotFoundException())
                     .given(teamCalendarScheduleService)
                     .update(any(), eq(notExistTeamPlaceId), eq(id));
@@ -364,11 +371,11 @@ public class TeamCalendarScheduleApiDocsTest {
         @DisplayName("시작 일자와 종료 일자의 순서가 맞지 않으면 실패")
         void failSpanWrongOrder() throws Exception {
             // given
-            final Long id = Schedule1_N_Hour.ID;
-            final String title = ScheduleFixtures.Schedule1_N_Hour.TITLE;
-            final Long teamPlaceId = ScheduleFixtures.Schedule1_N_Hour.TEAM_PLACE_ID;
-            final LocalDateTime startDateTime = ScheduleFixtures.Schedule1_N_Hour.START_DATE_TIME;
-            final LocalDateTime wrongEndDateTime = ScheduleFixtures.Schedule1_N_Hour.START_DATE_TIME.minusDays(1);
+            final Long id = 1L;
+            final String title = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_TITLE;
+            final Long teamPlaceId = 1L;
+            final LocalDateTime startDateTime = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(teamPlaceId).getSpan().getStartDateTime();
+            final LocalDateTime wrongEndDateTime = startDateTime.minusDays(1);
             final ScheduleUpdateRequest request = new ScheduleUpdateRequest(title, startDateTime, wrongEndDateTime);
 
             willThrow(new ScheduleException.SpanWrongOrderException())
@@ -394,8 +401,8 @@ public class TeamCalendarScheduleApiDocsTest {
         void failNotExistScheduleId() throws Exception {
             // given
             final Long notExistScheduleId = -1L;
-            final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
-            ScheduleRegisterRequest request = Schedule1_N_Hour.REQUEST;
+            final Long teamPlaceId = 1L;
+            final ScheduleRegisterRequest request = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_REGISTER_REQUEST;
             willThrow(new ScheduleException.ScheduleNotFoundException())
                     .given(teamCalendarScheduleService)
                     .update(any(), eq(teamPlaceId), eq(notExistScheduleId));

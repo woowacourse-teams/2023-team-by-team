@@ -7,3 +7,6 @@ export type TextSize = Size;
 export type DateCellSize = Extract<Size, 'sm' | 'md' | 'lg'>;
 
 export type ThreadSize = Extract<Size, 'sm' | 'md'>;
+
+export type NotificationSize = Extract<Size, 'sm' | 'md'>;
+

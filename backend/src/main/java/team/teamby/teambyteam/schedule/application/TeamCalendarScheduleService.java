@@ -24,7 +24,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeamCalendarScheduleService {
 
-    private final MemberRepository memberRepository;
     private final ScheduleRepository scheduleRepository;
     private final TeamPlaceRepository teamPlaceRepository;
 

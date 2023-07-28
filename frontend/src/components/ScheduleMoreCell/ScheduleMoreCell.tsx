@@ -7,9 +7,9 @@ interface ScheduleMoreCellProps extends Pick<Position, 'column'> {
 }
 
 const ScheduleMoreCell = (props: ScheduleMoreCellProps) => {
-  const { column } = props;
+  const { column, onClick } = props;
   return (
-    <S.Wrapper column={column}>
+    <S.Wrapper column={column} onClick={onClick}>
       <Text size="xs" css={S.moreText}>
         일정 더보기
       </Text>
