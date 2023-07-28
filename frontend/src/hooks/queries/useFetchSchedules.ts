@@ -7,7 +7,7 @@ export const useFetchSchedules = (
   month: number,
 ) => {
   const { data } = useQuery(['schedules', teamPlaceId, year, month], () =>
-    fetchSchedules(teamPlaceId, year, month),
+    fetchSchedules(teamPlaceId, year, month + 1),
   );
 
   if (data === undefined) return [];

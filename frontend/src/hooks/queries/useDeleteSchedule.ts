@@ -3,7 +3,6 @@ import { deleteSchedule } from '~/apis/schedule';
 
 export const useDeleteSchedule = (teamPlaceId: number, scheduleId: number) => {
   const queryClient = useQueryClient();
-
   const { mutate } = useMutation(
     () => deleteSchedule(teamPlaceId, scheduleId),
     {
