@@ -20,10 +20,10 @@ public class JwtTokenProvider {
     @Value("${jwt.expiration}")
     private long jwtExpirationInMs;
 
-    public String generateToken(String email) {
-        Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
-        SecretKey secretKey = new SecretKeySpec(jwtSecret.getBytes(StandardCharsets.UTF_8), SignatureAlgorithm.HS256.getJcaName());
+    public String generateToken(final String email) {
+        final Date now = new Date();
+        final Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
+        final SecretKey secretKey = new SecretKeySpec(jwtSecret.getBytes(StandardCharsets.UTF_8), SignatureAlgorithm.HS256.getJcaName());
 
         return Jwts.builder()
                 .claim(EMAIL_KEY, email)
@@ -33,7 +33,7 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String extractEmailFromToken(String token) {
+    public String extractEmailFromToken(final String token) {
         try {
             validate(token);
             final Jws<Claims> claimsJws = getParser().parseClaimsJws(token);
@@ -49,18 +49,18 @@ public class JwtTokenProvider {
                 .build();
     }
 
-    public void validate(String token) {
+    public void validate(final String token) {
         try {
-            Claims claims = getParser().parseClaimsJws(token).getBody();
+            final Claims claims = getParser().parseClaimsJws(token).getBody();
             validateExpiration(claims);
         } catch (MalformedJwtException | MissingClaimException | UnsupportedJwtException e) {
             throw new AuthenticationException.UnSupportAuthenticationException();
         }
     }
 
-    private void validateExpiration(Claims claims) {
-        Date now = new Date();
-        Date expiration = claims.getExpiration();
+    private void validateExpiration(final Claims claims) {
+        final Date now = new Date();
+        final Date expiration = claims.getExpiration();
         if (now.after(expiration)) {
             throw new ExpiredJwtException(null, claims, "토큰이 만료되었습니다.");
         }
