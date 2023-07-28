@@ -1,8 +1,9 @@
 package team.teamby.teambyteam.schedule.application.dto;
 
-import java.time.format.DateTimeFormatter;
 import team.teamby.teambyteam.schedule.domain.Schedule;
-import team.teamby.teambyteam.schedule.domain.Span;
+import team.teamby.teambyteam.schedule.domain.vo.Span;
+
+import java.time.format.DateTimeFormatter;
 
 public record ScheduleResponse(
         Long id,
@@ -12,7 +13,7 @@ public record ScheduleResponse(
 ) {
     private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm";
 
-    public static ScheduleResponse of(final Schedule schedule) {
+    public static ScheduleResponse from(final Schedule schedule) {
         final Span span = schedule.getSpan();
         final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
         final String startDateTime = span.getStartDateTime().format(dateTimeFormatter);

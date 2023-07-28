@@ -22,4 +22,7 @@ export const Inner = styled.div<Pick<ScheduleBarProps, 'color' | 'level'>>`
   filter: brightness(${({ level }) => 1 + level * 0.5});
 
   cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
 `;

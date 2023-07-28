@@ -17,3 +17,7 @@ spring:
         dialect: org.hibernate.dialect.MySQL57Dialect
         format_sql: true # for test
     show-sql: true # for test
+
+jwt:
+  secret: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  expiration: 10800000

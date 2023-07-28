@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import ScheduleEditModal from '~/components/ScheduleEditModal/ScheduleEditModal';
 
 const meta = {
-  title: 'ScheduleEditModal',
+  title: 'Schedule/ScheduleEditModal',
   component: ScheduleEditModal,
   tags: ['autodocs'],
 } satisfies Meta<typeof ScheduleEditModal>;
