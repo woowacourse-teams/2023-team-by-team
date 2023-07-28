@@ -8,9 +8,9 @@ public class AuthenticationException extends RuntimeException{
         super(message);
     }
 
-    public static class UnSupportAuthenticationException extends MemberException {
-        public UnSupportAuthenticationException() {
-            super("지원하지 않는 인증 방식입니다.");
+    public static class FailAuthenticationException extends MemberException {
+        public FailAuthenticationException() {
+            super("인증이 실패했습니다.");
         }
     }
 }

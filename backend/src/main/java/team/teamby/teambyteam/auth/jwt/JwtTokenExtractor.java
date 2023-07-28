@@ -16,6 +16,6 @@ public class JwtTokenExtractor {
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(PREFIX_BEARER)) {
             return bearerToken.substring(PREFIX_BEARER.length());
         }
-        throw new AuthenticationException.UnSupportAuthenticationException();
+        throw new AuthenticationException.FailAuthenticationException();
     }
 }

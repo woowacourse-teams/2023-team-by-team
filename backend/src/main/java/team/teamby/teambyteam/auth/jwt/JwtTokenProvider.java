@@ -39,7 +39,7 @@ public class JwtTokenProvider {
             final Jws<Claims> claimsJws = getParser().parseClaimsJws(token);
             return claimsJws.getBody().get(EMAIL_KEY, String.class);
         } catch (MissingClaimException e) {
-            throw new AuthenticationException.UnSupportAuthenticationException();
+            throw new AuthenticationException.FailAuthenticationException();
         }
     }
 
@@ -54,7 +54,7 @@ public class JwtTokenProvider {
             final Claims claims = getParser().parseClaimsJws(token).getBody();
             validateExpiration(claims);
         } catch (MalformedJwtException | MissingClaimException | UnsupportedJwtException e) {
-            throw new AuthenticationException.UnSupportAuthenticationException();
+            throw new AuthenticationException.FailAuthenticationException();
         }
     }
 

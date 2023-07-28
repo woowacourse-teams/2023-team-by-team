@@ -52,7 +52,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = {
-            AuthenticationException.UnSupportAuthenticationException.class,
+            AuthenticationException.FailAuthenticationException.class,
             ExpiredJwtException.class
     })
     public ResponseEntity<String> handleAuthenticationException(final RuntimeException exception) {
