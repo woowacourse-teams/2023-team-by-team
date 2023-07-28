@@ -82,11 +82,11 @@ public class ScheduleRepositoryTest extends RepositoryTest {
         );
         final List<Schedule> expectedSchedule = testFixtureBuilder.buildSchedules(schedulesToSave);
 
-        final LocalDateTime startDateTime = LocalDateTime.of(2023, 7, 13, 0, 0, 0);
-        final LocalDateTime endDateTime = LocalDateTime.of(2023, 7, 12, 0, 0, 0);
+        final LocalDateTime startDateTime = LocalDateTime.of(2023, 7, 12, 0, 0, 0);
+        final LocalDateTime endDateTime = LocalDateTime.of(2023, 7, 13, 0, 0, 0);
 
         // when
-        final List<Schedule> actualSchedules = scheduleRepository.findAllByTeamPlaceIdAndDailyPeriod(ENGLISH_TEAM_PLACE_ID, startDateTime, endDateTime);
+        final List<Schedule> actualSchedules = scheduleRepository.findAllByTeamPlaceIdAndPeriod(ENGLISH_TEAM_PLACE_ID, startDateTime, endDateTime);
 
         // then
         Assertions.assertThat(actualSchedules).usingRecursiveFieldByFieldElementComparator()

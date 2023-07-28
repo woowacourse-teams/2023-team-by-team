@@ -24,6 +24,6 @@ public record CalendarPeriod(
         LocalDate dailyDate = LocalDate.of(year, month, day);
         LocalDate nextDay = dailyDate.plusDays(NEXT_DAY_OFFSET);
 
-        return new CalendarPeriod(LocalDateTime.of(nextDay, START_TIME_OF_DAY), LocalDateTime.of(dailyDate, START_TIME_OF_DAY));
+        return new CalendarPeriod(LocalDateTime.of(dailyDate, START_TIME_OF_DAY), LocalDateTime.of(nextDay, START_TIME_OF_DAY));
     }
 }

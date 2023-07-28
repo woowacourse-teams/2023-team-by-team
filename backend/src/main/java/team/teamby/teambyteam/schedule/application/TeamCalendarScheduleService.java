@@ -3,7 +3,6 @@ package team.teamby.teambyteam.schedule.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleResponse;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleUpdateRequest;
@@ -91,7 +90,7 @@ public class TeamCalendarScheduleService {
 
         final CalendarPeriod dailyPeriod = CalendarPeriod.of(targetYear, targetMonth, targetDay);
         final List<Schedule> dailySchedules = scheduleRepository
-                .findAllByTeamPlaceIdAndDailyPeriod(teamPlaceId, dailyPeriod.startDateTime(), dailyPeriod.endDatetime());
+                .findAllByTeamPlaceIdAndPeriod(teamPlaceId, dailyPeriod.startDateTime(), dailyPeriod.endDatetime());
 
         return SchedulesResponse.of(dailySchedules);
     }
