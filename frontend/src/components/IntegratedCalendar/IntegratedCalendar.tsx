@@ -4,7 +4,7 @@ import Button from '~/components/common/Button/Button';
 import Text from '~/components/common/Text/Text';
 import useCalendar from '~/hooks/useCalendar';
 import * as S from './IntegratedCalendar.styled';
-import DateCell from '~/components/Calendar/DateCell/DateCell';
+import DateCell from '~/components/DateCell/DateCell';
 import { ArrowLeftIcon, ArrowRightIcon } from '~/assets/svg';
 import { DAYS_OF_WEEK } from '~/constants/calendar';
 

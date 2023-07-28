@@ -1,7 +1,7 @@
 import { Fragment, useState } from 'react';
 import Text from '~/components/common/Text/Text';
 import Button from '~/components/common/Button/Button';
-import DateCell from '~/components/Calendar/DateCell/DateCell';
+import DateCell from '~/components/DateCell/DateCell';
 import ScheduleModal from '~/components/ScheduleModal/ScheduleModal';
 import ScheduleBar from '~/components/ScheduleBar/ScheduleBar';
 import ScheduleAddModal from '~/components/ScheduleAddModal/ScheduleAddModal';
