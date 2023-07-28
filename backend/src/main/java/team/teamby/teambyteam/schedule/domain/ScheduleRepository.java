@@ -48,10 +48,18 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
             LocalDateTime lastDateTime
     );
 
+    /**
+     * Find All schedules contains daily schedules
+     * @param teamPlaceId teamPlaceId for the schedule
+     * EX Daily : 2023-07-12
+     * @param firstDateTime first-date-time of the period (2023-07-13 00:00:00)
+     * @param lastDateTime last-date-time of the period (2023-07-12 00:00:00)
+     * @return List of the Schedules. If there is no Schedule, it will return the List with size 0.
+     */
     @Query("SELECT s FROM Schedule s " +
             "WHERE s.teamPlaceId = :teamPlaceId " +
-            "AND s.span.startDateTime >= :firstDateTime " +
-            "AND s.span.endDateTime <= :lastDateTime " +
+            "AND s.span.startDateTime < :firstDateTime " +
+            "AND s.span.endDateTime >= :lastDateTime " +
             "ORDER BY s.span.startDateTime ASC"
     )
     List<Schedule> findAllByTeamPlaceIdAndDailyPeriod(

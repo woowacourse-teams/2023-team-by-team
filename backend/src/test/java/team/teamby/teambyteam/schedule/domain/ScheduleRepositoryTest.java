@@ -75,11 +75,15 @@ public class ScheduleRepositoryTest extends RepositoryTest {
         // given
         final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
         final Long ENGLISH_TEAM_PLACE_ID = ENGLISH_TEAM_PLACE.getId();
-        final List<Schedule> schedulesToSave = List.of(MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE(ENGLISH_TEAM_PLACE_ID), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(ENGLISH_TEAM_PLACE_ID));
+        final List<Schedule> schedulesToSave = List.of(
+                MONTH_6_AND_MONTH_7_DAY_12_SCHEDULE(ENGLISH_TEAM_PLACE_ID),
+                MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE(ENGLISH_TEAM_PLACE_ID),
+                MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(ENGLISH_TEAM_PLACE_ID)
+        );
         final List<Schedule> expectedSchedule = testFixtureBuilder.buildSchedules(schedulesToSave);
 
-        final LocalDateTime startDateTime = LocalDateTime.of(2023, 7, 12, 0, 0, 0);
-        final LocalDateTime endDateTime = LocalDateTime.of(2023, 7, 12, 23, 59, 59);
+        final LocalDateTime startDateTime = LocalDateTime.of(2023, 7, 13, 0, 0, 0);
+        final LocalDateTime endDateTime = LocalDateTime.of(2023, 7, 12, 0, 0, 0);
 
         // when
         final List<Schedule> actualSchedules = scheduleRepository.findAllByTeamPlaceIdAndDailyPeriod(ENGLISH_TEAM_PLACE_ID, startDateTime, endDateTime);
