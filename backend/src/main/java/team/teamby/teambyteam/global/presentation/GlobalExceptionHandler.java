@@ -1,5 +1,6 @@
 package team.teamby.teambyteam.global.presentation;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -7,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import team.teamby.teambyteam.auth.exception.AuthenticationException;
 import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
@@ -39,16 +41,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = {
             MemberException.MemberNotFoundException.class,
-            MemberException.UnSupportAuthenticationException.class
-    })
-    public ResponseEntity<String> handleAuthenticationException(final RuntimeException exception) {
-        final String message = exception.getMessage();
-        log.warn(message, exception);
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message);
-    }
-
-    @ExceptionHandler(value = {
             TeamPlaceException.NotFoundException.class,
             ScheduleException.ScheduleNotFoundException.class
     })
@@ -57,6 +49,18 @@ public class GlobalExceptionHandler {
         log.warn(message, exception);
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
+    }
+
+    @ExceptionHandler(value = {
+            AuthenticationException.FailAuthenticationException.class,
+            ExpiredJwtException.class
+    })
+    public ResponseEntity<String> handleAuthenticationException(final RuntimeException exception) {
+        final String message = exception.getMessage();
+        log.warn(message, exception);
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(message);
     }
 
     @ExceptionHandler(value = {

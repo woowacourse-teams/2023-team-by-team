@@ -27,7 +27,6 @@ import static team.teamby.teambyteam.common.fixtures.acceptance.MyCalendarSchedu
 
 public class MyCalendarScheduleAcceptanceTest extends AcceptanceTest {
 
-
     @Nested
     @DisplayName("내 캘린더 일정 조회를 한다")
     class MyCalendarFindSchedule {
@@ -55,7 +54,7 @@ public class MyCalendarScheduleAcceptanceTest extends AcceptanceTest {
             final int month = 7;
 
             // when
-            final ExtractableResponse<Response> response = FIND_PERIOD_SCHEDULE_REQUEST(year, month);
+            final ExtractableResponse<Response> response = FIND_PERIOD_SCHEDULE_REQUEST(jwtTokenProvider.generateToken(PHILIP.getEmail().getValue()), year, month);
             final List<ScheduleWithTeamPlaceIdResponse> schedules = response.jsonPath().getList("schedules", ScheduleWithTeamPlaceIdResponse.class);
 
             //then

@@ -6,8 +6,8 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import team.teamby.teambyteam.member.configuration.MemberArgumentResolver;
-import team.teamby.teambyteam.member.configuration.MemberInterceptor;
-import team.teamby.teambyteam.teamplace.configuration.TeamPlaceInterceptor;
+import team.teamby.teambyteam.auth.presentation.MemberInterceptor;
+import team.teamby.teambyteam.auth.presentation.TeamPlaceInterceptor;
 
 import java.util.List;
 
