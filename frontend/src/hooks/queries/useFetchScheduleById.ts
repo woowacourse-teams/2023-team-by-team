@@ -5,8 +5,9 @@ export const useFetchScheduleById = (
   teamPlaceId: number,
   scheduleId: number,
 ) => {
-  const { data: scheduleById } = useQuery(['schedule', scheduleId], () =>
-    fetchScheduleById(teamPlaceId, scheduleId),
+  const { data: scheduleById } = useQuery(
+    ['schedule', teamPlaceId, scheduleId],
+    () => fetchScheduleById(teamPlaceId, scheduleId),
   );
 
   return { scheduleById };
