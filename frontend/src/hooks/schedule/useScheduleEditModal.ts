@@ -16,7 +16,7 @@ const useScheduleEditModal = (
     endDateTime: initialSchedule?.endDateTime,
   });
   const { closeModal } = useModal();
-  const { mutateModifySchedule } = useModifySchedule(scheduleId);
+  const { mutateModifySchedule } = useModifySchedule(1, scheduleId);
 
   const handleScheduleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const { name, value } = e.target;
@@ -48,12 +48,9 @@ const useScheduleEditModal = (
 
     mutateModifySchedule(
       {
-        teamPlaceId: 1,
-        body: {
-          title,
-          startDateTime: formattedStartDateTime,
-          endDateTime: formattedEndDateTime,
-        },
+        title,
+        startDateTime: formattedStartDateTime,
+        endDateTime: formattedEndDateTime,
       },
       {
         onSuccess: () => closeModal(),

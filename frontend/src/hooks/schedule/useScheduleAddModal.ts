@@ -12,7 +12,7 @@ const useScheduleAddModal = () => {
     endDateTime: '2023-07-20T00:00',
   });
   const { closeModal } = useModal();
-  const { mutateSendSchedule } = useSendSchedule();
+  const { mutateSendSchedule } = useSendSchedule(1);
 
   const handleScheduleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const { name, value } = e.target;
@@ -41,12 +41,9 @@ const useScheduleAddModal = () => {
 
     mutateSendSchedule(
       {
-        teamPlaceId: 1,
-        body: {
-          title,
-          startDateTime: formattedStartDateTime,
-          endDateTime: formattedEndDateTime,
-        },
+        title,
+        startDateTime: formattedStartDateTime,
+        endDateTime: formattedEndDateTime,
       },
       {
         onSuccess: () => closeModal(),

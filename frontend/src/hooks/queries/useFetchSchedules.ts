@@ -6,7 +6,7 @@ export const useFetchSchedules = (
   year: number,
   month: number,
 ) => {
-  const { data } = useQuery(['schedules', year, month], () =>
+  const { data } = useQuery(['schedules', teamPlaceId, year, month], () =>
     fetchSchedules(teamPlaceId, year, month),
   );
 
