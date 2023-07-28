@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import Thead from './Thread';
+import Thread from './Thread';
 
 const meta = {
   title: 'Feed/Thead',
-  component: Thead,
+  component: Thread,
   tags: ['autodocs'],
-} satisfies Meta<typeof Thead>;
+} satisfies Meta<typeof Thread>;
 
 export default meta;
 
