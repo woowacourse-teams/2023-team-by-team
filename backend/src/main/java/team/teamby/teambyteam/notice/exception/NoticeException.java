@@ -12,4 +12,16 @@ public class NoticeException extends RuntimeException {
         }
     }
 
+    public static class NotFoundTeamPlaceException extends NoticeException {
+        public NotFoundTeamPlaceException() {
+            super("조회한 팀플레이스가 존재하지 않습니다.");
+        }
+    }
+
+
+    public static class NotFoundMemberException extends NoticeException {
+        public NotFoundMemberException() {
+            super("조회한 멤버가 존재하지 않습니다.");
+        }
+    }
 }
