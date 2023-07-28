@@ -27,7 +27,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     public void addInterceptors(final InterceptorRegistry registry) {
         registry.addInterceptor(memberInterceptor)
                 .order(1)
-                .addPathPatterns("/**");
+                .addPathPatterns("/api/**");
         registry.addInterceptor(teamPlaceInterceptor)
                 .order(2)
                 .addPathPatterns("/**/team-place/**");

@@ -7,7 +7,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import team.teamby.teambyteam.common.ServiceTest;
-import team.teamby.teambyteam.fixtures.ScheduleFixtures;
+import team.teamby.teambyteam.common.fixtures.ScheduleFixtures;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleResponse;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleUpdateRequest;
@@ -15,16 +15,20 @@ import team.teamby.teambyteam.schedule.application.dto.SchedulesResponse;
 import team.teamby.teambyteam.schedule.domain.Schedule;
 import team.teamby.teambyteam.schedule.domain.ScheduleRepository;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
+import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static team.teamby.teambyteam.fixtures.ScheduleFixtures.Schedule1_N_Hour;
+import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.*;
+import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
+import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.JAPANESE_TEAM_PLACE;
 
 public class TeamCalendarScheduleServiceTest extends ServiceTest {
 
@@ -34,6 +38,8 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
     @Autowired
     private ScheduleRepository scheduleRepository;
 
+    private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
     @Nested
     @DisplayName("팀 캘린더 일정 정보 조회시")
     class FindScheduleInTeamCalendar {
@@ -42,17 +48,20 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
         @DisplayName("특정 일정의 정보를 조회한다.")
         void findSpecificSchedule() {
             // given
-            final Long scheduleId = 1L;
-            final Long teamPlaceId = 1L;
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final Long ENGLISH_TEAM_PLACE_ID = ENGLISH_TEAM_PLACE.getId();
+            final Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(ENGLISH_TEAM_PLACE_ID));
+            final String expectedStartDateTime = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getStartDateTime().format(dateTimeFormatter);
+            final String expectedEndDateTime = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getEndDateTime().format(dateTimeFormatter);
 
             // when
-            final ScheduleResponse scheduleResponse = teamCalendarScheduleService.findSchedule(scheduleId, teamPlaceId);
+            final ScheduleResponse scheduleResponse = teamCalendarScheduleService.findSchedule(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId(), ENGLISH_TEAM_PLACE_ID);
 
             //then
             assertSoftly(softly -> {
-                softly.assertThat(scheduleResponse.title()).isEqualTo("1번 팀플 N시간 일정");
-                softly.assertThat(scheduleResponse.startDateTime()).isEqualTo("2023-07-12 10:00");
-                softly.assertThat(scheduleResponse.endDateTime()).isEqualTo("2023-07-12 18:00");
+                softly.assertThat(scheduleResponse.title()).isEqualTo(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getTitle().getValue());
+                softly.assertThat(scheduleResponse.startDateTime()).isEqualTo(expectedStartDateTime);
+                softly.assertThat(scheduleResponse.endDateTime()).isEqualTo(expectedEndDateTime);
             });
         }
 
@@ -60,11 +69,12 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
         @DisplayName("요청한 일정의 정보가 없으면 예외를 발생시킨다.")
         void failFindUnExistingSchedule() {
             // given
-            final Long wrongScheduleId = 100L;
-            final Long teamPlaceId = 1L;
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final Long ENGLISH_TEAM_PLACE_ID = ENGLISH_TEAM_PLACE.getId();
+            final Long wrongScheduleId = -1L;
 
             // when & then
-            assertThatThrownBy(() -> teamCalendarScheduleService.findSchedule(wrongScheduleId, teamPlaceId))
+            assertThatThrownBy(() -> teamCalendarScheduleService.findSchedule(wrongScheduleId, ENGLISH_TEAM_PLACE_ID))
                     .isInstanceOf(ScheduleException.ScheduleNotFoundException.class)
                     .hasMessage("조회한 일정이 존재하지 않습니다.");
 
@@ -74,11 +84,15 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
         @DisplayName("요청한 정보가 팀의 일정이 아니면 예외를 발생시킨다.")
         void failFindOtherTeamPlaceSchedule() {
             // given
-            final Long scheduleId = 1L;
-            final Long otherTeamId = 2L;
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final TeamPlace JAPANESE_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(JAPANESE_TEAM_PLACE());
+            final Long ENGLISH_TEAM_PLACE_ID = ENGLISH_TEAM_PLACE.getId();
+            final Long JAPANESE_TEAM_PLACE_ID = JAPANESE_TEAM_PLACE.getId();
+
+            final Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(ENGLISH_TEAM_PLACE_ID));
 
             // when & then
-            assertThatThrownBy(() -> teamCalendarScheduleService.findSchedule(scheduleId, otherTeamId))
+            assertThatThrownBy(() -> teamCalendarScheduleService.findSchedule(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId(), JAPANESE_TEAM_PLACE_ID))
                     .isInstanceOf(ScheduleException.TeamAccessForbidden.class)
                     .hasMessage("해당 팀플레이스에 일정을 조회할 권한이 없습니다.");
         }
@@ -87,21 +101,26 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
         @DisplayName("팀 캘린더에서 특정 기간 내 일정들을 조회한다.")
         void findAllInPeriod() {
             // given
-            final Long teamPlaceId = 3L;
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final Schedule MONTH_6_AND_MONTH_7_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_6_AND_MONTH_7_SCHEDULE(ENGLISH_TEAM_PLACE.getId()));
+            final Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(ENGLISH_TEAM_PLACE.getId()));
+            final Schedule MONTH_7_DAY_28_AND_MONTH_8_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_DAY_28_AND_MONTH_8_SCHEDULE(ENGLISH_TEAM_PLACE.getId()));
+            final Schedule MONTH_7_DAY_29_AND_MONTH_8_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_DAY_29_AND_MONTH_8_SCHEDULE(ENGLISH_TEAM_PLACE.getId()));
+
             final int year = 2023;
             final int month = 7;
 
             // when
-            final SchedulesResponse schedulesResponse = teamCalendarScheduleService.findScheduleInPeriod(teamPlaceId, year, month);
+            final SchedulesResponse schedulesResponse = teamCalendarScheduleService.findScheduleInPeriod(ENGLISH_TEAM_PLACE.getId(), year, month);
             final List<ScheduleResponse> scheduleResponses = schedulesResponse.schedules();
 
             //then
             assertSoftly(softly -> {
                 softly.assertThat(scheduleResponses).hasSize(4);
-                softly.assertThat(scheduleResponses.get(0).title()).isEqualTo("3번 팀플 B");
-                softly.assertThat(scheduleResponses.get(1).title()).isEqualTo("3번 팀플 C");
-                softly.assertThat(scheduleResponses.get(2).title()).isEqualTo("3번 팀플 E");
-                softly.assertThat(scheduleResponses.get(3).title()).isEqualTo("3번 팀플 D");
+                softly.assertThat(scheduleResponses.get(0).title()).isEqualTo(MONTH_6_AND_MONTH_7_SCHEDULE.getTitle().getValue());
+                softly.assertThat(scheduleResponses.get(1).title()).isEqualTo(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getTitle().getValue());
+                softly.assertThat(scheduleResponses.get(2).title()).isEqualTo(MONTH_7_DAY_28_AND_MONTH_8_SCHEDULE.getTitle().getValue());
+                softly.assertThat(scheduleResponses.get(3).title()).isEqualTo(MONTH_7_DAY_29_AND_MONTH_8_SCHEDULE.getTitle().getValue());
             });
         }
 
@@ -109,12 +128,12 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
         @DisplayName("팀 캘린더에서 일정이 없는 기간 내 일정들을 조회한다.")
         void findAllInPeriodWith0Schedule() {
             // given
-            final Long teamPlaceId = 3L;
-            final int year = 1000;
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final int notExistYear = -1;
             final int month = 7;
 
             // when
-            final SchedulesResponse schedulesResponse = teamCalendarScheduleService.findScheduleInPeriod(teamPlaceId, year, month);
+            final SchedulesResponse schedulesResponse = teamCalendarScheduleService.findScheduleInPeriod(ENGLISH_TEAM_PLACE.getId(), notExistYear, month);
             final List<ScheduleResponse> scheduleResponses = schedulesResponse.schedules();
 
             //then
@@ -125,23 +144,26 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
         @DisplayName("첫날과 마지막날 일정이 정상적으로 조회 된다.")
         void firstAndLastDateScheduleFind() {
             // given
-            final Long teamPlaceId = 3L;
-            final int year = 2023;
-            final int month = 5;
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final Schedule MONTH_5_FIRST_DAY_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_5_FIRST_DAY_SCHEDULE(ENGLISH_TEAM_PLACE.getId()));
+            final Schedule MONTH_5_LAST_DAY_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_5_LAST_DAY_SCHEDULE(ENGLISH_TEAM_PLACE.getId()));
+
+            final int year = MONTH_5_FIRST_DAY_SCHEDULE.getSpan().getStartDateTime().getYear();
+            final int month = MONTH_5_FIRST_DAY_SCHEDULE.getSpan().getStartDateTime().getMonthValue();
 
             // when
-            final SchedulesResponse schedulesResponse = teamCalendarScheduleService.findScheduleInPeriod(teamPlaceId, year, month);
+            final SchedulesResponse schedulesResponse = teamCalendarScheduleService.findScheduleInPeriod(ENGLISH_TEAM_PLACE.getId(), year, month);
             final List<ScheduleResponse> scheduleResponses = schedulesResponse.schedules();
 
             //then
             assertSoftly(softly -> {
                 softly.assertThat(scheduleResponses).hasSize(2);
-                softly.assertThat(scheduleResponses.get(0).title()).isEqualTo("3번 팀플 5월 첫날");
-                softly.assertThat(scheduleResponses.get(1).title()).isEqualTo("3번 팀플 5월 마지막날");
+                softly.assertThat(scheduleResponses.get(0).title()).isEqualTo(MONTH_5_FIRST_DAY_SCHEDULE.getTitle().getValue());
+                softly.assertThat(scheduleResponses.get(1).title()).isEqualTo(MONTH_5_LAST_DAY_SCHEDULE.getTitle().getValue());
             });
         }
     }
-    
+
     @Nested
     @DisplayName("팀 캘린더 하루 일정 조회 시")
     class FindTeamCalendarDailySchedule {
@@ -150,22 +172,26 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
         @DisplayName("팀 캘린더 하루 일정 조회를 성공한다.")
         void success() {
             // given
-            final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
-            final int year = Schedule1_N_Hour.START_DATE_TIME.getYear();
-            final int month = Schedule1_N_Hour.START_DATE_TIME.getMonthValue();
-            final int day = Schedule1_N_Hour.START_DATE_TIME.getDayOfMonth();
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final Long ENGLISH_TEAM_PLACE_ID = ENGLISH_TEAM_PLACE.getId();
+            final Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(ENGLISH_TEAM_PLACE_ID));
+            final Schedule MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE(ENGLISH_TEAM_PLACE_ID));
+
+            final int year = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getStartDateTime().getYear();
+            final int month = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getStartDateTime().getMonthValue();
+            final int day = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getStartDateTime().getDayOfMonth();
 
             // when
             final SchedulesResponse dailySchedulesResponse =
-                    teamCalendarScheduleService.findDailySchedule(teamPlaceId, year, month, day);
+                    teamCalendarScheduleService.findDailySchedule(ENGLISH_TEAM_PLACE_ID, year, month, day);
             final List<ScheduleResponse> dailyTeamCalendarSchedulesResponses = dailySchedulesResponse.schedules();
 
             // then
             assertSoftly(softly -> {
                 softly.assertThat(dailyTeamCalendarSchedulesResponses).hasSize(2);
                 softly.assertThat(dailyTeamCalendarSchedulesResponses.stream()
-                        .map(ScheduleResponse::title))
-                        .containsExactly("1번 팀플 종일 일정", "1번 팀플 N시간 일정");
+                                .map(ScheduleResponse::title))
+                        .containsExactly(MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE.getTitle().getValue(), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getTitle().getValue());
             });
         }
 
@@ -177,13 +203,15 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
             @DisplayName("잘못된 연도 형식일 경우 실패한다.")
             void wrongYear() {
                 // given
-                final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
+                final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+                final Long ENGLISH_TEAM_PLACE_ID = ENGLISH_TEAM_PLACE.getId();
+                final Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(ENGLISH_TEAM_PLACE_ID));
                 final int wrongYear = Integer.MAX_VALUE;
-                final int month = 7;
-                final int day = 12;
+                final int month = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getStartDateTime().getMonthValue();
+                final int day = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getStartDateTime().getDayOfMonth();
 
                 // when & then
-                assertThatThrownBy(() -> teamCalendarScheduleService.findDailySchedule(teamPlaceId, wrongYear, month, day))
+                assertThatThrownBy(() -> teamCalendarScheduleService.findDailySchedule(ENGLISH_TEAM_PLACE_ID, wrongYear, month, day))
                         .isInstanceOf(DateTimeException.class)
                         .hasMessageContaining("Invalid value for Year (valid values -999999999 - 999999999)");
             }
@@ -192,13 +220,15 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
             @DisplayName("잘못된 월 형식일 경우 실패한다.")
             void wrongMonth() {
                 // given
-                final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
-                final int year = 2023;
+                final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+                final Long ENGLISH_TEAM_PLACE_ID = ENGLISH_TEAM_PLACE.getId();
+                final Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(ENGLISH_TEAM_PLACE_ID));
+                final int year = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getStartDateTime().getYear();
                 final int wrongMonth = -1;
-                final int day = 12;
+                final int day = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getStartDateTime().getDayOfMonth();
 
                 // when & then
-                assertThatThrownBy(() -> teamCalendarScheduleService.findDailySchedule(teamPlaceId, year, wrongMonth, day))
+                assertThatThrownBy(() -> teamCalendarScheduleService.findDailySchedule(ENGLISH_TEAM_PLACE_ID, year, wrongMonth, day))
                         .isInstanceOf(DateTimeException.class)
                         .hasMessageContaining("Invalid value for MonthOfYear (valid values 1 - 12)");
             }
@@ -207,13 +237,15 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
             @DisplayName("잘못된 일 형식일 경우 실패한다.")
             void wrongDay() {
                 // given
-                final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
-                final int year = 2023;
-                final int month = 7;
+                final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+                final Long ENGLISH_TEAM_PLACE_ID = ENGLISH_TEAM_PLACE.getId();
+                final Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(ENGLISH_TEAM_PLACE_ID));
+                final int year = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getStartDateTime().getYear();
+                final int month = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getStartDateTime().getDayOfMonth();
                 final int wrongDay = -1;
 
                 // when & then
-                assertThatThrownBy(() -> teamCalendarScheduleService.findDailySchedule(teamPlaceId, year, month, wrongDay))
+                assertThatThrownBy(() -> teamCalendarScheduleService.findDailySchedule(ENGLISH_TEAM_PLACE_ID, year, month, wrongDay))
                         .isInstanceOf(DateTimeException.class)
                         .hasMessageContaining("Invalid value for DayOfMonth (valid values 1 - 28/31)");
             }
@@ -223,13 +255,13 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
         @DisplayName("조회한 팀 캘린더 하루 일정이 없으면 빈 리스트가 반환된다.")
         void successNotExistSchedule() {
             // given
-            final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
-            final int year = 1000;
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final int year = -1;
             final int month = 1;
             final int day = 1;
 
             // when
-            SchedulesResponse schedules = teamCalendarScheduleService.findDailySchedule(teamPlaceId, year, month, day);
+            SchedulesResponse schedules = teamCalendarScheduleService.findDailySchedule(ENGLISH_TEAM_PLACE.getId(), year, month, day);
 
             // then
             assertThat(schedules.schedules()).hasSize(0);
@@ -240,9 +272,9 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
         void failTeamPlaceNotExist() {
             // given
             final Long notExistTeamPlaceId = -1L;
-            final int year = Schedule1_N_Hour.START_DATE_TIME.getYear();
-            final int month = Schedule1_N_Hour.START_DATE_TIME.getMonthValue();
-            final int day = Schedule1_N_Hour.START_DATE_TIME.getDayOfMonth();
+            final int year = 2023;
+            final int month = 1;
+            final int day = 1;
 
             // when & then
             assertThatThrownBy(() -> teamCalendarScheduleService.findDailySchedule(notExistTeamPlaceId, year, month, day))
@@ -259,11 +291,11 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
         @DisplayName("일정 등록에 성공한다.")
         void success() {
             // given
-            final Long teamPlaceId = 1L;
-            final ScheduleRegisterRequest request = ScheduleFixtures.Schedule1_N_Hour.REQUEST;
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final ScheduleRegisterRequest request = ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_REGISTER_REQUEST;
 
             // when
-            final Long registeredId = teamCalendarScheduleService.register(request, teamPlaceId);
+            final Long registeredId = teamCalendarScheduleService.register(request, ENGLISH_TEAM_PLACE.getId());
 
             // then
             assertThat(registeredId).isNotNull();
@@ -273,14 +305,15 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
         @DisplayName("일정 등록 시 Span 순서가 맞지 않으면 예외가 발생한다.")
         void failSpanWrongOrder() {
             // given
-            final String title = ScheduleFixtures.Schedule1_N_Hour.TITLE;
-            final Long teamPlaceId = ScheduleFixtures.Schedule1_N_Hour.TEAM_PLACE_ID;
-            final LocalDateTime startDateTime = ScheduleFixtures.Schedule1_N_Hour.START_DATE_TIME;
-            final LocalDateTime wrongEndDateTime = ScheduleFixtures.Schedule1_N_Hour.START_DATE_TIME.minusDays(1);
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(ENGLISH_TEAM_PLACE.getId());
+            final String title = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getTitle().getValue();
+            final LocalDateTime startDateTime = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getStartDateTime();
+            final LocalDateTime wrongEndDateTime = startDateTime.minusDays(1);
             final ScheduleRegisterRequest request = new ScheduleRegisterRequest(title, startDateTime, wrongEndDateTime);
 
             // when & then
-            assertThatThrownBy(() -> teamCalendarScheduleService.register(request, teamPlaceId))
+            assertThatThrownBy(() -> teamCalendarScheduleService.register(request, ENGLISH_TEAM_PLACE.getId()))
                     .isInstanceOf(ScheduleException.SpanWrongOrderException.class)
                     .hasMessage("시작 일자가 종료 일자보다 이후일 수 없습니다.");
         }
@@ -289,7 +322,7 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
         @DisplayName("일정 등록 시 팀 플레이스 ID에 해당하는 팀 플레이스가 존재하지 않으면 예외가 발생한다.")
         void failTeamPlaceNotExistById() {
             // given
-            final ScheduleRegisterRequest request = ScheduleFixtures.Schedule1_N_Hour.REQUEST;
+            final ScheduleRegisterRequest request = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_REGISTER_REQUEST;
             final Long notExistTeamPlaceId = -1L;
 
             // when & then
@@ -307,18 +340,21 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
         @DisplayName("일정 수정에 성공한다.")
         void success() {
             // given
-            final Long id = Schedule1_N_Hour.ID;
-            final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
-            final ScheduleUpdateRequest request = Schedule1_N_Hour.UPDATE_REQUEST;
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final Long ENGLISH_TEAM_PLACE_ID = ENGLISH_TEAM_PLACE.getId();
+            final Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(ENGLISH_TEAM_PLACE_ID));
+            final Long MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_ID = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId();
+
+            final LocalDateTime startTimeToUpdate = DATE_2023_07_12_00_00_00;
+            final ScheduleUpdateRequest request = new ScheduleUpdateRequest(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_TITLE, startTimeToUpdate, MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getEndDateTime());
+
 
             // when
-            teamCalendarScheduleService.update(request, teamPlaceId, id);
-            final Schedule updatedSchedule = scheduleRepository.findById(id).get();
+            teamCalendarScheduleService.update(request, ENGLISH_TEAM_PLACE_ID, MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_ID);
+            final Schedule updatedSchedule = scheduleRepository.findById(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_ID).get();
 
             // then
-            assertThat(updatedSchedule).usingRecursiveComparison()
-                    .ignoringFields("id", "createdAt", "updatedAt")
-                    .isEqualTo(Schedule1_N_Hour.UPDATE_ENTITY());
+            assertThat(updatedSchedule.getSpan().getStartDateTime()).isEqualTo(startTimeToUpdate);
         }
 
         @ParameterizedTest
@@ -326,14 +362,16 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
         @DisplayName("일정 수정 시 수정할 일정 제목이 빈 값이면 예외가 발생한다.")
         void failUpdateTitleBlank(String titleToUpdate) {
             // given
-            final Long id = Schedule1_N_Hour.ID;
-            final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
-            final LocalDateTime startDateTime = Schedule1_N_Hour.START_DATE_TIME;
-            final LocalDateTime endDateTime = Schedule1_N_Hour.END_DATE_TIME;
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final Long ENGLISH_TEAM_PLACE_ID = ENGLISH_TEAM_PLACE.getId();
+            final Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(ENGLISH_TEAM_PLACE_ID));
+
+            final LocalDateTime startDateTime = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getStartDateTime();
+            final LocalDateTime endDateTime = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getEndDateTime();
             final ScheduleUpdateRequest request = new ScheduleUpdateRequest(titleToUpdate, startDateTime, endDateTime);
 
             // when & then
-            assertThatThrownBy(() -> teamCalendarScheduleService.update(request, teamPlaceId, id))
+            assertThatThrownBy(() -> teamCalendarScheduleService.update(request, ENGLISH_TEAM_PLACE_ID, MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId()))
                     .isInstanceOf(ScheduleException.TitleBlankException.class)
                     .hasMessage("일정의 제목은 빈 칸일 수 없습니다.");
         }
@@ -342,15 +380,17 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
         @DisplayName("일정 수정 시 Span 순서가 맞지 않으면 예외가 발생한다.")
         void failSpanWrongOrder() {
             // given
-            final Long id = Schedule1_N_Hour.ID;
-            final String title = Schedule1_N_Hour.TITLE;
-            final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
-            final LocalDateTime startDateTime = Schedule1_N_Hour.START_DATE_TIME;
-            final LocalDateTime wrongEndDateTime = Schedule1_N_Hour.START_DATE_TIME.minusDays(1);
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final Long ENGLISH_TEAM_PLACE_ID = ENGLISH_TEAM_PLACE.getId();
+            final Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(ENGLISH_TEAM_PLACE_ID));
+
+            String title = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getTitle().getValue();
+            final LocalDateTime startDateTime = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getStartDateTime();
+            final LocalDateTime wrongEndDateTime = startDateTime.minusDays(1);
             final ScheduleUpdateRequest request = new ScheduleUpdateRequest(title, startDateTime, wrongEndDateTime);
 
             // when & then
-            assertThatThrownBy(() -> teamCalendarScheduleService.update(request, teamPlaceId, id))
+            assertThatThrownBy(() -> teamCalendarScheduleService.update(request, ENGLISH_TEAM_PLACE_ID, MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId()))
                     .isInstanceOf(ScheduleException.SpanWrongOrderException.class)
                     .hasMessage("시작 일자가 종료 일자보다 이후일 수 없습니다.");
         }
@@ -359,12 +399,14 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
         @DisplayName("일정 수정 시 팀 플레이스 ID에 해당하는 팀 플레이스가 존재하지 않으면 예외가 발생한다.")
         void failTeamPlaceNotExistById() {
             // given
-            final Long id = Schedule1_N_Hour.ID;
-            final ScheduleUpdateRequest request = Schedule1_N_Hour.UPDATE_REQUEST;
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final Long ENGLISH_TEAM_PLACE_ID = ENGLISH_TEAM_PLACE.getId();
+            final Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(ENGLISH_TEAM_PLACE_ID));
+            final ScheduleUpdateRequest request = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_UPDATE_REQUEST;
             final Long notExistTeamPlaceId = -1L;
 
             // when & then
-            assertThatThrownBy(() -> teamCalendarScheduleService.update(request, notExistTeamPlaceId, id))
+            assertThatThrownBy(() -> teamCalendarScheduleService.update(request, notExistTeamPlaceId, MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId()))
                     .isInstanceOf(TeamPlaceException.NotFoundException.class)
                     .hasMessage("조회한 팀 플레이스가 존재하지 않습니다.");
         }
@@ -373,12 +415,12 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
         @DisplayName("일정 수정 시 수정할 일정 ID에 해당하는 일정이 존재하지 않으면 예외가 발생한다.")
         void failScheduleNotExistById() {
             // given
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             final Long notExistScheduleId = -1L;
-            final Long teamPlaceId = Schedule1_N_Hour.TEAM_PLACE_ID;
-            final ScheduleUpdateRequest request = Schedule1_N_Hour.UPDATE_REQUEST;
+            final ScheduleUpdateRequest request = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_UPDATE_REQUEST;
 
             // when & then
-            assertThatThrownBy(() -> teamCalendarScheduleService.update(request, teamPlaceId, notExistScheduleId))
+            assertThatThrownBy(() -> teamCalendarScheduleService.update(request, ENGLISH_TEAM_PLACE.getId(), notExistScheduleId))
                     .isInstanceOf(ScheduleException.ScheduleNotFoundException.class)
                     .hasMessage("조회한 일정이 존재하지 않습니다.");
         }
@@ -392,18 +434,20 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
         @DisplayName("일정 삭제에 성공한다.")
         void success() {
             // given
-            final Long teamPlaceId = 1L;
-            final ScheduleRegisterRequest request = ScheduleFixtures.Schedule1_N_Hour.REQUEST;
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final Long ENGLISH_TEAM_PLACE_ID = ENGLISH_TEAM_PLACE.getId();
+            final Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(ENGLISH_TEAM_PLACE_ID));
 
             // when
-            final Long registeredId = teamCalendarScheduleService.register(request, teamPlaceId);
+            teamCalendarScheduleService.delete(ENGLISH_TEAM_PLACE_ID, MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId());
+
 
             // then
-            assertThat(registeredId).isNotNull();
+            assertThat(scheduleRepository.findById(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId()).isEmpty()).isTrue();
         }
 
         @Test
-        @DisplayName("일정 등록 시 팀 플레이스 ID에 해당하는 팀 플레이스가 존재하지 않으면 예외가 발생한다.")
+        @DisplayName("일정 삭제 시 팀 플레이스 ID에 해당하는 팀 플레이스가 존재하지 않으면 예외가 발생한다.")
         void failTeamPlaceNotExistById() {
             // given
             final Long notExistTramPlaceId = -1L;
@@ -419,11 +463,12 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
         @DisplayName("일정 삭제 시 존재하지 않는 일정 Id면 실패한다.")
         void failScheduleNotExistById() {
             // given
-            final Long existTramPlaceId = 1L;
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final Long ENGLISH_TEAM_PLACE_ID = ENGLISH_TEAM_PLACE.getId();
             final Long notExistScheduleId = -1L;
 
             // when & then
-            assertThatThrownBy(() -> teamCalendarScheduleService.delete(existTramPlaceId, notExistScheduleId))
+            assertThatThrownBy(() -> teamCalendarScheduleService.delete(ENGLISH_TEAM_PLACE_ID, notExistScheduleId))
                     .isInstanceOf(ScheduleException.ScheduleNotFoundException.class)
                     .hasMessage("조회한 일정이 존재하지 않습니다.");
         }
