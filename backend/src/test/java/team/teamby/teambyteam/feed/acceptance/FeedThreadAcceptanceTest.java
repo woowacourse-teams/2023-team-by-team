@@ -3,6 +3,7 @@ package team.teamby.teambyteam.feed.acceptance;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import team.teamby.teambyteam.common.AcceptanceTest;
 import team.teamby.teambyteam.common.fixtures.FeedThreadFixtures;
 import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
+import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
@@ -28,21 +30,33 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
     @DisplayName("피드에 스레드 등록 시")
     class PostThread {
 
+        private Member authedMember;
+        private TeamPlace participatedTeamPlace;
+        private MemberTeamPlace participatedMemberTeamPlace;
+        private String authToken;
+
+        @BeforeEach
+        void setup() {
+            authedMember = testFixtureBuilder.buildMember(PHILIP());
+            participatedTeamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            participatedMemberTeamPlace = testFixtureBuilder.buildMemberTeamPlace(authedMember, participatedTeamPlace);
+            authToken = jwtTokenProvider.generateToken(authedMember.getEmail().getValue());
+
+        }
+
         @Test
         @DisplayName("스레드 등록에 성공한다.")
         void success() {
             // given
-            final MemberTeamPlace PHILIP_ENGLISH_TEAM_PLACE = testFixtureBuilder.buildMemberAndTeamPlace(PHILIP(), ENGLISH_TEAM_PLACE());
             final FeedThreadWritingRequest request = FeedThreadFixtures.HELLO_WRITING_REQUEST;
-            final String authToken = jwtTokenProvider.generateToken(PHILIP_ENGLISH_TEAM_PLACE.getMember().getEmail().getValue());
 
             // when
-            final ExtractableResponse<Response> response = POST_FEED_THREAD_REQUEST(authToken, PHILIP_ENGLISH_TEAM_PLACE.getTeamPlace(), request);
+            final ExtractableResponse<Response> response = POST_FEED_THREAD_REQUEST(authToken, participatedTeamPlace, request);
 
             //then
             SoftAssertions.assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
-                softly.assertThat(response.header(HttpHeaders.LOCATION)).contains("/api/team-place/" + PHILIP_ENGLISH_TEAM_PLACE.getTeamPlace().getId() + "/feed/threads");
+                softly.assertThat(response.header(HttpHeaders.LOCATION)).contains("/api/team-place/" + participatedMemberTeamPlace.getTeamPlace().getId() + "/feed/threads");
             });
         }
 
@@ -51,12 +65,10 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
         @DisplayName("스레드 내용으로 빈 내용의 요청이 오면 등록이 실패한다.")
         void failWithBlankContent(final String content) {
             // given
-            final MemberTeamPlace PHILIP_ENGLISH_TEAM_PLACE = testFixtureBuilder.buildMemberAndTeamPlace(PHILIP(), ENGLISH_TEAM_PLACE());
             final FeedThreadWritingRequest request = new FeedThreadWritingRequest(content);
-            final String authToken = jwtTokenProvider.generateToken(PHILIP_ENGLISH_TEAM_PLACE.getMember().getEmail().getValue());
 
             // when
-            final ExtractableResponse<Response> response = POST_FEED_THREAD_REQUEST(authToken, PHILIP_ENGLISH_TEAM_PLACE.getTeamPlace(), request);
+            final ExtractableResponse<Response> response = POST_FEED_THREAD_REQUEST(authToken, participatedTeamPlace, request);
 
             //then
             SoftAssertions.assertSoftly(softly -> {
@@ -69,10 +81,9 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
         @DisplayName("사용자가 소속되지 않은 팀플레이스 아이디로 요청시 등록이 실패한다.")
         void failWithForbiddenTeamPlace() {
             // given
-            final MemberTeamPlace PHILIP_ENGLISH_TEAM_PLACE = testFixtureBuilder.buildMemberAndTeamPlace(PHILIP(), ENGLISH_TEAM_PLACE());
             final TeamPlace UN_PARTICIPATED_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(JAPANESE_TEAM_PLACE());
+
             final FeedThreadWritingRequest request = FeedThreadFixtures.HELLO_WRITING_REQUEST;
-            final String authToken = jwtTokenProvider.generateToken(PHILIP_ENGLISH_TEAM_PLACE.getMember().getEmail().getValue());
 
             // when
             final ExtractableResponse<Response> response = POST_FEED_THREAD_REQUEST(authToken, UN_PARTICIPATED_TEAM_PLACE, request);
@@ -88,12 +99,11 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
         @DisplayName("인증되지 않은 사용자로 요청시 등록이 실패한다.")
         void failWithUnauthorizedMember() {
             // given
-            final MemberTeamPlace PHILIP_ENGLISH_TEAM_PLACE = testFixtureBuilder.buildMemberAndTeamPlace(PHILIP(), ENGLISH_TEAM_PLACE());
             final FeedThreadWritingRequest request = FeedThreadFixtures.HELLO_WRITING_REQUEST;
             final String unauthorizedToken = jwtTokenProvider.generateToken(ROY().getEmail().getValue());
 
             // when
-            final ExtractableResponse<Response> response = POST_FEED_THREAD_REQUEST(unauthorizedToken, PHILIP_ENGLISH_TEAM_PLACE.getTeamPlace(), request);
+            final ExtractableResponse<Response> response = POST_FEED_THREAD_REQUEST(unauthorizedToken, participatedTeamPlace, request);
 
             //then
             SoftAssertions.assertSoftly(softly -> {

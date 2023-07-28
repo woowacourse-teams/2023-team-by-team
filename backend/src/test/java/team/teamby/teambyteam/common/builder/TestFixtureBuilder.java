@@ -9,7 +9,6 @@ import team.teamby.teambyteam.schedule.domain.Schedule;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
 import java.util.List;
-import java.util.Objects;
 
 @Component
 public class TestFixtureBuilder {
@@ -41,34 +40,18 @@ public class TestFixtureBuilder {
         return bs.memberRepository().saveAll(members);
     }
 
+    public MemberTeamPlace buildMemberTeamPlace(final Member member, final TeamPlace teamPlace) {
+        final MemberTeamPlace memberTeamPlace = new MemberTeamPlace();
+        memberTeamPlace.setMemberAndTeamPlace(member, teamPlace);
+        return bs.memberTeamPlaceRepository().save(memberTeamPlace);
+    }
+
     public List<MemberTeamPlace> buildMemberTeamPlaces(final List<MemberTeamPlace> memberTeamPlaces) {
         return bs.memberTeamPlaceRepository().saveAll(memberTeamPlaces);
     }
 
     public List<TeamPlace> buildTeamPlaces(final List<TeamPlace> teamPlaces) {
         return bs.teamPlaceRepository().saveAll(teamPlaces);
-    }
-
-    public MemberTeamPlace buildMemberAndTeamPlace(final Member member, final TeamPlace teamPlace) {
-        final Member savedMember = getSavedMember(member);
-        final TeamPlace savedTeamPlace = getSavedTeamPlace(teamPlace);
-        final MemberTeamPlace memberTeamPlace = new MemberTeamPlace();
-        memberTeamPlace.setMemberAndTeamPlace(savedMember, savedTeamPlace);
-        return buildMemberTeamPlace(memberTeamPlace);
-    }
-
-    private Member getSavedMember(final Member member) {
-        if (bs.memberRepository().existsByEmail(member.getEmail())) {
-            return bs.memberRepository().findByEmail(member.getEmail()).get();
-        }
-        return buildMember(member);
-    }
-
-    private TeamPlace getSavedTeamPlace(final TeamPlace teamPlace) {
-        if (Objects.nonNull(teamPlace.getId()) && bs.teamPlaceRepository().existsById(teamPlace.getId())) {
-            return teamPlace;
-        }
-        return buildTeamPlace(teamPlace);
     }
 
     public Feed buildFeed(final Feed feed) {
