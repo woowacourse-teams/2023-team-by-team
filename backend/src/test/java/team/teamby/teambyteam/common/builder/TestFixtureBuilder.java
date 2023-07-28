@@ -59,7 +59,7 @@ public class TestFixtureBuilder {
 
     private Member getSavedMember(final Member member) {
         if (bs.memberRepository().existsByEmail(member.getEmail())) {
-            return member;
+            return bs.memberRepository().findByEmail(member.getEmail()).get();
         }
         return buildMember(member);
     }
