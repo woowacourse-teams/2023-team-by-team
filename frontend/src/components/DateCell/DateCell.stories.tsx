@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import DateCell from '~/components/Calendar/DateCell/DateCell';
+import DateCell from '~/components/DateCell/DateCell';
 
 const meta = {
   title: 'Calendar/DateCell',

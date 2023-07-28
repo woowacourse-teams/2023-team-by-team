@@ -18,7 +18,7 @@ const fontSize: Record<TextSize, string> = {
   xxl: '22px',
 };
 
-export const Text = styled.p<TextProps>`
+export const TextWrapper = styled.p<TextProps>`
   h1&,
   h2&,
   h3&,

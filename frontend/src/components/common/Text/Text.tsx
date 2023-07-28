@@ -25,9 +25,9 @@ const Text = (props: PropsWithChildren<TextProps>) => {
   const { as = 'p', size, weight, css, children } = props;
 
   return (
-    <S.Text as={as} size={size} css={css} weight={weight}>
+    <S.TextWrapper as={as} size={size} css={css} weight={weight}>
       {children}
-    </S.Text>
+    </S.TextWrapper>
   );
 };
 
