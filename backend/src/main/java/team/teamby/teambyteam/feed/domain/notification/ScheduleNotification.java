@@ -1,4 +1,4 @@
-package team.teamby.teambyteam.feed.domain;
+package team.teamby.teambyteam.feed.domain.notification;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
