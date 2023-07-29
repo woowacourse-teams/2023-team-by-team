@@ -90,7 +90,7 @@ public class TeamCalendarScheduleService {
 
         final CalendarPeriod dailyPeriod = CalendarPeriod.of(targetYear, targetMonth, targetDay);
         final List<Schedule> dailySchedules = scheduleRepository
-                .findAllByTeamPlaceIdAndDailyPeriod(teamPlaceId, dailyPeriod.startDateTime(), dailyPeriod.endDatetime());
+                .findAllByTeamPlaceIdAndPeriod(teamPlaceId, dailyPeriod.startDateTime(), dailyPeriod.endDatetime());
 
         return SchedulesResponse.of(dailySchedules);
     }
