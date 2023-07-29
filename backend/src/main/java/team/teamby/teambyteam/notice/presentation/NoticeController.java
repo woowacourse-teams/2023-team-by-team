@@ -10,10 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import team.teamby.teambyteam.member.configuration.AuthPrincipal;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
-import team.teamby.teambyteam.member.domain.Member;
-import team.teamby.teambyteam.member.domain.MemberRepository;
-import team.teamby.teambyteam.member.domain.vo.Email;
-import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.notice.application.NoticeService;
 import team.teamby.teambyteam.notice.application.dto.NoticeRegisterRequest;
 
@@ -25,17 +21,14 @@ import java.net.URI;
 public class NoticeController {
 
     private final NoticeService noticeService;
-    private final MemberRepository memberRepository;
 
-    @PostMapping(value = "/{teamPlaceId}/feed/notice")
-    public ResponseEntity<Void> Register(
-            @AuthPrincipal final MemberEmailDto memberEmailDto,
-            @RequestBody @Valid final NoticeRegisterRequest noticeRegisterRequest,
-            @PathVariable final Long teamPlaceId) {
+    @PostMapping("/{teamPlaceId}/feed/notice")
+    public ResponseEntity<Void> register(
+            @RequestBody @Valid final NoticeRegisterRequest reqeust,
+            @PathVariable final Long teamPlaceId,
+            @AuthPrincipal final MemberEmailDto memberEmailDto) {
 
-        final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(MemberException.MemberNotFoundException::new);
-        final Long registeredId = noticeService.register(noticeRegisterRequest, teamPlaceId, member.getId());
+        final Long registeredId = noticeService.register(reqeust, teamPlaceId, memberEmailDto);
         final URI location = URI.create("/api/team-place/" + teamPlaceId + "/feed/threads/notice/" + registeredId);
 
         return ResponseEntity.created(location).build();

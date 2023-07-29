@@ -20,12 +20,13 @@ public class NoticeService {
     private final TeamPlaceRepository teamPlaceRepository;
     private final MemberRepository memberRepository;
 
-    public Long register(final NoticeRegisterRequest noticeRegisterRequest, final Long teamPlaceId, final Long authorId) {
+    public Long register(final NoticeRegisterRequest noticeRegisterRequest, final Long teamPlaceId, final MemberEmailDto memberEmailDto) {
         checkTeamPlaceExist(teamPlaceId);
-        checkAuthorExist(authorId);
+        final IdOnly memberId = memberRepository.findIdByEmail(new Email(memberEmailDto.email()))
+                .orElseThrow(MemberException.MemberNotFoundException::new);
 
         final Content content = new Content(noticeRegisterRequest.content());
-        final Notice savedNotice = noticeRepository.save(new Notice(content, teamPlaceId, authorId));
+        final Notice savedNotice = noticeRepository.save(new Notice(content, teamPlaceId, memberId.id()));
 
         return savedNotice.getId();
     }
