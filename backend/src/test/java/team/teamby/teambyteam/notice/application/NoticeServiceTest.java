@@ -14,6 +14,7 @@ import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ROY;
+import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.FIRST_NOTICE_REGISTER_REQUEST;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
 
 class NoticeServiceTest extends ServiceTest {
@@ -35,7 +36,7 @@ class NoticeServiceTest extends ServiceTest {
             //given
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             final Member member = testFixtureBuilder.buildMember(ROY());
-            final NoticeRegisterRequest request = new NoticeRegisterRequest("테스트 공지");
+            final NoticeRegisterRequest request = FIRST_NOTICE_REGISTER_REQUEST;
 
             //when
             final Long registeredId = noticeService.register(request, teamPlace.getId(), member.getId());
@@ -49,8 +50,8 @@ class NoticeServiceTest extends ServiceTest {
         void failTeamPlaceNotExistById() {
             // given
             final Long notExistTeamPlaceId = -1L;
-            Member member = testFixtureBuilder.buildMember(ROY());
-            final NoticeRegisterRequest request = new NoticeRegisterRequest("테스트 공지");
+            final Member member = testFixtureBuilder.buildMember(ROY());
+            final NoticeRegisterRequest request = FIRST_NOTICE_REGISTER_REQUEST;
 
             // when & then
             assertThatThrownBy(() -> noticeService.register(request, notExistTeamPlaceId, member.getId()))
@@ -64,7 +65,7 @@ class NoticeServiceTest extends ServiceTest {
             // given
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             final Long notExistMemberId = -1L;
-            final NoticeRegisterRequest request = new NoticeRegisterRequest("테스트 공지");
+            final NoticeRegisterRequest request = FIRST_NOTICE_REGISTER_REQUEST;
 
             // when & then
             assertThatThrownBy(() -> noticeService.register(request, teamPlace.getId(), notExistMemberId))

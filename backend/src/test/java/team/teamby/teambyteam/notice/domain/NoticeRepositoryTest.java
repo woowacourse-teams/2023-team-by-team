@@ -1,9 +1,6 @@
 package team.teamby.teambyteam.notice.domain;
 
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -19,13 +16,6 @@ class NoticeRepositoryTest {
 
     @Autowired
     private NoticeRepository noticeRepository;
-
-
-    @ParameterizedTest
-    @CsvSource
-    @DisplayName("알림이 존재하면 true, 존재하지 않으면 false를 반환한다.")
-    void name() {
-    }
 
     @Test
     void registerTeamPlaceId() {

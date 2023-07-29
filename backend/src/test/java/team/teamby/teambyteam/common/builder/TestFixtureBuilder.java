@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import team.teamby.teambyteam.feed.domain.Feed;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
+import team.teamby.teambyteam.notice.domain.Notice;
 import team.teamby.teambyteam.schedule.domain.Schedule;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
@@ -60,5 +61,13 @@ public class TestFixtureBuilder {
 
     public List<Feed> buildFeeds(final List<Feed> feeds) {
         return bs.feedRepository().saveAll(feeds);
+    }
+
+    public Notice buildNotice(final Notice notice) {
+        return bs.noticeRepository().save(notice);
+    }
+
+    public List<Notice> buildNotices(final List<Notice> notices) {
+        return bs.noticeRepository().saveAll(notices);
     }
 }
