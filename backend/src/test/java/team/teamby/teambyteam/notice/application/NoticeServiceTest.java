@@ -1,5 +1,6 @@
 package team.teamby.teambyteam.notice.application;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -25,23 +26,29 @@ class NoticeServiceTest extends ServiceTest {
     @Autowired
     private NoticeRepository noticeRepository;
 
-
     @Nested
     @DisplayName("공지 등록 시")
     class RegisterNotice {
 
+        private TeamPlace teamPlace;
+        private Member member;
+        private NoticeRegisterRequest request;
+
+        @BeforeEach
+        void setUP() {
+            teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            member = testFixtureBuilder.buildMember(ROY());
+            request = FIRST_NOTICE_REGISTER_REQUEST;
+        }
+
+
         @Test
         @DisplayName("공지 등록에 성공한다")
         void success() {
-            //given
-            final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
-            final Member member = testFixtureBuilder.buildMember(ROY());
-            final NoticeRegisterRequest request = FIRST_NOTICE_REGISTER_REQUEST;
-
-            //when
+            // when
             final Long registeredId = noticeService.register(request, teamPlace.getId(), member.getId());
 
-            //then
+            // then
             assertThat(registeredId).isNotNull();
         }
 
@@ -50,8 +57,6 @@ class NoticeServiceTest extends ServiceTest {
         void failTeamPlaceNotExistById() {
             // given
             final Long notExistTeamPlaceId = -1L;
-            final Member member = testFixtureBuilder.buildMember(ROY());
-            final NoticeRegisterRequest request = FIRST_NOTICE_REGISTER_REQUEST;
 
             // when & then
             assertThatThrownBy(() -> noticeService.register(request, notExistTeamPlaceId, member.getId()))
@@ -63,9 +68,7 @@ class NoticeServiceTest extends ServiceTest {
         @DisplayName("공지 등록 시 멤버 ID에 해당하는 멤버가 존재하지 않으면 예외가 발생한다.")
         void failMemberNotExistById() {
             // given
-            final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             final Long notExistMemberId = -1L;
-            final NoticeRegisterRequest request = FIRST_NOTICE_REGISTER_REQUEST;
 
             // when & then
             assertThatThrownBy(() -> noticeService.register(request, teamPlace.getId(), notExistMemberId))

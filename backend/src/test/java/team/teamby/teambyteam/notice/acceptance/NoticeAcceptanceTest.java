@@ -7,6 +7,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,7 +21,9 @@ import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
+import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ROY;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
+import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.JAPANESE_TEAM_PLACE;
 import static team.teamby.teambyteam.common.fixtures.acceptance.NoticeAcceptanceFixtures.POST_NOTICE_REQUEST;
 
 public class NoticeAcceptanceTest extends AcceptanceTest {
@@ -42,18 +46,16 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
             participatedTeamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             participatedMemberTeamPlace = testFixtureBuilder.buildMemberTeamPlace(authedMember, participatedTeamPlace);
             authToken = jwtTokenProvider.generateToken(authedMember.getEmail().getValue());
-
-
         }
 
         @Test
         @DisplayName("공지 등록에 성공한다")
         void success() {
             // given
-            NoticeRegisterRequest request = NoticeFixtures.FIRST_NOTICE_REGISTER_REQUEST;
+            final NoticeRegisterRequest request = NoticeFixtures.FIRST_NOTICE_REGISTER_REQUEST;
 
             // when
-            ExtractableResponse<Response> response = POST_NOTICE_REQUEST(authToken, participatedTeamPlace, request);
+            final ExtractableResponse<Response> response = POST_NOTICE_REQUEST(authToken, participatedTeamPlace, request);
 
             // then
             assertSoftly(softly -> {
