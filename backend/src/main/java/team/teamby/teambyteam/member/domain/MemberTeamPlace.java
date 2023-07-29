@@ -25,11 +25,11 @@ public class MemberTeamPlace extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = false, updatable = false)
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = false, updatable = false)
     private TeamPlace teamPlace;
 
     @Embedded
@@ -44,6 +44,5 @@ public class MemberTeamPlace extends BaseEntity {
         this.displayMemberName = new DisplayMemberName(member.getName().getValue());
         this.displayTeamPlaceName = new DisplayTeamPlaceName(teamPlace.getName().getValue());
         member.getMemberTeamPlaces().add(this);
-        teamPlace.getMemberTeamPlaces().add(this);
     }
 }
