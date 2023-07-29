@@ -16,7 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import team.teamby.teambyteam.auth.presentation.MemberInterceptor;
-import team.teamby.teambyteam.auth.presentation.TeamPlaceInterceptor;
+import team.teamby.teambyteam.auth.presentation.TeamPlaceParticipationInterceptor;
 import team.teamby.teambyteam.schedule.application.TeamCalendarScheduleService;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleUpdateRequest;
@@ -73,13 +73,13 @@ public class TeamCalendarScheduleApiDocsTest {
     private MemberInterceptor memberInterceptor;
 
     @MockBean
-    private TeamPlaceInterceptor teamPlaceInterceptor;
+    private TeamPlaceParticipationInterceptor teamPlaceParticipationInterceptor;
 
     @BeforeEach
     void setup() throws Exception {
         given(memberInterceptor.preHandle(any(), any(), any()))
                 .willReturn(true);
-        given(teamPlaceInterceptor.preHandle(any(), any(), any()))
+        given(teamPlaceParticipationInterceptor.preHandle(any(), any(), any()))
                 .willReturn(true);
     }
 

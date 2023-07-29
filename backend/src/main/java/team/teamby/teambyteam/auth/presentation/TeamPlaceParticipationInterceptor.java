@@ -17,7 +17,7 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public final class TeamPlaceInterceptor implements HandlerInterceptor {
+public final class TeamPlaceParticipationInterceptor implements HandlerInterceptor {
 
     private final JwtTokenExtractor jwtTokenExtractor;
     private final JwtTokenProvider jwtTokenProvider;
