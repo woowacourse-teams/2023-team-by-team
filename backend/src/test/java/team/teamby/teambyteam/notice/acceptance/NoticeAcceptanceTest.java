@@ -61,5 +61,56 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
                 softly.assertThat(response.header(HttpHeaders.LOCATION)).contains("/api/team-place/" + participatedTeamPlace.getId() + "/feed/threads/notice/");
             });
         }
+
+        @ParameterizedTest
+        @ValueSource(strings = {"", " ", "  "})
+        @DisplayName("공지 내용 요청 값으로 빈 내용이 들어오면 공지 등록에 실패한다.")
+        void failWithBlankContent(final String content) {
+            // given
+            final NoticeRegisterRequest request = new NoticeRegisterRequest(content);
+
+            // when
+            final ExtractableResponse<Response> response = POST_NOTICE_REQUEST(authToken, participatedTeamPlace, request);
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+                softly.assertThat(response.body().asString()).contains("공지 내용은 빈 값일 수 없습니다.");
+            });
+        }
+
+        @Test
+        @DisplayName("사용자가 소속되지 않은 팀플레이스 아이디로 요청 시 등록이 실패한다.")
+        void failWithForbiddenTeamPlace() {
+            // given
+            final TeamPlace UN_PARTICIPATED_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(JAPANESE_TEAM_PLACE());
+            final NoticeRegisterRequest request = NoticeFixtures.FIRST_NOTICE_REGISTER_REQUEST;
+
+            // when
+            final ExtractableResponse<Response> response = POST_NOTICE_REQUEST(authToken, UN_PARTICIPATED_TEAM_PLACE, request);
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+                softly.assertThat(response.body().asString()).contains("접근할 수 없는 팀플레이스입니다.");
+            });
+        }
+
+        @Test
+        @DisplayName("인증되지 않은 사용자로 요청 시 등록이 실패한다.")
+        void fail() {
+            // given
+            final NoticeRegisterRequest request = NoticeFixtures.FIRST_NOTICE_REGISTER_REQUEST;
+            final String unauthorizedToken = jwtTokenProvider.generateToken(ROY().getEmail().getValue());
+
+            // when
+            final ExtractableResponse<Response> response = POST_NOTICE_REQUEST(unauthorizedToken, participatedTeamPlace, request);
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
+                softly.assertThat(response.body().asString()).contains("조회한 멤버가 존재하지 않습니다.");
+            });
+        }
     }
 }
