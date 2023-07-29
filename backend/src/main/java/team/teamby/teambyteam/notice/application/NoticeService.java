@@ -3,13 +3,17 @@ package team.teamby.teambyteam.notice.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
+import team.teamby.teambyteam.member.domain.IdOnly;
 import team.teamby.teambyteam.member.domain.MemberRepository;
+import team.teamby.teambyteam.member.domain.vo.Email;
+import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.notice.application.dto.NoticeRegisterRequest;
 import team.teamby.teambyteam.notice.domain.Notice;
 import team.teamby.teambyteam.notice.domain.NoticeRepository;
 import team.teamby.teambyteam.notice.domain.vo.Content;
-import team.teamby.teambyteam.notice.exception.NoticeException;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceRepository;
+import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
 @Service
 @Transactional
@@ -33,22 +37,12 @@ public class NoticeService {
 
     private void checkTeamPlaceExist(final Long teamPlaceId) {
         if (notExistTeamPlace(teamPlaceId)) {
-            throw new NoticeException.NotFoundTeamPlaceException();
+            throw new TeamPlaceException.NotFoundException();
         }
     }
 
     private boolean notExistTeamPlace(final Long teamPlaceId) {
         return !teamPlaceRepository.existsById(teamPlaceId);
-    }
-
-    private void checkAuthorExist(Long authorId) {
-        if (notExistMember(authorId)) {
-            throw new NoticeException.NotFoundMemberException();
-        }
-    }
-
-    private boolean notExistMember(Long authorId) {
-        return !memberRepository.existsById(authorId);
     }
 }
 
