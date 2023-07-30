@@ -53,7 +53,17 @@ export const PostDateContainer = styled.div`
   column-gap: 5px;
 `;
 
-export const Content = styled.p``;
+export const ContentWrapper = styled.div``;
+
+export const Divider = styled.span`
+  display: inline-block;
+
+  width: 1.5px;
+  height: 20px;
+  margin: 0 4px;
+
+  background-color: ${({ theme }) => theme.color.GRAY400};
+`;
 
 export const primaryNoticeTag = css`
   position: absolute;

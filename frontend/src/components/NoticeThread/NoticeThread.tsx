@@ -5,7 +5,6 @@ import { useThreadHeight } from '~/hooks/thread/useThreadHeight';
 import Text from '~/components/common/Text/Text';
 import ExpandButton from '~/components/ExpandButton/ExpandButton';
 import NoticeTag from '~/components/NoticeTag/NoticeTag';
-import { ClockIcon } from '~/assets/svg';
 import type { YYYYMMDDHHMM } from '~/types/schedule';
 import { formatWriteTime } from '~/utils/formatWriteTime';
 
@@ -35,12 +34,12 @@ const NoticeThread = (props: PropsWithChildren<NoticeThreadProps>) => {
           <Text size="lg" weight="bold">
             {author}
           </Text>
-          <S.PostDateContainer>
-            <ClockIcon width="24px" height="24px" />
-            <Text size="lg">{formatWriteTime(createdAt)}</Text>
-          </S.PostDateContainer>
+          <S.Divider />
+          <Text size="lg">{formatWriteTime(createdAt)}</Text>
         </S.ThreadHeader>
-        <S.Content ref={contentRef}>{children}</S.Content>
+        <S.ContentWrapper ref={contentRef}>
+          <Text>{children}</Text>
+        </S.ContentWrapper>
         {shouldShowExpandButton && (
           <ExpandButton isExpanded={isExpanded} onClick={toggleExpanded} />
         )}
