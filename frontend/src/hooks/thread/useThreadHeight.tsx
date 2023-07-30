@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { RefObject } from 'react';
-
-const DEFAULT_MAX_THREAD_HEIGHT = 300;
+import { DEFAULT_MAX_THREAD_HEIGHT } from '~/constants/thread';
 
 /**
  * 《useThreadHeight》
