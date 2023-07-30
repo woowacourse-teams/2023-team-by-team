@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import NoticeThread from './NoticeThread';
 
+/**
+ * `NoticeThread` 는 피드 메뉴에서 사용될 공지 스레드 컴포넌트입니다.
+ *  피드 메뉴와 모아보기 페이지에서의 두 UI를 모두 제공합니다.
+ */
 const meta = {
   title: 'Feed/NoticeThread',
   component: NoticeThread,
