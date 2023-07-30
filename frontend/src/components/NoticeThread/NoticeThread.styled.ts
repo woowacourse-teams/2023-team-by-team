@@ -20,8 +20,8 @@ export const Thread = styled.div<BoardProps>`
   width: 100%;
   min-height: 200px;
   max-height: ${({ height }) => height}px;
-  padding: 25px;
-  padding-bottom: ${({ isExpanded }) => (isExpanded ? '90px' : '25px')};
+  padding: 26px;
+  padding-bottom: ${({ isExpanded }) => (isExpanded ? '90px' : '26px')};
 
   border-radius: 40px;
   box-shadow: 0 0 16px ${({ theme }) => theme.color.GRAY300};
@@ -37,20 +37,14 @@ export const ThreadHeader = styled.header`
   column-gap: 8px;
 
   width: 100%;
-  height: 35px;
+  height: 36px;
 `;
 
 export const ProfileImage = styled.img`
-  width: 35px;
-  height: 35px;
+  width: 36px;
+  height: 36px;
 
   border-radius: 8px;
-`;
-
-export const PostDateContainer = styled.div`
-  display: flex;
-  align-items: center;
-  column-gap: 5px;
 `;
 
 export const ContentWrapper = styled.div``;

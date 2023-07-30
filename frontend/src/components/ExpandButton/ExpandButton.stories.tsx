@@ -6,7 +6,7 @@ import ExpandButton from './ExpandButton';
  *  기본적으로 `position: absolute` 가 적용되어 있으며 부모 요소의 최하단에 배치됩니다.
  */
 const meta = {
-  title: 'ExpandButton',
+  title: 'Feed/ExpandButton',
   component: ExpandButton,
   tags: ['autodocs'],
   decorators: [
