@@ -18,21 +18,23 @@ const ExpandButton = (props: ExpandButtonProps) => {
       css={S.expandButton}
       onClick={onClick}
     >
-      {isExpanded ? (
-        <S.Container>
-          <Text weight="bold" size="lg">
-            접기
-          </Text>
-          <ArrowExpandLessIcon />
-        </S.Container>
-      ) : (
-        <S.Container>
-          <Text weight="bold" size="lg">
-            펼치기
-          </Text>
-          <ArrowExpandMoreIcon />
-        </S.Container>
-      )}
+      <S.Container>
+        {isExpanded ? (
+          <>
+            <Text weight="bold" size="lg">
+              접기
+            </Text>
+            <ArrowExpandLessIcon />
+          </>
+        ) : (
+          <>
+            <Text weight="bold" size="lg">
+              펼치기
+            </Text>
+            <ArrowExpandMoreIcon />
+          </>
+        )}
+      </S.Container>
     </Button>
   );
 };
