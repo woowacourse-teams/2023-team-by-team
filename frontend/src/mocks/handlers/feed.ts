@@ -8,24 +8,18 @@ export const feedHandlers = [
   rest.get(
     `/api/team-place/:teamPlaceId/feed/threads`,
     async (req, res, ctx) => {
-      const lastThreadId = Number(req.url.searchParams.get('lastThreadId'));
+      const lastThreadId = Number(req.url.searchParams.get('last-thread-id'));
       const size = Number(req.url.searchParams.get('size'));
 
-      if (!lastThreadId)
-        return res(
-          ctx.status(200),
-          ctx.json({
-            threads: threads.slice(0, size),
-          }),
-        );
+      console.log('last' + lastThreadId);
+      let index = threads.findIndex((thread) => thread.id === lastThreadId);
 
-      const index = threads.findIndex((thread) => thread.id === lastThreadId);
-      if (index === -1) return res(ctx.status(404));
+      if (index === -1) index = 0;
 
       return res(
         ctx.status(200),
         ctx.json({
-          threads: threads.slice(index + 1, index + size),
+          threads: threads.slice(index, index + size),
         }),
       );
     },

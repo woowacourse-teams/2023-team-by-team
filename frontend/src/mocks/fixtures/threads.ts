@@ -192,7 +192,8 @@ export const threads: Thread[] = [
     profileImageUrl:
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYZjvO1QuvfgCfQxBwwzmJcHIT5pTXIBGOLeyBDIbZknn6Dhkd40WrU0ZCdjt-IoXLzI0&usqp=CAU',
     createdAt: '2021-11-12 12:15',
-    content: '요즘 너무 바쁘네요.',
+    content:
+      '20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 ',
   },
   {
     id: 21,
@@ -385,7 +386,8 @@ export const threads: Thread[] = [
     profileImageUrl:
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYZjvO1QuvfgCfQxBwwzmJcHIT5pTXIBGOLeyBDIbZknn6Dhkd40WrU0ZCdjt-IoXLzI0&usqp=CAU',
     createdAt: '2021-10-23 08:10',
-    content: '회사에서 사용하는 프로그래밍 언어는 무엇인가요?',
+    content:
+      '40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 ',
   },
   {
     id: 41,
@@ -578,7 +580,8 @@ export const threads: Thread[] = [
     authorName: 'schedule',
     profileImageUrl: null,
     createdAt: '2021-10-03 16:40',
-    content: '다음 주 월요일은 휴무입니다.',
+    content:
+      '60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 ',
   },
   {
     id: 61,
@@ -772,6 +775,7 @@ export const threads: Thread[] = [
     profileImageUrl:
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYZjvO1QuvfgCfQxBwwzmJcHIT5pTXIBGOLeyBDIbZknn6Dhkd40WrU0ZCdjt-IoXLzI0&usqp=CAU',
     createdAt: '2021-09-13 14:00',
-    content: '회사에서 사용하는 ERP 시스템은 무엇인가요?',
+    content:
+      '80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 ',
   },
 ];
