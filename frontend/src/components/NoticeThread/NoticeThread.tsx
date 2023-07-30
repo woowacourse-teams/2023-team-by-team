@@ -3,8 +3,8 @@ import { useRef } from 'react';
 import * as S from './NoticeThread.styled';
 import { useThreadHeight } from '~/hooks/thread/useThreadHeight';
 import Text from '~/components/common/Text/Text';
-import ExpandButton from './ExpandButton/ExpandButton';
-import Tag from './Tag/Tag';
+import ExpandButton from '~/components/ExpandButton/ExpandButton';
+import Tag from '~/components/Tag/Tag';
 import { ClockIcon } from '~/assets/svg';
 
 interface NoticeThreadProps {
