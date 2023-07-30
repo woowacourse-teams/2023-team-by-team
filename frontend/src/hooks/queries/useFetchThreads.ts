@@ -1,15 +1,22 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchThreads } from '~/apis/feed';
+import { THREAD_SIZE } from '~/constants/feed';
 
 export const useFetchThreads = (teamPlaceId: number) => {
-  const { data, hasNextPage, isFetchingNextPage } = useInfiniteQuery(
-    ['threads', teamPlaceId],
-    ({ pageParam }) => fetchThreads(teamPlaceId, pageParam),
+  const {
+    data: threadData,
+    hasNextPage,
+    fetchNextPage,
+  } = useInfiniteQuery(
+    ['threadData', teamPlaceId],
+    ({ pageParam = undefined }) => fetchThreads(teamPlaceId, pageParam),
+    {
+      getNextPageParam: (lastPage) => {
+        if (lastPage.threads.length !== THREAD_SIZE) return undefined;
+        return lastPage.threads[THREAD_SIZE - 1].id;
+      },
+    },
   );
 
-  return {
-    data,
-    hasNextPage,
-    isFetchingNextPage,
-  };
+  return { threadData, hasNextPage, fetchNextPage };
 };
