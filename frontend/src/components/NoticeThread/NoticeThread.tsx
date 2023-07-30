@@ -4,7 +4,7 @@ import * as S from './NoticeThread.styled';
 import { useThreadHeight } from '~/hooks/thread/useThreadHeight';
 import Text from '~/components/common/Text/Text';
 import ExpandButton from '~/components/ExpandButton/ExpandButton';
-import Tag from '~/components/Tag/Tag';
+import NoticeTag from '~/components/NoticeTag/NoticeTag';
 import { ClockIcon } from '~/assets/svg';
 import type { YYYYMMDDHHMM } from '~/types/schedule';
 import { formatWriteTime } from '~/utils/formatWriteTime';
@@ -45,7 +45,7 @@ const NoticeThread = (props: PropsWithChildren<NoticeThreadProps>) => {
           <ExpandButton isExpanded={isExpanded} onClick={toggleExpanded} />
         )}
       </S.Thread>
-      <Tag css={S.primaryNoticeTag} />
+      <NoticeTag css={S.primaryNoticeTag} />
     </S.ThreadContainer>
   );
 };

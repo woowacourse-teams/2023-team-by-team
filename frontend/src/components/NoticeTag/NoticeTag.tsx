@@ -1,4 +1,4 @@
-import * as S from './Tag.styled';
+import * as S from './NoticeTag.styled';
 import { MegaphoneIcon } from '~/assets/svg';
 import type { CSSProp } from 'styled-components';
 import Text from '~/components/common/Text/Text';
@@ -7,7 +7,7 @@ export interface TagProps {
   css?: CSSProp;
 }
 
-const Tag = (props: TagProps) => {
+const NoticeTag = (props: TagProps) => {
   const { css } = props;
 
   return (
@@ -20,4 +20,4 @@ const Tag = (props: TagProps) => {
   );
 };
 
-export default Tag;
+export default NoticeTag;

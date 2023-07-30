@@ -1,5 +1,5 @@
 import { styled, css } from 'styled-components';
-import type { TagProps } from './Tag';
+import type { TagProps } from './NoticeTag';
 
 export const TagContainer = styled.div<TagProps>`
   display: flex;

@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import Tag from './Tag';
+import NoticeTag from './NoticeTag';
 
 const meta = {
-  title: 'Tag',
-  component: Tag,
+  title: 'NoticeTag',
+  component: NoticeTag,
   tags: ['autodocs'],
-} satisfies Meta<typeof Tag>;
+} satisfies Meta<typeof NoticeTag>;
 
 export default meta;
 
