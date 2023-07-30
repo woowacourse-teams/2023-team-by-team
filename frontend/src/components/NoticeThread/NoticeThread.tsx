@@ -6,15 +6,17 @@ import Text from '~/components/common/Text/Text';
 import ExpandButton from '~/components/ExpandButton/ExpandButton';
 import Tag from '~/components/Tag/Tag';
 import { ClockIcon } from '~/assets/svg';
+import type { YYYYMMDDHHMM } from '~/types/schedule';
+import { formatWriteTime } from '~/utils/formatWriteTime';
 
 interface NoticeThreadProps {
   author: string;
   profileImageSrc: string;
-  date: string;
+  createdAt: YYYYMMDDHHMM;
 }
 
 const NoticeThread = (props: PropsWithChildren<NoticeThreadProps>) => {
-  const { author, profileImageSrc, children } = props;
+  const { author, profileImageSrc, createdAt, children } = props;
   const threadRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const { shouldShowExpandButton, isExpanded, toggleExpanded, resultHeight } =
@@ -35,7 +37,7 @@ const NoticeThread = (props: PropsWithChildren<NoticeThreadProps>) => {
           </Text>
           <S.PostDateContainer>
             <ClockIcon width="24px" height="24px" />
-            <Text size="lg">2023/01/21 22:00</Text>
+            <Text size="lg">{formatWriteTime(createdAt)}</Text>
           </S.PostDateContainer>
         </S.ThreadHeader>
         <S.Content ref={contentRef}>{children}</S.Content>
