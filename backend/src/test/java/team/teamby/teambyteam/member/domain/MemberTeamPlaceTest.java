@@ -9,7 +9,6 @@ import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
 class MemberTeamPlaceTest {
 
-
     @Test
     @DisplayName("멤버와 팀플레이스를 통해 멤버팀플레이스를 생성시 기본 이름으로 display name들이 설정된다.")
     void setDefaultDisplayName() {
@@ -27,5 +26,4 @@ class MemberTeamPlaceTest {
             softly.assertThat(memberTeamPlace.getDisplayTeamPlaceName().getValue()).isEqualTo(japaneseTeamPlace.getName().getValue());
         });
     }
-
 }

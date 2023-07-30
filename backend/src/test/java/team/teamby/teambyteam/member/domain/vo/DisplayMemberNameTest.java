@@ -39,5 +39,4 @@ class DisplayMemberNameTest {
                 .isInstanceOf(MemberTeamPlaceException.MemberDisplayNameLengthException.class)
                 .hasMessage("멤버 이름의 길이가 최대 이름 길이를 초과했습니다.");
     }
-
 }

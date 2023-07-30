@@ -58,5 +58,4 @@ class MemberTeamPlaceRepositoryTest extends RepositoryTest {
             softly.assertThat(displayNames).containsExactlyInAnyOrder(PHILIP.getName().getValue(), ENDLE.getName().getValue());
         });
     }
-
 }
