@@ -11,15 +11,12 @@ export const feedHandlers = [
       const lastThreadId = Number(req.url.searchParams.get('last-thread-id'));
       const size = Number(req.url.searchParams.get('size'));
 
-      console.log('last' + lastThreadId);
-      let index = threads.findIndex((thread) => thread.id === lastThreadId);
-
-      if (index === -1) index = 0;
+      const index = threads.findIndex((thread) => thread.id === lastThreadId);
 
       return res(
         ctx.status(200),
         ctx.json({
-          threads: threads.slice(index, index + size),
+          threads: threads.slice(index + 1, index + size + 1),
         }),
       );
     },
