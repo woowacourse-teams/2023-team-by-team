@@ -67,6 +67,6 @@ export const Divider = styled.span`
 
 export const primaryNoticeTag = css`
   position: absolute;
-  top: 18px;
-  right: -22px;
+  top: 22px;
+  right: -18px;
 `;
