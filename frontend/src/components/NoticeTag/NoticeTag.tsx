@@ -2,20 +2,24 @@ import * as S from './NoticeTag.styled';
 import { MegaphoneIcon } from '~/assets/svg';
 import type { CSSProp } from 'styled-components';
 import Text from '~/components/common/Text/Text';
+import type { NoticeTagSize } from '~/types/size';
 
-export interface TagProps {
+export interface NoticeTagProps {
+  size?: NoticeTagSize;
   css?: CSSProp;
 }
 
-const NoticeTag = (props: TagProps) => {
-  const { css } = props;
+const NoticeTag = (props: NoticeTagProps) => {
+  const { size, css } = props;
 
   return (
-    <S.TagContainer css={css}>
-      <MegaphoneIcon width="24px" height="24px" style={{ color: 'white' }} />
-      <Text size="lg" weight="bold" css={S.tagLabel}>
-        중요 공지
-      </Text>
+    <S.TagContainer size={size} css={css}>
+      <MegaphoneIcon />
+      {size === 'md' && (
+        <Text size="lg" weight="bold" css={S.tagLabel}>
+          중요 공지
+        </Text>
+      )}
     </S.TagContainer>
   );
 };

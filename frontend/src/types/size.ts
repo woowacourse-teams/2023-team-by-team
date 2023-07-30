@@ -10,3 +10,4 @@ export type ThreadSize = Extract<Size, 'sm' | 'md'>;
 
 export type NotificationSize = Extract<Size, 'sm' | 'md'>;
 
+export type NoticeTagSize = Extract<Size, 'sm' | 'md'>;

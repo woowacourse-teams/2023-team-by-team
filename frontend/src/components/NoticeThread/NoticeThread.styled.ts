@@ -57,6 +57,6 @@ export const Content = styled.p``;
 
 export const primaryNoticeTag = css`
   position: absolute;
-  top: 20px;
-  right: -20px;
+  top: 18px;
+  right: -22px;
 `;

@@ -1,13 +1,13 @@
 import { styled, css } from 'styled-components';
-import type { TagProps } from './NoticeTag';
+import type { NoticeTagProps } from './NoticeTag';
 
-export const TagContainer = styled.div<TagProps>`
+export const TagContainer = styled.div<NoticeTagProps>`
   display: flex;
   justify-content: center;
   align-items: center;
   column-gap: 8px;
 
-  width: 150px;
+  width: ${({ size = 'md' }) => (size === 'md' ? '150px' : '42px')};
   height: 42px;
 
   border-radius: 18px;
