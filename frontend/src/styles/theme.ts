@@ -21,6 +21,7 @@ const color = {
 
 const zIndex = {
   MODAL: 1,
+  MENU: 2,
 } as const;
 
 export const theme = {
