@@ -42,7 +42,7 @@ const NoticeThread = (props: NoticeThreadProps) => {
           </S.ThreadHeader>
         )}
         <S.ContentWrapper ref={contentRef}>
-          <Text>{content}</Text>
+          <Text size="lg">{content}</Text>
         </S.ContentWrapper>
         {shouldShowExpandButton && (
           <ExpandButton isExpanded={isExpanded} onClick={toggleExpanded} />
