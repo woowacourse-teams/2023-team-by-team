@@ -27,7 +27,7 @@ class NoticeRepositoryTest extends RepositoryTest {
         noticeRepository.save(secondNotice);
 
         // when
-        final List<Notice> notices = noticeRepository.findByTeamPlaceId(1L);
+        final List<Notice> notices = noticeRepository.findAllByTeamPlaceId(1L);
 
         // then
         assertSoftly(softly -> {

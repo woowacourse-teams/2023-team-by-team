@@ -55,7 +55,7 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
             final NoticeRegisterRequest request = NoticeFixtures.FIRST_NOTICE_REGISTER_REQUEST;
 
             // when
-            final ExtractableResponse<Response> response = POST_NOTICE_REQUEST(authToken, participatedTeamPlace, request);
+            final ExtractableResponse<Response> response = POST_NOTICE_REQUEST(authToken, participatedTeamPlace.getId(), request);
 
             // then
             assertSoftly(softly -> {
@@ -72,7 +72,7 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
             final NoticeRegisterRequest request = new NoticeRegisterRequest(content);
 
             // when
-            final ExtractableResponse<Response> response = POST_NOTICE_REQUEST(authToken, participatedTeamPlace, request);
+            final ExtractableResponse<Response> response = POST_NOTICE_REQUEST(authToken, participatedTeamPlace.getId(), request);
 
             // then
             assertSoftly(softly -> {
@@ -85,16 +85,33 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
         @DisplayName("사용자가 소속되지 않은 팀플레이스 아이디로 요청 시 등록이 실패한다.")
         void failWithForbiddenTeamPlace() {
             // given
-            final TeamPlace UN_PARTICIPATED_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(JAPANESE_TEAM_PLACE());
+            final TeamPlace UN_PARTICIPATED_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(testFixtureBuilder.buildTeamPlace(JAPANESE_TEAM_PLACE()));
             final NoticeRegisterRequest request = NoticeFixtures.FIRST_NOTICE_REGISTER_REQUEST;
 
             // when
-            final ExtractableResponse<Response> response = POST_NOTICE_REQUEST(authToken, UN_PARTICIPATED_TEAM_PLACE, request);
+            final ExtractableResponse<Response> response = POST_NOTICE_REQUEST(authToken, UN_PARTICIPATED_TEAM_PLACE.getId(), request);
 
             // then
             assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
                 softly.assertThat(response.body().asString()).contains("접근할 수 없는 팀플레이스입니다.");
+            });
+        }
+
+        @Test
+        @DisplayName("존재하지 않는 팀플레이스 아이디로 요청 시 등록에 실패한다.")
+        void failWithNonExistTeamPlace() {
+            // given
+            Long nonExistTeamPlaceId = -1L;
+            final NoticeRegisterRequest request = NoticeFixtures.FIRST_NOTICE_REGISTER_REQUEST;
+
+            // when
+            final ExtractableResponse<Response> response = POST_NOTICE_REQUEST(authToken, nonExistTeamPlaceId, request);
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
+                softly.assertThat(response.body().asString()).contains("조회한 팀 플레이스가 존재하지 않습니다.");
             });
         }
 
@@ -106,7 +123,7 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
             final String unauthorizedToken = jwtTokenProvider.generateToken(ROY().getEmail().getValue());
 
             // when
-            final ExtractableResponse<Response> response = POST_NOTICE_REQUEST(unauthorizedToken, participatedTeamPlace, request);
+            final ExtractableResponse<Response> response = POST_NOTICE_REQUEST(unauthorizedToken, participatedTeamPlace.getId(), request);
 
             // then
             assertSoftly(softly -> {
