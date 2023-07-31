@@ -25,6 +25,8 @@ const Calendar = () => {
     year,
     month,
     calendar,
+    currentDate,
+
     handlers: { handlePrevButtonClick, handleNextButtonClick },
   } = useCalendar();
   const schedules = useFetchSchedules(1, year, month);
@@ -34,6 +36,7 @@ const Calendar = () => {
     modalPosition,
     handlers: { handleScheduleModalOpen },
   } = useScheduleModal();
+  const [clickedDate, setClickedDate] = useState(currentDate);
   const [modalType, setModalType] = useState<ModalOpenType>(
     MODAL_OPEN_TYPE.ADD,
   );
@@ -63,6 +66,16 @@ const Calendar = () => {
     openModal();
   };
 
+  const handleDateCellClick = (clickedDate: Date) => {
+    setClickedDate(() => clickedDate);
+    handleModalOpen(MODAL_OPEN_TYPE.ADD);
+  };
+
+  const handleScheduleAddButtonClick = () => {
+    setClickedDate(() => currentDate);
+    handleModalOpen(MODAL_OPEN_TYPE.ADD);
+  };
+
   return (
     <>
       <S.Container>
@@ -87,7 +100,7 @@ const Calendar = () => {
             </Button>
             <Button
               css={S.scheduleAddButton}
-              onClick={() => handleModalOpen(MODAL_OPEN_TYPE.ADD)}
+              onClick={handleScheduleAddButtonClick}
             >
               <PlusIcon />
             </Button>
@@ -157,7 +170,9 @@ const Calendar = () => {
                           key={day.toISOString()}
                           rawDate={day}
                           currentMonth={month}
-                          onClick={() => handleModalOpen(MODAL_OPEN_TYPE.ADD)}
+                          onClick={() => {
+                            handleDateCellClick(day);
+                          }}
                           onDayClick={(e) => {
                             e.stopPropagation();
                             handleDailyScheduleModalOpen(
@@ -177,7 +192,7 @@ const Calendar = () => {
         </div>
       </S.Container>
       {isModalOpen && modalType === MODAL_OPEN_TYPE.ADD && (
-        <ScheduleAddModal teamPlaceName="팀바팀" />
+        <ScheduleAddModal teamPlaceName="팀바팀" clickedDate={clickedDate} />
       )}
       {isModalOpen && modalType === MODAL_OPEN_TYPE.VIEW && (
         <ScheduleModal
