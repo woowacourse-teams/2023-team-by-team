@@ -29,6 +29,19 @@ export const Container = styled.div<{ isClosing: boolean }>`
     0.3s ease-in-out forwards;
 `;
 
+export const TitleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const NoticeWrapper = styled.div`
+  display: flex;
+  align-items: center;
+
+  column-gap: 10px;
+`;
+
 export const Textarea = styled.textarea`
   width: 100%;
   height: 200px;
@@ -46,12 +59,25 @@ export const Textarea = styled.textarea`
 `;
 
 export const ButtonWrapper = styled.div`
+  display: flex;
+
   margin-left: auto;
+  column-gap: 20px;
 `;
 
 export const title = css`
   font-size: 24px;
   font-weight: 700;
+`;
+
+export const notice = css`
+  font-size: 18px;
+  font-weight: 500;
+`;
+
+export const cancelButton = css`
+  width: 100px;
+  background-color: ${({ theme }) => theme.color.GRAY500};
 `;
 
 export const button = css`
