@@ -15,11 +15,10 @@ export const Container = styled.div<{ isClosing: boolean }>`
   bottom: 0;
   left: 0;
 
-  padding: 20px 20px;
-  row-gap: 20px;
-
   width: 100%;
   min-height: 400px;
+  padding: 20px;
+  row-gap: 20px;
 
   border-top-left-radius: 40px;
   border-top-right-radius: 40px;
@@ -45,15 +44,13 @@ export const NoticeWrapper = styled.div`
 export const Textarea = styled.textarea`
   width: 100%;
   height: 200px;
-
-  background-color: ${({ theme }) => theme.color.GRAY100};
-
-  font-size: 16px;
-
   padding: 20px;
 
   border: none;
   border-radius: 4px;
+  background-color: ${({ theme }) => theme.color.GRAY100};
+
+  font-size: 16px;
 
   resize: none;
 `;
@@ -77,9 +74,10 @@ export const notice = css`
 
 export const cancelButton = css`
   width: 100px;
+
   background-color: ${({ theme }) => theme.color.GRAY500};
 `;
 
-export const button = css`
+export const submitButton = css`
   width: 100px;
 `;

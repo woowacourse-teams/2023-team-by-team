@@ -65,7 +65,7 @@ const ThreadAddBottomSheet = () => {
             >
               취소
             </Button>
-            <Button css={S.button}>등록</Button>
+            <Button css={S.submitButton}>등록</Button>
           </S.ButtonWrapper>
         </S.Container>
       </form>
