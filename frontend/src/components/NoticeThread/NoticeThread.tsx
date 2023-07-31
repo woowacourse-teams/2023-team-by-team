@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import * as S from './NoticeThread.styled';
 import { useThreadHeight } from '~/hooks/thread/useThreadHeight';
 import Text from '~/components/common/Text/Text';
