@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import team.teamby.teambyteam.member.configuration.MemberArgumentResolver;
 import team.teamby.teambyteam.auth.presentation.MemberInterceptor;
-import team.teamby.teambyteam.auth.presentation.TeamPlaceInterceptor;
+import team.teamby.teambyteam.auth.presentation.TeamPlaceParticipationInterceptor;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import java.util.List;
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
     private final MemberInterceptor memberInterceptor;
-    private final TeamPlaceInterceptor teamPlaceInterceptor;
+    private final TeamPlaceParticipationInterceptor teamPlaceParticipationInterceptor;
 
     @Override
     public void addArgumentResolvers(final List<HandlerMethodArgumentResolver> resolvers) {
@@ -28,7 +28,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         registry.addInterceptor(memberInterceptor)
                 .order(1)
                 .addPathPatterns("/api/**");
-        registry.addInterceptor(teamPlaceInterceptor)
+        registry.addInterceptor(teamPlaceParticipationInterceptor)
                 .order(2)
                 .addPathPatterns("/**/team-place/**");
     }
