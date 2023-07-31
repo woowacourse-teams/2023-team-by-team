@@ -5,15 +5,15 @@ import { parseDate } from '~/utils/parseDate';
 
 const useCalendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const { year, month } = parseDate(currentDate);
-  const { day: startDayOfMonth } = parseDate(new Date(currentDate.setDate(1)));
+  const { year, month, date } = parseDate(currentDate);
+  const { day: startDayOfMonth } = parseDate(new Date(year, month, 1));
 
   const handlePrevButtonClick = () => {
-    setCurrentDate(() => new Date(year, month - 1));
+    setCurrentDate(() => new Date(year, month - 1, date));
   };
 
   const handleNextButtonClick = () => {
-    setCurrentDate(() => new Date(year, month + 1));
+    setCurrentDate(() => new Date(year, month + 1, date));
   };
 
   const createCalendar = (year: number, month: number) =>
@@ -32,6 +32,7 @@ const useCalendar = () => {
     year,
     month,
     calendar,
+    currentDate,
 
     handlers: {
       handlePrevButtonClick,

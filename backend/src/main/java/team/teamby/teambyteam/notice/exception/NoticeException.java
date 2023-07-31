@@ -11,5 +11,4 @@ public class NoticeException extends RuntimeException {
             super("공지 내용의 길이가 최대 길이를 초과했습니다.");
         }
     }
-
 }

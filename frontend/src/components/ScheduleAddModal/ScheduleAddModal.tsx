@@ -9,15 +9,16 @@ import useScheduleAddModal from '~/hooks/schedule/useScheduleAddModal';
 
 interface ScheduleAddModalProps {
   teamPlaceName: string;
+  clickedDate: Date;
 }
 
 const ScheduleAddModal = (props: ScheduleAddModalProps) => {
-  const { teamPlaceName } = props;
+  const { teamPlaceName, clickedDate } = props;
   const { closeModal } = useModal();
   const {
     schedule,
     handlers: { handleScheduleChange, handleScheduleSubmit },
-  } = useScheduleAddModal();
+  } = useScheduleAddModal(clickedDate);
 
   return (
     <Modal>
@@ -55,7 +56,7 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
             <Input
               width="220px"
               height="40px"
-              type="datetime-local"
+              type="date"
               css={S.dateTimeLocalInput}
               name="startDateTime"
               value={schedule['startDateTime']}
@@ -74,10 +75,11 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
             <Input
               width="220px"
               height="40px"
-              type="datetime-local"
+              type="date"
               css={S.dateTimeLocalInput}
               name="endDateTime"
               value={schedule['endDateTime']}
+              min={schedule['startDateTime']}
               onChange={handleScheduleChange}
               required
             />
