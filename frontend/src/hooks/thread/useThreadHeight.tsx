@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { RefObject } from 'react';
-import { DEFAULT_MAX_THREAD_HEIGHT } from '~/constants/thread';
+import { DEFAULT_MAX_THREAD_HEIGHT } from '~/constants/feed';
 
 /**
  * 《useThreadHeight》
