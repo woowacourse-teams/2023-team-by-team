@@ -14,15 +14,23 @@ import org.springframework.http.HttpStatus;
 import team.teamby.teambyteam.common.AcceptanceTest;
 import team.teamby.teambyteam.common.fixtures.FeedThreadFixtures;
 import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
+import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
+import team.teamby.teambyteam.feed.domain.Feed;
+import team.teamby.teambyteam.feed.domain.FeedThread;
+import team.teamby.teambyteam.feed.domain.ScheduleNotification;
+import team.teamby.teambyteam.feed.domain.vo.Content;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ROY;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.JAPANESE_TEAM_PLACE;
-import static team.teamby.teambyteam.common.fixtures.acceptance.FeedThreadAcceptanceFixtures.POST_FEED_THREAD_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.acceptance.FeedThreadAcceptanceFixtures.*;
 
 public class FeedThreadAcceptanceTest extends AcceptanceTest {
 
@@ -111,7 +119,203 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
                 softly.assertThat(response.body().asString()).contains("조회한 멤버가 존재하지 않습니다.");
             });
         }
-
     }
 
+    @Nested
+    @DisplayName("피드의 스레드 조회 시")
+    class GetThread {
+
+        private Member authedMember;
+        private TeamPlace participatedTeamPlace;
+        private MemberTeamPlace participatedMemberTeamPlace;
+        private String authToken;
+
+        @BeforeEach
+        void setup() {
+            authedMember = testFixtureBuilder.buildMember(PHILIP());
+            participatedTeamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            participatedMemberTeamPlace = testFixtureBuilder.buildMemberTeamPlace(authedMember, participatedTeamPlace);
+            authToken = jwtTokenProvider.generateToken(authedMember.getEmail().getValue());
+        }
+
+        @Test
+        @DisplayName("스레드가 하나도 없는 경우 처음 조회 시 빈 리스트를 반환한다.")
+        void hasNotFeedsFirstReadSuccess() {
+            // given
+            final Long teamPlaceId = participatedMemberTeamPlace.getId();
+            final int size = 5;
+
+            // when
+            final ExtractableResponse<Response> response = GET_FEED_THREAD_FIRST(authToken, teamPlaceId, size);
+            FeedsResponse feedsResponse = response.as(FeedsResponse.class);
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+                softly.assertThat(feedsResponse.threads()).isEmpty();
+            });
+        }
+
+        @Test
+        @DisplayName("스레드 조회를 처음한다.")
+        void firstReadSuccess() {
+            // given
+            List<Feed> insertFeeds = new ArrayList<>();
+            insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
+            insertFeeds.add(new ScheduleNotification(1L, new Content("테스트 알림"), 1L));
+            insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
+            insertFeeds.add(new ScheduleNotification(1L, new Content("테스트 알림"), 2L));
+            insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
+            insertFeeds.add(new ScheduleNotification(1L, new Content("테스트 알림"), 3L));
+            testFixtureBuilder.buildFeeds(insertFeeds);
+            final Long teamPlaceId = participatedMemberTeamPlace.getId();
+            final int size = 5;
+
+            // when
+            final ExtractableResponse<Response> response = GET_FEED_THREAD_FIRST(authToken, teamPlaceId, size);
+            FeedsResponse feedsResponse = response.as(FeedsResponse.class);
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+                softly.assertThat(feedsResponse.threads().size()).isEqualTo(size);
+            });
+        }
+
+        @Test
+        @DisplayName("스레드 조회는 최신 순서로 한다.")
+        void readSuccessDESC() {
+            // given
+            List<Feed> insertFeeds = new ArrayList<>();
+            insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
+            insertFeeds.add(new ScheduleNotification(1L, new Content("테스트 알림"), 1L));
+            insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
+            insertFeeds.add(new ScheduleNotification(1L, new Content("테스트 알림"), 2L));
+            insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
+            testFixtureBuilder.buildFeeds(insertFeeds);
+            final Long teamPlaceId = participatedMemberTeamPlace.getId();
+            final int size = 5;
+
+            // when
+            final ExtractableResponse<Response> response = GET_FEED_THREAD_FIRST(authToken, teamPlaceId, size);
+            FeedsResponse feedsResponse = response.as(FeedsResponse.class);
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+                softly.assertThat(feedsResponse.threads().size()).isEqualTo(size);
+                softly.assertThat(feedsResponse.threads().get(0).id()).isEqualTo(5);
+                softly.assertThat(feedsResponse.threads().get(1).id()).isEqualTo(4);
+                softly.assertThat(feedsResponse.threads().get(2).id()).isEqualTo(3);
+                softly.assertThat(feedsResponse.threads().get(3).id()).isEqualTo(2);
+                softly.assertThat(feedsResponse.threads().get(4).id()).isEqualTo(1);
+            });
+        }
+
+        @Test
+        @DisplayName("처음에 스레드의 개수가 요청 개수보다 작으면 그만큼 가져온다.")
+        void firstReadUnderSizeSuccess() {
+            // given
+            List<Feed> insertFeeds = new ArrayList<>();
+            insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
+            insertFeeds.add(new ScheduleNotification(1L, new Content("테스트 알림"), 1L));
+            insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
+            insertFeeds.add(new ScheduleNotification(1L, new Content("테스트 알림"), 2L));
+            insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
+            insertFeeds.add(new ScheduleNotification(1L, new Content("테스트 알림"), 3L));
+            testFixtureBuilder.buildFeeds(insertFeeds);
+            final Long teamPlaceId = participatedMemberTeamPlace.getId();
+            final int size = 10;
+
+            // when
+            final ExtractableResponse<Response> response = GET_FEED_THREAD_FIRST(authToken, teamPlaceId, size);
+            FeedsResponse feedsResponse = response.as(FeedsResponse.class);
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+                softly.assertThat(feedsResponse.threads().size()).isEqualTo(insertFeeds.size());
+            });
+        }
+
+        @Test
+        @DisplayName("스레드를 재조회한다.")
+        void reReadSuccess() {
+            // given
+            List<Feed> insertFeeds = new ArrayList<>();
+            insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
+            insertFeeds.add(new ScheduleNotification(1L, new Content("테스트 알림"), 1L));
+            insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
+            insertFeeds.add(new ScheduleNotification(1L, new Content("테스트 알림"), 2L));
+            insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
+            insertFeeds.add(new ScheduleNotification(1L, new Content("테스트 알림"), 3L));
+            testFixtureBuilder.buildFeeds(insertFeeds);
+            final Long teamPlaceId = participatedMemberTeamPlace.getId();
+            final Long lastThreadId = 3L;
+            final int size = 2;
+
+            // when
+            final ExtractableResponse<Response> response = GET_FEED_THREAD_REPEAT(authToken, teamPlaceId, lastThreadId, size);
+            FeedsResponse feedsResponse = response.as(FeedsResponse.class);
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+                softly.assertThat(feedsResponse.threads().size()).isEqualTo(size);
+            });
+        }
+
+        @Test
+        @DisplayName("다음 스레드의 개수가 요청 개수보다 작으면 그만큼 조회한다.")
+        void reReadUnderSizeSuccess() {
+            // given
+            List<Feed> insertFeeds = new ArrayList<>();
+            insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
+            insertFeeds.add(new ScheduleNotification(1L, new Content("테스트 알림"), 1L));
+            insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
+            insertFeeds.add(new ScheduleNotification(1L, new Content("테스트 알림"), 2L));
+            insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
+            insertFeeds.add(new ScheduleNotification(1L, new Content("테스트 알림"), 3L));
+            testFixtureBuilder.buildFeeds(insertFeeds);
+            final Long teamPlaceId = participatedMemberTeamPlace.getId();
+            final Long lastThreadId = 3L;
+            final int size = 10;
+
+            // when
+            final ExtractableResponse<Response> response = GET_FEED_THREAD_REPEAT(authToken, teamPlaceId, lastThreadId, size);
+            FeedsResponse feedsResponse = response.as(FeedsResponse.class);
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+                softly.assertThat(feedsResponse.threads().size()).isEqualTo(2);
+            });
+        }
+
+        @Test
+        @DisplayName("다음 스레드들이 없는 경우 빈 리스트를 반환한다.")
+        void hasNotNextFeedsReReadSuccess() {
+            // given
+            List<Feed> insertFeeds = new ArrayList<>();
+            insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
+            insertFeeds.add(new ScheduleNotification(1L, new Content("테스트 알림"), 1L));
+            insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
+            insertFeeds.add(new ScheduleNotification(1L, new Content("테스트 알림"), 2L));
+            insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
+            testFixtureBuilder.buildFeeds(insertFeeds);
+            final Long teamPlaceId = participatedMemberTeamPlace.getId();
+            final Long lastThreadId = 1L;
+            final int size = 5;
+
+            // when
+            final ExtractableResponse<Response> response = GET_FEED_THREAD_REPEAT(authToken, teamPlaceId, lastThreadId, size);
+            FeedsResponse feedsResponse = response.as(FeedsResponse.class);
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+                softly.assertThat(feedsResponse.threads()).isEmpty();
+            });
+        }
+    }
 }

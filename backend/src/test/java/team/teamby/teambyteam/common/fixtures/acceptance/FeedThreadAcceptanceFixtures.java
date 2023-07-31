@@ -24,6 +24,35 @@ public class FeedThreadAcceptanceFixtures {
                 .post("/api/team-place/{teamPlaceId}/feed/threads", teamPlace.getId())
                 .then().log().all()
                 .extract();
+    }
 
+    public static ExtractableResponse<Response> GET_FEED_THREAD_FIRST(
+            final String authToken,
+            final Long teamPlaceId,
+            final Integer size
+    ) {
+        return RestAssured.given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, JWT_PREFIX + authToken)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .param("size", size)
+                .get("/api/team-place/{teamPlaceId}/feed/threads", teamPlaceId)
+                .then().log().all()
+                .extract();
+    }
+
+    public static ExtractableResponse<Response> GET_FEED_THREAD_REPEAT(
+            final String authToken,
+            final Long teamPlaceId,
+            final Long lastThreadId,
+            final Integer size
+    ) {
+        return RestAssured.given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, JWT_PREFIX + authToken)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .param("last-thread-id", lastThreadId)
+                .param("size", size)
+                .get("/api/team-place/{teamPlaceId}/feed/threads", teamPlaceId)
+                .then().log().all()
+                .extract();
     }
 }
