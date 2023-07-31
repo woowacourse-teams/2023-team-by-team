@@ -13,11 +13,12 @@ interface NoticeThreadProps {
   author: string;
   profileImageSrc: string;
   createdAt: YYYYMMDDHHMM;
+  content: string;
   size?: NoticeThreadSize;
 }
 
-const NoticeThread = (props: PropsWithChildren<NoticeThreadProps>) => {
-  const { author, profileImageSrc, createdAt, size = 'md', children } = props;
+const NoticeThread = (props: NoticeThreadProps) => {
+  const { author, profileImageSrc, createdAt, content, size = 'md' } = props;
   const threadRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const { shouldShowExpandButton, isExpanded, toggleExpanded, resultHeight } =
@@ -42,7 +43,7 @@ const NoticeThread = (props: PropsWithChildren<NoticeThreadProps>) => {
           </S.ThreadHeader>
         )}
         <S.ContentWrapper ref={contentRef}>
-          <Text>{children}</Text>
+          <Text>{content}</Text>
         </S.ContentWrapper>
         {shouldShowExpandButton && (
           <ExpandButton isExpanded={isExpanded} onClick={toggleExpanded} />
