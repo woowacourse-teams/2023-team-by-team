@@ -66,10 +66,8 @@ const Calendar = () => {
     openModal();
   };
 
-  const handleDateCellClick = (rowIndex: number, colIndex: number) => {
-    const dateByPosition = getDateByPosition(year, month, rowIndex, colIndex);
-
-    setClickedDate(() => dateByPosition);
+  const handleDateCellClick = (clickedDate: Date) => {
+    setClickedDate(() => clickedDate);
     handleModalOpen(MODAL_OPEN_TYPE.ADD);
   };
 
@@ -157,9 +155,9 @@ const Calendar = () => {
                           key={day.toISOString()}
                           rawDate={day}
                           currentMonth={month}
-                          onClick={() =>
-                            handleDateCellClick(rowIndex, colIndex)
-                          }
+                          onClick={() => {
+                            handleDateCellClick(day);
+                          }}
                           onDayClick={(e) => {
                             e.stopPropagation();
                             handleDailyScheduleModalOpen(
