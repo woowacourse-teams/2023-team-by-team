@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { useModal } from '~/hooks/useModal';
+import theme from '~/styles/theme';
 
 const useBottomSheet = () => {
   const [isClosing, setIsClosing] = useState(false);
@@ -16,7 +17,7 @@ const useBottomSheet = () => {
       if (timerId.current) {
         clearTimeout(timerId.current);
       }
-    }, 300);
+    }, theme.animation.duration);
   };
 
   return {

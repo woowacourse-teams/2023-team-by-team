@@ -25,7 +25,7 @@ export const Container = styled.div<{ isClosing: boolean }>`
 
   animation: ${({ theme, isClosing }) =>
       isClosing ? theme.animation.slideDown : theme.animation.slideUp}
-    0.3s ease-in-out forwards;
+    0.4s ease-in-out forwards;
 `;
 
 export const TitleWrapper = styled.div`

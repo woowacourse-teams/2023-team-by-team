@@ -42,6 +42,7 @@ const animation = {
       transform: translateY(100%);
     }  
   `,
+  duration: 400,
 };
 
 export const theme = {
