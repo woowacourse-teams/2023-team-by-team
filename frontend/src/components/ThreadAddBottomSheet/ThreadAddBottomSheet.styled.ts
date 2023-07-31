@@ -35,7 +35,7 @@ export const Textarea = styled.textarea`
 
   background-color: ${({ theme }) => theme.color.GRAY100};
 
-  font-size: 14px;
+  font-size: 16px;
 
   padding: 20px;
 
