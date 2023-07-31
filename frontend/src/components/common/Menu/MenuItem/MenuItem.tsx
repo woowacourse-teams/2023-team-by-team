@@ -3,7 +3,7 @@ import type { PropsWithChildren } from 'react';
 import type { CSSProp } from 'styled-components';
 
 export interface MenuItemProps {
-  css: CSSProp;
+  css?: CSSProp;
 }
 
 const MenuItem = (props: PropsWithChildren<MenuItemProps>) => {
