@@ -93,10 +93,10 @@ const useScheduleAddModal = (clickedDate: Date) => {
 
     const { title, startDateTime, endDateTime } = schedule;
     const { startTime, endTime } = times;
-    const formattedStartDateTime = `${startDateTime} ${parseAmPmTime(
-      startTime,
-    )}`;
-    const formattedEndDateTime = `${endDateTime} ${parseAmPmTime(endTime)}`;
+    const _startTime = isAllDay ? '00:00' : parseAmPmTime(startTime);
+    const _endTime = isAllDay ? '23:59' : parseAmPmTime(endTime);
+    const formattedStartDateTime = `${startDateTime} ${_startTime}`;
+    const formattedEndDateTime = `${endDateTime} ${_endTime}`;
 
     if (
       !isYYYYMMDDHHMM(formattedStartDateTime) ||
