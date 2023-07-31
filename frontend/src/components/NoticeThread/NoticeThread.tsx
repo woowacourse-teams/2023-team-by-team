@@ -3,7 +3,7 @@ import * as S from './NoticeThread.styled';
 import { useThreadHeight } from '~/hooks/thread/useThreadHeight';
 import Text from '~/components/common/Text/Text';
 import ExpandButton from '~/components/ExpandButton/ExpandButton';
-import NoticeTag from '~/components/NoticeTag/NoticeTag';
+import NoticeTag from './NoticeTag/NoticeTag';
 import type { YYYYMMDDHHMM } from '~/types/schedule';
 import { formatWriteTime } from '~/utils/formatWriteTime';
 import type { NoticeThreadSize } from '~/types/size';
