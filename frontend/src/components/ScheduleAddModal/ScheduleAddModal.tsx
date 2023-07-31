@@ -50,20 +50,20 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
             <CloseIcon />
           </Button>
         </S.Header>
-        <S.TitleWrapper>
-          <Input
-            width="100%"
-            height="100%"
-            placeholder="일정 제목"
-            css={S.title}
-            name="title"
-            value={schedule['title']}
-            required
-            onChange={handleScheduleChange}
-          />
-        </S.TitleWrapper>
-
         <form onSubmit={handleScheduleSubmit}>
+          <S.TitleWrapper>
+            <Input
+              width="100%"
+              height="100%"
+              placeholder="일정 제목"
+              css={S.title}
+              name="title"
+              value={schedule['title']}
+              required
+              onChange={handleScheduleChange}
+            />
+          </S.TitleWrapper>
+
           <S.TimeSelectContainer>
             <Text size="xxl" weight="bold">
               일정 시작
