@@ -1,6 +1,13 @@
 package team.teamby.teambyteam.member.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -50,5 +57,11 @@ public class Member extends BaseEntity {
         return getMemberTeamPlaces().stream()
                 .map(MemberTeamPlace::getTeamPlace)
                 .toList();
+    }
+
+    public boolean isMemberOf(final Long targetTeamPlaceId) {
+        return getMemberTeamPlaces().stream()
+                .mapToLong(memberTeamPlace -> memberTeamPlace.getMember().getId())
+                .anyMatch(teamPlaceId -> teamPlaceId == targetTeamPlaceId);
     }
 }
