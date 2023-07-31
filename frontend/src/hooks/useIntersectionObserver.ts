@@ -1,22 +1,21 @@
-import { useEffect, type RefObject } from 'react';
+import { useEffect, type RefObject, useRef } from 'react';
 
 export const useIntersectionObserver = <T extends HTMLElement>(
   targetRef: RefObject<T>,
   onIntersect: IntersectionObserverCallback,
 ) => {
+  const observer = useRef<IntersectionObserver>();
   useEffect(() => {
-    let observer: IntersectionObserver;
-
     if (targetRef && targetRef.current) {
-      observer = new IntersectionObserver(onIntersect, {
+      observer.current = new IntersectionObserver(onIntersect, {
         root: null,
         rootMargin: '0px',
         threshold: 1.0,
       });
 
-      observer.observe(targetRef.current);
+      observer.current.observe(targetRef.current);
     }
 
-    return () => observer && observer.disconnect();
+    return () => observer && observer.current?.disconnect();
   }, [targetRef, onIntersect]);
 };
