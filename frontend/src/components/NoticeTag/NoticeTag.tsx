@@ -10,7 +10,7 @@ export interface NoticeTagProps {
 }
 
 const NoticeTag = (props: NoticeTagProps) => {
-  const { size, css } = props;
+  const { size = 'md', css } = props;
 
   return (
     <S.TagContainer size={size} css={css}>
