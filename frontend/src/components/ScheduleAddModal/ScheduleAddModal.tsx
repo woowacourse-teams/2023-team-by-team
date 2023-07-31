@@ -6,6 +6,12 @@ import Text from '../common/Text/Text';
 import Button from '../common/Button/Button';
 import Input from '../common/Input/Input';
 import useScheduleAddModal from '~/hooks/schedule/useScheduleAddModal';
+import Checkbox from '~/components/common/Checkbox/Checkbox';
+import Menu from '~/components/common/Menu/Menu';
+import MenuButton from '~/components/common/Menu/MenuButton/MenuButton';
+import MenuItem from '~/components/common/Menu/MenuItem/MenuItem';
+import MenuList from '~/components/common/Menu/MenuList/MenuList';
+import { TIME_TABLE } from '~/constants/calendar';
 
 interface ScheduleAddModalProps {
   teamPlaceName: string;
@@ -17,7 +23,16 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
   const { closeModal } = useModal();
   const {
     schedule,
-    handlers: { handleScheduleChange, handleScheduleSubmit },
+    isAllDay,
+    times,
+
+    handlers: {
+      handleScheduleChange,
+      handleIsAllDayChange,
+      handleStartTimeChange,
+      handleEndTimeChange,
+      handleScheduleSubmit,
+    },
   } = useScheduleAddModal(clickedDate);
 
   return (
@@ -53,43 +68,93 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
             <Text size="xxl" weight="bold">
               일정 시작
             </Text>
-            <Input
-              width="220px"
-              height="40px"
-              type="date"
-              css={S.dateTimeLocalInput}
-              name="startDateTime"
-              value={schedule['startDateTime']}
-              onChange={handleScheduleChange}
-              required
-            />
-            <Text size="xxl" weight="bold">
-              종일
-            </Text>
-            <S.CheckBox type="checkbox" />
+            <S.InputWrapper>
+              <Input
+                width={isAllDay ? '100%' : '50%'}
+                height="40px"
+                type="date"
+                css={S.dateTimeLocalInput}
+                name="startDateTime"
+                value={schedule['startDateTime']}
+                onChange={handleScheduleChange}
+                required
+              />
+              {!isAllDay && (
+                <Menu>
+                  <MenuButton css={S.timetableButton}>
+                    {times['startTime']}
+                  </MenuButton>
+                  <MenuList>
+                    {TIME_TABLE.map((time) => (
+                      <MenuItem
+                        key={time}
+                        onClick={(e) => {
+                          handleStartTimeChange(
+                            e.currentTarget.textContent ?? '',
+                          );
+                        }}
+                      >
+                        {time}
+                      </MenuItem>
+                    ))}
+                  </MenuList>
+                </Menu>
+              )}
+            </S.InputWrapper>
           </S.TimeSelectContainer>
           <S.TimeSelectContainer>
             <Text size="xxl" weight="bold">
               일정 마감
             </Text>
-            <Input
-              width="220px"
-              height="40px"
-              type="date"
-              css={S.dateTimeLocalInput}
-              name="endDateTime"
-              value={schedule['endDateTime']}
-              min={schedule['startDateTime']}
-              onChange={handleScheduleChange}
-              required
-            />
+            <S.InputWrapper>
+              <Input
+                width={isAllDay ? '100%' : '50%'}
+                height="40px"
+                type="date"
+                css={S.dateTimeLocalInput}
+                name="endDateTime"
+                value={schedule['endDateTime']}
+                min={schedule['startDateTime']}
+                onChange={handleScheduleChange}
+                required
+              />
+              {!isAllDay && (
+                <Menu>
+                  <MenuButton css={S.timetableButton}>
+                    {times['endTime']}
+                  </MenuButton>
+                  <MenuList>
+                    {TIME_TABLE.map((time) => (
+                      <MenuItem
+                        key={time}
+                        onClick={(e) => {
+                          handleEndTimeChange(
+                            e.currentTarget.textContent ?? '',
+                          );
+                        }}
+                      >
+                        {time}
+                      </MenuItem>
+                    ))}
+                  </MenuList>
+                </Menu>
+              )}
+            </S.InputWrapper>
           </S.TimeSelectContainer>
+          <S.CheckboxContainer>
+            <Text size="xl" weight="bold">
+              종일
+            </Text>
+            <Checkbox isChecked={isAllDay} onChange={handleIsAllDayChange} />
+          </S.CheckboxContainer>
           <S.TeamNameContainer title={teamPlaceName}>
             <S.Circle />
             <Text css={S.teamPlaceName}>{teamPlaceName}</Text>
           </S.TeamNameContainer>
           <S.ControlButtonWrapper>
-            <Button variant="primary">등록</Button>
+            <Button variant="primary" css={S.submitButton}>
+              등록
+            </Button>
           </S.ControlButtonWrapper>
         </form>
       </S.Container>

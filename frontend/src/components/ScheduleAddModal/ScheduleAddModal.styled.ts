@@ -17,7 +17,7 @@ export const Container = styled.div`
   flex-direction: column;
 
   width: 496px;
-  height: 386px;
+  min-height: 420px;
   padding: 20px 30px;
 
   border-radius: 10px;
@@ -26,6 +26,14 @@ export const Container = styled.div`
     0 15px 25px #1b1d1f33,
     0 5px 10px #1b1d1f1f;
   background-color: ${({ theme }) => theme.color.WHITE};
+
+  & > form {
+    display: flex;
+    flex-direction: column;
+
+    margin-top: 20px;
+    row-gap: 24px;
+  }
 `;
 
 export const Header = styled.div`
@@ -42,7 +50,13 @@ export const Header = styled.div`
 export const TitleWrapper = styled.div`
   width: 100%;
   height: 51px;
-  margin-bottom: 28px;
+`;
+
+export const CheckboxContainer = styled.div`
+  display: flex;
+  align-items: center;
+
+  column-gap: 8px;
 `;
 
 export const TimeSelectContainer = styled.div`
@@ -51,9 +65,18 @@ export const TimeSelectContainer = styled.div`
 
   width: 100%;
   height: 40px;
-  margin-bottom: 28px;
 
   column-gap: 10px;
+`;
+
+export const InputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: calc(100% - 100px);
+
+  margin-left: auto;
 `;
 
 export const TeamNameContainer = styled.div`
@@ -81,12 +104,6 @@ export const ControlButtonWrapper = styled.div`
   height: 40px;
 `;
 
-/* TODO: 체크박스 공통 컴포넌트 구현 후 이 컴포넌트를 교체 */
-export const CheckBox = styled.input`
-  width: 25px;
-  height: 25px;
-`;
-
 export const title = css`
   padding: 10px 20px;
 
@@ -103,8 +120,16 @@ export const closeButton = css`
   padding: 8px 0;
 `;
 
+export const timetableButton = css`
+  width: 150px;
+  height: 40px;
+
+  border: 1px solid ${({ theme }) => theme.color.GRAY200};
+  border-radius: 4px;
+`;
+
 export const dateTimeLocalInput = css`
-  margin-right: 30px;
+  border-radius: 4px;
 
   text-align: center;
 `;
@@ -116,4 +141,8 @@ export const teamPlaceName = css`
 
   text-overflow: ellipsis;
   white-space: nowrap;
+`;
+
+export const submitButton = css`
+  width: 90px;
 `;
