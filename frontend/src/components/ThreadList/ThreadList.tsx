@@ -14,7 +14,7 @@ interface ThreadListProps {
 
 const ThreadList = (props: ThreadListProps) => {
   const { size = 'md' } = props;
-  const { threadData, hasNextPage, fetchNextPage } = useFetchThreads(1);
+  const { threadPages, hasNextPage, fetchNextPage } = useFetchThreads(1);
   const observeRef = useRef<HTMLDivElement>(null);
 
   const onIntersect: IntersectionObserverCallback = ([entry]) =>
@@ -24,7 +24,7 @@ const ThreadList = (props: ThreadListProps) => {
 
   return (
     <S.Container>
-      {threadData?.pages.map((page) =>
+      {threadPages?.pages.map((page) =>
         page.threads.map((thread) => {
           const { id, type, profileImageUrl, content, ...rest } = thread;
           const profileUrl = profileImageUrl === null ? '' : profileImageUrl;

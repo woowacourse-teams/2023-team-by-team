@@ -4,7 +4,7 @@ import { THREAD_SIZE } from '~/constants/feed';
 
 export const useFetchThreads = (teamPlaceId: number) => {
   const {
-    data: threadData,
+    data: threadPages,
     hasNextPage,
     fetchNextPage,
   } = useInfiniteQuery(
@@ -18,5 +18,5 @@ export const useFetchThreads = (teamPlaceId: number) => {
     },
   );
 
-  return { threadData, hasNextPage, fetchNextPage };
+  return { threadPages, hasNextPage, fetchNextPage };
 };
