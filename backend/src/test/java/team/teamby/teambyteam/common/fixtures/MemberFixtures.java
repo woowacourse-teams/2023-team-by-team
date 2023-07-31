@@ -1,5 +1,6 @@
 package team.teamby.teambyteam.common.fixtures;
 
+import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.domain.vo.Name;
@@ -30,6 +31,14 @@ public class MemberFixtures {
     public static final String ROY_PROFILE_IMAGE_URL = "/profile/roy.png";
     public static final String SEONGHA_PROFILE_IMAGE_URL = "/profile/seongha.png";
     public static final String ENDEL_PROFILE_IMAGE_URL = "/profile/endel.png";
+
+    /**
+     * REQUEST
+     */
+    public static final MemberEmailDto PHILIP_MEMBER_EMAIL_REQUEST = new MemberEmailDto(PHILIP_EMAIL);
+    public static final MemberEmailDto ROY_MEMBER_EMAIL_REQUEST = new MemberEmailDto(ROY_EMAIL);
+    public static final MemberEmailDto SEONGHA_MEMBER_EMAIL_REQUEST = new MemberEmailDto(SEONGHA_EMAIL);
+    public static final MemberEmailDto ENDEL_MEMBER_EMAIL_REQUEST = new MemberEmailDto(ENDEL_EMAIL);
 
     /**
      * ENTITY

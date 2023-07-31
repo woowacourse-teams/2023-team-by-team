@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import team.teamby.teambyteam.feed.domain.FeedRepository;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
+import team.teamby.teambyteam.notice.domain.NoticeRepository;
 import team.teamby.teambyteam.schedule.domain.ScheduleRepository;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceRepository;
 
@@ -26,6 +27,9 @@ public class BuilderSupporter {
     @Autowired
     private FeedRepository feedRepository;
 
+    @Autowired
+    private NoticeRepository noticeRepository;
+
     public ScheduleRepository scheduleRepository() {
         return scheduleRepository;
     }
@@ -44,5 +48,9 @@ public class BuilderSupporter {
 
     public FeedRepository feedRepository() {
         return feedRepository;
+    }
+
+    public NoticeRepository noticeRepository() {
+        return noticeRepository;
     }
 }
