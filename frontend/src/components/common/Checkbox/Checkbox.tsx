@@ -12,7 +12,7 @@ export interface CheckboxProps {
 }
 
 const Checkbox = (props: CheckboxProps) => {
-  const { isChecked, onChange, color, size, css } = props;
+  const { isChecked, onChange, color, size = 'md', css } = props;
 
   return (
     <label>
