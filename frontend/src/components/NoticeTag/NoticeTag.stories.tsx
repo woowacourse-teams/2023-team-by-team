@@ -5,7 +5,7 @@ import NoticeTag from './NoticeTag';
  * `NoticeTag` 는 공지 여부임을 표시하는 카테고리 컴포넌트입니다.
  */
 const meta = {
-  title: 'NoticeTag',
+  title: 'Feed/NoticeTag',
   component: NoticeTag,
   tags: ['autodocs'],
 } satisfies Meta<typeof NoticeTag>;
