@@ -34,10 +34,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
 import static team.teamby.teambyteam.common.fixtures.MemberTeamPlaceFixtures.PHILIP_ENGLISH_TEAM_PLACE;
-import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.*;
+import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE;
+import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE;
+import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_REGISTER_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_TITLE;
+import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_UPDATE_REQUEST;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.JAPANESE_TEAM_PLACE;
-import static team.teamby.teambyteam.common.fixtures.acceptance.TeamCalendarScheduleAcceptanceFixtures.*;
+import static team.teamby.teambyteam.common.fixtures.acceptance.TeamCalendarScheduleAcceptanceFixtures.DELETE_SCHEDULE_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.acceptance.TeamCalendarScheduleAcceptanceFixtures.FIND_DAILY_SCHEDULE_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.acceptance.TeamCalendarScheduleAcceptanceFixtures.FIND_PERIOD_SCHEDULE_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.acceptance.TeamCalendarScheduleAcceptanceFixtures.FIND_SPECIFIC_SCHEDULE_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.acceptance.TeamCalendarScheduleAcceptanceFixtures.REGISTER_SCHEDULE_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.acceptance.TeamCalendarScheduleAcceptanceFixtures.UPDATE_SCHEDULE_REQUEST;
 
 public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
 
@@ -270,7 +279,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
         }
 
         @Test
-        @DisplayName("조회할 팀 플레이스가 존재하지 않으면 조회에 실패한다.")
+        @DisplayName("조회할 팀 플레이스에 속해있지 않으면 조회에 실패한다.")
         void failTeamPlaceNotExist() {
             // given
             final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
@@ -284,8 +293,8 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
 
             // then
             assertSoftly(softly -> {
-                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
-                softly.assertThat(response.body().asString()).isEqualTo("조회한 팀 플레이스가 존재하지 않습니다.");
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+                softly.assertThat(response.body().asString()).isEqualTo("접근할 수 없는 팀플레이스입니다.");
             });
         }
     }
@@ -472,7 +481,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
         }
 
         @Test
-        @DisplayName("없는 팀 플레이스 ID로 요청하면 실패한다.")
+        @DisplayName("소속되지 않는 팀 플레이스 ID로 요청하면 실패한다.")
         void failNotExistTeamPlaceIdRequest() {
             // given
             Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
@@ -483,8 +492,8 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
 
             // then
             assertSoftly(softly -> {
-                softly.assertThat(notExistTeamPlaceIdRequest.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
-                softly.assertThat(notExistTeamPlaceIdRequest.body().asString()).isEqualTo("조회한 팀 플레이스가 존재하지 않습니다.");
+                softly.assertThat(notExistTeamPlaceIdRequest.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+                softly.assertThat(notExistTeamPlaceIdRequest.body().asString()).isEqualTo("접근할 수 없는 팀플레이스입니다.");
             });
         }
 
@@ -579,7 +588,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
         }
 
         @Test
-        @DisplayName("없는 팀 플레이스 ID로 요청하면 실패한다.")
+        @DisplayName("소속되지 않는 팀 플레이스 ID로 요청하면 실패한다.")
         void failNotExistTeamPlaceIdRequest() {
             // given
             final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
@@ -597,8 +606,8 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
 
             // then
             assertSoftly(softly -> {
-                softly.assertThat(notExistTeamPlaceIdRequest.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
-                softly.assertThat(notExistTeamPlaceIdRequest.body().asString()).isEqualTo("조회한 팀 플레이스가 존재하지 않습니다.");
+                softly.assertThat(notExistTeamPlaceIdRequest.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+                softly.assertThat(notExistTeamPlaceIdRequest.body().asString()).isEqualTo("접근할 수 없는 팀플레이스입니다.");
             });
         }
 
@@ -636,7 +645,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
         }
 
         @Test
-        @DisplayName("없는 팀 플레이스의 ID로 요청하면 실패한다.")
+        @DisplayName("소속되지 않는 팀 플레이스의 ID로 요청하면 실패한다.")
         void failNotExistTeamPlaceIdRequest() {
             // given
             final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
@@ -653,8 +662,8 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
 
             // then
             assertSoftly(softly -> {
-                softly.assertThat(notExistTeamPlaceIdDeleteScheduleResponse.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
-                softly.assertThat(notExistTeamPlaceIdDeleteScheduleResponse.body().asString()).isEqualTo("조회한 팀 플레이스가 존재하지 않습니다.");
+                softly.assertThat(notExistTeamPlaceIdDeleteScheduleResponse.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+                softly.assertThat(notExistTeamPlaceIdDeleteScheduleResponse.body().asString()).isEqualTo("접근할 수 없는 팀플레이스입니다.");
             });
         }
 

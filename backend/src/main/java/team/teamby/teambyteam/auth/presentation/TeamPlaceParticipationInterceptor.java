@@ -8,20 +8,20 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.HandlerMapping;
 import team.teamby.teambyteam.auth.jwt.JwtTokenExtractor;
 import team.teamby.teambyteam.auth.jwt.JwtTokenProvider;
+import team.teamby.teambyteam.member.domain.Member;
+import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
-import team.teamby.teambyteam.teamplace.domain.TeamPlace;
-import team.teamby.teambyteam.teamplace.domain.TeamPlaceRepository;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
 import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public final class TeamPlaceInterceptor implements HandlerInterceptor {
+public final class TeamPlaceParticipationInterceptor implements HandlerInterceptor {
 
     private final JwtTokenExtractor jwtTokenExtractor;
     private final JwtTokenProvider jwtTokenProvider;
-    private final TeamPlaceRepository teamPlaceRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler) throws Exception {
@@ -37,8 +37,8 @@ public final class TeamPlaceInterceptor implements HandlerInterceptor {
     }
 
     private boolean hasNotMemberInTeamPlace(final Long teamPlaceId, final String email) {
-        final TeamPlace teamPlace = teamPlaceRepository.findById(teamPlaceId)
+        final Member member = memberRepository.findByEmail(new Email(email))
                 .orElseThrow(TeamPlaceException.NotFoundException::new);
-        return !teamPlace.hasMemberByMemberEmail(new Email(email));
+        return !member.isMemberOf(teamPlaceId);
     }
 }

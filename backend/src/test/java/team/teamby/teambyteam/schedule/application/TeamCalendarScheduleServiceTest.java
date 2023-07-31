@@ -102,7 +102,7 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
         void findAllInPeriod() {
             // given
             final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
-            final Schedule MONTH_6_AND_MONTH_7_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_6_AND_MONTH_7_SCHEDULE(ENGLISH_TEAM_PLACE.getId()));
+            final Schedule MONTH_6_AND_MONTH_7_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_6_AND_MONTH_7_DAY_12_SCHEDULE(ENGLISH_TEAM_PLACE.getId()));
             final Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(ENGLISH_TEAM_PLACE.getId()));
             final Schedule MONTH_7_DAY_28_AND_MONTH_8_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_DAY_28_AND_MONTH_8_SCHEDULE(ENGLISH_TEAM_PLACE.getId()));
             final Schedule MONTH_7_DAY_29_AND_MONTH_8_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_DAY_29_AND_MONTH_8_SCHEDULE(ENGLISH_TEAM_PLACE.getId()));
@@ -176,6 +176,7 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
             final Long ENGLISH_TEAM_PLACE_ID = ENGLISH_TEAM_PLACE.getId();
             final Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(ENGLISH_TEAM_PLACE_ID));
             final Schedule MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE(ENGLISH_TEAM_PLACE_ID));
+            final Schedule MONTH_6_AND_MONTH_7_DAY_12_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_6_AND_MONTH_7_DAY_12_SCHEDULE(ENGLISH_TEAM_PLACE_ID));
 
             final int year = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getStartDateTime().getYear();
             final int month = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getStartDateTime().getMonthValue();
@@ -188,10 +189,14 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
 
             // then
             assertSoftly(softly -> {
-                softly.assertThat(dailyTeamCalendarSchedulesResponses).hasSize(2);
+                softly.assertThat(dailyTeamCalendarSchedulesResponses).hasSize(3);
                 softly.assertThat(dailyTeamCalendarSchedulesResponses.stream()
                                 .map(ScheduleResponse::title))
-                        .containsExactly(MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE.getTitle().getValue(), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getTitle().getValue());
+                        .containsExactly(
+                                MONTH_6_AND_MONTH_7_DAY_12_SCHEDULE.getTitle().getValue(),
+                                MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE.getTitle().getValue(),
+                                MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getTitle().getValue()
+                                );
             });
         }
 

@@ -15,7 +15,7 @@ public class ScheduleFixtures {
      */
     public static final String MONTH_5_FIRST_DAY_SCHEDULE_TITLE = "5월 첫 날 일정";
     public static final String MONTH_5_LAST_DAY_SCHEDULE_TITLE = "5월 마지막 날 일정";
-    public static final String MONTH_6_AND_MONTH_7_SCHEDULE_TITLE = "6월~7월 일정";
+    public static final String MONTH_6_AND_MONTH_7_SCHEDULE_TITLE = "6월~7월 12일 일정";
     public static final String MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_TITLE = "7월 12일 N시간 일정";
     public static final String MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE_TITLE = "7월 12일 종일 일정";
     public static final String MONTH_7_DAY_28_AND_MONTH_8_SCHEDULE_TITLE = "7월 28일~8월 일정";
@@ -58,7 +58,7 @@ public class ScheduleFixtures {
         return new Schedule(teamPlaceId, new Title(teamPlaceId + "번 팀플 " + MONTH_5_LAST_DAY_SCHEDULE_TITLE), new Span(DATE_2023_05_31_00_00_00, DATE_2023_05_31_23_59_59));
     }
 
-    public static Schedule MONTH_6_AND_MONTH_7_SCHEDULE(final Long teamPlaceId) {
+    public static Schedule MONTH_6_AND_MONTH_7_DAY_12_SCHEDULE(final Long teamPlaceId) {
         return new Schedule(teamPlaceId, new Title(teamPlaceId + "번 팀플 " + MONTH_6_AND_MONTH_7_SCHEDULE_TITLE), new Span(DATE_2023_06_25_10_00_00, DATE_2023_07_12_18_00_00));
     }
 

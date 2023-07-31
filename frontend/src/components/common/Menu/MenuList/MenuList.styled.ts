@@ -1,14 +1,11 @@
 import { styled } from 'styled-components';
+import type { MenuListProps } from '~/components/common/Menu/MenuList/MenuList';
 
-export const MenuWrapper = styled.ul`
+export const Wrapper = styled.ul<MenuListProps>`
   max-height: 200px;
-  width: 200px;
+  width: ${({ width }) => width};
   overflow-y: auto;
 
   border: 1px solid ${({ theme }) => theme.color.GRAY200};
   border-radius: 6px;
-`;
-
-export const MenuItem = styled.li`
-  padding: 8px 12px;
 `;
