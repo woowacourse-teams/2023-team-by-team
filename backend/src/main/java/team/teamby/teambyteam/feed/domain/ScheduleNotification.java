@@ -27,6 +27,11 @@ public class ScheduleNotification extends Notification {
         return FeedType.SCHEDULE_NOTIFICATION;
     }
 
+    @Override
+    public Long getAuthorId() {
+        return getScheduleId();
+    }
+
     public ScheduleNotification(final Long teamPlaceId, final Content content, final Long scheduleId) {
         super(teamPlaceId, content);
         this.scheduleId = scheduleId;

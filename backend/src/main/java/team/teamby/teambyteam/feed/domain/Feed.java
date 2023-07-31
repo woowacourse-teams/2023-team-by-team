@@ -39,4 +39,6 @@ public abstract class Feed extends BaseEntity {
     }
 
     public abstract FeedType getType();
+
+    public abstract Long getAuthorId();
 }
