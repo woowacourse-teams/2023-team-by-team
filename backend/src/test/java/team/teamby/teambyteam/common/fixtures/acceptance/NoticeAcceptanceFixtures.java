@@ -16,7 +16,7 @@ public class NoticeAcceptanceFixtures {
             final String authToken,
             final TeamPlace teamPlace,
             final NoticeRegisterRequest request
-            ) {
+    ) {
         return RestAssured.given().log().all()
                 .header(HttpHeaders.AUTHORIZATION, JWT_PREFIX + authToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -25,5 +25,4 @@ public class NoticeAcceptanceFixtures {
                 .then().log().all()
                 .extract();
     }
-
 }

@@ -49,7 +49,7 @@ class NoticeServiceTest extends ServiceTest {
         @DisplayName("공지 등록에 성공한다")
         void success() {
             // when
-            final Long registeredId = noticeService.register(request, teamPlace.getId(), new MemberEmailDto(member.getEmail().getValue()));
+            final Long registeredId = noticeService.register(request, teamPlace.getId(), memberEmailDto);
 
             // then
             assertThat(registeredId).isNotNull();
@@ -68,4 +68,3 @@ class NoticeServiceTest extends ServiceTest {
         }
     }
 }
-

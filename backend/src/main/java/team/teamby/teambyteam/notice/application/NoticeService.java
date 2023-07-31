@@ -24,7 +24,10 @@ public class NoticeService {
     private final TeamPlaceRepository teamPlaceRepository;
     private final MemberRepository memberRepository;
 
-    public Long register(final NoticeRegisterRequest noticeRegisterRequest, final Long teamPlaceId, final MemberEmailDto memberEmailDto) {
+    public Long register(final NoticeRegisterRequest noticeRegisterRequest,
+                         final Long teamPlaceId,
+                         final MemberEmailDto memberEmailDto
+    ) {
         checkTeamPlaceExist(teamPlaceId);
         final IdOnly memberId = memberRepository.findIdByEmail(new Email(memberEmailDto.email()))
                 .orElseThrow(MemberException.MemberNotFoundException::new);
@@ -45,4 +48,3 @@ public class NoticeService {
         return !teamPlaceRepository.existsById(teamPlaceId);
     }
 }
-

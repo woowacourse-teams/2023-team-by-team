@@ -26,8 +26,8 @@ public class NoticeController {
     public ResponseEntity<Void> register(
             @RequestBody @Valid final NoticeRegisterRequest reqeust,
             @PathVariable final Long teamPlaceId,
-            @AuthPrincipal final MemberEmailDto memberEmailDto) {
-
+            @AuthPrincipal final MemberEmailDto memberEmailDto
+    ) {
         final Long registeredId = noticeService.register(reqeust, teamPlaceId, memberEmailDto);
         final URI location = URI.create("/api/team-place/" + teamPlaceId + "/feed/threads/notice/" + registeredId);
 
