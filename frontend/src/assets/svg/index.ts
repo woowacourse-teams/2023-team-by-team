@@ -6,3 +6,4 @@ export { ReactComponent as EditIcon } from './edit.svg';
 export { ReactComponent as LogoIcon } from './logo.svg';
 export { ReactComponent as PlusIcon } from './plus.svg';
 export { ReactComponent as CheckIcon } from './check.svg';
+export { ReactComponent as ClockIcon } from './clock.svg';
