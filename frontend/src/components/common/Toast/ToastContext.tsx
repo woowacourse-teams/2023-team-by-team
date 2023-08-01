@@ -3,8 +3,7 @@ import { generateUuid } from '~/utils/generateUuid';
 import theme from '~/styles/theme';
 import type { PropsWithChildren } from 'react';
 import type { ToastProps } from '~/components/common/Toast/Toast';
-
-const MAX_TOAST_COUNT = 3;
+import { MAX_TOAST_COUNT } from '~/constants/toast';
 
 interface ToastContextProps {
   toastList: ToastProps[];
