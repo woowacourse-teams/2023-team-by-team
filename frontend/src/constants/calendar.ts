@@ -16,6 +16,8 @@ export const TIME_TABLE = arrayOf(48).map((_, i) => {
   return `${hour}:${minute}`;
 });
 
+export const SCHEDULE_CIRCLE_MAX_COUNT = 3;
+
 export const MODAL_OPEN_TYPE = {
   ADD: 'add',
   VIEW: 'view',
