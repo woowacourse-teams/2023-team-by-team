@@ -17,7 +17,7 @@ export const Container = styled.div`
   flex-direction: column;
 
   width: 496px;
-  min-height: 420px;
+  min-height: 400px;
   padding: 20px 30px;
 
   border-radius: 10px;
@@ -31,7 +31,6 @@ export const Container = styled.div`
     display: flex;
     flex-direction: column;
 
-    margin-top: 20px;
     row-gap: 24px;
   }
 `;
@@ -50,6 +49,14 @@ export const Header = styled.div`
 export const TitleWrapper = styled.div`
   width: 100%;
   height: 51px;
+`;
+
+export const InnerContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
 `;
 
 export const CheckboxContainer = styled.div`
@@ -82,10 +89,10 @@ export const InputWrapper = styled.div`
 export const TeamNameContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 5px;
 
-  width: 100%;
   height: 23px;
+
+  gap: 5px;
 `;
 
 export const Circle = styled.div`

@@ -159,15 +159,17 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
             </Text>
             <Checkbox isChecked={isAllDay} onChange={handleIsAllDayChange} />
           </S.CheckboxContainer>
-          <S.TeamNameContainer title={teamPlaceName}>
-            <S.Circle />
-            <Text css={S.teamPlaceName}>{teamPlaceName}</Text>
-          </S.TeamNameContainer>
-          <S.ControlButtonWrapper>
-            <Button variant="primary" css={S.submitButton}>
-              등록
-            </Button>
-          </S.ControlButtonWrapper>
+          <S.InnerContainer>
+            <S.TeamNameContainer title={teamPlaceName}>
+              <S.Circle />
+              <Text css={S.teamPlaceName}>{teamPlaceName}</Text>
+            </S.TeamNameContainer>
+            <S.ControlButtonWrapper>
+              <Button variant="primary" css={S.submitButton}>
+                등록
+              </Button>
+            </S.ControlButtonWrapper>
+          </S.InnerContainer>
         </form>
       </S.Container>
     </Modal>
