@@ -1,20 +1,27 @@
-import { css } from 'styled-components';
 import { parseDate } from '~/utils/parseDate';
 import Text from '~/components/common/Text/Text';
 import * as S from './DateCell.styled';
 import type { DateCellSize } from '~/types/size';
 import type { MouseEventHandler } from 'react';
 
-interface DateCellProps {
+export interface DateCellProps {
   rawDate: Date;
   currentMonth: number;
+  size?: DateCellSize;
+  isToday?: boolean;
   onClick?: () => void;
   onDayClick?: MouseEventHandler<HTMLDivElement>;
-  size?: DateCellSize;
 }
 
 const DateCell = (props: DateCellProps) => {
-  const { rawDate, currentMonth, size = 'lg', onClick, onDayClick } = props;
+  const {
+    rawDate,
+    currentMonth,
+    size = 'lg',
+    isToday = false,
+    onClick,
+    onDayClick,
+  } = props;
   const { date, day } = parseDate(rawDate);
 
   const isSunday = day === 0;
@@ -28,8 +35,12 @@ const DateCell = (props: DateCellProps) => {
       size={size}
       onClick={onClick}
     >
-      <S.DateBadge onClick={onDayClick}>
-        <Text css={S.dateText(isCurrentMonth, size)}>{date}</Text>
+      <S.DateBadge
+        isCurrentMonth={isCurrentMonth}
+        onClick={onDayClick}
+        isToday={isToday}
+      >
+        <Text css={S.dateText(isCurrentMonth, isToday, size)}>{date}</Text>
       </S.DateBadge>
     </S.Wrapper>
   );

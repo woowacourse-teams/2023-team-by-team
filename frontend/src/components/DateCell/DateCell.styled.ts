@@ -1,4 +1,5 @@
 import { css, styled } from 'styled-components';
+import { DateCellProps } from '~/components/DateCell/DateCell';
 import type { DateCellSize } from '~/types/size';
 
 interface WrapperProps {
@@ -36,21 +37,35 @@ export const Wrapper = styled.div<WrapperProps>`
   cursor: pointer;
 `;
 
-export const DateBadge = styled.div`
+export const DateBadge = styled.div<{
+  isToday: boolean;
+  isCurrentMonth: boolean;
+}>`
   display: flex;
   justify-content: center;
   align-items: center;
 
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
+
   border-radius: 50%;
 
   &:hover {
     background-color: ${({ theme }) => theme.color.GRAY300};
   }
+  background-color: ${({ isToday, theme, isCurrentMonth }) => {
+    if (isToday && isCurrentMonth) return theme.color.BLACK;
+    if (isToday) return theme.color.GRAY400;
+  }};
 `;
 
-export const dateText = (isCurrentMonth: boolean, size: DateCellSize) => css`
+export const dateText = (
+  isCurrentMonth: boolean,
+  isToday: boolean,
+  size: DateCellSize,
+) => css`
+  color: ${({ theme }) => (isToday ? theme.color.WHITE : theme.color.BLACK)};
   font-size: ${size === 'sm' ? 14 : 12}px;
+
   opacity: ${isCurrentMonth ? 1 : 0.3};
 `;

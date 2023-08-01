@@ -8,6 +8,7 @@ import DateCell from '~/components/DateCell/DateCell';
 import { ArrowLeftIcon, ArrowRightIcon } from '~/assets/svg';
 import { DAYS_OF_WEEK } from '~/constants/calendar';
 import { useFetchMySchedules } from '~/hooks/queries/useFetchMySchedules';
+import { parseDate } from '~/utils/parseDate';
 
 const IntegratedCalendar = () => {
   const {
@@ -18,8 +19,12 @@ const IntegratedCalendar = () => {
   } = useCalendar();
 
   const mySchedules = useFetchMySchedules(year, month);
-
-  console.log(mySchedules);
+  const {
+    year: currentYear,
+    month: currentMonth,
+    date: currentDate,
+  } = parseDate(new Date());
+  console.log(mySchedules); // 스케줄 렌더링 하면서 삭제할 예정이에요
 
   return (
     <S.Container>
@@ -66,11 +71,23 @@ const IntegratedCalendar = () => {
                 <S.ScheduleBarContainer></S.ScheduleBarContainer>
                 <S.DateView>
                   {week.map((day) => {
+                    const {
+                      year: renderYear,
+                      month: renderMonth,
+                      date: renderDate,
+                    } = parseDate(day);
+
+                    const isToday =
+                      currentYear === renderYear &&
+                      currentMonth === renderMonth &&
+                      currentDate === renderDate;
+
                     return (
                       <DateCell
                         key={day.toISOString()}
                         rawDate={day}
                         currentMonth={month}
+                        isToday={isToday}
                         size="sm"
                       />
                     );
