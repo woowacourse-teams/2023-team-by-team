@@ -36,6 +36,7 @@ const teamColor = {
 
 const zIndex = {
   MODAL: 1,
+  MENU: 2,
 } as const;
 
 const animation = {

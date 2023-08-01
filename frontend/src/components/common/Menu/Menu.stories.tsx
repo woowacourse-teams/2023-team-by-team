@@ -31,9 +31,9 @@ export const Default: Story = {
           메뉴 열기
         </MenuButton>
         <MenuList>
-          <MenuItem>메뉴 1</MenuItem>
-          <MenuItem>메뉴 2</MenuItem>
-          <MenuItem>메뉴 3</MenuItem>
+          <MenuItem value="메뉴 1">메뉴 1</MenuItem>
+          <MenuItem value="메뉴 2">메뉴 2</MenuItem>
+          <MenuItem value="메뉴 3">메뉴 3</MenuItem>
         </MenuList>
       </Menu>
     );

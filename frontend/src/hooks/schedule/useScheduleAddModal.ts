@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useSendSchedule } from '~/hooks/queries/useSendSchedule';
 import { useModal } from '~/hooks/useModal';
-import { formatISOString } from '~/utils/formatISOString';
 import { isYYYYMMDDHHMM } from '~/types/typeGuard';
 import { parseDate } from '~/utils/parseDate';
+import { parseAmPmTime } from '~/utils/parseAmPmTime';
 import type { ChangeEventHandler, FormEventHandler } from 'react';
 
 const useScheduleAddModal = (clickedDate: Date) => {
@@ -16,6 +16,11 @@ const useScheduleAddModal = (clickedDate: Date) => {
     startDateTime: dateString,
     endDateTime: dateString,
   });
+  const [times, setTimes] = useState({
+    startTime: '00:00',
+    endTime: '00:00',
+  });
+  const [isAllDay, setIsAllDay] = useState(false);
   const { closeModal } = useModal();
   const { mutateSendSchedule } = useSendSchedule(1);
 
@@ -30,12 +35,70 @@ const useScheduleAddModal = (clickedDate: Date) => {
     });
   };
 
+  const handleStartTimeChange = (value: string) => {
+    if (!isValidEndTime(value, times['endTime'])) {
+      setTimes((prev) => {
+        return {
+          ...prev,
+          ['startTime']: value,
+          ['endTime']: value,
+        };
+      });
+
+      return;
+    }
+
+    setTimes((prev) => {
+      return {
+        ...prev,
+        ['startTime']: value,
+      };
+    });
+  };
+
+  const handleEndTimeChange = (value: string) => {
+    if (!isValidEndTime(times['startTime'], value)) {
+      setTimes((prev) => {
+        return {
+          ...prev,
+          ['endTime']: prev['startTime'],
+        };
+      });
+
+      return;
+    }
+
+    setTimes((prev) => {
+      return {
+        ...prev,
+        ['endTime']: value,
+      };
+    });
+  };
+
+  const isValidEndTime = (startTime: string, endTime: string) => {
+    const { startDateTime, endDateTime } = schedule;
+    const start = new Date(`${startDateTime} ${startTime}`);
+    const end = new Date(`${endDateTime} ${endTime}`);
+
+    return start < end;
+  };
+
+  const handleIsAllDayChange = () => {
+    setIsAllDay((prev) => !prev);
+  };
+
   const handleScheduleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
     const { title, startDateTime, endDateTime } = schedule;
-    const formattedStartDateTime = formatISOString(startDateTime);
-    const formattedEndDateTime = formatISOString(endDateTime);
+    const { startTime, endTime } = times;
+    const formattedStartDateTime = `${startDateTime} ${
+      isAllDay ? '00:00' : startTime
+    }`;
+    const formattedEndDateTime = `${endDateTime} ${
+      isAllDay ? '23:59' : endTime
+    }`;
 
     if (
       !isYYYYMMDDHHMM(formattedStartDateTime) ||
@@ -58,9 +121,14 @@ const useScheduleAddModal = (clickedDate: Date) => {
 
   return {
     schedule,
+    isAllDay,
+    times,
 
     handlers: {
       handleScheduleChange,
+      handleIsAllDayChange,
+      handleStartTimeChange,
+      handleEndTimeChange,
       handleScheduleSubmit,
     },
   };
