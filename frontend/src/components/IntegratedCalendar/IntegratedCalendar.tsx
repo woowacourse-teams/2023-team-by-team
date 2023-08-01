@@ -22,6 +22,14 @@ const IntegratedCalendar = () => {
   return (
     <S.Container>
       <S.CalendarHeader>
+        <Button
+          variant="plain"
+          size="sm"
+          onClick={handlePrevButtonClick}
+          aria-label="이전 달로 이동하기"
+        >
+          <ArrowLeftIcon />
+        </Button>
         <Text
           css={css`
             font-size: 16px;
@@ -30,29 +38,23 @@ const IntegratedCalendar = () => {
         >
           {year}년 {month + 1}월
         </Text>
-        <div>
-          <Button
-            variant="plain"
-            size="sm"
-            onClick={handlePrevButtonClick}
-            aria-label="이전 달로 이동하기"
-          >
-            <ArrowLeftIcon />
-          </Button>
-          <Button
-            variant="plain"
-            size="sm"
-            onClick={handleNextButtonClick}
-            aria-label="다음 달로 이동하기"
-          >
-            <ArrowRightIcon />
-          </Button>
-        </div>
+        <Button
+          variant="plain"
+          size="sm"
+          onClick={handleNextButtonClick}
+          aria-label="다음 달로 이동하기"
+        >
+          <ArrowRightIcon />
+        </Button>
       </S.CalendarHeader>
       <div>
         <S.DaysOfWeek>
           {DAYS_OF_WEEK.map((day) => {
-            return <S.DayOfWeek key={day}>{day}</S.DayOfWeek>;
+            return (
+              <Text key={day} size="sm" weight="bold" css={S.dayOfWeek}>
+                {day}
+              </Text>
+            );
           })}
         </S.DaysOfWeek>
         <div>

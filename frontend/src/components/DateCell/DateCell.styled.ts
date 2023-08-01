@@ -10,18 +10,19 @@ interface WrapperProps {
 export const Wrapper = styled.div<WrapperProps>`
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+
   ${({ size }) => {
     if (size === 'sm')
       return css`
+        align-items: center;
         padding-top: 4px;
-        text-align: center;
-        font-size: 10px;
       `;
     if (size === 'md') return css``;
     if (size === 'lg')
       return css`
+        align-items: flex-end;
         padding: 2px 2px 0 0;
+
         text-align: right;
       `;
   }};
@@ -35,7 +36,7 @@ export const Wrapper = styled.div<WrapperProps>`
   cursor: pointer;
 `;
 
-export const TeamColorBadge = styled.div`
+export const DateBadge = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -47,4 +48,9 @@ export const TeamColorBadge = styled.div`
   &:hover {
     background-color: ${({ theme }) => theme.color.GRAY300};
   }
+`;
+
+export const dateText = (isCurrentMonth: boolean, size: DateCellSize) => css`
+  font-size: ${size === 'sm' ? 14 : 12}px;
+  opacity: ${isCurrentMonth ? 1 : 0.3};
 `;
