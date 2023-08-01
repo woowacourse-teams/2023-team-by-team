@@ -12,6 +12,7 @@ import MenuButton from '~/components/common/Menu/MenuButton/MenuButton';
 import MenuItem from '~/components/common/Menu/MenuItem/MenuItem';
 import MenuList from '~/components/common/Menu/MenuList/MenuList';
 import { TIME_TABLE } from '~/constants/calendar';
+import TeamBadge from '~/components/common/TeamBadge/TeamBadge';
 
 interface ScheduleAddModalProps {
   teamPlaceName: string;
@@ -161,7 +162,7 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
           </S.CheckboxContainer>
           <S.InnerContainer>
             <S.TeamNameContainer title={teamPlaceName}>
-              <S.Circle />
+              <TeamBadge teamPlaceColor={0} size="lg" />
               <Text css={S.teamPlaceName}>{teamPlaceName}</Text>
             </S.TeamNameContainer>
             <S.ControlButtonWrapper>
@@ -170,6 +171,12 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
               </Button>
             </S.ControlButtonWrapper>
           </S.InnerContainer>
+          <S.TeamNameContainer title={teamPlaceName}>
+            <Text css={S.teamPlaceName}>{teamPlaceName}</Text>
+          </S.TeamNameContainer>
+          <S.ControlButtonWrapper>
+            <Button variant="primary">등록</Button>
+          </S.ControlButtonWrapper>
         </form>
       </S.Container>
     </Modal>

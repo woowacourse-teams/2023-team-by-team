@@ -1,6 +1,5 @@
 package team.teamby.teambyteam.notice.domain.vo;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -10,6 +9,7 @@ import team.teamby.teambyteam.notice.exception.NoticeException;
 
 import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ContentTest {
@@ -18,10 +18,10 @@ class ContentTest {
     @DisplayName("공지 content를 정상적으로 생성한다.")
     void success() {
         // given
-        final String contentValue = "이것은 공지사항 이다.";
+        final String contentValue = "이것은 공지사항이다.";
 
         // when & then
-        Assertions.assertThatNoException().isThrownBy(() -> new Content(contentValue));
+        assertThatNoException().isThrownBy(() -> new Content(contentValue));
     }
 
     @ParameterizedTest(name = "입력된 값 : {0}")
@@ -48,5 +48,4 @@ class ContentTest {
                 )
         );
     }
-
 }

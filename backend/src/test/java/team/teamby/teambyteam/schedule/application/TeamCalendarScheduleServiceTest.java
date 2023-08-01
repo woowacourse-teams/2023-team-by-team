@@ -12,6 +12,9 @@ import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleResponse;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleUpdateRequest;
 import team.teamby.teambyteam.schedule.application.dto.SchedulesResponse;
+import team.teamby.teambyteam.schedule.application.event.ScheduleCreateEvent;
+import team.teamby.teambyteam.schedule.application.event.ScheduleDeleteEvent;
+import team.teamby.teambyteam.schedule.application.event.ScheduleUpdateEvent;
 import team.teamby.teambyteam.schedule.domain.Schedule;
 import team.teamby.teambyteam.schedule.domain.ScheduleRepository;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
@@ -38,7 +41,7 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
     @Autowired
     private ScheduleRepository scheduleRepository;
 
-    private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     @Nested
     @DisplayName("팀 캘린더 일정 정보 조회시")
@@ -196,7 +199,7 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
                                 MONTH_6_AND_MONTH_7_DAY_12_SCHEDULE.getTitle().getValue(),
                                 MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE.getTitle().getValue(),
                                 MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getTitle().getValue()
-                                );
+                        );
             });
         }
 
@@ -307,6 +310,20 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
         }
 
         @Test
+        @DisplayName("일정 생성 Event가 발행된다.")
+        void publishScheduleCreateEvent() {
+            // given
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final ScheduleRegisterRequest request = ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_REGISTER_REQUEST;
+
+            // when
+            teamCalendarScheduleService.register(request, ENGLISH_TEAM_PLACE.getId());
+
+            // then
+            assertThat(applicationEvents.stream(ScheduleCreateEvent.class).count()).isEqualTo(1);
+        }
+
+        @Test
         @DisplayName("일정 등록 시 Span 순서가 맞지 않으면 예외가 발생한다.")
         void failSpanWrongOrder() {
             // given
@@ -360,6 +377,25 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
 
             // then
             assertThat(updatedSchedule.getSpan().getStartDateTime()).isEqualTo(startTimeToUpdate);
+        }
+
+        @Test
+        @DisplayName("일정 수정 Event가 발행된다.")
+        void publishScheduleUpdateEvent() {
+            // given
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final Long ENGLISH_TEAM_PLACE_ID = ENGLISH_TEAM_PLACE.getId();
+            final Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(ENGLISH_TEAM_PLACE_ID));
+            final Long MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_ID = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId();
+
+            final LocalDateTime startTimeToUpdate = DATE_2023_07_12_00_00_00;
+            final ScheduleUpdateRequest request = new ScheduleUpdateRequest(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_TITLE, startTimeToUpdate, MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getEndDateTime());
+
+            // when
+            teamCalendarScheduleService.update(request, ENGLISH_TEAM_PLACE_ID, MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_ID);
+
+            // then
+            assertThat(applicationEvents.stream(ScheduleUpdateEvent.class).count()).isEqualTo(1);
         }
 
         @ParameterizedTest
@@ -449,6 +485,21 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
 
             // then
             assertThat(scheduleRepository.findById(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId()).isEmpty()).isTrue();
+        }
+
+        @Test
+        @DisplayName("일정 Event가 발행된다.")
+        void publishScheduleDeleteEvent() {
+            // given
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final Long ENGLISH_TEAM_PLACE_ID = ENGLISH_TEAM_PLACE.getId();
+            final Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(ENGLISH_TEAM_PLACE_ID));
+
+            // when
+            teamCalendarScheduleService.delete(ENGLISH_TEAM_PLACE_ID, MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId());
+
+            // then
+            assertThat(applicationEvents.stream(ScheduleDeleteEvent.class).count()).isEqualTo(1);
         }
 
         @Test

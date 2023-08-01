@@ -95,14 +95,6 @@ export const TeamNameContainer = styled.div`
   gap: 5px;
 `;
 
-export const Circle = styled.div`
-  width: 23px;
-  height: 23px;
-
-  border-radius: 50%;
-  background-color: ${({ theme }) => theme.color.PRIMARY};
-`;
-
 export const ControlButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-end;

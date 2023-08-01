@@ -18,13 +18,25 @@ public class MyCalendarScheduleController {
 
     private final MyCalendarScheduleService myCalendarScheduleService;
 
-    @GetMapping("/schedules")
+    @GetMapping(value = "/schedules", params = {"year", "month"})
     public ResponseEntity<SchedulesWithTeamPlaceIdResponse> findSchedulesInPeriod(
             @AuthPrincipal final MemberEmailDto memberEmailDto,
             @RequestParam final Integer year,
             @RequestParam final Integer month
     ) {
         final SchedulesWithTeamPlaceIdResponse responseBody = myCalendarScheduleService.findScheduleInPeriod(memberEmailDto, year, month);
+
+        return ResponseEntity.ok(responseBody);
+    }
+
+    @GetMapping(value = "/schedules", params = {"year", "month", "day"})
+    public ResponseEntity<SchedulesWithTeamPlaceIdResponse> findDailySchedule(
+            @AuthPrincipal final MemberEmailDto memberEmailDto,
+            @RequestParam final Integer year,
+            @RequestParam final Integer month,
+            @RequestParam final Integer day
+    ) {
+        final SchedulesWithTeamPlaceIdResponse responseBody = myCalendarScheduleService.findDailySchedule(memberEmailDto, year, month, day);
 
         return ResponseEntity.ok(responseBody);
     }
