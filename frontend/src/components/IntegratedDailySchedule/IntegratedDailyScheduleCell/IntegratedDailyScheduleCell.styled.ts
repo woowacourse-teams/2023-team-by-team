@@ -1,5 +1,5 @@
 import { css, styled } from 'styled-components';
-import type { IntegratedDailyScheduleCellProps } from '~/components/IntegratedDailyScheduleCell/IntegratedDailyScheduleCell';
+import type { IntegratedDailyScheduleCellProps } from '~/components/IntegratedDailySchedule/IntegratedDailyScheduleCell/IntegratedDailyScheduleCell';
 import type { TeamPlaceColor } from '~/types/team';
 
 export const Container = styled.div<

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import IntegratedDailyScheduleCell from '~/components/IntegratedDailyScheduleCell/IntegratedDailyScheduleCell';
+import IntegratedDailyScheduleCell from '~/components/IntegratedDailySchedule/IntegratedDailyScheduleCell/IntegratedDailyScheduleCell';
 
 const meta = {
   title: 'Calendar/IntegratedDailyScheduleCell',
