@@ -8,7 +8,6 @@ import { MAX_TOAST_COUNT } from '~/constants/toast';
 interface ToastContextProps {
   toastList: ToastProps[];
   closeToast: (id: ToastProps['id']) => void;
-  deactivateToast: (id: ToastProps['id']) => void;
   showToast: (
     status: ToastProps['status'],
     message: ToastProps['message'],
@@ -57,7 +56,7 @@ export const ToastProvider = ({ children }: PropsWithChildren) => {
     setTimeout(() => deactivateToast(toastId), theme.animation.duration * 10);
   };
 
-  const value = { toastList, showToast, closeToast, deactivateToast };
+  const value = { toastList, showToast, closeToast };
 
   return (
     <ToastContext.Provider value={value}>{children}</ToastContext.Provider>
