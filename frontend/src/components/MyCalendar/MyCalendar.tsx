@@ -1,16 +1,15 @@
 import { Fragment } from 'react';
-import { css } from 'styled-components';
 import Button from '~/components/common/Button/Button';
 import Text from '~/components/common/Text/Text';
 import useCalendar from '~/hooks/useCalendar';
-import * as S from './IntegratedCalendar.styled';
+import * as S from './MyCalendar.styled';
 import DateCell from '~/components/DateCell/DateCell';
 import { ArrowLeftIcon, ArrowRightIcon } from '~/assets/svg';
 import { DAYS_OF_WEEK } from '~/constants/calendar';
 import { useFetchMySchedules } from '~/hooks/queries/useFetchMySchedules';
 import { parseDate } from '~/utils/parseDate';
 
-const IntegratedCalendar = () => {
+const MyCalendar = () => {
   const {
     year,
     month,
@@ -97,4 +96,4 @@ const IntegratedCalendar = () => {
   );
 };
 
-export default IntegratedCalendar;
+export default MyCalendar;

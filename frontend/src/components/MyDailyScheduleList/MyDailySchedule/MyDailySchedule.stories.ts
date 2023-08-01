@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import IntegratedDailySchedule from '~/components/IntegratedDailySchedule/IntegratedDailySchedule/IntegratedDailySchedule';
+import MyDailySchedule from './MyDailySchedule';
 
 const meta = {
-  title: 'Calendar/IntegratedDailySchedule',
-  component: IntegratedDailySchedule,
+  title: 'Calendar/MyDailySchedule',
+  component: MyDailySchedule,
   tags: ['autodocs'],
-} satisfies Meta<typeof IntegratedDailySchedule>;
+} satisfies Meta<typeof MyDailySchedule>;
 
 export default meta;
 
