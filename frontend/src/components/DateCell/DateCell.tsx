@@ -28,16 +28,9 @@ const DateCell = (props: DateCellProps) => {
       size={size}
       onClick={onClick}
     >
-      <S.TeamColorBadge onClick={onDayClick}>
-        <Text
-          css={css`
-            font-size: 12px;
-            opacity: ${isCurrentMonth ? 1 : 0.3};
-          `}
-        >
-          {date}
-        </Text>
-      </S.TeamColorBadge>
+      <S.DateBadge onClick={onDayClick}>
+        <Text css={S.dateText(isCurrentMonth, size)}>{date}</Text>
+      </S.DateBadge>
     </S.Wrapper>
   );
 };
