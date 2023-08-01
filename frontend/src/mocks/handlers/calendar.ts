@@ -1,9 +1,22 @@
 import { rest } from 'msw';
-import { schedules as scheduleData } from '~/mocks/fixtures/schedules';
+import {
+  schedules as scheduleData,
+  mySchedules,
+} from '~/mocks/fixtures/schedules';
 
 let schedules = [...scheduleData];
 
 export const calendarHandlers = [
+  //통합캘린더 일정 기간 조회
+  rest.get(`//api/my-calendar/schedules`, (_, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        mySchedules,
+      }),
+    );
+  }),
+
   //팀플레이스 일정 기간 조회
   rest.get(`/api/team-place/:teamPlaceId/calendar/schedules`, (_, res, ctx) => {
     return res(
