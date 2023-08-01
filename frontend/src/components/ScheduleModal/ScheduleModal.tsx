@@ -56,6 +56,7 @@ const ScheduleModal = (props: ScheduleModalProps) => {
           </S.TeamWrapper>
           <S.MenuContainer>
             <Button
+              type="button"
               variant="plain"
               onClick={onOpenScheduleEditModal}
               css={S.menuIcon}
@@ -63,13 +64,19 @@ const ScheduleModal = (props: ScheduleModalProps) => {
               <EditIcon />
             </Button>
             <Button
+              type="button"
               variant="plain"
               onClick={handleScheduleDelete}
               css={S.menuIcon}
             >
               <DeleteIcon />
             </Button>
-            <Button variant="plain" onClick={closeModal} css={S.menuIcon}>
+            <Button
+              type="button"
+              variant="plain"
+              onClick={closeModal}
+              css={S.menuIcon}
+            >
               <CloseIcon />
             </Button>
           </S.MenuContainer>
