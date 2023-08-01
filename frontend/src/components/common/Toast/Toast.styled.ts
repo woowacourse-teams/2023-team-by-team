@@ -7,7 +7,6 @@ export const Wrapper = styled.div<Pick<ToastProps, 'status' | 'isActive'>>`
   justify-content: center;
 
   min-width: 50px;
-
   padding: 16px 16px;
 
   border-radius: 4px;
