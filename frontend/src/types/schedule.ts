@@ -26,3 +26,7 @@ export interface ScheduleCircle {
 
 export type ModalOpenType =
   (typeof MODAL_OPEN_TYPE)[keyof typeof MODAL_OPEN_TYPE];
+
+export interface ScheduleWithTeamPlaceId extends Schedule {
+  teamPlaceId: number;
+}
