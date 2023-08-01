@@ -8,7 +8,7 @@ export const useFetchMySchedules = (year: number, month: number) => {
 
   if (data === undefined) return [];
 
-  const { schedules: mySchedules } = data;
+  const { schedules } = data;
 
-  return mySchedules;
+  return schedules;
 };

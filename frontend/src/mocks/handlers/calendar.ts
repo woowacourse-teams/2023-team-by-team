@@ -12,7 +12,7 @@ export const calendarHandlers = [
     return res(
       ctx.status(200),
       ctx.json({
-        mySchedules,
+        schedules: mySchedules,
       }),
     );
   }),

@@ -17,13 +17,13 @@ const MyCalendar = () => {
     handlers: { handlePrevButtonClick, handleNextButtonClick },
   } = useCalendar();
 
-  const mySchedules = useFetchMySchedules(year, month);
+  const schedules = useFetchMySchedules(year, month);
   const {
     year: currentYear,
     month: currentMonth,
     date: currentDate,
   } = parseDate(new Date());
-  console.log(mySchedules); // 스케줄 렌더링 하면서 삭제할 예정이에요
+  console.log(schedules); // 스케줄 렌더링 하면서 삭제할 예정이에요
 
   return (
     <S.Container>

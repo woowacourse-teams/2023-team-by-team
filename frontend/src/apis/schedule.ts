@@ -20,9 +20,13 @@ export const fetchSchedules = (
   }>(`/api/team-place/${teamPlaceId}/calendar/schedules?${query}`);
 };
 
-export const fetchMySchedules = (year: number, month: number, day?: number) => {
-  const query = day
-    ? `year=${year}&month=${month}&day=${day}`
+export const fetchMySchedules = (
+  year: number,
+  month: number,
+  date?: number,
+) => {
+  const query = date
+    ? `year=${year}&month=${month}&day=${date}`
     : `year=${year}&month=${month}`;
 
   return http.get<{
