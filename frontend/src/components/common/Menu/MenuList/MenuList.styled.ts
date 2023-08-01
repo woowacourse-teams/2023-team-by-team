@@ -3,6 +3,7 @@ import type { MenuListProps } from '~/components/common/Menu/MenuList/MenuList';
 
 export const Wrapper = styled.ul<MenuListProps>`
   position: absolute;
+  z-index: ${({ theme }) => theme.zIndex.MENU};
 
   max-height: 200px;
   width: ${({ width }) => width};
@@ -12,6 +13,4 @@ export const Wrapper = styled.ul<MenuListProps>`
 
   border: 1px solid ${({ theme }) => theme.color.GRAY200};
   border-radius: 6px;
-
-  z-index: ${({ theme }) => theme.zIndex.MENU};
 `;

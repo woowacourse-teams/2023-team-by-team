@@ -8,8 +8,6 @@ export const Wrapper = styled.li<Omit<MenuItemProps, 'value'>>`
 
   text-align: center;
 
-  ${({ css }) => css}
-
   &:hover {
     background-color: ${({ theme }) => theme.color.GRAY100};
   }
@@ -17,4 +15,6 @@ export const Wrapper = styled.li<Omit<MenuItemProps, 'value'>>`
   &.selected {
     background-color: ${({ theme }) => theme.color.GRAY100};
   }
+
+  ${({ css }) => css}
 `;
