@@ -13,7 +13,7 @@ export const fetchThreads = (teamPlaceId: number, lastThreadId?: number) => {
 };
 
 export const fetchNoticeThread = (teamPlaceId: number) => {
-  return http.get<{
-    noticeThread: NoticeThread;
-  }>(`/api/team-place/${teamPlaceId}/feed/notice/recent`);
+  return http.get<NoticeThread>(
+    `/api/team-place/${teamPlaceId}/feed/notice/recent`,
+  );
 };

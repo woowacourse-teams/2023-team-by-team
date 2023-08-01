@@ -28,12 +28,7 @@ export const feedHandlers = [
   rest.get(
     '/api/team-place/:teamPlaceId/feed/notice/recent',
     async (req, res, ctx) => {
-      return res(
-        ctx.status(200),
-        ctx.json({
-          noticeThread,
-        }),
-      );
+      return res(ctx.status(200), ctx.json(noticeThread));
     },
   ),
 ];
