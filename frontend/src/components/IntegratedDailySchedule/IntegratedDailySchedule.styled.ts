@@ -31,13 +31,6 @@ export const Info = styled.div`
   gap: 4px;
 `;
 
-export const TeamInfo = styled.div`
-  display: flex;
-  align-items: center;
-
-  gap: 4px;
-`;
-
 export const titleText = (teamPlaceColor: TeamPlaceColor) => css`
   overflow: hidden;
   white-space: nowrap;

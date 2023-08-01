@@ -26,9 +26,11 @@ const IntegratedDailySchedule = (props: IntegratedDailyScheduleProps) => {
 
   return (
     <S.Container teamPlaceColor={teamPlaceColor}>
-      <Text size="xl" weight="bold" css={S.titleText(teamPlaceColor)}>
-        {title}
-      </Text>
+      <div title={title}>
+        <Text size="xl" weight="bold" css={S.titleText(teamPlaceColor)}>
+          {title}
+        </Text>
+      </div>
       <S.InfoContainer>
         <S.Info>
           <ClockIcon />
