@@ -1,9 +1,9 @@
 import { css, styled } from 'styled-components';
-import type { IntegratedDailyScheduleProps } from '~/components/IntegratedDailySchedule/IntegratedDailySchedule';
+import type { IntegratedDailyScheduleCellProps } from '~/components/IntegratedDailyScheduleCell/IntegratedDailyScheduleCell';
 import type { TeamPlaceColor } from '~/types/team';
 
 export const Container = styled.div<
-  Pick<IntegratedDailyScheduleProps, 'teamPlaceColor'>
+  Pick<IntegratedDailyScheduleCellProps, 'teamPlaceColor'>
 >`
   display: flex;
   flex-direction: column;
