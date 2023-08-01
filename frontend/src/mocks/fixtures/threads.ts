@@ -1,4 +1,5 @@
 import type { Thread } from '~/types/feed';
+import type { NoticeThread } from '~/types/feed';
 
 export const threads: Thread[] = [
   {
@@ -778,3 +779,12 @@ export const threads: Thread[] = [
       '80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 ',
   },
 ];
+
+export const noticeThread: NoticeThread = {
+  id: 1,
+  authorId: 4,
+  authorName: '대충 기본으로 들어가는 목 데이터',
+  profileImageUrl: 'https://avatars.githubusercontent.com/u/87642422?v=4',
+  createdAt: '2023-12-03 12:34',
+  content: '중요 공지입니다! 다들 스트레칭하세요',
+};
