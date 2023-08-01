@@ -38,13 +38,12 @@ const ThreadList = (props: ThreadListProps) => {
       {threadPages?.pages.map((page) =>
         page.threads.map((thread) => {
           const { id, type, profileImageUrl, content, ...rest } = thread;
-          const profileUrl = profileImageUrl === null ? '' : profileImageUrl;
 
           return type === THREAD_TYPE.THREAD ? (
             <Thread
               key={id}
               size={size}
-              profileImageUrl={profileUrl}
+              profileImageUrl={profileImageUrl}
               content={content}
               {...rest}
             />
