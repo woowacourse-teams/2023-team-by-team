@@ -44,4 +44,26 @@ public class MyCalendarScheduleService {
 
         return SchedulesWithTeamPlaceIdResponse.of(schedules);
     }
+
+    @Transactional(readOnly = true)
+    public SchedulesWithTeamPlaceIdResponse findDailySchedule(
+            final MemberEmailDto memberEmailDto,
+            final int targetYear,
+            final int targetMonth,
+            final int targetDay
+    ) {
+        final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
+                .orElseThrow(MemberException.MemberNotFoundException::new);
+
+        final List<Long> participatedTeamPlaceIds = member.getTeamPlaces()
+                .stream()
+                .map(TeamPlace::getId)
+                .toList();
+
+        final CalendarPeriod dailyPeriod = CalendarPeriod.of(targetYear, targetMonth, targetDay);
+        final List<Schedule> dailySchedules = scheduleRepository.findAllByTeamPlaceIdAndPeriod(
+                participatedTeamPlaceIds, dailyPeriod.startDateTime(), dailyPeriod.endDatetime());
+
+        return SchedulesWithTeamPlaceIdResponse.of(dailySchedules);
+    }
 }

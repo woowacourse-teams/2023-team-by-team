@@ -20,4 +20,16 @@ public class MyCalendarScheduleAcceptanceFixtures {
                 .then().log().all()
                 .extract();
     }
+
+    public static ExtractableResponse<Response> FIND_DAILY_SCHEDULE_REQUEST(final String token, final Integer year, final Integer month, final Integer day) {
+        return RestAssured.given().log().all()
+                .header(new Header(HttpHeaders.AUTHORIZATION, JWT_PREFIX + token))
+                .queryParam("year", year)
+                .queryParam("month", month)
+                .queryParam("day", day)
+                .when().log().all()
+                .get("/api/my-calendar/schedules")
+                .then().log().all()
+                .extract();
+    }
 }
