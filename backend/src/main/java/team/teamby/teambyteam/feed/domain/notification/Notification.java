@@ -1,9 +1,10 @@
-package team.teamby.teambyteam.feed.domain;
+package team.teamby.teambyteam.feed.domain.notification;
 
 import jakarta.persistence.MappedSuperclass;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team.teamby.teambyteam.feed.domain.Feed;
 import team.teamby.teambyteam.feed.domain.vo.Content;
 
 @MappedSuperclass
