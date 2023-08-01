@@ -1,5 +1,9 @@
 import { http } from '~/apis/http';
-import type { Schedule, ScheduleWithoutId } from '~/types/schedule';
+import type {
+  Schedule,
+  ScheduleWithTeamPlaceId,
+  ScheduleWithoutId,
+} from '~/types/schedule';
 
 export const fetchSchedules = (
   teamPlaceId: number,
@@ -14,6 +18,16 @@ export const fetchSchedules = (
   return http.get<{
     schedules: Schedule[];
   }>(`/api/team-place/${teamPlaceId}/calendar/schedules?${query}`);
+};
+
+export const fetchMySchedules = (year: number, month: number, day?: number) => {
+  const query = day
+    ? `year=${year}&month=${month}&day=${day}`
+    : `year=${year}&month=${month}`;
+
+  return http.get<{
+    schedules: ScheduleWithTeamPlaceId[];
+  }>(`/api/my-calendar/schedules?${query}`);
 };
 
 export const fetchScheduleById = (teamPlaceId: number, scheduleId: number) => {
