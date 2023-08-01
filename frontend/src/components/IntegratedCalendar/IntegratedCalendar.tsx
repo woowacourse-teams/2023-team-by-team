@@ -19,6 +19,8 @@ const IntegratedCalendar = () => {
 
   const mySchedules = useFetchMySchedules(year, month);
 
+  console.log(mySchedules);
+
   return (
     <S.Container>
       <S.CalendarHeader>

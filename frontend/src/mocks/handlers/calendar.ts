@@ -8,7 +8,7 @@ let schedules = [...scheduleData];
 
 export const calendarHandlers = [
   //통합캘린더 일정 기간 조회
-  rest.get(`//api/my-calendar/schedules`, (_, res, ctx) => {
+  rest.get(`/api/my-calendar/schedules`, (_, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
