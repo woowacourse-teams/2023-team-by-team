@@ -6,7 +6,7 @@ export interface Thread {
   type: (typeof THREAD_TYPE)[keyof typeof THREAD_TYPE];
   authorId: number;
   authorName: string;
-  profileImageUrl: string | null;
+  profileImageUrl: string;
   createdAt: YYYYMMDDHHMM;
   content: string;
 }

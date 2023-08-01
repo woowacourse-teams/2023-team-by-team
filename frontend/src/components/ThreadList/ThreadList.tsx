@@ -31,7 +31,7 @@ const ThreadList = (props: ThreadListProps) => {
         <NoticeThread
           author={noticeThread.authorName}
           createdAt={noticeThread.createdAt}
-          profileImageSrc={noticeThread.profileImageUrl || ''}
+          profileImageSrc={noticeThread.profileImageUrl}
           content={noticeThread.content}
         />
       )}
