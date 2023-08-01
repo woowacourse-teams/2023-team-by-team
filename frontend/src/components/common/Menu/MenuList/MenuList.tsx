@@ -10,7 +10,12 @@ export interface MenuListProps extends ComponentPropsWithoutRef<'ul'> {
 
 const MenuList = (props: PropsWithChildren<MenuListProps>) => {
   const { children, onClick, width = '100%' } = props;
-  const { isMenuOpen, handleMenuOpen, handleSelectedValueChange } = useMenu();
+  const {
+    isMenuOpen,
+    selectedValue,
+    handleMenuOpen,
+    handleSelectedValueChange,
+  } = useMenu();
   const offsetRef = useRef(0);
   const ref = useRef<HTMLUListElement>(null);
 
@@ -18,6 +23,10 @@ const MenuList = (props: PropsWithChildren<MenuListProps>) => {
     const { target } = e;
 
     if (target instanceof HTMLButtonElement) {
+      return;
+    }
+
+    if ((target as HTMLElement).closest('button')) {
       return;
     }
 
@@ -38,18 +47,31 @@ const MenuList = (props: PropsWithChildren<MenuListProps>) => {
     }
 
     onClick?.(e);
-    offsetRef.current = target.offsetTop;
     handleSelectedValueChange(textContent);
     handleMenuOpen();
   };
 
   useEffect(() => {
+    if (selectedValue === '' || !isMenuOpen) {
+      return;
+    }
+
     if (!ref.current) {
       return;
     }
 
-    ref.current.scrollTo(0, offsetRef.current);
-  });
+    const target = Array.from(ref.current.children).find(
+      (child) => child.textContent === selectedValue,
+    );
+
+    if (!(target instanceof HTMLLIElement)) {
+      return;
+    }
+
+    const { offsetTop } = target;
+
+    ref.current.scrollTo(0, offsetTop);
+  }, [isMenuOpen, selectedValue]);
 
   return (
     <>

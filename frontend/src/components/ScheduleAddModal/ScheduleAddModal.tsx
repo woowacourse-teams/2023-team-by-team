@@ -81,9 +81,10 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
               />
               {!isAllDay && (
                 <Menu>
-                  <MenuButton css={S.timetableButton}>
-                    {times['startTime']}
-                  </MenuButton>
+                  <MenuButton
+                    css={S.timetableButton}
+                    value={times['startTime']}
+                  />
                   <MenuList
                     onClick={(e) => {
                       const { target } = e;
@@ -125,9 +126,10 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
               />
               {!isAllDay && (
                 <Menu>
-                  <MenuButton css={S.timetableButton}>
-                    {times['endTime']}
-                  </MenuButton>
+                  <MenuButton
+                    css={S.timetableButton}
+                    value={times['endTime']}
+                  />
                   <MenuList
                     onClick={(e) => {
                       const { target } = e;
