@@ -8,21 +8,26 @@ import type { CSSProp } from 'styled-components';
 import { useMenu } from '~/hooks/useMenu';
 
 export interface MenuItemProps extends ComponentPropsWithoutRef<'li'> {
+  value: string;
   css?: CSSProp;
 }
 
 const MenuItem = (props: PropsWithChildren<MenuItemProps>) => {
-  const { children, onClick, css } = props;
-  const { handleMenuOpen } = useMenu();
+  const { children, value, onClick, css } = props;
+  const { selectedValue, handleMenuOpen } = useMenu();
 
   const handleClick: MouseEventHandler<HTMLLIElement> = (e) => {
     onClick?.(e);
     handleMenuOpen();
   };
 
-  // TODO: 현재 선택된 값으로 스크롤 이동
   return (
-    <S.Wrapper role="menuitem" css={css} onClick={handleClick}>
+    <S.Wrapper
+      role="menuitem"
+      css={css}
+      onClick={handleClick}
+      className={selectedValue === value ? 'selected' : ''}
+    >
       {children}
     </S.Wrapper>
   );

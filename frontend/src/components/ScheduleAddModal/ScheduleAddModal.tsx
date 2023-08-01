@@ -88,6 +88,7 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
                     {TIME_TABLE.map((time) => (
                       <MenuItem
                         key={time}
+                        value={time}
                         onClick={(e) => {
                           handleStartTimeChange(
                             e.currentTarget.textContent ?? '',
@@ -127,6 +128,7 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
                     {TIME_TABLE.map((time) => (
                       <MenuItem
                         key={time}
+                        value={time}
                         onClick={(e) => {
                           handleEndTimeChange(
                             e.currentTarget.textContent ?? '',
