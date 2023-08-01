@@ -37,13 +37,8 @@ const IntegratedCalendar = () => {
         >
           <ArrowLeftIcon />
         </Button>
-        <Text
-          css={css`
-            font-size: 16px;
-            font-weight: 600;
-          `}
-        >
-          {year}년 {month + 1}월
+        <Text size="xxl">
+          {year}-{month + 1}
         </Text>
         <Button
           variant="plain"

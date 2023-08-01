@@ -12,7 +12,7 @@ export const CalendarHeader = styled.div`
   justify-content: center;
   align-items: center;
 
-  padding: 4px 10px 0 10px;
+  padding: 10px;
 `;
 
 export const DaysOfWeek = styled.div`
