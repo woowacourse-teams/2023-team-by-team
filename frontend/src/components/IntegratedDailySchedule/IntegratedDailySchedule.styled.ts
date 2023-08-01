@@ -24,15 +24,17 @@ export const InfoContainer = styled.div`
   align-items: center;
 `;
 
-export const TimeInfo = styled.div`
+export const Info = styled.div`
   display: flex;
   align-items: center;
+
   gap: 4px;
 `;
 
 export const TeamInfo = styled.div`
   display: flex;
   align-items: center;
+
   gap: 4px;
 `;
 

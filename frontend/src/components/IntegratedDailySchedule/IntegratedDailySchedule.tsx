@@ -26,24 +26,22 @@ const IntegratedDailySchedule = (props: IntegratedDailyScheduleProps) => {
 
   return (
     <S.Container teamPlaceColor={teamPlaceColor}>
-      <div title={title}>
-        <Text size="xl" weight="bold" css={S.titleText(teamPlaceColor)}>
-          {title}
-        </Text>
-      </div>
+      <Text size="xl" weight="bold" css={S.titleText(teamPlaceColor)}>
+        {title}
+      </Text>
       <S.InfoContainer>
-        <S.TimeInfo>
+        <S.Info>
           <ClockIcon />
           <Text size="xs" weight="bold">
             {time}
           </Text>
-        </S.TimeInfo>
-        <S.TeamInfo title={teamName}>
+        </S.Info>
+        <S.Info title={teamName}>
           <GroupIcon />
           <Text size="xs" weight="bold" css={S.teamName}>
             {teamName}
           </Text>
-        </S.TeamInfo>
+        </S.Info>
       </S.InfoContainer>
     </S.Container>
   );
