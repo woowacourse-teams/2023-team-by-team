@@ -1,31 +1,21 @@
 import * as S from './MenuItem.styled';
-import type {
-  ComponentPropsWithoutRef,
-  MouseEventHandler,
-  PropsWithChildren,
-} from 'react';
+import type { PropsWithChildren } from 'react';
 import type { CSSProp } from 'styled-components';
 import { useMenu } from '~/hooks/useMenu';
 
-export interface MenuItemProps extends ComponentPropsWithoutRef<'li'> {
+export interface MenuItemProps {
   value: string;
   css?: CSSProp;
 }
 
 const MenuItem = (props: PropsWithChildren<MenuItemProps>) => {
-  const { children, value, onClick, css } = props;
-  const { selectedValue, handleMenuOpen } = useMenu();
-
-  const handleClick: MouseEventHandler<HTMLLIElement> = (e) => {
-    onClick?.(e);
-    handleMenuOpen();
-  };
+  const { children, value, css } = props;
+  const { selectedValue } = useMenu();
 
   return (
     <S.Wrapper
       role="menuitem"
       css={css}
-      onClick={handleClick}
       className={selectedValue === value ? 'selected' : ''}
     >
       {children}

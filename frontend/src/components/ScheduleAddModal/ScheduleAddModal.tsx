@@ -84,17 +84,21 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
                   <MenuButton css={S.timetableButton}>
                     {times['startTime']}
                   </MenuButton>
-                  <MenuList>
+                  <MenuList
+                    onClick={(e) => {
+                      const { target } = e;
+
+                      if (!(target instanceof HTMLLIElement)) {
+                        return;
+                      }
+
+                      handleStartTimeChange(
+                        (target as HTMLLIElement).textContent ?? '',
+                      );
+                    }}
+                  >
                     {TIME_TABLE.map((time) => (
-                      <MenuItem
-                        key={time}
-                        value={time}
-                        onClick={(e) => {
-                          handleStartTimeChange(
-                            e.currentTarget.textContent ?? '',
-                          );
-                        }}
-                      >
+                      <MenuItem key={time} value={time}>
                         {time}
                       </MenuItem>
                     ))}
@@ -124,17 +128,21 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
                   <MenuButton css={S.timetableButton}>
                     {times['endTime']}
                   </MenuButton>
-                  <MenuList>
+                  <MenuList
+                    onClick={(e) => {
+                      const { target } = e;
+
+                      if (!(target instanceof HTMLLIElement)) {
+                        return;
+                      }
+
+                      handleEndTimeChange(
+                        (target as HTMLLIElement).textContent ?? '',
+                      );
+                    }}
+                  >
                     {TIME_TABLE.map((time) => (
-                      <MenuItem
-                        key={time}
-                        value={time}
-                        onClick={(e) => {
-                          handleEndTimeChange(
-                            e.currentTarget.textContent ?? '',
-                          );
-                        }}
-                      >
+                      <MenuItem key={time} value={time}>
                         {time}
                       </MenuItem>
                     ))}
