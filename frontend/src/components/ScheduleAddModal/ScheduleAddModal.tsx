@@ -6,6 +6,13 @@ import Text from '../common/Text/Text';
 import Button from '../common/Button/Button';
 import Input from '../common/Input/Input';
 import useScheduleAddModal from '~/hooks/schedule/useScheduleAddModal';
+import Checkbox from '~/components/common/Checkbox/Checkbox';
+import Menu from '~/components/common/Menu/Menu';
+import MenuButton from '~/components/common/Menu/MenuButton/MenuButton';
+import MenuItem from '~/components/common/Menu/MenuItem/MenuItem';
+import MenuList from '~/components/common/Menu/MenuList/MenuList';
+import { TIME_TABLE } from '~/constants/calendar';
+import TeamBadge from '~/components/common/TeamBadge/TeamBadge';
 
 interface ScheduleAddModalProps {
   teamPlaceName: string;
@@ -17,7 +24,16 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
   const { closeModal } = useModal();
   const {
     schedule,
-    handlers: { handleScheduleChange, handleScheduleSubmit },
+    isAllDay,
+    times,
+
+    handlers: {
+      handleScheduleChange,
+      handleIsAllDayChange,
+      handleStartTimeChange,
+      handleEndTimeChange,
+      handleScheduleSubmit,
+    },
   } = useScheduleAddModal(clickedDate);
 
   return (
@@ -35,57 +51,127 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
             <CloseIcon />
           </Button>
         </S.Header>
-        <S.TitleWrapper>
-          <Input
-            width="100%"
-            height="100%"
-            placeholder="일정 제목"
-            css={S.title}
-            name="title"
-            value={schedule['title']}
-            required
-            onChange={handleScheduleChange}
-          />
-        </S.TitleWrapper>
-
         <form onSubmit={handleScheduleSubmit}>
+          <S.TitleWrapper>
+            <Input
+              width="100%"
+              height="100%"
+              placeholder="일정 제목"
+              css={S.title}
+              name="title"
+              value={schedule['title']}
+              required
+              onChange={handleScheduleChange}
+            />
+          </S.TitleWrapper>
+
           <S.TimeSelectContainer>
             <Text size="xxl" weight="bold">
               일정 시작
             </Text>
-            <Input
-              width="220px"
-              height="40px"
-              type="date"
-              css={S.dateTimeLocalInput}
-              name="startDateTime"
-              value={schedule['startDateTime']}
-              onChange={handleScheduleChange}
-              required
-            />
-            <Text size="xxl" weight="bold">
-              종일
-            </Text>
-            <S.CheckBox type="checkbox" />
+            <S.InputWrapper>
+              <Input
+                width={isAllDay ? '100%' : '50%'}
+                height="40px"
+                type="date"
+                css={S.dateTimeLocalInput}
+                name="startDateTime"
+                value={schedule['startDateTime']}
+                onChange={handleScheduleChange}
+                required
+              />
+              {!isAllDay && (
+                <Menu>
+                  <MenuButton
+                    css={S.timetableButton}
+                    value={times['startTime']}
+                  />
+                  <MenuList
+                    onClick={(e) => {
+                      const { target } = e;
+
+                      if (!(target instanceof HTMLLIElement)) {
+                        return;
+                      }
+
+                      handleStartTimeChange(
+                        (target as HTMLLIElement).textContent ?? '',
+                      );
+                    }}
+                  >
+                    {TIME_TABLE.map((time) => (
+                      <MenuItem key={time} value={time}>
+                        {time}
+                      </MenuItem>
+                    ))}
+                  </MenuList>
+                </Menu>
+              )}
+            </S.InputWrapper>
           </S.TimeSelectContainer>
           <S.TimeSelectContainer>
             <Text size="xxl" weight="bold">
               일정 마감
             </Text>
-            <Input
-              width="220px"
-              height="40px"
-              type="date"
-              css={S.dateTimeLocalInput}
-              name="endDateTime"
-              value={schedule['endDateTime']}
-              min={schedule['startDateTime']}
-              onChange={handleScheduleChange}
-              required
-            />
+            <S.InputWrapper>
+              <Input
+                width={isAllDay ? '100%' : '50%'}
+                height="40px"
+                type="date"
+                css={S.dateTimeLocalInput}
+                name="endDateTime"
+                value={schedule['endDateTime']}
+                min={schedule['startDateTime']}
+                onChange={handleScheduleChange}
+                required
+              />
+              {!isAllDay && (
+                <Menu>
+                  <MenuButton
+                    css={S.timetableButton}
+                    value={times['endTime']}
+                  />
+                  <MenuList
+                    onClick={(e) => {
+                      const { target } = e;
+
+                      if (!(target instanceof HTMLLIElement)) {
+                        return;
+                      }
+
+                      handleEndTimeChange(
+                        (target as HTMLLIElement).textContent ?? '',
+                      );
+                    }}
+                  >
+                    {TIME_TABLE.map((time) => (
+                      <MenuItem key={time} value={time}>
+                        {time}
+                      </MenuItem>
+                    ))}
+                  </MenuList>
+                </Menu>
+              )}
+            </S.InputWrapper>
           </S.TimeSelectContainer>
+          <S.CheckboxContainer>
+            <Text size="xl" weight="bold">
+              종일
+            </Text>
+            <Checkbox isChecked={isAllDay} onChange={handleIsAllDayChange} />
+          </S.CheckboxContainer>
+          <S.InnerContainer>
+            <S.TeamNameContainer title={teamPlaceName}>
+              <TeamBadge teamPlaceColor={0} size="lg" />
+              <Text css={S.teamPlaceName}>{teamPlaceName}</Text>
+            </S.TeamNameContainer>
+            <S.ControlButtonWrapper>
+              <Button variant="primary" css={S.submitButton}>
+                등록
+              </Button>
+            </S.ControlButtonWrapper>
+          </S.InnerContainer>
           <S.TeamNameContainer title={teamPlaceName}>
-            <S.Circle />
             <Text css={S.teamPlaceName}>{teamPlaceName}</Text>
           </S.TeamNameContainer>
           <S.ControlButtonWrapper>

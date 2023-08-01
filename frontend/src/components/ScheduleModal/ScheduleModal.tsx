@@ -9,6 +9,7 @@ import { formatDateTime } from '~/utils/formatDateTime';
 import type { SchedulePosition } from '~/types/schedule';
 import { useFetchScheduleById } from '~/hooks/queries/useFetchScheduleById';
 import { useDeleteSchedule } from '~/hooks/queries/useDeleteSchedule';
+import TeamBadge from '~/components/common/TeamBadge/TeamBadge';
 
 interface ScheduleModalProps {
   scheduleId: number;
@@ -48,7 +49,7 @@ const ScheduleModal = (props: ScheduleModalProps) => {
       <S.Container style={modalLocation}>
         <S.Header>
           <S.TeamWrapper>
-            <S.TeamColor />
+            <TeamBadge teamPlaceColor={0} size="lg" />
             <div title={'현대사회와 범죄 5조'}>
               <Text css={S.teamName}>현대사회와 범죄 5조</Text>
             </div>
