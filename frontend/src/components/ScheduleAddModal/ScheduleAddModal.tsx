@@ -171,12 +171,6 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
               </Button>
             </S.ControlButtonWrapper>
           </S.InnerContainer>
-          <S.TeamNameContainer title={teamPlaceName}>
-            <Text css={S.teamPlaceName}>{teamPlaceName}</Text>
-          </S.TeamNameContainer>
-          <S.ControlButtonWrapper>
-            <Button variant="primary">등록</Button>
-          </S.ControlButtonWrapper>
         </form>
       </S.Container>
     </Modal>
