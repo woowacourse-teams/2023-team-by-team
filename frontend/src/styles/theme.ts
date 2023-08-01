@@ -38,18 +38,6 @@ const zIndex = {
   MODAL: 1,
 } as const;
 
-const teamColor = {
-  0: '#4886FF',
-  1: '#59DFC7',
-  2: '#8E1DFF',
-  3: '#FF6666',
-  4: '#FF66F9',
-  5: '#FF9051',
-  6: '#FFC451',
-  7: '#FF51B9',
-  8: '#51C0FF',
-  9: '#82FF48',
-};
 const animation = {
   slideUp: keyframes`
     from {
@@ -75,7 +63,6 @@ export const theme = {
   teamColor,
   zIndex,
   animation,
-  teamColor,
 } as const;
 
 export type Theme = typeof theme;
