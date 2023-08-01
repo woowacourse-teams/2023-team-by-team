@@ -46,9 +46,10 @@ export const TeamColor = styled.div`
   background-color: ${({ theme }) => theme.color.PRIMARY};
 `;
 
-export const MenuWrapper = styled.div`
+export const MenuContainer = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-around;
 `;
 
 export const PeriodWrapper = styled.div`
@@ -63,6 +64,23 @@ export const teamName = css`
   text-overflow: ellipsis;
 
   max-width: 200px;
+`;
+
+export const menuIcon = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+
+  padding: 0;
+
+  border-radius: 8px;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.color.GRAY100};
+  }
 `;
 
 export const closeButton = css`

@@ -53,17 +53,25 @@ const ScheduleModal = (props: ScheduleModalProps) => {
               <Text css={S.teamName}>현대사회와 범죄 5조</Text>
             </div>
           </S.TeamWrapper>
-          <S.MenuWrapper>
-            <Button size="sm" variant="plain" onClick={onOpenScheduleEditModal}>
+          <S.MenuContainer>
+            <Button
+              variant="plain"
+              onClick={onOpenScheduleEditModal}
+              css={S.menuIcon}
+            >
               <EditIcon />
             </Button>
-            <Button size="sm" variant="plain" onClick={handleScheduleDelete}>
+            <Button
+              variant="plain"
+              onClick={handleScheduleDelete}
+              css={S.menuIcon}
+            >
               <DeleteIcon />
             </Button>
-            <Button size="sm" variant="plain" onClick={closeModal}>
+            <Button variant="plain" onClick={closeModal} css={S.menuIcon}>
               <CloseIcon />
             </Button>
-          </S.MenuWrapper>
+          </S.MenuContainer>
         </S.Header>
         <Text as="h4">{title}</Text>
         <S.PeriodWrapper>
