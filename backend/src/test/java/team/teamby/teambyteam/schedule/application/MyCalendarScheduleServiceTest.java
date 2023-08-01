@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import team.teamby.teambyteam.common.ServiceTest;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.Member;
-import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleWithTeamPlaceIdResponse;
 import team.teamby.teambyteam.schedule.application.dto.SchedulesWithTeamPlaceIdResponse;
 import team.teamby.teambyteam.schedule.domain.Schedule;
@@ -18,8 +17,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
-import static team.teamby.teambyteam.common.fixtures.MemberTeamPlaceFixtures.PHILIP_ENGLISH_TEAM_PLACE;
-import static team.teamby.teambyteam.common.fixtures.MemberTeamPlaceFixtures.PHILIP_JAPANESE_TEAM_PLACE;
 import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.*;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.JAPANESE_TEAM_PLACE;
@@ -40,14 +37,9 @@ public class MyCalendarScheduleServiceTest extends ServiceTest {
             final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
             final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             final TeamPlace JAPANESE_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(JAPANESE_TEAM_PLACE());
-            final MemberTeamPlace PHILIP_ENGLISH_TEAM_PLACE = PHILIP_ENGLISH_TEAM_PLACE();
-            final MemberTeamPlace PHILIP_JAPANESE_TEAM_PLACE = PHILIP_JAPANESE_TEAM_PLACE();
 
-            PHILIP_ENGLISH_TEAM_PLACE.setMemberAndTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
-            PHILIP_JAPANESE_TEAM_PLACE.setMemberAndTeamPlace(PHILIP, JAPANESE_TEAM_PLACE);
-
-            final List<MemberTeamPlace> memberTeamPlaces = List.of(PHILIP_ENGLISH_TEAM_PLACE, PHILIP_JAPANESE_TEAM_PLACE);
-            testFixtureBuilder.buildMemberTeamPlaces(memberTeamPlaces);
+            testFixtureBuilder.buildMemberTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
+            testFixtureBuilder.buildMemberTeamPlace(PHILIP, JAPANESE_TEAM_PLACE);
 
             final List<Schedule> expectedSchedules = List.of(
                     MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE(ENGLISH_TEAM_PLACE.getId()),
@@ -83,14 +75,9 @@ public class MyCalendarScheduleServiceTest extends ServiceTest {
             final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
             final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             final TeamPlace JAPANESE_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(JAPANESE_TEAM_PLACE());
-            final MemberTeamPlace PHILIP_ENGLISH_TEAM_PLACE = PHILIP_ENGLISH_TEAM_PLACE();
-            final MemberTeamPlace PHILIP_JAPANESE_TEAM_PLACE = PHILIP_JAPANESE_TEAM_PLACE();
 
-            PHILIP_ENGLISH_TEAM_PLACE.setMemberAndTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
-            PHILIP_JAPANESE_TEAM_PLACE.setMemberAndTeamPlace(PHILIP, JAPANESE_TEAM_PLACE);
-
-            final List<MemberTeamPlace> memberTeamPlaces = List.of(PHILIP_ENGLISH_TEAM_PLACE, PHILIP_JAPANESE_TEAM_PLACE);
-            testFixtureBuilder.buildMemberTeamPlaces(memberTeamPlaces);
+            testFixtureBuilder.buildMemberTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
+            testFixtureBuilder.buildMemberTeamPlace(PHILIP, JAPANESE_TEAM_PLACE);
 
             final List<Schedule> expectedSchedules = List.of(
                     MONTH_6_AND_MONTH_7_SCHEDULE(JAPANESE_TEAM_PLACE.getId()),
