@@ -1,20 +1,18 @@
 import type { ScheduleWithoutId, YYYYMMDDHHMM } from '~/types/schedule';
-import * as S from './IntegratedDailyScheduleCell.styled';
+import * as S from './IntegratedDailySchedule.styled';
 import type { TeamPlaceColor } from '~/types/team';
 import Text from '~/components/common/Text/Text';
 import { ClockIcon } from '~/assets/svg';
 import { GroupIcon } from '~/assets/svg';
 import { formatTime } from '~/utils/formatTime';
 
-export interface IntegratedDailyScheduleCellProps extends ScheduleWithoutId {
+export interface IntegratedDailyScheduleProps extends ScheduleWithoutId {
   teamPlaceColor: TeamPlaceColor;
   teamName: string;
   currentDateTime: YYYYMMDDHHMM;
 }
 
-const IntegratedDailyScheduleCell = (
-  props: IntegratedDailyScheduleCellProps,
-) => {
+const IntegratedDailySchedule = (props: IntegratedDailyScheduleProps) => {
   const {
     teamPlaceColor,
     title,
@@ -51,4 +49,4 @@ const IntegratedDailyScheduleCell = (
   );
 };
 
-export default IntegratedDailyScheduleCell;
+export default IntegratedDailySchedule;
