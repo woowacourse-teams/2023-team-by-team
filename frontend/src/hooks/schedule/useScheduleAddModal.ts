@@ -3,7 +3,6 @@ import { useSendSchedule } from '~/hooks/queries/useSendSchedule';
 import { useModal } from '~/hooks/useModal';
 import { isYYYYMMDDHHMM } from '~/types/typeGuard';
 import { parseDate } from '~/utils/parseDate';
-import { parseAmPmTime } from '~/utils/parseAmPmTime';
 import type { ChangeEventHandler, FormEventHandler } from 'react';
 
 const useScheduleAddModal = (clickedDate: Date) => {
