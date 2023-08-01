@@ -7,15 +7,17 @@ import * as S from './IntegratedCalendar.styled';
 import DateCell from '~/components/DateCell/DateCell';
 import { ArrowLeftIcon, ArrowRightIcon } from '~/assets/svg';
 import { DAYS_OF_WEEK } from '~/constants/calendar';
+import { useFetchMySchedules } from '~/hooks/queries/useFetchMySchedules';
 
 const IntegratedCalendar = () => {
   const {
     year,
     month,
     calendar,
-
     handlers: { handlePrevButtonClick, handleNextButtonClick },
   } = useCalendar();
+
+  const mySchedules = useFetchMySchedules(year, month);
 
   return (
     <S.Container>
