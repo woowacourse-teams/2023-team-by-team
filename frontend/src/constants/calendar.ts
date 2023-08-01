@@ -10,11 +10,10 @@ export const CALENDAR = {
 } as const;
 
 export const TIME_TABLE = arrayOf(48).map((_, i) => {
-  const hour = Math.floor(i / 2);
+  const hour = String(Math.floor(i / 2)).padStart(2, '0');
   const minute = i % 2 === 0 ? '00' : '30';
-  const isAM = hour < 12;
 
-  return `${isAM ? '오전' : '오후'} ${hour % 12 || 12}:${minute}`;
+  return `${hour}:${minute}`;
 });
 
 export const MODAL_OPEN_TYPE = {

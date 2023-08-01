@@ -17,8 +17,8 @@ const useScheduleAddModal = (clickedDate: Date) => {
     endDateTime: dateString,
   });
   const [times, setTimes] = useState({
-    startTime: '오전 12:00',
-    endTime: '오전 12:00',
+    startTime: '00:00',
+    endTime: '00:00',
   });
   const [isAllDay, setIsAllDay] = useState(false);
   const { closeModal } = useModal();
@@ -78,8 +78,8 @@ const useScheduleAddModal = (clickedDate: Date) => {
 
   const isValidEndTime = (startTime: string, endTime: string) => {
     const { startDateTime, endDateTime } = schedule;
-    const start = new Date(`${startDateTime} ${parseAmPmTime(startTime)}`);
-    const end = new Date(`${endDateTime} ${parseAmPmTime(endTime)}`);
+    const start = new Date(`${startDateTime} ${startTime}`);
+    const end = new Date(`${endDateTime} ${endTime}`);
 
     return start < end;
   };
@@ -93,10 +93,12 @@ const useScheduleAddModal = (clickedDate: Date) => {
 
     const { title, startDateTime, endDateTime } = schedule;
     const { startTime, endTime } = times;
-    const _startTime = isAllDay ? '00:00' : parseAmPmTime(startTime);
-    const _endTime = isAllDay ? '23:59' : parseAmPmTime(endTime);
-    const formattedStartDateTime = `${startDateTime} ${_startTime}`;
-    const formattedEndDateTime = `${endDateTime} ${_endTime}`;
+    const formattedStartDateTime = `${startDateTime} ${
+      isAllDay ? '00:00' : startTime
+    }`;
+    const formattedEndDateTime = `${endDateTime} ${
+      isAllDay ? '23:59' : endTime
+    }`;
 
     if (
       !isYYYYMMDDHHMM(formattedStartDateTime) ||
