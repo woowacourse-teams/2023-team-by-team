@@ -46,10 +46,10 @@ public class MyCalendarScheduleServiceTest extends ServiceTest {
             PHILIP_ENGLISH_TEAM_PLACE.setMemberAndTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
             PHILIP_JAPANESE_TEAM_PLACE.setMemberAndTeamPlace(PHILIP, JAPANESE_TEAM_PLACE);
 
-            List<MemberTeamPlace> memberTeamPlaces = List.of(PHILIP_ENGLISH_TEAM_PLACE, PHILIP_JAPANESE_TEAM_PLACE);
+            final List<MemberTeamPlace> memberTeamPlaces = List.of(PHILIP_ENGLISH_TEAM_PLACE, PHILIP_JAPANESE_TEAM_PLACE);
             testFixtureBuilder.buildMemberTeamPlaces(memberTeamPlaces);
 
-            List<Schedule> expectedSchedules = List.of(
+            final List<Schedule> expectedSchedules = List.of(
                     MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE(ENGLISH_TEAM_PLACE.getId()),
                     MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(JAPANESE_TEAM_PLACE.getId())
             );
@@ -89,10 +89,10 @@ public class MyCalendarScheduleServiceTest extends ServiceTest {
             PHILIP_ENGLISH_TEAM_PLACE.setMemberAndTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
             PHILIP_JAPANESE_TEAM_PLACE.setMemberAndTeamPlace(PHILIP, JAPANESE_TEAM_PLACE);
 
-            List<MemberTeamPlace> memberTeamPlaces = List.of(PHILIP_ENGLISH_TEAM_PLACE, PHILIP_JAPANESE_TEAM_PLACE);
+            final List<MemberTeamPlace> memberTeamPlaces = List.of(PHILIP_ENGLISH_TEAM_PLACE, PHILIP_JAPANESE_TEAM_PLACE);
             testFixtureBuilder.buildMemberTeamPlaces(memberTeamPlaces);
 
-            List<Schedule> expectedSchedules = List.of(
+            final List<Schedule> expectedSchedules = List.of(
                     MONTH_6_AND_MONTH_7_SCHEDULE(JAPANESE_TEAM_PLACE.getId()),
                     MONTH_6_AND_MONTH_7_DAY_12_SCHEDULE(ENGLISH_TEAM_PLACE.getId()),
                     MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE(ENGLISH_TEAM_PLACE.getId()),
@@ -106,9 +106,9 @@ public class MyCalendarScheduleServiceTest extends ServiceTest {
             final int day = 12;
 
             // when
-            SchedulesWithTeamPlaceIdResponse dailyScheduleResponse =
+            final SchedulesWithTeamPlaceIdResponse dailyScheduleResponse =
                     myCalendarScheduleService.findDailySchedule(memberEmailDto, year, month, day);
-            List<ScheduleWithTeamPlaceIdResponse> dailySchedules = dailyScheduleResponse.schedules();
+            final List<ScheduleWithTeamPlaceIdResponse> dailySchedules = dailyScheduleResponse.schedules();
 
             // then
             assertSoftly(softly -> {
@@ -131,7 +131,7 @@ public class MyCalendarScheduleServiceTest extends ServiceTest {
             final int day = 12;
 
             // when
-            SchedulesWithTeamPlaceIdResponse dailyScheduleResponse =
+            final SchedulesWithTeamPlaceIdResponse dailyScheduleResponse =
                     myCalendarScheduleService.findDailySchedule(memberEmailDto, year, month, day);
 
             // then
