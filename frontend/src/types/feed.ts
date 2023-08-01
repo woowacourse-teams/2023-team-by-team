@@ -10,3 +10,5 @@ export interface Thread {
   createdAt: YYYYMMDDHHMM;
   content: string;
 }
+
+export type NoticeThread = Omit<Thread, 'type'> | Record<string, never>;
