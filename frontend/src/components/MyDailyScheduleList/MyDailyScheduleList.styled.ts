@@ -5,7 +5,7 @@ export const ScheduleWrapper = styled.div`
   flex-direction: column;
   overflow: auto;
 
-  width: 260px;
+  width: 280px;
   max-height: 380px;
   height: auto;
   gap: 10px;
