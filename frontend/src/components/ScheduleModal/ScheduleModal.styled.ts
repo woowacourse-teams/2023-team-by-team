@@ -38,14 +38,6 @@ export const TeamWrapper = styled.div`
   gap: 12px;
 `;
 
-export const TeamColor = styled.div`
-  width: 23px;
-  height: 23px;
-
-  border-radius: 100%;
-  background-color: ${({ theme }) => theme.color.PRIMARY};
-`;
-
 export const MenuWrapper = styled.div`
   display: flex;
   align-items: center;

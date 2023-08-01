@@ -6,6 +6,7 @@ import Text from '../common/Text/Text';
 import Button from '../common/Button/Button';
 import Input from '../common/Input/Input';
 import useScheduleAddModal from '~/hooks/schedule/useScheduleAddModal';
+import TeamBadge from '~/components/common/TeamBadge/TeamBadge';
 
 interface ScheduleAddModalProps {
   teamPlaceName: string;
@@ -85,7 +86,7 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
             />
           </S.TimeSelectContainer>
           <S.TeamNameContainer title={teamPlaceName}>
-            <S.Circle />
+            <TeamBadge teamPlaceColor={0} size="lg" />
             <Text css={S.teamPlaceName}>{teamPlaceName}</Text>
           </S.TeamNameContainer>
           <S.ControlButtonWrapper>
