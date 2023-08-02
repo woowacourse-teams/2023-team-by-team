@@ -5,10 +5,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.IdOnly;
+import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
-import team.teamby.teambyteam.member.exception.MemberException;
+import team.teamby.teambyteam.member.exception.MemberException.MemberNotFoundException;
 import team.teamby.teambyteam.notice.application.dto.NoticeRegisterRequest;
+import team.teamby.teambyteam.notice.application.dto.NoticeResponse;
 import team.teamby.teambyteam.notice.domain.Notice;
 import team.teamby.teambyteam.notice.domain.NoticeRepository;
 import team.teamby.teambyteam.notice.domain.vo.Content;
@@ -30,7 +32,7 @@ public class NoticeService {
     ) {
         checkTeamPlaceExist(teamPlaceId);
         final IdOnly memberId = memberRepository.findIdByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(MemberException.MemberNotFoundException::new);
+                .orElseThrow(MemberNotFoundException::new);
 
         final Content content = new Content(noticeRegisterRequest.content());
         final Notice savedNotice = noticeRepository.save(new Notice(content, teamPlaceId, memberId.id()));
@@ -46,5 +48,17 @@ public class NoticeService {
 
     private boolean notExistTeamPlace(final Long teamPlaceId) {
         return !teamPlaceRepository.existsById(teamPlaceId);
+    }
+
+    public NoticeResponse findMostRecentNotice(final Long teamPlaceId) {
+        checkTeamPlaceExist(teamPlaceId);
+
+        return noticeRepository.findMostRecentByTeamPlaceId(teamPlaceId)
+                .map(findNotice -> {
+                    final Member findAuthor = memberRepository.findById(findNotice.getAuthorId())
+                            .orElseThrow(MemberNotFoundException::new);
+                    return NoticeResponse.of(findNotice, findAuthor);
+                })
+                .orElse(null);
     }
 }
