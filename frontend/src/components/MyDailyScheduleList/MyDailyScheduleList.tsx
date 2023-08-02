@@ -17,7 +17,7 @@ const MyDailyScheduleList = (props: MyDailyScheduleListProps) => {
 
   return (
     <S.ScheduleWrapper>
-      {schedules.length !== 0 ? (
+      {schedules.length !== 0 &&
         schedules.map((schedule, index) => {
           const { id, teamPlaceId, ...rest } = schedule;
 
@@ -32,12 +32,7 @@ const MyDailyScheduleList = (props: MyDailyScheduleListProps) => {
               {...rest}
             />
           );
-        })
-      ) : (
-        <Text size="lg" css={S.noticeText}>
-          등록된 일정이 없습니다.
-        </Text>
-      )}
+        })}
     </S.ScheduleWrapper>
   );
 };
