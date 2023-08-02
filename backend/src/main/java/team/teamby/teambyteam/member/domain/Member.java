@@ -53,6 +53,14 @@ public class Member extends BaseEntity {
         this.memberTeamPlaces = new ArrayList<>();
     }
 
+    public Member(
+            final String name,
+            final String email,
+            final String profileImageUrl
+    ) {
+        this(new Name(name), new Email(email), new ProfileImageUrl(profileImageUrl));
+    }
+
     public List<TeamPlace> getTeamPlaces() {
         return getMemberTeamPlaces().stream()
                 .map(MemberTeamPlace::getTeamPlace)
