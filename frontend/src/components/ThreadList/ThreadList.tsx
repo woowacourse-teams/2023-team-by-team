@@ -27,7 +27,7 @@ const ThreadList = (props: ThreadListProps) => {
 
   return (
     <S.Container>
-      {noticeThread && noticeThread.authorId && (
+      {noticeThread && noticeThread.id && (
         <NoticeThread
           author={noticeThread.authorName}
           createdAt={noticeThread.createdAt}
