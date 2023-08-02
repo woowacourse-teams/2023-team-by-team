@@ -53,8 +53,8 @@ public class FeedThreadService {
 
     @Transactional(readOnly = true)
     public FeedsResponse firstRead(final Long teamPlaceId, final Integer size) {
-        final Pageable pageable = getPageableInitSize(size);
-        final List<Feed> list = feedRepository.findByTeamPlaceId(teamPlaceId, pageable);
+        final Pageable pageSize = getPageableInitSize(size);
+        final List<Feed> list = feedRepository.findByTeamPlaceId(teamPlaceId, pageSize);
         final List<FeedResponse> feedResponses = mapFeedResponses(list);
 
         return FeedsResponse.of(feedResponses);
@@ -62,8 +62,8 @@ public class FeedThreadService {
 
     @Transactional(readOnly = true)
     public FeedsResponse reRead(final Long teamPlaceId, final Long feedId, final Integer size) {
-        final Pageable pageable = getPageableInitSize(size);
-        final List<Feed> list = feedRepository.findByTeamPlaceIdAndIdLessThan(teamPlaceId, feedId, pageable);
+        final Pageable pageSize = getPageableInitSize(size);
+        final List<Feed> list = feedRepository.findByTeamPlaceIdAndIdLessThan(teamPlaceId, feedId, pageSize);
         final List<FeedResponse> feedResponses = mapFeedResponses(list);
 
         return FeedsResponse.of(feedResponses);
