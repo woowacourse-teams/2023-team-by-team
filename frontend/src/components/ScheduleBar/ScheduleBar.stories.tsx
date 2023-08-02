@@ -15,6 +15,12 @@ export const Default: Story = {
   args: {
     id: '1',
     scheduleId: 1,
+    schedule: {
+      id: 1,
+      title: '테스트',
+      startDateTime: '2023-07-07 05:00',
+      endDateTime: '2023-07-09 10:00',
+    },
     title: 'ea',
     row: 1,
     column: 2,
@@ -28,6 +34,12 @@ export const LongTitle: Story = {
   args: {
     id: '1',
     scheduleId: 1,
+    schedule: {
+      id: 1,
+      title: '테스트',
+      startDateTime: '2023-07-07 05:00',
+      endDateTime: '2023-07-09 10:00',
+    },
     title:
       'Woowacourse Woowacourse Woowacourse Woowacourse Woowacourse Woowacourse',
     row: 1,

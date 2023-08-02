@@ -1,9 +1,11 @@
 import Text from '~/components/common/Text/Text';
 import * as S from './ScheduleBar.styled';
+import type { Schedule } from '~/types/schedule';
 
 export interface ScheduleBarProps {
   id: string;
   scheduleId: number;
+  schedule: Schedule;
   title: string;
   row: number;
   column: number;
