@@ -30,6 +30,12 @@ describe('Test #1 - 스케줄 바 기본 기능 테스트', () => {
         column: 1,
         duration: 3,
         level: 0,
+        schedule: {
+          id: 20,
+          title: '내 일정',
+          startDateTime: '2023-07-24 00:00',
+          endDateTime: '2023-07-26 23:59',
+        },
       },
     ];
 
@@ -68,6 +74,12 @@ describe('Test #1 - 스케줄 바 기본 기능 테스트', () => {
         column: 0,
         duration: 2,
         level: 0,
+        schedule: {
+          id: 116,
+          title: '첫 번째 일정',
+          startDateTime: '2023-07-23 00:00',
+          endDateTime: '2023-07-24 23:59',
+        },
       },
       {
         scheduleId: 225,
@@ -76,6 +88,12 @@ describe('Test #1 - 스케줄 바 기본 기능 테스트', () => {
         column: 3,
         duration: 3,
         level: 0,
+        schedule: {
+          id: 225,
+          title: '두 번째 일정',
+          startDateTime: '2023-07-26 12:00',
+          endDateTime: '2023-07-28 13:59',
+        },
       },
       {
         scheduleId: 932,
@@ -84,6 +102,12 @@ describe('Test #1 - 스케줄 바 기본 기능 테스트', () => {
         column: 6,
         duration: 1,
         level: 0,
+        schedule: {
+          id: 932,
+          title: '세 번째 일정',
+          startDateTime: '2023-07-29 23:58',
+          endDateTime: '2023-07-29 23:59',
+        },
       },
     ];
 
@@ -116,6 +140,12 @@ describe('Test #1 - 스케줄 바 기본 기능 테스트', () => {
         column: 6,
         duration: 1,
         level: 0,
+        schedule: {
+          id: 97,
+          title: '1주차의 일정',
+          startDateTime: '2023-07-01 17:00',
+          endDateTime: '2023-07-01 20:00',
+        },
       },
       {
         scheduleId: 106,
@@ -124,6 +154,12 @@ describe('Test #1 - 스케줄 바 기본 기능 테스트', () => {
         column: 1,
         duration: 3,
         level: 0,
+        schedule: {
+          id: 106,
+          title: '3주차의 일정',
+          startDateTime: '2023-07-10 10:00',
+          endDateTime: '2023-07-12 18:00',
+        },
       },
     ];
 
@@ -152,6 +188,12 @@ describe('Test #2 - 여러 주에 걸친 일정 테스트', () => {
         column: 1,
         duration: 6,
         level: 0,
+        schedule: {
+          id: 1105,
+          title: '바쁜 필립의 3주짜리 일정',
+          startDateTime: '2023-06-26 00:00',
+          endDateTime: '2023-07-12 23:59',
+        },
       },
       {
         scheduleId: 1105,
@@ -160,6 +202,12 @@ describe('Test #2 - 여러 주에 걸친 일정 테스트', () => {
         column: 0,
         duration: 7,
         level: 0,
+        schedule: {
+          id: 1105,
+          title: '바쁜 필립의 3주짜리 일정',
+          startDateTime: '2023-06-26 00:00',
+          endDateTime: '2023-07-12 23:59',
+        },
       },
       {
         scheduleId: 1105,
@@ -168,6 +216,12 @@ describe('Test #2 - 여러 주에 걸친 일정 테스트', () => {
         column: 0,
         duration: 4,
         level: 0,
+        schedule: {
+          id: 1105,
+          title: '바쁜 필립의 3주짜리 일정',
+          startDateTime: '2023-06-26 00:00',
+          endDateTime: '2023-07-12 23:59',
+        },
       },
     ];
 
@@ -196,6 +250,12 @@ describe('Test #3 - 달의 시작과 끝에서 잘리는 일정 테스트', () =
         column: 0,
         duration: 4,
         level: 0,
+        schedule: {
+          id: 987,
+          title: '저번 달부터 이어져 온 유스의 일정',
+          startDateTime: '2023-04-05 11:00',
+          endDateTime: '2023-06-28 23:35',
+        },
       },
     ];
 
@@ -222,6 +282,12 @@ describe('Test #3 - 달의 시작과 끝에서 잘리는 일정 테스트', () =
         column: 3,
         duration: 4,
         level: 0,
+        schedule: {
+          id: 1256,
+          title: '팀바팀의 일정(끝날 일 없음)',
+          startDateTime: '2023-07-26 00:00',
+          endDateTime: '2099-12-31 10:50',
+        },
       },
       {
         scheduleId: 1256,
@@ -230,6 +296,12 @@ describe('Test #3 - 달의 시작과 끝에서 잘리는 일정 테스트', () =
         column: 0,
         duration: 7,
         level: 0,
+        schedule: {
+          id: 1256,
+          title: '팀바팀의 일정(끝날 일 없음)',
+          startDateTime: '2023-07-26 00:00',
+          endDateTime: '2099-12-31 10:50',
+        },
       },
     ];
 
@@ -256,6 +328,12 @@ describe('Test #3 - 달의 시작과 끝에서 잘리는 일정 테스트', () =
         column: 0,
         duration: 7,
         level: 0,
+        schedule: {
+          id: 1078,
+          title: '우아한테크코스 전체 과정',
+          startDateTime: '2023-02-08 00:00',
+          endDateTime: '2023-11-15 18:00',
+        },
       },
       {
         scheduleId: 1078,
@@ -264,6 +342,12 @@ describe('Test #3 - 달의 시작과 끝에서 잘리는 일정 테스트', () =
         column: 0,
         duration: 7,
         level: 0,
+        schedule: {
+          id: 1078,
+          title: '우아한테크코스 전체 과정',
+          startDateTime: '2023-02-08 00:00',
+          endDateTime: '2023-11-15 18:00',
+        },
       },
       {
         scheduleId: 1078,
@@ -272,6 +356,12 @@ describe('Test #3 - 달의 시작과 끝에서 잘리는 일정 테스트', () =
         column: 0,
         duration: 7,
         level: 0,
+        schedule: {
+          id: 1078,
+          title: '우아한테크코스 전체 과정',
+          startDateTime: '2023-02-08 00:00',
+          endDateTime: '2023-11-15 18:00',
+        },
       },
       {
         scheduleId: 1078,
@@ -280,6 +370,12 @@ describe('Test #3 - 달의 시작과 끝에서 잘리는 일정 테스트', () =
         column: 0,
         duration: 7,
         level: 0,
+        schedule: {
+          id: 1078,
+          title: '우아한테크코스 전체 과정',
+          startDateTime: '2023-02-08 00:00',
+          endDateTime: '2023-11-15 18:00',
+        },
       },
       {
         scheduleId: 1078,
@@ -288,6 +384,12 @@ describe('Test #3 - 달의 시작과 끝에서 잘리는 일정 테스트', () =
         column: 0,
         duration: 7,
         level: 0,
+        schedule: {
+          id: 1078,
+          title: '우아한테크코스 전체 과정',
+          startDateTime: '2023-02-08 00:00',
+          endDateTime: '2023-11-15 18:00',
+        },
       },
       {
         scheduleId: 1078,
@@ -296,6 +398,12 @@ describe('Test #3 - 달의 시작과 끝에서 잘리는 일정 테스트', () =
         column: 0,
         duration: 7,
         level: 0,
+        schedule: {
+          id: 1078,
+          title: '우아한테크코스 전체 과정',
+          startDateTime: '2023-02-08 00:00',
+          endDateTime: '2023-11-15 18:00',
+        },
       },
     ];
 
@@ -348,6 +456,12 @@ describe('Test #4 - 스케줄 바가 겹칠 경우의 테스트', () => {
         column: 1,
         duration: 3,
         level: 0,
+        schedule: {
+          id: 1982,
+          title: 'Level 0',
+          startDateTime: '2023-07-17 00:00',
+          endDateTime: '2023-07-19 23:59',
+        },
       },
       {
         scheduleId: 1105,
@@ -356,6 +470,12 @@ describe('Test #4 - 스케줄 바가 겹칠 경우의 테스트', () => {
         column: 2,
         duration: 3,
         level: 1,
+        schedule: {
+          id: 1105,
+          title: 'Level 1',
+          startDateTime: '2023-07-18 00:00',
+          endDateTime: '2023-07-20 23:59',
+        },
       },
       {
         scheduleId: 3493,
@@ -364,6 +484,12 @@ describe('Test #4 - 스케줄 바가 겹칠 경우의 테스트', () => {
         column: 3,
         duration: 1,
         level: 2,
+        schedule: {
+          id: 3493,
+          title: 'Level 2',
+          startDateTime: '2023-07-19 00:00',
+          endDateTime: '2023-07-19 23:59',
+        },
       },
       {
         scheduleId: 2984,
@@ -372,6 +498,12 @@ describe('Test #4 - 스케줄 바가 겹칠 경우의 테스트', () => {
         column: 5,
         duration: 2,
         level: 0,
+        schedule: {
+          id: 2984,
+          title: 'Level 0-1',
+          startDateTime: '2023-07-21 00:00',
+          endDateTime: '2023-07-23 23:59',
+        },
       },
       {
         scheduleId: 2984,
@@ -380,6 +512,12 @@ describe('Test #4 - 스케줄 바가 겹칠 경우의 테스트', () => {
         column: 0,
         duration: 1,
         level: 0,
+        schedule: {
+          id: 2984,
+          title: 'Level 0-1',
+          startDateTime: '2023-07-21 00:00',
+          endDateTime: '2023-07-23 23:59',
+        },
       },
       {
         scheduleId: 7163,
@@ -388,6 +526,12 @@ describe('Test #4 - 스케줄 바가 겹칠 경우의 테스트', () => {
         column: 6,
         duration: 1,
         level: 1,
+        schedule: {
+          id: 7163,
+          title: 'Level 1-1',
+          startDateTime: '2023-07-22 00:00',
+          endDateTime: '2023-07-25 23:59',
+        },
       },
       {
         scheduleId: 7163,
@@ -396,6 +540,12 @@ describe('Test #4 - 스케줄 바가 겹칠 경우의 테스트', () => {
         column: 0,
         duration: 3,
         level: 1,
+        schedule: {
+          id: 7163,
+          title: 'Level 1-1',
+          startDateTime: '2023-07-22 00:00',
+          endDateTime: '2023-07-25 23:59',
+        },
       },
     ];
 
@@ -446,6 +596,12 @@ describe('Test #4 - 스케줄 바가 겹칠 경우의 테스트', () => {
         column: 1,
         duration: 3,
         level: 0,
+        schedule: {
+          id: 1982,
+          title: 'Level 0',
+          startDateTime: '2023-07-17 00:00',
+          endDateTime: '2023-07-19 23:59',
+        },
       },
       {
         scheduleId: 1105,
@@ -454,6 +610,12 @@ describe('Test #4 - 스케줄 바가 겹칠 경우의 테스트', () => {
         column: 2,
         duration: 3,
         level: 1,
+        schedule: {
+          id: 1105,
+          title: 'Level 1',
+          startDateTime: '2023-07-18 00:00',
+          endDateTime: '2023-07-20 23:59',
+        },
       },
       {
         scheduleId: 3493,
@@ -462,6 +624,12 @@ describe('Test #4 - 스케줄 바가 겹칠 경우의 테스트', () => {
         column: 3,
         duration: 1,
         level: 2,
+        schedule: {
+          id: 3493,
+          title: 'Level 2',
+          startDateTime: '2023-07-19 00:00',
+          endDateTime: '2023-07-19 23:59',
+        },
       },
       {
         scheduleId: 2984,
@@ -470,6 +638,12 @@ describe('Test #4 - 스케줄 바가 겹칠 경우의 테스트', () => {
         column: 5,
         duration: 2,
         level: 0,
+        schedule: {
+          id: 2984,
+          title: 'Level 0-1',
+          startDateTime: '2023-07-21 00:00',
+          endDateTime: '2023-07-23 23:59',
+        },
       },
       {
         scheduleId: 2984,
@@ -478,6 +652,12 @@ describe('Test #4 - 스케줄 바가 겹칠 경우의 테스트', () => {
         column: 0,
         duration: 1,
         level: 0,
+        schedule: {
+          id: 2984,
+          title: 'Level 0-1',
+          startDateTime: '2023-07-21 00:00',
+          endDateTime: '2023-07-23 23:59',
+        },
       },
       {
         scheduleId: 7163,
@@ -486,6 +666,12 @@ describe('Test #4 - 스케줄 바가 겹칠 경우의 테스트', () => {
         column: 6,
         duration: 1,
         level: 1,
+        schedule: {
+          id: 7163,
+          title: 'Level 1-1',
+          startDateTime: '2023-07-22 00:00',
+          endDateTime: '2023-07-25 23:59',
+        },
       },
       {
         scheduleId: 7163,
@@ -494,6 +680,12 @@ describe('Test #4 - 스케줄 바가 겹칠 경우의 테스트', () => {
         column: 0,
         duration: 3,
         level: 1,
+        schedule: {
+          id: 7163,
+          title: 'Level 1-1',
+          startDateTime: '2023-07-22 00:00',
+          endDateTime: '2023-07-25 23:59',
+        },
       },
     ];
 
@@ -545,6 +737,12 @@ describe('Test #5 - 잘못된 일정에 대한 테스트', () => {
         column: 3,
         duration: 4,
         level: 0,
+        schedule: {
+          id: 972,
+          title: '정상적인 일정',
+          startDateTime: '2023-07-05 00:00',
+          endDateTime: '2023-07-08 00:00',
+        },
       },
     ];
 

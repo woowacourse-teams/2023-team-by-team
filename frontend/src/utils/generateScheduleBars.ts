@@ -110,6 +110,7 @@ const generateRawScheduleBars = (
       rawScheduleBars.push({
         id,
         scheduleId,
+        schedule,
         title,
         row,
         column,
