@@ -75,16 +75,18 @@ public class FeedThreadService {
     }
 
     private List<FeedResponse> mapFeedResponses(final List<Feed> feeds) {
-        return feeds.stream().map(feed -> {
-            if (FeedType.THREAD == feed.getType()) {
-                final Optional<Member> member = memberRepository.findById(feed.getAuthorId());
-                final Member member1 = member.orElseThrow(MemberException.MemberNotFoundException::new);
-                return FeedResponse.from(feed, member1.getName().getValue(), member1.getProfileImageUrl().getValue());
-            }
-            if (FeedType.SCHEDULE_NOTIFICATION == feed.getType()) {
-                return FeedResponse.from(feed, "schedule", "");
-            }
-            throw new IllegalArgumentException("지원하지 않는 타입입니다.");
-        }).toList();
+        return feeds.stream().map(this::mapToResponse).toList();
+    }
+
+    private FeedResponse mapToResponse(Feed feed) {
+        if (FeedType.THREAD == feed.getType()) {
+            final Optional<Member> member = memberRepository.findById(feed.getAuthorId());
+            final Member member1 = member.orElseThrow(MemberException.MemberNotFoundException::new);
+            return FeedResponse.from(feed, member1.getName().getValue(), member1.getProfileImageUrl().getValue());
+        }
+        if (FeedType.SCHEDULE_NOTIFICATION == feed.getType()) {
+            return FeedResponse.from(feed, "schedule", "");
+        }
+        throw new IllegalArgumentException("지원하지 않는 타입입니다.");
     }
 }
