@@ -27,7 +27,7 @@ public class MemberService {
         final IdOnly memberId = memberRepository.findIdByEmail(new Email(memberEmailDto.email()))
                 .orElseThrow(MemberException.MemberNotFoundException::new);
 
-        List<MemberTeamPlace> allByMemberId = memberTeamPlaceRepository.findAllByMemberId(memberId.id());
+        final List<MemberTeamPlace> allByMemberId = memberTeamPlaceRepository.findAllByMemberId(memberId.id());
 
         return TeamPlacesResponse.of(allByMemberId);
     }
