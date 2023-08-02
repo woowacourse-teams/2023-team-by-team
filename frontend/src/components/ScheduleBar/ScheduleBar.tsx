@@ -12,6 +12,8 @@ export interface ScheduleBarProps {
   duration: number;
   level: number;
   color?: string;
+  roundedStart: boolean;
+  roundedEnd: boolean;
   onClick?: () => void;
 }
 

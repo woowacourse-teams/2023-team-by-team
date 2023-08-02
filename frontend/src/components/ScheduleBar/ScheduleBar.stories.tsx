@@ -26,6 +26,71 @@ export const Default: Story = {
     column: 2,
     duration: 3,
     level: 0,
+    roundedStart: true,
+    roundedEnd: true,
+    onClick: () => alert('clicked!'),
+  },
+};
+
+export const RoundedStart: Story = {
+  args: {
+    id: '1',
+    scheduleId: 1,
+    schedule: {
+      id: 1,
+      title: '테스트',
+      startDateTime: '2023-07-07 05:00',
+      endDateTime: '2023-07-09 10:00',
+    },
+    title: '테스트',
+    row: 1,
+    column: 2,
+    duration: 3,
+    level: 0,
+    roundedStart: true,
+    roundedEnd: false,
+    onClick: () => alert('clicked!'),
+  },
+};
+
+export const RoundedEnd: Story = {
+  args: {
+    id: '1',
+    scheduleId: 1,
+    schedule: {
+      id: 1,
+      title: '테스트',
+      startDateTime: '2023-07-07 05:00',
+      endDateTime: '2023-07-09 10:00',
+    },
+    title: '테스트',
+    row: 1,
+    column: 2,
+    duration: 3,
+    level: 0,
+    roundedStart: false,
+    roundedEnd: true,
+    onClick: () => alert('clicked!'),
+  },
+};
+
+export const NotRounded: Story = {
+  args: {
+    id: '1',
+    scheduleId: 1,
+    schedule: {
+      id: 1,
+      title: '테스트',
+      startDateTime: '2023-07-07 05:00',
+      endDateTime: '2023-07-09 10:00',
+    },
+    title: '테스트',
+    row: 1,
+    column: 2,
+    duration: 3,
+    level: 0,
+    roundedStart: false,
+    roundedEnd: false,
     onClick: () => alert('clicked!'),
   },
 };
