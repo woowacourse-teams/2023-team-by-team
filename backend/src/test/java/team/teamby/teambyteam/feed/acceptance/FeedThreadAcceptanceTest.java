@@ -17,12 +17,16 @@ import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
 import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
 import team.teamby.teambyteam.feed.domain.Feed;
 import team.teamby.teambyteam.feed.domain.FeedThread;
-import team.teamby.teambyteam.feed.domain.ScheduleNotification;
+import team.teamby.teambyteam.feed.domain.notification.ScheduleNotification;
 import team.teamby.teambyteam.feed.domain.vo.Content;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
+import team.teamby.teambyteam.schedule.application.event.ScheduleCreateEvent;
+import team.teamby.teambyteam.schedule.domain.vo.Span;
+import team.teamby.teambyteam.schedule.domain.vo.Title;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +34,9 @@ import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ROY;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.JAPANESE_TEAM_PLACE;
-import static team.teamby.teambyteam.common.fixtures.acceptance.FeedThreadAcceptanceFixtures.*;
+import static team.teamby.teambyteam.common.fixtures.acceptance.FeedThreadAcceptanceFixtures.GET_FEED_THREAD_FIRST;
+import static team.teamby.teambyteam.common.fixtures.acceptance.FeedThreadAcceptanceFixtures.GET_FEED_THREAD_REPEAT;
+import static team.teamby.teambyteam.common.fixtures.acceptance.FeedThreadAcceptanceFixtures.POST_FEED_THREAD_REQUEST;
 
 public class FeedThreadAcceptanceTest extends AcceptanceTest {
 
@@ -162,11 +168,12 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             // given
             List<Feed> insertFeeds = new ArrayList<>();
             insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
-            insertFeeds.add(new ScheduleNotification(1L, new Content("테스트 알림"), 1L));
+            insertFeeds.add(ScheduleNotification.from(new ScheduleCreateEvent(1L, 1L, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
             insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
-            insertFeeds.add(new ScheduleNotification(1L, new Content("테스트 알림"), 2L));
+            insertFeeds.add(ScheduleNotification.from(new ScheduleCreateEvent(2L, 1L, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
             insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
-            insertFeeds.add(new ScheduleNotification(1L, new Content("테스트 알림"), 3L));
+            insertFeeds.add(ScheduleNotification.from(new ScheduleCreateEvent(3L, 1L, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
+
             testFixtureBuilder.buildFeeds(insertFeeds);
             final Long teamPlaceId = participatedMemberTeamPlace.getId();
             final int size = 5;
@@ -188,9 +195,9 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             // given
             List<Feed> insertFeeds = new ArrayList<>();
             insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
-            insertFeeds.add(new ScheduleNotification(1L, new Content("테스트 알림"), 1L));
+            insertFeeds.add(ScheduleNotification.from(new ScheduleCreateEvent(1L, 1L, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
             insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
-            insertFeeds.add(new ScheduleNotification(1L, new Content("테스트 알림"), 2L));
+            insertFeeds.add(ScheduleNotification.from(new ScheduleCreateEvent(1L, 1L, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
             insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
             testFixtureBuilder.buildFeeds(insertFeeds);
             final Long teamPlaceId = participatedMemberTeamPlace.getId();
@@ -218,11 +225,11 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             // given
             List<Feed> insertFeeds = new ArrayList<>();
             insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
-            insertFeeds.add(new ScheduleNotification(1L, new Content("테스트 알림"), 1L));
+            insertFeeds.add(ScheduleNotification.from(new ScheduleCreateEvent(1L, 1L, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
             insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
-            insertFeeds.add(new ScheduleNotification(1L, new Content("테스트 알림"), 2L));
+            insertFeeds.add(ScheduleNotification.from(new ScheduleCreateEvent(2L, 1L, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
             insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
-            insertFeeds.add(new ScheduleNotification(1L, new Content("테스트 알림"), 3L));
+            insertFeeds.add(ScheduleNotification.from(new ScheduleCreateEvent(3L, 1L, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
             testFixtureBuilder.buildFeeds(insertFeeds);
             final Long teamPlaceId = participatedMemberTeamPlace.getId();
             final int size = 10;
@@ -244,11 +251,11 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             // given
             List<Feed> insertFeeds = new ArrayList<>();
             insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
-            insertFeeds.add(new ScheduleNotification(1L, new Content("테스트 알림"), 1L));
+            insertFeeds.add(ScheduleNotification.from(new ScheduleCreateEvent(1L, 1L, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
             insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
-            insertFeeds.add(new ScheduleNotification(1L, new Content("테스트 알림"), 2L));
+            insertFeeds.add(ScheduleNotification.from(new ScheduleCreateEvent(2L, 1L, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
             insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
-            insertFeeds.add(new ScheduleNotification(1L, new Content("테스트 알림"), 3L));
+            insertFeeds.add(ScheduleNotification.from(new ScheduleCreateEvent(3L, 1L, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
             testFixtureBuilder.buildFeeds(insertFeeds);
             final Long teamPlaceId = participatedMemberTeamPlace.getId();
             final Long lastThreadId = 3L;
@@ -271,11 +278,11 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             // given
             List<Feed> insertFeeds = new ArrayList<>();
             insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
-            insertFeeds.add(new ScheduleNotification(1L, new Content("테스트 알림"), 1L));
+            insertFeeds.add(ScheduleNotification.from(new ScheduleCreateEvent(1L, 1L, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
             insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
-            insertFeeds.add(new ScheduleNotification(1L, new Content("테스트 알림"), 2L));
+            insertFeeds.add(ScheduleNotification.from(new ScheduleCreateEvent(2L, 1L, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
             insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
-            insertFeeds.add(new ScheduleNotification(1L, new Content("테스트 알림"), 3L));
+            insertFeeds.add(ScheduleNotification.from(new ScheduleCreateEvent(3L, 1L, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
             testFixtureBuilder.buildFeeds(insertFeeds);
             final Long teamPlaceId = participatedMemberTeamPlace.getId();
             final Long lastThreadId = 3L;
@@ -298,9 +305,9 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             // given
             List<Feed> insertFeeds = new ArrayList<>();
             insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
-            insertFeeds.add(new ScheduleNotification(1L, new Content("테스트 알림"), 1L));
+            insertFeeds.add(ScheduleNotification.from(new ScheduleCreateEvent(1L, 1L, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
             insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
-            insertFeeds.add(new ScheduleNotification(1L, new Content("테스트 알림"), 2L));
+            insertFeeds.add(ScheduleNotification.from(new ScheduleCreateEvent(2L, 1L, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
             insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
             testFixtureBuilder.buildFeeds(insertFeeds);
             final Long teamPlaceId = participatedMemberTeamPlace.getId();
