@@ -6,7 +6,7 @@ export const Container = styled.div`
 
   width: 100%;
   height: 100%;
-  padding: 30px 80px 0;
+  padding: 10px 80px 30px;
   gap: 10px;
 
   background-color: ${({ theme }) => theme.color.GRAY100};
