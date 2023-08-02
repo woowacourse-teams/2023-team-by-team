@@ -10,6 +10,7 @@ import type { SchedulePosition } from '~/types/schedule';
 import { useFetchScheduleById } from '~/hooks/queries/useFetchScheduleById';
 import { useDeleteSchedule } from '~/hooks/queries/useDeleteSchedule';
 import TeamBadge from '~/components/common/TeamBadge/TeamBadge';
+import { useToast } from '~/hooks/useToast';
 
 interface ScheduleModalProps {
   scheduleId: number;
@@ -20,6 +21,7 @@ interface ScheduleModalProps {
 const ScheduleModal = (props: ScheduleModalProps) => {
   const { scheduleId, position, onOpenScheduleEditModal } = props;
   const { closeModal } = useModal();
+  const { showToast } = useToast();
   const { scheduleById } = useFetchScheduleById(1, scheduleId);
   const { mutateDeleteSchedule } = useDeleteSchedule(1, scheduleId);
 
@@ -38,7 +40,10 @@ const ScheduleModal = (props: ScheduleModalProps) => {
   const handleScheduleDelete = () => {
     if (confirm('일정을 삭제하시겠어요?')) {
       mutateDeleteSchedule(undefined, {
-        onSuccess: () => closeModal(),
+        onSuccess: () => {
+          showToast('success', '일정이 삭제되었습니다.');
+          closeModal();
+        },
       });
     }
   };
