@@ -1,38 +1,24 @@
-import { useState } from 'react';
 import Modal from '~/components/common/Modal/Modal';
 import Text from '~/components/common/Text/Text';
 import * as S from './ThreadAddBottomSheet.styled';
 import Button from '~/components/common/Button/Button';
-import useBottomSheet from '~/hooks/useBottomSheet';
-import type { ChangeEventHandler, FormEventHandler } from 'react';
 import Checkbox from '~/components/common/Checkbox/Checkbox';
+import { useThreadAddBottomSheet } from '~/hooks/thread/useThreadAddBottomSheet';
 
 const ThreadAddBottomSheet = () => {
-  const [content, setContent] = useState('');
-  const [isNotice, setIsNotice] = useState(false);
-  const { handleClose, isClosing } = useBottomSheet();
+  const {
+    content,
+    isNotice,
+    isClosing,
 
-  const handleContentChange: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
-    const { target } = e;
-
-    setContent(() => target.value);
-  };
-
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-
-    alert(content);
-  };
-
-  const handleIsNoticeChange = () => {
-    setIsNotice((prev) => !prev);
-  };
-
-  const handleCancelButtonClick = () => {
-    handleClose();
-    setContent(() => '');
-    setIsNotice(() => false);
-  };
+    handlers: {
+      handleClose,
+      handleContentChange,
+      handleIsNoticeChange,
+      handleCancelButtonClick,
+      handleSubmit,
+    },
+  } = useThreadAddBottomSheet();
 
   return (
     <Modal>

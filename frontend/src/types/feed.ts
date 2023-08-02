@@ -12,3 +12,5 @@ export interface Thread {
 }
 
 export type NoticeThread = Omit<Thread, 'type'> | Record<string, never>;
+
+export type ThreadContent = Pick<Thread, 'content'>;
