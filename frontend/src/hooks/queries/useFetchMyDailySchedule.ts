@@ -4,10 +4,10 @@ import { fetchMySchedules } from '~/apis/schedule';
 export const useFetchMyDailySchedules = (
   year: number,
   month: number,
-  date: number,
+  day: number,
 ) => {
-  const { data } = useQuery(['myDailySchedules', year, month, date], () =>
-    fetchMySchedules(year, month + 1, date),
+  const { data } = useQuery(['myDailySchedules', year, month, day], () =>
+    fetchMySchedules(year, month + 1, day),
   );
 
   if (data === undefined) return [];

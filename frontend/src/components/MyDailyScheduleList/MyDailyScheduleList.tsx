@@ -15,7 +15,6 @@ const MyDailyScheduleList = (props: MyDailyScheduleListProps) => {
 
   const schedules = useFetchMyDailySchedules(year, month, date);
 
-  console.log(schedules);
   return (
     <S.ScheduleWrapper>
       {schedules.length !== 0 ? (

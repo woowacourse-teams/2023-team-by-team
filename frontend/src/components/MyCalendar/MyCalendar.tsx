@@ -23,7 +23,6 @@ const MyCalendar = () => {
     month: currentMonth,
     date: currentDate,
   } = parseDate(new Date());
-  console.log(schedules); // 스케줄 렌더링 하면서 삭제할 예정이에요
 
   return (
     <S.Container>
