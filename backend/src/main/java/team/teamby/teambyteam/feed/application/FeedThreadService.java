@@ -62,9 +62,9 @@ public class FeedThreadService {
     }
 
     @Transactional(readOnly = true)
-    public FeedsResponse reRead(final Long teamPlaceId, final Long threadId, final Integer size) {
+    public FeedsResponse reRead(final Long teamPlaceId, final Long feedId, final Integer size) {
         final Pageable pageable = getPageableInitSize(size);
-        final List<Feed> list = feedRepository.findByTeamPlaceIdAndIdLessThan(teamPlaceId, threadId, pageable);
+        final List<Feed> list = feedRepository.findByTeamPlaceIdAndIdLessThan(teamPlaceId, feedId, pageable);
         final List<FeedResponse> feedResponses = mapFeedResponses(list);
 
         return FeedsResponse.of(feedResponses);
