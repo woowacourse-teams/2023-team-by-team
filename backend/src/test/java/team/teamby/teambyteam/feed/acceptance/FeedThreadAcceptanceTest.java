@@ -324,5 +324,87 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
                 softly.assertThat(feedsResponse.threads()).isEmpty();
             });
         }
+
+        @Test
+        @DisplayName("인증되지 않은 사용자가 처음 조회하는 경우 401에러가 발생한다.")
+        void unAuthenticationMemberFailFirstRead() {
+            // given
+            final Long teamPlaceId = participatedMemberTeamPlace.getId();
+            List<Feed> insertFeeds = new ArrayList<>();
+            insertFeeds.add(new FeedThread(teamPlaceId, new Content("테스트 스레드"), 1L));
+            insertFeeds.add(ScheduleNotification.from(new ScheduleCreateEvent(1L, teamPlaceId, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
+            testFixtureBuilder.buildFeeds(insertFeeds);
+            final int size = 5;
+
+            // when
+            final ExtractableResponse<Response> response = GET_FEED_THREAD_FIRST("invalidToken", teamPlaceId, size);
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+            });
+        }
+
+        @Test
+        @DisplayName("인증되지 않은 사용자가 재조회하는 경우 401에러가 발생한다.")
+        void unAuthenticationMemberFailReRead() {
+            // given
+            final Long teamPlaceId = participatedMemberTeamPlace.getId();
+            List<Feed> insertFeeds = new ArrayList<>();
+            insertFeeds.add(new FeedThread(teamPlaceId, new Content("테스트 스레드"), 1L));
+            insertFeeds.add(ScheduleNotification.from(new ScheduleCreateEvent(1L, teamPlaceId, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
+            testFixtureBuilder.buildFeeds(insertFeeds);
+            final int size = 5;
+            final long lastThreadId = 2L;
+
+            // when
+            final ExtractableResponse<Response> response = GET_FEED_THREAD_REPEAT("invalidToken", teamPlaceId, lastThreadId, size);
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+            });
+        }
+
+        @Test
+        @DisplayName("참가하지 않은 팀플레이스에 처음 요청하는 경우 403에러가 발생한다.")
+        void unParticipatedTeamPlaceMemberFailFirstRead() {
+            // given
+            final Long invalidTeamPlaceId = 0L;
+            List<Feed> insertFeeds = new ArrayList<>();
+            insertFeeds.add(new FeedThread(invalidTeamPlaceId, new Content("테스트 스레드"), 1L));
+            insertFeeds.add(ScheduleNotification.from(new ScheduleCreateEvent(1L, invalidTeamPlaceId, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
+            testFixtureBuilder.buildFeeds(insertFeeds);
+            final int size = 5;
+
+            // when
+            final ExtractableResponse<Response> response = GET_FEED_THREAD_FIRST(authToken, invalidTeamPlaceId, size);
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+            });
+        }
+
+        @Test
+        @DisplayName("참가하지 않은 팀플레이스에 재요청하는 경우 403에러가 발생한다.")
+        void unParticipatedTeamPlaceMemberFailReRead() {
+            // given
+            final Long invalidTeamPlaceId = 0L;
+            List<Feed> insertFeeds = new ArrayList<>();
+            insertFeeds.add(new FeedThread(invalidTeamPlaceId, new Content("테스트 스레드"), 1L));
+            insertFeeds.add(ScheduleNotification.from(new ScheduleCreateEvent(1L, invalidTeamPlaceId, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
+            testFixtureBuilder.buildFeeds(insertFeeds);
+            final int size = 5;
+            final long lastThreadId = 2L;
+
+            // when
+            final ExtractableResponse<Response> response = GET_FEED_THREAD_REPEAT(authToken, invalidTeamPlaceId, lastThreadId, size);
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+            });
+        }
     }
 }
