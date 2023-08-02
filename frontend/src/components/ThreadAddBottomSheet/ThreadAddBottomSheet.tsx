@@ -1,70 +1,24 @@
-import { useState } from 'react';
-import type { ChangeEventHandler, FormEventHandler } from 'react';
 import Modal from '~/components/common/Modal/Modal';
 import Text from '~/components/common/Text/Text';
 import * as S from './ThreadAddBottomSheet.styled';
 import Button from '~/components/common/Button/Button';
-import useBottomSheet from '~/hooks/useBottomSheet';
 import Checkbox from '~/components/common/Checkbox/Checkbox';
-import { useSendNoticeThread } from '~/hooks/queries/useSendNoticeThread';
-import { useSendThread } from '~/hooks/queries/useSendThread';
-import { useToast } from '~/hooks/useToast';
+import { useThreadAddBottomSheet } from '~/hooks/thread/useThreadAddBottomSheet';
 
 const ThreadAddBottomSheet = () => {
-  const [content, setContent] = useState('');
-  const [isNotice, setIsNotice] = useState(false);
-  const { handleClose, isClosing } = useBottomSheet();
-  const { showToast } = useToast();
-  const { mutateSendThread } = useSendThread(1);
-  const { mutateSendNoticeThread } = useSendNoticeThread(1);
+  const {
+    content,
+    isNotice,
+    isClosing,
 
-  const handleContentChange: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
-    const { target } = e;
-
-    setContent(() => target.value);
-  };
-
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-
-    if (isNotice) {
-      mutateSendNoticeThread(
-        { content },
-        {
-          onSuccess: () => {
-            showToast('success', '공지가 등록되었습니다.');
-            handleClose();
-            setContent(() => '');
-            setIsNotice(() => false);
-          },
-        },
-      );
-
-      return;
-    }
-
-    mutateSendThread(
-      { content },
-      {
-        onSuccess: () => {
-          showToast('success', '피드가 등록되었습니다.');
-          handleClose();
-          setContent(() => '');
-          setIsNotice(() => false);
-        },
-      },
-    );
-  };
-
-  const handleIsNoticeChange = () => {
-    setIsNotice((prev) => !prev);
-  };
-
-  const handleCancelButtonClick = () => {
-    handleClose();
-    setContent(() => '');
-    setIsNotice(() => false);
-  };
+    handlers: {
+      handleClose,
+      handleContentChange,
+      handleIsNoticeChange,
+      handleCancelButtonClick,
+      handleSubmit,
+    },
+  } = useThreadAddBottomSheet();
 
   return (
     <Modal>
