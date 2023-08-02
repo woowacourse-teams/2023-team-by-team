@@ -23,3 +23,17 @@ export const Default: Story = {
     onClick: () => alert('clicked!'),
   },
 };
+
+export const LongTitle: Story = {
+  args: {
+    id: '1',
+    scheduleId: 1,
+    title:
+      'Woowacourse Woowacourse Woowacourse Woowacourse Woowacourse Woowacourse',
+    row: 1,
+    column: 2,
+    duration: 3,
+    level: 0,
+    onClick: () => alert('clicked!'),
+  },
+};

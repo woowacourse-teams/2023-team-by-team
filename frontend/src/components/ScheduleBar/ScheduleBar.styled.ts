@@ -32,6 +32,12 @@ export const Inner = styled.div<Pick<ScheduleBarProps, 'color' | 'level'>>`
 `;
 
 export const scheduleBarTitle = css`
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
   font-size: 13px;
   color: ${({ theme }) => theme.color.WHITE};
+
+  max-width: 100px;
 `;
