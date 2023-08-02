@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import ScheduleBar from '~/components/ScheduleBar/ScheduleBar';
 
+/**
+ * `ScheduleBar` 는 캘린더의 일정을 바 형태로 시각적으로 보여 주기 위한 컴포넌트입니다.
+ */
 const meta = {
   title: 'Schedule/ScheduleBar',
   component: ScheduleBar,
