@@ -21,7 +21,7 @@ export const Default: Story = {
       startDateTime: '2023-07-07 05:00',
       endDateTime: '2023-07-09 10:00',
     },
-    title: 'ea',
+    title: '테스트',
     row: 1,
     column: 2,
     duration: 3,

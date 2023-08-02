@@ -2,9 +2,6 @@ import { css, styled } from 'styled-components';
 
 export const Container = styled.div`
   width: 260px;
-
-  border: 1px solid ${({ theme }) => theme.color.GRAY200};
-  border-radius: 8px;
 `;
 
 export const CalendarHeader = styled.div`

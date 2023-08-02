@@ -13,6 +13,7 @@ const color = {
   GRAY100: '#f2f4f6',
   GRAY200: '#e5e8eb',
   GRAY300: '#d1d6db',
+  GRAY350: '#c9c9c9',
   GRAY400: '#b0b8c1',
   GRAY500: '#8b95a1',
   GRAY600: '#6b7684',
