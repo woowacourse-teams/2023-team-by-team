@@ -11,3 +11,6 @@ export { ReactComponent as GroupIcon } from './group.svg';
 export { ReactComponent as ArrowExpandMoreIcon } from './arrow-expand-more.svg';
 export { ReactComponent as ArrowExpandLessIcon } from './arrow-expand-less.svg';
 export { ReactComponent as MegaphoneIcon } from './megaphone.svg';
+export { ReactComponent as HomeIcon } from './home.svg';
+export { ReactComponent as CalendarIcon } from './calendar.svg';
+export { ReactComponent as FeedIcon } from './feed.svg';
