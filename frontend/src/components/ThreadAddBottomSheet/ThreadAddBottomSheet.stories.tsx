@@ -4,7 +4,7 @@ import Button from '~/components/common/Button/Button';
 import { useModal } from '~/hooks/useModal';
 
 const meta = {
-  title: 'Thread/ThreadAddBottomSheet',
+  title: 'Feed/ThreadAddBottomSheet',
   component: ThreadAddBottomSheet,
 } satisfies Meta<typeof ThreadAddBottomSheet>;
 
