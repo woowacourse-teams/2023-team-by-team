@@ -7,12 +7,8 @@ import Button from '../common/Button/Button';
 import Input from '../common/Input/Input';
 import useScheduleAddModal from '~/hooks/schedule/useScheduleAddModal';
 import Checkbox from '~/components/common/Checkbox/Checkbox';
-import Menu from '~/components/common/Menu/Menu';
-import MenuButton from '~/components/common/Menu/MenuButton/MenuButton';
-import MenuItem from '~/components/common/Menu/MenuItem/MenuItem';
-import MenuList from '~/components/common/Menu/MenuList/MenuList';
-import { TIME_TABLE } from '~/constants/calendar';
 import TeamBadge from '~/components/common/TeamBadge/TeamBadge';
+import TimeTableMenu from '~/components/TimeTableMenu/TimeTableMenu';
 
 interface ScheduleAddModalProps {
   teamPlaceName: string;
@@ -81,31 +77,10 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
                 required
               />
               {!isAllDay && (
-                <Menu>
-                  <MenuButton
-                    css={S.timetableButton}
-                    value={times['startTime']}
-                  />
-                  <MenuList
-                    onClick={(e) => {
-                      const { target } = e;
-
-                      if (!(target instanceof HTMLLIElement)) {
-                        return;
-                      }
-
-                      handleStartTimeChange(
-                        (target as HTMLLIElement).textContent ?? '',
-                      );
-                    }}
-                  >
-                    {TIME_TABLE.map((time) => (
-                      <MenuItem key={time} value={time}>
-                        {time}
-                      </MenuItem>
-                    ))}
-                  </MenuList>
-                </Menu>
+                <TimeTableMenu
+                  displayValue={times['startTime']}
+                  onClickMenu={handleStartTimeChange}
+                />
               )}
             </S.InputWrapper>
           </S.TimeSelectContainer>
@@ -126,31 +101,10 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
                 required
               />
               {!isAllDay && (
-                <Menu>
-                  <MenuButton
-                    css={S.timetableButton}
-                    value={times['endTime']}
-                  />
-                  <MenuList
-                    onClick={(e) => {
-                      const { target } = e;
-
-                      if (!(target instanceof HTMLLIElement)) {
-                        return;
-                      }
-
-                      handleEndTimeChange(
-                        (target as HTMLLIElement).textContent ?? '',
-                      );
-                    }}
-                  >
-                    {TIME_TABLE.map((time) => (
-                      <MenuItem key={time} value={time}>
-                        {time}
-                      </MenuItem>
-                    ))}
-                  </MenuList>
-                </Menu>
+                <TimeTableMenu
+                  displayValue={times['endTime']}
+                  onClickMenu={handleEndTimeChange}
+                />
               )}
             </S.InputWrapper>
           </S.TimeSelectContainer>
