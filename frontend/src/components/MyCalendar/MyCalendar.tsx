@@ -12,7 +12,12 @@ import { generateScheduleCirclesMatrix } from '~/utils/generateScheduleCirclesMa
 import TeamBadge from '~/components/common/TeamBadge/TeamBadge';
 import type { TeamPlaceColor } from '~/types/team';
 
-const MyCalendar = () => {
+interface MyCalendarProps {
+  onDailyClick: (date: Date) => void;
+}
+
+const MyCalendar = (props: MyCalendarProps) => {
+  const { onDailyClick } = props;
   const {
     year,
     month,
@@ -85,6 +90,7 @@ const MyCalendar = () => {
                           currentMonth={month}
                           isToday={isToday}
                           size="sm"
+                          onDayClick={() => onDailyClick(day)}
                         />
                         <S.ScheduleCircleWrapper>
                           {scheduleCircles[rowIndex][colIndex].teamPlaceIds.map(

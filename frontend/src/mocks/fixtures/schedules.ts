@@ -73,6 +73,7 @@ export const mySchedules: ScheduleWithTeamPlaceId[] = [
     startDateTime: '2023-07-14 02:00',
     endDateTime: '2023-07-15 02:00',
   },
+
   {
     id: 3,
     teamPlaceId: 3,
