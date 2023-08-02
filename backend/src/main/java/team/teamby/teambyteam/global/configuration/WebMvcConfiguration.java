@@ -27,6 +27,8 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     public void addInterceptors(final InterceptorRegistry registry) {
         registry.addInterceptor(memberInterceptor)
                 .order(1)
+                .excludePathPatterns("/api/auth/**/login")
+                .excludePathPatterns("/api/auth/code/google")
                 .addPathPatterns("/api/**");
         registry.addInterceptor(teamPlaceParticipationInterceptor)
                 .order(2)

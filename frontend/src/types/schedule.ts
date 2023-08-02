@@ -7,6 +7,10 @@ export interface Schedule {
   endDateTime: YYYYMMDDHHMM;
 }
 
+export interface ScheduleWithTeamPlaceId extends Schedule {
+  teamPlaceId: number;
+}
+
 export type ScheduleWithoutId = Omit<Schedule, 'id'>;
 
 export type YYYYMMDDHHMM = `${string}-${string}-${string} ${string}:${string}`;
@@ -20,5 +24,13 @@ export interface SchedulePosition extends Position {
   level: number;
 }
 
+export interface ScheduleCircle {
+  teamPlaceIds: number[];
+}
+
 export type ModalOpenType =
   (typeof MODAL_OPEN_TYPE)[keyof typeof MODAL_OPEN_TYPE];
+
+export interface ScheduleWithTeamPlaceId extends Schedule {
+  teamPlaceId: number;
+}

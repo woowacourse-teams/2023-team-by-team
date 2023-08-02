@@ -16,13 +16,6 @@ export const Container = styled.div`
   }
 `;
 
-export const TeamColorBadge = styled.div`
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background-color: ${({ theme }) => theme.color.PURPLE};
-`;
-
 export const teamPlaceName = css`
   font-size: 24px;
   font-weight: bold;

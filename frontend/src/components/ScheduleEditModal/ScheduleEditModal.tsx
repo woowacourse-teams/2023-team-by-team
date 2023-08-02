@@ -7,6 +7,9 @@ import Input from '~/components/common/Input/Input';
 import Text from '~/components/common/Text/Text';
 import useScheduleEditModal from '~/hooks/schedule/useScheduleEditModal';
 import type { Schedule } from '~/types/schedule';
+import TeamBadge from '~/components/common/TeamBadge/TeamBadge';
+import TimeTableMenu from '~/components/TimeTableMenu/TimeTableMenu';
+import Checkbox from '~/components/common/Checkbox/Checkbox';
 
 interface ScheduleEditModalProps {
   teamPlaceName: string;
@@ -19,7 +22,16 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
   const { closeModal } = useModal();
   const {
     schedule,
-    handlers: { handleScheduleChange, handleScheduleSubmit },
+    times,
+    isAllDay,
+
+    handlers: {
+      handleScheduleChange,
+      handleScheduleSubmit,
+      handleStartTimeChange,
+      handleEndTimeChange,
+      handleIsAllDayChange,
+    },
   } = useScheduleEditModal(scheduleId, initialSchedule);
 
   if (initialSchedule === undefined) {
@@ -41,61 +53,84 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
             <CloseIcon />
           </Button>
         </S.Header>
-        <S.TitleWrapper>
-          <Input
-            width="100%"
-            height="100%"
-            placeholder="일정 제목"
-            css={S.title}
-            name="title"
-            value={schedule['title']}
-            required
-            onChange={handleScheduleChange}
-          />
-        </S.TitleWrapper>
-
         <form onSubmit={handleScheduleSubmit}>
+          <S.TitleWrapper>
+            <Input
+              width="100%"
+              height="100%"
+              placeholder="일정 제목"
+              css={S.title}
+              name="title"
+              value={schedule['title']}
+              required
+              onChange={handleScheduleChange}
+            />
+          </S.TitleWrapper>
+
           <S.TimeSelectContainer>
-            <Text size="xxl" weight="bold">
+            <Text size="xl" weight="bold">
               일정 시작
             </Text>
-            <Input
-              width="220px"
-              height="40px"
-              type="datetime-local"
-              css={S.dateTimeLocalInput}
-              name="startDateTime"
-              value={schedule['startDateTime']}
-              onChange={handleScheduleChange}
-              required
-            />
-            <Text size="xxl" weight="bold">
-              종일
-            </Text>
-            <S.CheckBox type="checkbox" />
+            <S.InputWrapper>
+              <Input
+                width={isAllDay ? '100%' : '50%'}
+                height="40px"
+                type="date"
+                css={S.dateTimeLocalInput}
+                name="startDate"
+                value={schedule['startDate']}
+                onChange={handleScheduleChange}
+                required
+              />
+              {!isAllDay && (
+                <TimeTableMenu
+                  displayValue={times['startTime']}
+                  onClickMenu={handleStartTimeChange}
+                />
+              )}
+            </S.InputWrapper>
           </S.TimeSelectContainer>
           <S.TimeSelectContainer>
             <Text size="xxl" weight="bold">
               일정 마감
             </Text>
-            <Input
-              width="220px"
-              height="40px"
-              type="datetime-local"
-              css={S.dateTimeLocalInput}
-              name="endDateTime"
-              value={schedule['endDateTime']}
-              onChange={handleScheduleChange}
-              required
-            />
+            <S.InputWrapper>
+              <Input
+                width={isAllDay ? '100%' : '50%'}
+                height="40px"
+                type="date"
+                css={S.dateTimeLocalInput}
+                name="endDate"
+                value={schedule['endDate']}
+                min={schedule['startDate']}
+                onChange={handleScheduleChange}
+                required
+              />
+              {!isAllDay && (
+                <TimeTableMenu
+                  displayValue={times['endTime']}
+                  onClickMenu={handleEndTimeChange}
+                />
+              )}
+            </S.InputWrapper>
           </S.TimeSelectContainer>
-          <S.TeamNameContainer title={teamPlaceName}>
-            <S.Circle />
-            <Text css={S.teamPlaceName}>{teamPlaceName}</Text>
-          </S.TeamNameContainer>
-          <S.ControlButtonWrapper>
-            <Button variant="primary">수정</Button>
-          </S.ControlButtonWrapper>
+          <S.CheckboxContainer>
+            <Text size="xl" weight="bold">
+              종일
+            </Text>
+            <Checkbox isChecked={isAllDay} onChange={handleIsAllDayChange} />
+          </S.CheckboxContainer>
+          <S.InnerContainer>
+            <S.TeamNameContainer title={teamPlaceName}>
+              <TeamBadge teamPlaceColor={0} size="lg" />
+              <Text css={S.teamPlaceName}>{teamPlaceName}</Text>
+            </S.TeamNameContainer>
+            <S.ControlButtonWrapper>
+              <Button variant="primary" css={S.submitButton}>
+                수정
+              </Button>
+            </S.ControlButtonWrapper>
+          </S.InnerContainer>
         </form>
       </S.Container>
     </Modal>

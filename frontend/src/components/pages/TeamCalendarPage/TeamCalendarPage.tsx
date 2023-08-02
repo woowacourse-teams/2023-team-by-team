@@ -1,5 +1,5 @@
 import Calendar from '~/components/Calendar/Calendar';
-import IntegratedCalendar from '~/components/IntegratedCalendar/IntegratedCalendar';
+import MyCalendar from '~/components/MyCalendar/MyCalendar';
 import * as S from './TeamCalendarPage.styled';
 
 const TeamCalendarPage = () => {

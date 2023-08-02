@@ -9,6 +9,7 @@ import { formatDateTime } from '~/utils/formatDateTime';
 import type { SchedulePosition } from '~/types/schedule';
 import { useFetchScheduleById } from '~/hooks/queries/useFetchScheduleById';
 import { useDeleteSchedule } from '~/hooks/queries/useDeleteSchedule';
+import TeamBadge from '~/components/common/TeamBadge/TeamBadge';
 
 interface ScheduleModalProps {
   scheduleId: number;
@@ -48,22 +49,37 @@ const ScheduleModal = (props: ScheduleModalProps) => {
       <S.Container style={modalLocation}>
         <S.Header>
           <S.TeamWrapper>
-            <S.TeamColor />
+            <TeamBadge teamPlaceColor={0} size="lg" />
             <div title={'현대사회와 범죄 5조'}>
               <Text css={S.teamName}>현대사회와 범죄 5조</Text>
             </div>
           </S.TeamWrapper>
-          <S.MenuWrapper>
-            <Button size="sm" variant="plain" onClick={onOpenScheduleEditModal}>
+          <S.MenuContainer>
+            <Button
+              type="button"
+              variant="plain"
+              onClick={onOpenScheduleEditModal}
+              css={S.menuIcon}
+            >
               <EditIcon />
             </Button>
-            <Button size="sm" variant="plain" onClick={handleScheduleDelete}>
+            <Button
+              type="button"
+              variant="plain"
+              onClick={handleScheduleDelete}
+              css={S.menuIcon}
+            >
               <DeleteIcon />
             </Button>
-            <Button size="sm" variant="plain" onClick={closeModal}>
+            <Button
+              type="button"
+              variant="plain"
+              onClick={closeModal}
+              css={S.menuIcon}
+            >
               <CloseIcon />
             </Button>
-          </S.MenuWrapper>
+          </S.MenuContainer>
         </S.Header>
         <Text as="h4">{title}</Text>
         <S.PeriodWrapper>

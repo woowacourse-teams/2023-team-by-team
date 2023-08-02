@@ -3,10 +3,12 @@ import * as S from './ThreadList.styled';
 import type { ThreadSize } from '~/types/size';
 import { THREAD_TYPE } from '~/constants/feed';
 import Thread from '~/components/Thread/Thread';
+import NoticeThread from '~/components/NoticeThread/NoticeThread';
 import Notification from '~/components/Notification/Notification';
 import { useRef } from 'react';
 import { useIntersectionObserver } from '~/hooks/useIntersectionObserver';
 import Text from '~/components/common/Text/Text';
+import { useFetchNoticeThread } from '~/hooks/queries/useFetchNoticeThread';
 
 interface ThreadListProps {
   size?: ThreadSize;
@@ -15,6 +17,7 @@ interface ThreadListProps {
 const ThreadList = (props: ThreadListProps) => {
   const { size = 'md' } = props;
   const { threadPages, hasNextPage, fetchNextPage } = useFetchThreads(1);
+  const { noticeThread } = useFetchNoticeThread(1);
   const observeRef = useRef<HTMLDivElement>(null);
 
   const onIntersect: IntersectionObserverCallback = ([entry]) =>
@@ -24,16 +27,23 @@ const ThreadList = (props: ThreadListProps) => {
 
   return (
     <S.Container>
+      {noticeThread && noticeThread.id && (
+        <NoticeThread
+          author={noticeThread.authorName}
+          createdAt={noticeThread.createdAt}
+          profileImageSrc={noticeThread.profileImageUrl}
+          content={noticeThread.content}
+        />
+      )}
       {threadPages?.pages.map((page) =>
         page.threads.map((thread) => {
           const { id, type, profileImageUrl, content, ...rest } = thread;
-          const profileUrl = profileImageUrl === null ? '' : profileImageUrl;
 
           return type === THREAD_TYPE.THREAD ? (
             <Thread
               key={id}
               size={size}
-              profileImageUrl={profileUrl}
+              profileImageUrl={profileImageUrl}
               content={content}
               {...rest}
             />
