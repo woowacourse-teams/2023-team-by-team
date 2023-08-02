@@ -1,3 +1,4 @@
+import Text from '~/components/common/Text/Text';
 import * as S from './ScheduleBar.styled';
 
 export interface ScheduleBarProps {
@@ -17,7 +18,11 @@ const ScheduleBar = (props: ScheduleBarProps) => {
 
   return (
     <S.Wrapper color={color} title={title} onClick={onClick} {...rest}>
-      <S.Inner color={color} {...rest} />
+      <S.Inner color={color} {...rest}>
+        <Text as="span" css={S.scheduleBarTitle}>
+          {title}
+        </Text>
+      </S.Inner>
     </S.Wrapper>
   );
 };
