@@ -15,15 +15,15 @@ const SideBar = () => {
 
   return (
     <S.Container>
-      <S.PartContainer>
+      <S.InnerContainer>
         <div>
           <Text as="h2" css={S.highLight}>
             내 일정
           </Text>
         </div>
         <MyCalendar onDailyClick={handleChangeDailySchedule} />
-      </S.PartContainer>
-      <S.PartContainer>
+      </S.InnerContainer>
+      <S.InnerContainer>
         <div>
           <Text as="h3" css={S.highLight}>
             {String(month + 1).padStart(2, '0')}월{' '}
@@ -31,7 +31,7 @@ const SideBar = () => {
           </Text>
         </div>
         <MyDailyScheduleList rawDate={dailyScheduleDate} />
-      </S.PartContainer>
+      </S.InnerContainer>
     </S.Container>
   );
 };

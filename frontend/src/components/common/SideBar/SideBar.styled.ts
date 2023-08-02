@@ -10,7 +10,7 @@ export const Container = styled.div`
   gap: 30px;
 `;
 
-export const PartContainer = styled.div`
+export const InnerContainer = styled.div`
   display: flex;
   flex-direction: column;
 
