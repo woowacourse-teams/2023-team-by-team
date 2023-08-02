@@ -36,7 +36,7 @@ export const Header = styled.div`
   width: 100%;
   height: 38px;
   padding-bottom: 4px;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
 
   border-bottom: ${({ theme }) => `1px solid ${theme.color.GRAY300}`};
 `;
@@ -61,16 +61,26 @@ export const ScheduleBox = styled.div<Pick<DailyScheduleModalProps, 'color'>>`
 
   width: 100%;
   height: 40px;
+  column-gap: 10px;
 
   background-color: ${({ color }) => color};
   border-radius: 4px;
 
-  filter: brightness(1.5);
+  color: ${({ theme }) => theme.color.WHITE};
 
   cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+    transition: 0.2s;
+  }
 `;
 
 export const closeButton = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   width: 22px;
   height: 38px;
   padding: 8px 0;

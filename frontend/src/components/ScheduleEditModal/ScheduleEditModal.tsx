@@ -68,7 +68,7 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
           </S.TitleWrapper>
 
           <S.TimeSelectContainer>
-            <Text size="xl" weight="bold">
+            <Text size="xxl" weight="bold">
               일정 시작
             </Text>
             <S.InputWrapper>

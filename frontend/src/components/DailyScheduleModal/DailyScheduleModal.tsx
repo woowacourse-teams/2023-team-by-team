@@ -33,12 +33,9 @@ const DailyScheduleModal = (props: DailyScheduleModalProps) => {
     onSetModalType,
   } = props;
   const { row, column } = position;
-
   const { closeModal } = useModal();
   const { year, month, date } = parseDate(rawDate);
-
   const schedules = useFetchDailySchedules(1, year, month, date);
-
   const modalLocation: CSSProperties = {
     top: row < 3 ? `${(row + 2) * 118}px` : 'none',
     bottom: row >= 3 ? `${(7 - row) * 120}px` : 'none',
@@ -84,7 +81,7 @@ const DailyScheduleModal = (props: DailyScheduleModalProps) => {
                     onSetModalType();
                   }}
                 >
-                  <Text size="lg" weight="bold" css={S.teamName}>
+                  <Text size="lg" css={S.teamName}>
                     {title}
                   </Text>
                 </S.ScheduleBox>
