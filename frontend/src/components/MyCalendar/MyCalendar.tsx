@@ -27,7 +27,7 @@ const MyCalendar = () => {
 
   const schedules = useFetchMySchedules(year, month);
   const scheduleCircles = generateScheduleCirclesMatrix(year, month, schedules);
-  console.log(schedules);
+
   return (
     <S.Container>
       <S.CalendarHeader>
@@ -40,7 +40,7 @@ const MyCalendar = () => {
           <ArrowLeftIcon />
         </Button>
         <Text size="xxl">
-          {year}-{month + 1}
+          {year}년 {month + 1}월
         </Text>
         <Button
           variant="plain"
@@ -77,7 +77,7 @@ const MyCalendar = () => {
                       currentYear === renderYear &&
                       currentMonth === renderMonth &&
                       currentDate === renderDate;
-                    console.log(scheduleCircles[rowIndex][colIndex]);
+
                     return (
                       <div key={day.toISOString()}>
                         <DateCell
