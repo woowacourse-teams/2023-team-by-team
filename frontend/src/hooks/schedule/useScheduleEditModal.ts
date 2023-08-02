@@ -4,6 +4,7 @@ import { useModifySchedule } from '~/hooks/queries/useModifySchedule';
 import { useModal } from '~/hooks/useModal';
 import { isYYYYMMDDHHMM } from '~/types/typeGuard';
 import type { Schedule } from '~/types/schedule';
+import { useToast } from '~/hooks/useToast';
 
 const useScheduleEditModal = (
   scheduleId: Schedule['id'],
@@ -24,6 +25,7 @@ const useScheduleEditModal = (
   });
   const [isAllDay, setIsAllDay] = useState(endTime === '23:59');
   const { closeModal } = useModal();
+  const { showToast } = useToast();
   const { mutateModifySchedule } = useModifySchedule(1, scheduleId);
 
   const handleIsAllDayChange = () => {
@@ -116,7 +118,10 @@ const useScheduleEditModal = (
         endDateTime: formattedEndDateTime,
       },
       {
-        onSuccess: () => closeModal(),
+        onSuccess: () => {
+          showToast('success', '일정이 수정되었습니다.');
+          closeModal();
+        },
       },
     );
   };

@@ -4,6 +4,7 @@ import { useModal } from '~/hooks/useModal';
 import { isYYYYMMDDHHMM } from '~/types/typeGuard';
 import { parseDate } from '~/utils/parseDate';
 import type { ChangeEventHandler, FormEventHandler } from 'react';
+import { useToast } from '~/hooks/useToast';
 
 const useScheduleAddModal = (clickedDate: Date) => {
   const { year, month, date } = parseDate(clickedDate);
@@ -21,6 +22,7 @@ const useScheduleAddModal = (clickedDate: Date) => {
   });
   const [isAllDay, setIsAllDay] = useState(false);
   const { closeModal } = useModal();
+  const { showToast } = useToast();
   const { mutateSendSchedule } = useSendSchedule(1);
 
   const handleScheduleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -113,7 +115,10 @@ const useScheduleAddModal = (clickedDate: Date) => {
         endDateTime: formattedEndDateTime,
       },
       {
-        onSuccess: () => closeModal(),
+        onSuccess: () => {
+          showToast('success', '일정이 등록되었습니다.');
+          closeModal();
+        },
       },
     );
   };
