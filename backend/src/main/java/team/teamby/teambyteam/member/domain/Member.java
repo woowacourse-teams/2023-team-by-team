@@ -61,6 +61,15 @@ public class Member extends BaseEntity {
         this(new Name(name), new Email(email), new ProfileImageUrl(profileImageUrl));
     }
 
+    public MemberTeamPlace participate(final TeamPlace teamPlace) {
+
+        final MemberTeamPlace memberTeamPlace = new MemberTeamPlace();
+
+        memberTeamPlace.setMemberAndTeamPlace(this, teamPlace);
+
+        return memberTeamPlace;
+    }
+
     public List<TeamPlace> getTeamPlaces() {
         return getMemberTeamPlaces().stream()
                 .map(MemberTeamPlace::getTeamPlace)
