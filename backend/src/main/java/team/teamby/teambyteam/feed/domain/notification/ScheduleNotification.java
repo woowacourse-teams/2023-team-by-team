@@ -1,6 +1,10 @@
 package team.teamby.teambyteam.feed.domain.notification;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +27,11 @@ public class ScheduleNotification extends Notification {
     @Override
     public FeedType getType() {
         return FeedType.SCHEDULE_NOTIFICATION;
+    }
+
+    @Override
+    public Long getAuthorId() {
+        return getScheduleId();
     }
 
     protected ScheduleNotification(final Long teamPlaceId, final Content content, final Long scheduleId) {

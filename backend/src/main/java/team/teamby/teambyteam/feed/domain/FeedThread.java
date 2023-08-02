@@ -24,4 +24,9 @@ public class FeedThread extends Feed {
     public FeedType getType() {
         return FeedType.THREAD;
     }
+
+    @Override
+    public Long getAuthorId() {
+        return this.authorId;
+    }
 }
