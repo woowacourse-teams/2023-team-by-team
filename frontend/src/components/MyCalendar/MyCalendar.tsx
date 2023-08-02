@@ -62,7 +62,7 @@ const MyCalendar = () => {
           {calendar.map((week, index) => {
             return (
               <Fragment key={index}>
-                <S.ScheduleBarContainer></S.ScheduleBarContainer>
+                <S.ScheduleCircleWrapper></S.ScheduleCircleWrapper>
                 <S.DateView>
                   {week.map((day) => {
                     const {

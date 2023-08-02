@@ -18,8 +18,7 @@ export const Wrapper = styled.div<WrapperProps>`
         align-items: center;
         padding-top: 4px;
       `;
-    if (size === 'md') return css``;
-    if (size === 'lg')
+    if (size === 'md' || size === 'lg')
       return css`
         align-items: flex-end;
         padding: 2px 2px 0 0;

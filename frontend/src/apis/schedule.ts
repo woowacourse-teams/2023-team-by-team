@@ -9,10 +9,10 @@ export const fetchSchedules = (
   teamPlaceId: number,
   year: number,
   month: number,
-  day?: number,
+  date?: number,
 ) => {
-  const query = day
-    ? `year=${year}&month=${month}&day=${day}`
+  const query = date
+    ? `year=${year}&month=${month}&day=${date}`
     : `year=${year}&month=${month}`;
 
   return http.get<{

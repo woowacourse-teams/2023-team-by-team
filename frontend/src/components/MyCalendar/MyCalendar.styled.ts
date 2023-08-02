@@ -22,8 +22,8 @@ export const DaysOfWeek = styled.div`
   height: 24px;
 `;
 
-export const ScheduleBarContainer = styled.div`
-  position: relative;
+export const ScheduleCircleWrapper = styled.div`
+  display: flex;
 `;
 
 export const DateView = styled.div`
