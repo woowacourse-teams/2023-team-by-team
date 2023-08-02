@@ -22,7 +22,6 @@ import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.exception.MemberException;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -80,9 +79,9 @@ public class FeedThreadService {
 
     private FeedResponse mapToResponse(Feed feed) {
         if (FeedType.THREAD == feed.getType()) {
-            final Optional<Member> member = memberRepository.findById(feed.getAuthorId());
-            final Member member1 = member.orElseThrow(MemberException.MemberNotFoundException::new);
-            return FeedResponse.from(feed, member1.getName().getValue(), member1.getProfileImageUrl().getValue());
+            final Member member = memberRepository.findById(feed.getAuthorId())
+                    .orElseThrow(MemberException.MemberNotFoundException::new);
+            return FeedResponse.from(feed, member.getName().getValue(), member.getProfileImageUrl().getValue());
         }
         if (FeedType.SCHEDULE_NOTIFICATION == feed.getType()) {
             return FeedResponse.from(feed, "schedule", "");
