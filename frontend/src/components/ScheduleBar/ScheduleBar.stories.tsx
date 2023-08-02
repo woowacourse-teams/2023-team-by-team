@@ -111,6 +111,8 @@ export const LongTitle: Story = {
     column: 2,
     duration: 3,
     level: 0,
+    roundedStart: true,
+    roundedEnd: true,
     onClick: () => alert('clicked!'),
   },
 };
