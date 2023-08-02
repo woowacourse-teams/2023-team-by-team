@@ -1,16 +1,16 @@
 import Calendar from '~/components/Calendar/Calendar';
-import MyCalendar from '~/components/MyCalendar/MyCalendar';
 import * as S from './TeamCalendarPage.styled';
+import Text from '~/components/common/Text/Text';
 
 const TeamCalendarPage = () => {
   return (
     <S.Container>
-      <S.CalendarWrapper>
-        <Calendar />
-      </S.CalendarWrapper>
-      {/* <S.IntegratedCalendarWrapper>
-        <IntegratedCalendar />
-      </S.IntegratedCalendarWrapper> */}
+      <div>
+        <Text as="h2" css={S.highLight}>
+          팀 캘린더
+        </Text>
+      </div>
+      <Calendar />
     </S.Container>
   );
 };

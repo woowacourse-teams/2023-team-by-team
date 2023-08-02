@@ -96,7 +96,7 @@ const MyCalendar = (props: MyCalendarProps) => {
                           {scheduleCircles[rowIndex][colIndex].teamPlaceIds.map(
                             (teamPlaceId) => (
                               <TeamBadge
-                                key={`${rowIndex},${colIndex}`}
+                                key={`${day.toISOString()}+${rowIndex},${colIndex}`}
                                 size="sm"
                                 teamPlaceColor={teamPlaceId as TeamPlaceColor} //팀 조회 로직 나오면 바꿀 임시 색상 로직
                               />

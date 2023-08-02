@@ -80,6 +80,7 @@ const Calendar = () => {
     <>
       <S.Container>
         <S.CalendarHeader>
+          <div />
           <S.ButtonContainer>
             <Button
               variant="plain"
@@ -98,13 +99,13 @@ const Calendar = () => {
             >
               <ArrowRightIcon />
             </Button>
-            <Button
-              css={S.scheduleAddButton}
-              onClick={handleScheduleAddButtonClick}
-            >
-              <PlusIcon />
-            </Button>
           </S.ButtonContainer>
+          <Button
+            css={S.scheduleAddButton}
+            onClick={handleScheduleAddButtonClick}
+          >
+            <PlusIcon />
+          </Button>
         </S.CalendarHeader>
         <div>
           <S.DaysOfWeek>
