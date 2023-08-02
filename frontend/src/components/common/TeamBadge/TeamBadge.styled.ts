@@ -5,8 +5,8 @@ export const Wrapper = styled.div<TeamBadgeProps>`
   ${({ size }) => {
     if (size === 'sm')
       return css`
-        width: 8px;
-        height: 8px;
+        width: 6px;
+        height: 6px;
       `;
     if (size === 'lg')
       return css`
