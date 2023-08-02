@@ -20,5 +20,13 @@ export interface SchedulePosition extends Position {
   level: number;
 }
 
+export interface ScheduleCircle {
+  teamPlaceIds: number[];
+}
+
 export type ModalOpenType =
   (typeof MODAL_OPEN_TYPE)[keyof typeof MODAL_OPEN_TYPE];
+
+export interface ScheduleWithTeamPlaceId extends Schedule {
+  teamPlaceId: number;
+}
