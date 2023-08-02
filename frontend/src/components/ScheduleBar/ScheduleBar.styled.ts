@@ -36,8 +36,9 @@ export const scheduleBarTitle = css`
   white-space: nowrap;
   text-overflow: ellipsis;
 
+  max-width: 100px;
+  height: 100%;
+
   font-size: 13px;
   color: ${({ theme }) => theme.color.WHITE};
-
-  max-width: 100px;
 `;
