@@ -9,6 +9,8 @@ import { theme } from './styles/theme';
 import { worker } from '~/mocks/browser';
 import { ModalProvider } from '~/components/common/Modal/ModalContext';
 import TeamCalendarPage from '~/components/pages/TeamCalendarPage/TeamCalendarPage';
+import { ToastProvider } from '~/components/common/Toast/ToastContext';
+import ToastList from '~/components/common/Toast/ToastList';
 
 if (process.env.NODE_ENV === 'development') {
   worker.start();
@@ -35,10 +37,13 @@ root.render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
-        <ModalProvider>
-          <GlobalStyle />
-          <RouterProvider router={router} />
-        </ModalProvider>
+        <ToastProvider>
+          <ModalProvider>
+            <GlobalStyle />
+            <RouterProvider router={router} />
+            <ToastList />
+          </ModalProvider>
+        </ToastProvider>
       </ThemeProvider>
     </QueryClientProvider>
   </StrictMode>,

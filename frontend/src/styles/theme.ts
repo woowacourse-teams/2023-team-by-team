@@ -37,6 +37,7 @@ const teamColor = {
 const zIndex = {
   MODAL: 1,
   MENU: 2,
+  TOAST: 3,
 } as const;
 
 const animation = {
@@ -55,6 +56,26 @@ const animation = {
     to {
       transform: translateY(100%);
     }  
+  `,
+  fadeInUp: keyframes`
+    from {
+      opacity: 0;
+      transform: translate3D(0, 100%, 0);
+    }
+
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  `,
+  fadeOut: keyframes`
+    from {
+      opacity: 1;
+    }
+
+    to {
+      opacity: 0;
+    }
   `,
   duration: 400,
 };
