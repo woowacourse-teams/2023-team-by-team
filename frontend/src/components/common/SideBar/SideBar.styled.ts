@@ -6,7 +6,7 @@ export const Container = styled.div`
 
   width: 300px;
   height: 100%;
-  padding: 12px 22px;
+  padding: 18px 22px;
   gap: 30px;
 `;
 
@@ -21,5 +21,7 @@ export const highLight = css`
   display: inline-block;
 
   padding-right: 10px;
-  box-shadow: inset 0 -11px 0 ${({ theme }) => theme.color.GRAY350};
+  box-shadow: inset 0 -8px 0 ${({ theme }) => theme.color.GRAY350};
+
+  font-weight: 600;
 `;

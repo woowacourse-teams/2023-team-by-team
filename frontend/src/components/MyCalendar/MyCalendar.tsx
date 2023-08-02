@@ -40,17 +40,19 @@ const MyCalendar = (props: MyCalendarProps) => {
           variant="plain"
           size="sm"
           onClick={handlePrevButtonClick}
+          css={S.monthButton}
           aria-label="이전 달로 이동하기"
         >
           <ArrowLeftIcon />
         </Button>
-        <Text size="xxl">
+        <Text size="xl">
           {year}년 {month + 1}월
         </Text>
         <Button
           variant="plain"
           size="sm"
           onClick={handleNextButtonClick}
+          css={S.monthButton}
           aria-label="다음 달로 이동하기"
         >
           <ArrowRightIcon />
@@ -96,7 +98,7 @@ const MyCalendar = (props: MyCalendarProps) => {
                           {scheduleCircles[rowIndex][colIndex].teamPlaceIds.map(
                             (teamPlaceId) => (
                               <TeamBadge
-                                key={`${rowIndex},${colIndex}`}
+                                key={`${day.toISOString()}+${rowIndex},${colIndex}`}
                                 size="sm"
                                 teamPlaceColor={teamPlaceId as TeamPlaceColor} //팀 조회 로직 나오면 바꿀 임시 색상 로직
                               />
