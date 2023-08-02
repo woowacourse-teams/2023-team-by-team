@@ -9,6 +9,8 @@ export const useSendSchedule = (teamPlaceId: number) => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['schedules', teamPlaceId]);
+        queryClient.invalidateQueries(['mySchedules']);
+        queryClient.invalidateQueries(['myDailySchedules']);
       },
     },
   );

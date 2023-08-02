@@ -8,6 +8,9 @@ import { ArrowLeftIcon, ArrowRightIcon } from '~/assets/svg';
 import { DAYS_OF_WEEK } from '~/constants/calendar';
 import { useFetchMySchedules } from '~/hooks/queries/useFetchMySchedules';
 import { parseDate } from '~/utils/parseDate';
+import { generateScheduleCirclesMatrix } from '~/utils/generateScheduleCirclesMatrix';
+import TeamBadge from '~/components/common/TeamBadge/TeamBadge';
+import type { TeamPlaceColor } from '~/types/team';
 
 const MyCalendar = () => {
   const {
@@ -16,13 +19,14 @@ const MyCalendar = () => {
     calendar,
     handlers: { handlePrevButtonClick, handleNextButtonClick },
   } = useCalendar();
-
-  const schedules = useFetchMySchedules(year, month);
   const {
     year: currentYear,
     month: currentMonth,
     date: currentDate,
   } = parseDate(new Date());
+
+  const schedules = useFetchMySchedules(year, month);
+  const scheduleCircles = generateScheduleCirclesMatrix(year, month, schedules);
 
   return (
     <S.Container>
@@ -36,7 +40,7 @@ const MyCalendar = () => {
           <ArrowLeftIcon />
         </Button>
         <Text size="xxl">
-          {year}-{month + 1}
+          {year}년 {month + 1}월
         </Text>
         <Button
           variant="plain"
@@ -58,12 +62,11 @@ const MyCalendar = () => {
           })}
         </S.DaysOfWeek>
         <div>
-          {calendar.map((week, index) => {
+          {calendar.map((week, rowIndex) => {
             return (
-              <Fragment key={index}>
-                <S.ScheduleCircleWrapper></S.ScheduleCircleWrapper>
+              <Fragment key={rowIndex}>
                 <S.DateView>
-                  {week.map((day) => {
+                  {week.map((day, colIndex) => {
                     const {
                       year: renderYear,
                       month: renderMonth,
@@ -76,13 +79,25 @@ const MyCalendar = () => {
                       currentDate === renderDate;
 
                     return (
-                      <DateCell
-                        key={day.toISOString()}
-                        rawDate={day}
-                        currentMonth={month}
-                        isToday={isToday}
-                        size="sm"
-                      />
+                      <div key={day.toISOString()}>
+                        <DateCell
+                          rawDate={day}
+                          currentMonth={month}
+                          isToday={isToday}
+                          size="sm"
+                        />
+                        <S.ScheduleCircleWrapper>
+                          {scheduleCircles[rowIndex][colIndex].teamPlaceIds.map(
+                            (teamPlaceId) => (
+                              <TeamBadge
+                                key={`${rowIndex},${colIndex}`}
+                                size="sm"
+                                teamPlaceColor={teamPlaceId as TeamPlaceColor} //팀 조회 로직 나오면 바꿀 임시 색상 로직
+                              />
+                            ),
+                          )}
+                        </S.ScheduleCircleWrapper>
+                      </div>
                     );
                   })}
                 </S.DateView>

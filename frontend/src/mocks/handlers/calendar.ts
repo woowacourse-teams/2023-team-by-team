@@ -1,10 +1,11 @@
 import { rest } from 'msw';
 import {
   schedules as scheduleData,
-  mySchedules,
+  mySchedules as myScheduleData,
 } from '~/mocks/fixtures/schedules';
 
 let schedules = [...scheduleData];
+let mySchedules = [...myScheduleData];
 
 export const calendarHandlers = [
   //통합캘린더 일정 기간 조회
@@ -53,6 +54,7 @@ export const calendarHandlers = [
       const teamPlaceId = Number(req.params.teamPlaceId);
 
       schedules.push(newSchedule);
+      mySchedules.push({ ...newSchedule, teamPlaceId: 1 });
 
       return res(
         ctx.status(201),
@@ -74,10 +76,22 @@ export const calendarHandlers = [
         (schedule) => schedule.id === scheduleId,
       );
 
+      const myIndex = mySchedules.findIndex(
+        (schedule) => schedule.id === scheduleId,
+      );
+
       if (index === -1) return res(ctx.status(404));
 
       schedules[index] = {
         id: scheduleId,
+        title,
+        startDateTime,
+        endDateTime,
+      };
+
+      mySchedules[myIndex] = {
+        id: scheduleId,
+        teamPlaceId: mySchedules[myIndex].teamPlaceId,
         title,
         startDateTime,
         endDateTime,
@@ -95,11 +109,12 @@ export const calendarHandlers = [
       const index = schedules.findIndex(
         (schedule) => schedule.id === scheduleId,
       );
-
       if (index === -1) return res(ctx.status(404));
 
       schedules = schedules.filter((schedule) => schedule.id !== scheduleId);
-
+      mySchedules = mySchedules.filter(
+        (schedule) => schedule.id !== scheduleId,
+      );
       return res(ctx.status(204));
     },
   ),

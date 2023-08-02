@@ -24,6 +24,10 @@ export const DaysOfWeek = styled.div`
 
 export const ScheduleCircleWrapper = styled.div`
   display: flex;
+  justify-content: center;
+
+  padding-top: 2px;
+  column-gap: 2px;
 `;
 
 export const DateView = styled.div`

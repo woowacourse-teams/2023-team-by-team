@@ -13,6 +13,8 @@ export const useModifySchedule = (
       onSuccess: () => {
         queryClient.invalidateQueries(['schedules', teamPlaceId]);
         queryClient.invalidateQueries(['schedule', teamPlaceId, scheduleId]);
+        queryClient.invalidateQueries(['mySchedules']);
+        queryClient.invalidateQueries(['myDailySchedules']);
       },
     },
   );
