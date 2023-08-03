@@ -14,7 +14,7 @@ const Notification = (props: NotificationProps) => {
 
   return (
     <S.Wrapper color={color} size={size}>
-      <Text size={textSize} weight="bold">
+      <Text size={textSize} css={S.notification}>
         {content}
       </Text>
     </S.Wrapper>

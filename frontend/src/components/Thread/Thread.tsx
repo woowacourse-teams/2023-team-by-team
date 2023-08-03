@@ -33,9 +33,7 @@ const Thread = (props: ThreadProps) => {
             </Text>
           </S.Author>
           <S.Divider />
-          <Text size="lg" weight="bold">
-            {createdTime}
-          </Text>
+          <Text size="lg">{createdTime}</Text>
         </S.ThreadHeader>
       )}
       <Text size="xl" css={S.contentField}>
