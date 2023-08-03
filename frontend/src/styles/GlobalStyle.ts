@@ -55,17 +55,21 @@ const GlobalStyle = createGlobalStyle`
   }
 
   *.hidden {
-    overflow: hidden;
-    white-space: nowrap;
-    clip: rect(1px, 1px, 1px, 1px);
-    -webkit-clip-path: inset(50%);
-    clip-path: inset(50%);
     position: absolute;
+    overflow: hidden;
+
     width: 1px;
     height: 1px;
     margin: 0;
     padding: 0;
+    
     border: 0;
+    
+    white-space: nowrap;
+    
+    clip: rect(1px, 1px, 1px, 1px);
+    -webkit-clip-path: inset(50%);
+    clip-path: inset(50%);
   }
 `;
 
