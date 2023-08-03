@@ -20,8 +20,7 @@ export const Wrapper = styled.div<Pick<NotificationProps, 'color' | 'size'>>`
 `;
 
 export const notification = css`
+  font-size: 18px;
   font-weight: 500;
   letter-spacing: 0.8px;
-
-  font-size: 18px;
 `;
