@@ -3,7 +3,6 @@ import * as S from './ThreadAddBottomSheet.styled';
 import Button from '~/components/common/Button/Button';
 import Checkbox from '~/components/common/Checkbox/Checkbox';
 import { useThreadAddBottomSheet } from '~/hooks/thread/useThreadAddBottomSheet';
-import { useRef, useEffect } from 'react';
 
 const ThreadAddBottomSheet = () => {
   const {
@@ -19,12 +18,6 @@ const ThreadAddBottomSheet = () => {
       handleSubmit,
     },
   } = useThreadAddBottomSheet();
-
-  const textAreaRef = useRef<HTMLTextAreaElement>(null);
-
-  useEffect(() => {
-    textAreaRef.current?.focus();
-  }, []);
 
   return (
     <>
@@ -47,7 +40,6 @@ const ThreadAddBottomSheet = () => {
             maxLength={1500}
             value={content}
             onChange={handleContentChange}
-            ref={textAreaRef}
             required
           />
           <S.ButtonWrapper>
