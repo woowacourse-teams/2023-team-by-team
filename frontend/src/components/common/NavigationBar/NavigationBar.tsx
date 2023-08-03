@@ -5,10 +5,13 @@ const NavigationBar = () => {
   return (
     <S.Container>
       <S.MenuContainer>
-        <S.MenuLink to="/" aria-label="홈 페이지로 이동하기 버튼">
+        <S.MenuLink to="/team-calendar" aria-label="홈 페이지로 이동하기 버튼">
           <HomeIcon />
         </S.MenuLink>
-        <S.MenuLink to="/" aria-label="팀 캘린더 페이지로 이동하기 버튼">
+        <S.MenuLink
+          to="/team-calendar"
+          aria-label="팀 캘린더 페이지로 이동하기 버튼"
+        >
           <CalendarIcon />
         </S.MenuLink>
         <S.MenuLink to="/threads" aria-label="팀 피드 페이지로 이동하기 버튼">

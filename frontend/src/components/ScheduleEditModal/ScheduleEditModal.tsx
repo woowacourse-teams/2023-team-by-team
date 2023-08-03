@@ -11,7 +11,6 @@ import TeamBadge from '~/components/common/TeamBadge/TeamBadge';
 import TimeTableMenu from '~/components/TimeTableMenu/TimeTableMenu';
 import Checkbox from '~/components/common/Checkbox/Checkbox';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
-import { getInfoByTeamPlaceId } from '~/utils/getInfoByTeamPlaceId';
 
 interface ScheduleEditModalProps {
   scheduleId: Schedule['id'];
@@ -21,8 +20,8 @@ interface ScheduleEditModalProps {
 const ScheduleEditModal = (props: ScheduleEditModalProps) => {
   const { scheduleId, initialSchedule } = props;
   const { closeModal } = useModal();
-  const { teamPlaces } = useTeamPlace();
-  const { teamPlaceColor, displayName } = getInfoByTeamPlaceId(teamPlaces, 1);
+  const { teamPlaceColor, displayName } = useTeamPlace();
+
   const {
     schedule,
     times,

@@ -5,11 +5,13 @@ import { useModal } from '~/hooks/useModal';
 import { isYYYYMMDDHHMM } from '~/types/typeGuard';
 import type { Schedule } from '~/types/schedule';
 import { useToast } from '~/hooks/useToast';
+import { useTeamPlace } from '~/hooks/useTeamPlace';
 
 const useScheduleEditModal = (
   scheduleId: Schedule['id'],
   initialSchedule?: Schedule,
 ) => {
+  const { teamPlaceId } = useTeamPlace();
   const [startDate, startTime] = initialSchedule?.startDateTime.split(' ') ?? [
     '',
   ];
@@ -26,7 +28,7 @@ const useScheduleEditModal = (
   const [isAllDay, setIsAllDay] = useState(endTime === '23:59');
   const { closeModal } = useModal();
   const { showToast } = useToast();
-  const { mutateModifySchedule } = useModifySchedule(1, scheduleId);
+  const { mutateModifySchedule } = useModifySchedule(teamPlaceId, scheduleId);
 
   const handleIsAllDayChange = () => {
     setIsAllDay((prev) => !prev);

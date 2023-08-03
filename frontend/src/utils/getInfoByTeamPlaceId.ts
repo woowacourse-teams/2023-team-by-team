@@ -10,7 +10,7 @@ export const getInfoByTeamPlaceId = (
 
   if (teamPlace === undefined)
     return {
-      teamPlaceColor: 0 as TeamPlaceColor,
+      teamPlaceColor: 100 as TeamPlaceColor,
       displayName: '',
     };
 

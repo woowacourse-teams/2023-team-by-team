@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useSendNoticeThread } from '~/hooks/queries/useSendNoticeThread';
 import { useSendThread } from '~/hooks/queries/useSendThread';
 import useBottomSheet from '~/hooks/useBottomSheet';
+import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useToast } from '~/hooks/useToast';
 
 export const useThreadAddBottomSheet = () => {
@@ -10,8 +11,9 @@ export const useThreadAddBottomSheet = () => {
   const [isNotice, setIsNotice] = useState(false);
   const { handleClose, isClosing } = useBottomSheet();
   const { showToast } = useToast();
-  const { mutateSendThread } = useSendThread(1);
-  const { mutateSendNoticeThread } = useSendNoticeThread(1);
+  const { teamPlaceId } = useTeamPlace();
+  const { mutateSendThread } = useSendThread(teamPlaceId);
+  const { mutateSendNoticeThread } = useSendNoticeThread(teamPlaceId);
 
   const handleContentChange: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
     const { target } = e;

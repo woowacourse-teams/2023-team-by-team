@@ -10,7 +10,6 @@ import Checkbox from '~/components/common/Checkbox/Checkbox';
 import TeamBadge from '~/components/common/TeamBadge/TeamBadge';
 import TimeTableMenu from '~/components/TimeTableMenu/TimeTableMenu';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
-import { getInfoByTeamPlaceId } from '~/utils/getInfoByTeamPlaceId';
 import { useRef, useEffect } from 'react';
 
 interface ScheduleAddModalProps {
@@ -20,7 +19,7 @@ interface ScheduleAddModalProps {
 const ScheduleAddModal = (props: ScheduleAddModalProps) => {
   const { clickedDate } = props;
   const { closeModal } = useModal();
-  const { teamPlaces } = useTeamPlace();
+  const { teamPlaceColor, displayName } = useTeamPlace();
   const {
     schedule,
     isAllDay,
@@ -33,8 +32,6 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
       handleScheduleSubmit,
     },
   } = useScheduleAddModal(clickedDate);
-
-  const { teamPlaceColor, displayName } = getInfoByTeamPlaceId(teamPlaces, 1);
 
   const titleInputRef = useRef<HTMLInputElement>(null);
 

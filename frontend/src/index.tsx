@@ -13,6 +13,7 @@ import { ToastProvider } from '~/components/common/Toast/ToastContext';
 import ToastList from '~/components/common/Toast/ToastList';
 import FeedPage from '~/components/pages/FeedPage/FeedPage';
 import { TeamPlaceProvider } from '~/contexts/TeamPlaceContext';
+import TempLandingPage from '~/components/pages/TempLandingPage/TempLandingPage';
 
 if (process.env.NODE_ENV === 'development') {
   worker.start();
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
     children: [
       {
         path: '',
+        element: <TempLandingPage />,
+      },
+      {
+        path: '/team-calendar',
         element: <TeamCalendarPage />,
       },
       {

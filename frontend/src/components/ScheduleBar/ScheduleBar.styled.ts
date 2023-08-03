@@ -1,5 +1,15 @@
 import { css, styled } from 'styled-components';
 import type { ScheduleBarProps } from '~/components/ScheduleBar/ScheduleBar';
+import type { TeamPlaceColor } from '~/types/team';
+
+interface InnerProps {
+  column: number;
+  duration: number;
+  level: number;
+  roundedStart: boolean;
+  roundedEnd: boolean;
+  teamPlaceColor: TeamPlaceColor;
+}
 
 export const Wrapper = styled.div<
   Pick<
@@ -18,12 +28,7 @@ export const Wrapper = styled.div<
     `0 ${roundedEnd ? '4px' : 0} 0 ${roundedStart ? '4px' : 0}`};
 `;
 
-export const Inner = styled.div<
-  Pick<
-    ScheduleBarProps,
-    'teamPlaceColor' | 'level' | 'roundedStart' | 'roundedEnd'
-  >
->`
+export const Inner = styled.div<InnerProps>`
   display: flex;
   align-items: center;
   justify-content: space-between;
