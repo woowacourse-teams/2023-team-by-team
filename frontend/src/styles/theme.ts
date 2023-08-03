@@ -24,7 +24,7 @@ const color = {
 
 const teamColor = {
   0: '#4886FF',
-  1: '#59DFC7',
+  1: '#1AA58C',
   2: '#8E1DFF',
   3: '#FF6666',
   4: '#FF66F9',
