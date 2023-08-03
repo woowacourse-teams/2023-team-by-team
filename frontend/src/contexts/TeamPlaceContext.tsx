@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useCallback, useEffect, useState } from 'react';
 import type { PropsWithChildren } from 'react';
 import { useFetchTeamPlaces } from '~/hooks/queries/useFetchTeamPlaces';
 import type { TeamPlace, TeamPlaceColor } from '~/types/team';
@@ -23,15 +23,19 @@ export const TeamPlaceProvider = (props: PropsWithChildren) => {
   const [teamPlaceColor, setTeamPlaceColor] = useState<TeamPlaceColor>(100);
   const [displayName, setDisplayName] = useState('');
 
-  const changeTeamPlace = (id: number) => {
-    const { teamPlaceColor: color, displayName: name } = getInfoByTeamPlaceId(
-      teamPlaces,
-      id,
-    );
-    setDisplayName(() => name);
-    setTeamPlaceColor(() => color);
-    setTeamPlaceId(() => id);
-  };
+  const changeTeamPlace = useCallback(
+    (id: number) => {
+      const { teamPlaceColor: color, displayName: name } = getInfoByTeamPlaceId(
+        teamPlaces,
+        id,
+      );
+      setDisplayName(() => name);
+      setTeamPlaceColor(() => color);
+      setTeamPlaceId(() => id);
+      localStorage.setItem('teamPlaceId', String(id));
+    },
+    [teamPlaces],
+  );
 
   const value = {
     teamPlaces,
@@ -40,6 +44,14 @@ export const TeamPlaceProvider = (props: PropsWithChildren) => {
     displayName,
     changeTeamPlace,
   } as const;
+
+  useEffect(() => {
+    const id = localStorage.getItem('teamPlaceId');
+
+    if (id) {
+      changeTeamPlace(Number(id));
+    }
+  }, [changeTeamPlace]);
 
   return (
     <TeamPlaceContext.Provider value={value}>
