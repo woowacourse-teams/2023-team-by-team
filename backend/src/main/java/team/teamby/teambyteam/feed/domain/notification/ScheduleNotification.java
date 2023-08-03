@@ -26,7 +26,7 @@ public class ScheduleNotification extends Notification {
 
     @Override
     public FeedType getType() {
-        return FeedType.SCHEDULE_NOTIFICATION;
+        return FeedType.NOTIFICATION;
     }
 
     @Override
