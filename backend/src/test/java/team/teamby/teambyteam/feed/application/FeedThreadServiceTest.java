@@ -15,6 +15,8 @@ import team.teamby.teambyteam.feed.domain.notification.ScheduleNotification;
 import team.teamby.teambyteam.feed.domain.vo.Content;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.Member;
+import team.teamby.teambyteam.member.domain.MemberTeamPlace;
+import team.teamby.teambyteam.member.domain.vo.DisplayMemberName;
 import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.schedule.application.event.ScheduleCreateEvent;
 import team.teamby.teambyteam.schedule.domain.vo.Span;
@@ -29,6 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.HELLO_WRITING_REQUEST;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
+import static team.teamby.teambyteam.common.fixtures.MemberTeamPlaceFixtures.PHILIP_ENGLISH_TEAM_PLACE;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.JAPANESE_TEAM_PLACE;
 
@@ -95,6 +98,7 @@ class FeedThreadServiceTest extends ServiceTest {
             // given
             final Member member = testFixtureBuilder.buildMember(PHILIP());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            testFixtureBuilder.buildMemberTeamPlace(member, teamPlace);
             final List<Feed> feeds = new ArrayList<>();
             feeds.add(new FeedThread(teamPlace.getId(), new Content("Hello1"), member.getId()));
             feeds.add(new FeedThread(teamPlace.getId(), new Content("Hello2"), member.getId()));
@@ -114,11 +118,38 @@ class FeedThreadServiceTest extends ServiceTest {
         }
 
         @Test
+        @DisplayName("피드의 스레드조회 시 팀플레이스의 이름이 나온다.")
+        void threadReadTeamPlaceMemberName() {
+            // given
+            final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final MemberTeamPlace PHILIP_ENGLISH_TEAM_PLACE = PHILIP_ENGLISH_TEAM_PLACE();
+            PHILIP_ENGLISH_TEAM_PLACE.setMemberAndTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
+            DisplayMemberName displayMemberName = new DisplayMemberName("changedName");
+            PHILIP_ENGLISH_TEAM_PLACE.changeDisplayMemberName(displayMemberName);
+            testFixtureBuilder.buildMemberTeamPlace(PHILIP_ENGLISH_TEAM_PLACE);
+            final List<Feed> feeds = new ArrayList<>();
+            feeds.add(new FeedThread(ENGLISH_TEAM_PLACE.getId(), new Content("Hello1"), PHILIP.getId()));
+            testFixtureBuilder.buildFeeds(feeds);
+            final int size = 10;
+
+            // when
+            final FeedsResponse feedsResponse = feedThreadService.firstRead(PHILIP_ENGLISH_TEAM_PLACE.getId(), size);
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(feedsResponse.threads().get(0).authorName()).isEqualTo(displayMemberName.getValue());
+                softly.assertThat(feedsResponse.threads().get(0).authorName()).isNotEqualTo(PHILIP.getName().getValue());
+            });
+        }
+
+        @Test
         @DisplayName("피드의 스레드를 사이즈 초과인 경우 처음 조회한다.")
         void firstThreadReadOverSizeSuccess() {
             // given
             final Member member = testFixtureBuilder.buildMember(PHILIP());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            testFixtureBuilder.buildMemberTeamPlace(member, teamPlace);
             final List<Feed> feeds = new ArrayList<>();
             final int size = 3;
             feeds.add(new FeedThread(teamPlace.getId(), new Content("Hello"), member.getId()));
@@ -145,6 +176,7 @@ class FeedThreadServiceTest extends ServiceTest {
             // given
             final Member member = testFixtureBuilder.buildMember(PHILIP());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            testFixtureBuilder.buildMemberTeamPlace(member, teamPlace);
             final List<Feed> feeds = new ArrayList<>();
             feeds.add(new FeedThread(teamPlace.getId(), new Content("Hello1"), member.getId()));
             testFixtureBuilder.buildFeeds(feeds);
@@ -186,6 +218,7 @@ class FeedThreadServiceTest extends ServiceTest {
             // given
             final Member member = testFixtureBuilder.buildMember(PHILIP());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            testFixtureBuilder.buildMemberTeamPlace(member, teamPlace);
             final List<Feed> feeds = new ArrayList<>();
             feeds.add(new FeedThread(1L, new Content("테스트 스레드"), member.getId()));
             feeds.add(ScheduleNotification.from(new ScheduleCreateEvent(1L, 1L, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
@@ -216,6 +249,7 @@ class FeedThreadServiceTest extends ServiceTest {
             // given
             final Member member = testFixtureBuilder.buildMember(PHILIP());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            testFixtureBuilder.buildMemberTeamPlace(member, teamPlace);
             final List<Feed> feeds = new ArrayList<>();
             final int size = 3;
             feeds.add(new FeedThread(teamPlace.getId(), new Content("Hello"), member.getId()));
@@ -244,6 +278,8 @@ class FeedThreadServiceTest extends ServiceTest {
             final Member member = testFixtureBuilder.buildMember(PHILIP());
             final TeamPlace englishTeamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             final TeamPlace japaneseTeamPlace = testFixtureBuilder.buildTeamPlace(JAPANESE_TEAM_PLACE());
+            testFixtureBuilder.buildMemberTeamPlace(member, englishTeamPlace);
+            testFixtureBuilder.buildMemberTeamPlace(member, japaneseTeamPlace);
             final int size = 2;
 
             final List<Feed> feeds = new ArrayList<>();

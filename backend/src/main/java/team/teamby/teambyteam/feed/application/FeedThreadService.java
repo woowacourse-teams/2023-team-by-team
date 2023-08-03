@@ -17,9 +17,12 @@ import team.teamby.teambyteam.feed.domain.vo.Content;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.IdOnly;
 import team.teamby.teambyteam.member.domain.Member;
+import team.teamby.teambyteam.member.domain.MemberIdAndDisplayNameOnly;
 import team.teamby.teambyteam.member.domain.MemberRepository;
+import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.exception.MemberException;
+import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
 import java.util.List;
 
@@ -34,6 +37,7 @@ public class FeedThreadService {
 
     private final FeedRepository feedRepository;
     private final MemberRepository memberRepository;
+    private final MemberTeamPlaceRepository memberTeamPlaceRepository;
 
     public Long write(
             final FeedThreadWritingRequest feedThreadWritingRequest,
@@ -81,7 +85,9 @@ public class FeedThreadService {
         if (FeedType.THREAD == feed.getType()) {
             final Member member = memberRepository.findById(feed.getAuthorId())
                     .orElseThrow(MemberException.MemberNotFoundException::new);
-            return FeedResponse.from(feed, member.getName().getValue(), member.getProfileImageUrl().getValue());
+            MemberIdAndDisplayNameOnly memberIdAndDisplayName = memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(feed.getTeamPlaceId(), member.getId())
+                    .orElseThrow(TeamPlaceException.TeamPlaceAccessForbidden::new);
+            return FeedResponse.from(feed, memberIdAndDisplayName.displayMemberName().getValue(), member.getProfileImageUrl().getValue());
         }
         if (FeedType.NOTIFICATION == feed.getType()) {
             return FeedResponse.from(feed, "schedule", "");

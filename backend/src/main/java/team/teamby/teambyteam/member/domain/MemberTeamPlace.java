@@ -86,4 +86,8 @@ public class MemberTeamPlace extends BaseEntity {
                 .map(Map.Entry::getKey)
                 .get();
     }
+
+    public void changeDisplayMemberName(final DisplayMemberName displayMemberName) {
+        this.displayMemberName = displayMemberName;
+    }
 }
