@@ -19,7 +19,8 @@ export const CalendarHeader = styled.div`
 export const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
-  margin: 0 auto;
+
+  margin-left: 30px;
 `;
 
 export const DaysOfWeek = styled.div`
@@ -72,8 +73,6 @@ export const calendarTitle = css`
 `;
 
 export const scheduleAddButton = css`
-  position: absolute;
-  right: 1em;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -83,6 +82,4 @@ export const scheduleAddButton = css`
   padding: 4px;
 
   font-size: 24px;
-
-  margin-left: auto;
 `;

@@ -10,7 +10,7 @@ public record ScheduleWithTeamPlaceIdResponse(
         Long teamPlaceId,
         String title,
         String startDateTime,
-        String endDAteTime
+        String endDateTime
 ) {
     private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm";
 

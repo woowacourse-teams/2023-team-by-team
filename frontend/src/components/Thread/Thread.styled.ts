@@ -12,13 +12,14 @@ export const Container = styled.div`
 
   border-radius: 40px;
   background: ${({ theme }) => theme.color.WHITE};
-  box-shadow: 0px 0px 30px 30px rgba(0, 0, 0, 0.03);
+
+  box-shadow: 0 0 8px ${({ theme }) => theme.color.GRAY300};
 `;
 
 export const ThreadHeader = styled.div`
   display: flex;
   align-items: center;
-  gap: 18px;
+  column-gap: 8px;
 
   height: 36px;
 `;
@@ -38,13 +39,14 @@ export const ProfileImg = styled.img`
   object-fit: cover;
 `;
 
-export const Divider = styled.div`
-  color: ${({ theme }) => theme.color.GRAY500};
-  padding: 0 5px;
+export const Divider = styled.span`
+  display: inline-block;
 
-  &::before {
-    content: '|';
-  }
+  width: 1.5px;
+  height: 20px;
+  margin: 0 4px;
+
+  background-color: ${({ theme }) => theme.color.GRAY400};
 `;
 
 export const contentField = css`

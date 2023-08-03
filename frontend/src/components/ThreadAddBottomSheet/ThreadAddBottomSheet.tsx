@@ -1,4 +1,3 @@
-import Modal from '~/components/common/Modal/Modal';
 import Text from '~/components/common/Text/Text';
 import * as S from './ThreadAddBottomSheet.styled';
 import Button from '~/components/common/Button/Button';
@@ -21,7 +20,7 @@ const ThreadAddBottomSheet = () => {
   } = useThreadAddBottomSheet();
 
   return (
-    <Modal>
+    <>
       <S.Backdrop onClick={handleClose} />
       <form onSubmit={handleSubmit}>
         <S.Container isClosing={isClosing}>
@@ -55,7 +54,7 @@ const ThreadAddBottomSheet = () => {
           </S.ButtonWrapper>
         </S.Container>
       </form>
-    </Modal>
+    </>
   );
 };
 

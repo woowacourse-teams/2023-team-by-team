@@ -10,6 +10,7 @@ export const CalendarHeader = styled.div`
   align-items: center;
 
   padding: 10px;
+  gap: 6px;
 `;
 
 export const DaysOfWeek = styled.div`
@@ -49,4 +50,9 @@ export const dayOfWeek = css`
   &:nth-child(7) {
     color: ${({ theme }) => theme.color.PURPLE};
   }
+`;
+
+export const monthButton = css`
+  padding: 0;
+  margin-top: 4px;
 `;
