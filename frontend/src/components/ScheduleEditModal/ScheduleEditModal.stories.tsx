@@ -21,7 +21,6 @@ const SampleModal = () => {
     <>
       <Button onClick={openModal}>모달 열기</Button>
       <ScheduleEditModal
-        teamPlaceName="Woowacourse TeamByTeam Corporation"
         scheduleId={1}
         initialSchedule={{
           id: 1,
@@ -37,7 +36,6 @@ const SampleModal = () => {
 export const Default: Story = {
   render: () => <SampleModal />,
   args: {
-    teamPlaceName: '',
     scheduleId: 1,
     initialSchedule: {
       id: 1,

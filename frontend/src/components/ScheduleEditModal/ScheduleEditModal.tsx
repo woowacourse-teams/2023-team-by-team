@@ -10,21 +10,23 @@ import type { Schedule } from '~/types/schedule';
 import TeamBadge from '~/components/common/TeamBadge/TeamBadge';
 import TimeTableMenu from '~/components/TimeTableMenu/TimeTableMenu';
 import Checkbox from '~/components/common/Checkbox/Checkbox';
+import { useTeamPlace } from '~/hooks/useTeamPlace';
+import { getInfoByTeamPlaceId } from '~/utils/getInfoByTeamPlaceId';
 
 interface ScheduleEditModalProps {
-  teamPlaceName: string;
   scheduleId: Schedule['id'];
   initialSchedule?: Schedule;
 }
 
 const ScheduleEditModal = (props: ScheduleEditModalProps) => {
-  const { teamPlaceName, scheduleId, initialSchedule } = props;
+  const { scheduleId, initialSchedule } = props;
   const { closeModal } = useModal();
+  const { teamPlaces } = useTeamPlace();
+  const { teamPlaceColor, displayName } = getInfoByTeamPlaceId(teamPlaces, 1);
   const {
     schedule,
     times,
     isAllDay,
-
     handlers: {
       handleScheduleChange,
       handleScheduleSubmit,
@@ -121,9 +123,9 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
             <Checkbox isChecked={isAllDay} onChange={handleIsAllDayChange} />
           </S.CheckboxContainer>
           <S.InnerContainer>
-            <S.TeamNameContainer title={teamPlaceName}>
-              <TeamBadge teamPlaceColor={0} size="lg" />
-              <Text css={S.teamPlaceName}>{teamPlaceName}</Text>
+            <S.TeamNameContainer title={displayName}>
+              <TeamBadge teamPlaceColor={teamPlaceColor} size="lg" />
+              <Text css={S.teamPlaceName}>{displayName}</Text>
             </S.TeamNameContainer>
             <S.ControlButtonWrapper>
               <Button variant="primary" css={S.submitButton}>

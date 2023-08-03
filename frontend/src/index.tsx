@@ -12,6 +12,7 @@ import TeamCalendarPage from '~/components/pages/TeamCalendarPage/TeamCalendarPa
 import { ToastProvider } from '~/components/common/Toast/ToastContext';
 import ToastList from '~/components/common/Toast/ToastList';
 import FeedPage from '~/components/pages/FeedPage/FeedPage';
+import { TeamPlaceProvider } from '~/contexts/TeamPlaceContext';
 
 if (process.env.NODE_ENV === 'development') {
   worker.start();
@@ -42,13 +43,15 @@ root.render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
-        <ToastProvider>
-          <ModalProvider>
-            <GlobalStyle />
-            <RouterProvider router={router} />
-            <ToastList />
-          </ModalProvider>
-        </ToastProvider>
+        <TeamPlaceProvider>
+          <ToastProvider>
+            <ModalProvider>
+              <GlobalStyle />
+              <RouterProvider router={router} />
+              <ToastList />
+            </ModalProvider>
+          </ToastProvider>
+        </TeamPlaceProvider>
       </ThemeProvider>
     </QueryClientProvider>
   </StrictMode>,

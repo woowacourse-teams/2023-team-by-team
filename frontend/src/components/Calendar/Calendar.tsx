@@ -19,6 +19,8 @@ import ScheduleMoreCell from '~/components/ScheduleMoreCell/ScheduleMoreCell';
 import type { Position, ModalOpenType } from '~/types/schedule';
 import DailyScheduleModal from '~/components/DailyScheduleModal/DailyScheduleModal';
 import { getDateByPosition } from '~/utils/getDateByPosition';
+import { getInfoByTeamPlaceId } from '~/utils/getInfoByTeamPlaceId';
+import { useTeamPlace } from '~/hooks/useTeamPlace';
 
 const Calendar = () => {
   const {
@@ -46,6 +48,9 @@ const Calendar = () => {
     column: 0,
   });
   const scheduleBars = generateScheduleBars(year, month, schedules);
+
+  const { teamPlaces } = useTeamPlace();
+  const { teamPlaceColor } = getInfoByTeamPlaceId(teamPlaces, 1);
 
   const handleModalOpen = (modalOpenType: ModalOpenType) => {
     setModalType(() => modalOpenType);
@@ -157,6 +162,7 @@ const Calendar = () => {
                                 level,
                               });
                             }}
+                            teamPlaceColor={teamPlaceColor}
                             {...scheduleBar}
                           />
                         );
@@ -193,7 +199,7 @@ const Calendar = () => {
         </div>
       </S.Container>
       {isModalOpen && modalType === MODAL_OPEN_TYPE.ADD && (
-        <ScheduleAddModal teamPlaceName="팀바팀" clickedDate={clickedDate} />
+        <ScheduleAddModal clickedDate={clickedDate} />
       )}
       {isModalOpen && modalType === MODAL_OPEN_TYPE.VIEW && (
         <ScheduleModal
@@ -204,7 +210,6 @@ const Calendar = () => {
       )}
       {isModalOpen && modalType === MODAL_OPEN_TYPE.EDIT && (
         <ScheduleEditModal
-          teamPlaceName="팀바팀"
           scheduleId={modalScheduleId}
           initialSchedule={schedules.find(
             (schedule) => schedule.id === modalScheduleId,

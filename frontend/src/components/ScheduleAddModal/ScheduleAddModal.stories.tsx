@@ -21,10 +21,7 @@ const SampleModal = () => {
   return (
     <>
       <Button onClick={openModal}>모달 열기</Button>
-      <ScheduleAddModal
-        teamPlaceName="Woowacourse TeamByTeam Corporation"
-        clickedDate={new Date()}
-      />
+      <ScheduleAddModal clickedDate={new Date()} />
     </>
   );
 };
@@ -32,7 +29,6 @@ const SampleModal = () => {
 export const Default: Story = {
   render: () => <SampleModal />,
   args: {
-    teamPlaceName: '',
     clickedDate: new Date(),
   },
 };
