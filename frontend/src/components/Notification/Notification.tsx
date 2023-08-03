@@ -14,10 +14,16 @@ const Notification = (props: NotificationProps) => {
   const textSize: Extract<TextSize, 'md' | 'xl'> = size === 'md' ? 'xl' : 'md';
 
   return (
-    <S.Wrapper teamPlaceColor={teamPlaceColor} size={size}>
-      <Text size={textSize} css={S.notification}>
-        {content}
-      </Text>
+    <S.Wrapper
+      teamPlaceColor={teamPlaceColor}
+      className={content.length > 100 ? 'can-hover' : ''}
+      size={size}
+    >
+      <S.Inner>
+        <Text size={textSize} css={S.notification}>
+          {content}
+        </Text>
+      </S.Inner>
     </S.Wrapper>
   );
 };
