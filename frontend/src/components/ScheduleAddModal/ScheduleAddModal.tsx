@@ -45,7 +45,7 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
             type="button"
             onClick={closeModal}
             css={S.closeButton}
-            aria-label="닫기"
+            aria-label="일정 등록 모달 닫기"
           >
             <CloseIcon />
           </Button>
@@ -55,10 +55,11 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
             <Input
               width="100%"
               height="100%"
-              placeholder="일정 제목"
+              placeholder="일정 제목을 입력해주세요."
               css={S.title}
               name="title"
               value={schedule['title']}
+              ref={titleInputRef}
               required
               onChange={handleScheduleChange}
             />
@@ -77,6 +78,7 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
                 name="startDateTime"
                 value={schedule['startDateTime']}
                 onChange={handleScheduleChange}
+                aria-label={`일정 시작 일자는 ${schedule['startDateTime']} 입니다`}
                 required
               />
               {!isAllDay && (
@@ -99,7 +101,8 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
                 css={S.dateTimeLocalInput}
                 name="endDateTime"
                 value={schedule['endDateTime']}
-                min={schedule['startDateTime']}
+                min={schedule['endDateTime']}
+                aria-label={`일정 마감 일자는 ${schedule['endDateTime']} 입니다`}
                 onChange={handleScheduleChange}
                 required
               />
@@ -116,6 +119,16 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
               종일
             </Text>
             <Checkbox isChecked={isAllDay} onChange={handleIsAllDayChange} />
+
+            <p
+              className="hidden"
+              aria-live="assertive"
+              aria-relevant="additions"
+            >
+              {isAllDay
+                ? '종일 일정이 선택되었습니다.'
+                : '종일 일정이 해제되었습니다.'}
+            </p>
           </S.CheckboxContainer>
           <S.InnerContainer>
             <S.TeamNameContainer title={displayName}>

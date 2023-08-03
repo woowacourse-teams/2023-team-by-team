@@ -7,20 +7,14 @@ const NavigationBar = () => {
   return (
     <S.Container>
       <S.MenuContainer>
-        <Link to="/">
-          <Button type="button" variant="plain" css={S.menuIcon}>
-            <HomeIcon />
-          </Button>
+        <Link to="/" aria-label="홈 페이지로 이동하기 버튼">
+          <HomeIcon />
         </Link>
-        <Link to="/">
-          <Button type="button" variant="plain" css={S.menuIcon}>
-            <CalendarIcon />
-          </Button>
+        <Link to="/" aria-label="팀 캘린더 페이지로 이동하기 버튼">
+          <CalendarIcon />
         </Link>
-        <Link to="/threads">
-          <Button type="button" variant="plain" css={S.menuIcon}>
-            <FeedIcon />
-          </Button>
+        <Link to="/threads" aria-label="팀 피드 페이지로 이동하기 버튼">
+          <FeedIcon />
         </Link>
       </S.MenuContainer>
     </S.Container>

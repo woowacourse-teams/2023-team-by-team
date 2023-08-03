@@ -108,6 +108,7 @@ const Calendar = () => {
           <Button
             css={S.scheduleAddButton}
             onClick={handleScheduleAddButtonClick}
+            aria-label="새로운 일정 등록하기"
           >
             <PlusIcon />
           </Button>
