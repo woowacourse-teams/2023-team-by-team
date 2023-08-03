@@ -11,7 +11,7 @@ const Header = () => {
   const { teamPlaceColor, displayName } = getInfoByTeamPlaceId(teamPlaces, 1);
 
   return (
-    <S.Container>
+    <S.Container tabIndex={0}>
       <LogoIcon />
       <div>
         <TeamBadge teamPlaceColor={teamPlaceColor} />
