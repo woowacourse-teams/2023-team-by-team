@@ -14,3 +14,6 @@ export { ReactComponent as MegaphoneIcon } from './megaphone.svg';
 export { ReactComponent as HomeIcon } from './home.svg';
 export { ReactComponent as CalendarIcon } from './calendar.svg';
 export { ReactComponent as FeedIcon } from './feed.svg';
+export { ReactComponent as DriveIcon } from './drive.svg';
+export { ReactComponent as WriteIcon } from './write.svg';
+export { ReactComponent as ArrowUpIcon } from './arrow-up.svg';
