@@ -139,9 +139,10 @@ class NoticeServiceTest extends ServiceTest {
         void succeedFindEmptyNotice() {
             // given
             final TeamPlace additionalTeamPlace = testFixtureBuilder.buildTeamPlace(JAPANESE_TEAM_PLACE());
+            final TeamPlace registerdTeamplace = testFixtureBuilder.buildTeamPlace(additionalTeamPlace);
 
             // when
-            Optional<NoticeResponse> noticeResponse = noticeService.findMostRecentNotice(additionalTeamPlace.getId());
+            Optional<NoticeResponse> noticeResponse = noticeService.findMostRecentNotice(registerdTeamplace.getId());
 
             //then
             assertThat(noticeResponse).isEmpty();
