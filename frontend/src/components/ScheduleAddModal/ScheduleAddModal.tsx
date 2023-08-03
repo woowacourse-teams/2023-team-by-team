@@ -105,7 +105,6 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
                 css={S.dateTimeLocalInput}
                 name="endDateTime"
                 value={schedule['endDateTime']}
-                min={schedule['endDateTime']}
                 aria-label={`일정 마감 일자는 ${schedule['endDateTime']} 입니다`}
                 onChange={handleScheduleChange}
                 required
