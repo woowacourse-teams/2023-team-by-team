@@ -8,5 +8,5 @@ export const useFetchTeamPlaces = () => {
 
   const { teamPlaces } = data;
 
-  return { teamPlaces };
+  return teamPlaces;
 };

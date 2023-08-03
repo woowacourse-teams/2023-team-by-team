@@ -10,14 +10,16 @@ import { useFetchMySchedules } from '~/hooks/queries/useFetchMySchedules';
 import { parseDate } from '~/utils/parseDate';
 import { generateScheduleCirclesMatrix } from '~/utils/generateScheduleCirclesMatrix';
 import TeamBadge from '~/components/common/TeamBadge/TeamBadge';
-import type { TeamPlaceColor } from '~/types/team';
+import { getInfoByTeamPlaceId } from '~/utils/getInfoByTeamPlaceId';
+import type { TeamPlace } from '~/types/team';
 
 interface MyCalendarProps {
+  teamPlaces: TeamPlace[];
   onDailyClick: (date: Date) => void;
 }
 
 const MyCalendar = (props: MyCalendarProps) => {
-  const { onDailyClick } = props;
+  const { teamPlaces, onDailyClick } = props;
   const {
     year,
     month,
@@ -96,13 +98,23 @@ const MyCalendar = (props: MyCalendarProps) => {
                         />
                         <S.ScheduleCircleWrapper>
                           {scheduleCircles[rowIndex][colIndex].teamPlaceIds.map(
-                            (teamPlaceId) => (
-                              <TeamBadge
-                                key={`${day.toISOString()}+${rowIndex},${colIndex}`}
-                                size="sm"
-                                teamPlaceColor={teamPlaceId as TeamPlaceColor} //팀 조회 로직 나오면 바꿀 임시 색상 로직
-                              />
-                            ),
+                            (teamPlaceId) => {
+                              const teamInfo = getInfoByTeamPlaceId(
+                                teamPlaces,
+                                teamPlaceId,
+                              );
+                              if (teamInfo === undefined) return;
+
+                              const { teamPlaceColor } = teamInfo;
+
+                              return (
+                                <TeamBadge
+                                  key={`${day.toISOString()}+${teamPlaceId}`}
+                                  size="sm"
+                                  teamPlaceColor={teamPlaceColor}
+                                />
+                              );
+                            },
                           )}
                         </S.ScheduleCircleWrapper>
                       </div>
