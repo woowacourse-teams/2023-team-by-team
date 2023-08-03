@@ -253,3 +253,66 @@ describe('Test #2 - 범위를 벗어나는 일정 테스트', () => {
     );
   });
 });
+
+describe('Test #3 - 중복 방지 테스트', () => {
+  test('팀플레이스 아이디 목록을 반환할 때, 같은 아이디는 한 번만 반환해야 한다.', () => {
+    const schedules: ScheduleWithTeamPlaceId[] = [
+      {
+        id: 1223,
+        teamPlaceId: 2,
+        title: '내 일정',
+        startDateTime: '2023-08-01 00:00',
+        endDateTime: '2023-08-01 02:00',
+      },
+      {
+        id: 4535,
+        teamPlaceId: 7,
+        title: '내 일정',
+        startDateTime: '2023-08-01 01:00',
+        endDateTime: '2023-08-01 03:59',
+      },
+      {
+        id: 1342,
+        teamPlaceId: 1,
+        title: '내 일정',
+        startDateTime: '2023-08-01 02:00',
+        endDateTime: '2023-08-01 03:59',
+      },
+      {
+        id: 3465,
+        teamPlaceId: 2,
+        title: '내 일정',
+        startDateTime: '2023-08-01 06:00',
+        endDateTime: '2023-08-01 08:59',
+      },
+      {
+        id: 88542,
+        teamPlaceId: 2,
+        title: '내 일정',
+        startDateTime: '2023-08-01 11:35',
+        endDateTime: '2023-08-01 14:23',
+      },
+      {
+        id: 997,
+        teamPlaceId: 7,
+        title: '내 일정',
+        startDateTime: '2023-08-01 02:00',
+        endDateTime: '2023-08-01 03:59',
+      },
+    ];
+
+    const expectedResult = [
+      { teamPlaceIds: [] },
+      { teamPlaceIds: [] },
+      { teamPlaceIds: [1, 2, 7] },
+      { teamPlaceIds: [] },
+      { teamPlaceIds: [] },
+      { teamPlaceIds: [] },
+      { teamPlaceIds: [] },
+    ];
+
+    expect(generateScheduleCirclesMatrix(2023, 7, schedules)[0]).toEqual(
+      expectedResult,
+    );
+  });
+});
