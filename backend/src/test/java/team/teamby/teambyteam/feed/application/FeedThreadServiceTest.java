@@ -10,12 +10,18 @@ import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
 import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
 import team.teamby.teambyteam.feed.domain.Feed;
 import team.teamby.teambyteam.feed.domain.FeedThread;
+import team.teamby.teambyteam.feed.domain.FeedType;
+import team.teamby.teambyteam.feed.domain.notification.ScheduleNotification;
 import team.teamby.teambyteam.feed.domain.vo.Content;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.exception.MemberException;
+import team.teamby.teambyteam.schedule.application.event.ScheduleCreateEvent;
+import team.teamby.teambyteam.schedule.domain.vo.Span;
+import team.teamby.teambyteam.schedule.domain.vo.Title;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,7 +83,7 @@ class FeedThreadServiceTest extends ServiceTest {
             final int size = 10;
 
             // when
-            FeedsResponse feedsResponse = feedThreadService.firstRead(teamPlace.getId(), size);
+            final FeedsResponse feedsResponse = feedThreadService.firstRead(teamPlace.getId(), size);
 
             //then
             assertThat(feedsResponse.threads()).isEmpty();
@@ -87,9 +93,9 @@ class FeedThreadServiceTest extends ServiceTest {
         @DisplayName("피드의 스레드를 사이즈 이하인 경우 처음 조회한다.")
         void firstThreadReadUnderSizeSuccess() {
             // given
-            Member member = testFixtureBuilder.buildMember(PHILIP());
+            final Member member = testFixtureBuilder.buildMember(PHILIP());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
-            List<Feed> feeds = new ArrayList<>();
+            final List<Feed> feeds = new ArrayList<>();
             feeds.add(new FeedThread(teamPlace.getId(), new Content("Hello1"), member.getId()));
             feeds.add(new FeedThread(teamPlace.getId(), new Content("Hello2"), member.getId()));
             feeds.add(new FeedThread(teamPlace.getId(), new Content("Hello3"), member.getId()));
@@ -97,7 +103,7 @@ class FeedThreadServiceTest extends ServiceTest {
             final int size = 10;
 
             // when
-            FeedsResponse feedsResponse = feedThreadService.firstRead(teamPlace.getId(), size);
+            final FeedsResponse feedsResponse = feedThreadService.firstRead(teamPlace.getId(), size);
 
             //then
             SoftAssertions.assertSoftly(softly -> {
@@ -111,9 +117,9 @@ class FeedThreadServiceTest extends ServiceTest {
         @DisplayName("피드의 스레드를 사이즈 초과인 경우 처음 조회한다.")
         void firstThreadReadOverSizeSuccess() {
             // given
-            Member member = testFixtureBuilder.buildMember(PHILIP());
+            final Member member = testFixtureBuilder.buildMember(PHILIP());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
-            List<Feed> feeds = new ArrayList<>();
+            final List<Feed> feeds = new ArrayList<>();
             final int size = 3;
             feeds.add(new FeedThread(teamPlace.getId(), new Content("Hello"), member.getId()));
             feeds.add(new FeedThread(teamPlace.getId(), new Content("Hello"), member.getId()));
@@ -123,7 +129,7 @@ class FeedThreadServiceTest extends ServiceTest {
             testFixtureBuilder.buildFeeds(feeds);
 
             // when
-            FeedsResponse feedsResponse = feedThreadService.firstRead(teamPlace.getId(), size);
+            final FeedsResponse feedsResponse = feedThreadService.firstRead(teamPlace.getId(), size);
 
             //then
             SoftAssertions.assertSoftly(softly -> {
@@ -134,12 +140,83 @@ class FeedThreadServiceTest extends ServiceTest {
         }
 
         @Test
+        @DisplayName("피드 스레드 타입이 소문자다.")
+        void threadTypeLowerCase() {
+            // given
+            final Member member = testFixtureBuilder.buildMember(PHILIP());
+            final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final List<Feed> feeds = new ArrayList<>();
+            feeds.add(new FeedThread(teamPlace.getId(), new Content("Hello1"), member.getId()));
+            testFixtureBuilder.buildFeeds(feeds);
+            final int size = 10;
+            final String type = FeedType.THREAD.name().toLowerCase();
+
+            // when
+            final FeedsResponse feedsResponse = feedThreadService.firstRead(teamPlace.getId(), size);
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(feedsResponse.threads().get(0).type()).isEqualTo(type);
+            });
+        }
+
+        @Test
+        @DisplayName("일정 알림 타입이 소문자다.")
+        void scheduleNotificationTypeLowerCase() {
+            // given
+            final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final List<Feed> feeds = new ArrayList<>();
+            feeds.add(ScheduleNotification.from(new ScheduleCreateEvent(1L, teamPlace.getId(), new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
+            testFixtureBuilder.buildFeeds(feeds);
+            final int size = 10;
+            final String type = FeedType.NOTIFICATION.name().toLowerCase();
+
+            // when
+            final FeedsResponse feedsResponse = feedThreadService.firstRead(teamPlace.getId(), size);
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(feedsResponse.threads().get(0).type()).isEqualTo(type);
+            });
+        }
+
+        @Test
+        @DisplayName("피드를 조회하면 스레드와 일정 알림이 동시에 조회된다.")
+        void feedCombinationReadSuccess() {
+            // given
+            final Member member = testFixtureBuilder.buildMember(PHILIP());
+            final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final List<Feed> feeds = new ArrayList<>();
+            feeds.add(new FeedThread(1L, new Content("테스트 스레드"), member.getId()));
+            feeds.add(ScheduleNotification.from(new ScheduleCreateEvent(1L, 1L, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
+            feeds.add(new FeedThread(1L, new Content("테스트 스레드"), member.getId()));
+            feeds.add(ScheduleNotification.from(new ScheduleCreateEvent(2L, 1L, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
+            feeds.add(new FeedThread(1L, new Content("테스트 스레드"), member.getId()));
+            testFixtureBuilder.buildFeeds(feeds);
+            final String threadType = FeedType.THREAD.name().toLowerCase();
+            final String notificationType = FeedType.NOTIFICATION.name().toLowerCase();
+            final int size = 5;
+
+            // when
+            final FeedsResponse feedsResponse = feedThreadService.firstRead(teamPlace.getId(), size);
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(feedsResponse.threads().get(0).type()).isEqualTo(threadType);
+                softly.assertThat(feedsResponse.threads().get(1).type()).isEqualTo(notificationType);
+                softly.assertThat(feedsResponse.threads().get(2).type()).isEqualTo(threadType);
+                softly.assertThat(feedsResponse.threads().get(3).type()).isEqualTo(notificationType);
+                softly.assertThat(feedsResponse.threads().get(4).type()).isEqualTo(threadType);
+            });
+        }
+
+        @Test
         @DisplayName("피드의 스레드를 사이즈 초과인 경우 다음 페이지를 재조회한다.")
         void ThreadReReadOverSizeSuccess() {
             // given
-            Member member = testFixtureBuilder.buildMember(PHILIP());
+            final Member member = testFixtureBuilder.buildMember(PHILIP());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
-            List<Feed> feeds = new ArrayList<>();
+            final List<Feed> feeds = new ArrayList<>();
             final int size = 3;
             feeds.add(new FeedThread(teamPlace.getId(), new Content("Hello"), member.getId()));
             feeds.add(new FeedThread(teamPlace.getId(), new Content("Hello"), member.getId()));
@@ -150,7 +227,7 @@ class FeedThreadServiceTest extends ServiceTest {
             testFixtureBuilder.buildFeeds(feeds);
 
             // when
-            FeedsResponse feedsResponse = feedThreadService.reRead(teamPlace.getId(), 4L, size);
+            final FeedsResponse feedsResponse = feedThreadService.reRead(teamPlace.getId(), 4L, size);
 
             //then
             SoftAssertions.assertSoftly(softly -> {
@@ -164,12 +241,12 @@ class FeedThreadServiceTest extends ServiceTest {
         @DisplayName("피드의 스레드를 조회할 때 다른 팀플레이스의 피드는 조회되지 않는다.")
         void ThreadReadNotIncludeAnotherTeamPlaceSuccess() {
             // given
-            Member member = testFixtureBuilder.buildMember(PHILIP());
+            final Member member = testFixtureBuilder.buildMember(PHILIP());
             final TeamPlace englishTeamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             final TeamPlace japaneseTeamPlace = testFixtureBuilder.buildTeamPlace(JAPANESE_TEAM_PLACE());
             final int size = 2;
 
-            List<Feed> feeds = new ArrayList<>();
+            final List<Feed> feeds = new ArrayList<>();
             feeds.add(new FeedThread(englishTeamPlace.getId(), new Content("Hello"), member.getId()));
             feeds.add(new FeedThread(japaneseTeamPlace.getId(), new Content("Hello"), member.getId()));
             feeds.add(new FeedThread(englishTeamPlace.getId(), new Content("Hello"), member.getId()));
@@ -179,7 +256,7 @@ class FeedThreadServiceTest extends ServiceTest {
             testFixtureBuilder.buildFeeds(feeds);
 
             // when
-            FeedsResponse feedsResponse = feedThreadService.reRead(englishTeamPlace.getId(), 5L, size);
+            final FeedsResponse feedsResponse = feedThreadService.reRead(englishTeamPlace.getId(), 5L, size);
 
             //then
             SoftAssertions.assertSoftly(softly -> {
@@ -193,7 +270,7 @@ class FeedThreadServiceTest extends ServiceTest {
         void failFeedThreadMemberNotFound() {
             // given
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
-            List<Feed> feeds = new ArrayList<>();
+            final List<Feed> feeds = new ArrayList<>();
             final int size = 10;
             feeds.add(new FeedThread(teamPlace.getId(), new Content("Hello"), 0L));
             feeds.add(new FeedThread(teamPlace.getId(), new Content("Hello"), 0L));

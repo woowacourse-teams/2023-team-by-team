@@ -32,7 +32,7 @@ class NotificationServiceTest extends ServiceTest {
 
     @Nested
     @DisplayName("일정 등록 시 일정 등록 알림 생성")
-    class createScheduleNotificationWhenCreateSchedule {
+    class CreateScheduleNotificationWhenCreateSchedule {
 
         @Test
         @DisplayName("정상적으로 성공한다.")
@@ -56,7 +56,7 @@ class NotificationServiceTest extends ServiceTest {
 
     @Nested
     @DisplayName("일정 수정 시 일정 수정 알림 생성")
-    class createScheduleNotificationWhenUpdateSchedule {
+    class CreateScheduleNotificationWhenUpdateSchedule {
 
         @Test
         @DisplayName("정상적으로 성공한다.")
@@ -80,7 +80,7 @@ class NotificationServiceTest extends ServiceTest {
 
     @Nested
     @DisplayName("일정 삭제 시 일정 삭제 알림 생성")
-    class createScheduleNotificationWhenDeleteSchedule {
+    class CreateScheduleNotificationWhenDeleteSchedule {
 
         @Test
         @DisplayName("정상적으로 성공한다.")

@@ -83,7 +83,7 @@ public class FeedThreadService {
                     .orElseThrow(MemberException.MemberNotFoundException::new);
             return FeedResponse.from(feed, member.getName().getValue(), member.getProfileImageUrl().getValue());
         }
-        if (FeedType.SCHEDULE_NOTIFICATION == feed.getType()) {
+        if (FeedType.NOTIFICATION == feed.getType()) {
             return FeedResponse.from(feed, "schedule", "");
         }
         throw new IllegalArgumentException("지원하지 않는 타입입니다.");
