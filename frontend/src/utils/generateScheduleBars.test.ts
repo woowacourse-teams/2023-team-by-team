@@ -30,6 +30,8 @@ describe('Test #1 - 스케줄 바 기본 기능 테스트', () => {
         column: 1,
         duration: 3,
         level: 0,
+        roundedStart: true,
+        roundedEnd: true,
         schedule: {
           id: 20,
           title: '내 일정',
@@ -74,6 +76,8 @@ describe('Test #1 - 스케줄 바 기본 기능 테스트', () => {
         column: 0,
         duration: 2,
         level: 0,
+        roundedStart: true,
+        roundedEnd: true,
         schedule: {
           id: 116,
           title: '첫 번째 일정',
@@ -88,6 +92,8 @@ describe('Test #1 - 스케줄 바 기본 기능 테스트', () => {
         column: 3,
         duration: 3,
         level: 0,
+        roundedStart: true,
+        roundedEnd: true,
         schedule: {
           id: 225,
           title: '두 번째 일정',
@@ -102,6 +108,8 @@ describe('Test #1 - 스케줄 바 기본 기능 테스트', () => {
         column: 6,
         duration: 1,
         level: 0,
+        roundedStart: true,
+        roundedEnd: true,
         schedule: {
           id: 932,
           title: '세 번째 일정',
@@ -140,6 +148,8 @@ describe('Test #1 - 스케줄 바 기본 기능 테스트', () => {
         column: 6,
         duration: 1,
         level: 0,
+        roundedStart: true,
+        roundedEnd: true,
         schedule: {
           id: 97,
           title: '1주차의 일정',
@@ -154,6 +164,8 @@ describe('Test #1 - 스케줄 바 기본 기능 테스트', () => {
         column: 1,
         duration: 3,
         level: 0,
+        roundedStart: true,
+        roundedEnd: true,
         schedule: {
           id: 106,
           title: '3주차의 일정',
@@ -188,6 +200,8 @@ describe('Test #2 - 여러 주에 걸친 일정 테스트', () => {
         column: 1,
         duration: 6,
         level: 0,
+        roundedStart: true,
+        roundedEnd: false,
         schedule: {
           id: 1105,
           title: '바쁜 필립의 3주짜리 일정',
@@ -202,6 +216,8 @@ describe('Test #2 - 여러 주에 걸친 일정 테스트', () => {
         column: 0,
         duration: 7,
         level: 0,
+        roundedStart: false,
+        roundedEnd: false,
         schedule: {
           id: 1105,
           title: '바쁜 필립의 3주짜리 일정',
@@ -216,6 +232,8 @@ describe('Test #2 - 여러 주에 걸친 일정 테스트', () => {
         column: 0,
         duration: 4,
         level: 0,
+        roundedStart: false,
+        roundedEnd: true,
         schedule: {
           id: 1105,
           title: '바쁜 필립의 3주짜리 일정',
@@ -250,6 +268,8 @@ describe('Test #3 - 달의 시작과 끝에서 잘리는 일정 테스트', () =
         column: 0,
         duration: 4,
         level: 0,
+        roundedStart: false,
+        roundedEnd: true,
         schedule: {
           id: 987,
           title: '저번 달부터 이어져 온 유스의 일정',
@@ -282,6 +302,8 @@ describe('Test #3 - 달의 시작과 끝에서 잘리는 일정 테스트', () =
         column: 3,
         duration: 4,
         level: 0,
+        roundedStart: true,
+        roundedEnd: false,
         schedule: {
           id: 1256,
           title: '팀바팀의 일정(끝날 일 없음)',
@@ -296,6 +318,8 @@ describe('Test #3 - 달의 시작과 끝에서 잘리는 일정 테스트', () =
         column: 0,
         duration: 7,
         level: 0,
+        roundedStart: false,
+        roundedEnd: false,
         schedule: {
           id: 1256,
           title: '팀바팀의 일정(끝날 일 없음)',
@@ -328,6 +352,8 @@ describe('Test #3 - 달의 시작과 끝에서 잘리는 일정 테스트', () =
         column: 0,
         duration: 7,
         level: 0,
+        roundedStart: false,
+        roundedEnd: false,
         schedule: {
           id: 1078,
           title: '우아한테크코스 전체 과정',
@@ -342,6 +368,8 @@ describe('Test #3 - 달의 시작과 끝에서 잘리는 일정 테스트', () =
         column: 0,
         duration: 7,
         level: 0,
+        roundedStart: false,
+        roundedEnd: false,
         schedule: {
           id: 1078,
           title: '우아한테크코스 전체 과정',
@@ -356,6 +384,8 @@ describe('Test #3 - 달의 시작과 끝에서 잘리는 일정 테스트', () =
         column: 0,
         duration: 7,
         level: 0,
+        roundedStart: false,
+        roundedEnd: false,
         schedule: {
           id: 1078,
           title: '우아한테크코스 전체 과정',
@@ -370,6 +400,8 @@ describe('Test #3 - 달의 시작과 끝에서 잘리는 일정 테스트', () =
         column: 0,
         duration: 7,
         level: 0,
+        roundedStart: false,
+        roundedEnd: false,
         schedule: {
           id: 1078,
           title: '우아한테크코스 전체 과정',
@@ -384,6 +416,8 @@ describe('Test #3 - 달의 시작과 끝에서 잘리는 일정 테스트', () =
         column: 0,
         duration: 7,
         level: 0,
+        roundedStart: false,
+        roundedEnd: false,
         schedule: {
           id: 1078,
           title: '우아한테크코스 전체 과정',
@@ -398,6 +432,8 @@ describe('Test #3 - 달의 시작과 끝에서 잘리는 일정 테스트', () =
         column: 0,
         duration: 7,
         level: 0,
+        roundedStart: false,
+        roundedEnd: false,
         schedule: {
           id: 1078,
           title: '우아한테크코스 전체 과정',
@@ -456,6 +492,8 @@ describe('Test #4 - 스케줄 바가 겹칠 경우의 테스트', () => {
         column: 1,
         duration: 3,
         level: 0,
+        roundedStart: true,
+        roundedEnd: true,
         schedule: {
           id: 1982,
           title: 'Level 0',
@@ -470,6 +508,8 @@ describe('Test #4 - 스케줄 바가 겹칠 경우의 테스트', () => {
         column: 2,
         duration: 3,
         level: 1,
+        roundedStart: true,
+        roundedEnd: true,
         schedule: {
           id: 1105,
           title: 'Level 1',
@@ -484,6 +524,8 @@ describe('Test #4 - 스케줄 바가 겹칠 경우의 테스트', () => {
         column: 3,
         duration: 1,
         level: 2,
+        roundedStart: true,
+        roundedEnd: true,
         schedule: {
           id: 3493,
           title: 'Level 2',
@@ -498,6 +540,8 @@ describe('Test #4 - 스케줄 바가 겹칠 경우의 테스트', () => {
         column: 5,
         duration: 2,
         level: 0,
+        roundedStart: true,
+        roundedEnd: false,
         schedule: {
           id: 2984,
           title: 'Level 0-1',
@@ -512,6 +556,8 @@ describe('Test #4 - 스케줄 바가 겹칠 경우의 테스트', () => {
         column: 0,
         duration: 1,
         level: 0,
+        roundedStart: false,
+        roundedEnd: true,
         schedule: {
           id: 2984,
           title: 'Level 0-1',
@@ -526,6 +572,8 @@ describe('Test #4 - 스케줄 바가 겹칠 경우의 테스트', () => {
         column: 6,
         duration: 1,
         level: 1,
+        roundedStart: true,
+        roundedEnd: false,
         schedule: {
           id: 7163,
           title: 'Level 1-1',
@@ -540,6 +588,8 @@ describe('Test #4 - 스케줄 바가 겹칠 경우의 테스트', () => {
         column: 0,
         duration: 3,
         level: 1,
+        roundedStart: false,
+        roundedEnd: true,
         schedule: {
           id: 7163,
           title: 'Level 1-1',
@@ -596,6 +646,8 @@ describe('Test #4 - 스케줄 바가 겹칠 경우의 테스트', () => {
         column: 1,
         duration: 3,
         level: 0,
+        roundedStart: true,
+        roundedEnd: true,
         schedule: {
           id: 1982,
           title: 'Level 0',
@@ -610,6 +662,8 @@ describe('Test #4 - 스케줄 바가 겹칠 경우의 테스트', () => {
         column: 2,
         duration: 3,
         level: 1,
+        roundedStart: true,
+        roundedEnd: true,
         schedule: {
           id: 1105,
           title: 'Level 1',
@@ -624,6 +678,8 @@ describe('Test #4 - 스케줄 바가 겹칠 경우의 테스트', () => {
         column: 3,
         duration: 1,
         level: 2,
+        roundedStart: true,
+        roundedEnd: true,
         schedule: {
           id: 3493,
           title: 'Level 2',
@@ -638,6 +694,8 @@ describe('Test #4 - 스케줄 바가 겹칠 경우의 테스트', () => {
         column: 5,
         duration: 2,
         level: 0,
+        roundedStart: true,
+        roundedEnd: false,
         schedule: {
           id: 2984,
           title: 'Level 0-1',
@@ -652,6 +710,8 @@ describe('Test #4 - 스케줄 바가 겹칠 경우의 테스트', () => {
         column: 0,
         duration: 1,
         level: 0,
+        roundedStart: false,
+        roundedEnd: true,
         schedule: {
           id: 2984,
           title: 'Level 0-1',
@@ -666,6 +726,8 @@ describe('Test #4 - 스케줄 바가 겹칠 경우의 테스트', () => {
         column: 6,
         duration: 1,
         level: 1,
+        roundedStart: true,
+        roundedEnd: false,
         schedule: {
           id: 7163,
           title: 'Level 1-1',
@@ -680,6 +742,8 @@ describe('Test #4 - 스케줄 바가 겹칠 경우의 테스트', () => {
         column: 0,
         duration: 3,
         level: 1,
+        roundedStart: false,
+        roundedEnd: true,
         schedule: {
           id: 7163,
           title: 'Level 1-1',
@@ -737,6 +801,8 @@ describe('Test #5 - 잘못된 일정에 대한 테스트', () => {
         column: 3,
         duration: 4,
         level: 0,
+        roundedStart: true,
+        roundedEnd: true,
         schedule: {
           id: 972,
           title: '정상적인 일정',

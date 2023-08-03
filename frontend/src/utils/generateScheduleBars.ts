@@ -31,7 +31,11 @@ export const generateScheduleBars = (
     calendarObject,
   );
   const leveledScheduleBars = giveLevelToScheduleBars(rawScheduleBars);
-  const slicedScheduleBars = sliceScheduleBars(leveledScheduleBars);
+  const slicedScheduleBars = sliceScheduleBars(
+    year,
+    month,
+    leveledScheduleBars,
+  );
 
   return slicedScheduleBars;
 };
@@ -116,6 +120,8 @@ const generateRawScheduleBars = (
         column,
         duration,
         level: 0,
+        roundedStart: false,
+        roundedEnd: false,
       });
     }
   });
@@ -149,14 +155,21 @@ const sortScheduleBars = (scheduleBars: ScheduleBarProps[]) => {
   });
 };
 
-const sliceScheduleBars = (rawScheduleBars: ScheduleBarProps[]) => {
+const sliceScheduleBars = (
+  year: number,
+  month: number,
+  rawScheduleBars: ScheduleBarProps[],
+) => {
   const slicedScheduleBars: ScheduleBarProps[] = [];
+  const { firstDateOfCalendar, lastDateOfCalendar } =
+    getFirstLastDateOfCalendar(year, month);
 
   rawScheduleBars.forEach((scheduleBar) => {
-    const { row, column, duration } = scheduleBar;
+    const { row, column, duration, schedule } = scheduleBar;
     let remainingDuration = duration;
     let currentRow = row;
     let currentColumn = column;
+    let isFirstSlice = true;
 
     while (remainingDuration > 0 && currentRow < CALENDAR.ROW_SIZE) {
       const currentDuration = Math.min(
@@ -164,16 +177,26 @@ const sliceScheduleBars = (rawScheduleBars: ScheduleBarProps[]) => {
         CALENDAR.COLUMN_SIZE - currentColumn,
       );
 
+      remainingDuration -= currentDuration;
+
+      const isRoundedStart =
+        isFirstSlice && new Date(schedule.startDateTime) >= firstDateOfCalendar;
+      const isRoundedEnd =
+        remainingDuration === 0 &&
+        new Date(schedule.endDateTime) <= lastDateOfCalendar;
+
       slicedScheduleBars.push({
         ...scheduleBar,
         row: currentRow,
         column: currentColumn,
         duration: currentDuration,
+        roundedStart: isRoundedStart,
+        roundedEnd: isRoundedEnd,
       });
 
       currentRow += 1;
       currentColumn = 0;
-      remainingDuration -= currentDuration;
+      isFirstSlice = false;
     }
   });
 

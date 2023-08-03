@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import ScheduleBar from '~/components/ScheduleBar/ScheduleBar';
 
+/**
+ * `ScheduleBar` 는 캘린더의 일정을 바 형태로 시각적으로 보여 주기 위한 컴포넌트입니다.
+ */
 const meta = {
   title: 'Schedule/ScheduleBar',
   component: ScheduleBar,
@@ -26,6 +29,71 @@ export const Default: Story = {
     column: 2,
     duration: 3,
     level: 0,
+    roundedStart: true,
+    roundedEnd: true,
+    onClick: () => alert('clicked!'),
+  },
+};
+
+export const RoundedStart: Story = {
+  args: {
+    id: '1',
+    scheduleId: 1,
+    schedule: {
+      id: 1,
+      title: '테스트',
+      startDateTime: '2023-07-07 05:00',
+      endDateTime: '2023-07-09 10:00',
+    },
+    title: '테스트',
+    row: 1,
+    column: 2,
+    duration: 3,
+    level: 0,
+    roundedStart: true,
+    roundedEnd: false,
+    onClick: () => alert('clicked!'),
+  },
+};
+
+export const RoundedEnd: Story = {
+  args: {
+    id: '1',
+    scheduleId: 1,
+    schedule: {
+      id: 1,
+      title: '테스트',
+      startDateTime: '2023-07-07 05:00',
+      endDateTime: '2023-07-09 10:00',
+    },
+    title: '테스트',
+    row: 1,
+    column: 2,
+    duration: 3,
+    level: 0,
+    roundedStart: false,
+    roundedEnd: true,
+    onClick: () => alert('clicked!'),
+  },
+};
+
+export const NotRounded: Story = {
+  args: {
+    id: '1',
+    scheduleId: 1,
+    schedule: {
+      id: 1,
+      title: '테스트',
+      startDateTime: '2023-07-07 05:00',
+      endDateTime: '2023-07-09 10:00',
+    },
+    title: '테스트',
+    row: 1,
+    column: 2,
+    duration: 3,
+    level: 0,
+    roundedStart: false,
+    roundedEnd: false,
     onClick: () => alert('clicked!'),
   },
 };
@@ -46,6 +114,8 @@ export const LongTitle: Story = {
     column: 2,
     duration: 3,
     level: 0,
+    roundedStart: true,
+    roundedEnd: true,
     onClick: () => alert('clicked!'),
   },
 };
