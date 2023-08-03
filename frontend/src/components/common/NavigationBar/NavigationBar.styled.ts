@@ -3,16 +3,15 @@ import { styled, css } from 'styled-components';
 export const Container = styled.div`
   display: flex;
 
-  width: 70px;
+  width: 100px;
   height: 100%;
-  padding-top: 80px;
+  padding-top: 14px;
 `;
 
 export const MenuContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 
   width: 100%;
   gap: 30px;
