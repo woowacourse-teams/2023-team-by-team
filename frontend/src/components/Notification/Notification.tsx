@@ -14,9 +14,11 @@ const Notification = (props: NotificationProps) => {
 
   return (
     <S.Wrapper color={color} size={size}>
-      <Text size={textSize} css={S.notification}>
-        {content}
-      </Text>
+      <S.Inner>
+        <Text size={textSize} css={S.notification}>
+          {content}
+        </Text>
+      </S.Inner>
     </S.Wrapper>
   );
 };
