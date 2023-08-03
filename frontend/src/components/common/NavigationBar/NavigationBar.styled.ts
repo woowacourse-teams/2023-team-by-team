@@ -1,4 +1,5 @@
-import { styled, css } from 'styled-components';
+import { styled } from 'styled-components';
+import { Link } from 'react-router-dom';
 
 export const Container = styled.div`
   display: flex;
@@ -17,7 +18,7 @@ export const MenuContainer = styled.div`
   gap: 30px;
 `;
 
-export const menuIcon = css`
+export const MenuLink = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -28,7 +29,8 @@ export const menuIcon = css`
 
   border-radius: 50%;
 
-  &:hover {
+  &:hover,
+  &:focus {
     background-color: ${({ theme }) => theme.color.GRAY200};
   }
 `;
