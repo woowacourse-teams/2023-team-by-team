@@ -44,14 +44,30 @@ export const generateScheduleCirclesMatrix = (
     });
   });
 
-  const sortedScheduleCirclesMatrix = getSortedScheduleCirclesMatrix(
+  const duplicateRemovedCirclesMatrix = removeDuplicatesInMatrix(
     scheduleCirclesMatrix,
+  );
+  const sortedScheduleCirclesMatrix = getSortedScheduleCirclesMatrix(
+    duplicateRemovedCirclesMatrix,
   );
   const slicedScheduleCirclesMatrix = getSlicedScheduleCirclesMatrix(
     sortedScheduleCirclesMatrix,
   );
 
   return slicedScheduleCirclesMatrix;
+};
+
+const removeDuplicatesInMatrix = (
+  scheduleCirclesMatrix: ScheduleCircle[][],
+) => {
+  const duplicateRemovedCirclesMatrix = scheduleCirclesMatrix.map(
+    (scheduleCircles) =>
+      scheduleCircles.map(({ teamPlaceIds }) => ({
+        teamPlaceIds: [...new Set(teamPlaceIds)],
+      })),
+  );
+
+  return duplicateRemovedCirclesMatrix;
 };
 
 const getSortedScheduleCirclesMatrix = (
