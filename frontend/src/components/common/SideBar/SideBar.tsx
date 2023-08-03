@@ -4,10 +4,12 @@ import MyCalendar from '~/components/MyCalendar/MyCalendar';
 import MyDailyScheduleList from '~/components/MyDailyScheduleList/MyDailyScheduleList';
 import { useState } from 'react';
 import { parseDate } from '~/utils/parseDate';
+import { useFetchTeamPlaces } from '~/hooks/queries/useFetchTeamPlaces';
 
 const SideBar = () => {
   const [dailyScheduleDate, setDailyScheduleDate] = useState(new Date());
   const { month, date } = parseDate(dailyScheduleDate);
+  const teamPlaces = useFetchTeamPlaces();
 
   const handleChangeDailySchedule = (date: Date) => {
     setDailyScheduleDate(() => date);
@@ -21,7 +23,10 @@ const SideBar = () => {
             내 일정
           </Text>
         </div>
-        <MyCalendar onDailyClick={handleChangeDailySchedule} />
+        <MyCalendar
+          teamPlaces={teamPlaces}
+          onDailyClick={handleChangeDailySchedule}
+        />
       </S.InnerContainer>
       <S.InnerContainer>
         <div>
@@ -30,7 +35,10 @@ const SideBar = () => {
             {String(date).padStart(2, '0')}일 일정
           </Text>
         </div>
-        <MyDailyScheduleList rawDate={dailyScheduleDate} />
+        <MyDailyScheduleList
+          teamPlaces={teamPlaces}
+          rawDate={dailyScheduleDate}
+        />
       </S.InnerContainer>
     </S.Container>
   );
