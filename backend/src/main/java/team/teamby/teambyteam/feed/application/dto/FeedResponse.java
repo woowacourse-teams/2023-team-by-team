@@ -21,7 +21,7 @@ public record FeedResponse(
 
         return new FeedResponse(
                 feed.getId(),
-                feed.getType().name(),
+                feed.getType().name().toLowerCase(),
                 feed.getAuthorId(),
                 authorName,
                 profileImageUrl,
