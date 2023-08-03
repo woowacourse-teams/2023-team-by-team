@@ -1,7 +1,9 @@
 import { css, styled } from 'styled-components';
 import type { NotificationProps } from '~/components/Notification/Notification';
 
-export const Wrapper = styled.div<Pick<NotificationProps, 'color' | 'size'>>`
+export const Wrapper = styled.div<
+  Pick<NotificationProps, 'teamPlaceColor' | 'size'>
+>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,10 +14,11 @@ export const Wrapper = styled.div<Pick<NotificationProps, 'color' | 'size'>>`
   height: ${({ size }) => (size === 'md' ? 50 : 42)}px;
 
   color: ${({ theme }) => theme.color.WHITE};
-  white-space: nowrap;
+  white-space: pre-wrap;
   text-overflow: ellipsis;
 
-  background-color: ${({ color }) => color};
+  background-color: ${({ theme, teamPlaceColor = 0 }) =>
+    theme.teamColor[teamPlaceColor]};
   border-radius: 20px;
 
   filter: brightness(1.2);
@@ -23,8 +26,7 @@ export const Wrapper = styled.div<Pick<NotificationProps, 'color' | 'size'>>`
 
   &.can-hover {
     &:hover {
-      height: 110px;
-      white-space: normal;
+      height: 130px;
       text-overflow: initial;
     }
 
