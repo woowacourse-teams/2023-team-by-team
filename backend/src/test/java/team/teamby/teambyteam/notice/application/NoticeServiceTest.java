@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import team.teamby.teambyteam.common.ServiceTest;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.Member;
+import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.exception.MemberException.MemberNotFoundException;
 import team.teamby.teambyteam.notice.application.dto.NoticeRegisterRequest;
 import team.teamby.teambyteam.notice.application.dto.NoticeResponse;
@@ -93,14 +94,14 @@ class NoticeServiceTest extends ServiceTest {
 
         private Member member;
         private TeamPlace teamPlace;
-        private NoticeRegisterRequest request;
+        private MemberTeamPlace memberTeamPlace;
         private List<Notice> notices;
 
         @BeforeEach
         void setUP() {
             member = testFixtureBuilder.buildMember(ROY());
             teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
-            request = FIRST_NOTICE_REGISTER_REQUEST;
+            memberTeamPlace = testFixtureBuilder.buildMemberTeamPlace(member, teamPlace);
             notices = testFixtureBuilder.buildNotices(
                     List.of(
                             NOTICE_1ST(teamPlace.getId(), member.getId()),
