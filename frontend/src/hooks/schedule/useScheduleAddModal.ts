@@ -47,10 +47,8 @@ const useScheduleAddModal = (clickedDate: Date) => {
           ['endTime']: value,
         };
       });
-
       return;
     }
-
     setTimes((prev) => {
       return {
         ...prev,
@@ -67,10 +65,8 @@ const useScheduleAddModal = (clickedDate: Date) => {
           ['endTime']: prev['startTime'],
         };
       });
-
       return;
     }
-
     setTimes((prev) => {
       return {
         ...prev,
@@ -107,6 +103,11 @@ const useScheduleAddModal = (clickedDate: Date) => {
       !isYYYYMMDDHHMM(formattedStartDateTime) ||
       !isYYYYMMDDHHMM(formattedEndDateTime)
     ) {
+      return;
+    }
+
+    if (!isValidEndTime(startTime, endTime)) {
+      showToast('error', '시작 시간이 종료 시간보다 늦습니다.');
       return;
     }
 
