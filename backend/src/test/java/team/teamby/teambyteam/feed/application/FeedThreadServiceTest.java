@@ -98,9 +98,7 @@ class FeedThreadServiceTest extends ServiceTest {
             // given
             final Member member = testFixtureBuilder.buildMember(PHILIP());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
-            MemberTeamPlace memberTeamPlace = new MemberTeamPlace();
-            memberTeamPlace.setMemberAndTeamPlace(member, teamPlace);
-            testFixtureBuilder.buildMemberTeamPlace(memberTeamPlace);
+            testFixtureBuilder.buildMemberTeamPlace(member, teamPlace);
             final List<Feed> feeds = new ArrayList<>();
             feeds.add(new FeedThread(teamPlace.getId(), new Content("Hello1"), member.getId()));
             feeds.add(new FeedThread(teamPlace.getId(), new Content("Hello2"), member.getId()));
@@ -151,9 +149,7 @@ class FeedThreadServiceTest extends ServiceTest {
             // given
             final Member member = testFixtureBuilder.buildMember(PHILIP());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
-            MemberTeamPlace memberTeamPlace = new MemberTeamPlace();
-            memberTeamPlace.setMemberAndTeamPlace(member, teamPlace);
-            testFixtureBuilder.buildMemberTeamPlace(memberTeamPlace);
+            testFixtureBuilder.buildMemberTeamPlace(member, teamPlace);
             final List<Feed> feeds = new ArrayList<>();
             final int size = 3;
             feeds.add(new FeedThread(teamPlace.getId(), new Content("Hello"), member.getId()));
@@ -180,9 +176,7 @@ class FeedThreadServiceTest extends ServiceTest {
             // given
             final Member member = testFixtureBuilder.buildMember(PHILIP());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
-            MemberTeamPlace memberTeamPlace = new MemberTeamPlace();
-            memberTeamPlace.setMemberAndTeamPlace(member, teamPlace);
-            testFixtureBuilder.buildMemberTeamPlace(memberTeamPlace);
+            testFixtureBuilder.buildMemberTeamPlace(member, teamPlace);
             final List<Feed> feeds = new ArrayList<>();
             feeds.add(new FeedThread(teamPlace.getId(), new Content("Hello1"), member.getId()));
             testFixtureBuilder.buildFeeds(feeds);
@@ -224,9 +218,7 @@ class FeedThreadServiceTest extends ServiceTest {
             // given
             final Member member = testFixtureBuilder.buildMember(PHILIP());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
-            MemberTeamPlace memberTeamPlace = new MemberTeamPlace();
-            memberTeamPlace.setMemberAndTeamPlace(member, teamPlace);
-            testFixtureBuilder.buildMemberTeamPlace(memberTeamPlace);
+            testFixtureBuilder.buildMemberTeamPlace(member, teamPlace);
             final List<Feed> feeds = new ArrayList<>();
             feeds.add(new FeedThread(1L, new Content("테스트 스레드"), member.getId()));
             feeds.add(ScheduleNotification.from(new ScheduleCreateEvent(1L, 1L, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
@@ -257,9 +249,7 @@ class FeedThreadServiceTest extends ServiceTest {
             // given
             final Member member = testFixtureBuilder.buildMember(PHILIP());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
-            MemberTeamPlace memberTeamPlace = new MemberTeamPlace();
-            memberTeamPlace.setMemberAndTeamPlace(member, teamPlace);
-            testFixtureBuilder.buildMemberTeamPlace(memberTeamPlace);
+            testFixtureBuilder.buildMemberTeamPlace(member, teamPlace);
             final List<Feed> feeds = new ArrayList<>();
             final int size = 3;
             feeds.add(new FeedThread(teamPlace.getId(), new Content("Hello"), member.getId()));
@@ -288,12 +278,8 @@ class FeedThreadServiceTest extends ServiceTest {
             final Member member = testFixtureBuilder.buildMember(PHILIP());
             final TeamPlace englishTeamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             final TeamPlace japaneseTeamPlace = testFixtureBuilder.buildTeamPlace(JAPANESE_TEAM_PLACE());
-            MemberTeamPlace memberTeamPlace1 = new MemberTeamPlace();
-            memberTeamPlace1.setMemberAndTeamPlace(member, englishTeamPlace);
-            testFixtureBuilder.buildMemberTeamPlace(memberTeamPlace1);
-            MemberTeamPlace memberTeamPlace2 = new MemberTeamPlace();
-            memberTeamPlace2.setMemberAndTeamPlace(member, japaneseTeamPlace);
-            testFixtureBuilder.buildMemberTeamPlace(memberTeamPlace2);
+            testFixtureBuilder.buildMemberTeamPlace(member, englishTeamPlace);
+            testFixtureBuilder.buildMemberTeamPlace(member, japaneseTeamPlace);
             final int size = 2;
 
             final List<Feed> feeds = new ArrayList<>();
