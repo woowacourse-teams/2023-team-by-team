@@ -1,23 +1,41 @@
 import { LogoIcon } from '~/assets/svg';
 import * as S from './Header.styled';
-import Text from '~/components/common/Text/Text';
 import TeamBadge from '~/components/common/TeamBadge/TeamBadge';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
-import { getInfoByTeamPlaceId } from '~/utils/getInfoByTeamPlaceId';
+import TeamPlaceMenu from '~/components/common/TeamPlaceMenu/TeamPlaceMenu';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
-  const { teamPlaces } = useTeamPlace();
+  const { teamPlaces, changeTeamPlace, teamPlaceColor, displayName } =
+    useTeamPlace();
+  const navigate = useNavigate();
 
-  const { teamPlaceColor, displayName } = getInfoByTeamPlaceId(teamPlaces, 1);
+  const [teamName, setTeamName] = useState(
+    displayName === '' ? '팀 선택하기' : displayName,
+  );
+
+  const handleTeamNameChange = (value: string) => {
+    const newTeamPlace = teamPlaces.find(
+      (teamPlace) => teamPlace.displayName === value,
+    );
+    if (newTeamPlace === undefined) return;
+    changeTeamPlace(newTeamPlace.id);
+    setTeamName(() => value);
+    navigate(`/team-calendar`);
+  };
 
   return (
     <S.Container tabIndex={0}>
       <LogoIcon />
       <div>
         <TeamBadge teamPlaceColor={teamPlaceColor} />
-        <Text as="h1" css={S.teamPlaceName}>
-          {displayName}
-        </Text>
+        <S.TeamNameWrapper>
+          <TeamPlaceMenu
+            displayValue={teamName}
+            onClickMenu={handleTeamNameChange}
+          />
+        </S.TeamNameWrapper>
       </div>
     </S.Container>
   );

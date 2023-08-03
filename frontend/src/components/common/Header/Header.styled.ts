@@ -16,6 +16,11 @@ export const Container = styled.div`
   }
 `;
 
+export const TeamNameWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 export const teamPlaceName = css`
   font-size: 24px;
   font-weight: bold;
