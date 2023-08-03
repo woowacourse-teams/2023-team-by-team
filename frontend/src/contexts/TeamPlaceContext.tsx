@@ -19,7 +19,7 @@ export const TeamPlaceContext = createContext<TeamPlaceContextProps>(
 export const TeamPlaceProvider = (props: PropsWithChildren) => {
   const { children } = props;
   const teamPlaces = useFetchTeamPlaces();
-  const [teamPlaceId, setTeamPlaceId] = useState(-1);
+  const [teamPlaceId, setTeamPlaceId] = useState(1);
   const [teamPlaceColor, setTeamPlaceColor] = useState<TeamPlaceColor>(100);
   const [displayName, setDisplayName] = useState('');
 
