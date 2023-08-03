@@ -12,11 +12,12 @@ export interface NotificationProps {
 const Notification = (props: NotificationProps) => {
   const { teamPlaceColor, content, size = 'md' } = props;
   const textSize: Extract<TextSize, 'md' | 'xl'> = size === 'md' ? 'xl' : 'md';
+  const isCanHover = /[\r\n]/.test(content) || content.length > 80;
 
   return (
     <S.Wrapper
       teamPlaceColor={teamPlaceColor}
-      className={content.length > 100 ? 'can-hover' : ''}
+      className={isCanHover ? 'can-hover' : ''}
       size={size}
     >
       <S.Inner>
