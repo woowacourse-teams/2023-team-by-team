@@ -9,7 +9,7 @@ public record TeamPlaceResponse(
 ) {
     public static TeamPlaceResponse of(MemberTeamPlace memberTeamPlace) {
         return new TeamPlaceResponse(
-                memberTeamPlace.getId(),
+                memberTeamPlace.getTeamPlace().getId(),
                 memberTeamPlace.getDisplayTeamPlaceName().getValue(),
                 memberTeamPlace.getTeamPlaceColor().getColorNumber()
         );
