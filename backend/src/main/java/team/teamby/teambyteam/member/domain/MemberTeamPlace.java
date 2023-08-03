@@ -1,7 +1,10 @@
 package team.teamby.teambyteam.member.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,6 +17,10 @@ import team.teamby.teambyteam.global.domain.BaseEntity;
 import team.teamby.teambyteam.member.domain.vo.DisplayMemberName;
 import team.teamby.teambyteam.member.domain.vo.DisplayTeamPlaceName;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 @Getter
 @Entity
@@ -38,11 +45,45 @@ public class MemberTeamPlace extends BaseEntity {
     @Embedded
     private DisplayTeamPlaceName displayTeamPlaceName;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private TeamPlaceColor teamPlaceColor;
+
     public void setMemberAndTeamPlace(final Member member, final TeamPlace teamPlace) {
         this.member = member;
         this.teamPlace = teamPlace;
+
         this.displayMemberName = new DisplayMemberName(member.getName().getValue());
         this.displayTeamPlaceName = new DisplayTeamPlaceName(teamPlace.getName().getValue());
+
+        this.teamPlaceColor = selectTeamPlaceColor();
+
         member.getMemberTeamPlaces().add(this);
+    }
+
+    private TeamPlaceColor selectTeamPlaceColor() {
+        final Map<TeamPlaceColor, Integer> existingColors = getParticipatedTeamColors();
+        return Arrays.stream(TeamPlaceColor.values())
+                .filter(color -> !existingColors.containsKey(color))
+                .findFirst()
+                .orElseGet(() -> getMinUsedColor(existingColors));
+    }
+
+    private Map<TeamPlaceColor, Integer> getParticipatedTeamColors() {
+        final Map<TeamPlaceColor, Integer> existingColors = new HashMap<>();
+
+        member.getMemberTeamPlaces().stream()
+                .map(MemberTeamPlace::getTeamPlaceColor)
+                .forEach(color -> existingColors.merge(color, 1, Integer::sum));
+
+        return existingColors;
+    }
+
+    private TeamPlaceColor getMinUsedColor(final Map<TeamPlaceColor, Integer> existingColors) {
+        return existingColors.entrySet()
+                .stream()
+                .min(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .get();
     }
 }

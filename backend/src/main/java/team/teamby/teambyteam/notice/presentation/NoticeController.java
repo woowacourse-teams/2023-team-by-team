@@ -3,6 +3,7 @@ package team.teamby.teambyteam.notice.presentation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,8 +13,10 @@ import team.teamby.teambyteam.member.configuration.AuthPrincipal;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.notice.application.NoticeService;
 import team.teamby.teambyteam.notice.application.dto.NoticeRegisterRequest;
+import team.teamby.teambyteam.notice.application.dto.NoticeResponse;
 
 import java.net.URI;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,7 +26,7 @@ public class NoticeController {
     private final NoticeService noticeService;
 
     @PostMapping("/{teamPlaceId}/feed/notice")
-    public ResponseEntity<Void> register(
+    public ResponseEntity<Void> registerNotice(
             @RequestBody @Valid final NoticeRegisterRequest reqeust,
             @PathVariable final Long teamPlaceId,
             @AuthPrincipal final MemberEmailDto memberEmailDto
@@ -32,5 +35,16 @@ public class NoticeController {
         final URI location = URI.create("/api/team-place/" + teamPlaceId + "/feed/threads/notice/" + registeredId);
 
         return ResponseEntity.created(location).build();
+    }
+
+    @GetMapping("/{teamPlaceId}/feed/notice/recent")
+    public ResponseEntity<NoticeResponse> findNotice(@PathVariable final Long teamPlaceId) {
+        final Optional<NoticeResponse> noticeResponseOptional = noticeService.findMostRecentNotice(teamPlaceId);
+
+        if (noticeResponseOptional.isEmpty()) {
+            return ResponseEntity.ok().build();
+        }
+
+        return ResponseEntity.ok(noticeResponseOptional.get());
     }
 }

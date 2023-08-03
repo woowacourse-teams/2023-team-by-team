@@ -11,6 +11,8 @@ import { useFetchScheduleById } from '~/hooks/queries/useFetchScheduleById';
 import { useDeleteSchedule } from '~/hooks/queries/useDeleteSchedule';
 import TeamBadge from '~/components/common/TeamBadge/TeamBadge';
 import { useToast } from '~/hooks/useToast';
+import { useTeamPlace } from '~/hooks/useTeamPlace';
+import { getInfoByTeamPlaceId } from '~/utils/getInfoByTeamPlaceId';
 
 interface ScheduleModalProps {
   scheduleId: number;
@@ -24,10 +26,12 @@ const ScheduleModal = (props: ScheduleModalProps) => {
   const { showToast } = useToast();
   const { scheduleById } = useFetchScheduleById(1, scheduleId);
   const { mutateDeleteSchedule } = useDeleteSchedule(1, scheduleId);
+  const { teamPlaces } = useTeamPlace();
+  const { teamPlaceColor, displayName } = getInfoByTeamPlaceId(teamPlaces, 1);
 
   if (scheduleById === undefined) return;
-
   const { title, startDateTime, endDateTime } = scheduleById;
+
   const { row, column, level } = position;
   const modalLocation: CSSProperties = {
     position: 'absolute',
@@ -54,9 +58,9 @@ const ScheduleModal = (props: ScheduleModalProps) => {
       <S.Container style={modalLocation}>
         <S.Header>
           <S.TeamWrapper>
-            <TeamBadge teamPlaceColor={0} size="lg" />
-            <div title={'현대사회와 범죄 5조'}>
-              <Text css={S.teamName}>현대사회와 범죄 5조</Text>
+            <TeamBadge teamPlaceColor={teamPlaceColor} size="lg" />
+            <div title={displayName}>
+              <Text css={S.teamName}>{displayName}</Text>
             </div>
           </S.TeamWrapper>
           <S.MenuContainer>

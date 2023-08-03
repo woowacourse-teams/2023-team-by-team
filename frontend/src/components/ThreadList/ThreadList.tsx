@@ -9,6 +9,8 @@ import { useRef } from 'react';
 import { useIntersectionObserver } from '~/hooks/useIntersectionObserver';
 import Text from '~/components/common/Text/Text';
 import { useFetchNoticeThread } from '~/hooks/queries/useFetchNoticeThread';
+import { useTeamPlace } from '~/hooks/useTeamPlace';
+import { getInfoByTeamPlaceId } from '~/utils/getInfoByTeamPlaceId';
 
 interface ThreadListProps {
   size?: ThreadSize;
@@ -19,6 +21,8 @@ const ThreadList = (props: ThreadListProps) => {
   const { threadPages, hasNextPage, fetchNextPage } = useFetchThreads(1);
   const { noticeThread } = useFetchNoticeThread(1);
   const observeRef = useRef<HTMLDivElement>(null);
+  const { teamPlaces } = useTeamPlace();
+  const { teamPlaceColor } = getInfoByTeamPlaceId(teamPlaces, 1);
 
   const onIntersect: IntersectionObserverCallback = ([entry]) =>
     entry.isIntersecting && fetchNextPage();
@@ -48,7 +52,12 @@ const ThreadList = (props: ThreadListProps) => {
               {...rest}
             />
           ) : (
-            <Notification key={id} size={size} content={content} />
+            <Notification
+              teamPlaceColor={teamPlaceColor}
+              key={id}
+              size={size}
+              content={content}
+            />
           );
         }),
       )}

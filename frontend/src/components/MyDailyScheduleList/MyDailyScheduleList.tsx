@@ -4,16 +4,17 @@ import * as S from './MyDailyScheduleList.styled';
 import MyDailySchedule from '~/components/MyDailyScheduleList/MyDailySchedule/MyDailySchedule';
 import type { TeamPlace } from '~/types/team';
 import { getInfoByTeamPlaceId } from '~/utils/getInfoByTeamPlaceId';
+import { useTeamPlace } from '~/hooks/useTeamPlace';
 
 interface MyDailyScheduleListProps {
-  teamPlaces: TeamPlace[];
   rawDate: Date;
 }
 
 const MyDailyScheduleList = (props: MyDailyScheduleListProps) => {
-  const { teamPlaces, rawDate } = props;
+  const { rawDate } = props;
   const { year, month, date } = parseDate(rawDate);
   const schedules = useFetchMyDailySchedules(year, month, date);
+  const { teamPlaces } = useTeamPlace();
 
   return (
     <S.ScheduleWrapper>
@@ -21,11 +22,11 @@ const MyDailyScheduleList = (props: MyDailyScheduleListProps) => {
         schedules.map((schedule) => {
           const { id, teamPlaceId, ...rest } = schedule;
 
-          const teamInfo = getInfoByTeamPlaceId(teamPlaces, teamPlaceId);
+          const { teamPlaceColor, displayName } = getInfoByTeamPlaceId(
+            teamPlaces,
+            teamPlaceId,
+          );
 
-          if (teamInfo === undefined) return;
-
-          const { teamPlaceColor, displayName } = teamInfo;
           return (
             <MyDailySchedule
               key={id}

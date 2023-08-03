@@ -1,4 +1,4 @@
-import type { TeamPlace } from '~/types/team';
+import type { TeamPlace, TeamPlaceColor } from '~/types/team';
 
 export const getInfoByTeamPlaceId = (
   teamPlaces: TeamPlace[],
@@ -8,7 +8,11 @@ export const getInfoByTeamPlaceId = (
     (teamPlace) => teamPlace.id === teamPlaceId,
   );
 
-  if (teamPlace === undefined) return;
+  if (teamPlace === undefined)
+    return {
+      teamPlaceColor: 0 as TeamPlaceColor,
+      displayName: '',
+    };
 
   return {
     teamPlaceColor: teamPlace.teamPlaceColor,

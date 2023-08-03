@@ -12,14 +12,14 @@ import { generateScheduleCirclesMatrix } from '~/utils/generateScheduleCirclesMa
 import TeamBadge from '~/components/common/TeamBadge/TeamBadge';
 import { getInfoByTeamPlaceId } from '~/utils/getInfoByTeamPlaceId';
 import type { TeamPlace } from '~/types/team';
+import { useTeamPlace } from '~/hooks/useTeamPlace';
 
 interface MyCalendarProps {
-  teamPlaces: TeamPlace[];
   onDailyClick: (date: Date) => void;
 }
 
 const MyCalendar = (props: MyCalendarProps) => {
-  const { teamPlaces, onDailyClick } = props;
+  const { onDailyClick } = props;
   const {
     year,
     month,
@@ -34,6 +34,7 @@ const MyCalendar = (props: MyCalendarProps) => {
 
   const schedules = useFetchMySchedules(year, month);
   const scheduleCircles = generateScheduleCirclesMatrix(year, month, schedules);
+  const { teamPlaces } = useTeamPlace();
 
   return (
     <S.Container>
@@ -99,14 +100,10 @@ const MyCalendar = (props: MyCalendarProps) => {
                         <S.ScheduleCircleWrapper>
                           {scheduleCircles[rowIndex][colIndex].teamPlaceIds.map(
                             (teamPlaceId) => {
-                              const teamInfo = getInfoByTeamPlaceId(
+                              const { teamPlaceColor } = getInfoByTeamPlaceId(
                                 teamPlaces,
                                 teamPlaceId,
                               );
-                              if (teamInfo === undefined) return;
-
-                              const { teamPlaceColor } = teamInfo;
-
                               return (
                                 <TeamBadge
                                   key={`${day.toISOString()}+${teamPlaceId}`}

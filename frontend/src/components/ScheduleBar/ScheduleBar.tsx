@@ -1,35 +1,29 @@
 import Text from '~/components/common/Text/Text';
 import * as S from './ScheduleBar.styled';
-import type { Schedule } from '~/types/schedule';
+import type { GeneratedScheduleBar } from '~/types/schedule';
 import { DoubleArrowRightIcon } from '~/assets/svg';
+import type { TeamPlaceColor } from '~/types/team';
 
-export interface ScheduleBarProps {
-  id: string;
-  scheduleId: number;
-  schedule: Schedule;
-  title: string;
-  row: number;
-  column: number;
-  duration: number;
-  level: number;
-  color?: string;
-  roundedStart: boolean;
-  roundedEnd: boolean;
+export interface ScheduleBarProps extends GeneratedScheduleBar {
+  teamPlaceColor: TeamPlaceColor;
   onClick?: () => void;
 }
 
 const ScheduleBar = (props: ScheduleBarProps) => {
-  const { color = '#516FFF', title, onClick, roundedEnd, ...rest } = props;
+  const { teamPlaceColor, title, onClick, roundedEnd, ...rest } = props;
 
   return (
     <S.Wrapper
-      color={color}
       title={title}
       onClick={onClick}
       roundedEnd={roundedEnd}
       {...rest}
     >
-      <S.Inner color={color} roundedEnd={roundedEnd} {...rest}>
+      <S.Inner
+        teamPlaceColor={teamPlaceColor}
+        roundedEnd={roundedEnd}
+        {...rest}
+      >
         <Text as="span" css={S.scheduleBarTitle}>
           {title}
         </Text>

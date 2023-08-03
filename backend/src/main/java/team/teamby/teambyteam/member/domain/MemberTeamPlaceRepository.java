@@ -10,4 +10,6 @@ public interface MemberTeamPlaceRepository extends JpaRepository<MemberTeamPlace
     Optional<MemberIdAndDisplayNameOnly> findByTeamPlaceIdAndMemberId(Long teamPlaceId, Long memberId);
 
     List<MemberIdAndDisplayNameOnly> findAllByTeamPlaceId(Long teamPlaceId);
+
+    List<MemberTeamPlace> findAllByMemberId(Long memberId);
 }

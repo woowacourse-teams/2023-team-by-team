@@ -1,8 +1,7 @@
 import { generateScheduleBars } from './generateScheduleBars';
-import type { Schedule } from '~/types/schedule';
-import type { ScheduleBarProps } from '~/components/ScheduleBar/ScheduleBar';
+import type { GeneratedScheduleBar, Schedule } from '~/types/schedule';
 
-const removeIdFromScheduleBars = (scheduleBars: ScheduleBarProps[]) => {
+const removeIdFromScheduleBars = (scheduleBars: GeneratedScheduleBar[]) => {
   /* eslint-disable-next-line */
   const scheduleBarsWithoutId = scheduleBars.map(({ id, ...rest }) => {
     return rest;

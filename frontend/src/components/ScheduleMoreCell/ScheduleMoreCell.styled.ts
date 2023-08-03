@@ -16,6 +16,12 @@ export const Wrapper = styled.div<Pick<Position, 'column'>>`
   &:hover {
     background-color: ${({ theme }) => theme.color.GRAY200};
   }
+
+  @media screen and (max-width: 800px) {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 `;
 
 export const moreText = css`
