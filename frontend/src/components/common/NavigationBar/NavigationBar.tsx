@@ -1,27 +1,19 @@
 import { CalendarIcon, FeedIcon, HomeIcon } from '~/assets/svg';
 import * as S from './NavigationBar.styled';
-import Button from '~/components/common/Button/Button';
-import { Link } from 'react-router-dom';
 
 const NavigationBar = () => {
   return (
     <S.Container>
       <S.MenuContainer>
-        <Link to="/">
-          <Button type="button" variant="plain" css={S.menuIcon}>
-            <HomeIcon />
-          </Button>
-        </Link>
-        <Link to="/">
-          <Button type="button" variant="plain" css={S.menuIcon}>
-            <CalendarIcon />
-          </Button>
-        </Link>
-        <Link to="/threads">
-          <Button type="button" variant="plain" css={S.menuIcon}>
-            <FeedIcon />
-          </Button>
-        </Link>
+        <S.MenuLink to="/" aria-label="홈 페이지로 이동하기 버튼">
+          <HomeIcon />
+        </S.MenuLink>
+        <S.MenuLink to="/" aria-label="팀 캘린더 페이지로 이동하기 버튼">
+          <CalendarIcon />
+        </S.MenuLink>
+        <S.MenuLink to="/threads" aria-label="팀 피드 페이지로 이동하기 버튼">
+          <FeedIcon />
+        </S.MenuLink>
       </S.MenuContainer>
     </S.Container>
   );

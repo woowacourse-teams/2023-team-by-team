@@ -28,6 +28,9 @@ const Toast = (props: ToastProps) => {
   return (
     <S.Wrapper id={id} ref={ref} status={status} isActive={isActive}>
       <Text as="span">{message}</Text>
+      <p className="hidden" aria-live="assertive">
+        {message}
+      </p>
     </S.Wrapper>
   );
 };
