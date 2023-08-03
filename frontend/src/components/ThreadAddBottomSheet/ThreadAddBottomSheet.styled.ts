@@ -4,24 +4,29 @@ export const Backdrop = styled.div`
   position: fixed;
   top: 0;
   left: 0;
+
   width: 100%;
   height: 100%;
+
+  background-color: rgba(0, 0, 0, 0.3);
 `;
 
 export const Container = styled.div<{ isClosing: boolean }>`
   display: flex;
   flex-direction: column;
-  position: fixed;
+  position: absolute;
   bottom: 0;
-  left: 0;
 
   width: 100%;
   min-height: 400px;
-  padding: 20px;
+  padding: 40px 24px 0;
   row-gap: 20px;
 
-  border-top-left-radius: 40px;
-  border-top-right-radius: 40px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  background-color: ${({ theme }) => theme.color.WHITE};
+
+  box-shadow: 0px -4px 12px rgba(0, 0, 0, 0.1);
 
   animation: ${({ theme, isClosing }) =>
       isClosing ? theme.animation.slideDown : theme.animation.slideUp}
@@ -58,6 +63,7 @@ export const Textarea = styled.textarea`
 export const ButtonWrapper = styled.div`
   display: flex;
 
+  margin-top: 10px;
   margin-left: auto;
   column-gap: 20px;
 `;

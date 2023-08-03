@@ -26,12 +26,12 @@ const ThreadList = (props: ThreadListProps) => {
   useIntersectionObserver(observeRef, onIntersect);
 
   return (
-    <S.Container>
+    <>
       {noticeThread && noticeThread.id && (
         <NoticeThread
-          author={noticeThread.authorName}
+          authorName={noticeThread.authorName}
           createdAt={noticeThread.createdAt}
-          profileImageSrc={noticeThread.profileImageUrl}
+          profileImageUrl={noticeThread.profileImageUrl}
           content={noticeThread.content}
         />
       )}
@@ -53,12 +53,12 @@ const ThreadList = (props: ThreadListProps) => {
         }),
       )}
       {!hasNextPage && (
-        <Text size="lg" weight="bold" css={S.lastThreadText}>
+        <Text size="lg" css={S.lastThreadText}>
           마지막 스레드 입니다.
         </Text>
       )}
       <div ref={observeRef} />
-    </S.Container>
+    </>
   );
 };
 

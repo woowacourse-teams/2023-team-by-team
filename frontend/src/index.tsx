@@ -11,6 +11,7 @@ import { ModalProvider } from '~/components/common/Modal/ModalContext';
 import TeamCalendarPage from '~/components/pages/TeamCalendarPage/TeamCalendarPage';
 import { ToastProvider } from '~/components/common/Toast/ToastContext';
 import ToastList from '~/components/common/Toast/ToastList';
+import FeedPage from '~/components/pages/FeedPage/FeedPage';
 
 if (process.env.NODE_ENV === 'development') {
   worker.start();
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
       {
         path: '',
         element: <TeamCalendarPage />,
+      },
+      {
+        path: '/threads',
+        element: <FeedPage />,
       },
     ],
   },
