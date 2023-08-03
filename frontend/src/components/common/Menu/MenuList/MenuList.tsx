@@ -16,7 +16,6 @@ const MenuList = (props: PropsWithChildren<MenuListProps>) => {
     handleMenuOpen,
     handleSelectedValueChange,
   } = useMenu();
-  const offsetRef = useRef(0);
   const ref = useRef<HTMLUListElement>(null);
 
   useClickOutside(ref, (e: Event) => {
