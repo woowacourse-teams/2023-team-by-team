@@ -20,5 +20,6 @@ public abstract class ScheduleEvent {
     }
 
     public abstract EventType getEventType();
+
     public abstract ScheduleUpdateEventDto getScheduleUpdateEventDto();
 }

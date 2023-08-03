@@ -11,9 +11,9 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     /**
      * Find All TeamPlace schedules in range
      *
-     * @param teamPlaceId teamPlaceId for the schedule
+     * @param teamPlaceId   teamPlaceId for the schedule
      * @param firstDateTime first-date-time of the period (Inclusive)
-     * @param lastDateTime last=date-time of the period (Exclusive)
+     * @param lastDateTime  last=date-time of the period (Exclusive)
      * @return List of the Schedules. If there is no Schedule, it will return the List with size 0.
      */
     @Query("SELECT s FROM Schedule s " +
@@ -31,9 +31,9 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     /**
      * Find All schedules in range
      *
-     * @param teamPlaceIds teamPlaceId for the schedule
+     * @param teamPlaceIds  teamPlaceId for the schedule
      * @param firstDateTime first-date-time of the period (Inclusive)
-     * @param lastDateTime last=date-time of the period (Exclusive)
+     * @param lastDateTime  last=date-time of the period (Exclusive)
      * @return List of the Schedules. If there is no Schedule, it will return the List with size 0.
      */
     @Query("SELECT s FROM Schedule s " +

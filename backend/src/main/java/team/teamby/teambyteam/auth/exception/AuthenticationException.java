@@ -2,7 +2,7 @@ package team.teamby.teambyteam.auth.exception;
 
 import team.teamby.teambyteam.member.exception.MemberException;
 
-public class AuthenticationException extends RuntimeException{
+public class AuthenticationException extends RuntimeException {
 
     public AuthenticationException(final String message) {
         super(message);

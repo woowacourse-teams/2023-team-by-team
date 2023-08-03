@@ -11,7 +11,9 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.*;
+import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.NOTICE_1ST;
+import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.NOTICE_2ND;
+import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.NOTICE_3RD;
 
 class NoticeRepositoryTest extends RepositoryTest {
 
