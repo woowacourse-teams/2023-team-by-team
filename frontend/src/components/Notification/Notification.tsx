@@ -13,7 +13,11 @@ const Notification = (props: NotificationProps) => {
   const textSize: Extract<TextSize, 'md' | 'xl'> = size === 'md' ? 'xl' : 'md';
 
   return (
-    <S.Wrapper color={color} size={size}>
+    <S.Wrapper
+      className={content.length > 100 ? 'can-hover' : ''}
+      color={color}
+      size={size}
+    >
       <S.Inner>
         <Text size={textSize} css={S.notification}>
           {content}
