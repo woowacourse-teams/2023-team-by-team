@@ -33,7 +33,8 @@ const teamColor = {
   7: '#FF51B9',
   8: '#51C0FF',
   9: '#82FF48',
-};
+  100: '#fff',
+} as const;
 
 const zIndex = {
   MODAL: 1,
