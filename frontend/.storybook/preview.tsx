@@ -6,6 +6,8 @@ import { theme } from '../src/styles/theme';
 import GlobalStyle from '../src/styles/GlobalStyle';
 import { ModalProvider } from '../src/components/common/Modal/ModalContext';
 import { ToastProvider } from '../src/components/common/Toast/ToastContext';
+import { TeamPlaceProvider } from '../src/contexts/TeamPlaceContext';
+
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { Preview } from '@storybook/react';
 
@@ -30,12 +32,14 @@ export const decorators = [
   (Story) => (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
-        <ToastProvider>
-          <ModalProvider>
-            <GlobalStyle />
-            <Story />
-          </ModalProvider>
-        </ToastProvider>
+        <TeamPlaceProvider>
+          <ToastProvider>
+            <ModalProvider>
+              <GlobalStyle />
+              <Story />
+            </ModalProvider>
+          </ToastProvider>
+        </TeamPlaceProvider>
       </ThemeProvider>
     </QueryClientProvider>
   ),
