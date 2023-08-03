@@ -16,6 +16,7 @@ import team.teamby.teambyteam.notice.application.dto.NoticeRegisterRequest;
 import team.teamby.teambyteam.notice.application.dto.NoticeResponse;
 
 import java.net.URI;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,12 +38,11 @@ public class NoticeController {
     }
 
     @GetMapping("/{teamPlaceId}/feed/notice/recent")
-    public ResponseEntity<Object> findNotice(@PathVariable final Long teamPlaceId) {
-        final NoticeResponse noticeResponse = noticeService.findMostRecentNotice(teamPlaceId);
+    public ResponseEntity<NoticeResponse> findNotice(@PathVariable final Long teamPlaceId) {
+        final Optional<NoticeResponse> noticeResponseOptional = noticeService.findMostRecentNotice(teamPlaceId);
 
-        if (noticeResponse == null) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(noticeResponse);
+        return noticeResponseOptional
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.noContent().build());
     }
 }

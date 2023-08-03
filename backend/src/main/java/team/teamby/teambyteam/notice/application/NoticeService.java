@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.IdOnly;
-import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.exception.MemberException.MemberNotFoundException;
@@ -16,6 +15,8 @@ import team.teamby.teambyteam.notice.domain.NoticeRepository;
 import team.teamby.teambyteam.notice.domain.vo.Content;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceRepository;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
+
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -50,15 +51,13 @@ public class NoticeService {
         return !teamPlaceRepository.existsById(teamPlaceId);
     }
 
-    public NoticeResponse findMostRecentNotice(final Long teamPlaceId) {
+    public Optional<NoticeResponse> findMostRecentNotice(final Long teamPlaceId) {
         checkTeamPlaceExist(teamPlaceId);
 
         return noticeRepository.findMostRecentByTeamPlaceId(teamPlaceId)
-                .map(findNotice -> {
-                    final Member findAuthor = memberRepository.findById(findNotice.getAuthorId())
-                            .orElseThrow(MemberNotFoundException::new);
-                    return NoticeResponse.of(findNotice, findAuthor);
-                })
-                .orElse(null);
+                .flatMap(findNotice -> {
+                    return memberRepository.findById(findNotice.getAuthorId())
+                            .map(findAuthor -> NoticeResponse.of(findNotice, findAuthor));
+                });
     }
 }

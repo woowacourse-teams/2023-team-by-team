@@ -1,5 +1,6 @@
 package team.teamby.teambyteam.notice.application;
 
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -17,6 +18,7 @@ import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException.NotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -111,10 +113,13 @@ class NoticeServiceTest extends ServiceTest {
         @DisplayName("공지 조회 시 가장 최근에 등록된 공지가 조회된다.")
         void successFindNotice() {
             // when
-            final NoticeResponse noticeResponse = noticeService.findMostRecentNotice(teamPlace.getId());
+            final Optional<NoticeResponse> noticeResponse = noticeService.findMostRecentNotice(teamPlace.getId());
 
             // then
-            assertThat(noticeResponse.content()).isEqualTo("3rdNotice");
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(noticeResponse).isPresent();
+                softly.assertThat(noticeResponse.get().content()).isEqualTo("3rdNotice");
+            });
         }
 
         @Test
@@ -136,23 +141,10 @@ class NoticeServiceTest extends ServiceTest {
             final TeamPlace additionalTeamPlace = testFixtureBuilder.buildTeamPlace(JAPANESE_TEAM_PLACE());
 
             // when
-            final NoticeResponse noticeResponse = noticeService.findMostRecentNotice(additionalTeamPlace.getId());
+            Optional<NoticeResponse> noticeResponse = noticeService.findMostRecentNotice(additionalTeamPlace.getId());
 
             //then
-            assertThat(noticeResponse).isNull();
-        }
-
-        @Test
-        @DisplayName("조회할 공지를 작성한 Member의 Id값이 존재하지 않을 경우 예외가 발생한다.")
-        void failMemberNotExistByIdFindingNotice() {
-            // given
-            final Long nonExistMemberId = -1L;
-            testFixtureBuilder.buildNotice(NOTICE_1ST(teamPlace.getId(), nonExistMemberId));
-
-            // when & then
-            assertThatThrownBy(() -> noticeService.findMostRecentNotice(teamPlace.getId()))
-                    .isInstanceOf(MemberNotFoundException.class)
-                    .hasMessage("조회한 멤버가 존재하지 않습니다.");
+            assertThat(noticeResponse).isEmpty();
         }
     }
 }
