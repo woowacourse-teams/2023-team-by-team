@@ -135,7 +135,7 @@ class NoticeServiceTest extends ServiceTest {
         }
 
         @Test
-        @DisplayName("조회할 공지가 없으면 null값을 반환한다.")
+        @DisplayName("조회할 공지가 없으면 빈 Optional 객체를 반환한다.")
         void succeedFindEmptyNotice() {
             // given
             final TeamPlace additionalTeamPlace = testFixtureBuilder.buildTeamPlace(JAPANESE_TEAM_PLACE());
