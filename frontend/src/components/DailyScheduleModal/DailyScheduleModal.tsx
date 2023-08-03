@@ -8,6 +8,7 @@ import { parseDate } from '~/utils/parseDate';
 import { useFetchDailySchedules } from '~/hooks/queries/useFetchDailySchedules';
 import type { Position, SchedulePosition } from '~/types/schedule';
 import type { CSSProperties } from 'react';
+import { useTeamPlace } from '~/hooks/useTeamPlace';
 
 export interface DailyScheduleModalProps {
   position: Position;
@@ -21,21 +22,16 @@ export interface DailyScheduleModalProps {
     scheduleId: number;
   }) => void;
   onSetModalType: () => void;
-  color?: string;
 }
 
 const DailyScheduleModal = (props: DailyScheduleModalProps) => {
-  const {
-    color = '#516FFF',
-    rawDate,
-    position,
-    onScheduleModalOpen,
-    onSetModalType,
-  } = props;
+  const { rawDate, position, onScheduleModalOpen, onSetModalType } = props;
   const { row, column } = position;
   const { closeModal } = useModal();
+  const { teamPlaceColor, teamPlaceId } = useTeamPlace();
+
   const { year, month, date } = parseDate(rawDate);
-  const schedules = useFetchDailySchedules(1, year, month, date);
+  const schedules = useFetchDailySchedules(teamPlaceId, year, month, date);
   const modalLocation: CSSProperties = {
     top: row < 3 ? `${(row + 2) * 118}px` : 'none',
     bottom: row >= 3 ? `${(7 - row) * 120}px` : 'none',
@@ -69,7 +65,7 @@ const DailyScheduleModal = (props: DailyScheduleModalProps) => {
               return (
                 <S.ScheduleBox
                   key={index}
-                  color={color}
+                  teamPlaceColor={teamPlaceColor}
                   title={title}
                   onClick={() => {
                     onScheduleModalOpen({

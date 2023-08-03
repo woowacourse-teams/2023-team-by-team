@@ -2,15 +2,15 @@ import Text from '~/components/common/Text/Text';
 import * as S from './ScheduleBar.styled';
 import type { GeneratedScheduleBar } from '~/types/schedule';
 import { DoubleArrowRightIcon } from '~/assets/svg';
-import type { TeamPlaceColor } from '~/types/team';
+import { useTeamPlace } from '~/hooks/useTeamPlace';
 
 export interface ScheduleBarProps extends GeneratedScheduleBar {
-  teamPlaceColor: TeamPlaceColor;
   onClick?: () => void;
 }
 
 const ScheduleBar = (props: ScheduleBarProps) => {
-  const { teamPlaceColor, title, onClick, roundedEnd, ...rest } = props;
+  const { title, onClick, roundedEnd, ...rest } = props;
+  const { teamPlaceColor } = useTeamPlace();
 
   return (
     <S.Wrapper

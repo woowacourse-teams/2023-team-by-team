@@ -19,10 +19,11 @@ import ScheduleMoreCell from '~/components/ScheduleMoreCell/ScheduleMoreCell';
 import type { Position, ModalOpenType } from '~/types/schedule';
 import DailyScheduleModal from '~/components/DailyScheduleModal/DailyScheduleModal';
 import { getDateByPosition } from '~/utils/getDateByPosition';
-import { getInfoByTeamPlaceId } from '~/utils/getInfoByTeamPlaceId';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 
 const Calendar = () => {
+  const { teamPlaceId } = useTeamPlace();
+
   const {
     year,
     month,
@@ -31,7 +32,7 @@ const Calendar = () => {
 
     handlers: { handlePrevButtonClick, handleNextButtonClick },
   } = useCalendar();
-  const schedules = useFetchSchedules(1, year, month);
+  const schedules = useFetchSchedules(teamPlaceId, year, month);
   const { isModalOpen, openModal } = useModal();
   const {
     modalScheduleId,
@@ -48,9 +49,6 @@ const Calendar = () => {
     column: 0,
   });
   const scheduleBars = generateScheduleBars(year, month, schedules);
-
-  const { teamPlaces } = useTeamPlace();
-  const { teamPlaceColor } = getInfoByTeamPlaceId(teamPlaces, 1);
 
   const handleModalOpen = (modalOpenType: ModalOpenType) => {
     setModalType(() => modalOpenType);
@@ -163,7 +161,6 @@ const Calendar = () => {
                                 level,
                               });
                             }}
-                            teamPlaceColor={teamPlaceColor}
                             {...scheduleBar}
                           />
                         );

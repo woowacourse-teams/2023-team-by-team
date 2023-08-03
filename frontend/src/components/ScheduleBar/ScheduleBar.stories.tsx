@@ -31,7 +31,6 @@ export const Default: Story = {
     level: 0,
     roundedStart: true,
     roundedEnd: true,
-    teamPlaceColor: 0,
     onClick: () => alert('clicked!'),
   },
 };
@@ -53,7 +52,6 @@ export const RoundedStart: Story = {
     level: 0,
     roundedStart: true,
     roundedEnd: false,
-    teamPlaceColor: 0,
     onClick: () => alert('clicked!'),
   },
 };
@@ -75,7 +73,6 @@ export const RoundedEnd: Story = {
     level: 0,
     roundedStart: false,
     roundedEnd: true,
-    teamPlaceColor: 0,
     onClick: () => alert('clicked!'),
   },
 };
@@ -97,7 +94,6 @@ export const NotRounded: Story = {
     level: 0,
     roundedStart: false,
     roundedEnd: false,
-    teamPlaceColor: 0,
     onClick: () => alert('clicked!'),
   },
 };
@@ -120,7 +116,6 @@ export const LongTitle: Story = {
     level: 0,
     roundedStart: true,
     roundedEnd: true,
-    teamPlaceColor: 0,
     onClick: () => alert('clicked!'),
   },
 };

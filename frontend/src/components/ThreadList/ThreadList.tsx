@@ -10,7 +10,6 @@ import { useIntersectionObserver } from '~/hooks/useIntersectionObserver';
 import Text from '~/components/common/Text/Text';
 import { useFetchNoticeThread } from '~/hooks/queries/useFetchNoticeThread';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
-import { getInfoByTeamPlaceId } from '~/utils/getInfoByTeamPlaceId';
 
 interface ThreadListProps {
   size?: ThreadSize;
@@ -18,11 +17,11 @@ interface ThreadListProps {
 
 const ThreadList = (props: ThreadListProps) => {
   const { size = 'md' } = props;
-  const { threadPages, hasNextPage, fetchNextPage } = useFetchThreads(1);
-  const { noticeThread } = useFetchNoticeThread(1);
+  const { teamPlaceId, teamPlaceColor } = useTeamPlace();
+  const { threadPages, hasNextPage, fetchNextPage } =
+    useFetchThreads(teamPlaceId);
+  const { noticeThread } = useFetchNoticeThread(teamPlaceId);
   const observeRef = useRef<HTMLDivElement>(null);
-  const { teamPlaces } = useTeamPlace();
-  const { teamPlaceColor } = getInfoByTeamPlaceId(teamPlaces, 1);
 
   const onIntersect: IntersectionObserverCallback = ([entry]) =>
     entry.isIntersecting && fetchNextPage();

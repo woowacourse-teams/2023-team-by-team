@@ -5,6 +5,7 @@ import { isYYYYMMDDHHMM } from '~/types/typeGuard';
 import { parseDate } from '~/utils/parseDate';
 import type { ChangeEventHandler, FormEventHandler } from 'react';
 import { useToast } from '~/hooks/useToast';
+import { useTeamPlace } from '~/hooks/useTeamPlace';
 
 const useScheduleAddModal = (clickedDate: Date) => {
   const { year, month, date } = parseDate(clickedDate);
@@ -23,7 +24,8 @@ const useScheduleAddModal = (clickedDate: Date) => {
   const [isAllDay, setIsAllDay] = useState(false);
   const { closeModal } = useModal();
   const { showToast } = useToast();
-  const { mutateSendSchedule } = useSendSchedule(1);
+  const { teamPlaceId } = useTeamPlace();
+  const { mutateSendSchedule } = useSendSchedule(teamPlaceId);
 
   const handleScheduleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const { name, value } = e.target;

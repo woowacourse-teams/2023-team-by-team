@@ -12,7 +12,6 @@ import { useDeleteSchedule } from '~/hooks/queries/useDeleteSchedule';
 import TeamBadge from '~/components/common/TeamBadge/TeamBadge';
 import { useToast } from '~/hooks/useToast';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
-import { getInfoByTeamPlaceId } from '~/utils/getInfoByTeamPlaceId';
 
 interface ScheduleModalProps {
   scheduleId: number;
@@ -24,10 +23,10 @@ const ScheduleModal = (props: ScheduleModalProps) => {
   const { scheduleId, position, onOpenScheduleEditModal } = props;
   const { closeModal } = useModal();
   const { showToast } = useToast();
-  const { scheduleById } = useFetchScheduleById(1, scheduleId);
-  const { mutateDeleteSchedule } = useDeleteSchedule(1, scheduleId);
-  const { teamPlaces } = useTeamPlace();
-  const { teamPlaceColor, displayName } = getInfoByTeamPlaceId(teamPlaces, 1);
+  const { teamPlaceColor, teamPlaceId, displayName } = useTeamPlace();
+
+  const { scheduleById } = useFetchScheduleById(teamPlaceId, scheduleId);
+  const { mutateDeleteSchedule } = useDeleteSchedule(teamPlaceId, scheduleId);
 
   if (scheduleById === undefined) return;
   const { title, startDateTime, endDateTime } = scheduleById;

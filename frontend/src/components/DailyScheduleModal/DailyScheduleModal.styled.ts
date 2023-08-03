@@ -1,5 +1,5 @@
 import { css, styled } from 'styled-components';
-import type { DailyScheduleModalProps } from '~/components/DailyScheduleModal/DailyScheduleModal';
+import type { TeamPlaceColor } from '~/types/team';
 
 export const Backdrop = styled.div`
   position: fixed;
@@ -54,7 +54,7 @@ export const ScheduleWrapper = styled.div`
   gap: 10px;
 `;
 
-export const ScheduleBox = styled.div<Pick<DailyScheduleModalProps, 'color'>>`
+export const ScheduleBox = styled.div<{ teamPlaceColor: TeamPlaceColor }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -63,7 +63,8 @@ export const ScheduleBox = styled.div<Pick<DailyScheduleModalProps, 'color'>>`
   height: 40px;
   column-gap: 10px;
 
-  background-color: ${({ color }) => color};
+  background-color: ${({ theme, teamPlaceColor }) =>
+    theme.teamColor[teamPlaceColor]};
   border-radius: 4px;
 
   color: ${({ theme }) => theme.color.WHITE};
