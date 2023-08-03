@@ -7,7 +7,6 @@ export const Wrapper = styled.div<
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
 
   width: 100%;
   padding: 10px 50px;
@@ -15,7 +14,6 @@ export const Wrapper = styled.div<
 
   color: ${({ theme }) => theme.color.WHITE};
   white-space: pre-wrap;
-  text-overflow: ellipsis;
 
   background-color: ${({ theme, teamPlaceColor = 0 }) =>
     theme.teamColor[teamPlaceColor]};
