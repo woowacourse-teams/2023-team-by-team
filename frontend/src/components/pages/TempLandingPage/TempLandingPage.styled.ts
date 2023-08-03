@@ -2,24 +2,26 @@ import { styled, css } from 'styled-components';
 
 export const Container = styled.div`
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
   width: 100%;
   height: 100%;
-  padding: 10px 80px 30px;
-  gap: 10px;
 
   background-color: ${({ theme }) => theme.color.GRAY100};
+`;
 
-  @media screen and (max-width: 1320px) {
-    padding: 10px 50px 30px;
-  }
+export const PlaceHolder = styled.div`
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
 
-  @media screen and (max-width: 1000px) {
-    padding: 10px 10px 30px;
-  }
+  width: 270px;
+  height: 270px;
+`;
 
-  @media screen and (max-width: 660px) {
-    padding: 10px 10px 30px;
-  }
+export const placeHolderText = css`
+  font-size: 30px;
+  text-align: center;
+  color: ${({ theme }) => theme.color.GRAY400};
 `;
