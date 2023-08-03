@@ -11,6 +11,7 @@ import TeamBadge from '~/components/common/TeamBadge/TeamBadge';
 import TimeTableMenu from '~/components/TimeTableMenu/TimeTableMenu';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { getInfoByTeamPlaceId } from '~/utils/getInfoByTeamPlaceId';
+import { useRef, useEffect } from 'react';
 
 interface ScheduleAddModalProps {
   clickedDate: Date;
@@ -34,6 +35,12 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
   } = useScheduleAddModal(clickedDate);
 
   const { teamPlaceColor, displayName } = getInfoByTeamPlaceId(teamPlaces, 1);
+
+  const titleInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    titleInputRef.current?.focus();
+  }, []);
 
   return (
     <Modal>

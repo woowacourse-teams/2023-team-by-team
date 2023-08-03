@@ -1,14 +1,15 @@
 import * as S from './Input.styled';
 import type { CSSProp } from 'styled-components';
-import type { InputHTMLAttributes } from 'react';
+import type { ComponentPropsWithRef } from 'react';
+import { forwardRef } from 'react';
 
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends ComponentPropsWithRef<'input'> {
   width: string;
   height: string;
   css?: CSSProp;
 }
 
-const Input = (props: InputProps) => {
+const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const { width, height, css, ...rest } = props;
 
   return (
@@ -16,9 +17,12 @@ const Input = (props: InputProps) => {
       width={width}
       height={height}
       css={css}
+      ref={ref}
       {...rest}
     ></S.InputWrapper>
   );
-};
+});
+
+Input.displayName = 'Input';
 
 export default Input;
