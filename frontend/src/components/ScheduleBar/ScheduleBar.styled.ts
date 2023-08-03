@@ -19,7 +19,10 @@ export const Wrapper = styled.div<
 `;
 
 export const Inner = styled.div<
-  Pick<ScheduleBarProps, 'color' | 'level' | 'roundedStart' | 'roundedEnd'>
+  Pick<
+    ScheduleBarProps,
+    'teamPlaceColor' | 'level' | 'roundedStart' | 'roundedEnd'
+  >
 >`
   display: flex;
   align-items: center;
@@ -28,7 +31,8 @@ export const Inner = styled.div<
   height: 100%;
   padding-left: 6px;
 
-  background-color: ${({ color }) => color};
+  background-color: ${({ theme, teamPlaceColor = 0 }) =>
+    theme.teamColor[teamPlaceColor]};
   border-radius: ${({ roundedStart, roundedEnd }) =>
     `${roundedStart ? '4px' : '0'} ${roundedEnd ? '4px 4px' : '0 0'} ${
       roundedStart ? '4px' : '0'

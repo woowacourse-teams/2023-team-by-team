@@ -34,3 +34,16 @@ export type ModalOpenType =
 export interface ScheduleWithTeamPlaceId extends Schedule {
   teamPlaceId: number;
 }
+
+export interface GeneratedScheduleBar {
+  id: string;
+  scheduleId: number;
+  schedule: Schedule;
+  title: string;
+  row: number;
+  column: number;
+  duration: number;
+  level: number;
+  roundedStart: boolean;
+  roundedEnd: boolean;
+}
