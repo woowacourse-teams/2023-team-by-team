@@ -51,13 +51,12 @@ public class NoticeService {
         return !teamPlaceRepository.existsById(teamPlaceId);
     }
 
+    @Transactional(readOnly = true)
     public Optional<NoticeResponse> findMostRecentNotice(final Long teamPlaceId) {
         checkTeamPlaceExist(teamPlaceId);
 
         return noticeRepository.findMostRecentByTeamPlaceId(teamPlaceId)
-                .flatMap(findNotice -> {
-                    return memberRepository.findById(findNotice.getAuthorId())
-                            .map(findAuthor -> NoticeResponse.of(findNotice, findAuthor));
-                });
+                .flatMap(findNotice -> memberRepository.findById(findNotice.getAuthorId())
+                        .map(findAuthor -> NoticeResponse.of(findNotice, findAuthor)));
     }
 }
