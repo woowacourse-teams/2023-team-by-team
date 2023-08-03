@@ -1,7 +1,9 @@
 import { css, styled } from 'styled-components';
 import type { NotificationProps } from '~/components/Notification/Notification';
 
-export const Wrapper = styled.div<Pick<NotificationProps, 'color' | 'size'>>`
+export const Wrapper = styled.div<
+  Pick<NotificationProps, 'teamPlaceColor' | 'size'>
+>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,7 +14,8 @@ export const Wrapper = styled.div<Pick<NotificationProps, 'color' | 'size'>>`
 
   color: ${({ theme }) => theme.color.WHITE};
 
-  background-color: ${({ color }) => color};
+  background-color: ${({ theme, teamPlaceColor = 0 }) =>
+    theme.teamColor[teamPlaceColor]};
   border-radius: 20px;
 
   filter: brightness(1.2);
