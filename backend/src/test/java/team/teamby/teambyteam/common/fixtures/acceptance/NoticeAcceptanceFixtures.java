@@ -24,4 +24,16 @@ public class NoticeAcceptanceFixtures {
                 .then().log().all()
                 .extract();
     }
+
+    public static ExtractableResponse<Response> GET_NOTICE_REQUEST(
+            final String authToken,
+            final Long teamPlaceId
+    ) {
+        return RestAssured.given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, JWT_PREFIX + authToken)
+                .when().log().all()
+                .get("/api/team-place/{teamPlaceId}/feed/notice/recent", teamPlaceId)
+                .then().log().all()
+                .extract();
+    }
 }

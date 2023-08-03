@@ -7,13 +7,16 @@ import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.IdOnly;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
-import team.teamby.teambyteam.member.exception.MemberException;
+import team.teamby.teambyteam.member.exception.MemberException.MemberNotFoundException;
 import team.teamby.teambyteam.notice.application.dto.NoticeRegisterRequest;
+import team.teamby.teambyteam.notice.application.dto.NoticeResponse;
 import team.teamby.teambyteam.notice.domain.Notice;
 import team.teamby.teambyteam.notice.domain.NoticeRepository;
 import team.teamby.teambyteam.notice.domain.vo.Content;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceRepository;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
+
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -30,7 +33,7 @@ public class NoticeService {
     ) {
         checkTeamPlaceExist(teamPlaceId);
         final IdOnly memberId = memberRepository.findIdByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(MemberException.MemberNotFoundException::new);
+                .orElseThrow(MemberNotFoundException::new);
 
         final Content content = new Content(noticeRegisterRequest.content());
         final Notice savedNotice = noticeRepository.save(new Notice(content, teamPlaceId, memberId.id()));
@@ -46,5 +49,14 @@ public class NoticeService {
 
     private boolean notExistTeamPlace(final Long teamPlaceId) {
         return !teamPlaceRepository.existsById(teamPlaceId);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<NoticeResponse> findMostRecentNotice(final Long teamPlaceId) {
+        checkTeamPlaceExist(teamPlaceId);
+
+        return noticeRepository.findMostRecentByTeamPlaceId(teamPlaceId)
+                .flatMap(findNotice -> memberRepository.findById(findNotice.getAuthorId())
+                        .map(findAuthor -> NoticeResponse.of(findNotice, findAuthor)));
     }
 }

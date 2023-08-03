@@ -1,5 +1,6 @@
 package team.teamby.teambyteam.notice.application;
 
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -8,17 +9,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import team.teamby.teambyteam.common.ServiceTest;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.Member;
-import team.teamby.teambyteam.member.exception.MemberException;
+import team.teamby.teambyteam.member.exception.MemberException.MemberNotFoundException;
 import team.teamby.teambyteam.notice.application.dto.NoticeRegisterRequest;
+import team.teamby.teambyteam.notice.application.dto.NoticeResponse;
+import team.teamby.teambyteam.notice.domain.Notice;
 import team.teamby.teambyteam.notice.domain.NoticeRepository;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
-import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
+import team.teamby.teambyteam.teamplace.exception.TeamPlaceException.NotFoundException;
+
+import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.*;
-import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.FIRST_NOTICE_REGISTER_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.*;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
+import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.JAPANESE_TEAM_PLACE;
 
 class NoticeServiceTest extends ServiceTest {
 
@@ -63,7 +70,7 @@ class NoticeServiceTest extends ServiceTest {
 
             // when & then
             assertThatThrownBy(() -> noticeService.register(request, notExistTeamPlaceId, ROY_MEMBER_EMAIL_REQUEST))
-                    .isInstanceOf(TeamPlaceException.NotFoundException.class)
+                    .isInstanceOf(NotFoundException.class)
                     .hasMessage("조회한 팀 플레이스가 존재하지 않습니다.");
         }
 
@@ -75,8 +82,70 @@ class NoticeServiceTest extends ServiceTest {
 
             // when & then
             assertThatThrownBy(() -> noticeService.register(request, teamPlace.getId(), new MemberEmailDto(nonExistMember.getEmail().getValue())))
-                    .isInstanceOf(MemberException.MemberNotFoundException.class)
+                    .isInstanceOf(MemberNotFoundException.class)
                     .hasMessage("조회한 멤버가 존재하지 않습니다.");
+        }
+    }
+
+    @Nested
+    @DisplayName("공지 조회 시")
+    class findNotice {
+
+        private Member member;
+        private TeamPlace teamPlace;
+        private NoticeRegisterRequest request;
+        private List<Notice> notices;
+
+        @BeforeEach
+        void setUP() {
+            member = testFixtureBuilder.buildMember(ROY());
+            teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            request = FIRST_NOTICE_REGISTER_REQUEST;
+            notices = testFixtureBuilder.buildNotices(
+                    List.of(
+                            NOTICE_1ST(teamPlace.getId(), member.getId()),
+                            NOTICE_2ND(teamPlace.getId(), member.getId()),
+                            NOTICE_3RD(teamPlace.getId(), member.getId()))
+            );
+        }
+
+        @Test
+        @DisplayName("공지 조회 시 가장 최근에 등록된 공지가 조회된다.")
+        void successFindNotice() {
+            // when
+            final Optional<NoticeResponse> noticeResponse = noticeService.findMostRecentNotice(teamPlace.getId());
+
+            // then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(noticeResponse).isPresent();
+                softly.assertThat(noticeResponse.get().content()).isEqualTo("3rdNotice");
+            });
+        }
+
+        @Test
+        @DisplayName("공지 조회 시 팀 플레이스 ID에 해당하는 팀 플레이스가 존재하지 않으면 예외가 발생한다.")
+        void failTeamPlaceNotExistByIdFindingNotice() {
+            // given
+            final Long notExistTeamPlaceId = -1L;
+
+            // when & then
+            assertThatThrownBy(() -> noticeService.findMostRecentNotice(notExistTeamPlaceId))
+                    .isInstanceOf(NotFoundException.class)
+                    .hasMessage("조회한 팀 플레이스가 존재하지 않습니다.");
+        }
+
+        @Test
+        @DisplayName("조회할 공지가 없으면 빈 Optional 객체를 반환한다.")
+        void succeedFindEmptyNotice() {
+            // given
+            final TeamPlace additionalTeamPlace = testFixtureBuilder.buildTeamPlace(JAPANESE_TEAM_PLACE());
+            final TeamPlace registerdTeamplace = testFixtureBuilder.buildTeamPlace(additionalTeamPlace);
+
+            // when
+            Optional<NoticeResponse> noticeResponse = noticeService.findMostRecentNotice(registerdTeamplace.getId());
+
+            //then
+            assertThat(noticeResponse).isEmpty();
         }
     }
 }
