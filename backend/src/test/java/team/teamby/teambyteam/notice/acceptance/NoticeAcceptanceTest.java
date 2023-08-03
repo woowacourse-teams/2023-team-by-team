@@ -199,7 +199,7 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
 
             // then
             assertSoftly(softly -> {
-                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
                 softly.assertThat(StringUtils.isBlank(response.body().asString())).isTrue();
             });
         }
