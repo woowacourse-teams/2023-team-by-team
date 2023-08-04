@@ -22,6 +22,16 @@ export const Default: Story = {
   },
 };
 
+export const ShortContent: Story = {
+  args: {
+    authorName: '팀바팀_필립',
+    profileImageUrl:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYZjvO1QuvfgCfQxBwwzmJcHIT5pTXIBGOLeyBDIbZknn6Dhkd40WrU0ZCdjt-IoXLzI0&usqp=CAU',
+    createdAt: '2023-07-27 15:09',
+    content: '3차 데모데이까지의 기한은 2023/10/25 입니다.',
+  },
+};
+
 export const Small: Story = {
   args: {
     size: 'sm',
