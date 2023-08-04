@@ -41,10 +41,8 @@ public class NoticeController {
     public ResponseEntity<NoticeResponse> findNotice(@PathVariable final Long teamPlaceId) {
         final Optional<NoticeResponse> noticeResponseOptional = noticeService.findMostRecentNotice(teamPlaceId);
 
-        if (noticeResponseOptional.isEmpty()) {
-            return ResponseEntity.ok().build();
-        }
-
-        return ResponseEntity.ok(noticeResponseOptional.get());
+        return noticeResponseOptional
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.ok().build());
     }
 }
