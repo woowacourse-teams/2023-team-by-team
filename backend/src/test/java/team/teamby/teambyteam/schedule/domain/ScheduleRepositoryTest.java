@@ -13,7 +13,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.*;
+import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_6_AND_MONTH_7_DAY_12_SCHEDULE;
+import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE;
+import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE;
+import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_DAY_28_AND_MONTH_8_SCHEDULE;
+import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_DAY_29_AND_MONTH_8_SCHEDULE;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.JAPANESE_TEAM_PLACE;
 

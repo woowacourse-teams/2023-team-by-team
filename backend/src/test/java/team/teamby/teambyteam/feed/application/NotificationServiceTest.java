@@ -17,7 +17,9 @@ import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static team.teamby.teambyteam.common.fixtures.ScheduleEventFixtures.*;
+import static team.teamby.teambyteam.common.fixtures.ScheduleEventFixtures.SCHEDULE_CREATE_EVENT;
+import static team.teamby.teambyteam.common.fixtures.ScheduleEventFixtures.SCHEDULE_DELETE_EVENT;
+import static team.teamby.teambyteam.common.fixtures.ScheduleEventFixtures.SCHEDULE_UPDATE_EVENT;
 import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE;
 import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_UPDATE_REQUEST;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;

@@ -3,7 +3,7 @@ package team.teamby.teambyteam.schedule.application.event;
 import team.teamby.teambyteam.schedule.domain.vo.Span;
 import team.teamby.teambyteam.schedule.domain.vo.Title;
 
-public class ScheduleUpdateEvent extends ScheduleEvent{
+public class ScheduleUpdateEvent extends ScheduleEvent {
 
     private final ScheduleUpdateEventDto scheduleUpdateEventDto;
 

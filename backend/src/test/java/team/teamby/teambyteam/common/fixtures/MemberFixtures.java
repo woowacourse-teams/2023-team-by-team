@@ -46,6 +46,7 @@ public class MemberFixtures {
     public static Member PHILIP() {
         return new Member(new Name(PHILIP_NAME), new Email(PHILIP_EMAIL), new ProfileImageUrl(PHILIP_PROFILE_IMAGE_URL));
     }
+
     public static Member ROY() {
         return new Member(new Name(ROY_NAME), new Email(ROY_EMAIL), new ProfileImageUrl(ROY_PROFILE_IMAGE_URL));
     }
