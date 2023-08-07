@@ -19,7 +19,7 @@ const NavigationBar = () => {
           <CalendarIcon />
         </S.MenuLink>
         <S.MenuLink
-          to={PATH_NAME.TEAM_THREAD}
+          to={PATH_NAME.TEAM_FEED}
           aria-label="팀 피드 페이지로 이동하기 버튼"
         >
           <FeedIcon />

@@ -1,12 +1,12 @@
 import Button from '~/components/common/Button/Button';
-import * as S from './FeedPage.styled';
+import * as S from './TeamFeedPage.styled';
 import { useModal } from '~/hooks/useModal';
 import ThreadAddBottomSheet from '~/components/ThreadAddBottomSheet/ThreadAddBottomSheet';
 import { ArrowUpIcon, WriteIcon } from '~/assets/svg';
 import { useEffect, useRef, useState } from 'react';
 import ThreadList from '~/components/ThreadList/ThreadList';
 
-const FeedPage = () => {
+const TeamFeedPage = () => {
   const { isModalOpen, openModal } = useModal();
   const [isShowScrollTopButton, setIsShowScrollTopButton] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -71,4 +71,4 @@ const FeedPage = () => {
   );
 };
 
-export default FeedPage;
+export default TeamFeedPage;
