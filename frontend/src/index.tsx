@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === 'development') {
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: '',
     element: <App />,
     children: [
       ROUTES.SPECIAL_ROUTES.LANDING,
