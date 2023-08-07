@@ -5,9 +5,9 @@ import TeamSelectPage from '~/components/pages/TeamSelectPage/TeamSelectPage';
 
 export const PATH_NAME = {
   LANDING: '/',
-  TEAM_SELECT: '/team-select',
-  TEAM_CALENDAR: '/team-calendar',
-  TEAM_THREAD: '/team-threads',
+  TEAM_SELECT: '/team',
+  TEAM_CALENDAR: '/team/calendar',
+  TEAM_THREAD: '/team/threads',
 };
 
 const SPECIAL_ROUTES = {
