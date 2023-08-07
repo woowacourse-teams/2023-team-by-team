@@ -1,8 +1,8 @@
 import Text from '~/components/common/Text/Text';
-import * as S from './TempLandingPage.styled';
+import * as S from './TeamSelectPage.styled';
 import { teamSelectImage } from '~/assets/png';
 
-const TempLandingPage = () => {
+const TeamSelectPage = () => {
   return (
     <S.Container>
       <S.PlaceHolder>
@@ -15,4 +15,4 @@ const TempLandingPage = () => {
   );
 };
 
-export default TempLandingPage;
+export default TeamSelectPage;
