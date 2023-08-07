@@ -1,6 +1,10 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import {
+  BrowserRouter,
+  RouterProvider,
+  createBrowserRouter,
+} from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import App from '~/App';
@@ -17,19 +21,6 @@ if (process.env.NODE_ENV === 'development') {
   worker.start();
 }
 
-const router = createBrowserRouter([
-  {
-    path: '',
-    element: <App />,
-    children: [
-      ROUTES.SPECIAL_ROUTES.LANDING,
-      ROUTES.MAIN_ROUTES.TEAM_SELECT,
-      ROUTES.MAIN_ROUTES.TEAM_CALENDAR,
-      ROUTES.MAIN_ROUTES.TEAM_THREAD,
-    ],
-  },
-]);
-
 const queryClient = new QueryClient();
 
 const root = createRoot(document.getElementById('root') as HTMLElement);
@@ -42,7 +33,9 @@ root.render(
           <ToastProvider>
             <ModalProvider>
               <GlobalStyle />
-              <RouterProvider router={router} />
+              <BrowserRouter>
+                <App />
+              </BrowserRouter>
               <ToastList />
             </ModalProvider>
           </ToastProvider>
