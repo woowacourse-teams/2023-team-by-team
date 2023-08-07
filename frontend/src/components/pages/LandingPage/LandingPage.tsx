@@ -1,10 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import Button from '~/components/common/Button/Button';
+import { PATH_NAME } from '~/constants/routes';
 
 const LandingPage = () => {
   const navigate = useNavigate();
   const handleNavigateClick = () => {
-    navigate('/team');
+    navigate(PATH_NAME.TEAM_SELECT);
   };
 
   return (
