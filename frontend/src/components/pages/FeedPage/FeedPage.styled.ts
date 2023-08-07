@@ -39,6 +39,7 @@ export const MenuButtonWrapper = styled.div`
   bottom: 36px;
 
   width: 40px;
+  margin-top: auto;
   margin-left: calc(100% - 14px);
   row-gap: 14px;
 

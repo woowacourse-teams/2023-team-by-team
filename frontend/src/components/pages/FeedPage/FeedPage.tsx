@@ -40,34 +40,32 @@ const FeedPage = () => {
   }, []);
 
   return (
-    <>
-      <S.ThreadContainer ref={ref}>
-        <ThreadList />
-        <S.MenuButtonWrapper>
-          {isShowScrollTopButton && (
-            <Button
-              type="button"
-              variant="plain"
-              aria-label="화면 상단으로 스크롤 이동하기"
-              css={S.scrollTopButton}
-              onClick={handleScrollTopButtonClick}
-            >
-              <ArrowUpIcon />
-            </Button>
-          )}
+    <S.ThreadContainer ref={ref}>
+      <ThreadList />
+      <S.MenuButtonWrapper>
+        {isShowScrollTopButton && (
           <Button
             type="button"
-            onClick={openModal}
-            aria-label="새로운 스레드 작성하기"
+            variant="plain"
+            aria-label="화면 상단으로 스크롤 이동하기"
+            css={S.scrollTopButton}
+            onClick={handleScrollTopButtonClick}
           >
-            <WriteIcon />
+            <ArrowUpIcon />
           </Button>
-        </S.MenuButtonWrapper>
-        <S.BottomSheetWrapper>
-          {isModalOpen && <ThreadAddBottomSheet />}
-        </S.BottomSheetWrapper>
-      </S.ThreadContainer>
-    </>
+        )}
+        <Button
+          type="button"
+          onClick={openModal}
+          aria-label="새로운 스레드 작성하기"
+        >
+          <WriteIcon />
+        </Button>
+      </S.MenuButtonWrapper>
+      <S.BottomSheetWrapper>
+        {isModalOpen && <ThreadAddBottomSheet />}
+      </S.BottomSheetWrapper>
+    </S.ThreadContainer>
   );
 };
 
