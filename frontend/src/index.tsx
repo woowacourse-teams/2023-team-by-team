@@ -23,14 +23,9 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       ROUTES.SPECIAL_ROUTES.LANDING,
-      {
-        path: ROUTES.MAIN_ROUTES.TEAM_SELECT.path,
-        element: ROUTES.MAIN_ROUTES.TEAM_SELECT.element,
-        children: [
-          ROUTES.MAIN_ROUTES.TEAM_CALENDAR,
-          ROUTES.MAIN_ROUTES.TEAM_THREAD,
-        ],
-      },
+      ROUTES.MAIN_ROUTES.TEAM_SELECT,
+      ROUTES.MAIN_ROUTES.TEAM_CALENDAR,
+      ROUTES.MAIN_ROUTES.TEAM_THREAD,
     ],
   },
 ]);
