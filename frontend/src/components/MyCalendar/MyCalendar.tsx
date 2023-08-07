@@ -8,9 +8,9 @@ import { ArrowLeftIcon, ArrowRightIcon } from '~/assets/svg';
 import { DAYS_OF_WEEK } from '~/constants/calendar';
 import { useFetchMySchedules } from '~/hooks/queries/useFetchMySchedules';
 import { parseDate } from '~/utils/parseDate';
-import { generateScheduleCirclesMatrix } from '~/utils/generateScheduleCirclesMatrix';
+import { generateScheduleCirclesMatrix } from '~/utils/generate/generateScheduleCirclesMatrix';
 import TeamBadge from '~/components/common/TeamBadge/TeamBadge';
-import { getInfoByTeamPlaceId } from '~/utils/getInfoByTeamPlaceId';
+import { getInfoByTeamPlaceId } from '~/utils/get/getInfoByTeamPlaceId';
 import type { TeamPlace } from '~/types/team';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 

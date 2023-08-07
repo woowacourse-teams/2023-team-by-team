@@ -5,7 +5,7 @@ import type {
   Schedule,
 } from '~/types/schedule';
 import { parseDate } from '~/utils/parseDate';
-import { generateUuid } from '~/utils/generateUuid';
+import { generateUuid } from '~/utils/generate/generateUuid';
 
 type CalendarObject = Record<string, Position>;
 

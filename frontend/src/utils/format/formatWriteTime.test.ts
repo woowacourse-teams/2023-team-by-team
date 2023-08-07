@@ -1,5 +1,5 @@
 import type { YYYYMMDDHHMM } from '~/types/schedule';
-import { formatWriteTime } from '~/utils/formatWriteTime';
+import { formatWriteTime } from '~/utils/format/formatWriteTime';
 
 describe('formatWriteTime', () => {
   it('YYYY-MM-DD HH:MM 형식의 Date을 YYYY/MM/DD HH:MM 형식으로 변환한다.', () => {

@@ -3,7 +3,7 @@ import { parseDate } from '~/utils/parseDate';
 import * as S from './MyDailyScheduleList.styled';
 import MyDailySchedule from '~/components/MyDailyScheduleList/MyDailySchedule/MyDailySchedule';
 import type { TeamPlace } from '~/types/team';
-import { getInfoByTeamPlaceId } from '~/utils/getInfoByTeamPlaceId';
+import { getInfoByTeamPlaceId } from '~/utils/get/getInfoByTeamPlaceId';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 
 interface MyDailyScheduleListProps {

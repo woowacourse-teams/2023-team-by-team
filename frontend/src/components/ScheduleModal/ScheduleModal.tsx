@@ -5,7 +5,7 @@ import { useModal } from '~/hooks/useModal';
 import * as S from './ScheduleModal.styled';
 import { CloseIcon, DeleteIcon, EditIcon } from '~/assets/svg';
 import Button from '~/components/common/Button/Button';
-import { formatDateTime } from '~/utils/formatDateTime';
+import { formatDateTime } from '~/utils/format/formatDateTime';
 import type { SchedulePosition } from '~/types/schedule';
 import { useFetchScheduleById } from '~/hooks/queries/useFetchScheduleById';
 import { useDeleteSchedule } from '~/hooks/queries/useDeleteSchedule';
