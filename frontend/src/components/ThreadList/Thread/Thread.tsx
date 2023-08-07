@@ -1,7 +1,7 @@
 import type { YYYYMMDDHHMM } from '~/types/schedule';
 import * as S from './Thread.styled';
 import Text from '~/components/common/Text/Text';
-import { formatWriteTime } from '~/utils/format/formatWriteTime';
+import { formatWriteTime } from '~/utils/formatWriteTime';
 import type { ThreadSize } from '~/types/size';
 
 interface ThreadProps {

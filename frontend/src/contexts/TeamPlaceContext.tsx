@@ -2,7 +2,7 @@ import { createContext, useCallback, useEffect, useState } from 'react';
 import type { PropsWithChildren } from 'react';
 import { useFetchTeamPlaces } from '~/hooks/queries/useFetchTeamPlaces';
 import type { TeamPlace, TeamPlaceColor } from '~/types/team';
-import { getInfoByTeamPlaceId } from '~/utils/get/getInfoByTeamPlaceId';
+import { getInfoByTeamPlaceId } from '~/utils/getInfoByTeamPlaceId';
 
 interface TeamPlaceContextProps {
   teamPlaces: TeamPlace[];

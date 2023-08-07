@@ -1,4 +1,4 @@
-import { getDateByPosition } from './getDateByPosition';
+import { getDateByPosition } from '../getDateByPosition';
 
 describe('날짜 객체 반환 테스트', () => {
   test.each([

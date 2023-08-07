@@ -1,5 +1,5 @@
 import { createContext, useState } from 'react';
-import { generateUuid } from '~/utils/generate/generateUuid';
+import { generateUuid } from '~/utils/generateUuid';
 import theme from '~/styles/theme';
 import type { PropsWithChildren } from 'react';
 import type { ToastProps } from '~/components/common/Toast/Toast';

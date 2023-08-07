@@ -1,4 +1,4 @@
-import { generateScheduleBars } from './generateScheduleBars';
+import { generateScheduleBars } from '../generateScheduleBars';
 import type { GeneratedScheduleBar, Schedule } from '~/types/schedule';
 
 const removeIdFromScheduleBars = (scheduleBars: GeneratedScheduleBar[]) => {

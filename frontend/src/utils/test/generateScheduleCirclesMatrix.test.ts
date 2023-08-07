@@ -1,4 +1,4 @@
-import { generateScheduleCirclesMatrix } from './generateScheduleCirclesMatrix';
+import { generateScheduleCirclesMatrix } from '../generateScheduleCirclesMatrix';
 import type { ScheduleWithTeamPlaceId } from '~/types/schedule';
 
 describe('Test #1 - 스케줄 서클 기본 기능 테스트', () => {

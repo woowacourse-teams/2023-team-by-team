@@ -5,7 +5,7 @@ import Text from '~/components/common/Text/Text';
 import ExpandButton from '~/components/ExpandButton/ExpandButton';
 import NoticeTag from './NoticeTag/NoticeTag';
 import type { YYYYMMDDHHMM } from '~/types/schedule';
-import { formatWriteTime } from '~/utils/format/formatWriteTime';
+import { formatWriteTime } from '~/utils/formatWriteTime';
 import type { NoticeThreadSize } from '~/types/size';
 
 interface NoticeThreadProps {

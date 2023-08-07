@@ -1,5 +1,5 @@
 import type { YYYYMMDDHHMM } from '~/types/schedule';
-import { formatTime } from '~/utils/format/formatTime';
+import { formatTime } from '~/utils/formatTime';
 
 describe('formatTime', () => {
   it('하루 일정이 들어올 경우 시작 시간과 끝 시간만 반환한다.', () => {
