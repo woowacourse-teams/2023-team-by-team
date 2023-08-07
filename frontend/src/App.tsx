@@ -1,15 +1,18 @@
-import { Outlet } from 'react-router-dom';
-import Header from '~/components/common/Header/Header';
+import { Route, Routes } from 'react-router-dom';
+import LandingPage from '~/components/pages/LandingPage/LandingPage';
 import PageTemplate from '~/components/pages/PageTemplate/PageTemplate';
+import { PATH_NAME, ROUTES } from '~/constants/routes';
 
 const App = () => {
   return (
-    <>
-      <Header />
-      <PageTemplate>
-        <Outlet />
-      </PageTemplate>
-    </>
+    <Routes>
+      <Route path={PATH_NAME.LANDING} element={<LandingPage />} />
+      <Route element={<PageTemplate />}>
+        {Object.values(ROUTES.MAIN_ROUTES).map(({ path, element }) => (
+          <Route key={path} path={path} element={element} />
+        ))}
+      </Route>
+    </Routes>
   );
 };
 
