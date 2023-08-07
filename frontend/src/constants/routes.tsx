@@ -16,13 +16,13 @@ const SPECIAL_ROUTES = {
     element: <LandingPage />,
   },
   LOGIN: {},
-};
-
-const MAIN_ROUTES = {
   TEAM_SELECT: {
     path: PATH_NAME.TEAM_SELECT,
     element: <TeamSelectPage />,
   },
+};
+
+const MAIN_ROUTES = {
   TEAM_CALENDAR: {
     path: PATH_NAME.TEAM_CALENDAR,
     element: <TeamCalendarPage />,
