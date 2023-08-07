@@ -1,5 +1,5 @@
 import { css, styled } from 'styled-components';
-import type { NotificationProps } from '~/components/Notification/Notification';
+import type { NotificationProps } from '~/components/ThreadList/Notification/Notification';
 
 export const Wrapper = styled.div<
   Pick<NotificationProps, 'teamPlaceColor' | 'size'>
