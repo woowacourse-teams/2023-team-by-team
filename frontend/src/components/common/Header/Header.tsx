@@ -27,7 +27,8 @@ const Header = () => {
       setTeamName(() => value);
       navigate(PATH_NAME.TEAM_CALENDAR);
     },
-    [changeTeamPlace, teamPlaces, navigate],
+    /*eslint-disable-next-line*/
+    [changeTeamPlace, teamPlaces],
   );
 
   useEffect(() => {
