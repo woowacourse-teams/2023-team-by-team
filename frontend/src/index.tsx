@@ -15,7 +15,6 @@ import { ModalProvider } from '~/components/common/Modal/ModalContext';
 import { ToastProvider } from '~/components/common/Toast/ToastContext';
 import ToastList from '~/components/common/Toast/ToastList';
 import { TeamPlaceProvider } from '~/contexts/TeamPlaceContext';
-import { ROUTES } from '~/constants/routes';
 
 if (process.env.NODE_ENV === 'development') {
   worker.start();
