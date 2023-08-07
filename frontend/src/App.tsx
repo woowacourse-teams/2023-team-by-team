@@ -8,7 +8,6 @@ const App = () => {
   return (
     <Routes>
       <Route path={PATH_NAME.LANDING} element={<LandingPage />} />
-      <Route path={PATH_NAME.TEAM_SELECT} element={<TeamSelectPage />} />
       <Route element={<PageTemplate />}>
         {Object.values(ROUTES.MAIN_ROUTES).map(({ path, element }) => (
           <Route key={path} path={path} element={element} />
