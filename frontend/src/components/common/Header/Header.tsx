@@ -5,6 +5,7 @@ import * as S from './Header.styled';
 import TeamBadge from '~/components/common/TeamBadge/TeamBadge';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import TeamPlaceMenu from '~/components/common/TeamPlaceMenu/TeamPlaceMenu';
+import { PATH_NAME } from '~/constants/routes';
 
 const Header = () => {
   const { teamPlaces, changeTeamPlace, teamPlaceColor, displayName } =
@@ -24,7 +25,7 @@ const Header = () => {
 
       changeTeamPlace(newTeamPlace.id);
       setTeamName(() => value);
-      navigate(`/team-calendar`);
+      navigate(PATH_NAME.TEAM_CALENDAR);
     },
     [changeTeamPlace, teamPlaces, navigate],
   );

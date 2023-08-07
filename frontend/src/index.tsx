@@ -8,12 +8,10 @@ import GlobalStyle from '~/styles/GlobalStyle';
 import { theme } from './styles/theme';
 import { worker } from '~/mocks/browser';
 import { ModalProvider } from '~/components/common/Modal/ModalContext';
-import TeamCalendarPage from '~/components/pages/TeamCalendarPage/TeamCalendarPage';
 import { ToastProvider } from '~/components/common/Toast/ToastContext';
 import ToastList from '~/components/common/Toast/ToastList';
-import FeedPage from '~/components/pages/FeedPage/FeedPage';
 import { TeamPlaceProvider } from '~/contexts/TeamPlaceContext';
-import TempLandingPage from '~/components/pages/TempLandingPage/TempLandingPage';
+import { ROUTES } from '~/constants/routes';
 
 if (process.env.NODE_ENV === 'development') {
   worker.start();
@@ -24,17 +22,14 @@ const router = createBrowserRouter([
     path: '/',
     element: <App />,
     children: [
+      ROUTES.SPECIAL_ROUTES.LANDING,
       {
-        path: '',
-        element: <TempLandingPage />,
-      },
-      {
-        path: '/team-calendar',
-        element: <TeamCalendarPage />,
-      },
-      {
-        path: '/threads',
-        element: <FeedPage />,
+        path: ROUTES.MAIN_ROUTES.TEAM_SELECT.path,
+        element: ROUTES.MAIN_ROUTES.TEAM_SELECT.element,
+        children: [
+          ROUTES.MAIN_ROUTES.TEAM_CALENDAR,
+          ROUTES.MAIN_ROUTES.TEAM_THREAD,
+        ],
       },
     ],
   },
