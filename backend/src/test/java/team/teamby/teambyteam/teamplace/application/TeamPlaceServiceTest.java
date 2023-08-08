@@ -15,6 +15,7 @@ import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.DisplayMemberName;
 import team.teamby.teambyteam.member.domain.vo.DisplayTeamPlaceName;
 import team.teamby.teambyteam.member.exception.MemberException;
+import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateResponse;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceRepository;
@@ -45,7 +46,7 @@ class TeamPlaceServiceTest extends ServiceTest {
             final String TEAM_PLACE_NAME = "새로운 팀플레이스";
 
             // when
-            final TeamPlaceCreateResponse response = teamPlaceService.create(new MemberEmailDto(PHILIP.getEmail().getValue()), TEAM_PLACE_NAME);
+            final TeamPlaceCreateResponse response = teamPlaceService.create(new MemberEmailDto(PHILIP.getEmail().getValue()), new TeamPlaceCreateRequest(TEAM_PLACE_NAME));
 
             //then
             Optional<TeamPlace> createdTeamPlace = teamPlaceRepository.findById(response.teamPlaceId());
@@ -68,7 +69,7 @@ class TeamPlaceServiceTest extends ServiceTest {
             final String TEAM_PLACE_NAME = "새로운 팀플레이스";
 
             // when & then
-            Assertions.assertThatThrownBy(() -> teamPlaceService.create(new MemberEmailDto(PHILIP.getEmail().getValue()), TEAM_PLACE_NAME))
+            Assertions.assertThatThrownBy(() -> teamPlaceService.create(new MemberEmailDto(PHILIP.getEmail().getValue()), new TeamPlaceCreateRequest(TEAM_PLACE_NAME)))
                     .isInstanceOf(MemberException.MemberNotFoundException.class)
                     .hasMessage("조회한 멤버가 존재하지 않습니다.");
         }

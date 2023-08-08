@@ -10,6 +10,7 @@ import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.exception.MemberException;
+import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateResponse;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceRepository;
@@ -24,12 +25,12 @@ public class TeamPlaceService {
     private final TeamPlaceRepository teamPlaceRepository;
     private final MemberTeamPlaceRepository memberTeamPlaceRepository;
 
-    public TeamPlaceCreateResponse create(final MemberEmailDto memberEmailDto, final String teamPlaceName) {
+    public TeamPlaceCreateResponse create(final MemberEmailDto memberEmailDto, final TeamPlaceCreateRequest request) {
 
         final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
                 .orElseThrow(MemberException.MemberNotFoundException::new);
 
-        final TeamPlace createdTeamPlace = teamPlaceRepository.save(new TeamPlace(new Name(teamPlaceName)));
+        final TeamPlace createdTeamPlace = teamPlaceRepository.save(new TeamPlace(new Name(request.name())));
         final MemberTeamPlace participatedMemberTeamPlace = member.participate(createdTeamPlace);
 
         memberTeamPlaceRepository.save(participatedMemberTeamPlace);
