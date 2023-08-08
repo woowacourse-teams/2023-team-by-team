@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.teamby.teambyteam.member.application.dto.TeamPlacesResponse;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.IdOnly;
+import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
@@ -30,6 +31,14 @@ public class MemberService {
         final List<MemberTeamPlace> allByMemberId = memberTeamPlaceRepository.findAllByMemberId(memberId.id());
 
         return TeamPlacesResponse.of(allByMemberId);
+    }
+
+    public void leaveTeamPlace(final MemberEmailDto memberEmailDto, final Long teamPlaceId) {
+        final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
+                .orElseThrow(MemberException.MemberNotFoundException::new);
+
+        final MemberTeamPlace memberTeamPlaceToLeave = member.leaveTeamPlace(teamPlaceId);
+        memberTeamPlaceRepository.delete(memberTeamPlaceToLeave);
     }
 
 }

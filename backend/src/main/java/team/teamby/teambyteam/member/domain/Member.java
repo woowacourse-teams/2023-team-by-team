@@ -16,6 +16,7 @@ import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.domain.vo.Name;
 import team.teamby.teambyteam.member.domain.vo.ProfileImageUrl;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
+import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,5 +81,15 @@ public class Member extends BaseEntity {
         return getMemberTeamPlaces().stream()
                 .mapToLong(memberTeamPlace -> memberTeamPlace.getTeamPlace().getId())
                 .anyMatch(teamPlaceId -> teamPlaceId == targetTeamPlaceId);
+    }
+
+    public MemberTeamPlace leaveTeamPlace(final Long teamPlaceId) {
+        final MemberTeamPlace teamPlaceToLeave = memberTeamPlaces.stream()
+                .filter(memberTeamPlace -> memberTeamPlace.getTeamPlace().getId().equals(teamPlaceId))
+                .findAny()
+                .orElseThrow(TeamPlaceException.TeamPlaceAccessForbidden::new);
+
+        memberTeamPlaces.remove(teamPlaceToLeave);
+        return teamPlaceToLeave;
     }
 }
