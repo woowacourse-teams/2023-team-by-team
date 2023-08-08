@@ -58,9 +58,9 @@ public class NoticeService {
         checkTeamPlaceExist(teamPlaceId);
 
         return noticeRepository.findMostRecentByTeamPlaceId(teamPlaceId)
-                .flatMap(findNotice -> memberRepository.findById(findNotice.getAuthorId())
-                        .flatMap(findAuthor -> memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(teamPlaceId, findAuthor.getId())
-                                .map(findMemberTeamPlace -> NoticeResponse.of(findNotice, findAuthor, findMemberTeamPlace))
-                        ));
+                .flatMap(findNotice ->
+                        memberTeamPlaceRepository.findById(findNotice.getAuthorId())
+                                .map(memberTeamPlace -> NoticeResponse.of(findNotice, memberTeamPlace))
+                );
     }
 }

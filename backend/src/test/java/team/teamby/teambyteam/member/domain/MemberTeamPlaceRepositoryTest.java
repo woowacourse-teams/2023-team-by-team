@@ -18,7 +18,7 @@ class MemberTeamPlaceRepositoryTest extends RepositoryTest {
     private MemberTeamPlaceRepository memberTeamPlaceRepository;
 
     @Test
-    @DisplayName("멤버아이디와 소속된 팀의 아이디로 해당 팀에서의 사용자 이름을 조회한다.")
+    @DisplayName("멤버아이디와 소속된 팀의 아이디로 해당 팀에서의 사용자 정보를 조회한다.")
     void findMemberIdAndDisplayNameByTeamPlaceIdAndMemberId() {
         // given
         final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
@@ -26,12 +26,13 @@ class MemberTeamPlaceRepositoryTest extends RepositoryTest {
         testFixtureBuilder.buildMemberTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
 
         // when
-        final MemberIdAndDisplayNameOnly actual = memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(ENGLISH_TEAM_PLACE.getId(), PHILIP.getId()).get();
+        final MemberTeamPlace actual = memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(ENGLISH_TEAM_PLACE.getId(), PHILIP.getId()).get();
 
         //then
         SoftAssertions.assertSoftly(softly -> {
-            softly.assertThat(actual.id()).isEqualTo(PHILIP.getId());
-            softly.assertThat(actual.displayMemberName().getValue()).isEqualTo(PHILIP.getName().getValue());
+            softly.assertThat(actual.getMember().getId()).isEqualTo(PHILIP.getId());
+            softly.assertThat(actual.getDisplayMemberName().getValue()).isEqualTo(PHILIP.getName().getValue());
+            softly.assertThat(actual.getDisplayTeamPlaceName().getValue()).isEqualTo(ENGLISH_TEAM_PLACE.getName().getValue());
         });
     }
 

@@ -17,12 +17,11 @@ import team.teamby.teambyteam.feed.domain.vo.Content;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.IdOnly;
 import team.teamby.teambyteam.member.domain.Member;
-import team.teamby.teambyteam.member.domain.MemberIdAndDisplayNameOnly;
 import team.teamby.teambyteam.member.domain.MemberRepository;
+import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.exception.MemberException;
-import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
 import java.util.List;
 
@@ -81,13 +80,12 @@ public class FeedThreadService {
         return feeds.stream().map(this::mapToResponse).toList();
     }
 
-    private FeedResponse mapToResponse(Feed feed) {
+    private FeedResponse mapToResponse(final Feed feed) {
         if (FeedType.THREAD == feed.getType()) {
-            final Member member = memberRepository.findById(feed.getAuthorId())
+            final MemberTeamPlace memberTeamPlace = memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(feed.getTeamPlaceId(), feed.getAuthorId())
                     .orElseThrow(MemberException.MemberNotFoundException::new);
-            MemberIdAndDisplayNameOnly memberIdAndDisplayName = memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(feed.getTeamPlaceId(), member.getId())
-                    .orElseThrow(TeamPlaceException.TeamPlaceAccessForbidden::new);
-            return FeedResponse.from(feed, memberIdAndDisplayName.displayMemberName().getValue(), member.getProfileImageUrl().getValue());
+            final Member member = memberTeamPlace.getMember();
+            return FeedResponse.from(feed, memberTeamPlace.getDisplayMemberName().getValue(), member.getProfileImageUrl().getValue());
         }
         if (FeedType.NOTIFICATION == feed.getType()) {
             return FeedResponse.from(feed, "schedule", "");
