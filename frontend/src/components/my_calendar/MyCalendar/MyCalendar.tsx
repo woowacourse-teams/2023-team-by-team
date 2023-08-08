@@ -3,15 +3,14 @@ import Button from '~/components/common/Button/Button';
 import Text from '~/components/common/Text/Text';
 import useCalendar from '~/hooks/useCalendar';
 import * as S from './MyCalendar.styled';
-import DateCell from '~/components/DateCell/DateCell';
+import DateCell from '~/components/common/DateCell/DateCell';
 import { ArrowLeftIcon, ArrowRightIcon } from '~/assets/svg';
 import { DAYS_OF_WEEK } from '~/constants/calendar';
 import { useFetchMySchedules } from '~/hooks/queries/useFetchMySchedules';
 import { parseDate } from '~/utils/parseDate';
 import { generateScheduleCirclesMatrix } from '~/utils/generateScheduleCirclesMatrix';
-import TeamBadge from '~/components/common/Badge/Badge';
+import TeamBadge from '~/components/team/TeamBadge/TeamBadge';
 import { getInfoByTeamPlaceId } from '~/utils/getInfoByTeamPlaceId';
-import type { TeamPlace } from '~/types/team';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 
 interface MyCalendarProps {

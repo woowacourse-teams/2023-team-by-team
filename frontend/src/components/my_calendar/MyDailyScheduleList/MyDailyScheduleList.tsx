@@ -1,10 +1,9 @@
 import { useFetchMyDailySchedules } from '~/hooks/queries/useFetchMyDailySchedule';
 import { parseDate } from '~/utils/parseDate';
 import * as S from './MyDailyScheduleList.styled';
-import MyDailySchedule from '~/components/MyDailyScheduleList/MyDailySchedule/MyDailySchedule';
-import type { TeamPlace } from '~/types/team';
 import { getInfoByTeamPlaceId } from '~/utils/getInfoByTeamPlaceId';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
+import MyDailySchedule from '~/components/my_calendar/MyDailySchedule/MyDailySchedule';
 
 interface MyDailyScheduleListProps {
   rawDate: Date;
