@@ -16,7 +16,7 @@ const LoginPage = () => {
     }
 
     localStorage.setItem('accessToken', accessToken);
-    navigate(PATH_NAME.LOGIN);
+    navigate(PATH_NAME.TEAM_SELECT);
   }, []);
 
   return <></>;
