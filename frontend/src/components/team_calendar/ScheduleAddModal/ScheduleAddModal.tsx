@@ -1,43 +1,43 @@
-import Modal from '~/components/common/Modal/Modal';
+import * as S from './ScheduleAddModal.styled';
 import { useModal } from '~/hooks/useModal';
-import * as S from './ScheduleEditModal.styled';
-import Button from '~/components/common/Button/Button';
 import { CloseIcon } from '~/assets/svg';
-import Input from '~/components/common/Input/Input';
-import Text from '~/components/common/Text/Text';
-import useScheduleEditModal from '~/hooks/schedule/useScheduleEditModal';
-import type { Schedule } from '~/types/schedule';
-import TeamBadge from '~/components/common/Badge/Badge';
-import TimeTableMenu from '~/components/TimeTableMenu/TimeTableMenu';
+import Modal from '~/components/common/Modal/Modal';
+import Text from '../../common/Text/Text';
+import Button from '../../common/Button/Button';
+import Input from '../../common/Input/Input';
+import useScheduleAddModal from '~/hooks/schedule/useScheduleAddModal';
 import Checkbox from '~/components/common/Checkbox/Checkbox';
+import TeamBadge from '~/components/team/TeamBadge/TeamBadge';
+import TimeTableMenu from '~/components/team_calendar/TimeTableMenu/TimeTableMenu';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
+import { useRef, useEffect } from 'react';
 
-interface ScheduleEditModalProps {
-  scheduleId: Schedule['id'];
-  initialSchedule?: Schedule;
+interface ScheduleAddModalProps {
+  clickedDate: Date;
 }
 
-const ScheduleEditModal = (props: ScheduleEditModalProps) => {
-  const { scheduleId, initialSchedule } = props;
+const ScheduleAddModal = (props: ScheduleAddModalProps) => {
+  const { clickedDate } = props;
   const { closeModal } = useModal();
   const { teamPlaceColor, displayName } = useTeamPlace();
-
   const {
     schedule,
-    times,
     isAllDay,
+    times,
     handlers: {
       handleScheduleChange,
-      handleScheduleSubmit,
+      handleIsAllDayChange,
       handleStartTimeChange,
       handleEndTimeChange,
-      handleIsAllDayChange,
+      handleScheduleSubmit,
     },
-  } = useScheduleEditModal(scheduleId, initialSchedule);
+  } = useScheduleAddModal(clickedDate);
 
-  if (initialSchedule === undefined) {
-    return null;
-  }
+  const titleInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    titleInputRef.current?.focus();
+  }, []);
 
   return (
     <Modal>
@@ -49,7 +49,7 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
             type="button"
             onClick={closeModal}
             css={S.closeButton}
-            aria-label="닫기"
+            aria-label="일정 등록 모달 닫기"
           >
             <CloseIcon />
           </Button>
@@ -59,10 +59,11 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
             <Input
               width="100%"
               height="100%"
-              placeholder="일정 제목"
+              placeholder="일정 제목을 입력해주세요."
               css={S.title}
               name="title"
               value={schedule['title']}
+              ref={titleInputRef}
               required
               onChange={handleScheduleChange}
             />
@@ -78,9 +79,10 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
                 height="40px"
                 type="date"
                 css={S.dateTimeLocalInput}
-                name="startDate"
-                value={schedule['startDate']}
+                name="startDateTime"
+                value={schedule['startDateTime']}
                 onChange={handleScheduleChange}
+                aria-label={`일정 시작 일자는 ${schedule['startDateTime']} 입니다`}
                 required
               />
               {!isAllDay && (
@@ -101,9 +103,9 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
                 height="40px"
                 type="date"
                 css={S.dateTimeLocalInput}
-                name="endDate"
-                value={schedule['endDate']}
-                min={schedule['startDate']}
+                name="endDateTime"
+                value={schedule['endDateTime']}
+                aria-label={`일정 마감 일자는 ${schedule['endDateTime']} 입니다`}
                 onChange={handleScheduleChange}
                 required
               />
@@ -120,6 +122,16 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
               종일
             </Text>
             <Checkbox isChecked={isAllDay} onChange={handleIsAllDayChange} />
+
+            <p
+              className="hidden"
+              aria-live="assertive"
+              aria-relevant="additions"
+            >
+              {isAllDay
+                ? '종일 일정이 선택되었습니다.'
+                : '종일 일정이 해제되었습니다.'}
+            </p>
           </S.CheckboxContainer>
           <S.InnerContainer>
             <S.TeamNameContainer title={displayName}>
@@ -128,7 +140,7 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
             </S.TeamNameContainer>
             <S.ControlButtonWrapper>
               <Button variant="primary" css={S.submitButton}>
-                수정
+                등록
               </Button>
             </S.ControlButtonWrapper>
           </S.InnerContainer>
@@ -138,4 +150,4 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
   );
 };
 
-export default ScheduleEditModal;
+export default ScheduleAddModal;
