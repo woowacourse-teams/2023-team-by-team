@@ -7,9 +7,7 @@ import java.util.Optional;
 
 public interface MemberTeamPlaceRepository extends JpaRepository<MemberTeamPlace, Long> {
 
-    Optional<MemberIdAndDisplayNameOnly> findByTeamPlaceIdAndMemberId(Long teamPlaceId, Long memberId);
-
-    List<MemberIdAndDisplayNameOnly> findAllByTeamPlaceId(Long teamPlaceId);
+    Optional<MemberTeamPlace> findByTeamPlaceIdAndMemberId(Long teamPlaceId, Long memberId);
 
     List<MemberTeamPlace> findAllByMemberId(Long memberId);
 }
