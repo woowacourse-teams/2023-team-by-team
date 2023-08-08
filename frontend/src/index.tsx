@@ -10,7 +10,6 @@ import { worker } from '~/mocks/browser';
 import { ModalProvider } from '~/components/common/Modal/ModalContext';
 import { ToastProvider } from '~/components/common/Toast/ToastContext';
 import ToastList from '~/components/common/Toast/ToastList';
-import { TeamPlaceProvider } from '~/contexts/TeamPlaceContext';
 
 if (process.env.NODE_ENV === 'development') {
   worker.start();
@@ -24,17 +23,15 @@ root.render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
-        <TeamPlaceProvider>
-          <ToastProvider>
-            <ModalProvider>
-              <GlobalStyle />
-              <BrowserRouter>
-                <App />
-              </BrowserRouter>
-              <ToastList />
-            </ModalProvider>
-          </ToastProvider>
-        </TeamPlaceProvider>
+        <ToastProvider>
+          <ModalProvider>
+            <GlobalStyle />
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+            <ToastList />
+          </ModalProvider>
+        </ToastProvider>
       </ThemeProvider>
     </QueryClientProvider>
   </StrictMode>,

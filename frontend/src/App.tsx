@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
+import ProtectRoute from '~/components/common/ProtectRoute/ProtectRoute';
 import { PATH_NAME } from '~/constants/routes';
 import LandingPage from '~/pages/LandingPage/LandingPage';
 import LoginPage from '~/pages/LoginPage/LoginPage';
@@ -12,10 +13,15 @@ const App = () => {
     <Routes>
       <Route path={PATH_NAME.LANDING} element={<LandingPage />} />
       <Route path={PATH_NAME.LOGIN} element={<LoginPage />} />
-      <Route element={<PageTemplate />}>
-        <Route path={PATH_NAME.TEAM_SELECT} element={<TeamSelectPage />} />
-        <Route path={PATH_NAME.TEAM_CALENDAR} element={<TeamCalendarPage />} />
-        <Route path={PATH_NAME.TEAM_FEED} element={<TeamFeedPage />} />
+      <Route element={<ProtectRoute />}>
+        <Route element={<PageTemplate />}>
+          <Route path={PATH_NAME.TEAM_SELECT} element={<TeamSelectPage />} />
+          <Route
+            path={PATH_NAME.TEAM_CALENDAR}
+            element={<TeamCalendarPage />}
+          />
+          <Route path={PATH_NAME.TEAM_FEED} element={<TeamFeedPage />} />
+        </Route>
       </Route>
     </Routes>
   );

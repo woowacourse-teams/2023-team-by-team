@@ -3,9 +3,18 @@ import Button from '~/components/common/Button/Button';
 import { PATH_NAME } from '~/constants/routes';
 import * as S from './LandingPage.styled';
 import { fetchGoogleLogin } from '~/apis/auth';
+import { useEffect } from 'react';
 
 const LandingPage = () => {
   const navigate = useNavigate();
+  const accessToken = localStorage.getItem('accessToken');
+
+  useEffect(() => {
+    if (accessToken) {
+      navigate(PATH_NAME.TEAM_SELECT);
+      return;
+    }
+  }, []);
 
   const handleGoogleLogin = async () => {
     const { googleLoginUrl } = await fetchGoogleLogin();
