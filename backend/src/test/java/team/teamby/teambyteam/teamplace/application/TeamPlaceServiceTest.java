@@ -10,9 +10,10 @@ import team.teamby.teambyteam.common.ServiceTest;
 import team.teamby.teambyteam.common.fixtures.MemberFixtures;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.Member;
-import team.teamby.teambyteam.member.domain.MemberIdAndDisplayNameOnly;
+import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.DisplayMemberName;
+import team.teamby.teambyteam.member.domain.vo.DisplayTeamPlaceName;
 import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateResponse;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
@@ -48,13 +49,14 @@ class TeamPlaceServiceTest extends ServiceTest {
 
             //then
             Optional<TeamPlace> createdTeamPlace = teamPlaceRepository.findById(response.teamPlaceId());
-            Optional<MemberIdAndDisplayNameOnly> memberTeamPlace = memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(response.teamPlaceId(), PHILIP.getId());
+            Optional<MemberTeamPlace> memberTeamPlace = memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(response.teamPlaceId(), PHILIP.getId());
             SoftAssertions.assertSoftly(softly -> {
                 softly.assertThat(response.teamPlaceId()).isNotNull();
                 softly.assertThat(createdTeamPlace).isNotEmpty();
                 softly.assertThat(createdTeamPlace.get().getName()).isEqualTo(new Name(TEAM_PLACE_NAME));
                 softly.assertThat(memberTeamPlace).isNotEmpty();
-                softly.assertThat(memberTeamPlace.get().displayMemberName()).isEqualTo(new DisplayMemberName(PHILIP.getName().getValue()));
+                softly.assertThat(memberTeamPlace.get().getDisplayMemberName()).isEqualTo(new DisplayMemberName(PHILIP.getName().getValue()));
+                softly.assertThat(memberTeamPlace.get().getDisplayTeamPlaceName()).isEqualTo(new DisplayTeamPlaceName(TEAM_PLACE_NAME));
             });
         }
 
