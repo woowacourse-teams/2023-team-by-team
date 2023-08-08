@@ -6,7 +6,7 @@ import ScheduleModal from '~/components/ScheduleModal/ScheduleModal';
 import ScheduleBar from '~/components/ScheduleBar/ScheduleBar';
 import ScheduleAddModal from '~/components/ScheduleAddModal/ScheduleAddModal';
 import ScheduleEditModal from '~/components/ScheduleEditModal/ScheduleEditModal';
-import * as S from './Calendar.styled';
+import * as S from './TeamCalendar.styled';
 import useCalendar from '~/hooks/useCalendar';
 import { useScheduleModal } from '~/hooks/schedule/useScheduleModal';
 import { useFetchSchedules } from '~/hooks/queries/useFetchSchedules';

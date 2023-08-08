@@ -9,7 +9,7 @@ import { formatDateTime } from '~/utils/formatDateTime';
 import type { SchedulePosition } from '~/types/schedule';
 import { useFetchScheduleById } from '~/hooks/queries/useFetchScheduleById';
 import { useDeleteSchedule } from '~/hooks/queries/useDeleteSchedule';
-import TeamBadge from '~/components/common/TeamBadge/TeamBadge';
+import TeamBadge from '~/components/common/Badge/Badge';
 import { useToast } from '~/hooks/useToast';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 

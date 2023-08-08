@@ -2,11 +2,11 @@ import { useRef } from 'react';
 import * as S from './NoticeThread.styled';
 import { useThreadHeight } from '~/hooks/thread/useThreadHeight';
 import Text from '~/components/common/Text/Text';
-import ExpandButton from '~/components/ExpandButton/ExpandButton';
-import NoticeTag from './NoticeTag/NoticeTag';
+import ExpandButton from '~/components/common/ExpandButton/ExpandButton';
 import type { YYYYMMDDHHMM } from '~/types/schedule';
 import { formatWriteTime } from '~/utils/formatWriteTime';
 import type { NoticeThreadSize } from '~/types/size';
+import NoticeTag from '~/components/NoticeTag/NoticeTag';
 
 interface NoticeThreadProps {
   authorName: string;

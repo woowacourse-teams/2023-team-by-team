@@ -1,5 +1,5 @@
 import { css, styled } from 'styled-components';
-import type { TeamBadgeProps } from '~/components/common/TeamBadge/TeamBadge';
+import type { TeamBadgeProps } from '~/components/common/Badge/Badge';
 
 export const Wrapper = styled.div<TeamBadgeProps>`
   ${({ size }) => {

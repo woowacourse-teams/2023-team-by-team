@@ -1,6 +1,6 @@
 import type { TeamBadgeSize } from '~/types/size';
 import type { TeamPlaceColor } from '~/types/team';
-import * as S from './TeamBadge.styled';
+import * as S from './Badge.styled';
 
 export interface TeamBadgeProps {
   teamPlaceColor: TeamPlaceColor;

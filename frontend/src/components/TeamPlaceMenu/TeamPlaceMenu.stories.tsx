@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import TeamPlaceMenu from '~/components/common/TeamPlaceMenu/TeamPlaceMenu';
+import TeamPlaceMenu from '~/components/TeamPlaceMenu/TeamPlaceMenu';
 
 const meta = {
   title: 'Common/TeamPlaceMenu',

@@ -7,7 +7,7 @@ import Button from '../common/Button/Button';
 import Input from '../common/Input/Input';
 import useScheduleAddModal from '~/hooks/schedule/useScheduleAddModal';
 import Checkbox from '~/components/common/Checkbox/Checkbox';
-import TeamBadge from '~/components/common/TeamBadge/TeamBadge';
+import TeamBadge from '~/components/common/Badge/Badge';
 import TimeTableMenu from '~/components/TimeTableMenu/TimeTableMenu';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useRef, useEffect } from 'react';

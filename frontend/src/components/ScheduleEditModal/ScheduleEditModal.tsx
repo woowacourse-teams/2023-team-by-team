@@ -7,7 +7,7 @@ import Input from '~/components/common/Input/Input';
 import Text from '~/components/common/Text/Text';
 import useScheduleEditModal from '~/hooks/schedule/useScheduleEditModal';
 import type { Schedule } from '~/types/schedule';
-import TeamBadge from '~/components/common/TeamBadge/TeamBadge';
+import TeamBadge from '~/components/common/Badge/Badge';
 import TimeTableMenu from '~/components/TimeTableMenu/TimeTableMenu';
 import Checkbox from '~/components/common/Checkbox/Checkbox';
 import { useTeamPlace } from '~/hooks/useTeamPlace';

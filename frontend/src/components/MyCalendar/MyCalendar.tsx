@@ -9,7 +9,7 @@ import { DAYS_OF_WEEK } from '~/constants/calendar';
 import { useFetchMySchedules } from '~/hooks/queries/useFetchMySchedules';
 import { parseDate } from '~/utils/parseDate';
 import { generateScheduleCirclesMatrix } from '~/utils/generateScheduleCirclesMatrix';
-import TeamBadge from '~/components/common/TeamBadge/TeamBadge';
+import TeamBadge from '~/components/common/Badge/Badge';
 import { getInfoByTeamPlaceId } from '~/utils/getInfoByTeamPlaceId';
 import type { TeamPlace } from '~/types/team';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
