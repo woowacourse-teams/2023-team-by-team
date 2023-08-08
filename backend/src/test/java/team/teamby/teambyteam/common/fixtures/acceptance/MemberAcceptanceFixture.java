@@ -18,4 +18,13 @@ public class MemberAcceptanceFixture {
                 .then().log().all()
                 .extract();
     }
+
+    public static ExtractableResponse<Response> DELETE_LEAVE_TEAM_PLACE(final String token, final Long teamPlaceId) {
+        return RestAssured.given().log().all()
+                .header(new Header(HttpHeaders.AUTHORIZATION, JWT_PREFIX + token))
+                .when().log().all()
+                .delete("/api/me/team-places/{teamPlaceId}", teamPlaceId)
+                .then().log().all()
+                .extract();
+    }
 }
