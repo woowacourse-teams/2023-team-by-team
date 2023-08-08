@@ -15,8 +15,8 @@ import team.teamby.teambyteam.global.domain.BaseEntity;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.domain.vo.Name;
 import team.teamby.teambyteam.member.domain.vo.ProfileImageUrl;
+import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
-import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +87,7 @@ public class Member extends BaseEntity {
         final MemberTeamPlace teamPlaceToLeave = memberTeamPlaces.stream()
                 .filter(memberTeamPlace -> memberTeamPlace.getTeamPlace().getId().equals(teamPlaceId))
                 .findAny()
-                .orElseThrow(TeamPlaceException.TeamPlaceAccessForbidden::new);
+                .orElseThrow(MemberTeamPlaceException.NotFoundException::new);
 
         memberTeamPlaces.remove(teamPlaceToLeave);
         return teamPlaceToLeave;

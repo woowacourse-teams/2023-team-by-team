@@ -15,8 +15,8 @@ import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
+import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
-import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
 import java.util.List;
 
@@ -109,8 +109,8 @@ class MemberServiceTest extends ServiceTest {
 
             // when & then
             Assertions.assertThatThrownBy(() -> memberService.leaveTeamPlace(new MemberEmailDto(ENDEL.getEmail().getValue()), JAPANESE_TEAM_PLACE.getId()))
-                    .isInstanceOf(TeamPlaceException.TeamPlaceAccessForbidden.class)
-                    .hasMessage("접근할 수 없는 팀플레이스입니다.");
+                    .isInstanceOf(MemberTeamPlaceException.NotFoundException.class)
+                    .hasMessage("가입된 팀플레이스를 찾을 수 없습니다.");
         }
     }
 
