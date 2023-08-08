@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import Calendar from '~/components/Calendar/Calendar';
+import TeamCalendar from '~/components/team_calendar/TeamCalendar/TeamCalendar';
 
 const meta = {
-  title: 'Calendar',
-  component: Calendar,
+  title: 'TeamCalendar',
+  component: TeamCalendar,
   tags: ['autodocs'],
-} satisfies Meta<typeof Calendar>;
+} satisfies Meta<typeof TeamCalendar>;
 
 export default meta;
 

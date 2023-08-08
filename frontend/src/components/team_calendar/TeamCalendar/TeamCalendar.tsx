@@ -1,11 +1,11 @@
 import { Fragment, useState } from 'react';
 import Text from '~/components/common/Text/Text';
 import Button from '~/components/common/Button/Button';
-import DateCell from '~/components/DateCell/DateCell';
-import ScheduleModal from '~/components/ScheduleModal/ScheduleModal';
-import ScheduleBar from '~/components/ScheduleBar/ScheduleBar';
-import ScheduleAddModal from '~/components/ScheduleAddModal/ScheduleAddModal';
-import ScheduleEditModal from '~/components/ScheduleEditModal/ScheduleEditModal';
+import DateCell from '~/components/common/DateCell/DateCell';
+import ScheduleModal from '~/components/team_calendar/ScheduleModal/ScheduleModal';
+import ScheduleBar from '~/components/team_calendar/ScheduleBar/ScheduleBar';
+import ScheduleAddModal from '~/components/team_calendar/ScheduleAddModal/ScheduleAddModal';
+import ScheduleEditModal from '~/components/team_calendar/ScheduleEditModal/ScheduleEditModal';
 import * as S from './TeamCalendar.styled';
 import useCalendar from '~/hooks/useCalendar';
 import { useScheduleModal } from '~/hooks/schedule/useScheduleModal';
@@ -15,13 +15,13 @@ import { generateScheduleBars } from '~/utils/generateScheduleBars';
 import { DAYS_OF_WEEK, MODAL_OPEN_TYPE } from '~/constants/calendar';
 import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from '~/assets/svg';
 import { arrayOf } from '~/utils/arrayOf';
-import ScheduleMoreCell from '~/components/ScheduleMoreCell/ScheduleMoreCell';
+import ScheduleMoreCell from '~/components/team_calendar/ScheduleMoreCell/ScheduleMoreCell';
 import type { Position, ModalOpenType } from '~/types/schedule';
-import DailyScheduleModal from '~/components/DailyScheduleModal/DailyScheduleModal';
+import DailyScheduleModal from '~/components/team_calendar/DailyScheduleModal/DailyScheduleModal';
 import { getDateByPosition } from '~/utils/getDateByPosition';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 
-const Calendar = () => {
+const TeamCalendar = () => {
   const { teamPlaceId } = useTeamPlace();
 
   const {
@@ -226,4 +226,4 @@ const Calendar = () => {
   );
 };
 
-export default Calendar;
+export default TeamCalendar;

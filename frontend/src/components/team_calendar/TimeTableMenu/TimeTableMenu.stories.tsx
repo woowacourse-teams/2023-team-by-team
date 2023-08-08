@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import TeamPlaceMenu from '~/components/TeamPlaceMenu/TeamPlaceMenu';
+import TimeTableMenu from '~/components/team_calendar/TimeTableMenu/TimeTableMenu';
 
 const meta = {
-  title: 'Common/TeamPlaceMenu',
-  component: TeamPlaceMenu,
+  title: 'Calendar/TimeTableMenu',
+  component: TimeTableMenu,
   tags: ['autodocs'],
-} satisfies Meta<typeof TeamPlaceMenu>;
+} satisfies Meta<typeof TimeTableMenu>;
 
 export default meta;
 
@@ -13,7 +13,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    displayValue: '팀 선택하기',
+    displayValue: '00:00',
     onClickMenu: () => {
       alert('Clicked!');
     },

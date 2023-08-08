@@ -8,12 +8,12 @@ import GlobalStyle from '~/styles/GlobalStyle';
 import { theme } from './styles/theme';
 import { worker } from '~/mocks/browser';
 import { ModalProvider } from '~/components/common/Modal/ModalContext';
-import TeamCalendarPage from '~/components/pages/TeamCalendarPage/TeamCalendarPage';
+import TeamCalendarPage from '~/pages/TeamCalendarPage/TeamCalendarPage';
 import { ToastProvider } from '~/components/common/Toast/ToastContext';
 import ToastList from '~/components/common/Toast/ToastList';
-import FeedPage from '~/components/pages/FeedPage/FeedPage';
+import FeedPage from '~/pages/FeedPage/FeedPage';
 import { TeamPlaceProvider } from '~/contexts/TeamPlaceContext';
-import TempLandingPage from '~/components/pages/TempLandingPage/TempLandingPage';
+import TempLandingPage from '~/pages/TempLandingPage/TempLandingPage';
 
 if (process.env.NODE_ENV === 'development') {
   worker.start();
