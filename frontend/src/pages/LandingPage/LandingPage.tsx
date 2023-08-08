@@ -9,13 +9,6 @@ const LandingPage = () => {
   const navigate = useNavigate();
   const accessToken = localStorage.getItem('accessToken');
 
-  useEffect(() => {
-    if (accessToken) {
-      navigate(PATH_NAME.TEAM_SELECT);
-      return;
-    }
-  }, []);
-
   const handleGoogleLogin = async () => {
     const { googleLoginUrl } = await fetchGoogleLogin();
 
@@ -25,6 +18,13 @@ const LandingPage = () => {
   const handleNavigateClick = () => {
     navigate(PATH_NAME.TEAM_SELECT);
   };
+
+  useEffect(() => {
+    if (accessToken) {
+      navigate(PATH_NAME.TEAM_SELECT);
+      return;
+    }
+  }, []);
 
   return (
     <S.Container>
