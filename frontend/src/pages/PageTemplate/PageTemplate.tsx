@@ -1,17 +1,19 @@
-import type { PropsWithChildren } from 'react';
 import * as S from './PageTemplate.styled';
 import NavigationBar from '~/components/common/NavigationBar/NavigationBar';
 import SideBar from '~/components/common/SideBar/SideBar';
+import { Outlet } from 'react-router-dom';
+import Header from '~/components/common/Header/Header';
 
-const PageTemplate = (props: PropsWithChildren) => {
-  const { children } = props;
-
+const PageTemplate = () => {
   return (
-    <S.Container>
-      <NavigationBar />
-      {children}
-      <SideBar />
-    </S.Container>
+    <>
+      <Header />
+      <S.Container>
+        <NavigationBar />
+        <Outlet />
+        <SideBar />
+      </S.Container>
+    </>
   );
 };
 

@@ -1,15 +1,21 @@
-import { Outlet } from 'react-router-dom';
-import Header from '~/components/common/Header/Header';
+import { Route, Routes } from 'react-router-dom';
+import { PATH_NAME } from '~/constants/routes';
+import LandingPage from '~/pages/LandingPage/LandingPage';
 import PageTemplate from '~/pages/PageTemplate/PageTemplate';
+import TeamCalendarPage from '~/pages/TeamCalendarPage/TeamCalendarPage';
+import TeamFeedPage from '~/pages/TeamFeedPage/TeamFeedPage';
+import TeamSelectPage from '~/pages/TeamSelectPage/TeamSelectPage';
 
 const App = () => {
   return (
-    <>
-      <Header />
-      <PageTemplate>
-        <Outlet />
-      </PageTemplate>
-    </>
+    <Routes>
+      <Route path={PATH_NAME.LANDING} element={<LandingPage />} />
+      <Route element={<PageTemplate />}>
+        <Route path={PATH_NAME.TEAM_SELECT} element={<TeamSelectPage />} />
+        <Route path={PATH_NAME.TEAM_CALENDAR} element={<TeamCalendarPage />} />
+        <Route path={PATH_NAME.TEAM_FEED} element={<TeamFeedPage />} />
+      </Route>
+    </Routes>
   );
 };
 
