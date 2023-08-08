@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import team.teamby.teambyteam.auth.jwt.JwtTokenProvider;
 import team.teamby.teambyteam.auth.presentation.MemberInterceptor;
 import team.teamby.teambyteam.auth.presentation.TeamPlaceParticipationInterceptor;
 import team.teamby.teambyteam.member.configuration.MemberArgumentResolver;
@@ -17,10 +18,11 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
     private final MemberInterceptor memberInterceptor;
     private final TeamPlaceParticipationInterceptor teamPlaceParticipationInterceptor;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     public void addArgumentResolvers(final List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new MemberArgumentResolver());
+        resolvers.add(new MemberArgumentResolver(jwtTokenProvider));
     }
 
     @Override
