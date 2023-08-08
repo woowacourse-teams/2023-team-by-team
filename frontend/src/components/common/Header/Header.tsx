@@ -2,9 +2,9 @@ import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LogoIcon } from '~/assets/svg';
 import * as S from './Header.styled';
-import TeamBadge from '~/components/common/Badge/Badge';
+import TeamBadge from '~/components/team/TeamBadge/TeamBadge';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
-import TeamPlaceMenu from '~/components/TeamPlaceMenu/TeamPlaceMenu';
+import TeamPlaceMenu from '~/components/team/TeamPlaceMenu/TeamPlaceMenu';
 
 const Header = () => {
   const { teamPlaces, changeTeamPlace, teamPlaceColor, displayName } =

@@ -1,7 +1,7 @@
 import Text from '~/components/common/Text/Text';
 import * as S from './SideBar.styled';
-import MyCalendar from '~/components/MyCalendar/MyCalendar';
-import MyDailyScheduleList from '~/components/MyDailyScheduleList/MyDailyScheduleList';
+import MyCalendar from '~/components/my_calendar/MyCalendar/MyCalendar';
+import MyDailyScheduleList from '~/components/my_calendar/MyDailyScheduleList/MyDailyScheduleList';
 import { useState } from 'react';
 import { parseDate } from '~/utils/parseDate';
 
