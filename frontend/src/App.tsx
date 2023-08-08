@@ -22,8 +22,6 @@ const App = () => {
           />
           <Route path={PATH_NAME.TEAM_FEED} element={<TeamFeedPage />} />
         </Route>
-        <Route>팀 참가</Route>
-        <Route>팀 생성</Route>
       </Route>
     </Routes>
   );
