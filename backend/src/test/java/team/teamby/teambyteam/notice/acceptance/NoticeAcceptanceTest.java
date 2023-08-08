@@ -179,7 +179,7 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
                 softly.assertThat(response.jsonPath().getLong("id")).isEqualTo(recentRegisteredNotice.getId());
                 softly.assertThat(response.jsonPath().getString("content")).isEqualTo(recentRegisteredNotice.getContent().getValue());
                 softly.assertThat(response.jsonPath().getLong("authorId")).isEqualTo(authedMember.getId());
-                softly.assertThat(response.jsonPath().getString("authorName")).isEqualTo(authedMember.getName().getValue());
+                softly.assertThat(response.jsonPath().getString("authorName")).isEqualTo(participatedMemberTeamPlace.getDisplayMemberName().getValue());
                 softly.assertThat(response.jsonPath().getString("profileImageUrl")).isEqualTo(authedMember.getProfileImageUrl().getValue());
                 softly.assertThat(response.jsonPath().getString("createdAt")).isEqualTo(DATE_TIME_FORMATTER.format(recentRegisteredNotice.getCreatedAt()));
             });
