@@ -14,7 +14,7 @@ import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 @Component
 @RequiredArgsConstructor
 public class MemberArgumentResolver implements HandlerMethodArgumentResolver {
-    
+
     private static final int TOKEN_INDEX = 1;
 
     private final JwtTokenProvider jwtTokenProvider;
