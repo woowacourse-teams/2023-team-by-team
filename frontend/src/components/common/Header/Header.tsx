@@ -25,7 +25,8 @@ const Header = () => {
 
       changeTeamPlace(newTeamPlace.id);
       setTeamName(() => value);
-      navigate(PATH_NAME.TEAM_CALENDAR);
+      if (location.pathname !== PATH_NAME.TEAM_FEED)
+        navigate(PATH_NAME.TEAM_CALENDAR);
     },
     /*eslint-disable-next-line*/
     [changeTeamPlace, teamPlaces],
