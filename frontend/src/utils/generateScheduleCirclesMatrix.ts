@@ -1,8 +1,8 @@
 import type { ScheduleWithTeamPlaceId } from '~/types/schedule';
 import { getDateByPosition } from './getDateByPosition';
 import type { ScheduleCircle } from '~/types/schedule';
-import { arrayOf } from './arrayOf';
 import { CALENDAR, SCHEDULE_CIRCLE_MAX_COUNT } from '~/constants/calendar';
+import { arrayOf } from '~/utils/arrayOf';
 
 /**
  * 《generateScheduleCirclesMatrix》

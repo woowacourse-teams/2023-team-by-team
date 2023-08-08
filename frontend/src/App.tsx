@@ -1,10 +1,10 @@
 import { Route, Routes } from 'react-router-dom';
-import TeamFeedPage from '~/components/pages/TeamFeedPage/TeamFeedPage';
-import LandingPage from '~/components/pages/LandingPage/LandingPage';
-import PageTemplate from '~/components/pages/PageTemplate/PageTemplate';
-import TeamCalendarPage from '~/components/pages/TeamCalendarPage/TeamCalendarPage';
-import TeamSelectPage from '~/components/pages/TeamSelectPage/TeamSelectPage';
 import { PATH_NAME } from '~/constants/routes';
+import LandingPage from '~/pages/LandingPage/LandingPage';
+import PageTemplate from '~/pages/PageTemplate/PageTemplate';
+import TeamCalendarPage from '~/pages/TeamCalendarPage/TeamCalendarPage';
+import TeamFeedPage from '~/pages/TeamFeedPage/TeamFeedPage';
+import TeamSelectPage from '~/pages/TeamSelectPage/TeamSelectPage';
 
 const App = () => {
   return (
@@ -13,7 +13,6 @@ const App = () => {
       <Route element={<PageTemplate />}>
         <Route path={PATH_NAME.TEAM_SELECT} element={<TeamSelectPage />} />
         <Route path={PATH_NAME.TEAM_CALENDAR} element={<TeamCalendarPage />} />
-        <Route path={PATH_NAME.TEAM_SELECT} element={<TeamCalendarPage />} />
         <Route path={PATH_NAME.TEAM_FEED} element={<TeamFeedPage />} />
       </Route>
     </Routes>

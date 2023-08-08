@@ -106,7 +106,7 @@ const useScheduleAddModal = (clickedDate: Date) => {
       return;
     }
 
-    if (!isValidEndTime(startTime, endTime) && !isAllDay) {
+    if (!isValidEndTime(startTime, endTime)) {
       showToast('error', '시작 시간이 종료 시간보다 늦습니다.');
       return;
     }
