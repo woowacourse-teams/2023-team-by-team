@@ -1,29 +1,20 @@
 import { PATH_NAME } from '~/constants/routes';
 
-const getAccessToken = () => {
-  const accessToken = localStorage.getItem('accessToken');
-
-  return process.env.NODE_ENV === 'production'
-    ? accessToken
-    : process.env.REACT_APP_ACCESS_TOKEN;
-};
-
 const resetAccessToken = () => {
   localStorage.removeItem('accessToken');
   alert('로그인이 필요합니다.');
-  history.pushState({}, '', PATH_NAME.LANDING);
-};
-
-const options = {
-  headers: {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-  },
+  window.location.href = PATH_NAME.LANDING;
 };
 
 export const http = {
   get: async <T>(url: RequestInfo | URL): Promise<T> => {
-    const response = await fetch(url, options);
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      },
+    });
 
     if (response.status === 401) {
       resetAccessToken();
@@ -40,7 +31,10 @@ export const http = {
   post: async (url: RequestInfo | URL, body: unknown) => {
     const response = await fetch(url, {
       method: 'POST',
-      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      },
       body: JSON.stringify(body),
     });
 
@@ -59,7 +53,10 @@ export const http = {
   patch: async (url: RequestInfo | URL, body: unknown) => {
     const response = await fetch(url, {
       method: 'PATCH',
-      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      },
       body: JSON.stringify(body),
     });
 
@@ -78,7 +75,10 @@ export const http = {
   delete: async (url: RequestInfo | URL) => {
     const response = await fetch(url, {
       method: 'DELETE',
-      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      },
     });
 
     if (response.status === 401) {
