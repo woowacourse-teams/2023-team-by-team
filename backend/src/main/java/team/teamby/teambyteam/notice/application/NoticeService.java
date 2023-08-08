@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.IdOnly;
 import team.teamby.teambyteam.member.domain.MemberRepository;
+import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.exception.MemberException.MemberNotFoundException;
 import team.teamby.teambyteam.notice.application.dto.NoticeRegisterRequest;
@@ -26,6 +27,7 @@ public class NoticeService {
     private final NoticeRepository noticeRepository;
     private final TeamPlaceRepository teamPlaceRepository;
     private final MemberRepository memberRepository;
+    private final MemberTeamPlaceRepository memberTeamPlaceRepository;
 
     public Long register(final NoticeRegisterRequest noticeRegisterRequest,
                          final Long teamPlaceId,
@@ -57,6 +59,8 @@ public class NoticeService {
 
         return noticeRepository.findMostRecentByTeamPlaceId(teamPlaceId)
                 .flatMap(findNotice -> memberRepository.findById(findNotice.getAuthorId())
-                        .map(findAuthor -> NoticeResponse.of(findNotice, findAuthor)));
+                        .flatMap(findAuthor -> memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(teamPlaceId, findAuthor.getId())
+                                .map(findMemberTeamPlace -> NoticeResponse.of(findNotice, findAuthor, findMemberTeamPlace))
+                        ));
     }
 }
