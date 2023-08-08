@@ -2,15 +2,15 @@ import { useNavigate } from 'react-router-dom';
 import Button from '~/components/common/Button/Button';
 import { PATH_NAME } from '~/constants/routes';
 import * as S from './LandingPage.styled';
-import { sendGoogleLogin } from '~/apis/auth';
+import { fetchGoogleLogin } from '~/apis/auth';
 
 const LandingPage = () => {
   const navigate = useNavigate();
 
   const handleGoogleLogin = async () => {
-    const response = await sendGoogleLogin();
+    const { googleLoginUrl } = await fetchGoogleLogin();
 
-    console.log(response);
+    window.location.href = googleLoginUrl;
   };
 
   const handleNavigateClick = () => {
