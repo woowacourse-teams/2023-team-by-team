@@ -42,7 +42,7 @@ public class NoticeController {
         final Optional<NoticeResponse> noticeResponseOptional = noticeService.findMostRecentNotice(teamPlaceId);
 
         return noticeResponseOptional
-            .map(ResponseEntity::ok)
-            .orElseGet(() -> ResponseEntity.ok().build());
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.ok().build());
     }
 }
