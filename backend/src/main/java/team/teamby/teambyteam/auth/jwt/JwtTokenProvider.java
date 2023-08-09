@@ -1,14 +1,6 @@
 package team.teamby.teambyteam.auth.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtParser;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.MissingClaimException;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import team.teamby.teambyteam.auth.exception.AuthenticationException;
@@ -53,19 +45,20 @@ public class JwtTokenProvider {
         if (extractedEmail == null) {
             throw new AuthenticationException.FailAuthenticationException();
         }
+        return extractedEmail;
     }
 
-    private JwtParser getParser() {
+    private JwtParser getAccessTokenParser() {
         return Jwts.parserBuilder()
-                .setSigningKey(jwtSecret.getBytes(StandardCharsets.UTF_8))
+                .setSigningKey(jwtAccessTokenSecret.getBytes(StandardCharsets.UTF_8))
                 .build();
     }
 
-    public void validate(final String token) {
+    private void validateAccessToken(final String token) {
         try {
-            final Claims claims = getParser().parseClaimsJws(token).getBody();
+            final Claims claims = getAccessTokenParser().parseClaimsJws(token).getBody();
             validateExpiration(claims);
-        } catch (MalformedJwtException | MissingClaimException | UnsupportedJwtException e) {
+        } catch (MalformedJwtException | UnsupportedJwtException e) {
             throw new AuthenticationException.FailAuthenticationException();
         }
     }
@@ -75,6 +68,44 @@ public class JwtTokenProvider {
         final Date expiration = claims.getExpiration();
         if (now.after(expiration)) {
             throw new ExpiredJwtException(null, claims, "토큰이 만료되었습니다.");
+        }
+    }
+
+    public String generateRefreshToken(final String email) {
+        final Date now = new Date();
+        final Date expiryDate = new Date(now.getTime() + jwtRefreshTokenExpirationInMs);
+        final SecretKey secretKey = new SecretKeySpec(jwtRefreshTokenSecret.getBytes(StandardCharsets.UTF_8), SignatureAlgorithm.HS256.getJcaName());
+
+        return Jwts.builder()
+                .claim(EMAIL_KEY, email)
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
+                .signWith(secretKey)
+                .compact();
+    }
+
+    public String extractEmailFromRefreshToken(final String token) {
+        validateRefreshToken(token);
+        final Jws<Claims> claimsJws = getRefreshTokenParser().parseClaimsJws(token);
+        String extractedEmail = claimsJws.getBody().get(EMAIL_KEY, String.class);
+        if (extractedEmail == null) {
+            throw new AuthenticationException.FailAuthenticationException();
+        }
+        return extractedEmail;
+    }
+
+    private JwtParser getRefreshTokenParser() {
+        return Jwts.parserBuilder()
+                .setSigningKey(jwtRefreshTokenSecret.getBytes(StandardCharsets.UTF_8))
+                .build();
+    }
+
+    private void validateRefreshToken(final String token) {
+        try {
+            final Claims claims = getRefreshTokenParser().parseClaimsJws(token).getBody();
+            validateExpiration(claims);
+        } catch (MalformedJwtException | UnsupportedJwtException e) {
+            throw new AuthenticationException.FailAuthenticationException();
         }
     }
 }
