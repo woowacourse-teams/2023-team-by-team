@@ -1,4 +1,4 @@
-name: frontend-cd
+name: frontend deploy dev
 
 on:
   workflow_dispatch:

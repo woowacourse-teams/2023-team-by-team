@@ -1,4 +1,4 @@
-name: frontend-ci
+name: frontend test for PR to develop
 
 on:
   pull_request:
