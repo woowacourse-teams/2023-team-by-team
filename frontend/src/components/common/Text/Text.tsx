@@ -3,7 +3,7 @@ import type { CSSProp } from 'styled-components';
 import type { Size } from '~/types/size';
 import * as S from './Text.styled';
 
-export type Weight = 'light' | 'normal' | 'bold';
+export type Weight = 'light' | 'normal' | 'semiBold' | 'bold';
 export interface TextProps {
   as?:
     | 'h1'
