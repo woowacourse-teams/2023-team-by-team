@@ -5,6 +5,7 @@
 name: backend deploy dev
 
 on:
+  workflow_dispatch:
   pull_request:
     types:
       - closed
@@ -17,7 +18,7 @@ permissions:
 
 jobs:
   build-and-upload:
-    if: github.event.pull_request.merged == true
+    # if: github.event.pull_request.merged == true
     runs-on: ubuntu-22.04
     defaults:
       run:
@@ -92,6 +93,6 @@ jobs:
         working-directory: backend/dev/
         run: |
           echo "$DEV_DEPLOY_SCRIPT" > dev-deploy.sh
-          chmod 700 dev-deploy.sh
+          chmod -x dev-deploy.sh
           ./dev-deploy.sh
       
