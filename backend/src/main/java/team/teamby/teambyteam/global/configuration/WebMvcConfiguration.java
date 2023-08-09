@@ -34,6 +34,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                 .addPathPatterns("/api/**");
         registry.addInterceptor(teamPlaceParticipationInterceptor)
                 .order(2)
-                .addPathPatterns("/**/team-place/**");
+                .addPathPatterns("/api/**/team-place/{teamPlaceId}/**")
+                .addPathPatterns("/api/**/team-places/{teamPlaceId}/**");
     }
 }

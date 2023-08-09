@@ -7,6 +7,7 @@ import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.notice.domain.NoticeRepository;
 import team.teamby.teambyteam.schedule.domain.ScheduleRepository;
+import team.teamby.teambyteam.teamplace.domain.TeamPlaceInviteCodeRepository;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceRepository;
 
 @Component
@@ -30,6 +31,9 @@ public class BuilderSupporter {
     @Autowired
     private NoticeRepository noticeRepository;
 
+    @Autowired
+    private TeamPlaceInviteCodeRepository teamPlaceInviteCodeRepository;
+
     public ScheduleRepository scheduleRepository() {
         return scheduleRepository;
     }
@@ -52,5 +56,9 @@ public class BuilderSupporter {
 
     public NoticeRepository noticeRepository() {
         return noticeRepository;
+    }
+
+    public TeamPlaceInviteCodeRepository teamPlaceInviteCodeRepository() {
+        return teamPlaceInviteCodeRepository;
     }
 }

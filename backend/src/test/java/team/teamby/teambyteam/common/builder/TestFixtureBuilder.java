@@ -8,6 +8,7 @@ import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.notice.domain.Notice;
 import team.teamby.teambyteam.schedule.domain.Schedule;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
+import team.teamby.teambyteam.teamplace.domain.TeamPlaceInviteCode;
 
 import java.util.List;
 
@@ -77,5 +78,9 @@ public class TestFixtureBuilder {
 
     public List<Notice> buildNotices(final List<Notice> notices) {
         return bs.noticeRepository().saveAll(notices);
+    }
+
+    public TeamPlaceInviteCode buildTeamPlaceInviteCode(final TeamPlaceInviteCode teamPlaceInviteCode) {
+        return bs.teamPlaceInviteCodeRepository().save(teamPlaceInviteCode);
     }
 }
