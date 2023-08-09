@@ -12,6 +12,7 @@ import team.teamby.teambyteam.auth.exception.AuthenticationException;
 import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
+import team.teamby.teambyteam.token.exception.TokenException;
 
 import java.time.DateTimeException;
 import java.time.format.DateTimeParseException;
@@ -42,7 +43,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {
             MemberException.MemberNotFoundException.class,
             TeamPlaceException.NotFoundException.class,
-            ScheduleException.ScheduleNotFoundException.class
+            ScheduleException.ScheduleNotFoundException.class,
+            TokenException.TokenNotFoundException.class
     })
     public ResponseEntity<String> handleNotFoundException(final RuntimeException exception) {
         final String message = exception.getMessage();
