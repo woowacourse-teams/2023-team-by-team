@@ -16,7 +16,6 @@ import team.teamby.teambyteam.feed.domain.FeedType;
 import team.teamby.teambyteam.feed.domain.vo.Content;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.IdOnly;
-import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
@@ -30,9 +29,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FeedThreadService {
 
+    public static final String BLANK_PROFILE_IMAGE_URL = "";
     private static final String SORT_CRITERIA = "id";
     private static final Sort.Direction SORT_DIRECTION = Sort.Direction.DESC;
     private static final int FIRST_PAGE = 0;
+    public static final String AUTHOR_NAME_SCHEDULE = "schedule";
 
     private final FeedRepository feedRepository;
     private final MemberRepository memberRepository;
@@ -83,12 +84,11 @@ public class FeedThreadService {
     private FeedResponse mapToResponse(final Feed feed) {
         if (FeedType.THREAD == feed.getType()) {
             final MemberTeamPlace memberTeamPlace = memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(feed.getTeamPlaceId(), feed.getAuthorId())
-                    .orElseThrow(MemberException.MemberNotFoundException::new);
-            final Member member = memberTeamPlace.getMember();
-            return FeedResponse.from(feed, memberTeamPlace.getDisplayMemberName().getValue(), member.getProfileImageUrl().getValue());
+                    .orElse(MemberTeamPlace.UNKNOWN_MEMBER_TEAM_PLACE);
+            return FeedResponse.from(feed, memberTeamPlace);
         }
         if (FeedType.NOTIFICATION == feed.getType()) {
-            return FeedResponse.from(feed, "schedule", "");
+            return FeedResponse.from(feed, AUTHOR_NAME_SCHEDULE, BLANK_PROFILE_IMAGE_URL);
         }
         throw new IllegalArgumentException("지원하지 않는 타입입니다.");
     }
