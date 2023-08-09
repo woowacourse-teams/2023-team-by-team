@@ -20,7 +20,7 @@ export const TeamPlaceContext = createContext<TeamPlaceContextProps>(
 
 export const TeamPlaceProvider = (props: PropsWithChildren) => {
   const { children } = props;
-  const { teamPlaces } = useFetchTeamPlaces();
+  const { teamPlaces, isFetched } = useFetchTeamPlaces();
   const [teamPlaceId, setTeamPlaceId] = useState(0);
   const [teamPlaceColor, setTeamPlaceColor] = useState<TeamPlaceColor>(100);
   const [displayName, setDisplayName] = useState('');
@@ -40,21 +40,15 @@ export const TeamPlaceProvider = (props: PropsWithChildren) => {
   );
 
   useEffect(() => {
-    const id = localStorage.getItem('teamPlaceId');
+    if (!isFetched) return;
 
-    if (id) {
-      changeTeamPlace(Number(id));
-    }
-  }, [changeTeamPlace]);
-
-  useEffect(() => {
     if (teamPlaces.length === 0) return;
 
     const id = localStorage.getItem('teamPlaceId');
     const initTeamPlaceId = id === null ? teamPlaces[0].id : Number(id);
 
     changeTeamPlace(initTeamPlaceId);
-  }, [teamPlaces]);
+  }, [isFetched, changeTeamPlace]);
 
   const value = {
     teamPlaces,

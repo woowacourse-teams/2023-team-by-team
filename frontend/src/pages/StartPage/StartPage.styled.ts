@@ -4,19 +4,24 @@ export const Container = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  overflow-x: hidden;
 
   width: 100vw;
   height: 100vh;
   padding-right: 120px;
 `;
 
-export const InnerContainer = styled.div`
+export const InnerContainer = styled.div<{ clickedButton: string | undefined }>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 
   width: 340px;
   height: 460px;
+
+  animation: ${({ theme, clickedButton }) =>
+      clickedButton && theme.animation.slideRight}
+    0.6s ease-in-out forwards;
 `;
 
 export const ButtonContainer = styled.div`
