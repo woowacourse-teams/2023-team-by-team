@@ -66,5 +66,4 @@ jobs:
         run: |
           rm /home/ubuntu/team-by-team/frontend/backup/*
           mv /home/ubuntu/team-by-team/frontend/www/dist/* /home/ubuntu/team-by-team/frontend/backup/
-          rm /home/ubuntu/team-by-team/frontend/www/dist/*
           mv ./dist/* /home/ubuntu/team-by-team/frontend/www/dist/
