@@ -67,6 +67,11 @@ jobs:
         working-directory: backend/dev/
         run: rm -f team-by-team-*.jar
 
+      - name: Make backup
+        run: |
+          rm -f /home/ubuntu/team-by-team/backend/backup/*
+          mv /home/ubuntu/team-by-team/backend/current/* /home/ubuntu/team-by-team/backend/backup/
+
       - name: Download jar file from artifact
         uses: actions/download-artifact@v3
         with:
@@ -77,16 +82,12 @@ jobs:
         working-directory: backend/dev/
         run: |
           echo "$DEV_PROPERTY" > application-dev.yml
-
-      - name: Make backup
-        run: |
-          rm -f /home/ubuntu/team-by-team/backend/backup/*
-          mv /home/ubuntu/team-by-team/backend/current/* /home/ubuntu/team-by-team/backend/backup/
         
-      - name: Make dev application.yml
+      - name: Move jar file and application yml to deploy directory
         working-directory: backend/dev/
         run: |
           mv team-by-team-*.jar /home/ubuntu/team-by-team/backend/current/team-by-team.jar
+          mv application-dev.yml /home/ubuntu/team-by-team/backend/current/
               
       - name: Deploy to WAS
         working-directory: backend/dev/
