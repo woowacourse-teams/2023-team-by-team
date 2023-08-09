@@ -93,6 +93,6 @@ jobs:
         working-directory: backend/dev/
         run: |
           echo "$DEV_DEPLOY_SCRIPT" > dev-deploy.sh
-          chmod -x dev-deploy.sh
+          sudo chmod -x dev-deploy.sh
           ./dev-deploy.sh
       
