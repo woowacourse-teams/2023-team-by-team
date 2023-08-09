@@ -142,7 +142,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             //then
             SoftAssertions.assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
-                softly.assertThat(response.body().asString()).contains("해당 팀 플레이스에 가입되어 있지 않습니다.");
+                softly.assertThat(response.body().asString()).contains("접근할 수 없는 팀플레이스입니다.");
             });
         }
     }
