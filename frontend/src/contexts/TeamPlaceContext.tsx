@@ -1,5 +1,7 @@
 import { createContext, useCallback, useEffect, useState } from 'react';
 import type { PropsWithChildren } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { PATH_NAME } from '~/constants/routes';
 import { useFetchTeamPlaces } from '~/hooks/queries/useFetchTeamPlaces';
 import type { TeamPlace, TeamPlaceColor } from '~/types/team';
 import { getInfoByTeamPlaceId } from '~/utils/getInfoByTeamPlaceId';
@@ -18,7 +20,7 @@ export const TeamPlaceContext = createContext<TeamPlaceContextProps>(
 
 export const TeamPlaceProvider = (props: PropsWithChildren) => {
   const { children } = props;
-  const teamPlaces = useFetchTeamPlaces();
+  const { teamPlaces } = useFetchTeamPlaces();
   const [teamPlaceId, setTeamPlaceId] = useState(0);
   const [teamPlaceColor, setTeamPlaceColor] = useState<TeamPlaceColor>(100);
   const [displayName, setDisplayName] = useState('');
@@ -46,10 +48,13 @@ export const TeamPlaceProvider = (props: PropsWithChildren) => {
   }, [changeTeamPlace]);
 
   useEffect(() => {
-    const initTeamPlaceId =
-      Number(localStorage.getItem('teamPlaceId')) ?? teamPlaces[0].id;
-    setTeamPlaceId(initTeamPlaceId);
-  }, []);
+    if (teamPlaces.length === 0) return;
+
+    const id = localStorage.getItem('teamPlaceId');
+    const initTeamPlaceId = id === null ? teamPlaces[0].id : Number(id);
+
+    changeTeamPlace(initTeamPlaceId);
+  }, [teamPlaces]);
 
   const value = {
     teamPlaces,
