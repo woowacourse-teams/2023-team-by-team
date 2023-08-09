@@ -64,6 +64,6 @@ jobs:
       - name: Deploy DEV frontend
         working-directory: frontend/dev/
         run: |
-          rm /home/ubuntu/team-by-team/frontend/backup/*
+          rm -f /home/ubuntu/team-by-team/frontend/backup/*
           mv /home/ubuntu/team-by-team/frontend/www/dist/* /home/ubuntu/team-by-team/frontend/backup/
           mv ./dist/* /home/ubuntu/team-by-team/frontend/www/dist/
