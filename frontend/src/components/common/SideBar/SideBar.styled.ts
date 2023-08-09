@@ -7,7 +7,7 @@ export const Container = styled.div`
   width: 300px;
   height: 100%;
   padding: 20px 22px;
-  gap: 30px;
+  row-gap: 18px;
 `;
 
 export const InnerContainer = styled.div`
