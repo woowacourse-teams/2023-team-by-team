@@ -21,6 +21,7 @@ export const ThreadContainer = styled.div`
 
   background-color: ${({ theme }) => theme.color.GRAY100};
 
+  overflow-x: hidden;
   overflow-y: auto;
 `;
 
