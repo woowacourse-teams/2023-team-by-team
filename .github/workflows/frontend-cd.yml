@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-22.04
     defaults:
       run:
-        working-directory: backend
+        working-directory: frontend
 
     steps:
       - name: Setup Repository
