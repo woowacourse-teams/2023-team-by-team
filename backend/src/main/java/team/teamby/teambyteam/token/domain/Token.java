@@ -25,4 +25,8 @@ public class Token {
         this.member = member;
         this.refreshToken = refreshToken;
     }
+
+    public void changeToken(final String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 }

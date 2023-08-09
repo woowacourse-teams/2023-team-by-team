@@ -9,6 +9,7 @@ import team.teamby.teambyteam.notice.domain.Notice;
 import team.teamby.teambyteam.schedule.domain.Schedule;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceInviteCode;
+import team.teamby.teambyteam.token.domain.Token;
 
 import java.util.List;
 
@@ -74,5 +75,9 @@ public class TestFixtureBuilder {
 
     public TeamPlaceInviteCode buildTeamPlaceInviteCode(final TeamPlaceInviteCode teamPlaceInviteCode) {
         return bs.teamPlaceInviteCodeRepository().save(teamPlaceInviteCode);
+    }
+
+    public Token buildToken(final Token token) {
+        return bs.tokenRepository().save(token);
     }
 }
