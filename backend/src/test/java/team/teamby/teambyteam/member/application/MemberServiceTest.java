@@ -109,8 +109,8 @@ class MemberServiceTest extends ServiceTest {
 
             // when & then
             Assertions.assertThatThrownBy(() -> memberService.leaveTeamPlace(new MemberEmailDto(ENDEL.getEmail().getValue()), JAPANESE_TEAM_PLACE.getId()))
-                    .isInstanceOf(MemberTeamPlaceException.NotFoundException.class)
-                    .hasMessage("가입된 팀플레이스를 찾을 수 없습니다.");
+                    .isInstanceOf(MemberTeamPlaceException.NotFoundParticipatedTeamPlaceException.class)
+                    .hasMessage("해당 팀 플레이스에 가입되어 있지 않습니다.");
         }
     }
 

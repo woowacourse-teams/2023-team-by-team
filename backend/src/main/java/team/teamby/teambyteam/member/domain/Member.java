@@ -87,7 +87,7 @@ public class Member extends BaseEntity {
         final MemberTeamPlace teamPlaceToLeave = memberTeamPlaces.stream()
                 .filter(memberTeamPlace -> memberTeamPlace.getTeamPlace().getId().equals(teamPlaceId))
                 .findAny()
-                .orElseThrow(MemberTeamPlaceException.NotFoundException::new);
+                .orElseThrow(MemberTeamPlaceException.NotFoundParticipatedTeamPlaceException::new);
 
         memberTeamPlaces.remove(teamPlaceToLeave);
         return teamPlaceToLeave;

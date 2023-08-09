@@ -30,9 +30,9 @@ public class MemberTeamPlaceException extends RuntimeException {
         }
     }
 
-    public static class NotFoundException extends MemberTeamPlaceException {
-        public NotFoundException() {
-            super("가입된 팀플레이스를 찾을 수 없습니다.");
+    public static class NotFoundParticipatedTeamPlaceException extends MemberTeamPlaceException {
+        public NotFoundParticipatedTeamPlaceException() {
+            super("해당 팀 플레이스에 가입되어 있지 않습니다.");
         }
     }
 }

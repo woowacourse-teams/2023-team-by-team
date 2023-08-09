@@ -44,7 +44,6 @@ public class GlobalExceptionHandler {
             MemberException.MemberNotFoundException.class,
             TeamPlaceException.NotFoundException.class,
             ScheduleException.ScheduleNotFoundException.class,
-            MemberTeamPlaceException.NotFoundException.class
     })
     public ResponseEntity<String> handleNotFoundException(final RuntimeException exception) {
         final String message = exception.getMessage();
@@ -67,7 +66,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = {
             ScheduleException.TeamAccessForbidden.class,
-            TeamPlaceException.TeamPlaceAccessForbidden.class
+            TeamPlaceException.TeamPlaceAccessForbidden.class,
+            MemberTeamPlaceException.NotFoundParticipatedTeamPlaceException.class
     })
     public ResponseEntity<String> handleCustomForbiddenException(final RuntimeException exception) {
         final String message = exception.getMessage();
