@@ -44,6 +44,8 @@ const Header = () => {
 
     alert('로그아웃 되었습니다.');
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('teamPlaceId');
+
     navigate(PATH_NAME.LANDING);
   };
 
