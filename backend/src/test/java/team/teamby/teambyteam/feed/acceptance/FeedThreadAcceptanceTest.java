@@ -34,9 +34,7 @@ import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ROY;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.JAPANESE_TEAM_PLACE;
-import static team.teamby.teambyteam.common.fixtures.acceptance.FeedThreadAcceptanceFixtures.GET_FEED_THREAD_FIRST;
-import static team.teamby.teambyteam.common.fixtures.acceptance.FeedThreadAcceptanceFixtures.GET_FEED_THREAD_REPEAT;
-import static team.teamby.teambyteam.common.fixtures.acceptance.FeedThreadAcceptanceFixtures.POST_FEED_THREAD_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.acceptance.FeedThreadAcceptanceFixtures.*;
 
 public class FeedThreadAcceptanceTest extends AcceptanceTest {
 
@@ -54,7 +52,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             authedMember = testFixtureBuilder.buildMember(PHILIP());
             participatedTeamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             participatedMemberTeamPlace = testFixtureBuilder.buildMemberTeamPlace(authedMember, participatedTeamPlace);
-            authToken = jwtTokenProvider.generateToken(authedMember.getEmail().getValue());
+            authToken = jwtTokenProvider.generateAccessToken(authedMember.getEmail().getValue());
 
         }
 
@@ -114,7 +112,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
         void failWithUnauthorizedMember() {
             // given
             final FeedThreadWritingRequest request = FeedThreadFixtures.HELLO_WRITING_REQUEST;
-            final String unauthorizedToken = jwtTokenProvider.generateToken(ROY().getEmail().getValue());
+            final String unauthorizedToken = jwtTokenProvider.generateAccessToken(ROY().getEmail().getValue());
 
             // when
             final ExtractableResponse<Response> response = POST_FEED_THREAD_REQUEST(unauthorizedToken, participatedTeamPlace, request);
@@ -141,7 +139,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             authedMember = testFixtureBuilder.buildMember(PHILIP());
             participatedTeamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             participatedMemberTeamPlace = testFixtureBuilder.buildMemberTeamPlace(authedMember, participatedTeamPlace);
-            authToken = jwtTokenProvider.generateToken(authedMember.getEmail().getValue());
+            authToken = jwtTokenProvider.generateAccessToken(authedMember.getEmail().getValue());
         }
 
         @Test

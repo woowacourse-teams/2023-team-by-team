@@ -25,8 +25,8 @@ public final class TeamPlaceParticipationInterceptor implements HandlerIntercept
 
     @Override
     public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler) throws Exception {
-        final String token = jwtTokenExtractor.extractToken(request);
-        final String email = jwtTokenProvider.extractEmailFromToken(token);
+        final String token = jwtTokenExtractor.extractAccessToken(request);
+        final String email = jwtTokenProvider.extractEmailFromAccessToken(token);
         final Map<String, String> pathVariables = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
         final Long teamPlaceId = Long.parseLong(pathVariables.get("teamPlaceId"));
 

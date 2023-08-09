@@ -36,7 +36,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             testFixtureBuilder.buildMemberTeamPlace(ENDEL, JAPANESE_TEAM_PLACE);
             testFixtureBuilder.buildMemberTeamPlace(ENDEL, STATICS_TEAM_PLACE);
 
-            final String ENDEL_TOKEN = jwtTokenProvider.generateToken(ENDEL.getEmail().getValue());
+            final String ENDEL_TOKEN = jwtTokenProvider.generateAccessToken(ENDEL.getEmail().getValue());
 
             // when
             final ExtractableResponse<Response> response = GET_PARTICIPATED_TEAM_PLACES(ENDEL_TOKEN);
@@ -69,7 +69,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             testFixtureBuilder.buildMemberTeamPlace(ENDEL, STATICS_TEAM_PLACE);
 
             final Member unAuthorizedMember = MemberFixtures.PHILIP();
-            final String UNAUTHORIZED_TOKEN = jwtTokenProvider.generateToken(unAuthorizedMember.getEmail().getValue());
+            final String UNAUTHORIZED_TOKEN = jwtTokenProvider.generateAccessToken(unAuthorizedMember.getEmail().getValue());
 
             // when
             final ExtractableResponse<Response> response = GET_PARTICIPATED_TEAM_PLACES(UNAUTHORIZED_TOKEN);
