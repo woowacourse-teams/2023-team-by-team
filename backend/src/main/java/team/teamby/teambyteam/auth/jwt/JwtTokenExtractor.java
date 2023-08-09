@@ -10,6 +10,8 @@ import team.teamby.teambyteam.auth.exception.AuthenticationException;
 public class JwtTokenExtractor {
 
     private static final String PREFIX_BEARER = "Bearer ";
+    private static final String ACCESS_TOKEN_HEADER = HttpHeaders.AUTHORIZATION;
+    private static final String REFRESH_TOKEN_HEADER = "Authorization-Refresh";
 
     public String extractAccessToken(final HttpServletRequest request) {
         final String accessToken = request.getHeader(ACCESS_TOKEN_HEADER);
