@@ -2,6 +2,7 @@ package team.teamby.teambyteam.teamplace.domain;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,7 +26,7 @@ public final class TeamPlaceInviteCode extends BaseEntity {
     @Embedded
     private InviteCode inviteCode;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_place_id")
     private TeamPlace teamPlace;
 
