@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-22.04
     defaults:
       run:
-        working-directory: backend
+        working-directory: frontend
 
     steps:
       - name: Setup Repository
@@ -52,7 +52,7 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Remove previous version app
-        working-directory: ./frontend/dev/
+        working-directory: frontend/dev/
         run: rm -rf dist
 
       - name: Download build file from artifact
@@ -62,7 +62,7 @@ jobs:
           path: frontend/dev/dist
 
       - name: Deploy DEV frontend
-        working-directory: ./frontend/dev/
+        working-directory: frontend/dev/
         run: |
           rm /home/ubuntu/team-by-team/frontend/backup/*
           mv /home/ubuntu/team-by-team/frontend/www/dist/* /home/ubuntu/team-by-team/frontend/backup/
