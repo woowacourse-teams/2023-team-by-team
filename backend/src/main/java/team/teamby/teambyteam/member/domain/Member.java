@@ -26,6 +26,11 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseEntity {
 
+    public static final String UNKNOWN_MEMBER_NAME = "(알수없음)";
+    public static final String UNKNOWN_MEMBER_EMAIL = "unknown@teamby.team";
+    public static final String UNKNOWN_MEMBER_PROFILE_URL = "";
+    public static final Member UNKNOWN_MEMBER = new Member(UNKNOWN_MEMBER_NAME, UNKNOWN_MEMBER_EMAIL, UNKNOWN_MEMBER_PROFILE_URL);
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
