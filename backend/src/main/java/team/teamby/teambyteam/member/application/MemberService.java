@@ -43,7 +43,9 @@ public class MemberService {
     public TeamPlaceParticipantResponse participateTeamPlace(final MemberEmailDto memberEmailDto, final String inviteCode) {
         final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
                 .orElseThrow(MemberException.MemberNotFoundException::new);
-        final TeamPlaceInviteCode teamPlaceInviteCode = teamPlaceInviteCodeRepository.findByInviteCode(new InviteCode(inviteCode))
+
+        final InviteCode inviteCodeVo = validteInviteCode(inviteCode);
+        final TeamPlaceInviteCode teamPlaceInviteCode = teamPlaceInviteCodeRepository.findByInviteCode(inviteCodeVo)
                 .orElseThrow(TeamPlaceInviteCodeException.NotFoundException::new);
         final TeamPlace teamPlace = teamPlaceInviteCode.getTeamPlace();
         if (member.isMemberOf(teamPlace.getId())) {
@@ -54,5 +56,15 @@ public class MemberService {
         memberTeamPlaceRepository.save(participatedMemberTeamPlace);
 
         return new TeamPlaceParticipantResponse(teamPlace.getId());
+    }
+
+    private InviteCode validteInviteCode(final String inviteCode) {
+        InviteCode inviteCodeVo;
+        try {
+            inviteCodeVo = new InviteCode(inviteCode);
+        } catch (IllegalArgumentException e) {
+            throw new TeamPlaceInviteCodeException.LengthException();
+        }
+        return inviteCodeVo;
     }
 }

@@ -149,6 +149,24 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         }
 
         @Test
+        @DisplayName("양식에 맞지 않는 초대코드로 요청 시 예외를 반환한다.")
+        void failIfInvalidInviteCode() {
+            // given
+            final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
+            testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
+            final String PHILIP_TOKEN = jwtTokenProvider.generateToken(PHILIP.getEmail().getValue());
+            final String invalidInviteCode = "aaaa";
+
+            // when
+            final ExtractableResponse<Response> response = PARTICIPATE_TEAM_PLACE(PHILIP_TOKEN, invalidInviteCode);
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+            });
+        }
+
+        @Test
         @DisplayName("잘못된 인증 토큰으로 요청시 401 에러를 반환한다.")
         void failWithWrongToken() {
             // given
