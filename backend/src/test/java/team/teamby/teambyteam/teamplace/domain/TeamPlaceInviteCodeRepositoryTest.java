@@ -3,8 +3,6 @@ package team.teamby.teambyteam.teamplace.domain;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import team.teamby.teambyteam.common.RepositoryTest;
 import team.teamby.teambyteam.teamplace.domain.vo.InviteCode;
 
@@ -12,8 +10,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceInviteCodeFixtures.TEAM_PLACE_INVITE_CODE;
 
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class TeamPlaceInviteCodeRepositoryTest extends RepositoryTest {
 
     @Autowired
