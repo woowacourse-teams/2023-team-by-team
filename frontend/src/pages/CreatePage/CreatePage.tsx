@@ -6,17 +6,12 @@ import {
   type FormEventHandler,
   useState,
   useRef,
-  useEffect,
 } from 'react';
 import Button from '~/components/common/Button/Button';
 
 const CreatePage = () => {
   const [teamName, setTeamName] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, []);
 
   const handleTeamNameBlur: ChangeEventHandler<HTMLInputElement> = (e) => {
     setTeamName(() => e.target.value);
