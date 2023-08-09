@@ -20,6 +20,12 @@ const color = {
   GRAY700: '#4e5968',
   GRAY800: '#333d4b',
   GRAY900: '#191f28',
+
+  BLUE100: '#d1ddff',
+  BLUE200: '#b9cbff',
+  BLUE300: '#8ba9ff',
+
+  TRANSPARENT_BLACK: '#777777aa',
 } as const;
 
 const teamColor = {
