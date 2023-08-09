@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { ChangeEventHandler, FormEventHandler } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { PATH_NAME } from '~/constants/routes';
 import { useDeleteTeamPlace } from '~/hooks/queries/useDeleteTeamPlace';
 import { useModal } from '~/hooks/useModal';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
@@ -8,7 +9,8 @@ import { useToast } from '~/hooks/useToast';
 
 const useTeamExitModal = () => {
   const navigate = useNavigate();
-  const { teamPlaceId, displayName, resetTeamPlace } = useTeamPlace();
+  const { teamPlaces, teamPlaceId, displayName, resetTeamPlace } =
+    useTeamPlace();
   const { showToast } = useToast();
   const { closeModal } = useModal();
   const { mutateDeleteTeamPlace } = useDeleteTeamPlace(teamPlaceId);
@@ -42,7 +44,13 @@ const useTeamExitModal = () => {
         resetTeamPlace();
         showToast('success', '팀 탈퇴가 완료되었습니다.');
         closeModal();
-        navigate('/team');
+
+        if (teamPlaces.length === 1) {
+          navigate(PATH_NAME.LANDING);
+          return;
+        }
+
+        navigate(PATH_NAME.TEAM_SELECT);
       },
     });
   };
