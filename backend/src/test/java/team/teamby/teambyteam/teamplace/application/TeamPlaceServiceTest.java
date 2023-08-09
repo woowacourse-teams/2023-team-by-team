@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import team.teamby.teambyteam.common.ServiceTest;
 import team.teamby.teambyteam.common.fixtures.MemberFixtures;
+import team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures;
+import team.teamby.teambyteam.common.fixtures.TeamPlaceInviteCodeFixtures;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
@@ -17,11 +19,16 @@ import team.teamby.teambyteam.member.domain.vo.DisplayTeamPlaceName;
 import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateResponse;
+import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceInviteCodeResponse;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
+import team.teamby.teambyteam.teamplace.domain.TeamPlaceInviteCode;
+import team.teamby.teambyteam.teamplace.domain.TeamPlaceInviteCodeRepository;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceRepository;
 import team.teamby.teambyteam.teamplace.domain.vo.Name;
+import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
 import java.util.Optional;
+import java.util.UUID;
 
 class TeamPlaceServiceTest extends ServiceTest {
 
@@ -33,6 +40,9 @@ class TeamPlaceServiceTest extends ServiceTest {
 
     @Autowired
     private MemberTeamPlaceRepository memberTeamPlaceRepository;
+
+    @Autowired
+    private TeamPlaceInviteCodeRepository teamPlaceInviteCodeRepository;
 
     @Nested
     @DisplayName("팀플레이스 생성시")
@@ -72,6 +82,63 @@ class TeamPlaceServiceTest extends ServiceTest {
             Assertions.assertThatThrownBy(() -> teamPlaceService.create(new MemberEmailDto(PHILIP.getEmail().getValue()), new TeamPlaceCreateRequest(TEAM_PLACE_NAME)))
                     .isInstanceOf(MemberException.MemberNotFoundException.class)
                     .hasMessage("조회한 멤버가 존재하지 않습니다.");
+        }
+    }
+
+    @Nested
+    @DisplayName("팀플레이스 초대코드 조회시")
+    class TeamPlaceInviteCodeTest {
+
+        @Test
+        @DisplayName("조회에 성공한다.")
+        void success() {
+            // given
+            final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
+            final String inviteCode = String.valueOf(UUID.randomUUID());
+            testFixtureBuilder.buildTeamPlaceInviteCode(TeamPlaceInviteCodeFixtures.TEAM_PLACE_INVITE_CODE(inviteCode, teamPlace));
+
+            // when
+            final TeamPlaceInviteCodeResponse response = teamPlaceService.getTeamPlaceInviteCode(teamPlace.getId());
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response).isNotNull();
+                softly.assertThat(response.teamPlaceId()).isEqualTo(teamPlace.getId());
+                softly.assertThat(response.inviteCode()).isEqualTo(inviteCode);
+            });
+        }
+
+        @Test
+        @DisplayName("코드가 없는 경우 코드를 생성하여 반환한다.")
+        void ifNotExistGenerateInviteCode() {
+            // given
+            final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
+            final Optional<TeamPlaceInviteCode> notGeneratedInviteCode = teamPlaceInviteCodeRepository.findByTeamPlaceId(teamPlace.getId());
+
+            // when
+            final TeamPlaceInviteCodeResponse response = teamPlaceService.getTeamPlaceInviteCode(teamPlace.getId());
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response).isNotNull();
+                softly.assertThat(notGeneratedInviteCode).isEmpty();
+                softly.assertThat(response.teamPlaceId()).isEqualTo(teamPlace.getId());
+                softly.assertThat(response.inviteCode()).isNotEmpty();
+            });
+        }
+
+        @Test
+        @DisplayName("팀플레이스가 없는 경우 예외를 던진다.")
+        void failIfNotExistTeamPlace() {
+            // given
+            final Long notExistTeamPlaceId = -1L;
+
+            // when & then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThatThrownBy(() -> teamPlaceService.getTeamPlaceInviteCode(notExistTeamPlaceId))
+                        .isInstanceOf(TeamPlaceException.NotFoundException.class)
+                        .hasMessage("조회한 팀 플레이스가 존재하지 않습니다.");
+            });
         }
     }
 }

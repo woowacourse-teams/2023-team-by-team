@@ -12,9 +12,16 @@ import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateResponse;
+import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceInviteCodeResponse;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
+import team.teamby.teambyteam.teamplace.domain.TeamPlaceInviteCode;
+import team.teamby.teambyteam.teamplace.domain.TeamPlaceInviteCodeRepository;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceRepository;
 import team.teamby.teambyteam.teamplace.domain.vo.Name;
+import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
+import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeException;
+
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -24,6 +31,7 @@ public class TeamPlaceService {
     private final MemberRepository memberRepository;
     private final TeamPlaceRepository teamPlaceRepository;
     private final MemberTeamPlaceRepository memberTeamPlaceRepository;
+    private final TeamPlaceInviteCodeRepository teamPlaceInviteCodeRepository;
 
     public TeamPlaceCreateResponse create(final MemberEmailDto memberEmailDto, final TeamPlaceCreateRequest request) {
 
@@ -38,4 +46,17 @@ public class TeamPlaceService {
         return new TeamPlaceCreateResponse(createdTeamPlace.getId());
     }
 
+    public TeamPlaceInviteCodeResponse getTeamPlaceInviteCode(final Long teamPlaceId) {
+        final boolean exist = teamPlaceInviteCodeRepository.existsByTeamPlaceId(teamPlaceId);
+        if (exist) {
+            final String code = teamPlaceInviteCodeRepository.findByTeamPlaceId(teamPlaceId)
+                    .orElseThrow(TeamPlaceInviteCodeException.NotGeneratedInviteCodeException::new)
+                    .getCode();
+            return new TeamPlaceInviteCodeResponse(teamPlaceId, code);
+        }
+        final TeamPlace teamPlace = teamPlaceRepository.findById(teamPlaceId).orElseThrow(TeamPlaceException.NotFoundException::new);
+        final String inviteCode = String.valueOf(UUID.randomUUID());
+        final TeamPlaceInviteCode teamPlaceInviteCode = teamPlaceInviteCodeRepository.save(new TeamPlaceInviteCode(inviteCode, teamPlace));
+        return new TeamPlaceInviteCodeResponse(teamPlaceId, teamPlaceInviteCode.getCode());
+    }
 }

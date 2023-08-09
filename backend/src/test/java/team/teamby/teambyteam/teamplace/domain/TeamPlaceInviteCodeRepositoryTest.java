@@ -30,7 +30,7 @@ class TeamPlaceInviteCodeRepositoryTest extends RepositoryTest {
         testFixtureBuilder.buildTeamPlaceInviteCode(TEAM_PLACE_INVITE_CODE(inviteCode, teamPlace));
 
         //when
-        final TeamPlaceInviteCode teamPlaceInviteCode = teamPlaceInviteCodeRepository.findByTeamPlaceId(buildTeamPlace.getId());
+        final TeamPlaceInviteCode teamPlaceInviteCode = teamPlaceInviteCodeRepository.findByTeamPlaceId(buildTeamPlace.getId()).get();
 
         //then
         assertThat(teamPlaceInviteCode.getCode()).isEqualTo(inviteCode);
