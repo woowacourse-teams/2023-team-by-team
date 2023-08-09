@@ -20,6 +20,7 @@ import type { Position, ModalOpenType } from '~/types/schedule';
 import DailyScheduleModal from '~/components/team_calendar/DailyScheduleModal/DailyScheduleModal';
 import { getDateByPosition } from '~/utils/getDateByPosition';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
+import { usePrefetchSchedules } from '~/hooks/queries/usePrefetchSchedules';
 
 const TeamCalendar = () => {
   const { teamPlaceId } = useTeamPlace();
@@ -49,6 +50,9 @@ const TeamCalendar = () => {
     column: 0,
   });
   const scheduleBars = generateScheduleBars(year, month, schedules);
+
+  usePrefetchSchedules(teamPlaceId, year, month - 1);
+  usePrefetchSchedules(teamPlaceId, year, month + 1);
 
   const handleModalOpen = (modalOpenType: ModalOpenType) => {
     setModalType(() => modalOpenType);
