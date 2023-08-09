@@ -57,17 +57,10 @@ public class JwtTokenProvider {
     private void validateAccessToken(final String token) {
         try {
             final Claims claims = getAccessTokenParser().parseClaimsJws(token).getBody();
-            validateExpiration(claims);
         } catch (MalformedJwtException | UnsupportedJwtException e) {
             throw new AuthenticationException.FailAuthenticationException();
-        }
-    }
-
-    private void validateExpiration(final Claims claims) {
-        final Date now = new Date();
-        final Date expiration = claims.getExpiration();
-        if (now.after(expiration)) {
-            throw new ExpiredJwtException(null, claims, "토큰이 만료되었습니다.");
+        } catch (ExpiredJwtException e) {
+            throw new ExpiredJwtException(null, null, "토큰이 만료되었습니다.");
         }
     }
 
@@ -103,9 +96,10 @@ public class JwtTokenProvider {
     private void validateRefreshToken(final String token) {
         try {
             final Claims claims = getRefreshTokenParser().parseClaimsJws(token).getBody();
-            validateExpiration(claims);
         } catch (MalformedJwtException | UnsupportedJwtException e) {
             throw new AuthenticationException.FailAuthenticationException();
+        } catch (ExpiredJwtException e) {
+            throw new ExpiredJwtException(null, null, "토큰이 만료되었습니다.");
         }
     }
 }
