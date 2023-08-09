@@ -64,7 +64,7 @@ jobs:
       DEV_DEPLOY_SCRIPT: ${{ secrets.DEV_BACK_DEPLOY_SCRIPT }}
     steps:
       - name: Remove previous version jar
-        working-directory: ./backend/dev/
+        working-directory: backend/dev/
         run: rm -f team-by-team-*.jar
 
       - name: Download jar file from artifact
@@ -74,7 +74,7 @@ jobs:
           path: backend/dev/
         
       - name: Make dev application.yml
-        working-directory: ./backend/dev/
+        working-directory: backend/dev/
         run: |
           echo "$DEV_PROPERTY" > application-dev.yml
 
@@ -84,12 +84,12 @@ jobs:
           mv /home/ubuntu/team-by-team/backend/current/* /home/ubuntu/team-by-team/backend/backup/
         
       - name: Make dev application.yml
-        working-directory: ./backend/dev/
+        working-directory: backend/dev/
         run: |
           mv team-by-team-*.jar /home/ubuntu/team-by-team/backend/current/team-by-team.jar
               
       - name: Deploy to WAS
-        working-directory: ./backend/dev/
+        working-directory: backend/dev/
         run: |
           echo "$DEV_DEPLOY_SCRIPT" > dev-deploy.sh
           chmod 700 dev-deploy.sh
