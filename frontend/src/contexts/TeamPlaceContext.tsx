@@ -10,6 +10,7 @@ interface TeamPlaceContextProps {
   teamPlaceColor: TeamPlaceColor;
   displayName: string;
   changeTeamPlace: (id: number) => void;
+  resetTeamPlace: () => void;
 }
 
 export const TeamPlaceContext = createContext<TeamPlaceContextProps>(
@@ -29,6 +30,7 @@ export const TeamPlaceProvider = (props: PropsWithChildren) => {
         teamPlaces,
         id,
       );
+
       setDisplayName(() => name);
       setTeamPlaceColor(() => color);
       setTeamPlaceId(() => id);
@@ -36,6 +38,13 @@ export const TeamPlaceProvider = (props: PropsWithChildren) => {
     },
     [teamPlaces],
   );
+
+  const resetTeamPlace = () => {
+    setTeamPlaceId(() => 0);
+    setDisplayName(() => '');
+    setTeamPlaceColor(() => 100);
+    localStorage.removeItem('teamPlaceId');
+  };
 
   useEffect(() => {
     if (!isFetched) return;
@@ -54,6 +63,7 @@ export const TeamPlaceProvider = (props: PropsWithChildren) => {
     teamPlaceColor,
     displayName,
     changeTeamPlace,
+    resetTeamPlace,
   } as const;
 
   return (
