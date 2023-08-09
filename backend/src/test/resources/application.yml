@@ -19,8 +19,13 @@ spring:
     show-sql: true # for test
 
 jwt:
-  secret: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-  expiration: 10800000
+  access:
+    secret: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    expiration: 1800000 # 30분
+
+  refresh:
+    secret: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    expiration: 86400000 # 1일
 
 oauth:
   google:
