@@ -17,4 +17,10 @@ public final class TeamPlaceInviteCodeException extends RuntimeException {
             super("팀 플레이스의 초대코드가 생성되지 않았습니다.");
         }
     }
+
+    public static class LengthException extends TeamPlaceException {
+        public LengthException() {
+            super("팀 플레이스의 초대코드의 길이가 맞지 않습니다.");
+        }
+    }
 }

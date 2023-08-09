@@ -20,15 +20,16 @@ import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateResponse;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceInviteCodeResponse;
+import team.teamby.teambyteam.teamplace.domain.RandomInviteCodeGenerator;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceInviteCode;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceInviteCodeRepository;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceRepository;
+import team.teamby.teambyteam.teamplace.domain.vo.InviteCode;
 import team.teamby.teambyteam.teamplace.domain.vo.Name;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
 import java.util.Optional;
-import java.util.UUID;
 
 class TeamPlaceServiceTest extends ServiceTest {
 
@@ -43,6 +44,9 @@ class TeamPlaceServiceTest extends ServiceTest {
 
     @Autowired
     private TeamPlaceInviteCodeRepository teamPlaceInviteCodeRepository;
+
+    @Autowired
+    private RandomInviteCodeGenerator randomInviteCodeGenerator;
 
     @Nested
     @DisplayName("팀플레이스 생성시")
@@ -94,7 +98,7 @@ class TeamPlaceServiceTest extends ServiceTest {
         void success() {
             // given
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
-            final String inviteCode = String.valueOf(UUID.randomUUID());
+            final InviteCode inviteCode = new InviteCode(randomInviteCodeGenerator.generateRandomString());
             testFixtureBuilder.buildTeamPlaceInviteCode(TeamPlaceInviteCodeFixtures.TEAM_PLACE_INVITE_CODE(inviteCode, teamPlace));
 
             // when
@@ -104,7 +108,7 @@ class TeamPlaceServiceTest extends ServiceTest {
             SoftAssertions.assertSoftly(softly -> {
                 softly.assertThat(response).isNotNull();
                 softly.assertThat(response.teamPlaceId()).isEqualTo(teamPlace.getId());
-                softly.assertThat(response.inviteCode()).isEqualTo(inviteCode);
+                softly.assertThat(response.inviteCode()).isEqualTo(inviteCode.getValue());
             });
         }
 

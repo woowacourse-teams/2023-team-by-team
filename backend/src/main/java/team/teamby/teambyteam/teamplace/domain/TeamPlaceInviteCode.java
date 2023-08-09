@@ -1,5 +1,6 @@
 package team.teamby.teambyteam.teamplace.domain;
 
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,6 +11,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.teamby.teambyteam.global.domain.BaseEntity;
+import team.teamby.teambyteam.teamplace.domain.vo.InviteCode;
 
 @Getter
 @Entity
@@ -20,14 +22,15 @@ public final class TeamPlaceInviteCode extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String code;
+    @Embedded
+    private InviteCode inviteCode;
 
     @OneToOne
     @JoinColumn(name = "team_place_id")
     private TeamPlace teamPlace;
 
-    public TeamPlaceInviteCode(final String code, final TeamPlace teamPlace) {
-        this.code = code;
+    public TeamPlaceInviteCode(final InviteCode inviteCode, final TeamPlace teamPlace) {
+        this.inviteCode = inviteCode;
         this.teamPlace = teamPlace;
     }
 }

@@ -13,15 +13,15 @@ import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateResponse;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceInviteCodeResponse;
+import team.teamby.teambyteam.teamplace.domain.RandomInviteCodeGenerator;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceInviteCode;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceInviteCodeRepository;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceRepository;
+import team.teamby.teambyteam.teamplace.domain.vo.InviteCode;
 import team.teamby.teambyteam.teamplace.domain.vo.Name;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeException;
-
-import java.util.UUID;
 
 @Service
 @Transactional
@@ -32,6 +32,7 @@ public class TeamPlaceService {
     private final TeamPlaceRepository teamPlaceRepository;
     private final MemberTeamPlaceRepository memberTeamPlaceRepository;
     private final TeamPlaceInviteCodeRepository teamPlaceInviteCodeRepository;
+    private final RandomInviteCodeGenerator randomInviteCodeGenerator;
 
     public TeamPlaceCreateResponse create(final MemberEmailDto memberEmailDto, final TeamPlaceCreateRequest request) {
 
@@ -49,14 +50,25 @@ public class TeamPlaceService {
     public TeamPlaceInviteCodeResponse getTeamPlaceInviteCode(final Long teamPlaceId) {
         final boolean exist = teamPlaceInviteCodeRepository.existsByTeamPlaceId(teamPlaceId);
         if (exist) {
-            final String code = teamPlaceInviteCodeRepository.findByTeamPlaceId(teamPlaceId)
+            final InviteCode inviteCode = teamPlaceInviteCodeRepository.findByTeamPlaceId(teamPlaceId)
                     .orElseThrow(TeamPlaceInviteCodeException.NotGeneratedInviteCodeException::new)
-                    .getCode();
-            return new TeamPlaceInviteCodeResponse(teamPlaceId, code);
+                    .getInviteCode();
+            return new TeamPlaceInviteCodeResponse(teamPlaceId, inviteCode.getValue());
         }
         final TeamPlace teamPlace = teamPlaceRepository.findById(teamPlaceId).orElseThrow(TeamPlaceException.NotFoundException::new);
-        final String inviteCode = String.valueOf(UUID.randomUUID());
+        final InviteCode inviteCode = generateInviteCode();
         final TeamPlaceInviteCode teamPlaceInviteCode = teamPlaceInviteCodeRepository.save(new TeamPlaceInviteCode(inviteCode, teamPlace));
-        return new TeamPlaceInviteCodeResponse(teamPlaceId, teamPlaceInviteCode.getCode());
+        return new TeamPlaceInviteCodeResponse(teamPlaceId, teamPlaceInviteCode.getInviteCode().getValue());
+    }
+
+    private InviteCode generateInviteCode() {
+        String generated = "";
+        boolean exists = true;
+        do {
+            generated = randomInviteCodeGenerator.generateRandomString();
+            exists = teamPlaceInviteCodeRepository.existsByInviteCode(new InviteCode(generated));
+        } while (exists);
+
+        return new InviteCode(generated);
     }
 }
