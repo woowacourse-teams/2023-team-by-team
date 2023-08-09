@@ -32,4 +32,20 @@ class TeamPlaceInviteCodeRepositoryTest extends RepositoryTest {
         //then
         assertThat(teamPlaceInviteCode.getInviteCode().getValue()).isEqualTo(inviteCode.getValue());
     }
+
+    @Test
+    @DisplayName("초대코드로 팀플레이스를 조회한다.")
+    public void getTeamPlaceByTeamPlaceInviteCode() {
+        //given
+        final TeamPlace teamPlace = ENGLISH_TEAM_PLACE();
+        final InviteCode inviteCode = new InviteCode(randomInviteCodeGenerator.generateRandomString());
+        final TeamPlace buildTeamPlace = testFixtureBuilder.buildTeamPlace(teamPlace);
+        testFixtureBuilder.buildTeamPlaceInviteCode(TEAM_PLACE_INVITE_CODE(inviteCode, teamPlace));
+
+        //when
+        final TeamPlaceInviteCode teamPlaceInviteCode = teamPlaceInviteCodeRepository.findByInviteCode(inviteCode).get();
+
+        //then
+        assertThat(teamPlaceInviteCode.getTeamPlace()).isEqualTo(buildTeamPlace);
+    }
 }
