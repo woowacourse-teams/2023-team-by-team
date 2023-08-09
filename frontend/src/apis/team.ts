@@ -6,3 +6,7 @@ export const fetchTeamPlaces = () => {
     teamPlaces: TeamPlace[];
   }>('/api/me/team-places');
 };
+
+export const deleteTeamPlace = (teamPlaceId: number) => {
+  return http.delete(`/api/me/team-places/${teamPlaceId}`);
+};
