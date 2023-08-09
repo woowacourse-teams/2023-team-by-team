@@ -12,10 +12,6 @@ on:
     paths:
       - 'backend/**'
 
-defaults:
-  run:
-    working-directory: backend
-
 permissions:
   contents: read
 
@@ -23,6 +19,9 @@ jobs:
   build-and-upload:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: backend
     
     steps:
 
@@ -77,6 +76,16 @@ jobs:
         working-directory: ./backend/dev/
         run: |
           echo "$DEV_PROPERTY" > application-dev.yml
+
+      - name: Make backup
+        run: |
+          rm -f /home/ubuntu/team-by-team/backend/backup/*
+          mv /home/ubuntu/team-by-team/backend/current/* /home/ubuntu/team-by-team/backend/backup/
+        
+      - name: Make dev application.yml
+        working-directory: ./backend/dev/
+        run: |
+          mv team-by-team-*.jar /home/ubuntu/team-by-team/backend/current/team-by-team.jar
               
       - name: Deploy to WAS
         working-directory: ./backend/dev/
