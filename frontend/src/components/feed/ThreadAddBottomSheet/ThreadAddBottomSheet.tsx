@@ -3,6 +3,7 @@ import * as S from './ThreadAddBottomSheet.styled';
 import Button from '~/components/common/Button/Button';
 import Checkbox from '~/components/common/Checkbox/Checkbox';
 import { useThreadAddBottomSheet } from '~/hooks/thread/useThreadAddBottomSheet';
+import { useKeydownEffect } from '~/hooks/useKeydownEffect';
 
 const ThreadAddBottomSheet = () => {
   const {
@@ -18,6 +19,7 @@ const ThreadAddBottomSheet = () => {
       handleSubmit,
     },
   } = useThreadAddBottomSheet();
+  useKeydownEffect('Escape', handleClose);
 
   return (
     <>
