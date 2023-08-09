@@ -1,7 +1,6 @@
-name: frontend-cd
+name: frontend deploy dev
 
 on:
-  workflow_dispatch:
   pull_request:
     types:
       - closed
@@ -14,7 +13,7 @@ permissions:
 
 jobs:
   build-and-upload:
-    # if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-22.04
     defaults:
       run:
@@ -64,6 +63,6 @@ jobs:
       - name: Deploy DEV frontend
         working-directory: frontend/dev/
         run: |
-          rm /home/ubuntu/team-by-team/frontend/backup/*
+          rm -f /home/ubuntu/team-by-team/frontend/backup/*
           mv /home/ubuntu/team-by-team/frontend/www/dist/* /home/ubuntu/team-by-team/frontend/backup/
           mv ./dist/* /home/ubuntu/team-by-team/frontend/www/dist/

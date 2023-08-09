@@ -2,10 +2,9 @@
 # 깃헙 러너에서 빌드 후 jar 업로드
 # 셀프 호스트 러너에서 jar 다운로드 후 was로 배포
 
-name: backend Java CD with Gradle
+name: backend deploy dev
 
 on:
-  workflow_dispatch:
   pull_request:
     types:
       - closed
@@ -18,7 +17,7 @@ permissions:
 
 jobs:
   build-and-upload:
-    # if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-22.04
     defaults:
       run:
