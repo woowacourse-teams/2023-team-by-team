@@ -11,9 +11,10 @@ public final class RandomInviteCodeGenerator {
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private static final int LENGTH = 8;
 
+    private final Random random = new SecureRandom();
+
     public String generateRandomString() {
         final StringBuilder randomString = new StringBuilder();
-        final Random random = new SecureRandom();
 
         for (int i = 0; i < LENGTH; i++) {
             final int randomIndex = random.nextInt(CHARACTERS.length());
