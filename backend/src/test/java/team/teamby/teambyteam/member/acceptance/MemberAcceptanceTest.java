@@ -85,8 +85,6 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     }
 
     @Nested
-<<<<<<<HEAD
-
     @DisplayName("사용자가 팀플레이스 탈퇴 요청시")
     class LeaveTeamPlace {
 
@@ -98,7 +96,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(ENDEL, ENGLISH_TEAM_PLACE);
 
-            final String ENDEL_TOKEN = jwtTokenProvider.generateToken(ENDEL.getEmail().getValue());
+            final String ENDEL_TOKEN = jwtTokenProvider.generateAccessToken(ENDEL.getEmail().getValue());
 
             // when
             final ExtractableResponse<Response> response = DELETE_LEAVE_TEAM_PLACE(ENDEL_TOKEN, ENGLISH_TEAM_PLACE.getId());
@@ -139,7 +137,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             final TeamPlace JAPANESE_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.JAPANESE_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(ENDEL, ENGLISH_TEAM_PLACE);
 
-            final String ENDEL_TOKEN = jwtTokenProvider.generateToken(ENDEL.getEmail().getValue());
+            final String ENDEL_TOKEN = jwtTokenProvider.generateAccessToken(ENDEL.getEmail().getValue());
 
             // when
             final ExtractableResponse<Response> response = DELETE_LEAVE_TEAM_PLACE(ENDEL_TOKEN, JAPANESE_TEAM_PLACE.getId());

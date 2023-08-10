@@ -196,7 +196,7 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
             testFixtureBuilder.buildMemberTeamPlace(otherMember, participatedTeamPlace);
             final Notice recentRegisteredNotice = registeredNotices.get(registeredNotices.size() - 1);
 
-            final String otherMemberToken = jwtTokenProvider.generateToken(otherMember.getEmail().getValue());
+            final String otherMemberToken = jwtTokenProvider.generateAccessToken(otherMember.getEmail().getValue());
 
             // when
             final ExtractableResponse<Response> response = GET_NOTICE_REQUEST(otherMemberToken, participatedTeamPlace.getId());
@@ -240,7 +240,7 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
             testFixtureBuilder.buildMemberTeamPlace(otherMember, participatedTeamPlace);
             authedMember.leaveTeamPlace(participatedTeamPlace.getId());
             testFixtureBuilder.deleteMemberTeamPlace(participatedMemberTeamPlace);
-            final String otherMemberToken = jwtTokenProvider.generateToken(otherMember.getEmail().getValue());
+            final String otherMemberToken = jwtTokenProvider.generateAccessToken(otherMember.getEmail().getValue());
 
             final Notice recentRegisteredNotice = registeredNotices.get(registeredNotices.size() - 1);
 
@@ -267,7 +267,7 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
             final Member otherMember = testFixtureBuilder.buildMember(ROY());
             testFixtureBuilder.buildMemberTeamPlace(otherMember, participatedTeamPlace);
             testFixtureBuilder.deleteMember(authedMember);
-            final String otherMemberToken = jwtTokenProvider.generateToken(otherMember.getEmail().getValue());
+            final String otherMemberToken = jwtTokenProvider.generateAccessToken(otherMember.getEmail().getValue());
 
             final Notice recentRegisteredNotice = registeredNotices.get(registeredNotices.size() - 1);
 
