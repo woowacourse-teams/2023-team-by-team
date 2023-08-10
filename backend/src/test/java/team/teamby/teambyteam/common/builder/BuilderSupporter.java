@@ -9,6 +9,7 @@ import team.teamby.teambyteam.notice.domain.NoticeRepository;
 import team.teamby.teambyteam.schedule.domain.ScheduleRepository;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceInviteCodeRepository;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceRepository;
+import team.teamby.teambyteam.token.domain.TokenRepository;
 
 @Component
 public class BuilderSupporter {
@@ -33,6 +34,9 @@ public class BuilderSupporter {
 
     @Autowired
     private TeamPlaceInviteCodeRepository teamPlaceInviteCodeRepository;
+
+    @Autowired
+    private TokenRepository tokenRepository;
 
     public ScheduleRepository scheduleRepository() {
         return scheduleRepository;
@@ -60,5 +64,9 @@ public class BuilderSupporter {
 
     public TeamPlaceInviteCodeRepository teamPlaceInviteCodeRepository() {
         return teamPlaceInviteCodeRepository;
+    }
+
+    public TokenRepository tokenRepository() {
+        return tokenRepository;
     }
 }

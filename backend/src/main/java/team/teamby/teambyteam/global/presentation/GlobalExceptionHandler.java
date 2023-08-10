@@ -12,6 +12,7 @@ import team.teamby.teambyteam.auth.exception.AuthenticationException;
 import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
+import team.teamby.teambyteam.token.exception.TokenException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeException;
 
 import java.time.DateTimeException;
@@ -55,7 +56,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = {
             AuthenticationException.FailAuthenticationException.class,
-            ExpiredJwtException.class
+            ExpiredJwtException.class,
+            TokenException.TokenNotFoundException.class
     })
     public ResponseEntity<String> handleAuthenticationException(final RuntimeException exception) {
         final String message = exception.getMessage();

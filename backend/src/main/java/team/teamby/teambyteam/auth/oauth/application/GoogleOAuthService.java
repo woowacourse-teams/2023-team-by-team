@@ -30,7 +30,7 @@ public class GoogleOAuthService {
         final GoogleTokenResponse googleTokenResponse = googleOAuthClient.getGoogleAccessToken(code);
         final OAuthMember oAuthMember = createOAuthMember(googleTokenResponse.idToken());
         createMemberIfNotExist(oAuthMember);
-        return new TokenResponse(jwtTokenProvider.generateToken(oAuthMember.email()));
+        return new TokenResponse(jwtTokenProvider.generateAccessToken(oAuthMember.email()));
     }
 
     private OAuthMember createOAuthMember(final String googleIdToken) {

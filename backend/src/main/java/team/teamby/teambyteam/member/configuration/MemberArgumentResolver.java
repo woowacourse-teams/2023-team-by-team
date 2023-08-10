@@ -28,7 +28,7 @@ public class MemberArgumentResolver implements HandlerMethodArgumentResolver {
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         final String authorization = webRequest.getHeader(HttpHeaders.AUTHORIZATION);
         final String jwtToken = authorization.split(" ")[TOKEN_INDEX];
-        String email = jwtTokenProvider.extractEmailFromToken(jwtToken);
+        String email = jwtTokenProvider.extractEmailFromAccessToken(jwtToken);
         return new MemberEmailDto(email);
     }
 }

@@ -31,6 +31,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                 .order(1)
                 .excludePathPatterns("/api/auth/**/login")
                 .excludePathPatterns("/api/auth/code/google")
+                .excludePathPatterns("/api/token/reissue")
                 .addPathPatterns("/api/**");
         registry.addInterceptor(teamPlaceParticipationInterceptor)
                 .order(2)
