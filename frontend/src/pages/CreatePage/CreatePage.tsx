@@ -13,7 +13,7 @@ const CreatePage = () => {
   const [teamName, setTeamName] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleTeamNameBlur: ChangeEventHandler<HTMLInputElement> = (e) => {
+  const handleTeamNameChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setTeamName(() => e.target.value);
   };
 
@@ -44,7 +44,7 @@ const CreatePage = () => {
                 placeholder="팀 이름 입력"
                 css={S.inputTitle}
                 ref={inputRef}
-                onBlur={handleTeamNameBlur}
+                onChange={handleTeamNameChange}
                 required
               />
             </S.InputWrapper>

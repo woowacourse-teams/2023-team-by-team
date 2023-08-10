@@ -31,7 +31,7 @@ const JoinPage = () => {
     });
   }, [isClicked]);
 
-  const handleInviteCodeBlur: ChangeEventHandler<HTMLInputElement> = (e) => {
+  const handleInviteCodeChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setInviteCode(() => e.target.value);
   };
 
@@ -66,7 +66,7 @@ const JoinPage = () => {
                 placeholder="팀 이름 입력"
                 css={S.inputTitle}
                 ref={inputRef}
-                onBlur={handleInviteCodeBlur}
+                onChange={handleInviteCodeChange}
                 required={isRequired}
               />
             </S.InputWrapper>
