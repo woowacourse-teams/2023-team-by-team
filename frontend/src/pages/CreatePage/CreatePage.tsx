@@ -8,10 +8,15 @@ import {
   useRef,
 } from 'react';
 import Button from '~/components/common/Button/Button';
+import { useSendNewTeamPlace } from '~/hooks/queries/useSendNewTeamPlace';
+import { useNavigate } from 'react-router-dom';
+import { PATH_NAME } from '~/constants/routes';
 
 const CreatePage = () => {
   const [teamName, setTeamName] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
+  const { mutateSendNewTeamPlace } = useSendNewTeamPlace();
 
   const handleTeamNameChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setTeamName(() => e.target.value);
@@ -26,7 +31,15 @@ const CreatePage = () => {
       inputRef.current?.focus();
       return;
     }
-    alert(teamName);
+    mutateSendNewTeamPlace(
+      { name: teamName },
+      {
+        onSuccess: (data) => {
+          localStorage.setItem('teamPlaceId', String(data.teamPlaceId));
+          navigate(PATH_NAME.TEAM_SELECT);
+        },
+      },
+    );
   };
 
   return (

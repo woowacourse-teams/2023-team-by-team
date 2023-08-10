@@ -41,7 +41,6 @@ export const TeamPlaceProvider = (props: PropsWithChildren) => {
     if (!isFetched) return;
 
     if (teamPlaces.length === 0) return;
-
     const id = localStorage.getItem('teamPlaceId');
     const initTeamPlaceId = id === null ? teamPlaces[0].id : Number(id);
 

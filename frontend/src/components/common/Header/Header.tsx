@@ -9,8 +9,13 @@ import { PATH_NAME } from '~/constants/routes';
 import Button from '~/components/common/Button/Button';
 
 const Header = () => {
-  const { teamPlaces, changeTeamPlace, teamPlaceColor, displayName } =
-    useTeamPlace();
+  const {
+    teamPlaces,
+    teamPlaceId,
+    changeTeamPlace,
+    teamPlaceColor,
+    displayName,
+  } = useTeamPlace();
   const navigate = useNavigate();
   const [teamName, setTeamName] = useState(displayName ?? '');
 
@@ -34,8 +39,12 @@ const Header = () => {
   );
 
   useEffect(() => {
+    const id = localStorage.getItem('teamPlaceId');
+
+    if (teamPlaceId !== Number(id)) return;
+
     handleTeamNameChange(displayName);
-  }, [handleTeamNameChange, displayName]);
+  }, [handleTeamNameChange, displayName, teamPlaceId]);
 
   const handleLogoutClick = () => {
     const isLogout = confirm('로그아웃 하시겠습니까?');
