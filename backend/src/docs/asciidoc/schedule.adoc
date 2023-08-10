@@ -127,3 +127,30 @@ include::{snippets}/team-calendar/schedules/findSchedulesInPeriod/failNotExistTe
 
 ==== Response
 include::{snippets}/team-calendar/schedules/findSchedulesInPeriod/failNotExistTeamplaceId/http-response.adoc[]
+
+
+=== 5. 팀 캘린더 일정 하루 조회 성공
+
+==== Request
+include::{snippets}/team-calendar/schedules/findDailySchedule/success/http-request.adoc[]
+
+==== Path Parameters
+include::{snippets}/team-calendar/schedules/findDailySchedule/success/path-parameters.adoc[]
+
+==== Query Parameters
+include::{snippets}/team-calendar/schedules/findDailySchedule/success/query-parameters.adoc[]
+
+==== Response
+include::{snippets}/team-calendar/schedules/findDailySchedule/success/http-response.adoc[]
+
+==== Response Field
+include::{snippets}/team-calendar/schedules/findDailySchedule/success/response-fields.adoc[]
+
+
+=== 5-1. 팀 캘린더 일정 하루 조회 실패 (존재하지 않는 팀 플레이스 ID)
+
+==== Request
+include::{snippets}/team-calendar/schedules/findDailySchedule/failNotExistTeamplaceId/http-request.adoc[]
+
+==== Response
+include::{snippets}/team-calendar/schedules/findDailySchedule/failNotExistTeamplaceId/http-response.adoc[]
