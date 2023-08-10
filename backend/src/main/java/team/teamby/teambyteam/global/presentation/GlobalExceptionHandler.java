@@ -43,8 +43,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {
             MemberException.MemberNotFoundException.class,
             TeamPlaceException.NotFoundException.class,
-            ScheduleException.ScheduleNotFoundException.class,
-            TokenException.TokenNotFoundException.class
+            ScheduleException.ScheduleNotFoundException.class
     })
     public ResponseEntity<String> handleNotFoundException(final RuntimeException exception) {
         final String message = exception.getMessage();
@@ -55,7 +54,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = {
             AuthenticationException.FailAuthenticationException.class,
-            ExpiredJwtException.class
+            ExpiredJwtException.class,
+            TokenException.TokenNotFoundException.class
     })
     public ResponseEntity<String> handleAuthenticationException(final RuntimeException exception) {
         final String message = exception.getMessage();

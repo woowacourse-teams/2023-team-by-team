@@ -111,7 +111,7 @@ public class TokenAcceptanceTest extends AcceptanceTest {
 
         // then
         assertSoftly(softly -> {
-            softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
+            softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
             softly.assertThat(response.body().asString()).isEqualTo("토큰을 찾을 수 없습니다.");
             softly.assertThat(response.header(ACCESS_TOKEN_HEADER)).isNull();
             softly.assertThat(response.header(REFRESH_TOKEN_HEADER)).isNull();
