@@ -12,22 +12,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import team.teamby.teambyteam.auth.jwt.JwtTokenProvider;
 import team.teamby.teambyteam.auth.presentation.MemberInterceptor;
 import team.teamby.teambyteam.auth.presentation.TeamPlaceParticipationInterceptor;
-import team.teamby.teambyteam.schedule.application.MyCalendarScheduleService;
 import team.teamby.teambyteam.schedule.application.TeamCalendarScheduleService;
-import team.teamby.teambyteam.schedule.presentation.MyCalendarScheduleController;
-import team.teamby.teambyteam.schedule.presentation.TeamCalendarScheduleController;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @AutoConfigureRestDocs
-@WebMvcTest(value = {
-        TeamCalendarScheduleController.class,
-        MyCalendarScheduleController.class
-})
-@MockBean(value = {
-        JpaMetamodelMappingContext.class
-})
+@WebMvcTest
+@MockBean(JpaMetamodelMappingContext.class)
 public abstract class ApiDocsTest {
 
     protected static final String AUTHORIZATION_HEADER_KEY = HttpHeaders.AUTHORIZATION;
@@ -51,8 +43,6 @@ public abstract class ApiDocsTest {
     @MockBean
     protected TeamCalendarScheduleService teamCalendarScheduleService;
 
-    @MockBean
-    protected MyCalendarScheduleService myCalendarScheduleService;
 
     @BeforeEach
     void setup() throws Exception {
