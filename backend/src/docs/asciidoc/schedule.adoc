@@ -156,3 +156,37 @@ include::{snippets}/team-calendar/schedules/findDailySchedule/failNotExistTeampl
 
 ==== Response
 include::{snippets}/team-calendar/schedules/findDailySchedule/failNotExistTeamplaceId/http-response.adoc[]
+
+
+== 팀 캘린더 특정 일정 조회 API
+
+=== 특정 일정 조회 성공
+
+==== Request
+include::{snippets}/team-calendar/schedules/findSchedule/success/http-request.adoc[]
+
+==== Path Parameters
+include::{snippets}/team-calendar/schedules/findSchedule/success/path-parameters.adoc[]
+
+==== Response
+include::{snippets}/team-calendar/schedules/findSchedule/success/http-response.adoc[]
+
+==== Response Field
+include::{snippets}/team-calendar/schedules/findSchedule/success/response-fields.adoc[]
+
+
+=== 특정 일정 조회 실패 (존재하지 않는 팀 플레이스 ID)
+
+==== Request
+include::{snippets}/team-calendar/schedules/findSchedule/failNotExistTeamplaceId/http-request.adoc[]
+
+==== Response
+include::{snippets}/team-calendar/schedules/findSchedule/failNotExistTeamplaceId/http-response.adoc[]
+
+=== 특정 일정 조회 실패 (존재하지 않는 일정 ID)
+
+==== Request
+include::{snippets}/team-calendar/schedules/findSchedule/failNotExistScheduleId/http-request.adoc[]
+
+==== Response
+include::{snippets}/team-calendar/schedules/findSchedule/failNotExistScheduleId/http-response.adoc[]

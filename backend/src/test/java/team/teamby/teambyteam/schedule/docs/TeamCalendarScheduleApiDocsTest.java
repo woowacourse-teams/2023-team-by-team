@@ -12,6 +12,7 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import team.teamby.teambyteam.common.ApiDocsTest;
 import team.teamby.teambyteam.schedule.application.TeamCalendarScheduleService;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
+import team.teamby.teambyteam.schedule.application.dto.ScheduleResponse;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleUpdateRequest;
 import team.teamby.teambyteam.schedule.application.dto.SchedulesResponse;
 import team.teamby.teambyteam.schedule.domain.Schedule;
@@ -557,6 +558,99 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
                     .andExpect(status().isNotFound())
                     .andDo(print())
                     .andDo(document("team-calendar/schedules/findDailySchedule/failNotExistTeamplaceId",
+                                    preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint())
+                            )
+                    );
+        }
+    }
+
+    @Nested
+    @DisplayName("특정 일정 조회 문서화")
+    class findScheduleDocs {
+
+        @Test
+        @DisplayName("특정 일정 조회 성공")
+        void success() throws Exception {
+            // given
+            final Long teamPlaceId = 1L;
+            final Long scheduleId = 1L;
+            final Schedule schedule = spy(MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE(teamPlaceId));
+            when(schedule.getId()).thenReturn(scheduleId);
+
+            ScheduleResponse response = ScheduleResponse.from(schedule);
+
+            given(teamCalendarScheduleService.findSchedule(teamPlaceId, scheduleId))
+                    .willReturn(response);
+
+            // when & then
+            mockMvc.perform(get("/api/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}", teamPlaceId, scheduleId)
+                            .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
+                            .accept(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
+                    .andDo(print())
+                    .andDo(document("team-calendar/schedules/findSchedule/success",
+                                    preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint()),
+                                    pathParameters(
+                                            parameterWithName("teamPlaceId").description("멤버가 속한 팀 플레이스 ID"),
+                                            parameterWithName("scheduleId").description("조회할 일정 ID")
+                                    ),
+                                    requestHeaders(
+                                            headerWithName(AUTHORIZATION_HEADER_KEY).description("사용자 JWT 인증 정보")
+                                    ),
+                                    responseFields(
+                                            fieldWithPath("id").type(JsonFieldType.NUMBER).description("조회한 특정 일정 ID"),
+                                            fieldWithPath("title").type(JsonFieldType.STRING).description("조회한 특정 일정 제목"),
+                                            fieldWithPath("startDateTime").type(JsonFieldType.STRING).description("조회한 특정 일정의 시작 일시(형식 : yyyy-MM-dd HH:mm)"),
+                                            fieldWithPath("endDateTime").type(JsonFieldType.STRING).description("조회한 특정 일정의 종료 일시(형식 : yyyy-MM-dd HH:mm)")
+                                    )
+                            )
+                    );
+        }
+
+        @Test
+        @DisplayName("존재하지 않는 팀플레이스 ID일 경우 실패")
+        void failNotExistTeamplaceId() throws Exception {
+            // given
+            final Long teamPlaceId = -1L;
+            final Long scheduleId = 1L;
+
+            willThrow(new TeamPlaceException.NotFoundException())
+                    .given(teamCalendarScheduleService)
+                    .findSchedule(scheduleId, teamPlaceId);
+
+            // when & then
+            mockMvc.perform(get("/api/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}", teamPlaceId, scheduleId)
+                            .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
+                            .accept(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isNotFound())
+                    .andDo(print())
+                    .andDo(document("team-calendar/schedules/findSchedule/failNotExistTeamplaceId",
+                                    preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint())
+                            )
+                    );
+        }
+
+        @Test
+        @DisplayName("존재하지 않는 일정 ID일 경우 실패")
+        void failNotExistScheduleId() throws Exception {
+            // given
+            final Long teamPlaceId = 1L;
+            final Long scheduleId = -1L;
+
+            willThrow(new ScheduleException.ScheduleNotFoundException())
+                    .given(teamCalendarScheduleService)
+                    .findSchedule(scheduleId, teamPlaceId);
+
+            // when & then
+            mockMvc.perform(get("/api/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}", teamPlaceId, scheduleId)
+                            .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
+                            .accept(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isNotFound())
+                    .andDo(print())
+                    .andDo(document("team-calendar/schedules/findSchedule/failNotExistScheduleId",
                                     preprocessRequest(prettyPrint()),
                                     preprocessResponse(prettyPrint())
                             )
