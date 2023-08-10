@@ -1,5 +1,6 @@
 package team.teamby.teambyteam.teamplace.presentation;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class TeamPlaceController {
     @PostMapping
     public ResponseEntity<TeamPlaceCreateResponse> createTeamPlace(
             @AuthPrincipal final MemberEmailDto memberEmailDto,
-            @RequestBody final TeamPlaceCreateRequest teamPlaceCreateRequest
+            @RequestBody @Valid final TeamPlaceCreateRequest teamPlaceCreateRequest
     ) {
         final TeamPlaceCreateResponse response = teamPlaceService.create(memberEmailDto, teamPlaceCreateRequest);
 
