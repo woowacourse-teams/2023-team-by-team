@@ -6,7 +6,10 @@ import LoginPage from '~/pages/LoginPage/LoginPage';
 import PageTemplate from '~/pages/PageTemplate/PageTemplate';
 import TeamCalendarPage from '~/pages/TeamCalendarPage/TeamCalendarPage';
 import TeamFeedPage from '~/pages/TeamFeedPage/TeamFeedPage';
+import StartPage from '~/pages/StartPage/StartPage';
 import TeamSelectPage from '~/pages/TeamSelectPage/TeamSelectPage';
+import CreatePage from '~/pages/CreatePage/CreatePage';
+import JoinPage from '~/pages/JoinPage/JoinPage';
 
 const App = () => {
   return (
@@ -14,6 +17,9 @@ const App = () => {
       <Route path={PATH_NAME.LANDING} element={<LandingPage />} />
       <Route path={PATH_NAME.LOGIN} element={<LoginPage />} />
       <Route element={<ProtectRoute />}>
+        <Route path={PATH_NAME.START} element={<StartPage />} />
+        <Route path={PATH_NAME.CREATE} element={<CreatePage />} />
+        <Route path={PATH_NAME.JOIN} element={<JoinPage />} />
         <Route element={<PageTemplate />}>
           <Route path={PATH_NAME.TEAM_SELECT} element={<TeamSelectPage />} />
           <Route
