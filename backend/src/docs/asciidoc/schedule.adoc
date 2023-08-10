@@ -190,3 +190,35 @@ include::{snippets}/team-calendar/schedules/findSchedule/failNotExistScheduleId/
 
 ==== Response
 include::{snippets}/team-calendar/schedules/findSchedule/failNotExistScheduleId/http-response.adoc[]
+
+
+== 팀 캘린더 일정 삭제 API
+
+=== 일정 삭제 성공
+
+==== Request
+include::{snippets}/team-calendar/schedules/delete/success/http-request.adoc[]
+
+==== Path Parameters
+include::{snippets}/team-calendar/schedules/delete/success/path-parameters.adoc[]
+
+==== Response
+include::{snippets}/team-calendar/schedules/delete/success/http-response.adoc[]
+
+
+=== 일정 삭제 실패 (존재하지 않는 팀 플레이스 ID)
+
+==== Request
+include::{snippets}/team-calendar/schedules/delete/failNotExistTeamplaceId/http-request.adoc[]
+
+==== Response
+include::{snippets}/team-calendar/schedules/delete/failNotExistTeamplaceId/http-response.adoc[]
+
+
+=== 일정 삭제 실패 (존재하지 않는 일정 ID)
+
+==== Request
+include::{snippets}/team-calendar/schedules/delete/failNotExistScheduleId/http-request.adoc[]
+
+==== Response
+include::{snippets}/team-calendar/schedules/delete/failNotExistScheduleId/http-response.adoc[]
