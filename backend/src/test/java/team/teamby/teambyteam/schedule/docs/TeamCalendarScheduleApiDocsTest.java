@@ -36,6 +36,7 @@ import static org.mockito.Mockito.spy;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
@@ -515,8 +516,6 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
                     .andExpect(status().isOk())
                     .andDo(print())
                     .andDo(document("team-calendar/schedules/findDailySchedule/success",
-                                    preprocessRequest(prettyPrint()),
-                                    preprocessResponse(prettyPrint()),
                                     pathParameters(
                                             parameterWithName("teamPlaceId").description("멤버가 속한 팀 플레이스 ID")
                                     ),
@@ -651,6 +650,85 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
                     .andExpect(status().isNotFound())
                     .andDo(print())
                     .andDo(document("team-calendar/schedules/findSchedule/failNotExistScheduleId",
+                                    preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint())
+                            )
+                    );
+        }
+    }
+
+    @Nested
+    @DisplayName("일정 삭제 문서화")
+    class deleteScheduleDocs {
+
+        @Test
+        @DisplayName("일정 삭제 성공")
+        void success() throws Exception {
+            // given
+            final Long teamPlaceId = 1L;
+            final Long scheduleId = 1L;
+            willDoNothing().given(teamCalendarScheduleService).delete(teamPlaceId, scheduleId);
+
+            // when & then
+            mockMvc.perform(delete("/api/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}", teamPlaceId, scheduleId)
+                            .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE))
+                    .andExpect(status().isNoContent())
+                    .andDo(print())
+                    .andDo(document("team-calendar/schedules/delete/success",
+                                    preprocessRequest(prettyPrint()),
+                                    pathParameters(
+                                            parameterWithName("teamPlaceId").description("멤버가 속한 팀 플레이스 ID"),
+                                            parameterWithName("scheduleId").description("삭제할 일정 ID")
+                                    ),
+                                    requestHeaders(
+                                            headerWithName(AUTHORIZATION_HEADER_KEY).description("사용자 JWT 인증 정보")
+                                    )
+                            )
+                    );
+        }
+
+        @Test
+        @DisplayName("존재하지 않는 팀플레이스 ID일 경우 실패")
+        void failNotExistTeamplaceId() throws Exception {
+            // given
+            final Long teamPlaceId = -1L;
+            final Long scheduleId = 1L;
+
+            willThrow(new TeamPlaceException.NotFoundException())
+                    .given(teamCalendarScheduleService)
+                    .delete(teamPlaceId, scheduleId);
+
+            // when & then
+            mockMvc.perform(delete("/api/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}", teamPlaceId, scheduleId)
+                            .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
+                            .accept(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isNotFound())
+                    .andDo(print())
+                    .andDo(document("team-calendar/schedules/delete/failNotExistTeamplaceId",
+                                    preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint())
+                            )
+                    );
+        }
+
+        @Test
+        @DisplayName("존재하지 않는 일정 ID일 경우 실패")
+        void failNotExistScheduleId() throws Exception {
+            // given
+            final Long teamPlaceId = 1L;
+            final Long scheduleId = -1L;
+
+            willThrow(new ScheduleException.ScheduleNotFoundException())
+                    .given(teamCalendarScheduleService)
+                    .delete(teamPlaceId, scheduleId);
+
+            // when & then
+            mockMvc.perform(delete("/api/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}", teamPlaceId, scheduleId)
+                            .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
+                            .accept(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isNotFound())
+                    .andDo(print())
+                    .andDo(document("team-calendar/schedules/delete/failNotExistScheduleId",
                                     preprocessRequest(prettyPrint()),
                                     preprocessResponse(prettyPrint())
                             )
