@@ -1,0 +1,17 @@
+== 팀플레이스 관련 API
+팀플레이스를 생성하거나 초대코드를 확인할 수 있습니다.
+
+=== 1. 팀플레이스 생성
+
+==== 요청 Header
+include::{snippets}/teamPlaces/create/success/request-headers.adoc[]
+
+==== 요청 Body
+include::{snippets}/teamPlaces/create/success/request-fields.adoc[]
+
+==== Request
+include::{snippets}/teamPlaces/create/success/http-request.adoc[]
+
+==== Response
+include::{snippets}/teamPlaces/create/success/response-fields.adoc[]
+include::{snippets}/teamPlaces/create/success/http-response.adoc[]
