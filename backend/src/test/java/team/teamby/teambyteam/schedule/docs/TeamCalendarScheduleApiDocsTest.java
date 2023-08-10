@@ -516,6 +516,8 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
                     .andExpect(status().isOk())
                     .andDo(print())
                     .andDo(document("team-calendar/schedules/findDailySchedule/success",
+                                    preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint()),
                                     pathParameters(
                                             parameterWithName("teamPlaceId").description("멤버가 속한 팀 플레이스 ID")
                                     ),
