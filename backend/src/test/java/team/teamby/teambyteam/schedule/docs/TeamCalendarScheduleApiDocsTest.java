@@ -456,7 +456,6 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
                                     )
                             )
                     );
-
         }
 
         @Test
@@ -482,7 +481,86 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
                                     preprocessResponse(prettyPrint())
                             )
                     );
+        }
+    }
 
+    @Nested
+    @DisplayName("하루 조회 문서화")
+    class findDailyScheduleDocs {
+
+        @Test
+        @DisplayName("하루 조회 성공")
+        void success() throws Exception {
+            // given
+            final Long teamPlaceId = 1L;
+            final Schedule schedule1 = spy(MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE(teamPlaceId));
+            final Schedule schedule2 = spy(MONTH_6_AND_MONTH_7_SCHEDULE(teamPlaceId));
+            when(schedule1.getId()).thenReturn(1L);
+            when(schedule2.getId()).thenReturn(2L);
+
+            List<Schedule> schedules = List.of(schedule1, schedule2);
+            SchedulesResponse response = SchedulesResponse.of(schedules);
+
+            given(teamCalendarScheduleService.findDailySchedule(teamPlaceId, 2023, 7, 12))
+                    .willReturn(response);
+
+            // when & then
+            mockMvc.perform(get("/api/team-place/{teamPlaceId}/calendar/schedules", teamPlaceId)
+                            .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
+                            .accept(MediaType.APPLICATION_JSON)
+                            .param("year", "2023")
+                            .param("month", "7")
+                            .param("day", "12"))
+                    .andExpect(status().isOk())
+                    .andDo(print())
+                    .andDo(document("team-calendar/schedules/findDailySchedule/success",
+                                    preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint()),
+                                    pathParameters(
+                                            parameterWithName("teamPlaceId").description("멤버가 속한 팀 플레이스 ID")
+                                    ),
+                                    queryParameters(
+                                            parameterWithName("year").description("조회할 연도"),
+                                            parameterWithName("month").description("조회할 월"),
+                                            parameterWithName("day").description("조회할 일")
+                                    ),
+                                    requestHeaders(
+                                            headerWithName(AUTHORIZATION_HEADER_KEY).description("사용자 JWT 인증 정보")
+                                    ),
+                                    responseFields(
+                                            fieldWithPath("schedules[0].id").type(JsonFieldType.NUMBER).description("조회한 하루 일정 ID"),
+                                            fieldWithPath("schedules[0].title").type(JsonFieldType.STRING).description("조회한 하루 일정 제목"),
+                                            fieldWithPath("schedules[0].startDateTime").type(JsonFieldType.STRING).description("조회한 하루 일정의 시작 일시(형식 : yyyy-MM-dd HH:mm)"),
+                                            fieldWithPath("schedules[0].endDateTime").type(JsonFieldType.STRING).description("조회한 하루 일정의 종료 일시(형식 : yyyy-MM-dd HH:mm)")
+                                    )
+                            )
+                    );
+        }
+
+        @Test
+        @DisplayName("존재하지 않는 팀플레이스 ID일 경우 실패")
+        void failNotExistTeamplaceId() throws Exception {
+            // given
+            final Long teamPlaceId = -1L;
+
+            willThrow(new TeamPlaceException.NotFoundException())
+                    .given(teamCalendarScheduleService)
+                    .findDailySchedule(teamPlaceId, 2023, 7, 12);
+
+            // when & then
+            mockMvc.perform(get("/api/team-place/{teamPlaceId}/calendar/schedules", teamPlaceId)
+                            .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
+                            .accept(MediaType.APPLICATION_JSON)
+                            .param("year", "2023")
+                            .param("month", "7")
+                            .param("day", "12"))
+                    .andExpect(status().isNotFound())
+                    .andDo(print())
+                    .andDo(document("team-calendar/schedules/findDailySchedule/failNotExistTeamplaceId",
+                                    preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint())
+                            )
+                    );
         }
     }
 }
