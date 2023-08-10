@@ -4,12 +4,13 @@ import { teamSelectImage } from '~/assets/png';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PATH_NAME } from '~/constants/routes';
+import { KEY } from '~/constants/localStorage';
 
 const TeamSelectPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const teamPlaceId = localStorage.getItem('teamPlaceId');
+    const teamPlaceId = localStorage.getItem(KEY.TEAM_PLACE_ID);
 
     if (teamPlaceId) navigate(PATH_NAME.TEAM_CALENDAR);
   }, [navigate]);

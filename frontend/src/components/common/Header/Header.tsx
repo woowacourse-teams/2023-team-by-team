@@ -7,6 +7,7 @@ import { useTeamPlace } from '~/hooks/useTeamPlace';
 import TeamPlaceMenu from '~/components/team/TeamPlaceMenu/TeamPlaceMenu';
 import { PATH_NAME } from '~/constants/routes';
 import Button from '~/components/common/Button/Button';
+import { KEY } from '~/constants/localStorage';
 
 const Header = () => {
   const {
@@ -39,7 +40,7 @@ const Header = () => {
   );
 
   useEffect(() => {
-    const id = localStorage.getItem('teamPlaceId');
+    const id = localStorage.getItem(KEY.TEAM_PLACE_ID);
 
     if (teamPlaceId !== Number(id)) return;
 
@@ -52,8 +53,8 @@ const Header = () => {
     if (!isLogout) return;
 
     alert('로그아웃 되었습니다.');
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('teamPlaceId');
+    localStorage.removeItem(KEY.ACCESS_TOKEN);
+    localStorage.removeItem(KEY.TEAM_PLACE_ID);
 
     navigate(PATH_NAME.LANDING);
   };

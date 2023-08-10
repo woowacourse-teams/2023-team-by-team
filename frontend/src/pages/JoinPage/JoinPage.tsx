@@ -14,6 +14,7 @@ import { PATH_NAME } from '~/constants/routes';
 import { useNavigate } from 'react-router-dom';
 import { useSendTeamPlace } from '~/hooks/queries/useSendTeamPlace';
 import { INVITE_CODE_LENGTH } from '~/constants/team';
+import { KEY } from '~/constants/localStorage';
 
 const JoinPage = () => {
   const [inviteCode, setInviteCode] = useState('');
@@ -60,7 +61,7 @@ const JoinPage = () => {
 
     mutateSendTeamPlace(inviteCode, {
       onSuccess: (data) => {
-        localStorage.setItem('teamPlaceId', String(data.teamPlaceId));
+        localStorage.setItem(KEY.TEAM_PLACE_ID, String(data.teamPlaceId));
         navigate(PATH_NAME.TEAM_SELECT);
       },
       onError: (error) => {

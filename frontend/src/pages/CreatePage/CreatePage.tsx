@@ -11,6 +11,7 @@ import Button from '~/components/common/Button/Button';
 import { useSendNewTeamPlace } from '~/hooks/queries/useSendNewTeamPlace';
 import { useNavigate } from 'react-router-dom';
 import { PATH_NAME } from '~/constants/routes';
+import { KEY } from '~/constants/localStorage';
 
 const CreatePage = () => {
   const [teamName, setTeamName] = useState('');
@@ -35,7 +36,7 @@ const CreatePage = () => {
       { name: teamName },
       {
         onSuccess: (data) => {
-          localStorage.setItem('teamPlaceId', String(data.teamPlaceId));
+          localStorage.setItem(KEY.TEAM_PLACE_ID, String(data.teamPlaceId));
           navigate(PATH_NAME.TEAM_SELECT);
         },
       },
