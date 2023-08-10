@@ -4,100 +4,100 @@
 === 1. 팀 캘린더 일정 등록
 
 ====== 요청 Header
-include::{snippets}/schedules/register/success/request-headers.adoc[]
+include::{snippets}/team-calendar/schedules/register/success/request-headers.adoc[]
 
 ==== Request
-include::{snippets}/schedules/register/success/http-request.adoc[]
-include::{snippets}/schedules/register/success/request-fields.adoc[]
+include::{snippets}/team-calendar/schedules/register/success/http-request.adoc[]
+include::{snippets}/team-calendar/schedules/register/success/request-fields.adoc[]
 
 
 ==== Response
-include::{snippets}/schedules/register/success/http-response.adoc[]
+include::{snippets}/team-calendar/schedules/register/success/http-response.adoc[]
 
 === 1-1. 일정 등록 실패 (등록할 일정 제목 빈 값)
 
 ==== Request
-include::{snippets}/schedules/register/failBlankTitle/http-request.adoc[]
+include::{snippets}/team-calendar/schedules/register/failBlankTitle/http-request.adoc[]
 
 ==== Response
-include::{snippets}/schedules/register/failBlankTitle/http-response.adoc[]
+include::{snippets}/team-calendar/schedules/register/failBlankTitle/http-response.adoc[]
 
 === 1-2. 일정 등록 실패 (존재하지 않는 팀 플레이스 ID)
 
 ==== Request
-include::{snippets}/schedules/register/failNotExistTeamPlaceId/http-request.adoc[]
+include::{snippets}/team-calendar/schedules/register/failNotExistTeamPlaceId/http-request.adoc[]
 
 ==== Response
-include::{snippets}/schedules/register/failNotExistTeamPlaceId/http-response.adoc[]
+include::{snippets}/team-calendar/schedules/register/failNotExistTeamPlaceId/http-response.adoc[]
 
 === 1-3. 일정 등록 실패 (등록할 시작 날짜가 등록할 종료 날짜보다 이후)
 
 ==== Request
-include::{snippets}/schedules/register/failSpanWrongOrder/http-request.adoc[]
+include::{snippets}/team-calendar/schedules/register/failSpanWrongOrder/http-request.adoc[]
 
 ==== Response
-include::{snippets}/schedules/register/failSpanWrongOrder/http-response.adoc[]
+include::{snippets}/team-calendar/schedules/register/failSpanWrongOrder/http-response.adoc[]
 
 === 1-4. 일정 등록 실패 (등록할 날짜 형식 잘못된 경우)
 
 ==== Request
-include::{snippets}/schedules/register/failWrongDateTimeType/http-request.adoc[]
+include::{snippets}/team-calendar/schedules/register/failWrongDateTimeType/http-request.adoc[]
 
 ==== Response
-include::{snippets}/schedules/register/failWrongDateTimeType/http-response.adoc[]
+include::{snippets}/team-calendar/schedules/register/failWrongDateTimeType/http-response.adoc[]
 
 
 === 2. 팀 캘린더 일정 수정
 
 ====== 요청 Header
-include::{snippets}/schedules/update/success/request-headers.adoc[]
+include::{snippets}/team-calendar/schedules/update/success/request-headers.adoc[]
 
 ==== Request
-include::{snippets}/schedules/update/success/http-request.adoc[]
-include::{snippets}/schedules/update/success/request-fields.adoc[]
+include::{snippets}/team-calendar/schedules/update/success/http-request.adoc[]
+include::{snippets}/team-calendar/schedules/update/success/request-fields.adoc[]
 
 
 ==== Response
-include::{snippets}/schedules/update/success/http-response.adoc[]
+include::{snippets}/team-calendar/schedules/update/success/http-response.adoc[]
 
 === 2-1. 일정 수정 실패 (수정할 일정 제목 빈 값)
 
 ==== Request
-include::{snippets}/schedules/update/failBlankTitle/http-request.adoc[]
+include::{snippets}/team-calendar/schedules/update/failBlankTitle/http-request.adoc[]
 
 ==== Response
-include::{snippets}/schedules/update/failBlankTitle/http-response.adoc[]
+include::{snippets}/team-calendar/schedules/update/failBlankTitle/http-response.adoc[]
 
 === 2-2. 일정 수정 실패 (존재하지 않는 팀 플레이스 ID)
 
 ==== Request
-include::{snippets}/schedules/update/failNotExistTeamPlaceId/http-request.adoc[]
+include::{snippets}/team-calendar/schedules/update/failNotExistTeamPlaceId/http-request.adoc[]
 
 ==== Response
-include::{snippets}/schedules/update/failNotExistTeamPlaceId/http-response.adoc[]
+include::{snippets}/team-calendar/schedules/update/failNotExistTeamPlaceId/http-response.adoc[]
 
 === 2-3. 일정 수정 실패 (수정할 시작 날짜가 등록할 종료 날짜보다 이후)
 
 ==== Request
-include::{snippets}/schedules/update/failSpanWrongOrder/http-request.adoc[]
+include::{snippets}/team-calendar/schedules/update/failSpanWrongOrder/http-request.adoc[]
 
 ==== Response
-include::{snippets}/schedules/update/failSpanWrongOrder/http-response.adoc[]
+include::{snippets}/team-calendar/schedules/update/failSpanWrongOrder/http-response.adoc[]
 
 === 2-4. 일정 수정 실패 (수정할 날짜 형식 잘못된 경우)
 
 ==== Request
-include::{snippets}/schedules/update/failWrongDateTimeType/http-request.adoc[]
+include::{snippets}/team-calendar/schedules/update/failWrongDateTimeType/http-request.adoc[]
 
 ==== Response
-include::{snippets}/schedules/update/failWrongDateTimeType/http-response.adoc[]
+include::{snippets}/team-calendar/schedules/update/failWrongDateTimeType/http-response.adoc[]
 
 === 2-5. 일정 수정 실패 (존재하지 않는 수정할 일정 ID)
 
 ==== Request
-include::{snippets}/schedules/update/failNotExistScheduleId/http-request.adoc[]
+include::{snippets}/team-calendar/schedules/update/failNotExistScheduleId/http-request.adoc[]
 
 ==== Response
-include::{snippets}/schedules/update/failNotExistScheduleId/http-response.adoc[]
+include::{snippets}/team-calendar/schedules/update/failNotExistScheduleId/http-response.adoc[]
 
 

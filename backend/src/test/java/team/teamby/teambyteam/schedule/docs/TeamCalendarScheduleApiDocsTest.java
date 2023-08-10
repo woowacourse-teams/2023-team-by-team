@@ -1,23 +1,15 @@
 package team.teamby.teambyteam.schedule.docs;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.web.servlet.MockMvc;
-import team.teamby.teambyteam.auth.jwt.JwtTokenProvider;
-import team.teamby.teambyteam.auth.presentation.MemberInterceptor;
-import team.teamby.teambyteam.auth.presentation.TeamPlaceParticipationInterceptor;
+import team.teamby.teambyteam.common.ApiDocsTest;
 import team.teamby.teambyteam.schedule.application.TeamCalendarScheduleService;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleUpdateRequest;
@@ -32,13 +24,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.BDDMockito.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.BDDMockito.willThrow;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -46,46 +43,20 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.*;
+import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE;
+import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_REGISTER_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_TITLE;
+import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_UPDATE_REQUEST;
 
-@AutoConfigureRestDocs
 @WebMvcTest(TeamCalendarScheduleController.class)
-@MockBean(value = {
-        JpaMetamodelMappingContext.class
-})
-public class TeamCalendarScheduleApiDocsTest {
+public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
 
-    private static final String AUTHORIZATION_HEADER_KEY = HttpHeaders.AUTHORIZATION;
-    private static final String AUTHORIZATION_HEADER_VALUE = "Bearer aaaa.bbbb.cccc";
     private static final String REQUEST_TITLE_KEY = "title";
     private static final String REQUEST_START_DATE_TIME_KEY = "startDateTime";
     private static final String REQUEST_END_DATE_KEY = "endDateTime";
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
     @MockBean
     private TeamCalendarScheduleService teamCalendarScheduleService;
-
-    @MockBean
-    private MemberInterceptor memberInterceptor;
-
-    @MockBean
-    private TeamPlaceParticipationInterceptor teamPlaceParticipationInterceptor;
-
-    @MockBean
-    private JwtTokenProvider jwtTokenProvider;
-
-    @BeforeEach
-    void setup() throws Exception {
-        given(memberInterceptor.preHandle(any(), any(), any()))
-                .willReturn(true);
-        given(teamPlaceParticipationInterceptor.preHandle(any(), any(), any()))
-                .willReturn(true);
-    }
 
     @Nested
     @DisplayName("일정 등록 문서화")
@@ -109,7 +80,7 @@ public class TeamCalendarScheduleApiDocsTest {
                     .andExpect(status().isCreated())
                     .andExpect(header().string(HttpHeaders.LOCATION, "/api/team-place/" + teamPlaceId + "/calendar/schedules/" + registeredId))
                     .andDo(print())
-                    .andDo(document("schedules/register/success",
+                    .andDo(document("team-calendar/schedules/register/success",
                                     preprocessRequest(prettyPrint()),
                                     pathParameters(
                                             parameterWithName("teamPlaceId").description("멤버가 속한 팀 플레이스 ID")
@@ -148,7 +119,7 @@ public class TeamCalendarScheduleApiDocsTest {
                             .content(objectMapper.writeValueAsString(request)))
                     .andExpect(status().isBadRequest())
                     .andDo(print())
-                    .andDo(document("schedules/register/failBlankTitle",
+                    .andDo(document("team-calendar/schedules/register/failBlankTitle",
                                     preprocessRequest(prettyPrint()),
                                     preprocessResponse(prettyPrint())
                             )
@@ -180,7 +151,7 @@ public class TeamCalendarScheduleApiDocsTest {
                             .content(objectMapper.writeValueAsString(requestMap)))
                     .andExpect(status().isBadRequest())
                     .andDo(print())
-                    .andDo(document("schedules/register/failWrongDateTimeType",
+                    .andDo(document("team-calendar/schedules/register/failWrongDateTimeType",
                                     preprocessRequest(prettyPrint()),
                                     preprocessResponse(prettyPrint())
                             )
@@ -205,7 +176,7 @@ public class TeamCalendarScheduleApiDocsTest {
                             .content(objectMapper.writeValueAsString(request)))
                     .andExpect(status().isNotFound())
                     .andDo(print())
-                    .andDo(document("schedules/register/failNotExistTeamPlaceId",
+                    .andDo(document("team-calendar/schedules/register/failNotExistTeamPlaceId",
                                     preprocessRequest(prettyPrint()),
                                     preprocessResponse(prettyPrint())
                             )
@@ -233,7 +204,7 @@ public class TeamCalendarScheduleApiDocsTest {
                             .content(objectMapper.writeValueAsString(request)))
                     .andExpect(status().isBadRequest())
                     .andDo(print())
-                    .andDo(document("schedules/register/failSpanWrongOrder",
+                    .andDo(document("team-calendar/schedules/register/failSpanWrongOrder",
                                     preprocessRequest(prettyPrint()),
                                     preprocessResponse(prettyPrint())
                             )
@@ -262,7 +233,7 @@ public class TeamCalendarScheduleApiDocsTest {
                             .content(objectMapper.writeValueAsString(request)))
                     .andExpect(status().isOk())
                     .andDo(print())
-                    .andDo(document("schedules/update/success",
+                    .andDo(document("team-calendar/schedules/update/success",
                                     preprocessRequest(prettyPrint()),
                                     pathParameters(
                                             parameterWithName("teamPlaceId").description("멤버가 속한 팀 플레이스 ID"),
@@ -305,7 +276,7 @@ public class TeamCalendarScheduleApiDocsTest {
                             .content(objectMapper.writeValueAsString(request)))
                     .andExpect(status().isBadRequest())
                     .andDo(print())
-                    .andDo(document("schedules/update/failBlankTitle",
+                    .andDo(document("team-calendar/schedules/update/failBlankTitle",
                                     preprocessRequest(prettyPrint()),
                                     preprocessResponse(prettyPrint())
                             )
@@ -338,7 +309,7 @@ public class TeamCalendarScheduleApiDocsTest {
                             .content(objectMapper.writeValueAsString(requestMap)))
                     .andExpect(status().isBadRequest())
                     .andDo(print())
-                    .andDo(document("schedules/update/failWrongDateTimeType",
+                    .andDo(document("team-calendar/schedules/update/failWrongDateTimeType",
                                     preprocessRequest(prettyPrint()),
                                     preprocessResponse(prettyPrint())
                             )
@@ -364,7 +335,7 @@ public class TeamCalendarScheduleApiDocsTest {
                             .content(objectMapper.writeValueAsString(request)))
                     .andExpect(status().isNotFound())
                     .andDo(print())
-                    .andDo(document("schedules/update/failNotExistTeamPlaceId",
+                    .andDo(document("team-calendar/schedules/update/failNotExistTeamPlaceId",
                                     preprocessRequest(prettyPrint()),
                                     preprocessResponse(prettyPrint())
                             )
@@ -393,7 +364,7 @@ public class TeamCalendarScheduleApiDocsTest {
                             .content(objectMapper.writeValueAsString(request)))
                     .andExpect(status().isBadRequest())
                     .andDo(print())
-                    .andDo(document("schedules/update/failSpanWrongOrder",
+                    .andDo(document("team-calendar/schedules/update/failSpanWrongOrder",
                                     preprocessRequest(prettyPrint()),
                                     preprocessResponse(prettyPrint())
                             )
@@ -419,7 +390,7 @@ public class TeamCalendarScheduleApiDocsTest {
                             .content(objectMapper.writeValueAsString(request)))
                     .andExpect(status().isNotFound())
                     .andDo(print())
-                    .andDo(document("schedules/update/failNotExistScheduleId",
+                    .andDo(document("team-calendar/schedules/update/failNotExistScheduleId",
                                     preprocessRequest(prettyPrint()),
                                     preprocessResponse(prettyPrint())
                             )
