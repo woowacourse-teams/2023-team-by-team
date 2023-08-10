@@ -52,7 +52,7 @@ const CreatePage = () => {
               간단한 입력으로 쉽게 팀을 만들어 보세요!
             </Text>
           </S.BodyContainer>
-          <Button css={S.submitButton} aria-label="팀 생성버튼">
+          <Button css={S.submitButton} aria-label="팀 생성">
             팀 생성
           </Button>
         </S.TeamNameForm>

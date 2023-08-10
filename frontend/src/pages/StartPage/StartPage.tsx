@@ -40,7 +40,7 @@ const StartPage = () => {
             variant="primary"
             css={S.startTeamButton()}
             onClick={() => handleButtonClick('create')}
-            aria-label="팀 생성하기 버튼"
+            aria-label="팀 생성하기"
           >
             팀 생성하기
           </Button>
@@ -53,6 +53,7 @@ const StartPage = () => {
             variant="normal"
             css={S.startTeamButton('normal')}
             onClick={() => handleButtonClick('join')}
+            aria-label="팀 참가하기"
           >
             팀 참가하기
           </Button>

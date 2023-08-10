@@ -77,14 +77,14 @@ const JoinPage = () => {
               <Button
                 variant="plain"
                 css={S.createPageButton}
-                aria-label="팀 생성하기 페이지 이동 버튼"
+                aria-label="팀 생성하기 페이지 이동"
                 onClick={handleCreatePageClicked}
               >
                 직접 팀을 만들어보세요!
               </Button>
             </div>
           </S.BodyContainer>
-          <Button css={S.submitButton} aria-label="팀 생성버튼">
+          <Button css={S.submitButton} aria-label="팀 참가">
             팀 참가
           </Button>
         </S.InviteCodeForm>
