@@ -1,4 +1,4 @@
-import { CalendarIcon, FeedIcon, HomeIcon } from '~/assets/svg';
+import { CalendarIcon, FeedIcon, HomeIcon, TeamAddIcon } from '~/assets/svg';
 import * as S from './NavigationBar.styled';
 import { PATH_NAME } from '~/constants/routes';
 
@@ -23,6 +23,12 @@ const NavigationBar = () => {
           aria-label="팀 피드 페이지로 이동하기 버튼"
         >
           <FeedIcon />
+        </S.MenuLink>
+        <S.MenuLink
+          to={PATH_NAME.CREATE}
+          aria-label="팀 시작 페이지로 이동하기 버튼"
+        >
+          <TeamAddIcon />
         </S.MenuLink>
       </S.MenuContainer>
     </S.Container>
