@@ -25,7 +25,7 @@ const NavigationBar = () => {
           <FeedIcon />
         </S.MenuLink>
         <S.MenuLink
-          to={PATH_NAME.CREATE}
+          to={PATH_NAME.START}
           aria-label="팀 시작 페이지로 이동하기 버튼"
         >
           <TeamAddIcon />
