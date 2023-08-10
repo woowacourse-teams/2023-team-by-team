@@ -109,7 +109,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         }
 
         @Test
-        @DisplayName("중복 참여시 아무일도 일어나지 않는다.")
+        @DisplayName("이미 참여한 팀플레이스 기준으로 응답한다.")
         void successIfDuplicateRequest() {
             // given
             final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
@@ -149,7 +149,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         }
 
         @Test
-        @DisplayName("양식에 맞지 않는 초대코드로 요청 시 예외를 반환한다.")
+        @DisplayName("8자가 아닌 초대코드로 요청 시 예외를 반환한다.")
         void failIfInvalidInviteCode() {
             // given
             final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
