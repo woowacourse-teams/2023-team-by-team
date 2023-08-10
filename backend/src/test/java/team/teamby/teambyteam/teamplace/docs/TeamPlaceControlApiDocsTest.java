@@ -12,6 +12,7 @@ import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.teamplace.application.TeamPlaceService;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateResponse;
+import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceInviteCodeResponse;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 import team.teamby.teambyteam.teamplace.presentation.TeamPlaceController;
 
@@ -21,6 +22,7 @@ import static org.mockito.BDDMockito.willThrow;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
@@ -28,6 +30,8 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -63,6 +67,7 @@ public class TeamPlaceControlApiDocsTest extends ApiDocsTest {
                     .andDo(print())
                     .andDo(document("teamPlaces/create/success",
                             preprocessRequest(prettyPrint()),
+                            preprocessResponse(prettyPrint()),
                             requestHeaders(
                                     headerWithName(AUTHORIZATION_HEADER_KEY).description("사용자 JWT 인증 정보")
                             ),
@@ -101,7 +106,7 @@ public class TeamPlaceControlApiDocsTest extends ApiDocsTest {
 
         @Test
         @DisplayName("팀플레이스 이름이 30자 초과시 400")
-        void badRequestForLongTeamPlaceName() throws Exception{
+        void badRequestForLongTeamPlaceName() throws Exception {
             // given
             final TeamPlaceCreateRequest request = new TeamPlaceCreateRequest("a".repeat(31));
             willThrow(new TeamPlaceException.NameLengthException())
@@ -117,6 +122,65 @@ public class TeamPlaceControlApiDocsTest extends ApiDocsTest {
                     .andExpect(status().isBadRequest())
                     .andDo(print())
                     .andDo(document("teamPlaces/create/failLongName",
+                                    preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint())
+                            )
+                    );
+        }
+    }
+
+    @Nested
+    @DisplayName("팀플레이스 초대코드 조회 문서화")
+    class GetTeamPlaceInviteCode {
+
+        @Test
+        @DisplayName("초대코드 조회에 성공")
+        void success() throws Exception {
+            // given
+            final Long teamPlaceId = 1L;
+            final TeamPlaceInviteCodeResponse response = new TeamPlaceInviteCodeResponse(teamPlaceId, "12ABcd7f");
+            given(teamPlaceService.getTeamPlaceInviteCode(teamPlaceId))
+                    .willReturn(response);
+
+            // when & then
+            mockMvc.perform(get("/api/team-places/{teamPlaceId}/invite-code", teamPlaceId)
+                            .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
+                            .accept(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(objectMapper.writeValueAsString(response)))
+                    .andDo(print())
+                    .andDo(document("teamPlaces/getInviteCode/success",
+                            preprocessRequest(prettyPrint()),
+                            preprocessResponse(prettyPrint()),
+                            requestHeaders(
+                                    headerWithName(AUTHORIZATION_HEADER_KEY).description("사용자 JWT 인증 정보")
+                            ),
+                            pathParameters(
+                                    parameterWithName("teamPlaceId").description("조회할 팀플레이스 ID")
+                            ),
+                            responseFields(
+                                    fieldWithPath("teamPlaceId").type(JsonFieldType.NUMBER).description("조회한 팀플레이스 ID"),
+                                    fieldWithPath("inviteCode").type(JsonFieldType.STRING).description("초대코드 - 알파벳 대문자, 소문자, 숫자로 이루어진 8글")
+                            )
+                    ));
+        }
+
+        @Test
+        @DisplayName("속하지 않은 팀플레이스의 코드 요청시 403")
+        void forbiddenWithUnparticipatedTeamPlace() throws Exception {
+            // given
+            final Long teamPlaceId = 2L;
+            willThrow(new TeamPlaceException.TeamPlaceAccessForbidden())
+                    .given(teamPlaceParticipationInterceptor)
+                    .preHandle(any(), any(), any());
+
+            // when & then
+            mockMvc.perform(get("/api/team-places/{teamPlaceId}/invite-code", teamPlaceId)
+                            .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
+                            .accept(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isForbidden())
+                    .andDo(print())
+                    .andDo(document("teamPlaces/getInviteCode/failWithForbiddenMember",
                                     preprocessRequest(prettyPrint()),
                                     preprocessResponse(prettyPrint())
                             )

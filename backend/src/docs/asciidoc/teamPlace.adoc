@@ -1,36 +1,71 @@
 == 팀플레이스 관련 API
+
 팀플레이스를 생성하거나 초대코드를 확인할 수 있습니다.
 
 === 1. 팀플레이스 생성
 
+==== Request
+
+include::{snippets}/teamPlaces/create/success/http-request.adoc[]
+
 ==== 요청 Header
+
 include::{snippets}/teamPlaces/create/success/request-headers.adoc[]
 
 ==== 요청 Body
+
 include::{snippets}/teamPlaces/create/success/request-fields.adoc[]
 
-==== Request
-include::{snippets}/teamPlaces/create/success/http-request.adoc[]
-
 ==== Response
-include::{snippets}/teamPlaces/create/success/response-fields.adoc[]
-include::{snippets}/teamPlaces/create/success/http-response.adoc[]
 
+include::{snippets}/teamPlaces/create/success/http-response.adoc[]
+include::{snippets}/teamPlaces/create/success/response-fields.adoc[]
 
 === 1.1 팀플레이스 생성 실패 (공백 이름 입력)
 
 ==== Request
+
 include::{snippets}/teamPlaces/create/failBlankName/http-request.adoc[]
 
 ==== Response
-include::{snippets}/teamPlaces/create/failBlankName/http-response.adoc[]
 
+include::{snippets}/teamPlaces/create/failBlankName/http-response.adoc[]
 
 === 1.1 팀플레이스 생성 실패 (30자 초과 이름 입력)
 
 ==== Request
+
 include::{snippets}/teamPlaces/create/failLongName/http-request.adoc[]
 
 ==== Response
+
 include::{snippets}/teamPlaces/create/failLongName/http-response.adoc[]
 
+=== 2. 팀플레이스 초대코드 조회
+
+==== Request
+
+include::{snippets}/teamPlaces/getInviteCode/success/http-request.adoc[]
+
+==== 요청 Header
+
+include::{snippets}/teamPlaces/getInviteCode/success/request-headers.adoc[]
+
+==== 요청 Path Parameter
+
+include::{snippets}/teamPlaces/getInviteCode/success/path-parameters.adoc[]
+
+==== Response
+
+include::{snippets}/teamPlaces/getInviteCode/success/http-response.adoc[]
+include::{snippets}/teamPlaces/getInviteCode/success/response-fields.adoc[]
+
+=== 2.1 소속되지 않은 팀플레이스 초대코드 조회
+
+==== Request
+
+include::{snippets}/teamPlaces/getInviteCode/failWithForbiddenMember/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/teamPlaces/getInviteCode/failWithForbiddenMember/http-response.adoc[]
