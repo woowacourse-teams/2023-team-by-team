@@ -192,7 +192,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
         }
 
         @Test
-        @DisplayName("탈퇴한 소속되지 않은 사용장의 스레드는 (알수없음) 작성자로 생성된다.")
+        @DisplayName("탈퇴한 소속되지 않은 사용자의 스레드는 (알수없음) 작성자로 생성된다.")
         void successWithUnknownMember() {
             // given
             final Member otherMember = testFixtureBuilder.buildMember(MemberFixtures.SEONGHA());

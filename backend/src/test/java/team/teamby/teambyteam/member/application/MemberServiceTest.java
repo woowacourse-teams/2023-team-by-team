@@ -104,6 +104,20 @@ class MemberServiceTest extends ServiceTest {
         }
 
         @Test
+        @DisplayName("데이터에 없는 사용자의 이메일 입력시 실패한다.")
+        void failWithMemberWithoutDb() {
+            // given
+            final Member ENDEL = testFixtureBuilder.buildMember(MemberFixtures.ENDEL());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
+            testFixtureBuilder.buildMemberTeamPlace(ENDEL, ENGLISH_TEAM_PLACE);
+
+            // when & then
+            Assertions.assertThatThrownBy(() -> memberService.leaveTeamPlace(new MemberEmailDto(MemberFixtures.PHILIP_EMAIL), ENGLISH_TEAM_PLACE.getId()))
+                    .isInstanceOf(MemberException.MemberNotFoundException.class)
+                    .hasMessage("조회한 멤버가 존재하지 않습니다.");
+        }
+
+        @Test
         @DisplayName("소속되지 않은 팀플레이스 탈퇴 시도시 접근할 수 없다는 예외를 발생시킨다.")
         void failWithUnParticipatedTeamPlace() {
             // given
