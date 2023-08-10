@@ -15,3 +15,22 @@ include::{snippets}/teamPlaces/create/success/http-request.adoc[]
 ==== Response
 include::{snippets}/teamPlaces/create/success/response-fields.adoc[]
 include::{snippets}/teamPlaces/create/success/http-response.adoc[]
+
+
+=== 1.1 팀플레이스 생성 실패 (공백 이름 입력)
+
+==== Request
+include::{snippets}/teamPlaces/create/failBlankName/http-request.adoc[]
+
+==== Response
+include::{snippets}/teamPlaces/create/failBlankName/http-response.adoc[]
+
+
+=== 1.1 팀플레이스 생성 실패 (30자 초과 이름 입력)
+
+==== Request
+include::{snippets}/teamPlaces/create/failLongName/http-request.adoc[]
+
+==== Response
+include::{snippets}/teamPlaces/create/failLongName/http-response.adoc[]
+

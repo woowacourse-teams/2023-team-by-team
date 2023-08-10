@@ -8,18 +8,22 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import team.teamby.teambyteam.common.ApiDocsTest;
+import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.teamplace.application.TeamPlaceService;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateResponse;
+import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 import team.teamby.teambyteam.teamplace.presentation.TeamPlaceController;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willThrow;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
@@ -45,7 +49,7 @@ public class TeamPlaceControlApiDocsTest extends ApiDocsTest {
             // given
             final TeamPlaceCreateRequest request = CREATE_ENGLISH_TEAM_PLACE_REQUEST();
             final TeamPlaceCreateResponse response = new TeamPlaceCreateResponse(1L);
-            given(teamPlaceService.create(any(), any()))
+            given(teamPlaceService.create(any(MemberEmailDto.class), any(TeamPlaceCreateRequest.class)))
                     .willReturn(response);
 
             // when & then
@@ -71,5 +75,52 @@ public class TeamPlaceControlApiDocsTest extends ApiDocsTest {
                     ));
         }
 
+        @Test
+        @DisplayName("팀플레이스에 공백으로 요청시 400")
+        void badRequestForBlankTeamPlaceName() throws Exception {
+            // given
+            final TeamPlaceCreateRequest request = new TeamPlaceCreateRequest("");
+            willThrow(new TeamPlaceException.NameBlankException())
+                    .given(teamPlaceService)
+                    .create(any(MemberEmailDto.class), any(TeamPlaceCreateRequest.class));
+
+            // when & then
+            mockMvc.perform(post("/api/team-places")
+                            .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request))
+                            .accept(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isBadRequest())
+                    .andDo(print())
+                    .andDo(document("teamPlaces/create/failBlankName",
+                                    preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint())
+                            )
+                    );
+        }
+
+        @Test
+        @DisplayName("팀플레이스 이름이 30자 초과시 400")
+        void badRequestForLongTeamPlaceName() throws Exception{
+            // given
+            final TeamPlaceCreateRequest request = new TeamPlaceCreateRequest("a".repeat(31));
+            willThrow(new TeamPlaceException.NameLengthException())
+                    .given(teamPlaceService)
+                    .create(any(MemberEmailDto.class), any(TeamPlaceCreateRequest.class));
+
+            // when & then
+            mockMvc.perform(post("/api/team-places")
+                            .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request))
+                            .accept(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isBadRequest())
+                    .andDo(print())
+                    .andDo(document("teamPlaces/create/failLongName",
+                                    preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint())
+                            )
+                    );
+        }
     }
 }
