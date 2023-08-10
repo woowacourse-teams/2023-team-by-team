@@ -1,7 +1,5 @@
 import { createContext, useCallback, useEffect, useState } from 'react';
 import type { PropsWithChildren } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { PATH_NAME } from '~/constants/routes';
 import { useFetchTeamPlaces } from '~/hooks/queries/useFetchTeamPlaces';
 import type { TeamPlace, TeamPlaceColor } from '~/types/team';
 import { getInfoByTeamPlaceId } from '~/utils/getInfoByTeamPlaceId';
@@ -48,7 +46,7 @@ export const TeamPlaceProvider = (props: PropsWithChildren) => {
     const initTeamPlaceId = id === null ? teamPlaces[0].id : Number(id);
 
     changeTeamPlace(initTeamPlaceId);
-  }, [isFetched, changeTeamPlace]);
+  }, [isFetched, changeTeamPlace, teamPlaces]);
 
   const value = {
     teamPlaces,

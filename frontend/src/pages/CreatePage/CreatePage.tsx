@@ -20,7 +20,7 @@ const CreatePage = () => {
   const handleTeamNameSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
-    const isRightName = confirm(`"${teamName}"으로 팀을 생성하시겠 습니까?`);
+    const isRightName = confirm(`"${teamName}"으로 팀을 생성하시겠습니까?`);
 
     if (!isRightName) {
       inputRef.current?.focus();
@@ -49,7 +49,7 @@ const CreatePage = () => {
               />
             </S.InputWrapper>
             <Text weight="semiBold" css={S.explainText}>
-              간단한 입력으로 쉽게 공간을 만들어 보세요!
+              간단한 입력으로 쉽게 팀을 만들어 보세요!
             </Text>
           </S.BodyContainer>
           <Button css={S.submitButton} aria-label="팀 생성버튼">

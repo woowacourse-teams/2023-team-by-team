@@ -34,7 +34,6 @@ export const InviteCodeForm = styled.form`
 export const BodyContainer = styled.div`
   display: flex;
   flex-direction: column;
-
   gap: 22px;
 `;
 
@@ -53,10 +52,10 @@ export const InputWrapper = styled.div`
 export const createPageButton = css`
   padding: 0;
 
+  border-bottom: 1px solid ${({ theme }) => theme.color.PRIMARY};
+
   font-size: 16px;
   font-weight: 600;
-
-  border-bottom: 1px solid ${({ theme }) => theme.color.PRIMARY};
   color: ${({ theme }) => theme.color.PRIMARY};
 
   &:hover {
@@ -76,10 +75,10 @@ export const titleText = css`
 
   width: 100%;
 
+  border-bottom: 1px solid ${({ theme }) => theme.color.PRIMARY};
+
   font-size: 32px;
   color: ${({ theme }) => theme.color.PRIMARY};
-
-  border-bottom: 1px solid ${({ theme }) => theme.color.PRIMARY};
 `;
 
 export const inputTitle = css`
@@ -96,6 +95,8 @@ export const submitButton = css`
   display: flex;
   justify-content: center;
   align-self: flex-end;
+
   width: 100px;
+
   border-radius: 10px;
 `;

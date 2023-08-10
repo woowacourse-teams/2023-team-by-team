@@ -27,7 +27,6 @@ export const InnerContainer = styled.div<{ clickedButton: string | undefined }>`
 export const ButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
-
   gap: 10px;
 `;
 

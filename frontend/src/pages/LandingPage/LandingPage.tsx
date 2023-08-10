@@ -7,8 +7,6 @@ import { useEffect } from 'react';
 
 const LandingPage = () => {
   const navigate = useNavigate();
-  const accessToken = localStorage.getItem('accessToken');
-  const teamPlaceId = localStorage.getItem('teamPlaceId');
 
   const handleGoogleLogin = async () => {
     const { googleLoginUrl } = await fetchGoogleLogin();
@@ -21,6 +19,9 @@ const LandingPage = () => {
   };
 
   useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    const teamPlaceId = localStorage.getItem('teamPlaceId');
+
     if (accessToken && teamPlaceId) {
       navigate(PATH_NAME.TEAM_SELECT);
       return;

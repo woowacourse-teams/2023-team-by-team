@@ -47,8 +47,8 @@ const JoinPage = () => {
   const handleCreatePageClicked: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
 
-    setIsRequired(false);
-    setIsClicked(true);
+    setIsRequired(() => false);
+    setIsClicked(() => true);
   };
 
   return (

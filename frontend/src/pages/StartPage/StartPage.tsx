@@ -53,7 +53,6 @@ const StartPage = () => {
             variant="normal"
             css={S.startTeamButton('normal')}
             onClick={() => handleButtonClick('join')}
-            aria-label="팀 개설하기 버튼"
           >
             팀 참가하기
           </Button>

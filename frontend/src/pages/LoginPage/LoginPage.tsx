@@ -7,10 +7,11 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const accessToken = params.get('accessToken');
-  localStorage.setItem('accessToken', accessToken ?? '');
   const { teamPlaces, isFetched } = useFetchTeamPlaces();
 
   useEffect(() => {
+    localStorage.setItem('accessToken', accessToken ?? '');
+
     if (!accessToken) {
       alert('로그인이 필요합니다.');
       localStorage.removeItem('accessToken');

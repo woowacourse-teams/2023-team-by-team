@@ -32,7 +32,6 @@ export const TeamNameForm = styled.form`
 export const BodyContainer = styled.div`
   display: flex;
   flex-direction: column;
-
   gap: 22px;
 `;
 
@@ -80,6 +79,7 @@ export const submitButton = css`
   display: flex;
   justify-content: center;
   align-self: flex-end;
+
   width: 100px;
   border-radius: 10px;
 `;
