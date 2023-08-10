@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { PATH_NAME } from '~/constants/routes';
+import { TeamPlaceProvider } from '~/contexts/TeamPlaceContext';
 
 const ProtectRoute = () => {
   const navigate = useNavigate();
@@ -15,7 +16,11 @@ const ProtectRoute = () => {
     }
   }, []);
 
-  return <Outlet />;
+  return (
+    <TeamPlaceProvider>
+      <Outlet />
+    </TeamPlaceProvider>
+  );
 };
 
 export default ProtectRoute;

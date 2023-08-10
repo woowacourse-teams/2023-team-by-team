@@ -21,12 +21,16 @@ public final class MemberInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler) throws Exception {
-        final String token = jwtTokenExtractor.extractToken(request);
-        final String email = jwtTokenProvider.extractEmailFromToken(token);
+        final String accessToken = jwtTokenExtractor.extractAccessToken(request);
+        String email = jwtTokenProvider.extractEmailFromAccessToken(accessToken);
+        validateMemberExist(email);
+        return true;
+    }
+
+    private void validateMemberExist(final String email) {
         if (notExistsByEmail(email)) {
             throw new MemberException.MemberNotFoundException();
         }
-        return true;
     }
 
     private boolean notExistsByEmail(final String email) {

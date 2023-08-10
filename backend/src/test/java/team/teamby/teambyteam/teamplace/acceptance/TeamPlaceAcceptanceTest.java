@@ -31,7 +31,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
         void success() {
             // given
             final Member ENDL = testFixtureBuilder.buildMember(MemberFixtures.ENDEL());
-            final String ENDL_TOKEN = jwtTokenProvider.generateToken(ENDL.getEmail().getValue());
+            final String ENDL_TOKEN = jwtTokenProvider.generateAccessToken(ENDL.getEmail().getValue());
             final String NEW_TEAM_PLACE_NAME = "새로운 팀플레이스";
             final TeamPlaceCreateRequest request = new TeamPlaceCreateRequest(NEW_TEAM_PLACE_NAME);
 
@@ -79,7 +79,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
             final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(PHILIP, teamPlace);
-            final String PHILIP_TOKEN = jwtTokenProvider.generateToken(PHILIP.getEmail().getValue());
+            final String PHILIP_TOKEN = jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue());
             final TeamPlaceInviteCodeResponse generatedCodeResponse = GET_TEAM_PLACE_INVITE_CODE(PHILIP_TOKEN, teamPlace.getId()).as(TeamPlaceInviteCodeResponse.class);
 
             // when
@@ -100,7 +100,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
             final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(PHILIP, teamPlace);
-            final String PHILIP_TOKEN = jwtTokenProvider.generateToken(PHILIP.getEmail().getValue());
+            final String PHILIP_TOKEN = jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue());
 
             // when
             final ExtractableResponse<Response> extractableResponse = GET_TEAM_PLACE_INVITE_CODE(PHILIP_TOKEN, teamPlace.getId());
@@ -119,7 +119,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
         void failIfNotExistTeamPlaceId() {
             // given
             final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
-            final String PHILIP_TOKEN = jwtTokenProvider.generateToken(PHILIP.getEmail().getValue());
+            final String PHILIP_TOKEN = jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue());
             final Long notExistTeamPlaceId = -1L;
 
             // when
@@ -136,7 +136,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
         void failIfNotParticipatedTeamPlace() {
             // given
             final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
-            final String PHILIP_TOKEN = jwtTokenProvider.generateToken(PHILIP.getEmail().getValue());
+            final String PHILIP_TOKEN = jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue());
             final Long notParticipatedTeamPlaceId = -1L;
 
             // when
