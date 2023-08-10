@@ -19,7 +19,7 @@ import team.teamby.teambyteam.teamplace.domain.vo.InviteCode;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptanceFixture.GET_PARTICIPATED_TEAM_PLACES;
-import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptanceFixture.PARTICIPATE_TEAM_PLACE;
+import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptanceFixture.PARTICIPATE_TEAM_PLACE_REQUEST;
 
 public class MemberAcceptanceTest extends AcceptanceTest {
 
@@ -98,7 +98,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             final String PHILIP_TOKEN = jwtTokenProvider.generateToken(PHILIP.getEmail().getValue());
 
             // when
-            final ExtractableResponse<Response> response = PARTICIPATE_TEAM_PLACE(PHILIP_TOKEN, inviteCode);
+            final ExtractableResponse<Response> response = PARTICIPATE_TEAM_PLACE_REQUEST(PHILIP_TOKEN, inviteCode);
 
             //then
             TeamPlaceParticipantResponse teamPlaceParticipantResponse = response.body().as(TeamPlaceParticipantResponse.class);
@@ -117,10 +117,10 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             final String inviteCode = "aaaaaaaa";
             testFixtureBuilder.buildTeamPlaceInviteCode(new TeamPlaceInviteCode(new InviteCode(inviteCode), ENGLISH_TEAM_PLACE));
             final String PHILIP_TOKEN = jwtTokenProvider.generateToken(PHILIP.getEmail().getValue());
-            PARTICIPATE_TEAM_PLACE(PHILIP_TOKEN, inviteCode);
+            PARTICIPATE_TEAM_PLACE_REQUEST(PHILIP_TOKEN, inviteCode);
 
             // when
-            final ExtractableResponse<Response> response = PARTICIPATE_TEAM_PLACE(PHILIP_TOKEN, inviteCode);
+            final ExtractableResponse<Response> response = PARTICIPATE_TEAM_PLACE_REQUEST(PHILIP_TOKEN, inviteCode);
 
             //then
             TeamPlaceParticipantResponse teamPlaceParticipantResponse = response.body().as(TeamPlaceParticipantResponse.class);
@@ -140,7 +140,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             final String invalidInviteCode = "aaaaaaaa";
 
             // when
-            final ExtractableResponse<Response> response = PARTICIPATE_TEAM_PLACE(PHILIP_TOKEN, invalidInviteCode);
+            final ExtractableResponse<Response> response = PARTICIPATE_TEAM_PLACE_REQUEST(PHILIP_TOKEN, invalidInviteCode);
 
             //then
             SoftAssertions.assertSoftly(softly -> {
@@ -158,7 +158,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             final String invalidInviteCode = "aaaa";
 
             // when
-            final ExtractableResponse<Response> response = PARTICIPATE_TEAM_PLACE(PHILIP_TOKEN, invalidInviteCode);
+            final ExtractableResponse<Response> response = PARTICIPATE_TEAM_PLACE_REQUEST(PHILIP_TOKEN, invalidInviteCode);
 
             //then
             SoftAssertions.assertSoftly(softly -> {
@@ -176,7 +176,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             testFixtureBuilder.buildTeamPlaceInviteCode(new TeamPlaceInviteCode(new InviteCode(inviteCode), teamPlace));
 
             // when
-            final ExtractableResponse<Response> response = PARTICIPATE_TEAM_PLACE(WRONG_TOKEN, inviteCode);
+            final ExtractableResponse<Response> response = PARTICIPATE_TEAM_PLACE_REQUEST(WRONG_TOKEN, inviteCode);
 
             //then
             SoftAssertions.assertSoftly(softly -> {

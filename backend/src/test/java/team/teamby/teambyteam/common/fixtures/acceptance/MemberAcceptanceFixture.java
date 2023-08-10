@@ -19,7 +19,7 @@ public class MemberAcceptanceFixture {
                 .extract();
     }
 
-    public static ExtractableResponse<Response> PARTICIPATE_TEAM_PLACE(final String token, final String inviteCode) {
+    public static ExtractableResponse<Response> PARTICIPATE_TEAM_PLACE_REQUEST(final String token, final String inviteCode) {
         return RestAssured.given().log().all()
                 .header(new Header(HttpHeaders.AUTHORIZATION, JWT_PREFIX + token))
                 .when().log().all()
