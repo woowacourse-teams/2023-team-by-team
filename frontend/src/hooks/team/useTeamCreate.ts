@@ -1,0 +1,50 @@
+import {
+  type ChangeEventHandler,
+  type FormEventHandler,
+  type RefObject,
+  useState,
+} from 'react';
+import { useNavigate } from 'react-router-dom';
+import { KEY } from '~/constants/localStorage';
+import { PATH_NAME } from '~/constants/routes';
+import { useSendNewTeamPlace } from '~/hooks/queries/useSendNewTeamPlace';
+
+export const useTeamCreate = (inputRef: RefObject<HTMLInputElement>) => {
+  const [teamName, setTeamName] = useState('');
+  const navigate = useNavigate();
+
+  const { mutateSendNewTeamPlace } = useSendNewTeamPlace();
+
+  const handleTeamNameChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setTeamName(() => e.target.value);
+  };
+
+  const handleTeamNameSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+
+    const isRightName = confirm(`"${teamName}"으로 팀을 생성하시겠습니까?`);
+
+    if (!isRightName) {
+      inputRef.current?.focus();
+      return;
+    }
+    mutateSendNewTeamPlace(
+      { name: teamName },
+      {
+        onSuccess: (data) => {
+          localStorage.setItem(KEY.TEAM_PLACE_ID, String(data.teamPlaceId));
+          navigate(PATH_NAME.TEAM_SELECT);
+        },
+      },
+    );
+  };
+
+  return {
+    teamName,
+
+    handler: {
+      handleTeamNameChange,
+      handleTeamNameSubmit,
+    },
+  };
+};
