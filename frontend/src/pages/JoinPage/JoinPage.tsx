@@ -64,9 +64,10 @@ const JoinPage = () => {
                 width="100%"
                 height="100%"
                 placeholder="팀 이름 입력"
-                css={S.inputTitle}
                 ref={inputRef}
+                value={inviteCode}
                 onChange={handleInviteCodeChange}
+                css={S.inputTitle}
                 required={isRequired}
               />
             </S.InputWrapper>

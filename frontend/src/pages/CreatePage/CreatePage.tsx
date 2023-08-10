@@ -42,9 +42,10 @@ const CreatePage = () => {
                 width="100%"
                 height="100%"
                 placeholder="팀 이름 입력"
-                css={S.inputTitle}
                 ref={inputRef}
+                value={teamName}
                 onChange={handleTeamNameChange}
+                css={S.inputTitle}
                 required
               />
             </S.InputWrapper>
