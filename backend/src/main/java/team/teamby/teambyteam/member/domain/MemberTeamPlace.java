@@ -27,6 +27,9 @@ import java.util.Map;
 @NoArgsConstructor
 public class MemberTeamPlace extends BaseEntity {
 
+    public static final MemberTeamPlace UNKNOWN_MEMBER_TEAM_PLACE
+            = new MemberTeamPlace(Member.UNKNOWN_MEMBER, TeamPlace.UNKNOWN_TEAM_PLACE);
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -48,6 +51,16 @@ public class MemberTeamPlace extends BaseEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private TeamPlaceColor teamPlaceColor;
+
+    private MemberTeamPlace(final Member member, final TeamPlace teamPlace) {
+        this.id = null;
+        this.member = member;
+        this.teamPlace = teamPlace;
+        this.teamPlaceColor = null;
+
+        this.displayMemberName = new DisplayMemberName(member.getName().getValue());
+        this.displayTeamPlaceName = new DisplayTeamPlaceName(teamPlace.getName().getValue());
+    }
 
     public void setMemberAndTeamPlace(final Member member, final TeamPlace teamPlace) {
         this.member = member;

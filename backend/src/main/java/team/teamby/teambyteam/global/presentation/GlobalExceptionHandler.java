@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import team.teamby.teambyteam.auth.exception.AuthenticationException;
 import team.teamby.teambyteam.member.exception.MemberException;
+import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 import team.teamby.teambyteam.token.exception.TokenException;
@@ -69,7 +70,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = {
             ScheduleException.TeamAccessForbidden.class,
-            TeamPlaceException.TeamPlaceAccessForbidden.class
+            TeamPlaceException.TeamPlaceAccessForbidden.class,
+            MemberTeamPlaceException.NotFoundParticipatedTeamPlaceException.class
     })
     public ResponseEntity<String> handleCustomForbiddenException(final RuntimeException exception) {
         final String message = exception.getMessage();

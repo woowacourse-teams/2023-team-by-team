@@ -40,6 +40,14 @@ public class MemberService {
         return TeamPlacesResponse.of(allByMemberId);
     }
 
+    public void leaveTeamPlace(final MemberEmailDto memberEmailDto, final Long teamPlaceId) {
+        final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
+                .orElseThrow(MemberException.MemberNotFoundException::new);
+
+        final MemberTeamPlace memberTeamPlaceToLeave = member.leaveTeamPlace(teamPlaceId);
+        memberTeamPlaceRepository.delete(memberTeamPlaceToLeave);
+    }
+
     public TeamPlaceParticipantResponse participateTeamPlace(final MemberEmailDto memberEmailDto, final String inviteCode) {
         final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
                 .orElseThrow(MemberException.MemberNotFoundException::new);

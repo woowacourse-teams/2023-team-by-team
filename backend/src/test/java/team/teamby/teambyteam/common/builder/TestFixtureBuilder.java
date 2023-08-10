@@ -27,8 +27,16 @@ public class TestFixtureBuilder {
         return bs.memberRepository().save(member);
     }
 
+    public void deleteMember(final Member member) {
+        bs.memberRepository().delete(member);
+    }
+
     public MemberTeamPlace buildMemberTeamPlace(final MemberTeamPlace memberTeamPlace) {
         return bs.memberTeamPlaceRepository().save(memberTeamPlace);
+    }
+
+    public void deleteMemberTeamPlace(final MemberTeamPlace memberTeamPlace) {
+        bs.memberTeamPlaceRepository().delete(memberTeamPlace);
     }
 
     public TeamPlace buildTeamPlace(final TeamPlace teamPlace) {
