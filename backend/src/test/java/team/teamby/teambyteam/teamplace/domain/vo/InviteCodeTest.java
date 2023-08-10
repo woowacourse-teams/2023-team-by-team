@@ -5,7 +5,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeException;
 
 class InviteCodeTest {
 
@@ -38,7 +37,7 @@ class InviteCodeTest {
     void failInviteCodeNotLength8(final String value) {
         // given & when & then
         Assertions.assertThatThrownBy(() -> new InviteCode(value))
-                .isInstanceOf(TeamPlaceInviteCodeException.LengthException.class)
-                .hasMessage("팀 플레이스의 초대코드의 길이가 맞지 않습니다.");
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("맞지 않는 길이입니다.");
     }
 }

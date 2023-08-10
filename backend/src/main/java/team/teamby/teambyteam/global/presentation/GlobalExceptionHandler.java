@@ -12,6 +12,7 @@ import team.teamby.teambyteam.auth.exception.AuthenticationException;
 import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
+import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeException;
 
 import java.time.DateTimeException;
 import java.time.format.DateTimeParseException;
@@ -42,7 +43,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {
             MemberException.MemberNotFoundException.class,
             TeamPlaceException.NotFoundException.class,
-            ScheduleException.ScheduleNotFoundException.class
+            ScheduleException.ScheduleNotFoundException.class,
+            TeamPlaceInviteCodeException.NotFoundException.class
     })
     public ResponseEntity<String> handleNotFoundException(final RuntimeException exception) {
         final String message = exception.getMessage();
@@ -75,7 +77,10 @@ public class GlobalExceptionHandler {
                 .body(message);
     }
 
-    @ExceptionHandler(value = {ScheduleException.SpanWrongOrderException.class})
+    @ExceptionHandler(value = {
+            ScheduleException.SpanWrongOrderException.class,
+            TeamPlaceInviteCodeException.LengthException.class
+    })
     public ResponseEntity<String> handleCustomBadRequestException(final RuntimeException exception) {
         final String message = exception.getMessage();
         log.warn(message, exception);

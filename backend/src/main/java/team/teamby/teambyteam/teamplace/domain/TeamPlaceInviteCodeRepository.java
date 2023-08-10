@@ -9,6 +9,8 @@ public interface TeamPlaceInviteCodeRepository extends JpaRepository<TeamPlaceIn
 
     Optional<TeamPlaceInviteCode> findByTeamPlaceId(final Long teamPlaceId);
 
+    Optional<TeamPlaceInviteCode> findByInviteCode(final InviteCode inviteCode);
+
     boolean existsByTeamPlaceId(final Long teamPlaceId);
 
     boolean existsByInviteCode(final InviteCode inviteCode);
