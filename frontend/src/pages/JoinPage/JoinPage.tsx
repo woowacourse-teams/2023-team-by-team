@@ -2,19 +2,9 @@ import Text from '~/components/common/Text/Text';
 import * as S from './JoinPage.styled';
 import Input from '~/components/common/Input/Input';
 import Button from '~/components/common/Button/Button';
-import {
-  type ChangeEventHandler,
-  type FormEventHandler,
-  type MouseEventHandler,
-  useRef,
-  useState,
-  useEffect,
-} from 'react';
+import { useRef, useEffect } from 'react';
 import { PATH_NAME } from '~/constants/routes';
 import { useNavigate } from 'react-router-dom';
-import { useSendTeamPlace } from '~/hooks/queries/useSendTeamPlace';
-import { INVITE_CODE_LENGTH } from '~/constants/team';
-import { KEY } from '~/constants/localStorage';
 import { useTeamJoin } from '~/hooks/team/useTeamJoin';
 
 const JoinPage = () => {

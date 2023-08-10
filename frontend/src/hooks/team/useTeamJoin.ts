@@ -11,7 +11,7 @@ import { PATH_NAME } from '~/constants/routes';
 import { INVITE_CODE_LENGTH } from '~/constants/team';
 import { useSendTeamPlace } from '~/hooks/queries/useSendTeamPlace';
 
-export const useTeamJoin = (inputRef: RefObject<HTMLDivElement>) => {
+export const useTeamJoin = (inputRef: RefObject<HTMLInputElement>) => {
   const [inviteCode, setInviteCode] = useState('');
   const [isClicked, setIsClicked] = useState(false);
   const [isRequired, setIsRequired] = useState(true);
