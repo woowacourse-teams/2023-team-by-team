@@ -13,6 +13,7 @@ import team.teamby.teambyteam.common.ApiDocsTest;
 import team.teamby.teambyteam.schedule.application.TeamCalendarScheduleService;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleUpdateRequest;
+import team.teamby.teambyteam.schedule.application.dto.SchedulesResponse;
 import team.teamby.teambyteam.schedule.domain.Schedule;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
 import team.teamby.teambyteam.schedule.presentation.TeamCalendarScheduleController;
@@ -21,16 +22,20 @@ import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.when;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.BDDMockito.willThrow;
+import static org.mockito.Mockito.spy;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
@@ -38,11 +43,15 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_6_AND_MONTH_7_SCHEDULE;
+import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE;
 import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE;
 import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_REGISTER_REQUEST;
 import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_TITLE;
@@ -395,6 +404,85 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
                                     preprocessResponse(prettyPrint())
                             )
                     );
+        }
+    }
+
+    @Nested
+    @DisplayName("기간 조회 문서화")
+    class findSchedulesInPeriodDocs {
+
+        @Test
+        @DisplayName("기간 조회 성공")
+        void success() throws Exception {
+            // given
+            final Long teamPlaceId = 1L;
+            final Schedule schedule1 = spy(MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE(teamPlaceId));
+            final Schedule schedule2 = spy(MONTH_6_AND_MONTH_7_SCHEDULE(teamPlaceId));
+            when(schedule1.getId()).thenReturn(1L);
+            when(schedule2.getId()).thenReturn(2L);
+
+            List<Schedule> schedules = List.of(schedule1, schedule2);
+            SchedulesResponse response = SchedulesResponse.of(schedules);
+
+            given(teamCalendarScheduleService.findScheduleInPeriod(teamPlaceId, 2023, 7))
+                    .willReturn(response);
+
+            // when & then
+            mockMvc.perform(get("/api/team-place/{teamPlaceId}/calendar/schedules", teamPlaceId)
+                            .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
+                            .accept(MediaType.APPLICATION_JSON)
+                            .param("year", "2023")
+                            .param("month", "7"))
+                    .andExpect(status().isOk())
+                    .andDo(print())
+                    .andDo(document("team-calendar/schedules/findSchedulesInPeriod/success",
+                                    preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint()),
+                                    pathParameters(
+                                            parameterWithName("teamPlaceId").description("멤버가 속한 팀 플레이스 ID")
+                                    ),
+                                    queryParameters(
+                                            parameterWithName("year").description("조회할 연도"),
+                                            parameterWithName("month").description("조회할 월")
+                                    ),
+                                    requestHeaders(
+                                            headerWithName(AUTHORIZATION_HEADER_KEY).description("사용자 JWT 인증 정보")
+                                    ),
+                                    responseFields(
+                                            fieldWithPath("schedules[0].id").type(JsonFieldType.NUMBER).description("조회한 일정 ID"),
+                                            fieldWithPath("schedules[0].title").type(JsonFieldType.STRING).description("조회한 일정 제목"),
+                                            fieldWithPath("schedules[0].startDateTime").type(JsonFieldType.STRING).description("조회한 일정의 시작 일시(형식 : yyyy-MM-dd HH:mm)"),
+                                            fieldWithPath("schedules[0].endDateTime").type(JsonFieldType.STRING).description("조회한 일정의 종료 일시(형식 : yyyy-MM-dd HH:mm)")
+                                    )
+                            )
+                    );
+
+        }
+
+        @Test
+        @DisplayName("존재하지 않는 팀플레이스 ID일 경우 실패")
+        void failNotExistTeamplaceId() throws Exception {
+            // given
+            final Long teamPlaceId = -1L;
+
+            willThrow(new TeamPlaceException.NotFoundException())
+                    .given(teamCalendarScheduleService)
+                    .findScheduleInPeriod(teamPlaceId, 2023, 7);
+
+            // when & then
+            mockMvc.perform(get("/api/team-place/{teamPlaceId}/calendar/schedules", teamPlaceId)
+                            .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
+                            .accept(MediaType.APPLICATION_JSON)
+                            .param("year", "2023")
+                            .param("month", "7"))
+                    .andExpect(status().isNotFound())
+                    .andDo(print())
+                    .andDo(document("team-calendar/schedules/findSchedulesInPeriod/failNotExistTeamplaceId",
+                                    preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint())
+                            )
+                    );
+
         }
     }
 }
