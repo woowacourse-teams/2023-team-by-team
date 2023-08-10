@@ -2,7 +2,7 @@
 # 깃헙 러너에서 빌드 후 jar 업로드
 # 셀프 호스트 러너에서 jar 다운로드 후 was로 배포
 
-name: backend Java CD with Gradle
+name: backend deploy dev
 
 on:
   pull_request:
@@ -12,10 +12,6 @@ on:
     paths:
       - 'backend/**'
 
-defaults:
-  run:
-    working-directory: backend
-
 permissions:
   contents: read
 
@@ -23,6 +19,9 @@ jobs:
   build-and-upload:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: backend
     
     steps:
 
@@ -64,8 +63,13 @@ jobs:
       DEV_DEPLOY_SCRIPT: ${{ secrets.DEV_BACK_DEPLOY_SCRIPT }}
     steps:
       - name: Remove previous version jar
-        working-directory: ./backend/dev/
+        working-directory: backend/dev/
         run: rm -f team-by-team-*.jar
+
+      - name: Make backup
+        run: |
+          rm -f /home/ubuntu/team-by-team/backend/backup/*
+          mv /home/ubuntu/team-by-team/backend/current/* /home/ubuntu/team-by-team/backend/backup/
 
       - name: Download jar file from artifact
         uses: actions/download-artifact@v3
@@ -74,14 +78,20 @@ jobs:
           path: backend/dev/
         
       - name: Make dev application.yml
-        working-directory: ./backend/dev/
+        working-directory: backend/dev/
         run: |
           echo "$DEV_PROPERTY" > application-dev.yml
+        
+      - name: Move jar file and application yml to deploy directory
+        working-directory: backend/dev/
+        run: |
+          mv team-by-team-*.jar /home/ubuntu/team-by-team/backend/current/team-by-team.jar
+          mv application-dev.yml /home/ubuntu/team-by-team/backend/current/
               
       - name: Deploy to WAS
-        working-directory: ./backend/dev/
+        working-directory: backend/dev/
         run: |
           echo "$DEV_DEPLOY_SCRIPT" > dev-deploy.sh
           chmod 700 dev-deploy.sh
-          ./dev-deploy.sh
+          sudo ./dev-deploy.sh
       

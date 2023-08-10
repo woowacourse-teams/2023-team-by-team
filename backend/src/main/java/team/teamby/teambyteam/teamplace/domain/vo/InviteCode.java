@@ -6,7 +6,6 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeException;
 
 import java.util.Objects;
 
@@ -16,9 +15,9 @@ import java.util.Objects;
 @Getter
 public final class InviteCode {
 
-    private static final int MAX_LENGTH = 8;
+    private static final int LENGTH = 8;
 
-    @Column(name = "invite_code", nullable = false, length = MAX_LENGTH, unique = true)
+    @Column(name = "invite_code", nullable = false, length = LENGTH, unique = true)
     private String value;
 
     public InviteCode(final String value) {
@@ -30,8 +29,8 @@ public final class InviteCode {
         if (Objects.isNull(value)) {
             throw new NullPointerException("팀 플레이스 초대코드는 null일 수 없습니다.");
         }
-        if (value.length() != MAX_LENGTH) {
-            throw new TeamPlaceInviteCodeException.LengthException();
+        if (value.length() != LENGTH) {
+            throw new IllegalArgumentException("맞지 않는 길이입니다.");
         }
     }
 }
