@@ -1,5 +1,8 @@
 import { rest } from 'msw';
-import { teamPlaces as teamPlacesData } from '~/mocks/fixtures/team';
+import {
+  teamPlaces as teamPlacesData,
+  inviteTeams,
+} from '~/mocks/fixtures/team';
 
 const teamPlaces = [...teamPlacesData];
 export const teamHandlers = [
@@ -22,5 +25,27 @@ export const teamHandlers = [
     });
 
     return res(ctx.status(201), ctx.json({ teamPlaceId: newId }));
+  }),
+
+  // 팀플레이스 참가
+  rest.post('/api/me/team-places/:inviteCode', async (req, res, ctx) => {
+    const inviteCode = req.params.inviteCode;
+
+    const index = inviteTeams.findIndex(
+      (inviteTeam) => inviteTeam.inviteCode === inviteCode,
+    );
+
+    if (index === -1) return res(ctx.status(404));
+
+    teamPlaces.push({
+      id: inviteTeams[index].id,
+      displayName: inviteTeams[index].displayName,
+      teamPlaceColor: inviteTeams[index].teamPlaceColor,
+    });
+
+    return res(
+      ctx.status(201),
+      ctx.json({ teamPlaceId: inviteTeams[index].id }),
+    );
   }),
 ];

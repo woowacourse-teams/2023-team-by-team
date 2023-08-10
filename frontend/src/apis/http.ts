@@ -43,6 +43,10 @@ export const http = {
       throw new Error('유효한 사용자 정보가 아닙니다.');
     }
 
+    if (response.status === 404) {
+      throw response;
+    }
+
     if (!response.ok) {
       throw new Error('네트워크 통신 중 에러가 발생했습니다.');
     }
