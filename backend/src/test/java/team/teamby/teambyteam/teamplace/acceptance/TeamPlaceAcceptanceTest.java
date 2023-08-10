@@ -66,6 +66,43 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
                 softly.assertThat(response.body().asString()).contains("인증이 실패했습니다.");
             });
         }
+
+        @Test
+        @DisplayName("팀플레이스의 이름이 없으면 생성에 실패한다.")
+        void failWithBlankTeamPlaceName() {
+            // given
+            final Member ENDL = testFixtureBuilder.buildMember(MemberFixtures.ENDEL());
+            final String ENDL_TOKEN = jwtTokenProvider.generateAccessToken(ENDL.getEmail().getValue());
+            final String BLANK_NAME = "";
+            final TeamPlaceCreateRequest request = new TeamPlaceCreateRequest(BLANK_NAME);
+
+            // when
+            final ExtractableResponse<Response> response = CREATE_TEAM_PLACE(ENDL_TOKEN, request);
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+                softly.assertThat(response.body().asString()).contains("팀플레이스 이름이 있어야 합니다.");
+            });
+        }
+
+        @Test
+        @DisplayName("너무 긴 이름(30자 초과)의 팀플레이스는 생성할 수 없다.")
+        void failWithLongTeamPlaceName() {
+            final Member ENDL = testFixtureBuilder.buildMember(MemberFixtures.ENDEL());
+            final String ENDL_TOKEN = jwtTokenProvider.generateAccessToken(ENDL.getEmail().getValue());
+            final String BLANK_NAME = "a".repeat(31);
+            final TeamPlaceCreateRequest request = new TeamPlaceCreateRequest(BLANK_NAME);
+
+            // when
+            final ExtractableResponse<Response> response = CREATE_TEAM_PLACE(ENDL_TOKEN, request);
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+                softly.assertThat(response.body().asString()).contains("팀 플레이스 이름의 길이가 최대 이름 길이를 초과했습니다.");
+            });
+        }
     }
 
     @Nested
