@@ -48,7 +48,7 @@ const JoinPage = () => {
                 <Input
                   width="100%"
                   height="100%"
-                  placeholder="8자리 참여코드 입력"
+                  placeholder="8자리 초대코드 입력"
                   ref={inputRef}
                   value={inviteCode}
                   onChange={handleInviteCodeChange}
@@ -62,7 +62,7 @@ const JoinPage = () => {
             </S.InputContainer>
             <div>
               <Text as="span" weight="semiBold" css={S.explainText}>
-                참여코드가 없으신가요?
+                초대코드가 없으신가요?
               </Text>
               <Button
                 variant="plain"
