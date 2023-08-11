@@ -20,6 +20,16 @@ const color = {
   GRAY700: '#4e5968',
   GRAY800: '#333d4b',
   GRAY900: '#191f28',
+
+  BLUE100: '#d1ddff',
+  BLUE200: '#b9cbff',
+  BLUE300: '#a0c1fd',
+  BLUE400: '#8ba9ff',
+  BLUE500: '#5885f5',
+  BLUE600: '#2459e0',
+  BLUE700: '#193ecb',
+
+  TRANSPARENT_BLACK: '#777777aa',
 } as const;
 
 const teamColor = {
@@ -37,6 +47,7 @@ const teamColor = {
 } as const;
 
 const zIndex = {
+  LANDING_CARD: -1,
   MODAL: 1,
   MENU: 2,
   TOAST: 3,

@@ -1,9 +1,13 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Button from '~/components/common/Button/Button';
+import { fetchGoogleLogin } from '~/apis/auth';
 import { PATH_NAME } from '~/constants/routes';
 import * as S from './LandingPage.styled';
-import { fetchGoogleLogin } from '~/apis/auth';
-import { useEffect } from 'react';
+import Button from '~/components/common/Button/Button';
+import IntroCardPile from '~/components/landing/IntroCardPile/IntroCardPile';
+import Text from '~/components/common/Text/Text';
+import { LogoIcon } from '~/assets/svg';
+import { googleLogo } from '~/assets/png';
 import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
 
 const LandingPage = () => {
@@ -13,10 +17,6 @@ const LandingPage = () => {
     const { googleLoginUrl } = await fetchGoogleLogin();
 
     window.location.href = googleLoginUrl;
-  };
-
-  const handleNavigateClick = () => {
-    navigate(PATH_NAME.TEAM_SELECT);
   };
 
   useEffect(() => {
@@ -32,12 +32,44 @@ const LandingPage = () => {
       localStorage.removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
       return;
     }
-  }, []);
+  }, [navigate]);
 
   return (
     <S.Container>
-      <Button onClick={handleGoogleLogin}>구글 로그인</Button>
-      <Button onClick={handleNavigateClick}>팀바팀 이동하기</Button>
+      <S.SampleHeader>
+        <S.LandingPageLink to={PATH_NAME.LANDING}>
+          <LogoIcon />
+          <Text as="h1" css={S.headerTitle}>
+            팀바팀
+          </Text>
+        </S.LandingPageLink>
+      </S.SampleHeader>
+      <S.MainContainer>
+        <S.Main>
+          <Text as="h2" css={S.mainPrefix}>
+            쉽고 간단한 팀플 플랫폼,
+          </Text>
+          <Text as="h2" css={S.mainTitle}>
+            팀바팀
+          </Text>
+          <S.LoreTextContainer>
+            <Text css={S.mainLore}>팀 프로젝트의 모든 것을</Text>
+            <Text css={S.mainLore}>팀바팀으로 관리해보세요.</Text>
+          </S.LoreTextContainer>
+          <Button
+            type="button"
+            variant="plain"
+            css={S.googleLoginButton}
+            onClick={handleGoogleLogin}
+          >
+            <S.GoogleLoginButtonAppearance>
+              <S.GoogleLogo src={googleLogo} />
+              <Text css={S.googleLoginText}>Google 계정으로 로그인하기</Text>
+            </S.GoogleLoginButtonAppearance>
+          </Button>
+        </S.Main>
+      </S.MainContainer>
+      <IntroCardPile />
     </S.Container>
   );
 };
