@@ -4,7 +4,13 @@ import { ArrowLeftIcon, ArrowRightIcon } from '~/assets/svg';
 import { mousePointer } from '~/assets/png';
 import { CELL_COUNT } from '~/constants/landing';
 
-const TeamCalendarDecoration = () => {
+interface TeamCalendarDecorationProps {
+  animation?: boolean;
+}
+
+const TeamCalendarDecoration = (props: TeamCalendarDecorationProps) => {
+  const { animation = true } = props;
+
   return (
     <S.Container>
       <S.TeamBadge />
@@ -85,7 +91,7 @@ const TeamCalendarDecoration = () => {
           />
         </S.CalendarBarContainer>
       </S.CalendarContainer>
-      <S.MousePointer src={mousePointer} />
+      <S.MousePointer src={mousePointer} animation={animation} />
     </S.Container>
   );
 };

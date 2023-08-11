@@ -5,7 +5,12 @@ import FeedDecoration from '~/components/landing/FeedDecoration/FeedDecoration';
 import FileDriveDecoration from '~/components/landing/FileDriveDecoration/FileDriveDecoration';
 import { CARD_COUNT } from '~/constants/landing';
 
-const IntroCardPile = () => {
+interface IntroCardPileProps {
+  animation?: boolean;
+}
+
+const IntroCardPile = (props: IntroCardPileProps) => {
+  const { animation = true } = props;
   const [decorationNo, setDecorationNo] = useState(0);
   const blindRef = useRef<HTMLDivElement>(null);
 
@@ -15,11 +20,11 @@ const IntroCardPile = () => {
 
   return (
     <S.Container>
-      <S.Card css={S.card1} />
-      <S.Card css={S.card2} />
-      <S.Card css={S.card3}>
+      <S.Card css={S.card1(animation)} />
+      <S.Card css={S.card2(animation)} />
+      <S.Card css={S.card3(animation)}>
         {decorationNo === 0 ? (
-          <TeamCalendarDecoration />
+          <TeamCalendarDecoration animation={animation} />
         ) : decorationNo === 1 ? (
           <FeedDecoration />
         ) : (
@@ -27,6 +32,7 @@ const IntroCardPile = () => {
         )}
         <S.Blind
           ref={blindRef}
+          animation={animation}
           onAnimationIteration={handleAnimationIteration}
         />
       </S.Card>

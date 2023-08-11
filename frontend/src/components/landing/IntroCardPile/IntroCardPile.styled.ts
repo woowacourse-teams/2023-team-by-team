@@ -51,7 +51,6 @@ export const Card = styled.div<{ css: CSSProp }>`
   box-shadow: 0 20px 40px ${({ theme }) => theme.color.TRANSPARENT_BLACK};
 
   transform-origin: bottom right;
-  transform: rotate(-60deg);
 
   ${({ css }) => css}
 `;
@@ -69,7 +68,7 @@ const invertedFadeInOut = keyframes`
   }
 `;
 
-export const Blind = styled.div`
+export const Blind = styled.div<{ animation: boolean }>`
   position: absolute;
   top: 0;
   left: 0;
@@ -79,25 +78,52 @@ export const Blind = styled.div`
 
   background-color: ${({ theme }) => theme.color.BLUE100};
 
-  animation: ${invertedFadeInOut} 7s 2.5s infinite;
+  opacity: 0;
+
+  ${({ animation = true }) =>
+    animation &&
+    css`
+      opacity: 1;
+
+      animation: ${invertedFadeInOut} 7s 2.5s infinite;
+    `}
 `;
 
-export const card1 = css`
+export const card1 = (animation: boolean) => css`
   background-color: ${({ theme }) => theme.color.BLUE400};
 
-  animation: ${() => cardRotate('10deg')} 1.5s forwards;
+  ${animation
+    ? () => css`
+        transform: rotate(-60deg);
+        animation: ${() => cardRotate('10deg')} 1.5s forwards;
+      `
+    : () => css`
+        transform: rotate(10deg);
+      `}
 `;
 
-export const card2 = css`
+export const card2 = (animation: boolean) => css`
   background-color: ${({ theme }) => theme.color.BLUE200};
 
-  animation: ${() => cardRotate('17deg')} 1.5s forwards;
-  animation-delay: 0.3s;
+  ${animation
+    ? () => css`
+        transform: rotate(-60deg);
+        animation: ${() => cardRotate('17deg')} 1.5s forwards;
+      `
+    : () => css`
+        transform: rotate(17deg);
+      `}
 `;
 
-export const card3 = css`
+export const card3 = (animation: boolean) => css`
   background-color: ${({ theme }) => theme.color.BLUE100};
 
-  animation: ${() => cardRotate('24deg')} 1.5s forwards;
-  animation-delay: 0.6s;
+  ${animation
+    ? () => css`
+        transform: rotate(-60deg);
+        animation: ${cardRotate('24deg')} 1.5s 0.6s forwards;
+      `
+    : () => css`
+        transform: rotate(24deg);
+      `}
 `;

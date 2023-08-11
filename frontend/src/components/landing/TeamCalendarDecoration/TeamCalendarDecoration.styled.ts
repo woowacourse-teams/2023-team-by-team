@@ -124,7 +124,7 @@ const backAndForth = keyframes`
   }
 `;
 
-export const MousePointer = styled.img`
+export const MousePointer = styled.img<{ animation: boolean }>`
   position: absolute;
   top: 70%;
   left: 70%;
@@ -132,7 +132,12 @@ export const MousePointer = styled.img`
   width: 40px;
 
   opacity: 0;
-  animation: ${backAndForth} 7s infinite;
+
+  ${({ animation = true }) =>
+    animation &&
+    css`
+      animation: ${backAndForth} 7s infinite;
+    `};
 `;
 
 export const calendarHeaderText = css`
