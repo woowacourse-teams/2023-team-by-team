@@ -16,7 +16,7 @@ import java.util.Objects;
 @Getter
 public class Name {
 
-    private static final int MAX_LENGTH = 20;
+    public static final int MAX_LENGTH = 20;
 
     @Column(name = "name", nullable = false, length = MAX_LENGTH)
     private String value;
