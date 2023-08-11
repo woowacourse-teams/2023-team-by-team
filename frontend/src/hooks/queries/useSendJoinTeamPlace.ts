@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { sendTeamPlace } from '~/apis/team';
+import { sendJoinTeamPlace } from '~/apis/team';
 
-export const useSendTeamPlace = () => {
+export const useSendJoinTeamPlace = () => {
   const queryClient = useQueryClient();
   const { mutate } = useMutation(
-    (inviteCode: string) => sendTeamPlace(inviteCode),
+    (inviteCode: string) => sendJoinTeamPlace(inviteCode),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['teamPlaces']);
@@ -12,5 +12,5 @@ export const useSendTeamPlace = () => {
     },
   );
 
-  return { mutateSendTeamPlace: mutate };
+  return { mutateSendJoinTeamPlace: mutate };
 };

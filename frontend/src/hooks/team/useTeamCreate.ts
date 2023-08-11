@@ -7,14 +7,15 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
 import { PATH_NAME } from '~/constants/routes';
-import { useSendNewTeamPlace } from '~/hooks/queries/useSendNewTeamPlace';
+import { useSendCreateTeamPlace } from '~/hooks/queries/useSendCreateTeamPlace';
 import type { TeamInfo } from '~/types/team';
 
 export const useTeamCreate = (inputRef: RefObject<HTMLInputElement>) => {
   const [teamName, setTeamName] = useState('');
   const navigate = useNavigate();
 
-  const { mutateSendNewTeamPlace } = useSendNewTeamPlace();
+  const { mutateSendCreateTeamPlace: mutateSendNewTeamPlace } =
+    useSendCreateTeamPlace();
 
   const handleTeamNameChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setTeamName(() => e.target.value);

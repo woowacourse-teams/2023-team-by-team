@@ -7,10 +7,10 @@ export const fetchTeamPlaces = () => {
   }>('/api/me/team-places');
 };
 
-export const sendTeamPlace = (inviteCode: string) => {
+export const sendJoinTeamPlace = (inviteCode: string) => {
   return http.post(`/api/me/team-places/${inviteCode}`, {});
 };
 
-export const sendNewTeamPlace = (body: Pick<TeamInfo, 'name'>) => {
+export const sendCreateTeamPlace = (body: Pick<TeamInfo, 'name'>) => {
   return http.post('/api/team-places', body);
 };

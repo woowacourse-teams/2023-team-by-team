@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
 import { PATH_NAME } from '~/constants/routes';
 import { INVITE_CODE_LENGTH } from '~/constants/team';
-import { useSendTeamPlace } from '~/hooks/queries/useSendTeamPlace';
+import { useSendJoinTeamPlace } from '~/hooks/queries/useSendTeamPlace';
 import type { TeamInfo } from '~/types/team';
 
 export const useTeamJoin = (inputRef: RefObject<HTMLInputElement>) => {
@@ -19,7 +19,8 @@ export const useTeamJoin = (inputRef: RefObject<HTMLInputElement>) => {
   const [warningText, setWarningText] = useState('');
   const navigate = useNavigate();
 
-  const { mutateSendTeamPlace } = useSendTeamPlace();
+  const { mutateSendJoinTeamPlace: mutateSendTeamPlace } =
+    useSendJoinTeamPlace();
 
   const handleInviteCodeChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const { value: rawCode } = e.target;
