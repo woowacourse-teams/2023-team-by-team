@@ -12,22 +12,36 @@ export const Container = styled.div`
   height: 910px;
 
   transform-origin: bottom left;
+
   pointer-events: none;
+  z-index: ${({ theme }) => theme.zIndex.LANDING_CARD};
 
-  @media screen and (max-height: 900px) {
-    transform: scale(0.85);
+  @media screen and (max-height: 930px) {
+    transform: scale(0.9);
   }
 
-  @media screen and (max-height: 700px) {
-    transform: scale(0.75);
+  @media screen and (max-height: 780px) {
+    transform: scale(0.78);
   }
 
-  @media screen and (max-height: 650px) {
+  @media screen and (max-height: 710px) {
+    transform: scale(0.7);
+  }
+
+  @media screen and (max-height: 630px) {
     transform: scale(0.62);
   }
 
-  @media screen and (max-height: 550px) {
+  @media screen and (max-height: 510px) {
     transform: scale(0.5);
+  }
+
+  @media screen and (max-height: 440px) {
+    transform: scale(0.41);
+  }
+
+  @media screen and (max-height: 390px) {
+    transform: scale(0.35);
   }
 `;
 

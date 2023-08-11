@@ -55,6 +55,7 @@ export const GoogleLoginButtonAppearance = styled.div`
 
   border: 1px solid ${({ theme }) => theme.color.GRAY300};
   border-radius: 12px;
+  background-color: ${({ theme }) => theme.color.WHITE};
 
   box-shadow: 0 12px 20px ${({ theme }) => theme.color.GRAY300};
   transition: 0.25s;

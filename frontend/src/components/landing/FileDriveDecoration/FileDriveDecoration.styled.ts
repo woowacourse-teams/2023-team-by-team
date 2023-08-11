@@ -1,5 +1,4 @@
-import { styled, css, keyframes } from 'styled-components';
-import type { CSSProp } from 'styled-components';
+import { styled, keyframes } from 'styled-components';
 
 export const Container = styled.div`
   display: flex;

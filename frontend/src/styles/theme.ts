@@ -47,6 +47,7 @@ const teamColor = {
 } as const;
 
 const zIndex = {
+  LANDING_CARD: -1,
   MODAL: 1,
   MENU: 2,
   TOAST: 3,
