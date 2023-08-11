@@ -30,7 +30,7 @@ export const Main = styled.main`
   }
 `;
 
-export const Header = styled.header`
+export const SampleHeader = styled.header`
   height: 64px;
   padding: 8px;
 `;

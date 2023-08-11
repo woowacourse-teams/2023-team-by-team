@@ -36,14 +36,14 @@ const LandingPage = () => {
 
   return (
     <S.Container>
-      <S.Header>
+      <S.SampleHeader>
         <S.LandingPageLink to={PATH_NAME.LANDING}>
           <LogoIcon />
           <Text as="h1" css={S.headerTitle}>
             팀바팀
           </Text>
         </S.LandingPageLink>
-      </S.Header>
+      </S.SampleHeader>
       <S.MainContainer>
         <S.Main>
           <Text as="h2" css={S.mainPrefix}>
