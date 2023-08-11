@@ -3,6 +3,7 @@ import Text from '~/components/common/Text/Text';
 import { ArrowLeftIcon, ArrowRightIcon } from '~/assets/svg';
 import { mousePointer } from '~/assets/png';
 import { CELL_COUNT } from '~/constants/landing';
+import { parseDate } from '~/utils/parseDate';
 
 interface TeamCalendarDecorationProps {
   animation?: boolean;
@@ -10,13 +11,15 @@ interface TeamCalendarDecorationProps {
 
 const TeamCalendarDecoration = (props: TeamCalendarDecorationProps) => {
   const { animation = true } = props;
+  const { year, month } = parseDate(new Date());
+  const YYYYMM = `${year}-${String(month + 1).padStart(2, '0')}`;
 
   return (
     <S.Container>
       <S.TeamBadge />
       <S.CalendarHeaderContainer>
         <ArrowLeftIcon />
-        <Text css={S.calendarHeaderText}>2023-09</Text>
+        <Text css={S.calendarHeaderText}>{YYYYMM}</Text>
         <ArrowRightIcon />
       </S.CalendarHeaderContainer>
       <S.CalendarContainer>
