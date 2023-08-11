@@ -5,3 +5,8 @@ export interface TeamPlace {
   displayName: string;
   teamPlaceColor: TeamPlaceColor;
 }
+
+export interface TeamInfo {
+  teamPlaceId: number;
+  name: string;
+}

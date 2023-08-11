@@ -1,5 +1,9 @@
 import type { TeamPlace } from '~/types/team';
 
+interface InviteTeamPlace extends TeamPlace {
+  inviteCode: string;
+}
+
 export const teamPlaces: TeamPlace[] = [
   {
     id: 1,
@@ -50,5 +54,50 @@ export const teamPlaces: TeamPlace[] = [
     id: 10,
     displayName: '현대사회와 범죄 5조',
     teamPlaceColor: 9,
+  },
+];
+
+export const inviteTeams: InviteTeamPlace[] = [
+  {
+    id: 100,
+    displayName: '응애로이',
+    teamPlaceColor: 1,
+    inviteCode: 'aaaaaaaa',
+  },
+  {
+    id: 200,
+    displayName: '응애필립',
+    teamPlaceColor: 2,
+    inviteCode: 'bbbbbbbb',
+  },
+  {
+    id: 300,
+    displayName: '응애유스',
+    teamPlaceColor: 3,
+    inviteCode: 'ccccccccc',
+  },
+  {
+    id: 400,
+    displayName: '응애성하',
+    teamPlaceColor: 4,
+    inviteCode: 'dddddddd',
+  },
+  {
+    id: 500,
+    displayName: '응애엔델',
+    teamPlaceColor: 5,
+    inviteCode: 'eeeeeeee',
+  },
+  {
+    id: 600,
+    displayName: '응애요토',
+    teamPlaceColor: 6,
+    inviteCode: 'ffffffff',
+  },
+  {
+    id: 700,
+    displayName: '응애루루',
+    teamPlaceColor: 7,
+    inviteCode: 'gggggggg',
   },
 ];

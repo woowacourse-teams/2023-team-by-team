@@ -4,6 +4,7 @@ import { PATH_NAME } from '~/constants/routes';
 import * as S from './LandingPage.styled';
 import { fetchGoogleLogin } from '~/apis/auth';
 import { useEffect } from 'react';
+import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -19,8 +20,8 @@ const LandingPage = () => {
   };
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
-    const teamPlaceId = localStorage.getItem('teamPlaceId');
+    const accessToken = localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
+    const teamPlaceId = localStorage.getItem(LOCAL_STORAGE_KEY.TEAM_PLACE_ID);
 
     if (accessToken && teamPlaceId) {
       navigate(PATH_NAME.TEAM_SELECT);
@@ -28,7 +29,7 @@ const LandingPage = () => {
     }
 
     if (accessToken) {
-      localStorage.removeItem('accessToken');
+      localStorage.removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
       return;
     }
   }, []);
