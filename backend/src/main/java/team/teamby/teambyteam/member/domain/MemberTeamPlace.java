@@ -103,4 +103,20 @@ public class MemberTeamPlace extends BaseEntity {
     public void changeDisplayMemberName(final DisplayMemberName displayMemberName) {
         this.displayMemberName = displayMemberName;
     }
+
+    public Long findMemberId() {
+        return member.getId();
+    }
+
+    public String findMemberName() {
+        return member.getName().getValue();
+    }
+
+    public String findMemberProfileImageUrl() {
+       return member.getProfileImageUrl().getValue();
+    }
+
+    public Long findTeamPlaceId() {
+        return teamPlace.getId();
+    }
 }
