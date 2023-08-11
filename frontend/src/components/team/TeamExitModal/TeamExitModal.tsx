@@ -60,7 +60,7 @@ const TeamExitModal = () => {
                 취소
               </Button>
               <Button
-                disabled={teamName.length === 0}
+                disabled={teamName !== displayName}
                 css={S.exitConfirmButton}
               >
                 확인
