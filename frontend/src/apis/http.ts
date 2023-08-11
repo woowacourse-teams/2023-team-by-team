@@ -31,7 +31,7 @@ export const http = {
     return response.json();
   },
 
-  post: async <T>(url: RequestInfo | URL, body: unknown): Promise<T> => {
+  post: async (url: RequestInfo | URL, body: unknown) => {
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -56,7 +56,7 @@ export const http = {
       throw new Error('네트워크 통신 중 에러가 발생했습니다.');
     }
 
-    return response.json();
+    return response;
   },
 
   patch: async (url: RequestInfo | URL, body: unknown) => {

@@ -10,6 +10,7 @@ import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
 import { PATH_NAME } from '~/constants/routes';
 import { INVITE_CODE_LENGTH } from '~/constants/team';
 import { useSendTeamPlace } from '~/hooks/queries/useSendTeamPlace';
+import type { TeamInfo } from '~/types/team';
 
 export const useTeamJoin = (inputRef: RefObject<HTMLInputElement>) => {
   const [inviteCode, setInviteCode] = useState('');
@@ -49,10 +50,12 @@ export const useTeamJoin = (inputRef: RefObject<HTMLInputElement>) => {
     }
 
     mutateSendTeamPlace(inviteCode, {
-      onSuccess: (data) => {
+      onSuccess: async (data) => {
+        const response = await data.json();
+
         localStorage.setItem(
           LOCAL_STORAGE_KEY.TEAM_PLACE_ID,
-          String(data.teamPlaceId),
+          String(response.teamPlaceId as Pick<TeamInfo, 'teamPlaceId'>),
         );
         navigate(PATH_NAME.TEAM_SELECT);
       },

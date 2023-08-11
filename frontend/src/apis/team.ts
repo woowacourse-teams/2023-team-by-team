@@ -8,12 +8,9 @@ export const fetchTeamPlaces = () => {
 };
 
 export const sendTeamPlace = (inviteCode: string) => {
-  return http.post<Pick<TeamInfo, 'teamPlaceId'>>(
-    `/api/me/team-places/${inviteCode}`,
-    {},
-  );
+  return http.post(`/api/me/team-places/${inviteCode}`, {});
 };
 
 export const sendNewTeamPlace = (body: Pick<TeamInfo, 'name'>) => {
-  return http.post<Pick<TeamInfo, 'teamPlaceId'>>('/api/team-places', body);
+  return http.post('/api/team-places', body);
 };

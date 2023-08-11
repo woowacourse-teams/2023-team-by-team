@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
 import { PATH_NAME } from '~/constants/routes';
 import { useSendNewTeamPlace } from '~/hooks/queries/useSendNewTeamPlace';
+import type { TeamInfo } from '~/types/team';
 
 export const useTeamCreate = (inputRef: RefObject<HTMLInputElement>) => {
   const [teamName, setTeamName] = useState('');
@@ -31,10 +32,11 @@ export const useTeamCreate = (inputRef: RefObject<HTMLInputElement>) => {
     mutateSendNewTeamPlace(
       { name: teamName },
       {
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
+          const response = await data.json();
           localStorage.setItem(
             LOCAL_STORAGE_KEY.TEAM_PLACE_ID,
-            String(data.teamPlaceId),
+            String(response.teamPlaceId as Pick<TeamInfo, 'teamPlaceId'>),
           );
           navigate(PATH_NAME.TEAM_SELECT);
         },
