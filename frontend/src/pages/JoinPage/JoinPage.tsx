@@ -2,24 +2,28 @@ import Text from '~/components/common/Text/Text';
 import * as S from './JoinPage.styled';
 import Input from '~/components/common/Input/Input';
 import Button from '~/components/common/Button/Button';
-import {
-  type ChangeEventHandler,
-  type FormEventHandler,
-  type MouseEventHandler,
-  useRef,
-  useState,
-  useEffect,
-} from 'react';
+import { useRef, useEffect } from 'react';
 import { PATH_NAME } from '~/constants/routes';
 import { useNavigate } from 'react-router-dom';
+import { useTeamJoin } from '~/hooks/team/useTeamJoin';
 
 const JoinPage = () => {
-  const [inviteCode, setInviteCode] = useState('');
-  const [isClicked, setIsClicked] = useState(false);
-  const [isRequired, setIsRequired] = useState(true);
-  const inputRef = useRef<HTMLInputElement>(null);
   const ref = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+
+  const {
+    inviteCode,
+    isClicked,
+    isRequired,
+    warningText,
+
+    handlers: {
+      handleInviteCodeChange,
+      handleTeamNameSubmit,
+      handleCreatePageClicked,
+    },
+  } = useTeamJoin(inputRef);
 
   useEffect(() => {
     if (!isClicked || ref.current === null) {
@@ -31,26 +35,6 @@ const JoinPage = () => {
     });
   }, [isClicked]);
 
-  const handleInviteCodeChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setInviteCode(() => e.target.value);
-  };
-
-  const handleTeamNameSubmit: FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-
-    alert(inviteCode);
-    inputRef.current?.focus();
-
-    return;
-  };
-
-  const handleCreatePageClicked: MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.preventDefault();
-
-    setIsRequired(() => false);
-    setIsClicked(() => true);
-  };
-
   return (
     <S.Container>
       <S.InnerContainer ref={ref} isLinkClicked={isClicked}>
@@ -59,18 +43,23 @@ const JoinPage = () => {
         </Text>
         <S.InviteCodeForm onSubmit={handleTeamNameSubmit}>
           <S.BodyContainer>
-            <S.InputWrapper>
-              <Input
-                width="100%"
-                height="100%"
-                placeholder="팀 이름 입력"
-                ref={inputRef}
-                value={inviteCode}
-                onChange={handleInviteCodeChange}
-                css={S.inputTitle}
-                required={isRequired}
-              />
-            </S.InputWrapper>
+            <S.InputContainer>
+              <S.InputWrapper>
+                <Input
+                  width="100%"
+                  height="100%"
+                  placeholder="8자리 참여코드 입력"
+                  ref={inputRef}
+                  value={inviteCode}
+                  onChange={handleInviteCodeChange}
+                  css={S.inputTitle}
+                  required={isRequired}
+                />
+              </S.InputWrapper>
+              <Text size="sm" weight="semiBold" css={S.warningText}>
+                {warningText}
+              </Text>
+            </S.InputContainer>
             <div>
               <Text as="span" weight="semiBold" css={S.explainText}>
                 참여코드가 없으신가요?
@@ -85,7 +74,11 @@ const JoinPage = () => {
               </Button>
             </div>
           </S.BodyContainer>
-          <Button css={S.submitButton} aria-label="팀 참가">
+          <Button
+            css={S.submitButton}
+            disabled={inviteCode.length < 8}
+            aria-label="팀 참가"
+          >
             팀 참가
           </Button>
         </S.InviteCodeForm>

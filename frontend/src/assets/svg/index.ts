@@ -20,3 +20,4 @@ export { ReactComponent as WriteIcon } from './write.svg';
 export { ReactComponent as ArrowUpIcon } from './arrow-up.svg';
 export { ReactComponent as ExitIcon } from './exit.svg';
 export { ReactComponent as LogoutIcon } from './logout.svg';
+export { ReactComponent as TeamAddIcon } from './team-add.svg';

@@ -1,33 +1,17 @@
 import Text from '~/components/common/Text/Text';
 import * as S from './CreatePage.styled';
 import Input from '~/components/common/Input/Input';
-import {
-  type ChangeEventHandler,
-  type FormEventHandler,
-  useState,
-  useRef,
-} from 'react';
+import { useRef } from 'react';
 import Button from '~/components/common/Button/Button';
+import { useTeamCreate } from '~/hooks/team/useTeamCreate';
 
 const CreatePage = () => {
-  const [teamName, setTeamName] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
+  const {
+    teamName,
 
-  const handleTeamNameChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setTeamName(() => e.target.value);
-  };
-
-  const handleTeamNameSubmit: FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-
-    const isRightName = confirm(`"${teamName}"으로 팀을 생성하시겠습니까?`);
-
-    if (!isRightName) {
-      inputRef.current?.focus();
-      return;
-    }
-    alert(teamName);
-  };
+    handlers: { handleTeamNameChange, handleTeamNameSubmit },
+  } = useTeamCreate(inputRef);
 
   return (
     <S.Container>
