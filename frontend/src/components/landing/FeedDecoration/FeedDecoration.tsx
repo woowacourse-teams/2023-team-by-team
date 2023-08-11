@@ -1,0 +1,30 @@
+import * as S from './FeedDecoration.styled';
+import { ArrowUpIcon, WriteIcon } from '~/assets/svg';
+
+const FeedDecoration = () => {
+  return (
+    <S.Container>
+      <S.TeamBadge />
+      <S.Thread css={S.thread1}>
+        <S.WritingLine width="85%" delay="2s" color="dark" />
+        <S.WritingLine width="55%" delay="2.3s" color="dark" />
+        <S.WritingLine width="60%" delay="2.6s" color="dark" />
+      </S.Thread>
+      <S.Thread css={S.thread2}>
+        <S.WritingLine width="70%" delay="2.3s" color="dark" />
+        <S.WritingLine width="30%" delay="2.6s" color="dark" />
+      </S.Thread>
+      <S.Thread css={S.thread3} />
+      <S.CircleButtonsContainer>
+        <S.CircleButton>
+          <ArrowUpIcon />
+        </S.CircleButton>
+        <S.CircleButton>
+          <WriteIcon />
+        </S.CircleButton>
+      </S.CircleButtonsContainer>
+    </S.Container>
+  );
+};
+
+export default FeedDecoration;
