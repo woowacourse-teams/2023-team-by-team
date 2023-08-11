@@ -34,10 +34,11 @@ export const useTeamCreate = (inputRef: RefObject<HTMLInputElement>) => {
       { name: teamName },
       {
         onSuccess: async (data) => {
-          const response = await data.json();
+          const response: { teamPlaceId: Pick<TeamInfo, 'teamPlaceId'> } =
+            await data.json();
           localStorage.setItem(
             LOCAL_STORAGE_KEY.TEAM_PLACE_ID,
-            String(response.teamPlaceId as Pick<TeamInfo, 'teamPlaceId'>),
+            String(response.teamPlaceId),
           );
           navigate(PATH_NAME.TEAM_SELECT);
         },

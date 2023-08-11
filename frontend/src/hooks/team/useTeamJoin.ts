@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
 import { PATH_NAME } from '~/constants/routes';
 import { INVITE_CODE_LENGTH } from '~/constants/team';
-import { useSendJoinTeamPlace } from '~/hooks/queries/useSendTeamPlace';
+import { useSendJoinTeamPlace } from '~/hooks/queries/useSendJoinTeamPlace';
 import type { TeamInfo } from '~/types/team';
 
 export const useTeamJoin = (inputRef: RefObject<HTMLInputElement>) => {
@@ -52,11 +52,12 @@ export const useTeamJoin = (inputRef: RefObject<HTMLInputElement>) => {
 
     mutateSendTeamPlace(inviteCode, {
       onSuccess: async (data) => {
-        const response = await data.json();
+        const response: { teamPlaceId: Pick<TeamInfo, 'teamPlaceId'> } =
+          await data.json();
 
         localStorage.setItem(
           LOCAL_STORAGE_KEY.TEAM_PLACE_ID,
-          String(response.teamPlaceId as Pick<TeamInfo, 'teamPlaceId'>),
+          String(response.teamPlaceId),
         );
         navigate(PATH_NAME.TEAM_SELECT);
       },
