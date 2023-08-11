@@ -1,79 +1,36 @@
-import { useModal } from '~/hooks/useModal';
 import * as S from './TeamLinkAddModal.styled';
 import Modal from '~/components/common/Modal/Modal';
 import Button from '~/components/common/Button/Button';
 import { CloseIcon } from '~/assets/svg';
 import Text from '~/components/common/Text/Text';
 import Input from '~/components/common/Input/Input';
-import {
-  type ChangeEventHandler,
-  type FormEventHandler,
-  useState,
-  useRef,
-} from 'react';
-import { useToast } from '~/hooks/useToast';
-import { useSendTeamLink } from '~/hooks/queries/useSendTeamLink';
-import { useTeamPlace } from '~/hooks/useTeamPlace';
-
-const URL_REGEX =
-  /*eslint-disable-next-line*/
-  /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i;
+import { useRef } from 'react';
+import { useTeamLinkAddModal } from '~/hooks/link/useTeamLinkAddModal';
 
 const TeamLinkAddModal = () => {
-  const { teamPlaceId } = useTeamPlace();
-  const { closeModal } = useModal();
-  const [linkName, setLinkName] = useState('');
-  const [link, setLink] = useState('');
   const linkRef = useRef<HTMLInputElement>(null);
-  const { showToast } = useToast();
-  const { mutateSendTeamLink } = useSendTeamLink(teamPlaceId);
 
-  const handleLinkNameChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const { value } = e.target;
+  const {
+    linkName,
+    link,
 
-    setLinkName(() => value);
-  };
-
-  const handleLinkChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const { value } = e.target;
-
-    setLink(() => value);
-  };
-
-  const handleTeamLinkSubmit: FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-
-    if (!URL_REGEX.test(link)) {
-      showToast('error', '올바르지 않은 링크 형식입니다.');
-      linkRef.current?.focus();
-      return;
-    }
-
-    mutateSendTeamLink(
-      {
-        title: linkName,
-        url: link,
-      },
-      {
-        onSuccess: () => {
-          showToast('success', '링크가 등록되었습니다.');
-          setLinkName(() => '');
-          setLink(() => '');
-          closeModal();
-        },
-      },
-    );
-  };
+    handlers: {
+      handleClose,
+      handleTeamLinkSubmit,
+      handleLinkNameChange,
+      handleLinkChange,
+    },
+  } = useTeamLinkAddModal(linkRef);
 
   return (
     <Modal>
-      <S.Backdrop onClick={closeModal} />
+      <S.Backdrop onClick={handleClose} />
       <S.Container>
         <S.IconWrapper>
           <Button
             variant="plain"
             type="button"
-            onClick={closeModal}
+            onClick={handleClose}
             css={S.closeButton}
             aria-label="팀 링크 등록 모달 닫기"
           >
