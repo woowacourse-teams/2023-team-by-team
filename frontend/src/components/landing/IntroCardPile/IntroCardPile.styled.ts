@@ -122,7 +122,7 @@ export const card2 = (animation: boolean) => css`
   ${animation
     ? () => css`
         transform: rotate(-60deg);
-        animation: ${() => cardRotate('17deg')} 1.5s forwards;
+        animation: ${() => cardRotate('17deg')} 1.5s 0.3s forwards;
       `
     : () => css`
         transform: rotate(17deg);

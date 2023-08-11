@@ -6,13 +6,13 @@ const FeedDecoration = () => {
     <S.Container>
       <S.TeamBadge />
       <S.Thread css={S.thread1}>
-        <S.WritingLine width="85%" delay="2s" color="dark" />
-        <S.WritingLine width="55%" delay="2.3s" color="dark" />
-        <S.WritingLine width="60%" delay="2.6s" color="dark" />
+        <S.WritingLine width="85%" delay="1s" color="dark" />
+        <S.WritingLine width="55%" delay="1.3s" color="dark" />
+        <S.WritingLine width="60%" delay="1.6s" color="dark" />
       </S.Thread>
       <S.Thread css={S.thread2}>
-        <S.WritingLine width="70%" delay="2.3s" color="dark" />
-        <S.WritingLine width="30%" delay="2.6s" color="dark" />
+        <S.WritingLine width="70%" delay="2.8s" color="dark" />
+        <S.WritingLine width="30%" delay="3.1s" color="dark" />
       </S.Thread>
       <S.Thread css={S.thread3} />
       <S.CircleButtonsContainer>

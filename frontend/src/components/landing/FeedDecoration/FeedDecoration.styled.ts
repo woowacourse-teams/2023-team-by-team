@@ -78,7 +78,7 @@ export const WritingLine = styled.div<{
   background-color: ${({ color, theme }) =>
     color === 'dark' ? theme.color.BLUE500 : theme.color.BLUE600};
 
-  animation: ${({ width }) => fillToRightAnimation(width)} 1.2s forwards;
+  animation: ${({ width }) => fillToRightAnimation(width)} 2.5s forwards;
   animation-delay: ${({ delay }) => delay};
 `;
 
