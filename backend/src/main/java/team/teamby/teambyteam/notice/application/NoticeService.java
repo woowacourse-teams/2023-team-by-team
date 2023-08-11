@@ -63,7 +63,8 @@ public class NoticeService {
     }
 
     private NoticeResponse mapToNoticeResponse(final Notice notice) {
-        final MemberTeamPlace memberTeamPlace = memberTeamPlaceRepository.findById(notice.getAuthorId())
+        final MemberTeamPlace memberTeamPlace = memberTeamPlaceRepository
+                .findByTeamPlaceIdAndMemberId(notice.getTeamPlaceId(), notice.getAuthorId())
                 .orElse(MemberTeamPlace.UNKNOWN_MEMBER_TEAM_PLACE);
         return NoticeResponse.of(notice, memberTeamPlace);
     }

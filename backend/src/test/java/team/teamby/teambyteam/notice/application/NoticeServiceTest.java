@@ -126,6 +126,8 @@ class NoticeServiceTest extends ServiceTest {
             SoftAssertions.assertSoftly(softly -> {
                 softly.assertThat(noticeResponse).isPresent();
                 softly.assertThat(noticeResponse.get().content()).isEqualTo("3rdNotice");
+                softly.assertThat(noticeResponse.get().authorId()).isEqualTo(member.getId());
+                softly.assertThat(noticeResponse.get().authorName()).isEqualTo(memberTeamPlace.getDisplayMemberName().getValue());
             });
         }
 
