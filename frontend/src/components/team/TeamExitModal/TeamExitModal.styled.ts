@@ -50,13 +50,7 @@ export const ButtonContainer = styled.div`
   margin-left: auto;
 `;
 
-export const exitContent = css`
-  font-size: 18px;
-`;
-
 export const strongContent = css`
-  font-size: 18px;
-  font-weight: 600;
   text-decoration: underline;
 `;
 
