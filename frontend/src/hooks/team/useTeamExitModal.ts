@@ -42,12 +42,11 @@ const useTeamExitModal = () => {
     mutateDeleteTeamPlace(undefined, {
       onSuccess: () => {
         resetTeamPlace();
-        setTeamName(() => '');
+        handleClose();
         showToast('success', '팀 탈퇴가 완료되었습니다.');
-        closeModal();
 
         if (teamPlaces.length === 1) {
-          navigate(PATH_NAME.LANDING);
+          navigate(PATH_NAME.START);
           return;
         }
 
@@ -63,6 +62,7 @@ const useTeamExitModal = () => {
 
   return {
     teamName,
+    displayName,
 
     handlers: {
       handleTeamNameChange,

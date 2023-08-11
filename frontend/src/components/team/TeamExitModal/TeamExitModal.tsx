@@ -10,6 +10,8 @@ import * as S from './TeamExitModal.styled';
 const TeamExitModal = () => {
   const {
     teamName,
+    displayName,
+
     handlers: { handleTeamNameChange, handleSubmit, handleClose },
   } = useTeamExitModal();
 
@@ -45,7 +47,7 @@ const TeamExitModal = () => {
               <Input
                 width="340px"
                 height="40px"
-                placeholder="팀 이름을 입력해주세요."
+                placeholder={displayName}
                 css={S.teamNameInput}
                 autoFocus
                 required
