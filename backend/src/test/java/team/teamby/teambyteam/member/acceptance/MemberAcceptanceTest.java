@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import team.teamby.teambyteam.common.AcceptanceTest;
 import team.teamby.teambyteam.common.fixtures.MemberFixtures;
 import team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures;
+import team.teamby.teambyteam.common.fixtures.TokenFixtures;
 import team.teamby.teambyteam.member.application.dto.TeamPlacesResponse;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceParticipantResponse;
@@ -19,10 +20,52 @@ import team.teamby.teambyteam.teamplace.domain.vo.InviteCode;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptanceFixture.DELETE_LEAVE_TEAM_PLACE;
+import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptanceFixture.GET_MY_INFORMATION;
 import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptanceFixture.GET_PARTICIPATED_TEAM_PLACES;
 import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptanceFixture.PARTICIPATE_TEAM_PLACE_REQUEST;
 
 public class MemberAcceptanceTest extends AcceptanceTest {
+
+
+    @Nested
+    @DisplayName("내 정보 조회시")
+    class GetMyInformation {
+
+        @Test
+        @DisplayName("내 정보 조회에 성공한다.")
+        void success() {
+            // given
+            final Member AUTHORIZED_MEMBER = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
+            final String TOKEN = jwtTokenProvider.generateAccessToken(AUTHORIZED_MEMBER.getEmail().getValue());
+
+            // when
+            final ExtractableResponse<Response> response = GET_MY_INFORMATION(TOKEN);
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+                softly.assertThat(response.jsonPath().getLong("id")).isEqualTo(AUTHORIZED_MEMBER.getId());
+                softly.assertThat(response.jsonPath().getString("name")).isEqualTo(AUTHORIZED_MEMBER.getName().getValue());
+                softly.assertThat(response.jsonPath().getString("profileImageUrl")).isEqualTo(AUTHORIZED_MEMBER.getProfileImageUrl().getValue());
+                softly.assertThat(response.jsonPath().getString("email")).isEqualTo(AUTHORIZED_MEMBER.getEmail().getValue());
+            });
+        }
+
+        @Test
+        @DisplayName("인증되지 않은 사용자의 요청에서 실패한다.")
+        void failWithUnauthorizedMember() {
+            // given
+
+            // when
+            final ExtractableResponse<Response> response = GET_MY_INFORMATION(TokenFixtures.MALFORMED_JWT_TOKEN);
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+                softly.assertThat(response.body().asString()).contains("인증이 실패했습니다.");
+            });
+        }
+    }
 
     @Nested
     @DisplayName("사용자가 소속된 팀플레이스들의 정보를 조회시")
