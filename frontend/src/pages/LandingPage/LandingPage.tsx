@@ -8,7 +8,6 @@ import IntroCardPile from '~/components/landing/IntroCardPile/IntroCardPile';
 import Text from '~/components/common/Text/Text';
 import { LogoIcon } from '~/assets/svg';
 import { googleLogo } from '~/assets/png';
-import { fetchGoogleLogin } from '~/apis/auth';
 import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
 
 const LandingPage = () => {
