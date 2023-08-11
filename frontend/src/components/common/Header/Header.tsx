@@ -22,6 +22,11 @@ const Header = () => {
 
   const handleTeamNameChange = useCallback(
     (value: string) => {
+      if (value === '') {
+        setTeamName(() => '');
+        return;
+      }
+
       const newTeamPlace = teamPlaces.find(
         (teamPlace) => teamPlace.displayName === value,
       );
@@ -32,8 +37,10 @@ const Header = () => {
 
       changeTeamPlace(newTeamPlace.id);
       setTeamName(() => value);
-      if (location.pathname !== PATH_NAME.TEAM_FEED)
+
+      if (location.pathname !== PATH_NAME.TEAM_FEED) {
         navigate(PATH_NAME.TEAM_CALENDAR);
+      }
     },
     /*eslint-disable-next-line*/
     [changeTeamPlace, teamPlaces],

@@ -7,6 +7,10 @@ export const fetchTeamPlaces = () => {
   }>('/api/me/team-places');
 };
 
+export const deleteTeamPlace = (teamPlaceId: number) => {
+  return http.delete(`/api/me/team-places/${teamPlaceId}`);
+};
+
 export const sendJoinTeamPlace = (inviteCode: string) => {
   return http.post(`/api/me/team-places/${inviteCode}`, {});
 };
