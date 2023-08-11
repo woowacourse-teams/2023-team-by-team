@@ -21,15 +21,20 @@ export const useTeamJoin = (inputRef: RefObject<HTMLInputElement>) => {
   const { mutateSendTeamPlace } = useSendTeamPlace();
 
   const handleInviteCodeChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const { value } = e.target;
-    const code = value.replace(/[^A-Za-z0-9]/g, '');
+    const { value: rawCode } = e.target;
+    const code = rawCode.replace(/[^A-z0-9]/g, '');
 
-    if (value.length !== code.length)
-      setWarningText('영어 대,소문자와 숫자만 입력 가능합니다.');
-    if (value.length === code.length) setWarningText(() => '');
+    if (rawCode.length !== code.length) {
+      setWarningText(() => '영어 대,소문자와 숫자만 입력 가능합니다.');
+    }
 
-    if (code.length > INVITE_CODE_LENGTH)
+    if (rawCode.length === code.length) {
+      setWarningText(() => '');
+    }
+
+    if (code.length > INVITE_CODE_LENGTH) {
       setWarningText(() => '참여코드는 8자리입니다.');
+    }
 
     setInviteCode(() => code.slice(0, INVITE_CODE_LENGTH));
   };

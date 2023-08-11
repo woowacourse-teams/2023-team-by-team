@@ -48,7 +48,7 @@ const JoinPage = () => {
                 <Input
                   width="100%"
                   height="100%"
-                  placeholder="참여코드 입력"
+                  placeholder="8자리 참여코드 입력"
                   ref={inputRef}
                   value={inviteCode}
                   onChange={handleInviteCodeChange}
