@@ -39,9 +39,12 @@ public class GoogleOAuthService {
         final String email = extractElementFromToken(googleIdToken, "email");
         final String rawName = extractElementFromToken(googleIdToken, "name");
         final String picture = extractElementFromToken(googleIdToken, "picture");
-        final String substringName = rawName.substring(NAME_BEGIN_INDEX, Name.MAX_LENGTH);
 
-        return new OAuthMember(email, substringName, picture);
+        if (rawName.length() > Name.MAX_LENGTH) {
+            final String substringName = rawName.substring(NAME_BEGIN_INDEX, Name.MAX_LENGTH);
+            return new OAuthMember(email, substringName, picture);
+        }
+        return new OAuthMember(email, rawName, picture);
     }
 
     private void createMemberIfNotExist(final OAuthMember oAuthMember) {
