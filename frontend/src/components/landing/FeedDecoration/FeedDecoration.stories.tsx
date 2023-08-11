@@ -2,10 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 import FeedDecoration from './FeedDecoration';
 
 /**
- * `FileDriveDecoration` 컴포넌트는 랜딩 페이지의 부속품에 해당하는 컴포넌트로,
- *
- * 여러 장의 카드를 이용하여 팀바팀 서비스의 간략화된 UI를 미리 보여줍니다.
- *
+ * `FeedDecoration` 컴포넌트는 랜딩 페이지의 장식 컴포넌트인 `IntroCardPile` 의 두 번째 장면 해당하는 컴포넌트입니다.
+ * **팀 피드**에 대한 모형을 애니메이션과 함께 보여줍니다.
  */
 const meta = {
   title: 'landing/FeedDecoration',

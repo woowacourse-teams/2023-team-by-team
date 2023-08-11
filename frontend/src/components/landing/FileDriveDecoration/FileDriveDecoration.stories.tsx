@@ -2,9 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react';
 import FileDriveDecoration from './FileDriveDecoration';
 
 /**
- * `FileDriveDecoration` 컴포넌트는 랜딩 페이지의 부속품에 해당하는 컴포넌트로,
- *
- * 여러 장의 카드를 이용하여 팀바팀 서비스의 간략화된 UI를 미리 보여줍니다.
+ * `FileDriveDecoration` 컴포넌트는 랜딩 페이지의 장식 컴포넌트인 `IntroCardPile` 의 세 번째 장면 해당하는 컴포넌트입니다.
+ * **팀 드라이브**에 대한 모형을 애니메이션과 함께 보여줍니다.
+ * 이 컴포넌트를 작성하는 시점에서, 팀 드라이브의 UI는 구상이 되어 있지 않았기에, 추후 구상이 완료될 경우 이 UI는 바뀔 수도 있습니다.
  */
 const meta = {
   title: 'landing/FileDriveDecoration',

@@ -3,8 +3,8 @@ import IntroCardPile from './IntroCardPile';
 
 /**
  * `IntroCardPile` 컴포넌트는 랜딩 페이지의 부속품에 해당하는 컴포넌트로,
- *
  * 여러 장의 카드를 이용하여 팀바팀 서비스의 간략화된 UI를 미리 보여줍니다.
+ * 랜딩 페이지의 왼쪽에 배치하여 메인 디자인 요소로 사용될 것입니다.
  */
 const meta = {
   title: 'landing/IntroCardPile',

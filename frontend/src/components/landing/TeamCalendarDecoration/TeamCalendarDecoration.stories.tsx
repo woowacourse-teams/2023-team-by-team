@@ -2,10 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 import TeamCalendarDecoration from './TeamCalendarDecoration';
 
 /**
- * `FileDriveDecoration` 컴포넌트는 랜딩 페이지의 부속품에 해당하는 컴포넌트로,
- *
- * 여러 장의 카드를 이용하여 팀바팀 서비스의 간략화된 UI를 미리 보여줍니다.
- *
+ * `TeamCalendarDecoration` 컴포넌트는 랜딩 페이지의 장식 컴포넌트인 `IntroCardPile` 의 첫 번째 장면 해당하는 컴포넌트입니다.
+ * **팀 캘린더**에 대한 모형을 애니메이션과 함께 보여줍니다.
  */
 const meta = {
   title: 'landing/TeamCalendarDecoration',
@@ -39,4 +37,17 @@ type Story = StoryObj<typeof meta>;
  */
 export const Default: Story = {
   args: {},
+};
+
+/**
+ * 이 옵션은 이 컴포넌트가 주목을 끌어서는 안 되는 페이지에 사용하기에 적합합니다.
+ * 랜딩 페이지를 제외한 페이지에서는 이 옵션이 사용될 것입니다.
+ *
+ * 참고로, 다른 `IntroCardPile` 의 장면들의 경우 이 옵션이 없는데,
+ * 이는 `IntroCardPile` 에서 애니메이션을 보여주지 않는 옵션이 켜졌을 경우 다른 장면들은 랜더링될 일이 없기 때문입니다.
+ */
+export const NoAnimation: Story = {
+  args: {
+    animation: false,
+  },
 };
