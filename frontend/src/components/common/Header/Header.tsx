@@ -7,10 +7,16 @@ import { useTeamPlace } from '~/hooks/useTeamPlace';
 import TeamPlaceMenu from '~/components/team/TeamPlaceMenu/TeamPlaceMenu';
 import { PATH_NAME } from '~/constants/routes';
 import Button from '~/components/common/Button/Button';
+import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
 
 const Header = () => {
-  const { teamPlaces, changeTeamPlace, teamPlaceColor, displayName } =
-    useTeamPlace();
+  const {
+    teamPlaces,
+    teamPlaceId,
+    changeTeamPlace,
+    teamPlaceColor,
+    displayName,
+  } = useTeamPlace();
   const navigate = useNavigate();
   const [teamName, setTeamName] = useState(displayName ?? '');
 
@@ -34,8 +40,12 @@ const Header = () => {
   );
 
   useEffect(() => {
+    const id = localStorage.getItem(LOCAL_STORAGE_KEY.TEAM_PLACE_ID);
+
+    if (teamPlaceId !== Number(id)) return;
+
     handleTeamNameChange(displayName);
-  }, [handleTeamNameChange, displayName]);
+  }, [handleTeamNameChange, displayName, teamPlaceId]);
 
   const handleLogoutClick = () => {
     const isLogout = confirm('로그아웃 하시겠습니까?');
@@ -43,8 +53,8 @@ const Header = () => {
     if (!isLogout) return;
 
     alert('로그아웃 되었습니다.');
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('teamPlaceId');
+    localStorage.removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
+    localStorage.removeItem(LOCAL_STORAGE_KEY.TEAM_PLACE_ID);
 
     navigate(PATH_NAME.LANDING);
   };
