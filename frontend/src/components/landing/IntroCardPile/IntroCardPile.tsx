@@ -3,13 +3,14 @@ import * as S from './IntroCardPile.styled';
 import TeamCalendarDecoration from '../TeamCalendarDecoration/TeamCalendarDecoration';
 import FeedDecoration from '~/components/landing/FeedDecoration/FeedDecoration';
 import FileDriveDecoration from '~/components/landing/FileDriveDecoration/FileDriveDecoration';
+import { CARD_COUNT } from '~/constants/landing';
 
 const IntroCardPile = () => {
   const [decorationNo, setDecorationNo] = useState(0);
   const blindRef = useRef<HTMLDivElement>(null);
 
   const handleAnimationIteration = () => {
-    setDecorationNo((prev) => (prev + 1) % 3);
+    setDecorationNo((prev) => (prev + 1) % CARD_COUNT);
   };
 
   return (

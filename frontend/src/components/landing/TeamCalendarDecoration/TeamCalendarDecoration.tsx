@@ -2,8 +2,7 @@ import * as S from './TeamCalendarDecoration.styled';
 import Text from '~/components/common/Text/Text';
 import { ArrowLeftIcon, ArrowRightIcon } from '~/assets/svg';
 import { mousePointer } from '~/assets/png';
-
-const CELL_COUNT = 42;
+import { CELL_COUNT } from '~/constants/landing';
 
 const TeamCalendarDecoration = () => {
   return (
