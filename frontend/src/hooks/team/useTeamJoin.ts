@@ -35,7 +35,7 @@ export const useTeamJoin = (inputRef: RefObject<HTMLInputElement>) => {
     }
 
     if (code.length > INVITE_CODE_LENGTH) {
-      setWarningText(() => '참여코드는 8자리입니다.');
+      setWarningText(() => '초대코드는 8자리입니다.');
     }
 
     setInviteCode(() => code.slice(0, INVITE_CODE_LENGTH));
