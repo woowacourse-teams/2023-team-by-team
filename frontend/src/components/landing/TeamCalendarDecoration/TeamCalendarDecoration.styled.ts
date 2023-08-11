@@ -10,7 +10,7 @@ export const Container = styled.div`
   padding: 50px;
 `;
 
-export const TeamBadge = styled.div`
+export const SampleBadge = styled.div`
   width: 36px;
   height: 36px;
 
@@ -45,7 +45,7 @@ export const CalendarTable = styled.div`
   height: 100%;
 `;
 
-export const CalendarBarContainer = styled.div`
+export const SampleCalendarBarContainer = styled.div`
   position: absolute;
   top: 0;
   left: 0;
@@ -54,7 +54,7 @@ export const CalendarBarContainer = styled.div`
   height: 100%;
 `;
 
-export const CalendarBar = styled.div<{
+export const SampleCalendarBar = styled.div<{
   row: number;
   column: number;
   length: number;

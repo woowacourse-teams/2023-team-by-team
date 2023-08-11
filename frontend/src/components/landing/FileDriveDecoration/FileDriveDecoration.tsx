@@ -4,7 +4,7 @@ import { FolderOpenIcon } from '~/assets/svg';
 const FileDriveDecoration = () => {
   return (
     <S.Container>
-      <S.TeamBadge />
+      <S.SampleBadge />
       <FolderOpenIcon />
       <S.WritingLinesContainer>
         <S.WritingLine width="46%" delay="0s" />

@@ -10,7 +10,7 @@ export const Container = styled.div`
   padding: 50px;
 `;
 
-export const TeamBadge = styled.div`
+export const SampleBadge = styled.div`
   width: 36px;
   height: 36px;
 

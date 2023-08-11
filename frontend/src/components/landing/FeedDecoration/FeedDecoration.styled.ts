@@ -11,7 +11,7 @@ export const Container = styled.div`
   padding: 50px;
 `;
 
-export const TeamBadge = styled.div`
+export const SampleBadge = styled.div`
   width: 36px;
   height: 36px;
 
@@ -19,7 +19,7 @@ export const TeamBadge = styled.div`
   background-color: ${({ theme }) => theme.color.BLUE600};
 `;
 
-export const Thread = styled.div<{ css: CSSProp }>`
+export const SampleThread = styled.div<{ css: CSSProp }>`
   display: flex;
   flex-direction: column;
   row-gap: 12px;
@@ -57,7 +57,7 @@ export const CircleButton = styled.div`
   }
 `;
 
-const fillToRightAnimation = (width: string) => keyframes`
+const fillToRight = (width: string) => keyframes`
   from {
     width: 0;
   }
@@ -78,23 +78,23 @@ export const WritingLine = styled.div<{
   background-color: ${({ color, theme }) =>
     color === 'dark' ? theme.color.BLUE500 : theme.color.BLUE600};
 
-  animation: ${({ width }) => fillToRightAnimation(width)} 2.5s forwards;
+  animation: ${({ width }) => fillToRight(width)} 2.5s forwards;
   animation-delay: ${({ delay }) => delay};
 `;
 
-export const thread1 = css`
+export const sampleThread1 = css`
   height: 200px;
 
   background-color: ${({ theme }) => theme.color.BLUE700};
 `;
 
-export const thread2 = css`
+export const sampleThread2 = css`
   height: 150px;
 
   background-color: ${({ theme }) => theme.color.BLUE300};
 `;
 
-export const thread3 = css`
+export const sampleThread3 = css`
   height: 120px;
 
   background-color: ${({ theme }) => theme.color.BLUE300};

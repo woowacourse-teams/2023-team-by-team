@@ -16,7 +16,7 @@ const TeamCalendarDecoration = (props: TeamCalendarDecorationProps) => {
 
   return (
     <S.Container>
-      <S.TeamBadge />
+      <S.SampleBadge />
       <S.CalendarHeaderContainer>
         <ArrowLeftIcon />
         <Text css={S.calendarHeaderText}>{YYYYMM}</Text>
@@ -28,8 +28,8 @@ const TeamCalendarDecoration = (props: TeamCalendarDecorationProps) => {
             <S.CalendarCell key={index} />
           ))}
         </S.CalendarTable>
-        <S.CalendarBarContainer>
-          <S.CalendarBar
+        <S.SampleCalendarBarContainer>
+          <S.SampleCalendarBar
             row={0}
             column={0}
             length={4}
@@ -38,7 +38,7 @@ const TeamCalendarDecoration = (props: TeamCalendarDecorationProps) => {
             roundedEnd={true}
             color="#193ecb"
           />
-          <S.CalendarBar
+          <S.SampleCalendarBar
             row={0}
             column={2}
             length={4}
@@ -47,7 +47,7 @@ const TeamCalendarDecoration = (props: TeamCalendarDecorationProps) => {
             roundedEnd={true}
             color="#7c25ff"
           />
-          <S.CalendarBar
+          <S.SampleCalendarBar
             row={2}
             column={2}
             length={5}
@@ -56,7 +56,7 @@ const TeamCalendarDecoration = (props: TeamCalendarDecorationProps) => {
             roundedEnd={false}
             color="#2546ff"
           />
-          <S.CalendarBar
+          <S.SampleCalendarBar
             row={3}
             column={0}
             length={7}
@@ -65,7 +65,7 @@ const TeamCalendarDecoration = (props: TeamCalendarDecorationProps) => {
             roundedEnd={false}
             color="#2546ff"
           />
-          <S.CalendarBar
+          <S.SampleCalendarBar
             row={4}
             column={0}
             length={3}
@@ -74,7 +74,7 @@ const TeamCalendarDecoration = (props: TeamCalendarDecorationProps) => {
             roundedEnd={true}
             color="#2546ff"
           />
-          <S.CalendarBar
+          <S.SampleCalendarBar
             row={3}
             column={1}
             length={5}
@@ -83,7 +83,7 @@ const TeamCalendarDecoration = (props: TeamCalendarDecorationProps) => {
             roundedEnd={true}
             color="#2596ff"
           />
-          <S.CalendarBar
+          <S.SampleCalendarBar
             row={5}
             column={4}
             length={3}
@@ -92,7 +92,7 @@ const TeamCalendarDecoration = (props: TeamCalendarDecorationProps) => {
             roundedEnd={false}
             color="#2cbeeb"
           />
-        </S.CalendarBarContainer>
+        </S.SampleCalendarBarContainer>
       </S.CalendarContainer>
       <S.MousePointer src={mousePointer} animation={animation} />
     </S.Container>
