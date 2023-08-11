@@ -33,16 +33,16 @@ const TeamExitModal = () => {
           <S.Body>
             <label>
               <Text as="span" size="lg">
-                팀 탈퇴를 위해 현재 선택된 팀의 이름을{' '}
+                팀 탈퇴를 위해{' '}
                 <Text
                   as="strong"
                   size="lg"
                   weight="semiBold"
                   css={S.strongContent}
                 >
-                  정확히
-                </Text>{' '}
-                입력해 주세요.
+                  {displayName}
+                </Text>
+                을(를) 입력해 주세요.
               </Text>
               <Input
                 width="340px"
