@@ -25,7 +25,7 @@ export const teamHandlers = [
     teamPlaces.splice(index, 1);
 
     return res(ctx.status(204));
-  });
+  }),
 
   // 팀플레이스 생성
   rest.post('/api/team-places', async (req, res, ctx) => {
