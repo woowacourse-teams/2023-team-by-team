@@ -42,6 +42,7 @@ const useTeamExitModal = () => {
     mutateDeleteTeamPlace(undefined, {
       onSuccess: () => {
         resetTeamPlace();
+        setTeamName(() => '');
         showToast('success', '팀 탈퇴가 완료되었습니다.');
         closeModal();
 
