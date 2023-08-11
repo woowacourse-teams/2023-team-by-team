@@ -23,7 +23,11 @@ const color = {
 
   BLUE100: '#d1ddff',
   BLUE200: '#b9cbff',
-  BLUE300: '#8ba9ff',
+  BLUE300: '#a0c1fd',
+  BLUE400: '#8ba9ff',
+  BLUE500: '#5885f5',
+  BLUE600: '#2459e0',
+  BLUE700: '#193ecb',
 
   TRANSPARENT_BLACK: '#777777aa',
 } as const;
