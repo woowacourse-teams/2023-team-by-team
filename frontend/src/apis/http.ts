@@ -2,7 +2,7 @@ import { PATH_NAME } from '~/constants/routes';
 
 const resetAccessToken = () => {
   localStorage.removeItem('accessToken');
-  alert('로그인이 필요합니다.');
+
   window.location.href = PATH_NAME.LANDING;
 };
 
