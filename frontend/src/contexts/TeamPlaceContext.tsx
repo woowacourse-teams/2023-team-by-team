@@ -1,6 +1,6 @@
 import { createContext, useCallback, useEffect, useState } from 'react';
 import type { PropsWithChildren } from 'react';
-import { KEY } from '~/constants/localStorage';
+import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
 import { useFetchTeamPlaces } from '~/hooks/queries/useFetchTeamPlaces';
 import type { TeamPlace, TeamPlaceColor } from '~/types/team';
 import { getInfoByTeamPlaceId } from '~/utils/getInfoByTeamPlaceId';
@@ -33,7 +33,7 @@ export const TeamPlaceProvider = (props: PropsWithChildren) => {
       setDisplayName(() => name);
       setTeamPlaceColor(() => color);
       setTeamPlaceId(() => id);
-      localStorage.setItem(KEY.TEAM_PLACE_ID, String(id));
+      localStorage.setItem(LOCAL_STORAGE_KEY.TEAM_PLACE_ID, String(id));
     },
     [teamPlaces],
   );
@@ -42,7 +42,7 @@ export const TeamPlaceProvider = (props: PropsWithChildren) => {
     if (!isFetched) return;
 
     if (teamPlaces.length === 0) return;
-    const id = localStorage.getItem(KEY.TEAM_PLACE_ID);
+    const id = localStorage.getItem(LOCAL_STORAGE_KEY.TEAM_PLACE_ID);
     const initTeamPlaceId = id === null ? teamPlaces[0].id : Number(id);
 
     changeTeamPlace(initTeamPlaceId);

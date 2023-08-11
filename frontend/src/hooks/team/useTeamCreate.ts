@@ -5,7 +5,7 @@ import {
   useState,
 } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { KEY } from '~/constants/localStorage';
+import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
 import { PATH_NAME } from '~/constants/routes';
 import { useSendNewTeamPlace } from '~/hooks/queries/useSendNewTeamPlace';
 
@@ -32,7 +32,10 @@ export const useTeamCreate = (inputRef: RefObject<HTMLInputElement>) => {
       { name: teamName },
       {
         onSuccess: (data) => {
-          localStorage.setItem(KEY.TEAM_PLACE_ID, String(data.teamPlaceId));
+          localStorage.setItem(
+            LOCAL_STORAGE_KEY.TEAM_PLACE_ID,
+            String(data.teamPlaceId),
+          );
           navigate(PATH_NAME.TEAM_SELECT);
         },
       },

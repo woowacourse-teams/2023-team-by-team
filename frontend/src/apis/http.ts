@@ -1,8 +1,8 @@
-import { KEY } from '~/constants/localStorage';
+import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
 import { PATH_NAME } from '~/constants/routes';
 
 const resetAccessToken = () => {
-  localStorage.removeItem(KEY.ACCESS_TOKEN);
+  localStorage.removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
   alert('로그인이 필요합니다.');
   window.location.href = PATH_NAME.LANDING;
 };
@@ -13,7 +13,9 @@ export const http = {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem(KEY.ACCESS_TOKEN)}`,
+        Authorization: `Bearer ${localStorage.getItem(
+          LOCAL_STORAGE_KEY.ACCESS_TOKEN,
+        )}`,
       },
     });
 
@@ -34,7 +36,9 @@ export const http = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem(KEY.ACCESS_TOKEN)}`,
+        Authorization: `Bearer ${localStorage.getItem(
+          LOCAL_STORAGE_KEY.ACCESS_TOKEN,
+        )}`,
       },
       body: JSON.stringify(body),
     });
@@ -60,7 +64,9 @@ export const http = {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem(KEY.ACCESS_TOKEN)}`,
+        Authorization: `Bearer ${localStorage.getItem(
+          LOCAL_STORAGE_KEY.ACCESS_TOKEN,
+        )}`,
       },
       body: JSON.stringify(body),
     });
@@ -82,7 +88,9 @@ export const http = {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem(KEY.ACCESS_TOKEN)}`,
+        Authorization: `Bearer ${localStorage.getItem(
+          LOCAL_STORAGE_KEY.ACCESS_TOKEN,
+        )}`,
       },
     });
 
