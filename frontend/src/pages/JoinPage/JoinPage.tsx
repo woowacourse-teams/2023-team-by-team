@@ -74,7 +74,11 @@ const JoinPage = () => {
               </Button>
             </div>
           </S.BodyContainer>
-          <Button css={S.submitButton} aria-label="팀 참가">
+          <Button
+            css={S.submitButton}
+            disabled={inviteCode.length < 8}
+            aria-label="팀 참가"
+          >
             팀 참가
           </Button>
         </S.InviteCodeForm>
