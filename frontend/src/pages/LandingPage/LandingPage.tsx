@@ -44,18 +44,21 @@ const LandingPage = () => {
           <Text as="h2" css={S.mainTitle}>
             팀바팀
           </Text>
-          <Text css={S.mainLore}>팀 프로젝트의 모든 것을</Text>
-          <Text css={S.mainLore}>팀바팀으로 관리해보세요.</Text>
-          <S.GoogleLoginButtonWrapper>
-            <Button
-              variant="plain"
-              css={S.googleLoginButton}
-              onClick={handleGoogleLogin}
-            >
-              <S.GoogleLogo src={googleLogo} alt="구글 아이콘" />
+          <S.LoreTextContainer>
+            <Text css={S.mainLore}>팀 프로젝트의 모든 것을</Text>
+            <Text css={S.mainLore}>팀바팀으로 관리해보세요.</Text>
+          </S.LoreTextContainer>
+          <Button
+            type="button"
+            variant="plain"
+            css={S.googleLoginButton}
+            onClick={handleGoogleLogin}
+          >
+            <S.GoogleLoginButtonAppearance>
+              <S.GoogleLogo src={googleLogo} />
               <Text css={S.googleLoginText}>Google 계정으로 로그인하기</Text>
-            </Button>
-          </S.GoogleLoginButtonWrapper>
+            </S.GoogleLoginButtonAppearance>
+          </Button>
         </S.Main>
       </S.MainContainer>
       <IntroCardPile />

@@ -41,10 +41,25 @@ export const LandingPageLink = styled(Link)`
   column-gap: 20px;
 `;
 
-export const GoogleLoginButtonWrapper = styled.div`
-  &:hover button {
-    box-shadow: 0 18px 20px ${({ theme }) => theme.color.GRAY300};
+export const LoreTextContainer = styled.div`
+  margin-bottom: 60px;
+`;
 
+export const GoogleLoginButtonAppearance = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  width: 300px;
+  height: 60px;
+
+  border: 1px solid ${({ theme }) => theme.color.GRAY300};
+  border-radius: 12px;
+
+  box-shadow: 0 12px 20px ${({ theme }) => theme.color.GRAY300};
+  transition: 0.25s;
+
+  button &:hover {
     transform: translateY(-6px);
   }
 `;
@@ -82,18 +97,13 @@ export const mainLore = css`
 
 export const googleLoginButton = css`
   display: flex;
-  justify-content: space-around;
-  align-items: center;
+  flex-direction: column;
+  justify-content: end;
 
   width: 300px;
-  height: 60px;
-  margin: 80px 0 0 auto;
-
-  border: 1px solid ${({ theme }) => theme.color.GRAY300};
-  border-radius: 12px;
-
-  box-shadow: 0 12px 20px ${({ theme }) => theme.color.GRAY300};
-  transition: 0.2s;
+  height: 66px;
+  margin-left: auto;
+  padding: 0;
 `;
 
 export const googleLoginText = css`
