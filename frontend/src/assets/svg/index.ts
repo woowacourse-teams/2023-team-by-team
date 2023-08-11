@@ -19,3 +19,4 @@ export { ReactComponent as DriveIcon } from './drive.svg';
 export { ReactComponent as WriteIcon } from './write.svg';
 export { ReactComponent as ArrowUpIcon } from './arrow-up.svg';
 export { ReactComponent as FolderOpenIcon } from './folder-open.svg';
+export { ReactComponent as LogoutIcon } from './logout.svg';

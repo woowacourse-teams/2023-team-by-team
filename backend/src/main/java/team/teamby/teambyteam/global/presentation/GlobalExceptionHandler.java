@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import team.teamby.teambyteam.auth.exception.AuthenticationException;
 import team.teamby.teambyteam.member.exception.MemberException;
+import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
+import team.teamby.teambyteam.token.exception.TokenException;
+import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeException;
 
 import java.time.DateTimeException;
 import java.time.format.DateTimeParseException;
@@ -42,7 +45,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {
             MemberException.MemberNotFoundException.class,
             TeamPlaceException.NotFoundException.class,
-            ScheduleException.ScheduleNotFoundException.class
+            ScheduleException.ScheduleNotFoundException.class,
+            TeamPlaceInviteCodeException.NotFoundException.class
     })
     public ResponseEntity<String> handleNotFoundException(final RuntimeException exception) {
         final String message = exception.getMessage();
@@ -53,7 +57,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = {
             AuthenticationException.FailAuthenticationException.class,
-            ExpiredJwtException.class
+            ExpiredJwtException.class,
+            TokenException.TokenNotFoundException.class
     })
     public ResponseEntity<String> handleAuthenticationException(final RuntimeException exception) {
         final String message = exception.getMessage();
@@ -65,7 +70,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = {
             ScheduleException.TeamAccessForbidden.class,
-            TeamPlaceException.TeamPlaceAccessForbidden.class
+            TeamPlaceException.TeamPlaceAccessForbidden.class,
+            MemberTeamPlaceException.NotFoundParticipatedTeamPlaceException.class
     })
     public ResponseEntity<String> handleCustomForbiddenException(final RuntimeException exception) {
         final String message = exception.getMessage();
@@ -75,7 +81,12 @@ public class GlobalExceptionHandler {
                 .body(message);
     }
 
-    @ExceptionHandler(value = {ScheduleException.SpanWrongOrderException.class})
+    @ExceptionHandler(value = {
+            ScheduleException.SpanWrongOrderException.class,
+            TeamPlaceInviteCodeException.LengthException.class,
+            TeamPlaceException.NameLengthException.class,
+            TeamPlaceException.NameBlankException.class
+    })
     public ResponseEntity<String> handleCustomBadRequestException(final RuntimeException exception) {
         final String message = exception.getMessage();
         log.warn(message, exception);

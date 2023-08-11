@@ -70,6 +70,22 @@ const animation = {
       transform: translateY(100%);
     }  
   `,
+  slideLeft: keyframes`
+    from {
+      transform: translateX(140%);
+    }
+    to {
+      transform: translateX(0);
+    }  
+  `,
+  slideRight: keyframes`
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(140%);
+    }  
+  `,
   fadeInUp: keyframes`
     from {
       opacity: 0;

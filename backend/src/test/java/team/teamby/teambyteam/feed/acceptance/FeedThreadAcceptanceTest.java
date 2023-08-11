@@ -13,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import team.teamby.teambyteam.common.AcceptanceTest;
 import team.teamby.teambyteam.common.fixtures.FeedThreadFixtures;
+import team.teamby.teambyteam.common.fixtures.MemberFixtures;
 import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
 import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
 import team.teamby.teambyteam.feed.domain.Feed;
@@ -37,6 +38,7 @@ import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.JAPANESE_
 import static team.teamby.teambyteam.common.fixtures.acceptance.FeedThreadAcceptanceFixtures.GET_FEED_THREAD_FIRST;
 import static team.teamby.teambyteam.common.fixtures.acceptance.FeedThreadAcceptanceFixtures.GET_FEED_THREAD_REPEAT;
 import static team.teamby.teambyteam.common.fixtures.acceptance.FeedThreadAcceptanceFixtures.POST_FEED_THREAD_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptanceFixture.DELETE_LEAVE_TEAM_PLACE;
 
 public class FeedThreadAcceptanceTest extends AcceptanceTest {
 
@@ -54,7 +56,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             authedMember = testFixtureBuilder.buildMember(PHILIP());
             participatedTeamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             participatedMemberTeamPlace = testFixtureBuilder.buildMemberTeamPlace(authedMember, participatedTeamPlace);
-            authToken = jwtTokenProvider.generateToken(authedMember.getEmail().getValue());
+            authToken = jwtTokenProvider.generateAccessToken(authedMember.getEmail().getValue());
 
         }
 
@@ -114,7 +116,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
         void failWithUnauthorizedMember() {
             // given
             final FeedThreadWritingRequest request = FeedThreadFixtures.HELLO_WRITING_REQUEST;
-            final String unauthorizedToken = jwtTokenProvider.generateToken(ROY().getEmail().getValue());
+            final String unauthorizedToken = jwtTokenProvider.generateAccessToken(ROY().getEmail().getValue());
 
             // when
             final ExtractableResponse<Response> response = POST_FEED_THREAD_REQUEST(unauthorizedToken, participatedTeamPlace, request);
@@ -141,7 +143,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             authedMember = testFixtureBuilder.buildMember(PHILIP());
             participatedTeamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             participatedMemberTeamPlace = testFixtureBuilder.buildMemberTeamPlace(authedMember, participatedTeamPlace);
-            authToken = jwtTokenProvider.generateToken(authedMember.getEmail().getValue());
+            authToken = jwtTokenProvider.generateAccessToken(authedMember.getEmail().getValue());
         }
 
         @Test
@@ -186,6 +188,35 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             SoftAssertions.assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
                 softly.assertThat(feedsResponse.threads().size()).isEqualTo(size);
+            });
+        }
+
+        @Test
+        @DisplayName("탈퇴한 소속되지 않은 사용자의 스레드는 (알수없음) 작성자로 생성된다.")
+        void successWithUnknownMember() {
+            // given
+            final Member otherMember = testFixtureBuilder.buildMember(MemberFixtures.SEONGHA());
+            final MemberTeamPlace otherMemberTeamPlace = otherMember.participate(participatedTeamPlace);
+            testFixtureBuilder.buildMemberTeamPlace(otherMemberTeamPlace);
+            final String otherMemberToken = jwtTokenProvider.generateAccessToken(otherMember.getEmail().getValue());
+
+            final Long teamPlaceId = participatedMemberTeamPlace.getId();
+            final int size = 5;
+
+            POST_FEED_THREAD_REQUEST(otherMemberToken, participatedTeamPlace, FeedThreadFixtures.HELLO_WRITING_REQUEST);
+            DELETE_LEAVE_TEAM_PLACE(otherMemberToken, teamPlaceId);
+
+            // when
+            final ExtractableResponse<Response> response = GET_FEED_THREAD_FIRST(authToken, teamPlaceId, size);
+            FeedsResponse feedsResponse = response.as(FeedsResponse.class);
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+                softly.assertThat(feedsResponse.threads().size()).isEqualTo(1);
+                softly.assertThat(feedsResponse.threads().get(0).authorId()).isNull();
+                softly.assertThat(feedsResponse.threads().get(0).authorName()).isEqualTo(Member.UNKNOWN_MEMBER_NAME);
+                softly.assertThat(feedsResponse.threads().get(0).profileImageUrl()).isEqualTo(Member.UNKNOWN_MEMBER_PROFILE_URL);
             });
         }
 

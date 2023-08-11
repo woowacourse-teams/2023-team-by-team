@@ -1,6 +1,7 @@
 package team.teamby.teambyteam.feed.application.dto;
 
 import team.teamby.teambyteam.feed.domain.Feed;
+import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 
 import java.time.format.DateTimeFormatter;
 
@@ -25,6 +26,21 @@ public record FeedResponse(
                 feed.getAuthorId(),
                 authorName,
                 profileImageUrl,
+                createdAt,
+                feed.getContent().getValue()
+        );
+    }
+
+    public static FeedResponse from(final Feed feed, final MemberTeamPlace threadAuthorInfo) {
+        final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
+        String createdAt = feed.getCreatedAt().format(dateTimeFormatter);
+
+        return new FeedResponse(
+                feed.getId(),
+                feed.getType().name().toLowerCase(),
+                threadAuthorInfo.getMember().getId(),
+                threadAuthorInfo.getDisplayMemberName().getValue(),
+                threadAuthorInfo.getMember().getProfileImageUrl().getValue(),
                 createdAt,
                 feed.getContent().getValue()
         );

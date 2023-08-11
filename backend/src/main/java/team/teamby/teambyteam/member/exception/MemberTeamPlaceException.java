@@ -29,4 +29,10 @@ public class MemberTeamPlaceException extends RuntimeException {
             super("팀플레이스의 이름은 공백을 제외한 1자 이상이어야합니다.");
         }
     }
+
+    public static class NotFoundParticipatedTeamPlaceException extends MemberTeamPlaceException {
+        public NotFoundParticipatedTeamPlaceException() {
+            super("해당 팀 플레이스에 가입되어 있지 않습니다.");
+        }
+    }
 }

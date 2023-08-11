@@ -5,6 +5,7 @@ import type { TextProps, Weight } from './Text';
 const fontWeight: Record<Weight, number> = {
   light: 100,
   normal: 400,
+  semiBold: 600,
   bold: 800,
 };
 

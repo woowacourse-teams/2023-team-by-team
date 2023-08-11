@@ -8,7 +8,7 @@ const NavigationBar = () => {
       <S.MenuContainer>
         <S.MenuLink
           to={PATH_NAME.TEAM_CALENDAR}
-          aria-label="홈 페이지로 이동하기 버튼"
+          aria-label="모아보기 페이지로 이동하기 버튼"
         >
           <HomeIcon />
         </S.MenuLink>

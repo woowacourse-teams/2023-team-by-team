@@ -11,6 +11,8 @@ export const Container = styled.div`
 
   background-color: ${({ theme }) => theme.color.GRAY100};
 
+  overflow: hidden;
+
   @media screen and (max-width: 1320px) {
     padding: 10px 50px 30px;
   }

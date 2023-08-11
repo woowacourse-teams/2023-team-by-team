@@ -31,7 +31,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
         void success() {
             // given
             final Member ENDL = testFixtureBuilder.buildMember(MemberFixtures.ENDEL());
-            final String ENDL_TOKEN = jwtTokenProvider.generateToken(ENDL.getEmail().getValue());
+            final String ENDL_TOKEN = jwtTokenProvider.generateAccessToken(ENDL.getEmail().getValue());
             final String NEW_TEAM_PLACE_NAME = "새로운 팀플레이스";
             final TeamPlaceCreateRequest request = new TeamPlaceCreateRequest(NEW_TEAM_PLACE_NAME);
 
@@ -66,6 +66,43 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
                 softly.assertThat(response.body().asString()).contains("인증이 실패했습니다.");
             });
         }
+
+        @Test
+        @DisplayName("팀플레이스의 이름이 없으면 생성에 실패한다.")
+        void failWithBlankTeamPlaceName() {
+            // given
+            final Member ENDL = testFixtureBuilder.buildMember(MemberFixtures.ENDEL());
+            final String ENDL_TOKEN = jwtTokenProvider.generateAccessToken(ENDL.getEmail().getValue());
+            final String BLANK_NAME = "";
+            final TeamPlaceCreateRequest request = new TeamPlaceCreateRequest(BLANK_NAME);
+
+            // when
+            final ExtractableResponse<Response> response = CREATE_TEAM_PLACE(ENDL_TOKEN, request);
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+                softly.assertThat(response.body().asString()).contains("팀플레이스 이름이 있어야 합니다.");
+            });
+        }
+
+        @Test
+        @DisplayName("너무 긴 이름(30자 초과)의 팀플레이스는 생성할 수 없다.")
+        void failWithLongTeamPlaceName() {
+            final Member ENDL = testFixtureBuilder.buildMember(MemberFixtures.ENDEL());
+            final String ENDL_TOKEN = jwtTokenProvider.generateAccessToken(ENDL.getEmail().getValue());
+            final String BLANK_NAME = "a".repeat(31);
+            final TeamPlaceCreateRequest request = new TeamPlaceCreateRequest(BLANK_NAME);
+
+            // when
+            final ExtractableResponse<Response> response = CREATE_TEAM_PLACE(ENDL_TOKEN, request);
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+                softly.assertThat(response.body().asString()).contains("팀 플레이스 이름의 길이가 최대 이름 길이를 초과했습니다.");
+            });
+        }
     }
 
     @Nested
@@ -79,7 +116,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
             final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(PHILIP, teamPlace);
-            final String PHILIP_TOKEN = jwtTokenProvider.generateToken(PHILIP.getEmail().getValue());
+            final String PHILIP_TOKEN = jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue());
             final TeamPlaceInviteCodeResponse generatedCodeResponse = GET_TEAM_PLACE_INVITE_CODE(PHILIP_TOKEN, teamPlace.getId()).as(TeamPlaceInviteCodeResponse.class);
 
             // when
@@ -100,7 +137,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
             final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(PHILIP, teamPlace);
-            final String PHILIP_TOKEN = jwtTokenProvider.generateToken(PHILIP.getEmail().getValue());
+            final String PHILIP_TOKEN = jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue());
 
             // when
             final ExtractableResponse<Response> extractableResponse = GET_TEAM_PLACE_INVITE_CODE(PHILIP_TOKEN, teamPlace.getId());
@@ -119,7 +156,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
         void failIfNotExistTeamPlaceId() {
             // given
             final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
-            final String PHILIP_TOKEN = jwtTokenProvider.generateToken(PHILIP.getEmail().getValue());
+            final String PHILIP_TOKEN = jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue());
             final Long notExistTeamPlaceId = -1L;
 
             // when
@@ -136,7 +173,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
         void failIfNotParticipatedTeamPlace() {
             // given
             final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
-            final String PHILIP_TOKEN = jwtTokenProvider.generateToken(PHILIP.getEmail().getValue());
+            final String PHILIP_TOKEN = jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue());
             final Long notParticipatedTeamPlaceId = -1L;
 
             // when

@@ -3,7 +3,7 @@
 # Comment for Fail Test
 # Gradle Cache
 
-name: backend Java CI with Gradle
+name: backend test for PR to develop
 
 on:
   pull_request:

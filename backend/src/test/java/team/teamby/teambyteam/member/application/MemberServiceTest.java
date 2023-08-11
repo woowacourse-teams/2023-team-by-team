@@ -1,5 +1,6 @@
 package team.teamby.teambyteam.member.application;
 
+import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -12,16 +13,27 @@ import team.teamby.teambyteam.member.application.dto.TeamPlaceResponse;
 import team.teamby.teambyteam.member.application.dto.TeamPlacesResponse;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.Member;
+import team.teamby.teambyteam.member.domain.MemberTeamPlace;
+import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
+import team.teamby.teambyteam.member.exception.MemberException;
+import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
+import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceParticipantResponse;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
+import team.teamby.teambyteam.teamplace.domain.vo.InviteCode;
+import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeException;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static team.teamby.teambyteam.common.fixtures.TeamPlaceInviteCodeFixtures.TEAM_PLACE_INVITE_CODE;
 
 class MemberServiceTest extends ServiceTest {
 
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    private MemberTeamPlaceRepository memberTeamPlaceRepository;
 
     @Nested
     @DisplayName("사용자가 속한 팀플레이스들의 정보 조회시")
@@ -71,4 +83,131 @@ class MemberServiceTest extends ServiceTest {
         }
     }
 
+    @Nested
+    @DisplayName("팀플레이스에서 탈퇴시")
+    class LeaveTeamPlace {
+
+        @Test
+        @DisplayName("팀플레이스 탈퇴에 성공한다.")
+        void success() {
+            // given
+            final Member ENDEL = testFixtureBuilder.buildMember(MemberFixtures.ENDEL());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
+            testFixtureBuilder.buildMemberTeamPlace(ENDEL, ENGLISH_TEAM_PLACE);
+
+            // when
+            memberService.leaveTeamPlace(new MemberEmailDto(ENDEL.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId());
+
+            //then
+            final List<MemberTeamPlace> allParticipatedTeamPlaces = memberTeamPlaceRepository.findAllByMemberId(ENDEL.getId());
+            assertThat(allParticipatedTeamPlaces).hasSize(0);
+        }
+
+        @Test
+        @DisplayName("데이터에 없는 사용자의 이메일 입력시 실패한다.")
+        void failWithMemberWithoutDb() {
+            // given
+            final Member ENDEL = testFixtureBuilder.buildMember(MemberFixtures.ENDEL());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
+            testFixtureBuilder.buildMemberTeamPlace(ENDEL, ENGLISH_TEAM_PLACE);
+
+            // when & then
+            Assertions.assertThatThrownBy(() -> memberService.leaveTeamPlace(new MemberEmailDto(MemberFixtures.PHILIP_EMAIL), ENGLISH_TEAM_PLACE.getId()))
+                    .isInstanceOf(MemberException.MemberNotFoundException.class)
+                    .hasMessage("조회한 멤버가 존재하지 않습니다.");
+        }
+
+        @Test
+        @DisplayName("소속되지 않은 팀플레이스 탈퇴 시도시 접근할 수 없다는 예외를 발생시킨다.")
+        void failWithUnParticipatedTeamPlace() {
+            // given
+            final Member ENDEL = testFixtureBuilder.buildMember(MemberFixtures.ENDEL());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
+            final TeamPlace JAPANESE_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.JAPANESE_TEAM_PLACE());
+            testFixtureBuilder.buildMemberTeamPlace(ENDEL, ENGLISH_TEAM_PLACE);
+
+            // when & then
+            Assertions.assertThatThrownBy(() -> memberService.leaveTeamPlace(new MemberEmailDto(ENDEL.getEmail().getValue()), JAPANESE_TEAM_PLACE.getId()))
+                    .isInstanceOf(MemberTeamPlaceException.NotFoundParticipatedTeamPlaceException.class)
+                    .hasMessage("해당 팀 플레이스에 가입되어 있지 않습니다.");
+        }
+    }
+
+    @Nested
+    @DisplayName("멤버가 초대코드로 팀플레이스 참여")
+    class ParticipateTeamPlaceByInviteCode {
+
+        @Test
+        @DisplayName("참여에 성공한다.")
+        void success() {
+            // given
+            final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
+            final String inviteCode = "aaaaaaaa";
+            testFixtureBuilder.buildTeamPlaceInviteCode(TEAM_PLACE_INVITE_CODE(new InviteCode(inviteCode), ENGLISH_TEAM_PLACE));
+
+            // when
+            final TeamPlaceParticipantResponse response = memberService.participateTeamPlace(new MemberEmailDto(PHILIP.getEmail().getValue()), inviteCode);
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(PHILIP.isMemberOf(ENGLISH_TEAM_PLACE.getId())).isTrue();
+                softly.assertThat(response.teamPlaceId()).isEqualTo(ENGLISH_TEAM_PLACE.getId());
+            });
+        }
+
+        @Test
+        @DisplayName("중복 참여의 경우 계속 동일한 TeamPlaceParticipantResponse를 반환한다.")
+        void ifDuplicateRequest() {
+            // given
+            final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
+            testFixtureBuilder.buildMemberTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
+            final String inviteCode = "aaaaaaaa";
+            testFixtureBuilder.buildTeamPlaceInviteCode(TEAM_PLACE_INVITE_CODE(new InviteCode(inviteCode), ENGLISH_TEAM_PLACE));
+            memberService.participateTeamPlace(new MemberEmailDto(PHILIP.getEmail().getValue()), inviteCode);
+
+            // when
+            final TeamPlaceParticipantResponse response = memberService.participateTeamPlace(new MemberEmailDto(PHILIP.getEmail().getValue()), inviteCode);
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(PHILIP.isMemberOf(ENGLISH_TEAM_PLACE.getId())).isTrue();
+                softly.assertThat(response.teamPlaceId()).isEqualTo(ENGLISH_TEAM_PLACE.getId());
+            });
+        }
+
+        @Test
+        @DisplayName("존재하지 않는 사용자의 경우 예외가 발생한다.")
+        void failIfNotExistsMember() {
+            // given
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
+            final String inviteCode = "aaaaaaaa";
+            testFixtureBuilder.buildTeamPlaceInviteCode(TEAM_PLACE_INVITE_CODE(new InviteCode(inviteCode), ENGLISH_TEAM_PLACE));
+            final String invalidEmail = "email@email.com";
+
+            // when & then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThatThrownBy(() -> memberService.participateTeamPlace(new MemberEmailDto(invalidEmail), inviteCode))
+                        .isInstanceOf(MemberException.MemberNotFoundException.class)
+                        .hasMessage("조회한 멤버가 존재하지 않습니다.");
+            });
+        }
+
+        @Test
+        @DisplayName("존재하지 않는 참여코드의 경우 예외가 발생한다.")
+        void failIfNotExistsInviteCode() {
+            // given
+            final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
+            final String invalidInviteCode = "aaaaaaaa";
+
+            // when & then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThatThrownBy(() -> memberService.participateTeamPlace(new MemberEmailDto(PHILIP.getEmail().getValue()), invalidInviteCode))
+                        .isInstanceOf(TeamPlaceInviteCodeException.NotFoundException.class)
+                        .hasMessage("존재하지 않는 초대코드 입니다.");
+            });
+        }
+    }
 }

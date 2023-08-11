@@ -6,7 +6,6 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.MissingClaimException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,15 +22,20 @@ public class JwtTokenProvider {
 
     private final String EMAIL_KEY = "email";
 
-    @Value("${jwt.secret}")
-    private String jwtSecret;
-    @Value("${jwt.expiration}")
-    private long jwtExpirationInMs;
+    @Value("${jwt.access.secret}")
+    private String jwtAccessTokenSecret;
+    @Value("${jwt.access.expiration}")
+    private long jwtAccessTokenExpirationInMs;
 
-    public String generateToken(final String email) {
+    @Value("${jwt.refresh.secret}")
+    private String jwtRefreshTokenSecret;
+    @Value("${jwt.refresh.expiration}")
+    private long jwtRefreshTokenExpirationInMs;
+
+    public String generateAccessToken(final String email) {
         final Date now = new Date();
-        final Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
-        final SecretKey secretKey = new SecretKeySpec(jwtSecret.getBytes(StandardCharsets.UTF_8), SignatureAlgorithm.HS256.getJcaName());
+        final Date expiryDate = new Date(now.getTime() + jwtAccessTokenExpirationInMs);
+        final SecretKey secretKey = new SecretKeySpec(jwtAccessTokenSecret.getBytes(StandardCharsets.UTF_8), SignatureAlgorithm.HS256.getJcaName());
 
         return Jwts.builder()
                 .claim(EMAIL_KEY, email)
@@ -41,36 +45,68 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String extractEmailFromToken(final String token) {
-        try {
-            validate(token);
-            final Jws<Claims> claimsJws = getParser().parseClaimsJws(token);
-            return claimsJws.getBody().get(EMAIL_KEY, String.class);
-        } catch (MissingClaimException e) {
+    public String extractEmailFromAccessToken(final String token) {
+        validateAccessToken(token);
+        final Jws<Claims> claimsJws = getAccessTokenParser().parseClaimsJws(token);
+        String extractedEmail = claimsJws.getBody().get(EMAIL_KEY, String.class);
+        if (extractedEmail == null) {
             throw new AuthenticationException.FailAuthenticationException();
         }
+        return extractedEmail;
     }
 
-    private JwtParser getParser() {
+    private JwtParser getAccessTokenParser() {
         return Jwts.parserBuilder()
-                .setSigningKey(jwtSecret.getBytes(StandardCharsets.UTF_8))
+                .setSigningKey(jwtAccessTokenSecret.getBytes(StandardCharsets.UTF_8))
                 .build();
     }
 
-    public void validate(final String token) {
+    private void validateAccessToken(final String token) {
         try {
-            final Claims claims = getParser().parseClaimsJws(token).getBody();
-            validateExpiration(claims);
-        } catch (MalformedJwtException | MissingClaimException | UnsupportedJwtException e) {
+            final Claims claims = getAccessTokenParser().parseClaimsJws(token).getBody();
+        } catch (MalformedJwtException | UnsupportedJwtException e) {
             throw new AuthenticationException.FailAuthenticationException();
+        } catch (ExpiredJwtException e) {
+            throw new ExpiredJwtException(null, null, "토큰이 만료되었습니다.");
         }
     }
 
-    private void validateExpiration(final Claims claims) {
+    public String generateRefreshToken(final String email) {
         final Date now = new Date();
-        final Date expiration = claims.getExpiration();
-        if (now.after(expiration)) {
-            throw new ExpiredJwtException(null, claims, "토큰이 만료되었습니다.");
+        final Date expiryDate = new Date(now.getTime() + jwtRefreshTokenExpirationInMs);
+        final SecretKey secretKey = new SecretKeySpec(jwtRefreshTokenSecret.getBytes(StandardCharsets.UTF_8), SignatureAlgorithm.HS256.getJcaName());
+
+        return Jwts.builder()
+                .claim(EMAIL_KEY, email)
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
+                .signWith(secretKey)
+                .compact();
+    }
+
+    public String extractEmailFromRefreshToken(final String token) {
+        validateRefreshToken(token);
+        final Jws<Claims> claimsJws = getRefreshTokenParser().parseClaimsJws(token);
+        String extractedEmail = claimsJws.getBody().get(EMAIL_KEY, String.class);
+        if (extractedEmail == null) {
+            throw new AuthenticationException.FailAuthenticationException();
+        }
+        return extractedEmail;
+    }
+
+    private JwtParser getRefreshTokenParser() {
+        return Jwts.parserBuilder()
+                .setSigningKey(jwtRefreshTokenSecret.getBytes(StandardCharsets.UTF_8))
+                .build();
+    }
+
+    private void validateRefreshToken(final String token) {
+        try {
+            final Claims claims = getRefreshTokenParser().parseClaimsJws(token).getBody();
+        } catch (MalformedJwtException | UnsupportedJwtException e) {
+            throw new AuthenticationException.FailAuthenticationException();
+        } catch (ExpiredJwtException e) {
+            throw new ExpiredJwtException(null, null, "토큰이 만료되었습니다.");
         }
     }
 }

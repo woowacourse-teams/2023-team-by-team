@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.IdOnly;
 import team.teamby.teambyteam.member.domain.MemberRepository;
+import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.exception.MemberException.MemberNotFoundException;
@@ -58,9 +59,12 @@ public class NoticeService {
         checkTeamPlaceExist(teamPlaceId);
 
         return noticeRepository.findMostRecentByTeamPlaceId(teamPlaceId)
-                .flatMap(findNotice ->
-                        memberTeamPlaceRepository.findById(findNotice.getAuthorId())
-                                .map(memberTeamPlace -> NoticeResponse.of(findNotice, memberTeamPlace))
-                );
+                .map(this::mapToNoticeResponse);
+    }
+
+    private NoticeResponse mapToNoticeResponse(final Notice notice) {
+        final MemberTeamPlace memberTeamPlace = memberTeamPlaceRepository.findById(notice.getAuthorId())
+                .orElse(MemberTeamPlace.UNKNOWN_MEMBER_TEAM_PLACE);
+        return NoticeResponse.of(notice, memberTeamPlace);
     }
 }

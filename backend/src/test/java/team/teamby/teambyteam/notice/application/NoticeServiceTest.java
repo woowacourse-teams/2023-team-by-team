@@ -23,8 +23,14 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static team.teamby.teambyteam.common.fixtures.MemberFixtures.*;
-import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.*;
+import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ROY;
+import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ROY_MEMBER_EMAIL_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.MemberFixtures.SEONGHA;
+import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.FIRST_NOTICE_REGISTER_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.NOTICE_1ST;
+import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.NOTICE_2ND;
+import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.NOTICE_3RD;
+import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.THIRD_CONTENT;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.JAPANESE_TEAM_PLACE;
 
@@ -147,6 +153,43 @@ class NoticeServiceTest extends ServiceTest {
 
             //then
             assertThat(noticeResponse).isEmpty();
+        }
+
+        @Test
+        @DisplayName("공지작성자가 탈퇴한 경우 알수없는 사용자의 정보로 공지를 조회한다.")
+        void successWithUnknownMemberLeaveFromService() {
+            // given
+            testFixtureBuilder.deleteMember(member);
+
+            // when
+            Optional<NoticeResponse> response = noticeService.findMostRecentNotice(teamPlace.getId());
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response).isPresent();
+                softly.assertThat(response.get().authorId()).isNull();
+                softly.assertThat(response.get().authorName()).isEqualTo(Member.UNKNOWN_MEMBER_NAME);
+                softly.assertThat(response.get().content()).isEqualTo(THIRD_CONTENT);
+            });
+        }
+
+        @Test
+        @DisplayName("공지작성자가 팀플레이스를 탈퇴한 경우 알수없는 사용자의 정보로 공지를 조회한다.")
+        void successWithUnknownMemberLeaveFromTeamPlace() {
+            // given
+            member.leaveTeamPlace(teamPlace.getId());
+            testFixtureBuilder.deleteMemberTeamPlace(memberTeamPlace);
+
+            // when
+            Optional<NoticeResponse> response = noticeService.findMostRecentNotice(teamPlace.getId());
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response).isPresent();
+                softly.assertThat(response.get().authorId()).isNull();
+                softly.assertThat(response.get().authorName()).isEqualTo(Member.UNKNOWN_MEMBER_NAME);
+                softly.assertThat(response.get().content()).isEqualTo(THIRD_CONTENT);
+            });
         }
     }
 }

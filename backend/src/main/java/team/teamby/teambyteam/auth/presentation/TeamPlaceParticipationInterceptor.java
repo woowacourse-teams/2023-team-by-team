@@ -14,21 +14,26 @@ import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
 import java.util.Map;
+import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
 public final class TeamPlaceParticipationInterceptor implements HandlerInterceptor {
 
+    private static final String PATH_VARIABLE_KEY = "teamPlaceId";
     private final JwtTokenExtractor jwtTokenExtractor;
     private final JwtTokenProvider jwtTokenProvider;
     private final MemberRepository memberRepository;
 
     @Override
     public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler) throws Exception {
-        final String token = jwtTokenExtractor.extractToken(request);
-        final String email = jwtTokenProvider.extractEmailFromToken(token);
+        final String token = jwtTokenExtractor.extractAccessToken(request);
+        final String email = jwtTokenProvider.extractEmailFromAccessToken(token);
         final Map<String, String> pathVariables = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
-        final Long teamPlaceId = Long.parseLong(pathVariables.get("teamPlaceId"));
+        if (Objects.isNull(pathVariables.get(PATH_VARIABLE_KEY))) {
+            return true;
+        }
+        final Long teamPlaceId = Long.parseLong(pathVariables.get(PATH_VARIABLE_KEY));
 
         if (hasNotMemberInTeamPlace(teamPlaceId, email)) {
             throw new TeamPlaceException.TeamPlaceAccessForbidden();

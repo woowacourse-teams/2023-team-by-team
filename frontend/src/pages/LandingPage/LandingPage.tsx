@@ -11,7 +11,6 @@ import { googleLogo } from '~/assets/png';
 
 const LandingPage = () => {
   const navigate = useNavigate();
-  const accessToken = localStorage.getItem('accessToken');
 
   const handleGoogleLogin = async () => {
     const { googleLoginUrl } = await fetchGoogleLogin();
@@ -20,11 +19,19 @@ const LandingPage = () => {
   };
 
   useEffect(() => {
-    if (accessToken) {
+    const accessToken = localStorage.getItem('accessToken');
+    const teamPlaceId = localStorage.getItem('teamPlaceId');
+
+    if (accessToken && teamPlaceId) {
       navigate(PATH_NAME.TEAM_SELECT);
       return;
     }
-  }, [accessToken, navigate]);
+
+    if (accessToken) {
+      localStorage.removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
+      return;
+    }
+  }, [navigate]);
 
   return (
     <S.Container>
