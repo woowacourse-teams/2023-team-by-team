@@ -12,6 +12,7 @@ import team.teamby.teambyteam.auth.oauth.client.GoogleOAuthClient;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
+import team.teamby.teambyteam.member.domain.vo.Name;
 
 import java.util.Base64;
 
@@ -21,6 +22,7 @@ import java.util.Base64;
 public class GoogleOAuthService {
 
     private static final int PAYLOAD_INDEX = 1;
+    private static final int NAME_BEGIN_INDEX = 0;
 
     private final JwtTokenProvider jwtTokenProvider;
     private final GoogleOAuthClient googleOAuthClient;
@@ -35,10 +37,11 @@ public class GoogleOAuthService {
 
     private OAuthMember createOAuthMember(final String googleIdToken) {
         final String email = extractElementFromToken(googleIdToken, "email");
-        final String name = extractElementFromToken(googleIdToken, "name");
+        final String rawName = extractElementFromToken(googleIdToken, "name");
         final String picture = extractElementFromToken(googleIdToken, "picture");
+        final String substringName = rawName.substring(NAME_BEGIN_INDEX, Name.MAX_LENGTH);
 
-        return new OAuthMember(email, name, picture);
+        return new OAuthMember(email, substringName, picture);
     }
 
     private void createMemberIfNotExist(final OAuthMember oAuthMember) {
