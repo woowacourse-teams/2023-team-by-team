@@ -10,7 +10,7 @@ const CreatePage = () => {
   const {
     teamName,
 
-    handler: { handleTeamNameChange, handleTeamNameSubmit },
+    handlers: { handleTeamNameChange, handleTeamNameSubmit },
   } = useTeamCreate(inputRef);
 
   return (

@@ -82,7 +82,7 @@ export const useTeamJoin = (inputRef: RefObject<HTMLInputElement>) => {
     isRequired,
     warningText,
 
-    handler: {
+    handlers: {
       handleInviteCodeChange,
       handleTeamNameSubmit,
       handleCreatePageClicked,

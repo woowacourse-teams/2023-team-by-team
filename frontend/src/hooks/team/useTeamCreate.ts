@@ -47,7 +47,7 @@ export const useTeamCreate = (inputRef: RefObject<HTMLInputElement>) => {
   return {
     teamName,
 
-    handler: {
+    handlers: {
       handleTeamNameChange,
       handleTeamNameSubmit,
     },

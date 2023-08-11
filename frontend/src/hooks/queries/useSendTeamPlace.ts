@@ -3,7 +3,6 @@ import { sendTeamPlace } from '~/apis/team';
 
 export const useSendTeamPlace = () => {
   const queryClient = useQueryClient();
-
   const { mutate } = useMutation(
     (inviteCode: string) => sendTeamPlace(inviteCode),
     {

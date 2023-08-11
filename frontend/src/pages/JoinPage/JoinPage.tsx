@@ -18,7 +18,7 @@ const JoinPage = () => {
     isRequired,
     warningText,
 
-    handler: {
+    handlers: {
       handleInviteCodeChange,
       handleTeamNameSubmit,
       handleCreatePageClicked,
