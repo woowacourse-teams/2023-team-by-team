@@ -13,8 +13,8 @@ import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
-import team.teamby.teambyteam.token.exception.TokenException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeException;
+import team.teamby.teambyteam.token.exception.TokenException;
 
 import java.time.DateTimeException;
 import java.time.format.DateTimeParseException;
@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> handleMethodArgumentNotValidException(final MethodArgumentNotValidException exception) {
         final String defaultErrorMessage = exception.getBindingResult().getAllErrors().get(0).getDefaultMessage();
-        log.warn(defaultErrorMessage, exception);
+        log.warn(defaultErrorMessage);
 
         return ResponseEntity.badRequest().body(defaultErrorMessage);
     }
@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
             DateTimeException.class
     })
     public ResponseEntity<String> handleDateTimeParseException(final DateTimeException exception) {
-        log.warn(exception.getMessage(), exception);
+        log.warn(exception.getMessage());
 
         return ResponseEntity.badRequest().body("DateTime 형식이 잘못되었습니다. 서버 관리자에게 문의해주세요.");
     }
@@ -50,7 +50,7 @@ public class GlobalExceptionHandler {
     })
     public ResponseEntity<String> handleNotFoundException(final RuntimeException exception) {
         final String message = exception.getMessage();
-        log.warn(message, exception);
+        log.warn(message);
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
     }
@@ -62,7 +62,7 @@ public class GlobalExceptionHandler {
     })
     public ResponseEntity<String> handleAuthenticationException(final RuntimeException exception) {
         final String message = exception.getMessage();
-        log.warn(message, exception);
+        log.warn(message);
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(message);
@@ -75,7 +75,7 @@ public class GlobalExceptionHandler {
     })
     public ResponseEntity<String> handleCustomForbiddenException(final RuntimeException exception) {
         final String message = exception.getMessage();
-        log.warn(message, exception);
+        log.warn(message);
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(message);
@@ -89,7 +89,7 @@ public class GlobalExceptionHandler {
     })
     public ResponseEntity<String> handleCustomBadRequestException(final RuntimeException exception) {
         final String message = exception.getMessage();
-        log.warn(message, exception);
+        log.warn(message);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(message);
