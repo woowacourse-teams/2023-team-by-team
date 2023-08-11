@@ -6,6 +6,7 @@ import { useRef, useEffect } from 'react';
 import { PATH_NAME } from '~/constants/routes';
 import { useNavigate } from 'react-router-dom';
 import { useTeamJoin } from '~/hooks/team/useTeamJoin';
+import IntroCardPile from '~/components/landing/IntroCardPile/IntroCardPile';
 
 const JoinPage = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -83,6 +84,7 @@ const JoinPage = () => {
           </Button>
         </S.InviteCodeForm>
       </S.InnerContainer>
+      <IntroCardPile animation={false} />
     </S.Container>
   );
 };
