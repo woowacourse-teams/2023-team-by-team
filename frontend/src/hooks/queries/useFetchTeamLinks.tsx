@@ -10,7 +10,5 @@ export const useFetchTeamLinks = (teamPlaceId: number) => {
 
   const { teamLinks } = data;
 
-  console.log(teamLinks);
-
   return teamLinks;
 };
