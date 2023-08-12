@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import TeamLinkAddModal from '~/components/team_link/TeamLinkAddModal/TeamLinkAddModal';
+import LinkAddModal from '~/components/link/LinkAddModal/LinkAddModal';
 import { useModal } from '~/hooks/useModal';
 import Button from '~/components/common/Button/Button';
 
 const meta = {
-  title: 'TeamLink/TeamLinkAddModal',
-  component: TeamLinkAddModal,
+  title: 'Link/LinkAddModal',
+  component: LinkAddModal,
   tags: ['autodocs'],
-} satisfies Meta<typeof TeamLinkAddModal>;
+} satisfies Meta<typeof LinkAddModal>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -18,7 +18,7 @@ const SampleModal = () => {
   return (
     <>
       <Button onClick={openModal}>모달 열기</Button>
-      <TeamLinkAddModal />
+      <LinkAddModal />
     </>
   );
 };

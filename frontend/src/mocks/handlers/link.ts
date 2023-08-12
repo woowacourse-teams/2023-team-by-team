@@ -1,7 +1,7 @@
 import { rest } from 'msw';
 import type { TeamLink } from '~/types/link';
 
-const teamLink = [] as TeamLink[];
+const teamLinks = [] as TeamLink[];
 
 export const LinkHandlers = [
   // 팀 링크 등록
@@ -9,7 +9,7 @@ export const LinkHandlers = [
     '/api/team-place/:teamPlaceId/team-links',
     async (req, res, ctx) => {
       const { title, url } = await req.json();
-      teamLink.push({
+      teamLinks.push({
         title,
         url,
       });

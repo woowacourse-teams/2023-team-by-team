@@ -1,4 +1,4 @@
-import * as S from './TeamLinkAddModal.styled';
+import * as S from './LinkAddModal.styled';
 import Modal from '~/components/common/Modal/Modal';
 import Button from '~/components/common/Button/Button';
 import { CloseIcon } from '~/assets/svg';
@@ -7,7 +7,7 @@ import Input from '~/components/common/Input/Input';
 import { useRef } from 'react';
 import { useTeamLinkAddModal } from '~/hooks/link/useTeamLinkAddModal';
 
-const TeamLinkAddModal = () => {
+const LinkAddModal = () => {
   const linkRef = useRef<HTMLInputElement>(null);
 
   const {
@@ -78,4 +78,4 @@ const TeamLinkAddModal = () => {
   );
 };
 
-export default TeamLinkAddModal;
+export default LinkAddModal;
