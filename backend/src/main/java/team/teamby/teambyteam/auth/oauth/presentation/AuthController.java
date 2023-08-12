@@ -18,7 +18,6 @@ import java.io.IOException;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private static final StringBuilder sb = new StringBuilder();
     private static final String QUERY_START_MARK = "?";
     private static final String QUERY_AND_MARK = "&";
     private static final String QUERY_PARAM_ACCESS_TOKEN_KEY = "accessToken=";
@@ -38,6 +37,12 @@ public class AuthController {
         final String accessToken = googleOAuthService.createToken(code).accessToken();
         final String refreshToken = googleOAuthService.createToken(code).refreshToken();
 
+        String url = generateUrl(baseUrl, accessToken, refreshToken);
+        response.sendRedirect(url);
+    }
+
+    private String generateUrl(final String baseUrl, final String accessToken, final String refreshToken) {
+        StringBuilder sb = new StringBuilder();
         StringBuilder url = sb.append(baseUrl)
                 .append(QUERY_START_MARK)
                 .append(QUERY_PARAM_ACCESS_TOKEN_KEY)
@@ -45,7 +50,6 @@ public class AuthController {
                 .append(QUERY_AND_MARK)
                 .append(QUERY_PARAM_REFRESH_TOKEN_KEY)
                 .append(refreshToken);
-
-        response.sendRedirect(url.toString());
+        return url.toString();
     }
 }
