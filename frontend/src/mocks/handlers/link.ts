@@ -1,7 +1,5 @@
 import { rest } from 'msw';
-import type { TeamLink } from '~/types/link';
-
-const teamLinks = [] as TeamLink[];
+import { teamLinks } from '../fixtures/link';
 
 export const LinkHandlers = [
   // 팀 링크 등록
@@ -21,4 +19,9 @@ export const LinkHandlers = [
       return res(ctx.status(201));
     },
   ),
+
+  // 팀 링크목록 조회
+  rest.get('/api/team-place/:teamPlaceId/team-links', async (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json({ teamLinks }));
+  }),
 ];
