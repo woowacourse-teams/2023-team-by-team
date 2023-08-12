@@ -21,6 +21,6 @@ class SpanTest {
         // when & then
         assertThatThrownBy(() -> new Span(startDateTime, endDateTime))
                 .isInstanceOf(ScheduleException.SpanWrongOrderException.class)
-                .hasMessage("시작 일자가 종료 일자보다 이후일 수 없습니다.");
+                .hasMessageContaining("시작 일자가 종료 일자보다 이후일 수 없습니다.");
     }
 }

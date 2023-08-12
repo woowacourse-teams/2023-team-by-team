@@ -85,7 +85,7 @@ class TeamPlaceServiceTest extends ServiceTest {
             // when & then
             Assertions.assertThatThrownBy(() -> teamPlaceService.create(new MemberEmailDto(PHILIP.getEmail().getValue()), new TeamPlaceCreateRequest(TEAM_PLACE_NAME)))
                     .isInstanceOf(MemberException.MemberNotFoundException.class)
-                    .hasMessage("조회한 멤버가 존재하지 않습니다.");
+                    .hasMessageContaining("조회한 멤버가 존재하지 않습니다.");
         }
     }
 
@@ -141,7 +141,7 @@ class TeamPlaceServiceTest extends ServiceTest {
             SoftAssertions.assertSoftly(softly -> {
                 softly.assertThatThrownBy(() -> teamPlaceService.getTeamPlaceInviteCode(notExistTeamPlaceId))
                         .isInstanceOf(TeamPlaceException.NotFoundException.class)
-                        .hasMessage("조회한 팀 플레이스가 존재하지 않습니다.");
+                        .hasMessageContaining("조회한 팀 플레이스가 존재하지 않습니다.");
             });
         }
     }

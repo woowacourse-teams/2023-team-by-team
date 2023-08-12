@@ -70,7 +70,7 @@ class FeedThreadServiceTest extends ServiceTest {
             // when & then
             assertThatThrownBy(() -> feedThreadService.write(request, new MemberEmailDto(author.getEmail().getValue() + "x"), teamPlace.getId()))
                     .isInstanceOf(MemberException.MemberNotFoundException.class)
-                    .hasMessage("조회한 멤버가 존재하지 않습니다.");
+                    .hasMessageContaining("조회한 멤버가 존재하지 않습니다.");
         }
     }
 

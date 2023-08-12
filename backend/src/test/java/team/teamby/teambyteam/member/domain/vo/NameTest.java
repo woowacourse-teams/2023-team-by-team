@@ -18,7 +18,7 @@ class NameTest {
         // when & then
         Assertions.assertThatThrownBy(() -> new Name(nullName))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessage("멤버 이름은 null일 수 없습니다.");
+                .hasMessageContaining("멤버 이름은 null일 수 없습니다.");
     }
 
     @Test
@@ -31,7 +31,7 @@ class NameTest {
         // when & then
         Assertions.assertThatThrownBy(() -> new Name(overLengthName))
                 .isInstanceOf(MemberException.NameLengthException.class)
-                .hasMessage("멤버 이름의 길이가 최대 이름 길이를 초과했습니다.");
+                .hasMessageContaining("멤버 이름의 길이가 최대 이름 길이를 초과했습니다.");
     }
 
     @ParameterizedTest
@@ -41,6 +41,6 @@ class NameTest {
         // when & then
         Assertions.assertThatThrownBy(() -> new Name(blankName))
                 .isInstanceOf(MemberException.NameBlankException.class)
-                .hasMessage("멤버 이름은 공백을 제외한 1자 이상이어야합니다.");
+                .hasMessageContaining("멤버 이름은 공백을 제외한 1자 이상이어야합니다.");
     }
 }

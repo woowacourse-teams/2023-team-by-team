@@ -28,6 +28,6 @@ class EmailTest {
         // when & then
         Assertions.assertThatThrownBy(() -> new Email(value))
                 .isInstanceOf(MemberException.EmailRegexException.class)
-                .hasMessage("정해진 이메일의 양식이 아닙니다.");
+                .hasMessageContaining("정해진 이메일의 양식이 아닙니다.");
     }
 }

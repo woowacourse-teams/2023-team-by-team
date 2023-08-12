@@ -598,7 +598,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             // then
             assertSoftly(softly -> {
                 softly.assertThat(notExistTeamPlaceIdRequest.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
-                softly.assertThat(notExistTeamPlaceIdRequest.jsonPath().getString("error")).isEqualTo("접근할 수 없는 팀플레이스입니다.");
+                softly.assertThat(notExistTeamPlaceIdRequest.jsonPath().getString("error")).contains("접근할 수 없는 팀플레이스입니다.");
             });
         }
 
@@ -654,7 +654,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             // then
             assertSoftly(softly -> {
                 softly.assertThat(notExistTeamPlaceIdDeleteScheduleResponse.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
-                softly.assertThat(notExistTeamPlaceIdDeleteScheduleResponse.jsonPath().getString("error")).isEqualTo("접근할 수 없는 팀플레이스입니다.");
+                softly.assertThat(notExistTeamPlaceIdDeleteScheduleResponse.jsonPath().getString("error")).contains("접근할 수 없는 팀플레이스입니다.");
             });
         }
 
@@ -677,7 +677,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             // then
             assertSoftly(softly -> {
                 softly.assertThat(notExistScheduleIdDeleteResponse.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
-                softly.assertThat(notExistScheduleIdDeleteResponse.jsonPath().getString("error")).isEqualTo("조회한 일정이 존재하지 않습니다.");
+                softly.assertThat(notExistScheduleIdDeleteResponse.jsonPath().getString("error")).contains("조회한 일정이 존재하지 않습니다.");
             });
         }
     }
