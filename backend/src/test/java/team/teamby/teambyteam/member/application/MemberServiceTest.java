@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import team.teamby.teambyteam.common.ServiceTest;
 import team.teamby.teambyteam.common.fixtures.MemberFixtures;
 import team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures;
+import team.teamby.teambyteam.member.application.dto.MemberInfoResponse;
 import team.teamby.teambyteam.member.application.dto.TeamPlaceResponse;
 import team.teamby.teambyteam.member.application.dto.TeamPlacesResponse;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
@@ -208,6 +209,41 @@ class MemberServiceTest extends ServiceTest {
                         .isInstanceOf(TeamPlaceInviteCodeException.NotFoundException.class)
                         .hasMessage("존재하지 않는 초대코드 입니다.");
             });
+        }
+    }
+
+    @Nested
+    @DisplayName("사용자의 정보시")
+    class GetMyInformation {
+
+        @Test
+        @DisplayName("정보 조회에 성공한다.")
+        void success() {
+            // given
+            final Member REGISTERED_MEMBER = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
+
+            // when
+            final MemberInfoResponse response = memberService.getMemberInformation(new MemberEmailDto(REGISTERED_MEMBER.getEmail().getValue()));
+
+            // then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response.id()).isEqualTo(REGISTERED_MEMBER.getId());
+                softly.assertThat(response.name()).isEqualTo(REGISTERED_MEMBER.getName().getValue());
+                softly.assertThat(response.profileImageUrl()).isEqualTo(REGISTERED_MEMBER.getProfileImageUrl().getValue());
+                softly.assertThat(response.email()).isEqualTo(REGISTERED_MEMBER.getEmail().getValue());
+            });
+        }
+
+        @Test
+        @DisplayName("존재하지 않는 사용자이메일로 조회시 실패한다.")
+        void failWithNotRegisteredMember() {
+            // given
+            final Member NON_REGISTERED_MEMBER = MemberFixtures.ROY();
+
+            // when & then
+            Assertions.assertThatThrownBy(() -> memberService.getMemberInformation(new MemberEmailDto(NON_REGISTERED_MEMBER.getEmail().getValue())))
+                    .isInstanceOf(MemberException.MemberNotFoundException.class)
+                    .hasMessage("조회한 멤버가 존재하지 않습니다.");
         }
     }
 }
