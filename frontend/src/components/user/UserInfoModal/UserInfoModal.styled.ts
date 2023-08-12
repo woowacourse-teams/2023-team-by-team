@@ -34,7 +34,6 @@ export const Container = styled.div`
 export const ProfileImage = styled.img`
   width: 200px;
   height: 200px;
-
   margin: 10px auto;
 
   border-radius: 50%;
