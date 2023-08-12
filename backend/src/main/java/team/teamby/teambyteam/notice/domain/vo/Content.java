@@ -34,7 +34,7 @@ public class Content {
             throw new NullPointerException("공지 내용은 null일 수 없습니다.");
         }
         if (value.length() > MAX_LENGTH) {
-            throw new NoticeException.ContentLengthException();
+            throw new NoticeException.ContentLengthException(MAX_LENGTH, value);
         }
     }
 }

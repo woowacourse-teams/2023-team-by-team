@@ -30,7 +30,7 @@ public class Span {
 
     private void validateDateTimeOrder(final LocalDateTime startDateTime, final LocalDateTime endDateTime) {
         if (startDateTime.isAfter(endDateTime)) {
-            throw new ScheduleException.SpanWrongOrderException();
+            throw new ScheduleException.SpanWrongOrderException(startDateTime, endDateTime);
         }
     }
 

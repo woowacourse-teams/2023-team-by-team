@@ -53,7 +53,7 @@ public class TeamCalendarScheduleService {
 
     private void checkTeamPlaceExist(final Long teamPlaceId) {
         if (notExistTeamPlace(teamPlaceId)) {
-            throw new TeamPlaceException.NotFoundException();
+            throw new TeamPlaceException.NotFoundException(teamPlaceId);
         }
     }
 
@@ -66,7 +66,7 @@ public class TeamCalendarScheduleService {
         checkTeamPlaceExist(teamPlaceId);
 
         final Schedule schedule = scheduleRepository.findById(scheduleId)
-                .orElseThrow(ScheduleException.ScheduleNotFoundException::new);
+                .orElseThrow(() -> new ScheduleException.ScheduleNotFoundException(scheduleId));
         validateScheduleOwnerTeam(teamPlaceId, schedule);
 
         return ScheduleResponse.from(schedule);
@@ -74,7 +74,7 @@ public class TeamCalendarScheduleService {
 
     private void validateScheduleOwnerTeam(final Long teamPlaceId, final Schedule schedule) {
         if (isNotScheduleOfTeam(teamPlaceId, schedule)) {
-            throw new ScheduleException.TeamAccessForbidden();
+            throw new ScheduleException.TeamAccessForbidden(schedule.getId(), teamPlaceId);
         }
     }
 
@@ -113,7 +113,7 @@ public class TeamCalendarScheduleService {
         checkTeamPlaceExist(teamPlaceId);
 
         final Schedule previousSchedule = scheduleRepository.findById(scheduleId)
-                .orElseThrow(ScheduleException.ScheduleNotFoundException::new);
+                .orElseThrow(() -> new ScheduleException.ScheduleNotFoundException(scheduleId));
         validateScheduleOwnerTeam(teamPlaceId, previousSchedule);
 
         Title previousTitle = previousSchedule.getTitle();
@@ -138,7 +138,7 @@ public class TeamCalendarScheduleService {
         checkTeamPlaceExist(teamPlaceId);
 
         final Schedule schedule = scheduleRepository.findById(scheduleId)
-                .orElseThrow(ScheduleException.ScheduleNotFoundException::new);
+                .orElseThrow(() -> new ScheduleException.ScheduleNotFoundException(scheduleId));
         validateScheduleOwnerTeam(teamPlaceId, schedule);
 
         scheduleRepository.deleteById(scheduleId);

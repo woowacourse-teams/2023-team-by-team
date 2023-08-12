@@ -36,7 +36,7 @@ public class MemberService {
     @Transactional(readOnly = true)
     public TeamPlacesResponse getParticipatedTeamPlaces(final MemberEmailDto memberEmailDto) {
         final IdOnly memberId = memberRepository.findIdByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(MemberException.MemberNotFoundException::new);
+                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
 
         final List<MemberTeamPlace> allByMemberId = memberTeamPlaceRepository.findAllByMemberId(memberId.id());
 
@@ -45,7 +45,7 @@ public class MemberService {
 
     public void leaveTeamPlace(final MemberEmailDto memberEmailDto, final Long teamPlaceId) {
         final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(MemberException.MemberNotFoundException::new);
+                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
 
         final MemberTeamPlace memberTeamPlaceToLeave = member.leaveTeamPlace(teamPlaceId);
         memberTeamPlaceRepository.delete(memberTeamPlaceToLeave);
@@ -55,11 +55,11 @@ public class MemberService {
 
     public TeamPlaceParticipantResponse participateTeamPlace(final MemberEmailDto memberEmailDto, final String inviteCode) {
         final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(MemberException.MemberNotFoundException::new);
+                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
 
         final InviteCode inviteCodeVo = validteInviteCode(inviteCode);
         final TeamPlaceInviteCode teamPlaceInviteCode = teamPlaceInviteCodeRepository.findByInviteCode(inviteCodeVo)
-                .orElseThrow(TeamPlaceInviteCodeException.NotFoundException::new);
+                .orElseThrow(() -> new TeamPlaceInviteCodeException.NotFoundException(inviteCodeVo.getValue()));
         final TeamPlace teamPlace = teamPlaceInviteCode.getTeamPlace();
         if (member.isMemberOf(teamPlace.getId())) {
             return new TeamPlaceParticipantResponse(teamPlace.getId());
@@ -73,11 +73,11 @@ public class MemberService {
     }
 
     private InviteCode validteInviteCode(final String inviteCode) {
-        InviteCode inviteCodeVo;
+        final InviteCode inviteCodeVo;
         try {
             inviteCodeVo = new InviteCode(inviteCode);
         } catch (IllegalArgumentException e) {
-            throw new TeamPlaceInviteCodeException.LengthException();
+            throw new TeamPlaceInviteCodeException.LengthException(InviteCode.LENGTH, inviteCode);
         }
         return inviteCodeVo;
     }
@@ -85,7 +85,7 @@ public class MemberService {
     @Transactional(readOnly = true)
     public MemberInfoResponse getMemberInformation(final MemberEmailDto memberEmailDto) {
         final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(MemberException.MemberNotFoundException::new);
+                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
 
         return MemberInfoResponse.of(member);
     }

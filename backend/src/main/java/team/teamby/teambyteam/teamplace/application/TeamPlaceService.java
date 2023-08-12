@@ -39,7 +39,7 @@ public class TeamPlaceService {
     public TeamPlaceCreateResponse create(final MemberEmailDto memberEmailDto, final TeamPlaceCreateRequest request) {
 
         final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(MemberException.MemberNotFoundException::new);
+                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
 
         final TeamPlace createdTeamPlace = teamPlaceRepository.save(new TeamPlace(new Name(request.name())));
         final MemberTeamPlace participatedMemberTeamPlace = member.participate(createdTeamPlace);
@@ -54,11 +54,12 @@ public class TeamPlaceService {
         final boolean exist = teamPlaceInviteCodeRepository.existsByTeamPlaceId(teamPlaceId);
         if (exist) {
             final InviteCode inviteCode = teamPlaceInviteCodeRepository.findByTeamPlaceId(teamPlaceId)
-                    .orElseThrow(TeamPlaceInviteCodeException.NotGeneratedInviteCodeException::new)
+                    .orElseThrow(() -> new TeamPlaceInviteCodeException.NotGeneratedInviteCodeException(teamPlaceId))
                     .getInviteCode();
             return new TeamPlaceInviteCodeResponse(teamPlaceId, inviteCode.getValue());
         }
-        final TeamPlace teamPlace = teamPlaceRepository.findById(teamPlaceId).orElseThrow(TeamPlaceException.NotFoundException::new);
+        final TeamPlace teamPlace = teamPlaceRepository.findById(teamPlaceId)
+                .orElseThrow(() -> new TeamPlaceException.NotFoundException(teamPlaceId));
         final InviteCode inviteCode = generateInviteCode();
         final TeamPlaceInviteCode teamPlaceInviteCode = teamPlaceInviteCodeRepository.save(new TeamPlaceInviteCode(inviteCode, teamPlace));
 

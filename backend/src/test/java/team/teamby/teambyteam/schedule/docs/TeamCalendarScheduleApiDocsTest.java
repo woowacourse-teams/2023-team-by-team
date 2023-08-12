@@ -193,7 +193,7 @@ public class TeamCalendarScheduleApiDocsTest {
             // given
             final Long notExistTeamPlaceId = -1L;
             final ScheduleRegisterRequest request = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_REGISTER_REQUEST;
-            willThrow(new TeamPlaceException.NotFoundException())
+            willThrow(new TeamPlaceException.NotFoundException(notExistTeamPlaceId))
                     .given(teamCalendarScheduleService)
                     .register(any(), eq(notExistTeamPlaceId));
 
@@ -222,7 +222,7 @@ public class TeamCalendarScheduleApiDocsTest {
             final LocalDateTime wrongEndDateTime = startDateTime.minusDays(1);
             final ScheduleRegisterRequest request = new ScheduleRegisterRequest(title, startDateTime, wrongEndDateTime);
 
-            willThrow(new ScheduleException.SpanWrongOrderException())
+            willThrow(new ScheduleException.SpanWrongOrderException(startDateTime, wrongEndDateTime))
                     .given(teamCalendarScheduleService)
                     .register(request, teamPlaceId);
 
@@ -352,7 +352,7 @@ public class TeamCalendarScheduleApiDocsTest {
             final Long id = 1L;
             final Long notExistTeamPlaceId = -1L;
             final ScheduleRegisterRequest request = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_REGISTER_REQUEST;
-            willThrow(new TeamPlaceException.NotFoundException())
+            willThrow(new TeamPlaceException.NotFoundException(notExistTeamPlaceId))
                     .given(teamCalendarScheduleService)
                     .update(any(), eq(notExistTeamPlaceId), eq(id));
 
@@ -382,7 +382,7 @@ public class TeamCalendarScheduleApiDocsTest {
             final LocalDateTime wrongEndDateTime = startDateTime.minusDays(1);
             final ScheduleUpdateRequest request = new ScheduleUpdateRequest(title, startDateTime, wrongEndDateTime);
 
-            willThrow(new ScheduleException.SpanWrongOrderException())
+            willThrow(new ScheduleException.SpanWrongOrderException(startDateTime, wrongEndDateTime))
                     .given(teamCalendarScheduleService)
                     .update(request, teamPlaceId, id);
 
@@ -407,7 +407,7 @@ public class TeamCalendarScheduleApiDocsTest {
             final Long notExistScheduleId = -1L;
             final Long teamPlaceId = 1L;
             final ScheduleRegisterRequest request = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_REGISTER_REQUEST;
-            willThrow(new ScheduleException.ScheduleNotFoundException())
+            willThrow(new ScheduleException.ScheduleNotFoundException(notExistScheduleId))
                     .given(teamCalendarScheduleService)
                     .update(any(), eq(teamPlaceId), eq(notExistScheduleId));
 

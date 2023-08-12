@@ -10,6 +10,7 @@ import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
+import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.member.exception.MemberException.MemberNotFoundException;
 import team.teamby.teambyteam.notice.application.dto.NoticeRegisterRequest;
 import team.teamby.teambyteam.notice.application.dto.NoticeResponse;
@@ -38,7 +39,7 @@ public class NoticeService {
     ) {
         checkTeamPlaceExist(teamPlaceId);
         final IdOnly memberId = memberRepository.findIdByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(MemberNotFoundException::new);
+                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
 
         final Content content = new Content(noticeRegisterRequest.content());
         final Notice savedNotice = noticeRepository.save(new Notice(content, teamPlaceId, memberId.id()));
@@ -49,7 +50,7 @@ public class NoticeService {
 
     private void checkTeamPlaceExist(final Long teamPlaceId) {
         if (notExistTeamPlace(teamPlaceId)) {
-            throw new TeamPlaceException.NotFoundException();
+            throw new TeamPlaceException.NotFoundException(teamPlaceId);
         }
     }
 

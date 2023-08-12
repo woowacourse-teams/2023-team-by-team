@@ -49,7 +49,7 @@ public class FeedThreadService {
 
         final Content content = new Content(feedThreadWritingRequest.content());
         final IdOnly memberId = memberRepository.findIdByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(MemberException.MemberNotFoundException::new);
+                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
 
         final Feed feed = new FeedThread(teamPlaceId, content, memberId.id());
 
