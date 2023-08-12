@@ -7,7 +7,8 @@ export const useSendTeamLink = (teamPlaceId: number) => {
   const { mutate } = useMutation(
     (body: TeamLinkWithoutInfo) => sendTeamLink(teamPlaceId, body),
     {
-      onSuccess: () => queryClient.invalidateQueries(['teamLinks']),
+      onSuccess: () =>
+        queryClient.invalidateQueries(['teamLinks', teamPlaceId]),
     },
   );
 
