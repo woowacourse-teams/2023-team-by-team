@@ -2,6 +2,7 @@ import * as S from './LinkTable.styled';
 import Text from '~/components/common/Text/Text';
 import Button from '~/components/common/Button/Button';
 import LinkAddModal from '../LinkAddModal/LinkAddModal';
+import EmptyLinkPlaceholder from '../EmptyLinkPlaceholder/EmptyLinkPlaceholder';
 import { PlusIcon, DeleteIcon } from '~/assets/svg';
 import { useFetchTeamLinks } from '~/hooks/queries/useFetchTeamLinks';
 import { useDeleteTeamLink } from '~/hooks/queries/useDeleteTeamLink';
@@ -37,35 +38,39 @@ const TeamLinkTable = () => {
               <th key={value}>{value}</th>
             ))}
           </S.TableHeader>
-          <S.TableBody>
-            <S.Table>
-              {teamLinks.map(({ id, title, url, memberName, updatedAt }) => (
-                <tr key={id}>
-                  <td>
-                    <a
-                      href={url}
-                      target="_blank"
-                      rel="noreferrer"
-                      title={title}
-                    >
-                      {title}
-                    </a>
-                  </td>
-                  <td title={memberName}>{memberName}</td>
-                  <td>{updatedAt}</td>
-                  <td>
-                    <Button
-                      variant="plain"
-                      css={S.deleteButton}
-                      onClick={() => mutateDeleteTeamLink(id)}
-                    >
-                      <DeleteIcon />
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </S.Table>
-          </S.TableBody>
+          {teamLinks.length > 0 ? (
+            <S.TableBody>
+              <S.Table>
+                {teamLinks.map(({ id, title, url, memberName, updatedAt }) => (
+                  <tr key={id}>
+                    <td>
+                      <a
+                        href={url}
+                        target="_blank"
+                        rel="noreferrer"
+                        title={title}
+                      >
+                        {title}
+                      </a>
+                    </td>
+                    <td title={memberName}>{memberName}</td>
+                    <td>{updatedAt}</td>
+                    <td>
+                      <Button
+                        variant="plain"
+                        css={S.deleteButton}
+                        onClick={() => mutateDeleteTeamLink(id)}
+                      >
+                        <DeleteIcon />
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </S.Table>
+            </S.TableBody>
+          ) : (
+            <EmptyLinkPlaceholder onClick={openModal} />
+          )}
         </S.TableContainer>
       </S.Container>
       {isModalOpen && <LinkAddModal />}
