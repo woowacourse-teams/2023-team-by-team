@@ -38,7 +38,7 @@ const Header = () => {
       changeTeamPlace(newTeamPlace.id);
       setTeamName(() => value);
 
-      if (location.pathname !== PATH_NAME.TEAM_FEED) {
+      if (location.pathname === PATH_NAME.TEAM_SELECT) {
         navigate(PATH_NAME.TEAM_CALENDAR);
       }
     },
