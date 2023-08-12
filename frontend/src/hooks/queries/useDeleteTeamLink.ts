@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteTeamLink } from '~/apis/link';
 import { useToast } from '../useToast';
 
-export const useDeleteTeamPlace = (teamPlaceId: number, teamLinkId: number) => {
+export const useDeleteTeamLink = (teamPlaceId: number, teamLinkId: number) => {
   const queryClient = useQueryClient();
   const { showToast } = useToast();
   const { mutate } = useMutation(
