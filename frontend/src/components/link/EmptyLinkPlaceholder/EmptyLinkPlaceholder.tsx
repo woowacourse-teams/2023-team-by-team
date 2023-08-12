@@ -12,7 +12,12 @@ const EmptyLinkPlaceholder = (props: EmptyLinkPlaceholderProps) => {
 
   return (
     <S.Container>
-      <Button variant="plain" onClick={onClick} css={S.placeholderButton}>
+      <Button
+        variant="plain"
+        onClick={onClick}
+        css={S.placeholderButton}
+        aria-label="새로운 링크 등록하기"
+      >
         <S.PlaceholderContainer>
           <S.LinkEmptyImage src={linkEmptyImage} />
           <Text weight="bold" css={S.titleText}>
