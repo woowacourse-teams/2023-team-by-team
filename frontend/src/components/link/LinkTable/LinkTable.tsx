@@ -4,6 +4,7 @@ import Button from '~/components/common/Button/Button';
 import LinkAddModal from '../LinkAddModal/LinkAddModal';
 import { PlusIcon, DeleteIcon } from '~/assets/svg';
 import { useFetchTeamLinks } from '~/hooks/queries/useFetchTeamLinks';
+import { useDeleteTeamLink } from '~/hooks/queries/useDeleteTeamLink';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useModal } from '~/hooks/useModal';
 
@@ -13,6 +14,7 @@ const TeamLinkTable = () => {
   const { openModal, isModalOpen } = useModal();
   const { teamPlaceId } = useTeamPlace();
   const teamLinks = useFetchTeamLinks(teamPlaceId);
+  const { mutateDeleteTeamLink } = useDeleteTeamLink(teamPlaceId);
 
   return (
     <>
@@ -52,7 +54,11 @@ const TeamLinkTable = () => {
                   <td title={memberName}>{memberName}</td>
                   <td>{updatedAt}</td>
                   <td>
-                    <Button variant="plain" css={S.deleteButton}>
+                    <Button
+                      variant="plain"
+                      css={S.deleteButton}
+                      onClick={() => mutateDeleteTeamLink(id)}
+                    >
                       <DeleteIcon />
                     </Button>
                   </td>
