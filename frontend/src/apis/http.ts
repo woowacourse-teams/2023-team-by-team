@@ -1,12 +1,6 @@
 import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
 import { PATH_NAME } from '~/constants/routes';
 
-const resetAccessToken = () => {
-  localStorage.removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
-  
-  window.location.href = PATH_NAME.LANDING;
-};
-
 export const http = {
   get: async <T>(url: RequestInfo | URL): Promise<T> => {
     const response = await fetch(url, {
@@ -20,8 +14,7 @@ export const http = {
     });
 
     if (response.status === 401) {
-      resetAccessToken();
-      throw new Error('유효한 사용자 정보가 아닙니다.');
+      throw response;
     }
 
     if (!response.ok) {
@@ -31,24 +24,28 @@ export const http = {
     return response.json();
   },
 
-  post: async (url: RequestInfo | URL, body: unknown) => {
+  post: async (url: RequestInfo | URL, body: unknown, reissue?: boolean) => {
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
+    };
+
+    if (reissue) {
+      headers['Authorization-Refresh'] = `Bearer ${localStorage.getItem(
+        LOCAL_STORAGE_KEY.REFRESH_TOKEN,
+      )}`;
+    } else {
+      headers['Authorization'] = `Bearer ${localStorage.getItem(
+        LOCAL_STORAGE_KEY.ACCESS_TOKEN,
+      )}`;
+    }
+
     const response = await fetch(url, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem(
-          LOCAL_STORAGE_KEY.ACCESS_TOKEN,
-        )}`,
-      },
+      headers: headers,
       body: JSON.stringify(body),
     });
 
-    if (response.status === 401) {
-      resetAccessToken();
-      throw new Error('유효한 사용자 정보가 아닙니다.');
-    }
-
-    if (response.status === 404) {
+    if (response.status === 401 || response.status === 404) {
       throw response;
     }
 
@@ -72,8 +69,7 @@ export const http = {
     });
 
     if (response.status === 401) {
-      resetAccessToken();
-      throw new Error('유효한 사용자 정보가 아닙니다.');
+      throw response;
     }
 
     if (!response.ok) {
@@ -95,8 +91,7 @@ export const http = {
     });
 
     if (response.status === 401) {
-      resetAccessToken();
-      throw new Error('유효한 사용자 정보가 아닙니다.');
+      throw response;
     }
 
     if (!response.ok) {
