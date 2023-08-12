@@ -1,10 +1,10 @@
 import * as S from './TeamLinkPage.styled';
-import TeamLinkTable from '~/components/link/LinkTable/LinkTable';
+import LinkTable from '~/components/link/LinkTable/LinkTable';
 
 const TeamLinkPage = () => {
   return (
     <S.Container>
-      <TeamLinkTable />
+      <LinkTable />
     </S.Container>
   );
 };

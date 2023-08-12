@@ -8,8 +8,7 @@ import { useFetchTeamLinks } from '~/hooks/queries/useFetchTeamLinks';
 import { useDeleteTeamLink } from '~/hooks/queries/useDeleteTeamLink';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useModal } from '~/hooks/useModal';
-
-const headerValues = ['링크명', '이름', '날짜', '삭제'];
+import { linkTableheaderValues } from '~/constants/link';
 
 const TeamLinkTable = () => {
   const { openModal, isModalOpen } = useModal();
@@ -34,7 +33,7 @@ const TeamLinkTable = () => {
         </S.MenuHeader>
         <S.TableContainer>
           <S.TableHeader>
-            {headerValues.map((value) => (
+            {linkTableheaderValues.map((value) => (
               <th key={value}>{value}</th>
             ))}
           </S.TableHeader>
