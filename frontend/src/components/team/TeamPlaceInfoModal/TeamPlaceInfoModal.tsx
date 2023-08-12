@@ -9,10 +9,11 @@ import * as S from './TeamPlaceInfoModal.styled';
 import { ModalProvider } from '~/components/common/Modal/ModalContext';
 import Button from '~/components/common/Button/Button';
 import { useToast } from '~/hooks/useToast';
+import TeamBadge from '~/components/team/TeamBadge/TeamBadge';
 
 const TeamPlaceInfoModal = () => {
   const { closeModal } = useModal();
-  const { teamPlaceId } = useTeamPlace();
+  const { teamPlaceId, teamPlaceColor, displayName } = useTeamPlace();
   const { members } = useFetchTeamPlaceMembers(teamPlaceId);
   const { inviteCode } = useFetchTeamPlaceInviteCode(teamPlaceId);
   const { showToast } = useToast();
@@ -35,12 +36,21 @@ const TeamPlaceInfoModal = () => {
       <Modal>
         <S.Backdrop onClick={closeModal} />
         <S.Container>
-          <S.TitleContainer>
+          <S.TeamPlaceName>
+            <TeamBadge teamPlaceColor={teamPlaceColor} size="md" />
+            <Text as="span" size="lg" weight="semiBold">
+              {displayName}
+            </Text>
+          </S.TeamPlaceName>
+
+          <S.Divider />
+
+          <S.MemberDescription>
             <Text as="span" weight="semiBold">
               팀원 목록
             </Text>
             <Text as="span">총 {members?.length}명</Text>
-          </S.TitleContainer>
+          </S.MemberDescription>
           <S.MemberList>
             {members?.map((member) => {
               const { id, name, profileImageUrl } = member;

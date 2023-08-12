@@ -26,9 +26,19 @@ export const Container = styled.div`
     0 15px 25px #1b1d1f33,
     0 5px 10px #1b1d1f1f;
   background-color: ${({ theme }) => theme.color.WHITE};
+
+  overflow: hidden;
 `;
 
-export const TitleContainer = styled.div`
+export const TeamPlaceName = styled.div`
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+  margin-bottom: 10px;
+`;
+
+export const MemberDescription = styled.div`
   display: flex;
   justify-content: space-between;
 `;
@@ -91,9 +101,10 @@ export const InviteCodeWrapper = styled.div`
 export const Divider = styled.div`
   width: 100%;
   height: 1px;
+
   margin-bottom: 20px;
 
-  background-color: ${({ theme }) => theme.color.GRAY300};
+  background-color: ${({ theme }) => theme.color.GRAY400};
 `;
 
 export const copyButton = css`
