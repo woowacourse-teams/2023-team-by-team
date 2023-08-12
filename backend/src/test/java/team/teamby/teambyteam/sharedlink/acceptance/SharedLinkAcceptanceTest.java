@@ -10,11 +10,13 @@ import org.springframework.http.HttpStatus;
 import team.teamby.teambyteam.common.AcceptanceTest;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.sharedlink.application.dto.SharedLinkCreateRequest;
+import team.teamby.teambyteam.sharedlink.application.dto.SharedLinksResponse;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
+import static team.teamby.teambyteam.common.fixtures.acceptance.SharedLinkAcceptanceFixtures.GET_SHARED_LINK_REQUEST;
 import static team.teamby.teambyteam.common.fixtures.acceptance.SharedLinkAcceptanceFixtures.REGISTER_SHARED_LINK_REQUEST;
 
 public final class SharedLinkAcceptanceTest extends AcceptanceTest {
@@ -110,6 +112,65 @@ public final class SharedLinkAcceptanceTest extends AcceptanceTest {
 
             // when
             final ExtractableResponse<Response> successRequest = REGISTER_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), invalidTeamPlaceId, sharedLinkCreateRequest);
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(successRequest.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+            });
+        }
+    }
+
+    @Nested
+    @DisplayName("공유 링크 조회시")
+    public class GetSharedLinkTest {
+
+        @Test
+        @DisplayName("지정 팀플레이스의 공유 링크를 조회한다.")
+        void success() {
+            // given
+            final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            testFixtureBuilder.buildMemberTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
+            final SharedLinkCreateRequest sharedLinkCreateRequest = new SharedLinkCreateRequest("title", "/");
+            REGISTER_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), sharedLinkCreateRequest);
+
+            // when
+            final ExtractableResponse<Response> successRequest = GET_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId());
+
+            // then
+            final SharedLinksResponse sharedLinksResponse = successRequest.as(SharedLinksResponse.class);
+            assertSoftly(softly -> {
+                softly.assertThat(successRequest.statusCode()).isEqualTo(HttpStatus.OK.value());
+                softly.assertThat(sharedLinksResponse.teamLinks().size()).isEqualTo(1);
+                softly.assertThat(sharedLinksResponse.teamLinks().get(0).title()).isEqualTo("title");
+            });
+        }
+
+        @Test
+        @DisplayName("인증되지 않은 사용자면 에러를 반환한다.")
+        void failIfUnAuthorized() {
+            // given
+            final String invalidToken = "aaaa.bbbb.cccc";
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+
+            // when
+            final ExtractableResponse<Response> successRequest = GET_SHARED_LINK_REQUEST(invalidToken, ENGLISH_TEAM_PLACE.getId());
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(successRequest.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+            });
+        }
+
+        @Test
+        @DisplayName("존재하지 않거나 참여하지 않은 팀플레이스면 에러를 반환한다.")
+        void failIfNotParticipated() {
+            // given
+            final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+
+            // when
+            final ExtractableResponse<Response> successRequest = GET_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId());
 
             // then
             assertSoftly(softly -> {

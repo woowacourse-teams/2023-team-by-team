@@ -3,6 +3,7 @@ package team.teamby.teambyteam.sharedlink.presentation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,8 +13,11 @@ import team.teamby.teambyteam.member.configuration.AuthPrincipal;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.sharedlink.application.SharedLinkService;
 import team.teamby.teambyteam.sharedlink.application.dto.SharedLinkCreateRequest;
+import team.teamby.teambyteam.sharedlink.application.dto.SharedLinkResponse;
+import team.teamby.teambyteam.sharedlink.application.dto.SharedLinksResponse;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/team-place")
@@ -32,5 +36,14 @@ public class SharedLinkController {
 
         final URI location = URI.create("/api/team-place/" + teamPlaceId + "/team-links/" + sharedLinkId);
         return ResponseEntity.created(location).build();
+    }
+
+    @GetMapping("/{teamPlaceId}/team-links")
+    public ResponseEntity<SharedLinksResponse> getSharedLink(
+            @PathVariable final Long teamPlaceId
+    ) {
+        final List<SharedLinkResponse> sharedLinkResponses = sharedLinkService.getLinks(teamPlaceId);
+
+        return ResponseEntity.ok(new SharedLinksResponse(sharedLinkResponses));
     }
 }

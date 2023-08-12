@@ -24,4 +24,16 @@ public final class SharedLinkAcceptanceFixtures {
                 .then().log().all()
                 .extract();
     }
+
+    public static ExtractableResponse<Response> GET_SHARED_LINK_REQUEST(
+            final String authToken,
+            final Long teamPlaceId
+    ) {
+        return RestAssured.given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, JWT_PREFIX + authToken)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .get("/api/team-place/{teamPlaceId}/team-links", teamPlaceId)
+                .then().log().all()
+                .extract();
+    }
 }

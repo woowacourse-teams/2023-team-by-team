@@ -12,12 +12,17 @@ import team.teamby.teambyteam.common.fixtures.MemberFixtures;
 import team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.Member;
+import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.sharedlink.application.dto.SharedLinkCreateRequest;
+import team.teamby.teambyteam.sharedlink.application.dto.SharedLinkResponse;
 import team.teamby.teambyteam.sharedlink.domain.SharedLink;
 import team.teamby.teambyteam.sharedlink.domain.SharedLinkRepository;
+import team.teamby.teambyteam.sharedlink.domain.vo.SharedURL;
+import team.teamby.teambyteam.sharedlink.domain.vo.Title;
 import team.teamby.teambyteam.sharedlink.exception.SharedLinkException;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
+import java.util.List;
 import java.util.Optional;
 
 class SharedLinkServiceTest extends ServiceTest {
@@ -27,6 +32,9 @@ class SharedLinkServiceTest extends ServiceTest {
 
     @Autowired
     private SharedLinkRepository sharedLinkRepository;
+
+    @Autowired
+    private MemberTeamPlaceRepository memberTeamPlaceRepository;
 
     @Nested
     @DisplayName("공유링크 생성시")
@@ -97,6 +105,55 @@ class SharedLinkServiceTest extends ServiceTest {
                             .isInstanceOf(SharedLinkException.URLException.class)
                             .hasMessage("공유 링크는 빈칸으로 구성될 수 없습니다.")
             );
+        }
+    }
+
+    @Nested
+    @DisplayName("공유링크 조회시")
+    class GetSharedLinkTest {
+        @Test
+        @DisplayName("조회에 성공한다.")
+        void success() {
+            // given
+            final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
+            final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
+            testFixtureBuilder.buildMemberTeamPlace(PHILIP, teamPlace);
+            final String title = "자료";
+            final String url = "/";
+            testFixtureBuilder.buildSharedLink(new SharedLink(teamPlace.getId(), PHILIP.getId(), new Title(title), new SharedURL(url)));
+            testFixtureBuilder.buildSharedLink(new SharedLink(teamPlace.getId(), PHILIP.getId(), new Title(title), new SharedURL(url)));
+            testFixtureBuilder.buildSharedLink(new SharedLink(teamPlace.getId(), PHILIP.getId(), new Title(title), new SharedURL(url)));
+
+            // when
+            final List<SharedLinkResponse> sharedLinkResponses = sharedLinkService.getLinks(teamPlace.getId());
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(sharedLinkResponses).isNotNull();
+                softly.assertThat(sharedLinkResponses).hasSize(3);
+                softly.assertThat(sharedLinkResponses.get(0).memberName()).isEqualTo(memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(teamPlace.getId(), PHILIP.getId()).get().getDisplayMemberName().getValue());
+                softly.assertThat(sharedLinkResponses.get(0).memberId()).isEqualTo(PHILIP.getId());
+                softly.assertThat(sharedLinkResponses.get(0).title()).isEqualTo(title);
+                softly.assertThat(sharedLinkResponses.get(0).url()).isEqualTo(url);
+            });
+        }
+
+        @Test
+        @DisplayName("내용이 없을 시 빈 리스트 조회에 성공한다.")
+        void successEmptySize() {
+            // given
+            final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
+            final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
+            testFixtureBuilder.buildMemberTeamPlace(PHILIP, teamPlace);
+
+            // when
+            final List<SharedLinkResponse> sharedLinkResponses = sharedLinkService.getLinks(teamPlace.getId());
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(sharedLinkResponses).isNotNull();
+                softly.assertThat(sharedLinkResponses).hasSize(0);
+            });
         }
     }
 }
