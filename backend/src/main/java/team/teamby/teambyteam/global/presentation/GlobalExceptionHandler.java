@@ -25,21 +25,23 @@ public class GlobalExceptionHandler {
     final Logger log = LoggerFactory.getLogger(getClass());
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<String> handleMethodArgumentNotValidException(final MethodArgumentNotValidException exception) {
+    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(final MethodArgumentNotValidException exception) {
         final String defaultErrorMessage = exception.getBindingResult().getAllErrors().get(0).getDefaultMessage();
         log.warn(defaultErrorMessage);
 
-        return ResponseEntity.badRequest().body(defaultErrorMessage);
+        return ResponseEntity.badRequest()
+                .body(new ErrorResponse(defaultErrorMessage));
     }
 
     @ExceptionHandler(value = {
             DateTimeParseException.class,
             DateTimeException.class
     })
-    public ResponseEntity<String> handleDateTimeParseException(final DateTimeException exception) {
+    public ResponseEntity<ErrorResponse> handleDateTimeParseException(final DateTimeException exception) {
         log.warn(exception.getMessage());
 
-        return ResponseEntity.badRequest().body("DateTime 형식이 잘못되었습니다. 서버 관리자에게 문의해주세요.");
+        return ResponseEntity.badRequest()
+                .body(new ErrorResponse("DateTime 형식이 잘못되었습니다. 서버 관리자에게 문의해주세요."));
     }
 
     @ExceptionHandler(value = {
@@ -48,11 +50,12 @@ public class GlobalExceptionHandler {
             ScheduleException.ScheduleNotFoundException.class,
             TeamPlaceInviteCodeException.NotFoundException.class
     })
-    public ResponseEntity<String> handleNotFoundException(final RuntimeException exception) {
+    public ResponseEntity<ErrorResponse> handleNotFoundException(final RuntimeException exception) {
         final String message = exception.getMessage();
         log.warn(message);
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponse(message));
     }
 
     @ExceptionHandler(value = {
@@ -60,12 +63,12 @@ public class GlobalExceptionHandler {
             ExpiredJwtException.class,
             TokenException.TokenNotFoundException.class
     })
-    public ResponseEntity<String> handleAuthenticationException(final RuntimeException exception) {
+    public ResponseEntity<ErrorResponse> handleAuthenticationException(final RuntimeException exception) {
         final String message = exception.getMessage();
         log.warn(message);
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(message);
+                .body(new ErrorResponse(message));
     }
 
     @ExceptionHandler(value = {
@@ -73,12 +76,12 @@ public class GlobalExceptionHandler {
             TeamPlaceException.TeamPlaceAccessForbidden.class,
             MemberTeamPlaceException.NotFoundParticipatedTeamPlaceException.class
     })
-    public ResponseEntity<String> handleCustomForbiddenException(final RuntimeException exception) {
+    public ResponseEntity<ErrorResponse> handleCustomForbiddenException(final RuntimeException exception) {
         final String message = exception.getMessage();
         log.warn(message);
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(message);
+                .body(new ErrorResponse(message));
     }
 
     @ExceptionHandler(value = {
@@ -87,11 +90,11 @@ public class GlobalExceptionHandler {
             TeamPlaceException.NameLengthException.class,
             TeamPlaceException.NameBlankException.class
     })
-    public ResponseEntity<String> handleCustomBadRequestException(final RuntimeException exception) {
+    public ResponseEntity<ErrorResponse> handleCustomBadRequestException(final RuntimeException exception) {
         final String message = exception.getMessage();
         log.warn(message);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(message);
+                .body(new ErrorResponse(message));
     }
 }

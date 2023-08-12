@@ -98,7 +98,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             // then
             SoftAssertions.assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
-                softly.assertThat(response.body().asString()).isEqualTo("조회한 일정이 존재하지 않습니다.");
+                softly.assertThat(response.jsonPath().getString("error")).contains("조회한 일정이 존재하지 않습니다.");
             });
         }
 
@@ -122,7 +122,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             // then
             SoftAssertions.assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
-                softly.assertThat(response.body().asString()).isEqualTo("접근할 수 없는 팀플레이스입니다.");
+                softly.assertThat(response.jsonPath().getString("error")).contains("접근할 수 없는 팀플레이스입니다.");
             });
         }
     }
@@ -285,7 +285,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             // then
             assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
-                softly.assertThat(response.body().asString()).isEqualTo("접근할 수 없는 팀플레이스입니다.");
+                softly.assertThat(response.jsonPath().getString("error")).contains("접근할 수 없는 팀플레이스입니다.");
             });
         }
     }
@@ -314,7 +314,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             // then
             assertSoftly(softly -> {
                 softly.assertThat(wrongDayResponse.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-                softly.assertThat(wrongDayResponse.body().asString()).isEqualTo("DateTime 형식이 잘못되었습니다. 서버 관리자에게 문의해주세요.");
+                softly.assertThat(wrongDayResponse.jsonPath().getString("error")).contains("DateTime 형식이 잘못되었습니다. 서버 관리자에게 문의해주세요.");
             });
         }
 
@@ -338,7 +338,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             // then
             assertSoftly(softly -> {
                 softly.assertThat(wrongDayResponse.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-                softly.assertThat(wrongDayResponse.body().asString()).isEqualTo("DateTime 형식이 잘못되었습니다. 서버 관리자에게 문의해주세요.");
+                softly.assertThat(wrongDayResponse.jsonPath().getString("error")).contains("DateTime 형식이 잘못되었습니다. 서버 관리자에게 문의해주세요.");
             });
         }
 
@@ -362,7 +362,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             // then
             assertSoftly(softly -> {
                 softly.assertThat(wrongDayResponse.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-                softly.assertThat(wrongDayResponse.body().asString()).isEqualTo("DateTime 형식이 잘못되었습니다. 서버 관리자에게 문의해주세요.");
+                softly.assertThat(wrongDayResponse.jsonPath().getString("error")).contains("DateTime 형식이 잘못되었습니다. 서버 관리자에게 문의해주세요.");
             });
         }
     }
@@ -414,7 +414,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             // then
             assertSoftly(softly -> {
                 softly.assertThat(blankTitleRequest.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-                softly.assertThat(blankTitleRequest.body().asString()).isEqualTo("제목은 빈 값일 수 없습니다.");
+                softly.assertThat(blankTitleRequest.jsonPath().getString("error")).contains("제목은 빈 값일 수 없습니다.");
             });
         }
 
@@ -442,7 +442,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             // then
             assertSoftly(softly -> {
                 softly.assertThat(wrongDateTimeTypeRequest.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-                softly.assertThat(wrongDateTimeTypeRequest.body().asString()).isEqualTo("DateTime 형식이 잘못되었습니다. 서버 관리자에게 문의해주세요.");
+                softly.assertThat(wrongDateTimeTypeRequest.jsonPath().getString("error")).contains("DateTime 형식이 잘못되었습니다. 서버 관리자에게 문의해주세요.");
             });
         }
 
@@ -467,7 +467,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             // then
             assertSoftly(softly -> {
                 softly.assertThat(wrongSpanOrderResponse.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-                softly.assertThat(wrongSpanOrderResponse.body().asString()).isEqualTo("시작 일자가 종료 일자보다 이후일 수 없습니다.");
+                softly.assertThat(wrongSpanOrderResponse.jsonPath().getString("error")).contains("시작 일자가 종료 일자보다 이후일 수 없습니다.");
             });
         }
 
@@ -484,7 +484,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             // then
             assertSoftly(softly -> {
                 softly.assertThat(notExistTeamPlaceIdRequest.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
-                softly.assertThat(notExistTeamPlaceIdRequest.body().asString()).isEqualTo("접근할 수 없는 팀플레이스입니다.");
+                softly.assertThat(notExistTeamPlaceIdRequest.jsonPath().getString("error")).contains("접근할 수 없는 팀플레이스입니다.");
             });
         }
 
@@ -546,7 +546,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             // then
             assertSoftly(softly -> {
                 softly.assertThat(blankTitleRequest.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-                softly.assertThat(blankTitleRequest.body().asString()).isEqualTo("제목은 빈 값일 수 없습니다.");
+                softly.assertThat(blankTitleRequest.jsonPath().getString("error")).contains("제목은 빈 값일 수 없습니다.");
             });
         }
 
@@ -574,7 +574,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             // then
             assertSoftly(softly -> {
                 softly.assertThat(wrongDateTimeTypeRequest.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-                softly.assertThat(wrongDateTimeTypeRequest.body().asString()).isEqualTo("DateTime 형식이 잘못되었습니다. 서버 관리자에게 문의해주세요.");
+                softly.assertThat(wrongDateTimeTypeRequest.jsonPath().getString("error")).contains("DateTime 형식이 잘못되었습니다. 서버 관리자에게 문의해주세요.");
             });
         }
 
@@ -598,7 +598,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             // then
             assertSoftly(softly -> {
                 softly.assertThat(notExistTeamPlaceIdRequest.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
-                softly.assertThat(notExistTeamPlaceIdRequest.body().asString()).isEqualTo("접근할 수 없는 팀플레이스입니다.");
+                softly.assertThat(notExistTeamPlaceIdRequest.jsonPath().getString("error")).isEqualTo("접근할 수 없는 팀플레이스입니다.");
             });
         }
 
@@ -654,7 +654,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             // then
             assertSoftly(softly -> {
                 softly.assertThat(notExistTeamPlaceIdDeleteScheduleResponse.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
-                softly.assertThat(notExistTeamPlaceIdDeleteScheduleResponse.body().asString()).isEqualTo("접근할 수 없는 팀플레이스입니다.");
+                softly.assertThat(notExistTeamPlaceIdDeleteScheduleResponse.jsonPath().getString("error")).isEqualTo("접근할 수 없는 팀플레이스입니다.");
             });
         }
 
@@ -677,7 +677,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             // then
             assertSoftly(softly -> {
                 softly.assertThat(notExistScheduleIdDeleteResponse.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
-                softly.assertThat(notExistScheduleIdDeleteResponse.body().asString()).isEqualTo("조회한 일정이 존재하지 않습니다.");
+                softly.assertThat(notExistScheduleIdDeleteResponse.jsonPath().getString("error")).isEqualTo("조회한 일정이 존재하지 않습니다.");
             });
         }
     }
