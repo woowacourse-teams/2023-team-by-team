@@ -3,6 +3,7 @@ package team.teamby.teambyteam.sharedlink.presentation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,5 +46,15 @@ public class SharedLinkController {
         final List<SharedLinkResponse> sharedLinkResponses = sharedLinkService.getLinks(teamPlaceId);
 
         return ResponseEntity.ok(new SharedLinksResponse(sharedLinkResponses));
+    }
+
+    @DeleteMapping("/{teamPlaceId}/team-links/{teamLinkId}")
+    public ResponseEntity<Void> deleteSharedLink(
+            @AuthPrincipal final MemberEmailDto memberEmailDto,
+            @PathVariable final Long teamLinkId
+    ) {
+        sharedLinkService.deleteLink(memberEmailDto, teamLinkId);
+
+        return ResponseEntity.noContent().build();
     }
 }

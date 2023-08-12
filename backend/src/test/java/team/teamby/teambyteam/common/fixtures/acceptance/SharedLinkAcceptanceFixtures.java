@@ -36,4 +36,18 @@ public final class SharedLinkAcceptanceFixtures {
                 .then().log().all()
                 .extract();
     }
+
+    public static ExtractableResponse<Response> DELETE_SHARED_LINK_REQUEST(
+            final String authToken,
+            final Long teamPlaceId,
+            final Long sharedLinkException
+
+    ) {
+        return RestAssured.given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, JWT_PREFIX + authToken)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .delete("/api/team-place/{teamPlaceId}/team-links/{teamLinkId}", teamPlaceId, sharedLinkException)
+                .then().log().all()
+                .extract();
+    }
 }

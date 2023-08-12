@@ -11,11 +11,16 @@ import team.teamby.teambyteam.common.AcceptanceTest;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.sharedlink.application.dto.SharedLinkCreateRequest;
 import team.teamby.teambyteam.sharedlink.application.dto.SharedLinksResponse;
+import team.teamby.teambyteam.sharedlink.domain.SharedLink;
+import team.teamby.teambyteam.sharedlink.domain.vo.SharedURL;
+import team.teamby.teambyteam.sharedlink.domain.vo.Title;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
+import static team.teamby.teambyteam.common.fixtures.MemberFixtures.SEONGHA;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
+import static team.teamby.teambyteam.common.fixtures.acceptance.SharedLinkAcceptanceFixtures.DELETE_SHARED_LINK_REQUEST;
 import static team.teamby.teambyteam.common.fixtures.acceptance.SharedLinkAcceptanceFixtures.GET_SHARED_LINK_REQUEST;
 import static team.teamby.teambyteam.common.fixtures.acceptance.SharedLinkAcceptanceFixtures.REGISTER_SHARED_LINK_REQUEST;
 
@@ -171,6 +176,105 @@ public final class SharedLinkAcceptanceTest extends AcceptanceTest {
 
             // when
             final ExtractableResponse<Response> successRequest = GET_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId());
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(successRequest.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+            });
+        }
+    }
+
+    @Nested
+    @DisplayName("공유 링크 삭제시")
+    public class DeleteSharedLinkTest {
+
+        @Test
+        @DisplayName("지정 공유 링크를 삭제한다.")
+        void success() {
+            // given
+            final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            testFixtureBuilder.buildMemberTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
+            final SharedLink sharedLink = testFixtureBuilder.buildSharedLink(new SharedLink(ENGLISH_TEAM_PLACE.getId(), PHILIP.getId(), new Title("title"), new SharedURL("/")));
+
+            // when
+            final ExtractableResponse<Response> successRequest = DELETE_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), sharedLink.getId());
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(successRequest.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+            });
+        }
+
+        @Test
+        @DisplayName("존재하지 않는 공유링크면 예외를 반환한다.")
+        void failIfNotFound() {
+            // given
+            final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            testFixtureBuilder.buildMemberTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
+            final Long invalidId = -1L;
+
+            // when
+            final ExtractableResponse<Response> successRequest = DELETE_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), invalidId);
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(successRequest.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
+            });
+        }
+
+        @Test
+        @DisplayName("작성하지 않은 멤버가 요청하면 예외를 반환한다.")
+        void failIfNotCreatedMember() {
+            // given
+            final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            testFixtureBuilder.buildMemberTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
+            final SharedLink sharedLink = testFixtureBuilder.buildSharedLink(new SharedLink(ENGLISH_TEAM_PLACE.getId(), PHILIP.getId(), new Title("title"), new SharedURL("/")));
+            final Member SEONGHA = testFixtureBuilder.buildMember(SEONGHA());
+            testFixtureBuilder.buildMemberTeamPlace(SEONGHA, ENGLISH_TEAM_PLACE);
+
+            // when
+            final ExtractableResponse<Response> successRequest = DELETE_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(SEONGHA.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), sharedLink.getId());
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(successRequest.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+            });
+        }
+
+        @Test
+        @DisplayName("인증되지 않은 사용자면 예외를 반환한다.")
+        void failIfUnAuthorized() {
+            // given
+            final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            testFixtureBuilder.buildMemberTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
+            final SharedLink sharedLink = testFixtureBuilder.buildSharedLink(new SharedLink(ENGLISH_TEAM_PLACE.getId(), PHILIP.getId(), new Title("title"), new SharedURL("/")));
+            final String invalidToken = "aaaa.bbbb.cccc";
+
+            // when
+            final ExtractableResponse<Response> successRequest = DELETE_SHARED_LINK_REQUEST(invalidToken, ENGLISH_TEAM_PLACE.getId(), sharedLink.getId());
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(successRequest.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+            });
+        }
+
+        @Test
+        @DisplayName("없거나 참여하지 않은 팀플레이스면 예외를 반환한다.")
+        void failIfNotParticipated() {
+            // given
+            final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            testFixtureBuilder.buildMemberTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
+            final SharedLink sharedLink = testFixtureBuilder.buildSharedLink(new SharedLink(ENGLISH_TEAM_PLACE.getId(), PHILIP.getId(), new Title("title"), new SharedURL("/")));
+            final Member SEONGHA = testFixtureBuilder.buildMember(SEONGHA());
+
+            // when
+            final ExtractableResponse<Response> successRequest = DELETE_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(SEONGHA.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), sharedLink.getId());
 
             // then
             assertSoftly(softly -> {

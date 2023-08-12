@@ -156,4 +156,69 @@ class SharedLinkServiceTest extends ServiceTest {
             });
         }
     }
+
+    @Nested
+    @DisplayName("공유링크 삭제시")
+    class DeleteSharedLinkTest {
+        @Test
+        @DisplayName("삭제에 성공한다.")
+        void success() {
+            // given
+            final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
+            final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
+            testFixtureBuilder.buildMemberTeamPlace(PHILIP, teamPlace);
+            final String title = "자료";
+            final String url = "/";
+            final SharedLink sharedLink = testFixtureBuilder.buildSharedLink(new SharedLink(teamPlace.getId(), PHILIP.getId(), new Title(title), new SharedURL(url)));
+            final int beforeSize = sharedLinkRepository.findByTeamPlaceId(teamPlace.getId()).size();
+
+            // when
+            sharedLinkService.deleteLink(new MemberEmailDto(PHILIP.getEmail().getValue()), sharedLink.getId());
+
+            //then
+            final int afterSize = sharedLinkRepository.findByTeamPlaceId(teamPlace.getId()).size();
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(beforeSize - 1).isEqualTo(afterSize);
+            });
+        }
+
+        @Test
+        @DisplayName("없는 경우에 실패한다.")
+        void failIfNotFound() {
+            // given
+            final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
+            final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
+            testFixtureBuilder.buildMemberTeamPlace(PHILIP, teamPlace);
+            final MemberEmailDto memberEmailDto = new MemberEmailDto(PHILIP.getEmail().getValue());
+            final Long invalidSharedLinkId = -1L;
+
+            // when & then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThatThrownBy(() -> sharedLinkService.deleteLink(memberEmailDto, invalidSharedLinkId))
+                        .isInstanceOf(SharedLinkException.NotFoundException.class)
+                        .hasMessage("존재하지 않는 공유 링크입니다.");
+            });
+        }
+
+        @Test
+        @DisplayName("해당 멤버의 공유링크가 아닌 경우 실패한다.")
+        void failIfHasNot() {
+            // given
+            final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
+            final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
+            testFixtureBuilder.buildMemberTeamPlace(PHILIP, teamPlace);
+            final String title = "자료";
+            final String url = "/";
+            final SharedLink sharedLink = testFixtureBuilder.buildSharedLink(new SharedLink(teamPlace.getId(), PHILIP.getId(), new Title(title), new SharedURL(url)));
+            final Member anotherMember = testFixtureBuilder.buildMember(MemberFixtures.SEONGHA());
+            final MemberEmailDto memberEmailDto = new MemberEmailDto(anotherMember.getEmail().getValue());
+
+            // when & then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThatThrownBy(() -> sharedLinkService.deleteLink(memberEmailDto, sharedLink.getId()))
+                        .isInstanceOf(SharedLinkException.OwnerForbiddenException.class)
+                        .hasMessage("실행 권한이 없는 공유링크입니다.");
+            });
+        }
+    }
 }

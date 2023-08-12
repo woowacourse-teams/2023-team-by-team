@@ -17,6 +17,7 @@ import team.teamby.teambyteam.sharedlink.domain.SharedLink;
 import team.teamby.teambyteam.sharedlink.domain.SharedLinkRepository;
 import team.teamby.teambyteam.sharedlink.domain.vo.SharedURL;
 import team.teamby.teambyteam.sharedlink.domain.vo.Title;
+import team.teamby.teambyteam.sharedlink.exception.SharedLinkException;
 
 import java.util.List;
 
@@ -45,5 +46,15 @@ public class SharedLinkService {
                 .map(sharedLink ->
                         SharedLinkResponse.of(sharedLink, memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(sharedLink.getTeamPlaceId(), sharedLink.getMemberId()).orElse(MemberTeamPlace.UNKNOWN_MEMBER_TEAM_PLACE).getDisplayMemberName().getValue())).toList();
         return sharedLinkResponses;
+    }
+
+    public void deleteLink(final MemberEmailDto memberEmailDto, final Long sharedLinkId) {
+        final SharedLink sharedLink = sharedLinkRepository.findById(sharedLinkId)
+                .orElseThrow(SharedLinkException.NotFoundException::new);
+        final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
+                .orElseThrow(MemberException.MemberNotFoundException::new);
+        sharedLink.validateOwner(member);
+
+        sharedLinkRepository.delete(sharedLink);
     }
 }

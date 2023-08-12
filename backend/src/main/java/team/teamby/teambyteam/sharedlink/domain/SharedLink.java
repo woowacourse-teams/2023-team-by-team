@@ -10,8 +10,10 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.teamby.teambyteam.global.domain.BaseEntity;
+import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.sharedlink.domain.vo.SharedURL;
 import team.teamby.teambyteam.sharedlink.domain.vo.Title;
+import team.teamby.teambyteam.sharedlink.exception.SharedLinkException;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -39,5 +41,12 @@ public final class SharedLink extends BaseEntity {
         this.memberId = memberId;
         this.title = title;
         this.sharedURL = sharedURL;
+    }
+
+    public void validateOwner(final Member member) {
+        if (memberId.equals(member.getId())) {
+            return;
+        }
+        throw new SharedLinkException.OwnerForbiddenException();
     }
 }

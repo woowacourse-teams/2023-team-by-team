@@ -17,4 +17,16 @@ public class SharedLinkException extends RuntimeException {
             super("공유 링크는 빈칸으로 구성될 수 없습니다.");
         }
     }
+
+    public static class NotFoundException extends SharedLinkException {
+        public NotFoundException() {
+            super("존재하지 않는 공유 링크입니다.");
+        }
+    }
+
+    public static class OwnerForbiddenException extends SharedLinkException {
+        public OwnerForbiddenException() {
+            super("실행 권한이 없는 공유링크입니다.");
+        }
+    }
 }
