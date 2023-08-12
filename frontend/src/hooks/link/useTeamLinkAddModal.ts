@@ -10,8 +10,7 @@ import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useToast } from '~/hooks/useToast';
 
 const URL_REGEX =
-  /*eslint-disable-next-line*/
-  /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i;
+  /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i;
 
 export const useTeamLinkAddModal = (linkRef: RefObject<HTMLInputElement>) => {
   const { teamPlaceId } = useTeamPlace();
