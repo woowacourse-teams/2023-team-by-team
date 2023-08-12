@@ -1,6 +1,7 @@
 package team.teamby.teambyteam.notice.application;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
@@ -20,6 +21,7 @@ import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -41,6 +43,7 @@ public class NoticeService {
         final Content content = new Content(noticeRegisterRequest.content());
         final Notice savedNotice = noticeRepository.save(new Notice(content, teamPlaceId, memberId.id()));
 
+        log.info("공지 등록 - 등록자 이메일 : {}, 팀플레이스 아이디 : {}, 공지 아이디 : {}", memberEmailDto.email(), teamPlaceId, savedNotice.getId());
         return savedNotice.getId();
     }
 

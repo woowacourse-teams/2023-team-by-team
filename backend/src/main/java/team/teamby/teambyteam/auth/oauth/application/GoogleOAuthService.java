@@ -1,6 +1,7 @@
 package team.teamby.teambyteam.auth.oauth.application;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import team.teamby.teambyteam.member.domain.vo.Name;
 
 import java.util.Base64;
 
+@Slf4j
 @RequiredArgsConstructor
 @Transactional
 @Service
@@ -32,6 +34,8 @@ public class GoogleOAuthService {
         final GoogleTokenResponse googleTokenResponse = googleOAuthClient.getGoogleAccessToken(code);
         final OAuthMember oAuthMember = createOAuthMember(googleTokenResponse.idToken());
         createMemberIfNotExist(oAuthMember);
+
+        log.info("토큰 생성 - 사용자 이메일 : {}", oAuthMember.email());
         return new TokenResponse(jwtTokenProvider.generateAccessToken(oAuthMember.email()));
     }
 

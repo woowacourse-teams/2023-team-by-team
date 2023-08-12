@@ -1,6 +1,7 @@
 package team.teamby.teambyteam.member.application;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.teamby.teambyteam.member.application.dto.MemberInfoResponse;
@@ -22,6 +23,7 @@ import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeException;
 
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 @Transactional
@@ -47,6 +49,8 @@ public class MemberService {
 
         final MemberTeamPlace memberTeamPlaceToLeave = member.leaveTeamPlace(teamPlaceId);
         memberTeamPlaceRepository.delete(memberTeamPlaceToLeave);
+
+        log.info("사용자 팀플레이스 탈퇴 - 회원 이메일 : {}, 팀플레이스 아이디 : {}", memberEmailDto.email(), teamPlaceId);
     }
 
     public TeamPlaceParticipantResponse participateTeamPlace(final MemberEmailDto memberEmailDto, final String inviteCode) {
@@ -64,6 +68,7 @@ public class MemberService {
         final MemberTeamPlace participatedMemberTeamPlace = member.participate(teamPlace);
         memberTeamPlaceRepository.save(participatedMemberTeamPlace);
 
+        log.info("사용자가 팀플레이스 참가 - 회원 이메일 : {}, 팀플레이스 아이디 : {}, 사용한 초대코드 : {}", memberEmailDto.email(), teamPlace.getId(), inviteCode);
         return new TeamPlaceParticipantResponse(teamPlace.getId());
     }
 

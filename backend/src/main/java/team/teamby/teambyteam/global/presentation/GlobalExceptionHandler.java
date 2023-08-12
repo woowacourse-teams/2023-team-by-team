@@ -1,6 +1,7 @@
 package team.teamby.teambyteam.global.presentation;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -19,10 +20,9 @@ import team.teamby.teambyteam.token.exception.TokenException;
 import java.time.DateTimeException;
 import java.time.format.DateTimeParseException;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
-    final Logger log = LoggerFactory.getLogger(getClass());
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(final MethodArgumentNotValidException exception) {

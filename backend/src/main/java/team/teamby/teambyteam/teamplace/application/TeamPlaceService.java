@@ -1,6 +1,7 @@
 package team.teamby.teambyteam.teamplace.application;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
@@ -23,6 +24,7 @@ import team.teamby.teambyteam.teamplace.domain.vo.Name;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeException;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -44,6 +46,7 @@ public class TeamPlaceService {
 
         memberTeamPlaceRepository.save(participatedMemberTeamPlace);
 
+        log.info("팀플레이스 생성 - 팀플레이스 아이디 : {}, 생성한 사용자 이메일 : {}", createdTeamPlace.getId(), memberEmailDto.email());
         return new TeamPlaceCreateResponse(createdTeamPlace.getId());
     }
 
@@ -58,6 +61,8 @@ public class TeamPlaceService {
         final TeamPlace teamPlace = teamPlaceRepository.findById(teamPlaceId).orElseThrow(TeamPlaceException.NotFoundException::new);
         final InviteCode inviteCode = generateInviteCode();
         final TeamPlaceInviteCode teamPlaceInviteCode = teamPlaceInviteCodeRepository.save(new TeamPlaceInviteCode(inviteCode, teamPlace));
+
+        log.info("팀플레이스 초대 코드 생성 - 팀플레이스 아이디 : {}, 생성된 초대코드 : {}", teamPlaceId, inviteCode);
         return new TeamPlaceInviteCodeResponse(teamPlaceId, teamPlaceInviteCode.getInviteCode().getValue());
     }
 
