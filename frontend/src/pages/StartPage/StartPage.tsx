@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PATH_NAME } from '~/constants/routes';
 import { START_TYPE } from '~/constants/team';
+import IntroCardPile from '~/components/landing/IntroCardPile/IntroCardPile';
 
 type StartType = (typeof START_TYPE)[keyof typeof START_TYPE];
 
@@ -60,6 +61,7 @@ const StartPage = () => {
           </Button>
         </S.ButtonContainer>
       </S.InnerContainer>
+      <IntroCardPile animation={false} />
     </S.Container>
   );
 };

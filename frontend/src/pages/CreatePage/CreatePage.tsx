@@ -4,6 +4,7 @@ import Input from '~/components/common/Input/Input';
 import { useRef } from 'react';
 import Button from '~/components/common/Button/Button';
 import { useTeamCreate } from '~/hooks/team/useTeamCreate';
+import IntroCardPile from '~/components/landing/IntroCardPile/IntroCardPile';
 
 const CreatePage = () => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -42,6 +43,7 @@ const CreatePage = () => {
           </Button>
         </S.TeamNameForm>
       </S.InnerContainer>
+      <IntroCardPile animation={false} />
     </S.Container>
   );
 };

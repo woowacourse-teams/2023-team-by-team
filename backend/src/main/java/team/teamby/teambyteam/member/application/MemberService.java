@@ -3,6 +3,7 @@ package team.teamby.teambyteam.member.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.teamby.teambyteam.member.application.dto.MemberInfoResponse;
 import team.teamby.teambyteam.member.application.dto.TeamPlacesResponse;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.IdOnly;
@@ -74,5 +75,13 @@ public class MemberService {
             throw new TeamPlaceInviteCodeException.LengthException();
         }
         return inviteCodeVo;
+    }
+
+    @Transactional(readOnly = true)
+    public MemberInfoResponse getMemberInformation(final MemberEmailDto memberEmailDto) {
+        final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
+                .orElseThrow(MemberException.MemberNotFoundException::new);
+
+        return MemberInfoResponse.of(member);
     }
 }
