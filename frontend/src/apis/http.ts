@@ -24,24 +24,15 @@ export const http = {
     return response.json();
   },
 
-  post: async (url: RequestInfo | URL, body: unknown, reissue?: boolean) => {
-    const headers: HeadersInit = {
-      'Content-Type': 'application/json',
-    };
-
-    if (reissue) {
-      headers['Authorization-Refresh'] = `Bearer ${localStorage.getItem(
-        LOCAL_STORAGE_KEY.REFRESH_TOKEN,
-      )}`;
-    } else {
-      headers['Authorization'] = `Bearer ${localStorage.getItem(
-        LOCAL_STORAGE_KEY.ACCESS_TOKEN,
-      )}`;
-    }
-
+  post: async (url: RequestInfo | URL, body: unknown) => {
     const response = await fetch(url, {
       method: 'POST',
-      headers: headers,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem(
+          LOCAL_STORAGE_KEY.ACCESS_TOKEN,
+        )}`,
+      },
       body: JSON.stringify(body),
     });
 
