@@ -16,6 +16,7 @@ import team.teamby.teambyteam.teamplace.application.TeamPlaceService;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateResponse;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceInviteCodeResponse;
+import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceMembersResponse;
 
 @RestController
 @RequestMapping("/api/team-places")
@@ -39,6 +40,15 @@ public class TeamPlaceController {
             @PathVariable final Long teamPlaceId
     ) {
         final TeamPlaceInviteCodeResponse response = teamPlaceService.getTeamPlaceInviteCode(teamPlaceId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/{teamPlaceId}/members")
+    public ResponseEntity<TeamPlaceMembersResponse> getTeamPlaceMembers(
+            @PathVariable final Long teamPlaceId
+    ) {
+        TeamPlaceMembersResponse response = teamPlaceService.findMembers(teamPlaceId);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
