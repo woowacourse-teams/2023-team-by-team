@@ -90,7 +90,11 @@ const Header = () => {
         </S.InnerContainer>
 
         <S.ButtonContainer>
-          <Button variant="plain" onClick={handleTeamButtonClick}>
+          <Button
+            variant="plain"
+            onClick={handleTeamButtonClick}
+            css={S.teamPlaceInfoButton}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="32"

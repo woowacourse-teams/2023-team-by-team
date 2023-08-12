@@ -26,7 +26,7 @@ export const InnerContainer = styled.div`
 export const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
-  column-gap: 6px;
+  column-gap: 10px;
 `;
 
 export const Divider = styled.div`
@@ -54,8 +54,29 @@ export const teamPlaceName = css`
   font-weight: bold;
 `;
 
+export const teamPlaceInfoButton = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
+  padding: 0;
+
+  border-radius: 50%;
+
+  &:hover {
+    cursor: pointer;
+    background-color: ${({ theme }) => theme.color.GRAY200};
+  }
+`;
+
 export const userInfoButton = css`
   display: flex;
-  gap: 2px;
   align-items: center;
+  justify-content: center;
+
+  width: 50px;
+  height: 50px;
+  padding: 0;
 `;
