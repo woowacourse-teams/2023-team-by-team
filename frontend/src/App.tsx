@@ -10,6 +10,7 @@ import StartPage from '~/pages/StartPage/StartPage';
 import TeamSelectPage from '~/pages/TeamSelectPage/TeamSelectPage';
 import CreatePage from '~/pages/CreatePage/CreatePage';
 import JoinPage from '~/pages/JoinPage/JoinPage';
+import TeamLinkPage from './pages/TeamLinkPage/TeamLinkPage';
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
             element={<TeamCalendarPage />}
           />
           <Route path={PATH_NAME.TEAM_FEED} element={<TeamFeedPage />} />
+          <Route path={PATH_NAME.TEAM_LINK} element={<TeamLinkPage />} />
         </Route>
       </Route>
     </Routes>
