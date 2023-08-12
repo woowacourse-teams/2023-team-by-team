@@ -39,7 +39,7 @@ const TeamPlaceInfoModal = () => {
         <S.Container>
           <S.TeamPlaceName>
             <TeamBadge teamPlaceColor={teamPlaceColor} size="md" />
-            <Text as="span" size="lg" weight="semiBold">
+            <Text as="span" size="lg" weight="semiBold" css={S.teamName}>
               {displayName}
             </Text>
           </S.TeamPlaceName>

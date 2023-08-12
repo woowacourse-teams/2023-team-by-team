@@ -107,6 +107,14 @@ export const Divider = styled.div`
   background-color: ${({ theme }) => theme.color.GRAY400};
 `;
 
+export const teamName = css`
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  max-width: 200px;
+`;
+
 export const copyButton = css`
   display: flex;
   align-items: center;
