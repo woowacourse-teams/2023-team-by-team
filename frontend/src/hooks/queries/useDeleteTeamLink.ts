@@ -2,14 +2,14 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteTeamLink } from '~/apis/link';
 import { useToast } from '../useToast';
 
-export const useDeleteTeamLink = (teamPlaceId: number, teamLinkId: number) => {
+export const useDeleteTeamLink = (teamPlaceId: number) => {
   const queryClient = useQueryClient();
   const { showToast } = useToast();
   const { mutate } = useMutation(
-    () => deleteTeamLink(teamPlaceId, teamLinkId),
+    (teamLinkId: number) => deleteTeamLink(teamPlaceId, teamLinkId),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['teamLinks', teamPlaceId, teamLinkId]),
+        queryClient.invalidateQueries(['teamLinks', teamPlaceId]),
           showToast('success', '링크를 삭제했습니다.');
       },
       onError: () => {
