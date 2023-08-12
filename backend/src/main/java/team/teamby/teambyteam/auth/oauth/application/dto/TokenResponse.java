@@ -1,4 +1,4 @@
 package team.teamby.teambyteam.auth.oauth.application.dto;
 
-public record TokenResponse(String accessToken) {
+public record TokenResponse(String accessToken, String refreshToken) {
 }
