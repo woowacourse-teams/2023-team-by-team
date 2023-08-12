@@ -23,9 +23,30 @@ export const InnerContainer = styled.div`
   }
 `;
 
+export const ButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  column-gap: 6px;
+`;
+
+export const Divider = styled.div`
+  width: 1px;
+  height: 24px;
+
+  background-color: ${({ theme }) => theme.color.GRAY500};
+`;
+
 export const TeamNameWrapper = styled.div`
   display: flex;
   align-items: center;
+`;
+
+export const ProfileImage = styled.img`
+  width: 40px;
+  height: 40px;
+
+  border-radius: 50%;
+  object-fit: cover;
 `;
 
 export const teamPlaceName = css`
@@ -33,10 +54,8 @@ export const teamPlaceName = css`
   font-weight: bold;
 `;
 
-export const logoutButton = css`
+export const userInfoButton = css`
   display: flex;
   gap: 2px;
   align-items: center;
-
-  padding: 8px;
 `;

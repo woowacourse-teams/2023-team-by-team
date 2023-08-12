@@ -8,11 +8,11 @@ import { ModalProvider } from '~/components/common/Modal/ModalContext';
 const PageTemplate = () => {
   return (
     <>
-      <Header />
+      <ModalProvider>
+        <Header />
+      </ModalProvider>
       <S.Container>
-        <ModalProvider>
-          <NavigationBar />
-        </ModalProvider>
+        <NavigationBar />
         <ModalProvider>
           <Outlet />
         </ModalProvider>
