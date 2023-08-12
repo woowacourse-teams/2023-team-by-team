@@ -1,6 +1,9 @@
 import { http } from '~/apis/http';
-import type { TeamLink } from '~/types/link';
+import type { TeamLinkWithOutInfo } from '~/types/link';
 
-export const sendTeamLink = (teamPlaceId: number, body: TeamLink) => {
+export const sendTeamLink = (
+  teamPlaceId: number,
+  body: TeamLinkWithOutInfo,
+) => {
   return http.post(`/api/team-place/${teamPlaceId}/team-links`, body);
 };

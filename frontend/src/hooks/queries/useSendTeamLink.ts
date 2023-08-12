@@ -1,9 +1,9 @@
 import { useMutation } from '@tanstack/react-query';
 import { sendTeamLink } from '~/apis/link';
-import type { TeamLink } from '~/types/link';
+import type { TeamLinkWithOutInfo } from '~/types/link';
 
 export const useSendTeamLink = (teamPlaceId: number) => {
-  const { mutate } = useMutation((body: TeamLink) =>
+  const { mutate } = useMutation((body: TeamLinkWithOutInfo) =>
     sendTeamLink(teamPlaceId, body),
   );
 

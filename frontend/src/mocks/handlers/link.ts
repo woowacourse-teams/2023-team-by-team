@@ -10,6 +10,10 @@ export const LinkHandlers = [
     async (req, res, ctx) => {
       const { title, url } = await req.json();
       teamLinks.push({
+        id: teamLinks.length,
+        memberId: 123123,
+        memberName: '루루',
+        updatedAt: '2023-08-12 15:02',
         title,
         url,
       });
