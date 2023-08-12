@@ -30,8 +30,9 @@ public class AuthController {
     @GetMapping("/code/google")
     public void googleRedirect(final HttpServletResponse response, @RequestParam final String code) throws IOException {
         final String baseUrl = "/login";
-        final String token = googleOAuthService.createToken(code).accessToken();
-        final String url = baseUrl + "?accessToken=" + token;
+        final String accessToken = googleOAuthService.createToken(code).accessToken();
+        final String refreshToken = googleOAuthService.createToken(code).refreshToken();
+        final String url = baseUrl + "?accessToken=" + accessToken + "?refreshToken=" + refreshToken;
 
         response.sendRedirect(url);
     }
