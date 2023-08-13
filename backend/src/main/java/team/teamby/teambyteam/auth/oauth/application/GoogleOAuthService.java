@@ -36,7 +36,10 @@ public class GoogleOAuthService {
         createMemberIfNotExist(oAuthMember);
 
         log.info("토큰 생성 - 사용자 이메일 : {}", oAuthMember.email());
-        return new TokenResponse(jwtTokenProvider.generateAccessToken(oAuthMember.email()));
+        return new TokenResponse(
+                jwtTokenProvider.generateAccessToken(oAuthMember.email()),
+                jwtTokenProvider.generateRefreshToken(oAuthMember.email())
+        );
     }
 
     private OAuthMember createOAuthMember(final String googleIdToken) {

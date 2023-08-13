@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import team.teamby.teambyteam.common.ServiceTest;
-import team.teamby.teambyteam.common.fixtures.MemberFixtures;
-import team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures;
 import team.teamby.teambyteam.common.fixtures.TeamPlaceInviteCodeFixtures;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.Member;
@@ -20,6 +18,7 @@ import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateResponse;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceInviteCodeResponse;
+import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceMembersResponse;
 import team.teamby.teambyteam.teamplace.domain.RandomInviteCodeGenerator;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceInviteCode;
@@ -29,7 +28,15 @@ import team.teamby.teambyteam.teamplace.domain.vo.InviteCode;
 import team.teamby.teambyteam.teamplace.domain.vo.Name;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
+import java.util.List;
 import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ENDEL;
+import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
+import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ROY;
+import static team.teamby.teambyteam.common.fixtures.MemberFixtures.SEONGHA;
+import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
 
 class TeamPlaceServiceTest extends ServiceTest {
 
@@ -56,7 +63,7 @@ class TeamPlaceServiceTest extends ServiceTest {
         @DisplayName("생성에 성공한다.")
         void success() {
             // given
-            final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
+            final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
             final String TEAM_PLACE_NAME = "새로운 팀플레이스";
 
             // when
@@ -79,7 +86,7 @@ class TeamPlaceServiceTest extends ServiceTest {
         @DisplayName("존재하지 않는 사용자 아이디로 요청시 실패한다.")
         void failWithUnauthorizedEmail() {
             // given
-            final Member PHILIP = MemberFixtures.PHILIP();
+            final Member PHILIP = PHILIP();
             final String TEAM_PLACE_NAME = "새로운 팀플레이스";
 
             // when & then
@@ -97,7 +104,7 @@ class TeamPlaceServiceTest extends ServiceTest {
         @DisplayName("조회에 성공한다.")
         void success() {
             // given
-            final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
+            final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             final InviteCode inviteCode = new InviteCode(randomInviteCodeGenerator.generateRandomString());
             testFixtureBuilder.buildTeamPlaceInviteCode(TeamPlaceInviteCodeFixtures.TEAM_PLACE_INVITE_CODE(inviteCode, teamPlace));
 
@@ -116,7 +123,7 @@ class TeamPlaceServiceTest extends ServiceTest {
         @DisplayName("코드가 없는 경우 코드를 생성하여 반환한다.")
         void ifNotExistGenerateInviteCode() {
             // given
-            final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
+            final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             final Optional<TeamPlaceInviteCode> notGeneratedInviteCode = teamPlaceInviteCodeRepository.findByTeamPlaceId(teamPlace.getId());
 
             // when
@@ -143,6 +150,37 @@ class TeamPlaceServiceTest extends ServiceTest {
                         .isInstanceOf(TeamPlaceException.NotFoundException.class)
                         .hasMessageContaining("조회한 팀 플레이스가 존재하지 않습니다.");
             });
+        }
+    }
+
+    @Nested
+    @DisplayName("팀 플레이스 참여 멤버 조회 시")
+    class FindMembers {
+
+        @Test
+        @DisplayName("팀 플레이스 참여 멤버 조회에 성공한다.")
+        void success() {
+            // given
+            final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
+            final Member ROY = testFixtureBuilder.buildMember(ROY());
+            final Member SEONGHA = testFixtureBuilder.buildMember(SEONGHA());
+            final Member ENDEL = testFixtureBuilder.buildMember(ENDEL());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+
+            final MemberTeamPlace memberTeamPlace1 = testFixtureBuilder.buildMemberTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
+            final MemberTeamPlace memberTeamPlace2 = testFixtureBuilder.buildMemberTeamPlace(ROY, ENGLISH_TEAM_PLACE);
+            final MemberTeamPlace memberTeamPlace3 = testFixtureBuilder.buildMemberTeamPlace(SEONGHA, ENGLISH_TEAM_PLACE);
+            final MemberTeamPlace memberTeamPlace4 = testFixtureBuilder.buildMemberTeamPlace(ENDEL, ENGLISH_TEAM_PLACE);
+
+            final TeamPlaceMembersResponse expectedResponse = TeamPlaceMembersResponse.from(List.of(
+                    memberTeamPlace1, memberTeamPlace2, memberTeamPlace3, memberTeamPlace4
+            ));
+
+            // when
+            final TeamPlaceMembersResponse actualResponse = teamPlaceService.findMembers(ENGLISH_TEAM_PLACE.getId());
+
+            // then
+            assertThat(actualResponse).usingRecursiveComparison().isEqualTo(expectedResponse);
         }
     }
 }

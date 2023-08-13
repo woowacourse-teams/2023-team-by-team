@@ -22,9 +22,9 @@ public record NoticeResponse(
         return new NoticeResponse(
                 notice.getId(),
                 notice.getContent().getValue(),
-                memberTeamPlace.getMember().getId(),
+                memberTeamPlace.findMemberId(),
                 memberTeamPlace.getDisplayMemberName().getValue(),
-                memberTeamPlace.getMember().getProfileImageUrl().getValue(),
+                memberTeamPlace.findMemberProfileImageUrl(),
                 noticeCreatedAt
         );
     }

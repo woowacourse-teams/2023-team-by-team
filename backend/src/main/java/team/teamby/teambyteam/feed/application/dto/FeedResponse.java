@@ -38,9 +38,9 @@ public record FeedResponse(
         return new FeedResponse(
                 feed.getId(),
                 feed.getType().name().toLowerCase(),
-                threadAuthorInfo.getMember().getId(),
+                threadAuthorInfo.findMemberId(),
                 threadAuthorInfo.getDisplayMemberName().getValue(),
-                threadAuthorInfo.getMember().getProfileImageUrl().getValue(),
+                threadAuthorInfo.findMemberProfileImageUrl(),
                 createdAt,
                 feed.getContent().getValue()
         );
