@@ -13,6 +13,7 @@ import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateResponse;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceInviteCodeResponse;
+import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceMembersResponse;
 import team.teamby.teambyteam.teamplace.domain.RandomInviteCodeGenerator;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceInviteCode;
@@ -22,6 +23,8 @@ import team.teamby.teambyteam.teamplace.domain.vo.InviteCode;
 import team.teamby.teambyteam.teamplace.domain.vo.Name;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeException;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -70,5 +73,11 @@ public class TeamPlaceService {
         } while (exists);
 
         return new InviteCode(generated);
+    }
+
+    @Transactional(readOnly = true)
+    public TeamPlaceMembersResponse findMembers(final Long teamPlaceId) {
+        final List<MemberTeamPlace> memberTeamPlaces = memberTeamPlaceRepository.findAllByTeamPlaceId(teamPlaceId);
+        return TeamPlaceMembersResponse.from(memberTeamPlaces);
     }
 }
