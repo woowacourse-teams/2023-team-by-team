@@ -1,13 +1,4 @@
-import { styled, css, keyframes } from 'styled-components';
-
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-`;
+import { styled, css } from 'styled-components';
 
 export const Container = styled.div`
   display: flex;
@@ -28,8 +19,6 @@ export const PlaceholderContainer = styled.div`
   height: 100%;
 
   opacity: 0;
-
-  animation: ${fadeIn} 0.4s forwards;
 `;
 
 export const LinkEmptyImage = styled.img`
