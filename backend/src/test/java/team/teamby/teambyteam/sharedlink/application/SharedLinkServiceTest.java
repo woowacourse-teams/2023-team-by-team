@@ -17,12 +17,12 @@ import team.teamby.teambyteam.sharedlink.application.dto.SharedLinkCreateRequest
 import team.teamby.teambyteam.sharedlink.application.dto.SharedLinksResponse;
 import team.teamby.teambyteam.sharedlink.domain.SharedLink;
 import team.teamby.teambyteam.sharedlink.domain.SharedLinkRepository;
-import team.teamby.teambyteam.sharedlink.domain.vo.SharedURL;
-import team.teamby.teambyteam.sharedlink.domain.vo.Title;
 import team.teamby.teambyteam.sharedlink.exception.SharedLinkException;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
 import java.util.Optional;
+
+import static team.teamby.teambyteam.common.fixtures.SharedLinkFixtures.TEAM_BY_TEAM_LINK;
 
 class SharedLinkServiceTest extends ServiceTest {
 
@@ -47,9 +47,8 @@ class SharedLinkServiceTest extends ServiceTest {
             final MemberEmailDto memberEmailDto = new MemberEmailDto(PHILIP.getEmail().getValue());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(PHILIP, teamPlace);
-            final String title = "자료";
-            final String url = "/";
-            final SharedLinkCreateRequest createRequest = new SharedLinkCreateRequest(title, url);
+            final SharedLink sharedLink = TEAM_BY_TEAM_LINK(teamPlace.getId(), PHILIP.getId());
+            final SharedLinkCreateRequest createRequest = new SharedLinkCreateRequest(sharedLink.getTitle().getValue(), sharedLink.getSharedURL().getValue());
 
             // when
             final Long created = sharedLinkService.create(memberEmailDto, teamPlace.getId(), createRequest);
@@ -59,8 +58,8 @@ class SharedLinkServiceTest extends ServiceTest {
             SoftAssertions.assertSoftly(softly -> {
                 softly.assertThat(created).isNotNull();
                 softly.assertThat(createdSharedLink).isNotEmpty();
-                softly.assertThat(createdSharedLink.get().getTitle().getValue()).isEqualTo(title);
-                softly.assertThat(createdSharedLink.get().getSharedURL().getValue()).isEqualTo(url);
+                softly.assertThat(createdSharedLink.get().getTitle().getValue()).isEqualTo(sharedLink.getTitle().getValue());
+                softly.assertThat(createdSharedLink.get().getSharedURL().getValue()).isEqualTo(sharedLink.getSharedURL().getValue());
                 softly.assertThat(createdSharedLink.get().getMemberId()).isEqualTo(PHILIP.getId());
                 softly.assertThat(createdSharedLink.get().getTeamPlaceId()).isEqualTo(teamPlace.getId());
             });
@@ -75,7 +74,7 @@ class SharedLinkServiceTest extends ServiceTest {
             final MemberEmailDto memberEmailDto = new MemberEmailDto(PHILIP.getEmail().getValue());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(PHILIP, teamPlace);
-            final String url = "/";
+            final String url = TEAM_BY_TEAM_LINK(teamPlace.getId(), PHILIP.getId()).getSharedURL().getValue();
             final SharedLinkCreateRequest createRequest = new SharedLinkCreateRequest(title, url);
 
             // when & then
@@ -95,7 +94,7 @@ class SharedLinkServiceTest extends ServiceTest {
             final MemberEmailDto memberEmailDto = new MemberEmailDto(PHILIP.getEmail().getValue());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(PHILIP, teamPlace);
-            final String title = "title";
+            final String title = TEAM_BY_TEAM_LINK(teamPlace.getId(), PHILIP.getId()).getSharedURL().getValue();
             final SharedLinkCreateRequest createRequest = new SharedLinkCreateRequest(title, url);
 
             // when & then
@@ -117,11 +116,10 @@ class SharedLinkServiceTest extends ServiceTest {
             final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(PHILIP, teamPlace);
-            final String title = "자료";
-            final String url = "/";
-            testFixtureBuilder.buildSharedLink(new SharedLink(teamPlace.getId(), PHILIP.getId(), new Title(title), new SharedURL(url)));
-            testFixtureBuilder.buildSharedLink(new SharedLink(teamPlace.getId(), PHILIP.getId(), new Title(title), new SharedURL(url)));
-            testFixtureBuilder.buildSharedLink(new SharedLink(teamPlace.getId(), PHILIP.getId(), new Title(title), new SharedURL(url)));
+            final SharedLink sharedLink = TEAM_BY_TEAM_LINK(teamPlace.getId(), PHILIP.getId());
+            testFixtureBuilder.buildSharedLink(sharedLink);
+            testFixtureBuilder.buildSharedLink(new SharedLink(sharedLink.getTeamPlaceId(), sharedLink.getMemberId(), sharedLink.getTitle(), sharedLink.getSharedURL()));
+            testFixtureBuilder.buildSharedLink(new SharedLink(sharedLink.getTeamPlaceId(), sharedLink.getMemberId(), sharedLink.getTitle(), sharedLink.getSharedURL()));
 
             // when
             final SharedLinksResponse sharedLinkResponses = sharedLinkService.getLinks(teamPlace.getId());
@@ -132,8 +130,8 @@ class SharedLinkServiceTest extends ServiceTest {
                 softly.assertThat(sharedLinkResponses.teamLinks()).hasSize(3);
                 softly.assertThat(sharedLinkResponses.teamLinks().get(0).memberName()).isEqualTo(memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(teamPlace.getId(), PHILIP.getId()).get().getDisplayMemberName().getValue());
                 softly.assertThat(sharedLinkResponses.teamLinks().get(0).memberId()).isEqualTo(PHILIP.getId());
-                softly.assertThat(sharedLinkResponses.teamLinks().get(0).title()).isEqualTo(title);
-                softly.assertThat(sharedLinkResponses.teamLinks().get(0).url()).isEqualTo(url);
+                softly.assertThat(sharedLinkResponses.teamLinks().get(0).title()).isEqualTo(sharedLink.getTitle().getValue());
+                softly.assertThat(sharedLinkResponses.teamLinks().get(0).url()).isEqualTo(sharedLink.getSharedURL().getValue());
             });
         }
 
@@ -166,9 +164,7 @@ class SharedLinkServiceTest extends ServiceTest {
             final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(PHILIP, teamPlace);
-            final String title = "자료";
-            final String url = "/";
-            final SharedLink sharedLink = testFixtureBuilder.buildSharedLink(new SharedLink(teamPlace.getId(), PHILIP.getId(), new Title(title), new SharedURL(url)));
+            final SharedLink sharedLink = testFixtureBuilder.buildSharedLink(TEAM_BY_TEAM_LINK(teamPlace.getId(), PHILIP.getId()));
             final int beforeSize = sharedLinkRepository.findAllByTeamPlaceId(teamPlace.getId()).size();
 
             // when
@@ -205,9 +201,7 @@ class SharedLinkServiceTest extends ServiceTest {
             final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(PHILIP, teamPlace);
-            final String title = "자료";
-            final String url = "/";
-            final SharedLink sharedLink = testFixtureBuilder.buildSharedLink(new SharedLink(teamPlace.getId(), PHILIP.getId(), new Title(title), new SharedURL(url)));
+            final SharedLink sharedLink = testFixtureBuilder.buildSharedLink(TEAM_BY_TEAM_LINK(teamPlace.getId(), PHILIP.getId()));
             final Long invalidTeamPlaceId = -1L;
 
             // when & then

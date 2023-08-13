@@ -12,13 +12,12 @@ import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.sharedlink.application.dto.SharedLinkCreateRequest;
 import team.teamby.teambyteam.sharedlink.application.dto.SharedLinksResponse;
 import team.teamby.teambyteam.sharedlink.domain.SharedLink;
-import team.teamby.teambyteam.sharedlink.domain.vo.SharedURL;
-import team.teamby.teambyteam.sharedlink.domain.vo.Title;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.SEONGHA;
+import static team.teamby.teambyteam.common.fixtures.SharedLinkFixtures.TEAM_BY_TEAM_LINK;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
 import static team.teamby.teambyteam.common.fixtures.acceptance.SharedLinkAcceptanceFixtures.DELETE_SHARED_LINK_REQUEST;
 import static team.teamby.teambyteam.common.fixtures.acceptance.SharedLinkAcceptanceFixtures.GET_SHARED_LINK_REQUEST;
@@ -195,7 +194,7 @@ public final class SharedLinkAcceptanceTest extends AcceptanceTest {
             final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
             final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
-            final SharedLink sharedLink = testFixtureBuilder.buildSharedLink(new SharedLink(ENGLISH_TEAM_PLACE.getId(), PHILIP.getId(), new Title("title"), new SharedURL("/")));
+            final SharedLink sharedLink = testFixtureBuilder.buildSharedLink(TEAM_BY_TEAM_LINK(ENGLISH_TEAM_PLACE.getId(), PHILIP.getId()));
 
             // when
             final ExtractableResponse<Response> successRequest = DELETE_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), sharedLink.getId());
@@ -231,9 +230,9 @@ public final class SharedLinkAcceptanceTest extends AcceptanceTest {
             final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
             testFixtureBuilder.buildMemberTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
+            final SharedLink sharedLink = testFixtureBuilder.buildSharedLink(TEAM_BY_TEAM_LINK(ENGLISH_TEAM_PLACE.getId(), PHILIP.getId()));
             final Member SEONGHA = testFixtureBuilder.buildMember(SEONGHA());
             testFixtureBuilder.buildMemberTeamPlace(SEONGHA, ENGLISH_TEAM_PLACE);
-            final SharedLink sharedLink = testFixtureBuilder.buildSharedLink(new SharedLink(ENGLISH_TEAM_PLACE.getId(), PHILIP.getId(), new Title("title"), new SharedURL("/")));
 
             // when
             final ExtractableResponse<Response> successRequest = DELETE_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(SEONGHA.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), sharedLink.getId());
@@ -251,7 +250,7 @@ public final class SharedLinkAcceptanceTest extends AcceptanceTest {
             final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
             final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
-            final SharedLink sharedLink = testFixtureBuilder.buildSharedLink(new SharedLink(ENGLISH_TEAM_PLACE.getId(), PHILIP.getId(), new Title("title"), new SharedURL("/")));
+            final SharedLink sharedLink = testFixtureBuilder.buildSharedLink(TEAM_BY_TEAM_LINK(ENGLISH_TEAM_PLACE.getId(), PHILIP.getId()));
             final String invalidToken = "aaaa.bbbb.cccc";
 
             // when
@@ -270,7 +269,7 @@ public final class SharedLinkAcceptanceTest extends AcceptanceTest {
             final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
             final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
-            final SharedLink sharedLink = testFixtureBuilder.buildSharedLink(new SharedLink(ENGLISH_TEAM_PLACE.getId(), PHILIP.getId(), new Title("title"), new SharedURL("/")));
+            final SharedLink sharedLink = testFixtureBuilder.buildSharedLink(TEAM_BY_TEAM_LINK(ENGLISH_TEAM_PLACE.getId(), PHILIP.getId()));
             final Member SEONGHA = testFixtureBuilder.buildMember(SEONGHA());
 
             // when
