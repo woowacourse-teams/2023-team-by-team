@@ -47,11 +47,11 @@ export const MemberList = styled.ul`
   display: flex;
   flex-direction: column;
 
-  max-height: 240px;
-  margin: 20px 0 20px 0;
-
   overflow-x: hidden;
   overflow-y: auto;
+
+  max-height: 240px;
+  margin: 20px 0 20px 0;
 `;
 
 export const MemberListItem = styled.li`
