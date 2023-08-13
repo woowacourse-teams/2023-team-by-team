@@ -9,4 +9,4 @@ export interface TeamLink {
   url: string;
 }
 
-export type TeamLinkWithOutInfo = Pick<TeamLink, 'title' | 'url'>;
+export type TeamLinkWithoutInfo = Pick<TeamLink, 'title' | 'url'>;

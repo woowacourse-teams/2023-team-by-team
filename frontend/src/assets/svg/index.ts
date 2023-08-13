@@ -23,4 +23,5 @@ export { ReactComponent as ExitIcon } from './exit.svg';
 export { ReactComponent as LogoutIcon } from './logout.svg';
 export { ReactComponent as TeamIcon } from './team.svg';
 export { ReactComponent as TeamAddIcon } from './team-add.svg';
+export { ReactComponent as ChainIcon } from './chain.svg';
 export { ReactComponent as ClipboardIcon } from './clipboard.svg';
