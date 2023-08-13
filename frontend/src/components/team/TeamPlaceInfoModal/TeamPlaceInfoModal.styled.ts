@@ -62,10 +62,8 @@ export const MemberListItem = styled.li`
   padding: 8px;
   column-gap: 12px;
 
-  border-radius: 8px;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.color.GRAY100};
+  &:not(:last-child) {
+    border-bottom: 1px solid ${({ theme }) => theme.color.GRAY300};
   }
 `;
 
