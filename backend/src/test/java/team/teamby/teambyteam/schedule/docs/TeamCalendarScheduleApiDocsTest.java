@@ -451,6 +451,7 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
                                             headerWithName(AUTHORIZATION_HEADER_KEY).description("사용자 JWT 인증 정보")
                                     ),
                                     responseFields(
+                                            fieldWithPath("schedules").type(JsonFieldType.ARRAY).description("등록된 일정들 리스트"),
                                             fieldWithPath("schedules[0].id").type(JsonFieldType.NUMBER).description("조회한 일정 ID"),
                                             fieldWithPath("schedules[0].title").type(JsonFieldType.STRING).description("조회한 일정 제목"),
                                             fieldWithPath("schedules[0].startDateTime").type(JsonFieldType.STRING).description("조회한 일정의 시작 일시(형식 : yyyy-MM-dd HH:mm)"),
@@ -530,6 +531,7 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
                                             headerWithName(AUTHORIZATION_HEADER_KEY).description("사용자 JWT 인증 정보")
                                     ),
                                     responseFields(
+                                            fieldWithPath("schedules").type(JsonFieldType.ARRAY).description("등록된 일정들 리스트"),
                                             fieldWithPath("schedules[0].id").type(JsonFieldType.NUMBER).description("조회한 하루 일정 ID"),
                                             fieldWithPath("schedules[0].title").type(JsonFieldType.STRING).description("조회한 하루 일정 제목"),
                                             fieldWithPath("schedules[0].startDateTime").type(JsonFieldType.STRING).description("조회한 하루 일정의 시작 일시(형식 : yyyy-MM-dd HH:mm)"),
