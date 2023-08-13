@@ -32,7 +32,7 @@ public class SharedLinkService {
 
     public Long create(final MemberEmailDto memberEmailDto, final Long teamPlaceId, final SharedLinkCreateRequest sharedLinkCreateRequest) {
         final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(MemberException.MemberNotFoundException::new);
+                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
         final SharedLink sharedLink = new SharedLink(teamPlaceId, member.getId(), new Title(sharedLinkCreateRequest.title()), new SharedURL(sharedLinkCreateRequest.url()));
         final SharedLink saved = sharedLinkRepository.save(sharedLink);
 
