@@ -17,7 +17,7 @@ import team.teamby.teambyteam.sharedlink.exception.SharedLinkException;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public final class SharedLink extends BaseEntity {
+public class SharedLink extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
