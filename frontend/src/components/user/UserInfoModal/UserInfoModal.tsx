@@ -43,7 +43,9 @@ const UserInfoModal = () => {
         <Text as="span" size="xl" css={S.userName}>
           {name}
         </Text>
-        <S.Email href={`mailto:${email}`}>{email}</S.Email>
+        <Text as="span" css={S.email}>
+          {email}
+        </Text>
         <Button
           type="button"
           variant="normal"

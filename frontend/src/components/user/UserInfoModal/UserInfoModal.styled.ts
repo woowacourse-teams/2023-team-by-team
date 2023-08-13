@@ -40,13 +40,6 @@ export const ProfileImage = styled.img`
   object-fit: cover;
 `;
 
-export const Email = styled.a`
-  margin: 0 auto;
-
-  font-size: 14px;
-  color: ${({ theme }) => theme.color.GRAY600};
-`;
-
 export const logoutButton = css`
   display: flex;
   align-items: center;
@@ -60,4 +53,11 @@ export const userName = css`
   margin: 0 auto;
 
   font-weight: 500;
+`;
+
+export const email = css`
+  margin: 0 auto;
+
+  font-size: 14px;
+  color: ${({ theme }) => theme.color.GRAY600};
 `;
