@@ -1,30 +1,31 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import Button from '~/components/common/Button/Button';
-import TeamExitModal from '~/components/team/TeamExitModal/TeamExitModal';
 import { useModal } from '~/hooks/useModal';
+import Button from '~/components/common/Button/Button';
+import UserInfoModal from '~/components/user/UserInfoModal/UserInfoModal';
 
 const meta = {
-  title: 'team/TeamExitModal',
-  component: TeamExitModal,
+  title: 'user/UserInfoModal',
+  component: UserInfoModal,
   tags: ['autodocs'],
-} satisfies Meta<typeof TeamExitModal>;
+} satisfies Meta<typeof UserInfoModal>;
 
 export default meta;
-
 type Story = StoryObj<typeof meta>;
 
 const SampleModal = () => {
-  const { openModal, closeModal } = useModal();
+  const { openModal } = useModal();
 
   return (
     <>
       <Button onClick={openModal}>모달 열기</Button>
-      <TeamExitModal onClose={closeModal} />
+      <UserInfoModal />
     </>
   );
 };
 
 export const Default: Story = {
   render: () => <SampleModal />,
-  args: {},
+  args: {
+    clickedDate: new Date(),
+  },
 };

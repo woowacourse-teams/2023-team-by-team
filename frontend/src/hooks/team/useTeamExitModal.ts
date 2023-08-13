@@ -7,7 +7,7 @@ import { useModal } from '~/hooks/useModal';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useToast } from '~/hooks/useToast';
 
-const useTeamExitModal = () => {
+const useTeamExitModal = (onClose: () => void) => {
   const navigate = useNavigate();
   const { teamPlaces, teamPlaceId, displayName, resetTeamPlace } =
     useTeamPlace();
@@ -42,6 +42,7 @@ const useTeamExitModal = () => {
     mutateDeleteTeamPlace(undefined, {
       onSuccess: () => {
         resetTeamPlace();
+        onClose();
         handleClose();
         showToast('success', '팀 탈퇴가 완료되었습니다.');
 

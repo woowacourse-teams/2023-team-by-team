@@ -1,25 +1,8 @@
-import Button from '~/components/common/Button/Button';
-import TeamExitModal from '~/components/team/TeamExitModal/TeamExitModal';
-import { useTeamPlace } from '~/hooks/useTeamPlace';
-import { useModal } from '~/hooks/useModal';
 import { PATH_NAME } from '~/constants/routes';
-import {
-  CalendarIcon,
-  ExitIcon,
-  FeedIcon,
-  HomeIcon,
-  TeamAddIcon,
-} from '~/assets/svg';
+import { CalendarIcon, FeedIcon, HomeIcon, TeamAddIcon } from '~/assets/svg';
 import * as S from './NavigationBar.styled';
 
 const NavigationBar = () => {
-  const { displayName } = useTeamPlace();
-  const { openModal } = useModal();
-
-  const handleExitButtonClick = () => {
-    openModal();
-  };
-
   return (
     <>
       <S.Container>
@@ -48,19 +31,8 @@ const NavigationBar = () => {
           >
             <TeamAddIcon />
           </S.MenuLink>
-          <Button
-            type="button"
-            variant="plain"
-            disabled={displayName === ''}
-            css={S.exitButton}
-            aria-label="팀 플레이스 탈퇴하기"
-            onClick={handleExitButtonClick}
-          >
-            <ExitIcon />
-          </Button>
         </S.MenuContainer>
       </S.Container>
-      <TeamExitModal />
     </>
   );
 };
