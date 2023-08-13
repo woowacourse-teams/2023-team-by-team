@@ -19,6 +19,7 @@ import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.SEONGHA;
 import static team.teamby.teambyteam.common.fixtures.SharedLinkFixtures.TEAM_BY_TEAM_LINK;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
+import static team.teamby.teambyteam.common.fixtures.TokenFixtures.MALFORMED_JWT_TOKEN;
 import static team.teamby.teambyteam.common.fixtures.acceptance.SharedLinkAcceptanceFixtures.DELETE_SHARED_LINK_REQUEST;
 import static team.teamby.teambyteam.common.fixtures.acceptance.SharedLinkAcceptanceFixtures.GET_SHARED_LINK_REQUEST;
 import static team.teamby.teambyteam.common.fixtures.acceptance.SharedLinkAcceptanceFixtures.REGISTER_SHARED_LINK_REQUEST;
@@ -95,10 +96,9 @@ public final class SharedLinkAcceptanceTest extends AcceptanceTest {
             final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
             final SharedLinkCreateRequest sharedLinkCreateRequest = new SharedLinkCreateRequest("title", "/");
-            final String invalidToken = "aaaa.bbbb.cccc";
 
             // when
-            final ExtractableResponse<Response> successRequest = REGISTER_SHARED_LINK_REQUEST(invalidToken, ENGLISH_TEAM_PLACE.getId(), sharedLinkCreateRequest);
+            final ExtractableResponse<Response> successRequest = REGISTER_SHARED_LINK_REQUEST(MALFORMED_JWT_TOKEN, ENGLISH_TEAM_PLACE.getId(), sharedLinkCreateRequest);
 
             // then
             assertSoftly(softly -> {
@@ -154,11 +154,10 @@ public final class SharedLinkAcceptanceTest extends AcceptanceTest {
         @DisplayName("인증되지 않은 사용자면 에러를 반환한다.")
         void failIfUnAuthorized() {
             // given
-            final String invalidToken = "aaaa.bbbb.cccc";
             final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
 
             // when
-            final ExtractableResponse<Response> successRequest = GET_SHARED_LINK_REQUEST(invalidToken, ENGLISH_TEAM_PLACE.getId());
+            final ExtractableResponse<Response> successRequest = GET_SHARED_LINK_REQUEST(MALFORMED_JWT_TOKEN, ENGLISH_TEAM_PLACE.getId());
 
             // then
             assertSoftly(softly -> {
@@ -251,10 +250,9 @@ public final class SharedLinkAcceptanceTest extends AcceptanceTest {
             final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
             final SharedLink sharedLink = testFixtureBuilder.buildSharedLink(TEAM_BY_TEAM_LINK(ENGLISH_TEAM_PLACE.getId(), PHILIP.getId()));
-            final String invalidToken = "aaaa.bbbb.cccc";
 
             // when
-            final ExtractableResponse<Response> successRequest = DELETE_SHARED_LINK_REQUEST(invalidToken, ENGLISH_TEAM_PLACE.getId(), sharedLink.getId());
+            final ExtractableResponse<Response> successRequest = DELETE_SHARED_LINK_REQUEST(MALFORMED_JWT_TOKEN, ENGLISH_TEAM_PLACE.getId(), sharedLink.getId());
 
             // then
             assertSoftly(softly -> {
