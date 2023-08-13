@@ -78,7 +78,7 @@ class NoticeServiceTest extends ServiceTest {
             // when & then
             assertThatThrownBy(() -> noticeService.register(request, notExistTeamPlaceId, ROY_MEMBER_EMAIL_REQUEST))
                     .isInstanceOf(NotFoundException.class)
-                    .hasMessage("조회한 팀 플레이스가 존재하지 않습니다.");
+                    .hasMessageContaining("조회한 팀 플레이스가 존재하지 않습니다.");
         }
 
         @Test
@@ -90,7 +90,7 @@ class NoticeServiceTest extends ServiceTest {
             // when & then
             assertThatThrownBy(() -> noticeService.register(request, teamPlace.getId(), new MemberEmailDto(nonExistMember.getEmail().getValue())))
                     .isInstanceOf(MemberNotFoundException.class)
-                    .hasMessage("조회한 멤버가 존재하지 않습니다.");
+                    .hasMessageContaining("조회한 멤버가 존재하지 않습니다.");
         }
     }
 
@@ -126,6 +126,8 @@ class NoticeServiceTest extends ServiceTest {
             SoftAssertions.assertSoftly(softly -> {
                 softly.assertThat(noticeResponse).isPresent();
                 softly.assertThat(noticeResponse.get().content()).isEqualTo("3rdNotice");
+                softly.assertThat(noticeResponse.get().authorId()).isEqualTo(member.getId());
+                softly.assertThat(noticeResponse.get().authorName()).isEqualTo(memberTeamPlace.getDisplayMemberName().getValue());
             });
         }
 
@@ -138,7 +140,7 @@ class NoticeServiceTest extends ServiceTest {
             // when & then
             assertThatThrownBy(() -> noticeService.findMostRecentNotice(notExistTeamPlaceId))
                     .isInstanceOf(NotFoundException.class)
-                    .hasMessage("조회한 팀 플레이스가 존재하지 않습니다.");
+                    .hasMessageContaining("조회한 팀 플레이스가 존재하지 않습니다.");
         }
 
         @Test

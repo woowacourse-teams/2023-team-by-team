@@ -10,6 +10,15 @@ public class MemberAcceptanceFixture {
 
     private static final String JWT_PREFIX = "Bearer ";
 
+    public static ExtractableResponse<Response> GET_MY_INFORMATION(final String token) {
+        return RestAssured.given().log().all()
+                .header(new Header(HttpHeaders.AUTHORIZATION, JWT_PREFIX + token))
+                .when().log().all()
+                .get("/api/me")
+                .then().log().all()
+                .extract();
+    }
+
     public static ExtractableResponse<Response> GET_PARTICIPATED_TEAM_PLACES(final String token) {
         return RestAssured.given().log().all()
                 .header(new Header(HttpHeaders.AUTHORIZATION, JWT_PREFIX + token))

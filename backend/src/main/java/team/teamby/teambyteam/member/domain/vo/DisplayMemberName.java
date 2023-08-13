@@ -31,7 +31,7 @@ public class DisplayMemberName {
             throw new NullPointerException("멤버 이름은 null일 수 없습니다.");
         }
         if (value.length() > MAX_LENGTH) {
-            throw new MemberTeamPlaceException.MemberDisplayNameLengthException();
+            throw new MemberTeamPlaceException.MemberDisplayNameLengthException(MAX_LENGTH, value);
         }
         if (value.isBlank()) {
             throw new MemberTeamPlaceException.MemberNameBlankException();

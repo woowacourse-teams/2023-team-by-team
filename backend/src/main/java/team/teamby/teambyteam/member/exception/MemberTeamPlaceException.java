@@ -7,8 +7,12 @@ public class MemberTeamPlaceException extends RuntimeException {
     }
 
     public static class MemberDisplayNameLengthException extends MemberTeamPlaceException {
-        public MemberDisplayNameLengthException() {
-            super("멤버 이름의 길이가 최대 이름 길이를 초과했습니다.");
+        public MemberDisplayNameLengthException(final int allowedLength, final String inputValue) {
+            super(String.format(
+                    "멤버 이름의 길이가 최대 이름 길이를 초과했습니다. - request info { allowed_length : %d, input_length : %d",
+                    allowedLength,
+                    inputValue.length())
+            );
         }
     }
 
@@ -19,8 +23,11 @@ public class MemberTeamPlaceException extends RuntimeException {
     }
 
     public static class TeamPlaceDisplayNameLengthException extends MemberTeamPlaceException {
-        public TeamPlaceDisplayNameLengthException() {
-            super("팀플레이스의 이름의 길이가 최대 이름 길이를 초과했습니다.");
+        public TeamPlaceDisplayNameLengthException(final int allowedLength, final String inputValue) {
+            super(String.format(
+                    "팀플레이스의 이름의 길이가 최대 이름 길이를 초과했습니다. - request info { allowed_length : %d, input_length : %d",
+                    allowedLength,
+                    inputValue.length()));
         }
     }
 
@@ -31,8 +38,12 @@ public class MemberTeamPlaceException extends RuntimeException {
     }
 
     public static class NotFoundParticipatedTeamPlaceException extends MemberTeamPlaceException {
-        public NotFoundParticipatedTeamPlaceException() {
-            super("해당 팀 플레이스에 가입되어 있지 않습니다.");
+        public NotFoundParticipatedTeamPlaceException(final String memberEmail, final Long teamPlaceId) {
+            super(String.format(
+                    "해당 팀 플레이스에 가입되어 있지 않습니다. - request info { member_email : %s, team_place_id : %d }",
+                    memberEmail,
+                    teamPlaceId)
+            );
         }
     }
 }

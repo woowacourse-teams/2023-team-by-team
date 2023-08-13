@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import team.teamby.teambyteam.member.application.MemberService;
+import team.teamby.teambyteam.member.application.dto.MemberInfoResponse;
 import team.teamby.teambyteam.member.application.dto.TeamPlacesResponse;
 import team.teamby.teambyteam.member.configuration.AuthPrincipal;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
@@ -21,6 +22,13 @@ import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceParticipantResp
 public class MemberController {
 
     private final MemberService memberService;
+
+    @GetMapping
+    public ResponseEntity<MemberInfoResponse> getMyInformation(@AuthPrincipal final MemberEmailDto memberEmailDto) {
+        final MemberInfoResponse myInformation = memberService.getMemberInformation(memberEmailDto);
+
+        return ResponseEntity.ok(myInformation);
+    }
 
     @GetMapping("/team-places")
     public ResponseEntity<TeamPlacesResponse> getParticipatedTeamPlaces(@AuthPrincipal final MemberEmailDto memberEmailDto) {

@@ -29,7 +29,7 @@ public final class MemberInterceptor implements HandlerInterceptor {
 
     private void validateMemberExist(final String email) {
         if (notExistsByEmail(email)) {
-            throw new MemberException.MemberNotFoundException();
+            throw new MemberException.MemberNotFoundException(email);
         }
     }
 

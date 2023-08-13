@@ -1,6 +1,7 @@
 package team.teamby.teambyteam.feed.application;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -24,6 +25,7 @@ import team.teamby.teambyteam.member.exception.MemberException;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -47,11 +49,13 @@ public class FeedThreadService {
 
         final Content content = new Content(feedThreadWritingRequest.content());
         final IdOnly memberId = memberRepository.findIdByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(MemberException.MemberNotFoundException::new);
+                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
 
         final Feed feed = new FeedThread(teamPlaceId, content, memberId.id());
 
         final Feed savedFeed = feedRepository.save(feed);
+
+        log.info("스레드 생성 - 생성자 이메일 : {}, 스레드 아이디 : {}", memberEmailDto.email(), savedFeed.getId());
         return savedFeed.getId();
     }
 

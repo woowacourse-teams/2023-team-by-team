@@ -50,6 +50,15 @@ export const ButtonContainer = styled.div`
   margin-left: auto;
 `;
 
+export const exitButton = css`
+  display: flex;
+  align-items: center;
+
+  padding: 8px;
+  gap: 2px;
+  margin: 0 auto;
+`;
+
 export const strongContent = css`
   text-decoration: underline;
 `;
