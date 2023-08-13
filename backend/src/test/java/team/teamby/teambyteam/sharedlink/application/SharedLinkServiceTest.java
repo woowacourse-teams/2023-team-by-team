@@ -170,13 +170,13 @@ class SharedLinkServiceTest extends ServiceTest {
             final String title = "자료";
             final String url = "/";
             final SharedLink sharedLink = testFixtureBuilder.buildSharedLink(new SharedLink(teamPlace.getId(), PHILIP.getId(), new Title(title), new SharedURL(url)));
-            final int beforeSize = sharedLinkRepository.findByTeamPlaceId(teamPlace.getId()).size();
+            final int beforeSize = sharedLinkRepository.findAllByTeamPlaceId(teamPlace.getId()).size();
 
             // when
             sharedLinkService.deleteLink(teamPlace.getId(), sharedLink.getId());
 
             //then
-            final int afterSize = sharedLinkRepository.findByTeamPlaceId(teamPlace.getId()).size();
+            final int afterSize = sharedLinkRepository.findAllByTeamPlaceId(teamPlace.getId()).size();
             SoftAssertions.assertSoftly(softly -> {
                 softly.assertThat(beforeSize - 1).isEqualTo(afterSize);
             });

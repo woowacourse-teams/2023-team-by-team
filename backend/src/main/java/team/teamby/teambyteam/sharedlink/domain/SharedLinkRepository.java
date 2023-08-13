@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface SharedLinkRepository extends JpaRepository<SharedLink, Long> {
 
-    List<SharedLink> findByTeamPlaceId(final Long teamPlaceId);
+    List<SharedLink> findAllByTeamPlaceId(final Long teamPlaceId);
 }

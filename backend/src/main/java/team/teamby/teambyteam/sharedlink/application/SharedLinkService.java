@@ -40,7 +40,7 @@ public class SharedLinkService {
 
     @Transactional(readOnly = true)
     public List<SharedLinkResponse> getLinks(final Long teamPlaceId) {
-        final List<SharedLink> sharedLinks = sharedLinkRepository.findByTeamPlaceId(teamPlaceId);
+        final List<SharedLink> sharedLinks = sharedLinkRepository.findAllByTeamPlaceId(teamPlaceId);
         final List<SharedLinkResponse> sharedLinkResponses = sharedLinks.stream()
                 .map(sharedLink ->
                         SharedLinkResponse.of(sharedLink, memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(sharedLink.getTeamPlaceId(), sharedLink.getMemberId()).orElse(MemberTeamPlace.UNKNOWN_MEMBER_TEAM_PLACE).getDisplayMemberName().getValue())).toList();
