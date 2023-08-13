@@ -2,14 +2,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 import TeamLinkTable from './LinkTable';
 import { styled } from 'styled-components';
 
-const Container = styled.div`
-  width: 100%;
-  height: 500px;
-  padding: 30px;
-
-  background-color: #e9e9e9;
-`;
-
 /**
  * `LinkTable` 는 팀 링크 목록을 표시할 메뉴 컴포넌트입니다.
  */
@@ -19,9 +11,16 @@ const meta = {
   tags: ['autodocs'],
   decorators: [
     (Story) => (
-      <Container>
+      <div
+        style={{
+          width: '100%',
+          height: '500px',
+          padding: '30px',
+          backgroundColor: '#e9e9e9',
+        }}
+      >
         <Story />
-      </Container>
+      </div>
     ),
   ],
 } satisfies Meta<typeof TeamLinkTable>;
