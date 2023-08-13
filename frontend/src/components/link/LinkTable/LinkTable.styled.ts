@@ -83,8 +83,6 @@ export const TableHeader = styled.table`
   width: calc(100% - 32px);
   height: 60px;
 
-  border-collapse: collapse;
-
   ${tableProperties}
 `;
 
@@ -99,8 +97,6 @@ export const TableBody = styled.div`
 
 export const Table = styled.table`
   width: 100%;
-
-  border-collapse: collapse;
 
   ${tableProperties}
 

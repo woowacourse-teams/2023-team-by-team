@@ -54,14 +54,26 @@ const GlobalStyle = createGlobalStyle`
     cursor: not-allowed;
   }
   
-  table, caption, tbody, tfoot, thead, tr, th, td {
+  table,
+  caption,
+  tbody,
+  tfoot,
+  thead,
+  tr,
+  th,
+  td {
     margin: 0;
     padding: 0;
+
     border: 0;
     outline: 0;
+    border-collapse: collapse;
+    
     font-size: 100%;
-    vertical-align: baseline;
+    
     background: transparent;
+    
+    vertical-align: baseline;
   }
 
   *.hidden {
