@@ -14,7 +14,7 @@ import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.sharedlink.application.dto.SharedLinkCreateRequest;
-import team.teamby.teambyteam.sharedlink.application.dto.SharedLinkResponse;
+import team.teamby.teambyteam.sharedlink.application.dto.SharedLinksResponse;
 import team.teamby.teambyteam.sharedlink.domain.SharedLink;
 import team.teamby.teambyteam.sharedlink.domain.SharedLinkRepository;
 import team.teamby.teambyteam.sharedlink.domain.vo.SharedURL;
@@ -22,7 +22,6 @@ import team.teamby.teambyteam.sharedlink.domain.vo.Title;
 import team.teamby.teambyteam.sharedlink.exception.SharedLinkException;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
-import java.util.List;
 import java.util.Optional;
 
 class SharedLinkServiceTest extends ServiceTest {
@@ -125,16 +124,16 @@ class SharedLinkServiceTest extends ServiceTest {
             testFixtureBuilder.buildSharedLink(new SharedLink(teamPlace.getId(), PHILIP.getId(), new Title(title), new SharedURL(url)));
 
             // when
-            final List<SharedLinkResponse> sharedLinkResponses = sharedLinkService.getLinks(teamPlace.getId());
+            final SharedLinksResponse sharedLinkResponses = sharedLinkService.getLinks(teamPlace.getId());
 
             //then
             SoftAssertions.assertSoftly(softly -> {
                 softly.assertThat(sharedLinkResponses).isNotNull();
-                softly.assertThat(sharedLinkResponses).hasSize(3);
-                softly.assertThat(sharedLinkResponses.get(0).memberName()).isEqualTo(memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(teamPlace.getId(), PHILIP.getId()).get().getDisplayMemberName().getValue());
-                softly.assertThat(sharedLinkResponses.get(0).memberId()).isEqualTo(PHILIP.getId());
-                softly.assertThat(sharedLinkResponses.get(0).title()).isEqualTo(title);
-                softly.assertThat(sharedLinkResponses.get(0).url()).isEqualTo(url);
+                softly.assertThat(sharedLinkResponses.teamLinks()).hasSize(3);
+                softly.assertThat(sharedLinkResponses.teamLinks().get(0).memberName()).isEqualTo(memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(teamPlace.getId(), PHILIP.getId()).get().getDisplayMemberName().getValue());
+                softly.assertThat(sharedLinkResponses.teamLinks().get(0).memberId()).isEqualTo(PHILIP.getId());
+                softly.assertThat(sharedLinkResponses.teamLinks().get(0).title()).isEqualTo(title);
+                softly.assertThat(sharedLinkResponses.teamLinks().get(0).url()).isEqualTo(url);
             });
         }
 
@@ -147,12 +146,12 @@ class SharedLinkServiceTest extends ServiceTest {
             testFixtureBuilder.buildMemberTeamPlace(PHILIP, teamPlace);
 
             // when
-            final List<SharedLinkResponse> sharedLinkResponses = sharedLinkService.getLinks(teamPlace.getId());
+            final SharedLinksResponse sharedLinkResponses = sharedLinkService.getLinks(teamPlace.getId());
 
             //then
             SoftAssertions.assertSoftly(softly -> {
                 softly.assertThat(sharedLinkResponses).isNotNull();
-                softly.assertThat(sharedLinkResponses).hasSize(0);
+                softly.assertThat(sharedLinkResponses.teamLinks()).hasSize(0);
             });
         }
     }

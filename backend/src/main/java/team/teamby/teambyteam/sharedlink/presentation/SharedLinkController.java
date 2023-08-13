@@ -14,11 +14,9 @@ import team.teamby.teambyteam.member.configuration.AuthPrincipal;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.sharedlink.application.SharedLinkService;
 import team.teamby.teambyteam.sharedlink.application.dto.SharedLinkCreateRequest;
-import team.teamby.teambyteam.sharedlink.application.dto.SharedLinkResponse;
 import team.teamby.teambyteam.sharedlink.application.dto.SharedLinksResponse;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/team-place")
@@ -43,9 +41,9 @@ public class SharedLinkController {
     public ResponseEntity<SharedLinksResponse> getSharedLink(
             @PathVariable final Long teamPlaceId
     ) {
-        final List<SharedLinkResponse> sharedLinkResponses = sharedLinkService.getLinks(teamPlaceId);
+        final SharedLinksResponse sharedLinkResponses = sharedLinkService.getLinks(teamPlaceId);
 
-        return ResponseEntity.ok(new SharedLinksResponse(sharedLinkResponses));
+        return ResponseEntity.ok(sharedLinkResponses);
     }
 
     @DeleteMapping("/{teamPlaceId}/team-links/{teamLinkId}")

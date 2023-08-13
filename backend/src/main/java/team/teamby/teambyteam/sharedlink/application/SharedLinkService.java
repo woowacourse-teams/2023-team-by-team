@@ -12,6 +12,7 @@ import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.sharedlink.application.dto.SharedLinkCreateRequest;
 import team.teamby.teambyteam.sharedlink.application.dto.SharedLinkResponse;
+import team.teamby.teambyteam.sharedlink.application.dto.SharedLinksResponse;
 import team.teamby.teambyteam.sharedlink.domain.SharedLink;
 import team.teamby.teambyteam.sharedlink.domain.SharedLinkRepository;
 import team.teamby.teambyteam.sharedlink.domain.vo.SharedURL;
@@ -39,12 +40,19 @@ public class SharedLinkService {
     }
 
     @Transactional(readOnly = true)
-    public List<SharedLinkResponse> getLinks(final Long teamPlaceId) {
+    public SharedLinksResponse getLinks(final Long teamPlaceId) {
         final List<SharedLink> sharedLinks = sharedLinkRepository.findAllByTeamPlaceId(teamPlaceId);
         final List<SharedLinkResponse> sharedLinkResponses = sharedLinks.stream()
-                .map(sharedLink ->
-                        SharedLinkResponse.of(sharedLink, memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(sharedLink.getTeamPlaceId(), sharedLink.getMemberId()).orElse(MemberTeamPlace.UNKNOWN_MEMBER_TEAM_PLACE).getDisplayMemberName().getValue())).toList();
-        return sharedLinkResponses;
+                .map(this::mapToSharedLinkResponse).toList();
+
+        return SharedLinksResponse.of(sharedLinkResponses);
+    }
+
+    private SharedLinkResponse mapToSharedLinkResponse(final SharedLink sharedLink) {
+        final MemberTeamPlace memberTeamPlace = memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(sharedLink.getTeamPlaceId(), sharedLink.getMemberId())
+                .orElse(MemberTeamPlace.UNKNOWN_MEMBER_TEAM_PLACE);
+
+        return SharedLinkResponse.of(sharedLink, memberTeamPlace);
     }
 
     public void deleteLink(final Long teamPlaceId, final Long sharedLinkId) {
