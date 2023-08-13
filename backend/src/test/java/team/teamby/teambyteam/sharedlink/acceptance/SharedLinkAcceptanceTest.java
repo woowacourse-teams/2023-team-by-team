@@ -147,6 +147,7 @@ public final class SharedLinkAcceptanceTest extends AcceptanceTest {
                 softly.assertThat(successRequest.statusCode()).isEqualTo(HttpStatus.OK.value());
                 softly.assertThat(sharedLinksResponse.teamLinks().size()).isEqualTo(1);
                 softly.assertThat(sharedLinksResponse.teamLinks().get(0).title()).isEqualTo("title");
+                softly.assertThat(sharedLinksResponse.teamLinks().get(0).url()).isEqualTo("/");
             });
         }
 
