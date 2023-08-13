@@ -15,6 +15,8 @@ import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.sharedlink.application.dto.SharedLinkCreateRequest;
 import team.teamby.teambyteam.sharedlink.application.dto.SharedLinksResponse;
+import team.teamby.teambyteam.sharedlink.application.event.SharedLinkCreateEvent;
+import team.teamby.teambyteam.sharedlink.application.event.SharedLinkDeleteEvent;
 import team.teamby.teambyteam.sharedlink.domain.SharedLink;
 import team.teamby.teambyteam.sharedlink.domain.SharedLinkRepository;
 import team.teamby.teambyteam.sharedlink.exception.SharedLinkException;
@@ -22,7 +24,9 @@ import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static team.teamby.teambyteam.common.fixtures.SharedLinkFixtures.TEAM_BY_TEAM_LINK;
+import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
 
 class SharedLinkServiceTest extends ServiceTest {
 
@@ -63,6 +67,23 @@ class SharedLinkServiceTest extends ServiceTest {
                 softly.assertThat(createdSharedLink.get().getMemberId()).isEqualTo(PHILIP.getId());
                 softly.assertThat(createdSharedLink.get().getTeamPlaceId()).isEqualTo(teamPlace.getId());
             });
+        }
+
+        @Test
+        @DisplayName("공유 링크 Event가 발행된다.")
+        void publishSharedLinkCreateEvent() {
+            // given
+            final Member member = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final MemberEmailDto memberEmailDto = new MemberEmailDto(member.getEmail().getValue());
+            final SharedLink sharedLink = TEAM_BY_TEAM_LINK(ENGLISH_TEAM_PLACE.getId(), member.getId());
+            final SharedLinkCreateRequest sharedLinkCreateRequest = new SharedLinkCreateRequest(sharedLink.getTitle().getValue(), sharedLink.getSharedURL().getValue());
+
+            // when
+            sharedLinkService.create(memberEmailDto, ENGLISH_TEAM_PLACE.getId(), sharedLinkCreateRequest);
+
+            // then
+            assertThat(applicationEvents.stream(SharedLinkCreateEvent.class).count()).isEqualTo(1);
         }
 
         @ParameterizedTest
@@ -175,6 +196,21 @@ class SharedLinkServiceTest extends ServiceTest {
             SoftAssertions.assertSoftly(softly -> {
                 softly.assertThat(beforeSize - 1).isEqualTo(afterSize);
             });
+        }
+
+        @Test
+        @DisplayName("공유 링크 Event가 발행된다.")
+        void publishSharedLinkDeleteEvent() {
+            // given
+            final Member member = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final SharedLink sharedLink = testFixtureBuilder.buildSharedLink(TEAM_BY_TEAM_LINK(ENGLISH_TEAM_PLACE.getId(), member.getId()));
+
+            // when
+            sharedLinkService.deleteLink(ENGLISH_TEAM_PLACE.getId(), sharedLink.getId());
+
+            // then
+            assertThat(applicationEvents.stream(SharedLinkDeleteEvent.class).count()).isEqualTo(1);
         }
 
         @Test

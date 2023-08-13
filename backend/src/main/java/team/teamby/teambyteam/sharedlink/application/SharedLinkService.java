@@ -1,6 +1,7 @@
 package team.teamby.teambyteam.sharedlink.application;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
@@ -13,6 +14,8 @@ import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.sharedlink.application.dto.SharedLinkCreateRequest;
 import team.teamby.teambyteam.sharedlink.application.dto.SharedLinkResponse;
 import team.teamby.teambyteam.sharedlink.application.dto.SharedLinksResponse;
+import team.teamby.teambyteam.sharedlink.application.event.SharedLinkCreateEvent;
+import team.teamby.teambyteam.sharedlink.application.event.SharedLinkDeleteEvent;
 import team.teamby.teambyteam.sharedlink.domain.SharedLink;
 import team.teamby.teambyteam.sharedlink.domain.SharedLinkRepository;
 import team.teamby.teambyteam.sharedlink.domain.vo.SharedURL;
@@ -29,12 +32,15 @@ public class SharedLinkService {
     private final MemberRepository memberRepository;
     private final SharedLinkRepository sharedLinkRepository;
     private final MemberTeamPlaceRepository memberTeamPlaceRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     public Long create(final MemberEmailDto memberEmailDto, final Long teamPlaceId, final SharedLinkCreateRequest sharedLinkCreateRequest) {
         final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
                 .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
         final SharedLink sharedLink = new SharedLink(teamPlaceId, member.getId(), new Title(sharedLinkCreateRequest.title()), new SharedURL(sharedLinkCreateRequest.url()));
         final SharedLink saved = sharedLinkRepository.save(sharedLink);
+
+        eventPublisher.publishEvent(new SharedLinkCreateEvent(saved.getId(), teamPlaceId, saved.getTitle(), saved.getSharedURL()));
 
         return saved.getId();
     }
@@ -59,6 +65,8 @@ public class SharedLinkService {
         final SharedLink sharedLink = sharedLinkRepository.findById(sharedLinkId)
                 .orElseThrow(SharedLinkException.NotFoundException::new);
         sharedLink.validateOwnerTeamPlace(teamPlaceId);
+
+        eventPublisher.publishEvent(new SharedLinkDeleteEvent(sharedLinkId, teamPlaceId, sharedLink.getTitle(), sharedLink.getSharedURL()));
 
         sharedLinkRepository.delete(sharedLink);
     }
