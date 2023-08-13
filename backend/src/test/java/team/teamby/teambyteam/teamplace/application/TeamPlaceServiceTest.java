@@ -172,12 +172,12 @@ class TeamPlaceServiceTest extends ServiceTest {
             final MemberTeamPlace memberTeamPlace3 = testFixtureBuilder.buildMemberTeamPlace(SEONGHA, ENGLISH_TEAM_PLACE);
             final MemberTeamPlace memberTeamPlace4 = testFixtureBuilder.buildMemberTeamPlace(ENDEL, ENGLISH_TEAM_PLACE);
 
-            TeamPlaceMembersResponse expectedResponse = TeamPlaceMembersResponse.from(List.of(
+            final TeamPlaceMembersResponse expectedResponse = TeamPlaceMembersResponse.from(List.of(
                     memberTeamPlace1, memberTeamPlace2, memberTeamPlace3, memberTeamPlace4
             ));
 
             // when
-            TeamPlaceMembersResponse actualResponse = teamPlaceService.findMembers(ENGLISH_TEAM_PLACE.getId());
+            final TeamPlaceMembersResponse actualResponse = teamPlaceService.findMembers(ENGLISH_TEAM_PLACE.getId());
 
             // then
             assertThat(actualResponse).usingRecursiveComparison().isEqualTo(expectedResponse);

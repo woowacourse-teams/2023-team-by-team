@@ -77,7 +77,7 @@ public class TeamPlaceService {
 
     @Transactional(readOnly = true)
     public TeamPlaceMembersResponse findMembers(final Long teamPlaceId) {
-        List<MemberTeamPlace> memberTeamPlaces = memberTeamPlaceRepository.findAllByTeamPlaceId(teamPlaceId);
+        final List<MemberTeamPlace> memberTeamPlaces = memberTeamPlaceRepository.findAllByTeamPlaceId(teamPlaceId);
         return TeamPlaceMembersResponse.from(memberTeamPlaces);
     }
 }

@@ -50,12 +50,12 @@ class MemberTeamPlaceRepositoryTest extends RepositoryTest {
         final Member ENDEL = testFixtureBuilder.buildMember(ENDEL());
         final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
 
-        MemberTeamPlace memberTeamPlace1 = testFixtureBuilder.buildMemberTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
-        MemberTeamPlace memberTeamPlace2 = testFixtureBuilder.buildMemberTeamPlace(ROY, ENGLISH_TEAM_PLACE);
-        MemberTeamPlace memberTeamPlace3 = testFixtureBuilder.buildMemberTeamPlace(SEONGHA, ENGLISH_TEAM_PLACE);
-        MemberTeamPlace memberTeamPlace4 = testFixtureBuilder.buildMemberTeamPlace(ENDEL, ENGLISH_TEAM_PLACE);
+        final MemberTeamPlace memberTeamPlace1 = testFixtureBuilder.buildMemberTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
+        final MemberTeamPlace memberTeamPlace2 = testFixtureBuilder.buildMemberTeamPlace(ROY, ENGLISH_TEAM_PLACE);
+        final MemberTeamPlace memberTeamPlace3 = testFixtureBuilder.buildMemberTeamPlace(SEONGHA, ENGLISH_TEAM_PLACE);
+        final MemberTeamPlace memberTeamPlace4 = testFixtureBuilder.buildMemberTeamPlace(ENDEL, ENGLISH_TEAM_PLACE);
 
-        List<MemberTeamPlace> expected =
+        final List<MemberTeamPlace> expected =
                 List.of(memberTeamPlace1, memberTeamPlace2, memberTeamPlace3, memberTeamPlace4);
 
         // when

@@ -48,7 +48,7 @@ public class TeamPlaceController {
     public ResponseEntity<TeamPlaceMembersResponse> getTeamPlaceMembers(
             @PathVariable final Long teamPlaceId
     ) {
-        TeamPlaceMembersResponse response = teamPlaceService.findMembers(teamPlaceId);
+        final TeamPlaceMembersResponse response = teamPlaceService.findMembers(teamPlaceId);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
