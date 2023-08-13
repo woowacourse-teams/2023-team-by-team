@@ -82,7 +82,7 @@ class SharedLinkServiceTest extends ServiceTest {
             // when & then
             SoftAssertions.assertSoftly(softly ->
                     softly.assertThatThrownBy(() -> sharedLinkService.create(memberEmailDto, teamPlace.getId(), createRequest))
-                            .isInstanceOf(SharedLinkException.TitleException.class)
+                            .isInstanceOf(SharedLinkException.TitleBlankException.class)
                             .hasMessage("공유 링크의 제목은 빈칸으로 구성될 수 없습니다.")
             );
         }
@@ -102,7 +102,7 @@ class SharedLinkServiceTest extends ServiceTest {
             // when & then
             SoftAssertions.assertSoftly(softly ->
                     softly.assertThatThrownBy(() -> sharedLinkService.create(memberEmailDto, teamPlace.getId(), createRequest))
-                            .isInstanceOf(SharedLinkException.URLException.class)
+                            .isInstanceOf(SharedLinkException.URLBlankException.class)
                             .hasMessage("공유 링크는 빈칸으로 구성될 수 없습니다.")
             );
         }

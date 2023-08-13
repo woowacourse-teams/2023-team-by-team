@@ -15,7 +15,7 @@ class SharedURLTest {
     void failBlankTitle(final String value) {
         // when & then
         assertThatThrownBy(() -> new SharedURL(value))
-                .isInstanceOf(SharedLinkException.URLException.class)
+                .isInstanceOf(SharedLinkException.URLBlankException.class)
                 .hasMessage("공유 링크는 빈칸으로 구성될 수 없습니다.");
     }
 }

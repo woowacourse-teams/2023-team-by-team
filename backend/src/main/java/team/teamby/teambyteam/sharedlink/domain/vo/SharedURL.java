@@ -24,7 +24,7 @@ public class SharedURL {
 
     private void validate(final String value) {
         if (value.isBlank()) {
-            throw new SharedLinkException.URLException();
+            throw new SharedLinkException.URLBlankException();
         }
     }
 }

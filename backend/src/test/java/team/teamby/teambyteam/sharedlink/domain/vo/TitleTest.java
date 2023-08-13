@@ -15,7 +15,7 @@ class TitleTest {
     void failBlankTitle(final String value) {
         // when & then
         assertThatThrownBy(() -> new Title(value))
-                .isInstanceOf(SharedLinkException.TitleException.class)
+                .isInstanceOf(SharedLinkException.TitleBlankException.class)
                 .hasMessage("공유 링크의 제목은 빈칸으로 구성될 수 없습니다.");
     }
 }

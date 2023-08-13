@@ -24,7 +24,7 @@ public class Title {
 
     private void validate(String value) {
         if (value.isBlank()) {
-            throw new SharedLinkException.TitleException();
+            throw new SharedLinkException.TitleBlankException();
         }
     }
 }
