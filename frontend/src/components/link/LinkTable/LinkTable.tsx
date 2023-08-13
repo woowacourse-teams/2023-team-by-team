@@ -18,7 +18,14 @@ const TeamLinkTable = () => {
   const { mutateDeleteTeamLink } = useDeleteTeamLink(teamPlaceId);
   const { showToast } = useToast();
 
-  const handleDeleteTeamLink = (id: number) => {
+  const handleDeleteTeamLink = (id: number, title: string) => {
+    const slicedTitle = title.length > 30 ? `${title.slice(0, 30)}...` : title;
+    const shouldDelete = confirm(`"${slicedTitle}" 링크를 제거하시겠습니까?`);
+
+    if (!shouldDelete) {
+      return;
+    }
+
     mutateDeleteTeamLink(id, {
       onSuccess: () => {
         showToast('success', '링크를 삭제했습니다.');
@@ -74,7 +81,7 @@ const TeamLinkTable = () => {
                       <Button
                         variant="plain"
                         css={S.deleteButton}
-                        onClick={() => handleDeleteTeamLink(id)}
+                        onClick={() => handleDeleteTeamLink(id, title)}
                       >
                         <DeleteIcon />
                       </Button>
