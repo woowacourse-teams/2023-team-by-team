@@ -14,7 +14,7 @@ const Container = styled.div`
  * `LinkTable` 는 팀 링크 목록을 표시할 메뉴 컴포넌트입니다.
  */
 const meta = {
-  title: 'link/TeamLinkTable',
+  title: 'Link/TeamLinkTable',
   component: TeamLinkTable,
   tags: ['autodocs'],
   decorators: [
