@@ -466,7 +466,7 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
             // given
             final Long teamPlaceId = -1L;
 
-            willThrow(new TeamPlaceException.NotFoundException())
+            willThrow(new TeamPlaceException.NotFoundException(teamPlaceId))
                     .given(teamCalendarScheduleService)
                     .findScheduleInPeriod(teamPlaceId, 2023, 7);
 
@@ -545,7 +545,7 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
             // given
             final Long teamPlaceId = -1L;
 
-            willThrow(new TeamPlaceException.NotFoundException())
+            willThrow(new TeamPlaceException.NotFoundException(teamPlaceId))
                     .given(teamCalendarScheduleService)
                     .findDailySchedule(teamPlaceId, 2023, 7, 12);
 
@@ -617,7 +617,7 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
             final Long teamPlaceId = -1L;
             final Long scheduleId = 1L;
 
-            willThrow(new TeamPlaceException.NotFoundException())
+            willThrow(new TeamPlaceException.NotFoundException(teamPlaceId))
                     .given(teamCalendarScheduleService)
                     .findSchedule(scheduleId, teamPlaceId);
 
@@ -641,7 +641,7 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
             final Long teamPlaceId = 1L;
             final Long scheduleId = -1L;
 
-            willThrow(new ScheduleException.ScheduleNotFoundException())
+            willThrow(new ScheduleException.ScheduleNotFoundException(scheduleId))
                     .given(teamCalendarScheduleService)
                     .findSchedule(scheduleId, teamPlaceId);
 
@@ -696,7 +696,7 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
             final Long teamPlaceId = -1L;
             final Long scheduleId = 1L;
 
-            willThrow(new TeamPlaceException.NotFoundException())
+            willThrow(new TeamPlaceException.NotFoundException(teamPlaceId))
                     .given(teamCalendarScheduleService)
                     .delete(teamPlaceId, scheduleId);
 
@@ -720,7 +720,7 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
             final Long teamPlaceId = 1L;
             final Long scheduleId = -1L;
 
-            willThrow(new ScheduleException.ScheduleNotFoundException())
+            willThrow(new ScheduleException.ScheduleNotFoundException(scheduleId))
                     .given(teamCalendarScheduleService)
                     .delete(teamPlaceId, scheduleId);
 
