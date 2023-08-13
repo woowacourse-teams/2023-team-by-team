@@ -1,6 +1,5 @@
 package team.teamby.teambyteam.sharedlink.application;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +29,7 @@ public class SharedLinkService {
     private final SharedLinkRepository sharedLinkRepository;
     private final MemberTeamPlaceRepository memberTeamPlaceRepository;
 
-    public Long create(MemberEmailDto memberEmailDto, final Long teamPlaceId, final @Valid SharedLinkCreateRequest sharedLinkCreateRequest) {
+    public Long create(MemberEmailDto memberEmailDto, final Long teamPlaceId, final SharedLinkCreateRequest sharedLinkCreateRequest) {
         final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
                 .orElseThrow(MemberException.MemberNotFoundException::new);
         final SharedLink sharedLink = new SharedLink(teamPlaceId, member.getId(), new Title(sharedLinkCreateRequest.title()), new SharedURL(sharedLinkCreateRequest.url()));
