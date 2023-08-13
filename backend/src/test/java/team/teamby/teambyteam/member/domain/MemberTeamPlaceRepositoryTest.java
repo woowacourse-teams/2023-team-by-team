@@ -1,7 +1,5 @@
 package team.teamby.teambyteam.member.domain;
 
-import org.assertj.core.api.Assertions;
-import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +8,8 @@ import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ENDEL;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ROY;
@@ -33,7 +33,7 @@ class MemberTeamPlaceRepositoryTest extends RepositoryTest {
         final MemberTeamPlace actual = memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(ENGLISH_TEAM_PLACE.getId(), PHILIP.getId()).get();
 
         //then
-        SoftAssertions.assertSoftly(softly -> {
+        assertSoftly(softly -> {
             softly.assertThat(actual.getMember().getId()).isEqualTo(PHILIP.getId());
             softly.assertThat(actual.getDisplayMemberName().getValue()).isEqualTo(PHILIP.getName().getValue());
             softly.assertThat(actual.getDisplayTeamPlaceName().getValue()).isEqualTo(ENGLISH_TEAM_PLACE.getName().getValue());
@@ -62,7 +62,6 @@ class MemberTeamPlaceRepositoryTest extends RepositoryTest {
         final List<MemberTeamPlace> actual = memberTeamPlaceRepository.findAllByTeamPlaceId(ENGLISH_TEAM_PLACE.getId());
 
         //then
-        Assertions.assertThat(actual).usingRecursiveFieldByFieldElementComparator()
-                .isEqualTo(expected);
+        assertThat(actual).usingRecursiveFieldByFieldElementComparator().isEqualTo(expected);
     }
 }

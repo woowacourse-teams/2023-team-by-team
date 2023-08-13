@@ -2,7 +2,6 @@ package team.teamby.teambyteam.teamplace.acceptance;
 
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -24,6 +23,7 @@ import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ENDEL;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
@@ -278,7 +278,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
             final ExtractableResponse<Response> response = GET_MEMBERS_REQUEST(wrongToken, teamPlace.getId());
 
             // then
-            Assertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
         }
 
         @Test
