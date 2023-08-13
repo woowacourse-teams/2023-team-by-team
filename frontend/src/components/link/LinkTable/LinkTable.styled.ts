@@ -23,9 +23,9 @@ export const TableContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: calc(100% - 70px);
 
   width: 100%;
+  height: calc(100% - 70px);
   padding: 30px;
 
   background-color: ${({ theme }) => theme.color.WHITE};
