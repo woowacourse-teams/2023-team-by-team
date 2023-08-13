@@ -294,7 +294,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
             // then
             assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
-                softly.assertThat(response.body().asString()).isEqualTo("접근할 수 없는 팀플레이스입니다.");
+                softly.assertThat(response.jsonPath().getString("error")).contains("접근할 수 없는 팀플레이스입니다.");
             });
         }
     }

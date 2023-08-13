@@ -1,6 +1,7 @@
 package team.teamby.teambyteam.teamplace.application;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
@@ -26,6 +27,7 @@ import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeException;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -40,13 +42,14 @@ public class TeamPlaceService {
     public TeamPlaceCreateResponse create(final MemberEmailDto memberEmailDto, final TeamPlaceCreateRequest request) {
 
         final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(MemberException.MemberNotFoundException::new);
+                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
 
         final TeamPlace createdTeamPlace = teamPlaceRepository.save(new TeamPlace(new Name(request.name())));
         final MemberTeamPlace participatedMemberTeamPlace = member.participate(createdTeamPlace);
 
         memberTeamPlaceRepository.save(participatedMemberTeamPlace);
 
+        log.info("팀플레이스 생성 - 팀플레이스 아이디 : {}, 생성한 사용자 이메일 : {}", createdTeamPlace.getId(), memberEmailDto.email());
         return new TeamPlaceCreateResponse(createdTeamPlace.getId());
     }
 
@@ -54,13 +57,16 @@ public class TeamPlaceService {
         final boolean exist = teamPlaceInviteCodeRepository.existsByTeamPlaceId(teamPlaceId);
         if (exist) {
             final InviteCode inviteCode = teamPlaceInviteCodeRepository.findByTeamPlaceId(teamPlaceId)
-                    .orElseThrow(TeamPlaceInviteCodeException.NotGeneratedInviteCodeException::new)
+                    .orElseThrow(() -> new TeamPlaceInviteCodeException.NotGeneratedInviteCodeException(teamPlaceId))
                     .getInviteCode();
             return new TeamPlaceInviteCodeResponse(teamPlaceId, inviteCode.getValue());
         }
-        final TeamPlace teamPlace = teamPlaceRepository.findById(teamPlaceId).orElseThrow(TeamPlaceException.NotFoundException::new);
+        final TeamPlace teamPlace = teamPlaceRepository.findById(teamPlaceId)
+                .orElseThrow(() -> new TeamPlaceException.NotFoundException(teamPlaceId));
         final InviteCode inviteCode = generateInviteCode();
         final TeamPlaceInviteCode teamPlaceInviteCode = teamPlaceInviteCodeRepository.save(new TeamPlaceInviteCode(inviteCode, teamPlace));
+
+        log.info("팀플레이스 초대 코드 생성 - 팀플레이스 아이디 : {}, 생성된 초대코드 : {}", teamPlaceId, inviteCode);
         return new TeamPlaceInviteCodeResponse(teamPlaceId, teamPlaceInviteCode.getInviteCode().getValue());
     }
 
