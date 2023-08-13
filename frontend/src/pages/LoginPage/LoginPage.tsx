@@ -8,7 +8,10 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const accessToken = params.get('accessToken');
+  const refreshToken = params.get('refreshToken');
   localStorage.setItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN, accessToken ?? '');
+  localStorage.setItem(LOCAL_STORAGE_KEY.REFRESH_TOKEN, refreshToken ?? '');
+
   const { teamPlaces, isFetched } = useFetchTeamPlaces();
 
   useEffect(() => {

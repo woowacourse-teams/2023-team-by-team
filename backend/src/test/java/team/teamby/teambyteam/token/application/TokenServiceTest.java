@@ -51,7 +51,7 @@ class TokenServiceTest extends ServiceTest {
         // when & then
         assertThatThrownBy(() -> tokenService.reissueToken(expiredRefreshToken))
                 .isInstanceOf(ExpiredJwtException.class)
-                .hasMessage("토큰이 만료되었습니다.");
+                .hasMessage("EXPIRED_REFRESH_TOKEN");
     }
 
     @Test

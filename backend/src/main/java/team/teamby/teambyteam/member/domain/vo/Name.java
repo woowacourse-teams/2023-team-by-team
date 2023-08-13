@@ -31,7 +31,7 @@ public class Name {
             throw new NullPointerException("멤버 이름은 null일 수 없습니다.");
         }
         if (value.length() > MAX_LENGTH) {
-            throw new MemberException.NameLengthException();
+            throw new MemberException.NameLengthException(MAX_LENGTH, value);
         }
         if (value.isBlank()) {
             throw new MemberException.NameBlankException();

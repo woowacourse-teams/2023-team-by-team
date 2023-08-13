@@ -31,7 +31,7 @@ public class MyCalendarScheduleService {
             final int targetMonth
     ) {
         final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(MemberException.MemberNotFoundException::new);
+                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
 
         final List<Long> participatedTeamPlaceIds = member.getTeamPlaces()
                 .stream()
@@ -53,7 +53,7 @@ public class MyCalendarScheduleService {
             final int targetDay
     ) {
         final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(MemberException.MemberNotFoundException::new);
+                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
 
         final List<Long> participatedTeamPlaceIds = member.getTeamPlaces()
                 .stream()

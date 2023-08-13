@@ -7,7 +7,7 @@ import GlobalStyle from '../src/styles/GlobalStyle';
 import { ModalProvider } from '../src/components/common/Modal/ModalContext';
 import { ToastProvider } from '../src/components/common/Toast/ToastContext';
 import { TeamPlaceProvider } from '../src/contexts/TeamPlaceContext';
-
+import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { Preview } from '@storybook/react';
 
@@ -30,18 +30,20 @@ const queryClient = new QueryClient();
 
 export const decorators = [
   (Story) => (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={theme}>
-        <TeamPlaceProvider>
-          <ToastProvider>
-            <ModalProvider>
-              <GlobalStyle />
-              <Story />
-            </ModalProvider>
-          </ToastProvider>
-        </TeamPlaceProvider>
-      </ThemeProvider>
-    </QueryClientProvider>
+    <BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={theme}>
+          <TeamPlaceProvider>
+            <ToastProvider>
+              <ModalProvider>
+                <GlobalStyle />
+                <Story />
+              </ModalProvider>
+            </ToastProvider>
+          </TeamPlaceProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
+    </BrowserRouter>
   ),
   mswDecorator,
 ];
