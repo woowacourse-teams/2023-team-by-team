@@ -173,7 +173,7 @@ class SharedLinkServiceTest extends ServiceTest {
             final int beforeSize = sharedLinkRepository.findByTeamPlaceId(teamPlace.getId()).size();
 
             // when
-            sharedLinkService.deleteLink(new MemberEmailDto(PHILIP.getEmail().getValue()), sharedLink.getId());
+            sharedLinkService.deleteLink(teamPlace.getId(), sharedLink.getId());
 
             //then
             final int afterSize = sharedLinkRepository.findByTeamPlaceId(teamPlace.getId()).size();
@@ -189,20 +189,19 @@ class SharedLinkServiceTest extends ServiceTest {
             final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(PHILIP, teamPlace);
-            final MemberEmailDto memberEmailDto = new MemberEmailDto(PHILIP.getEmail().getValue());
             final Long invalidSharedLinkId = -1L;
 
             // when & then
             SoftAssertions.assertSoftly(softly -> {
-                softly.assertThatThrownBy(() -> sharedLinkService.deleteLink(memberEmailDto, invalidSharedLinkId))
+                softly.assertThatThrownBy(() -> sharedLinkService.deleteLink(teamPlace.getId(), invalidSharedLinkId))
                         .isInstanceOf(SharedLinkException.NotFoundException.class)
                         .hasMessage("존재하지 않는 공유 링크입니다.");
             });
         }
 
         @Test
-        @DisplayName("해당 멤버의 공유링크가 아닌 경우 실패한다.")
-        void failIfHasNot() {
+        @DisplayName("해당 팀플레이스의 공유링크가 아닌 경우 실패한다.")
+        void failIfNotTeamPlace() {
             // given
             final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
@@ -210,14 +209,13 @@ class SharedLinkServiceTest extends ServiceTest {
             final String title = "자료";
             final String url = "/";
             final SharedLink sharedLink = testFixtureBuilder.buildSharedLink(new SharedLink(teamPlace.getId(), PHILIP.getId(), new Title(title), new SharedURL(url)));
-            final Member anotherMember = testFixtureBuilder.buildMember(MemberFixtures.SEONGHA());
-            final MemberEmailDto memberEmailDto = new MemberEmailDto(anotherMember.getEmail().getValue());
+            final Long invalidTeamPlaceId = -1L;
 
             // when & then
             SoftAssertions.assertSoftly(softly -> {
-                softly.assertThatThrownBy(() -> sharedLinkService.deleteLink(memberEmailDto, sharedLink.getId()))
+                softly.assertThatThrownBy(() -> sharedLinkService.deleteLink(invalidTeamPlaceId, sharedLink.getId()))
                         .isInstanceOf(SharedLinkException.OwnerForbiddenException.class)
-                        .hasMessage("실행 권한이 없는 공유링크입니다.");
+                        .hasMessage("요청 권한이 없는 공유링크입니다.");
             });
         }
     }

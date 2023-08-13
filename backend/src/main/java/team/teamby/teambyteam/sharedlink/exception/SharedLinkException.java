@@ -26,7 +26,7 @@ public class SharedLinkException extends RuntimeException {
 
     public static class OwnerForbiddenException extends SharedLinkException {
         public OwnerForbiddenException() {
-            super("실행 권한이 없는 공유링크입니다.");
+            super("요청 권한이 없는 공유링크입니다.");
         }
     }
 }

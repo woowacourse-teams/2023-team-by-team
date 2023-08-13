@@ -47,12 +47,10 @@ public class SharedLinkService {
         return sharedLinkResponses;
     }
 
-    public void deleteLink(final MemberEmailDto memberEmailDto, final Long sharedLinkId) {
+    public void deleteLink(final Long teamPlaceId, final Long sharedLinkId) {
         final SharedLink sharedLink = sharedLinkRepository.findById(sharedLinkId)
                 .orElseThrow(SharedLinkException.NotFoundException::new);
-        final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(MemberException.MemberNotFoundException::new);
-        sharedLink.validateOwner(member);
+        sharedLink.validateOwnerTeamPlace(teamPlaceId);
 
         sharedLinkRepository.delete(sharedLink);
     }

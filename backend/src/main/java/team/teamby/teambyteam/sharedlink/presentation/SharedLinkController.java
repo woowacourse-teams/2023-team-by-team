@@ -50,10 +50,10 @@ public class SharedLinkController {
 
     @DeleteMapping("/{teamPlaceId}/team-links/{teamLinkId}")
     public ResponseEntity<Void> deleteSharedLink(
-            @AuthPrincipal final MemberEmailDto memberEmailDto,
+            @PathVariable final Long teamPlaceId,
             @PathVariable final Long teamLinkId
     ) {
-        sharedLinkService.deleteLink(memberEmailDto, teamLinkId);
+        sharedLinkService.deleteLink(teamPlaceId, teamLinkId);
 
         return ResponseEntity.noContent().build();
     }

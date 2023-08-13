@@ -225,22 +225,22 @@ public final class SharedLinkAcceptanceTest extends AcceptanceTest {
         }
 
         @Test
-        @DisplayName("작성하지 않은 멤버가 요청하면 예외를 반환한다.")
+        @DisplayName("동일한 팀플레이스의 다른 멤버가 요청 해도 삭제한다.")
         void failIfNotCreatedMember() {
             // given
-            final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
             final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
             testFixtureBuilder.buildMemberTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
-            final SharedLink sharedLink = testFixtureBuilder.buildSharedLink(new SharedLink(ENGLISH_TEAM_PLACE.getId(), PHILIP.getId(), new Title("title"), new SharedURL("/")));
             final Member SEONGHA = testFixtureBuilder.buildMember(SEONGHA());
             testFixtureBuilder.buildMemberTeamPlace(SEONGHA, ENGLISH_TEAM_PLACE);
+            final SharedLink sharedLink = testFixtureBuilder.buildSharedLink(new SharedLink(ENGLISH_TEAM_PLACE.getId(), PHILIP.getId(), new Title("title"), new SharedURL("/")));
 
             // when
             final ExtractableResponse<Response> successRequest = DELETE_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(SEONGHA.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), sharedLink.getId());
 
             // then
             assertSoftly(softly -> {
-                softly.assertThat(successRequest.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+                softly.assertThat(successRequest.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
             });
         }
 
