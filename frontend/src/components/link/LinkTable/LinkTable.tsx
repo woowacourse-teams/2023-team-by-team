@@ -8,13 +8,29 @@ import { useFetchTeamLinks } from '~/hooks/queries/useFetchTeamLinks';
 import { useDeleteTeamLink } from '~/hooks/queries/useDeleteTeamLink';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useModal } from '~/hooks/useModal';
-import { linkTableheaderValues } from '~/constants/link';
+import { useToast } from '~/hooks/useToast';
+import { linkTableHeaderValues } from '~/constants/link';
 
 const TeamLinkTable = () => {
   const { openModal, isModalOpen } = useModal();
   const { teamPlaceId } = useTeamPlace();
   const teamLinks = useFetchTeamLinks(teamPlaceId);
   const { mutateDeleteTeamLink } = useDeleteTeamLink(teamPlaceId);
+  const { showToast } = useToast();
+
+  const handleDeleteTeamLink = (id: number) => {
+    mutateDeleteTeamLink(id, {
+      onSuccess: () => {
+        showToast('success', '링크를 삭제했습니다.');
+      },
+      onError: () => {
+        showToast(
+          'error',
+          '링크를 삭제하는 데 실패했습니다. 잠시 후 다시 시도해 주세요.',
+        );
+      },
+    });
+  };
 
   return (
     <>
@@ -33,7 +49,7 @@ const TeamLinkTable = () => {
         </S.MenuHeader>
         <S.TableContainer>
           <S.TableHeader>
-            {linkTableheaderValues.map((value) => (
+            {linkTableHeaderValues.map((value) => (
               <th key={value}>{value}</th>
             ))}
           </S.TableHeader>
@@ -58,7 +74,7 @@ const TeamLinkTable = () => {
                       <Button
                         variant="plain"
                         css={S.deleteButton}
-                        onClick={() => mutateDeleteTeamLink(id)}
+                        onClick={() => handleDeleteTeamLink(id)}
                       >
                         <DeleteIcon />
                       </Button>
