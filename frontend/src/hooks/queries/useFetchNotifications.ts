@@ -29,6 +29,7 @@ export const useFetchNotifications = (teamPlaceId: number) => {
         }),
         pageParams: data.pageParams,
       }),
+      enabled: teamPlaceId > 0,
     },
   );
 
