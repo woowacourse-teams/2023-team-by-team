@@ -20,6 +20,13 @@ public record SharedLinkResponse(
         final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
         final String updatedAt = sharedLink.getUpdatedAt().format(dateTimeFormatter);
 
-        return new SharedLinkResponse(sharedLink.getId(), sharedLink.getTitle().getValue(), sharedLink.getSharedURL().getValue(), sharedLink.getMemberId(), memberTeamPlace.getDisplayMemberName().getValue(), updatedAt);
+        return new SharedLinkResponse(
+                sharedLink.getId(),
+                sharedLink.getTitle().getValue(),
+                sharedLink.getSharedURL().getValue(),
+                sharedLink.getMemberId(),
+                memberTeamPlace.getDisplayMemberName().getValue(),
+                updatedAt
+        );
     }
 }

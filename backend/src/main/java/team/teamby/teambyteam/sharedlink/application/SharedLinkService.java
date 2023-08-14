@@ -49,7 +49,8 @@ public class SharedLinkService {
     public SharedLinksResponse getLinks(final Long teamPlaceId) {
         final List<SharedLink> sharedLinks = sharedLinkRepository.findAllByTeamPlaceId(teamPlaceId);
         final List<SharedLinkResponse> sharedLinkResponses = sharedLinks.stream()
-                .map(this::mapToSharedLinkResponse).toList();
+                .map(this::mapToSharedLinkResponse)
+                .toList();
 
         return SharedLinksResponse.of(sharedLinkResponses);
     }
