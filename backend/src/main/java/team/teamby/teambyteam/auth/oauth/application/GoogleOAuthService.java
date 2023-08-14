@@ -41,10 +41,19 @@ public class GoogleOAuthService {
 
         final String accessToken = jwtTokenProvider.generateAccessToken(oAuthMember.email());
         final String refreshToken = jwtTokenProvider.generateRefreshToken(oAuthMember.email());
-        tokenRepository.save(new Token(member, refreshToken));
+
+        saveOrUpdateRefreshToken(member, refreshToken);
 
         log.info("토큰 생성 - 사용자 이메일 : {}", oAuthMember.email());
         return new TokenResponse(accessToken, refreshToken);
+    }
+
+    private void saveOrUpdateRefreshToken(Member member, String refreshToken) {
+        tokenRepository.findByMember(member)
+                .ifPresentOrElse(
+                        token -> token.changeToken(refreshToken),
+                        () -> tokenRepository.save(new Token(member, refreshToken))
+                );
     }
 
     private OAuthMember createOAuthMember(final String googleIdToken) {
