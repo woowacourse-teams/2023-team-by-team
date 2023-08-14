@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'team.teamby'
-version = '0.0.1-SNAPSHOT'
+version = 'v0.1.0'
 
 java {
     sourceCompatibility = '17'
