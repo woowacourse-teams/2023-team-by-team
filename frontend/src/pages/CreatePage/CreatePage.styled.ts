@@ -2,12 +2,20 @@ import { css, styled } from 'styled-components';
 
 export const Container = styled.div`
   display: flex;
+  flex-direction: column;
+
+  width: 100vw;
+  height: 100vh;
+`;
+
+export const MainContainer = styled.main`
+  display: flex;
   justify-content: flex-end;
   align-items: center;
   overflow-x: hidden;
 
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   padding-right: 120px;
 `;
 
