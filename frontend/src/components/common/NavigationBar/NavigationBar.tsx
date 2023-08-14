@@ -1,12 +1,11 @@
 import { PATH_NAME } from '~/constants/routes';
 import {
   CalendarIcon,
-  ExitIcon,
   FeedIcon,
   HomeIcon,
   ChainIcon,
   TeamAddIcon,
-} from '~/assets/svg'
+} from '~/assets/svg';
 import * as S from './NavigationBar.styled';
 
 const NavigationBar = () => {
