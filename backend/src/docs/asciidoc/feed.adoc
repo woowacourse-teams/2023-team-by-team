@@ -67,7 +67,7 @@ include::{snippets}/feeds/read/first/fail/notParticipated/http-request.adoc[]
 ==== Response
 include::{snippets}/feeds/read/first/fail/notParticipated/http-response.adoc[]
 
-=== 3. 피드 재 조회
+=== 3. 피드 다음 부분 조회
 
 ====== 요청 Header
 include::{snippets}/feeds/read/repeat/success/request-headers.adoc[]
@@ -80,7 +80,7 @@ include::{snippets}/feeds/read/repeat/success/query-parameters.adoc[]
 ==== Response
 include::{snippets}/feeds/read/repeat/success/http-response.adoc[]
 
-=== 3-1. 피드 재 조회 실패 (인증되지 않은 사용자)
+=== 3-1. 피드 다음 부분 조회 실패 (인증되지 않은 사용자)
 
 ==== Request
 include::{snippets}/feeds/read/repeat/fail/unAuthorized/http-request.adoc[]
@@ -88,7 +88,7 @@ include::{snippets}/feeds/read/repeat/fail/unAuthorized/http-request.adoc[]
 ==== Response
 include::{snippets}/feeds/read/repeat/fail/unAuthorized/http-response.adoc[]
 
-=== 3-2. 피드 재 조회 실패 (참여하지 않은 팀플레이스에 요청)
+=== 3-2. 피드 다음 부분 조회 실패 (참여하지 않은 팀플레이스에 요청)
 
 ==== Request
 include::{snippets}/feeds/read/repeat/fail/notParticipated/http-request.adoc[]
