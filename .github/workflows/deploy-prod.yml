@@ -1,5 +1,6 @@
 # 운영서버 배포 워크플로우
 # 백엔드 + 프런트엔드 동시 배포
+name: deploy production
 
 on:
   workflow_dispatch:
