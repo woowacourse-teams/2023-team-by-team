@@ -1,4 +1,4 @@
-package team.teamby.teambyteam.feed.domain.notification;
+package team.teamby.teambyteam.feed.domain.notification.schedulenotification;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import team.teamby.teambyteam.feed.domain.FeedType;
+import team.teamby.teambyteam.feed.domain.notification.Notification;
 import team.teamby.teambyteam.feed.domain.vo.Content;
 import team.teamby.teambyteam.schedule.application.event.ScheduleEvent;
 

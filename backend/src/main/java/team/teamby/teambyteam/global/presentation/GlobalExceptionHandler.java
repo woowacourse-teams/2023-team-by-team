@@ -11,6 +11,7 @@ import team.teamby.teambyteam.auth.exception.AuthenticationException;
 import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
+import team.teamby.teambyteam.sharedlink.exception.SharedLinkException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeException;
 import team.teamby.teambyteam.token.exception.TokenException;
@@ -46,7 +47,8 @@ public class GlobalExceptionHandler {
             MemberException.MemberNotFoundException.class,
             TeamPlaceException.NotFoundException.class,
             ScheduleException.ScheduleNotFoundException.class,
-            TeamPlaceInviteCodeException.NotFoundException.class
+            TeamPlaceInviteCodeException.NotFoundException.class,
+            SharedLinkException.NotFoundException.class
     })
     public ResponseEntity<ErrorResponse> handleNotFoundException(final RuntimeException exception) {
         final String message = exception.getMessage();
@@ -72,7 +74,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {
             ScheduleException.TeamAccessForbidden.class,
             TeamPlaceException.TeamPlaceAccessForbidden.class,
-            MemberTeamPlaceException.NotFoundParticipatedTeamPlaceException.class
+            MemberTeamPlaceException.NotFoundParticipatedTeamPlaceException.class,
+            SharedLinkException.OwnerForbiddenException.class
     })
     public ResponseEntity<ErrorResponse> handleCustomForbiddenException(final RuntimeException exception) {
         final String message = exception.getMessage();

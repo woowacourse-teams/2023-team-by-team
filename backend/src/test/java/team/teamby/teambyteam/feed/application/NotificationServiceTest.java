@@ -5,13 +5,19 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import team.teamby.teambyteam.common.ServiceTest;
+import team.teamby.teambyteam.common.fixtures.MemberFixtures;
 import team.teamby.teambyteam.feed.domain.Feed;
 import team.teamby.teambyteam.feed.domain.FeedRepository;
-import team.teamby.teambyteam.feed.domain.notification.ScheduleNotification;
+import team.teamby.teambyteam.feed.domain.notification.schedulenotification.ScheduleNotification;
+import team.teamby.teambyteam.feed.domain.notification.sharedlinknotification.SharedLinkNotification;
+import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.schedule.application.event.ScheduleCreateEvent;
 import team.teamby.teambyteam.schedule.application.event.ScheduleDeleteEvent;
 import team.teamby.teambyteam.schedule.application.event.ScheduleUpdateEvent;
 import team.teamby.teambyteam.schedule.domain.Schedule;
+import team.teamby.teambyteam.sharedlink.application.event.SharedLinkCreateEvent;
+import team.teamby.teambyteam.sharedlink.application.event.SharedLinkDeleteEvent;
+import team.teamby.teambyteam.sharedlink.domain.SharedLink;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
 import java.util.List;
@@ -22,6 +28,9 @@ import static team.teamby.teambyteam.common.fixtures.ScheduleEventFixtures.SCHED
 import static team.teamby.teambyteam.common.fixtures.ScheduleEventFixtures.SCHEDULE_UPDATE_EVENT;
 import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE;
 import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_UPDATE_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.SharedLinkEventFixtures.SHARED_LINK_CREATE_EVENT;
+import static team.teamby.teambyteam.common.fixtures.SharedLinkEventFixtures.SHARED_LINK_DELETE_EVENT;
+import static team.teamby.teambyteam.common.fixtures.SharedLinkFixtures.TEAM_BY_TEAM_LINK;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
 
 class NotificationServiceTest extends ServiceTest {
@@ -97,6 +106,54 @@ class NotificationServiceTest extends ServiceTest {
             // when
             notificationService.createScheduleNotification(scheduleDeleteEvent);
             List<Feed> feeds = feedRepository.findByTeamPlaceId(ENGLISH_TEAM_PLACE.getId());
+
+            // then
+            assertThat(feeds.get(0)).usingRecursiveComparison()
+                    .ignoringFields("id", "createdAt", "updatedAt").isEqualTo(expected);
+        }
+    }
+
+    @Nested
+    @DisplayName("공유 링크 등록 시 등록 알림 생성")
+    class CreateSharedLinkNotificationWhenCreateSharedLink {
+
+        @Test
+        @DisplayName("정상적으로 성공한다.")
+        void success() {
+            // given
+            final Member member = testFixtureBuilder.buildMember(MemberFixtures.SEONGHA());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final SharedLink sharedLink = testFixtureBuilder.buildSharedLink(TEAM_BY_TEAM_LINK(ENGLISH_TEAM_PLACE.getId(), member.getId()));
+            final SharedLinkCreateEvent sharedLinkCreateEvent = SHARED_LINK_CREATE_EVENT(sharedLink);
+            final SharedLinkNotification expected = SharedLinkNotification.from(sharedLinkCreateEvent);
+
+            // when
+            notificationService.createSharedLinkNotification(sharedLinkCreateEvent);
+            final List<Feed> feeds = feedRepository.findByTeamPlaceId(ENGLISH_TEAM_PLACE.getId());
+
+            // then
+            assertThat(feeds.get(0)).usingRecursiveComparison()
+                    .ignoringFields("id", "createdAt", "updatedAt").isEqualTo(expected);
+        }
+    }
+
+    @Nested
+    @DisplayName("공유 링크 삭제 시 삭제 알림 생성")
+    class CreateSharedLinkNotificationWhenDeleteSharedLink {
+
+        @Test
+        @DisplayName("정상적으로 성공한다.")
+        void success() {
+            // given
+            final Member member = testFixtureBuilder.buildMember(MemberFixtures.SEONGHA());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final SharedLink sharedLink = testFixtureBuilder.buildSharedLink(TEAM_BY_TEAM_LINK(ENGLISH_TEAM_PLACE.getId(), member.getId()));
+            final SharedLinkDeleteEvent sharedLinkDeleteEvent = SHARED_LINK_DELETE_EVENT(sharedLink);
+            final SharedLinkNotification expected = SharedLinkNotification.from(sharedLinkDeleteEvent);
+
+            // when
+            notificationService.createSharedLinkNotification(sharedLinkDeleteEvent);
+            final List<Feed> feeds = feedRepository.findByTeamPlaceId(ENGLISH_TEAM_PLACE.getId());
 
             // then
             assertThat(feeds.get(0)).usingRecursiveComparison()
