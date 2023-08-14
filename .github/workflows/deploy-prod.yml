@@ -6,9 +6,10 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: '배포할 버전의 태그를 입력하세요.'
+        description: '배포할 Version Tag'
         required: true
         type: string
+      
 
 permissions:
   contents: read
