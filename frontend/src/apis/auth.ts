@@ -1,17 +1,17 @@
 import { http } from '~/apis/http';
 import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
+import type { UserInfo } from '~/types/team';
+
+interface GoogleLoginResponse {
+  googleLoginUrl: string;
+}
 
 export const fetchGoogleLogin = () => {
-  return http.get<{ googleLoginUrl: string }>(`/api/auth/oauth/google/login`);
+  return http.get<GoogleLoginResponse>(`/api/auth/oauth/google/login`);
 };
 
 export const fetchUserInfo = () => {
-  return http.get<{
-    id: number;
-    name: string;
-    profileImageUrl: string;
-    email: string;
-  }>('/api/me');
+  return http.get<UserInfo>('/api/me');
 };
 
 export const sendTokenReissue = async () => {

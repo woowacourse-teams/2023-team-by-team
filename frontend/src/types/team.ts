@@ -10,3 +10,10 @@ export interface TeamInfo {
   teamPlaceId: number;
   name: string;
 }
+
+export interface UserInfo {
+  id: number;
+  name: string;
+  profileImageUrl: string;
+  email: string;
+}

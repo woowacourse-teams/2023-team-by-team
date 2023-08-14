@@ -5,6 +5,14 @@ import type {
   ScheduleWithoutId,
 } from '~/types/schedule';
 
+interface SchedulesResponse {
+  schedules: Schedule[];
+}
+
+interface MySchedulesResponse {
+  schedules: ScheduleWithTeamPlaceId[];
+}
+
 export const fetchSchedules = (
   teamPlaceId: number,
   year: number,
@@ -15,9 +23,9 @@ export const fetchSchedules = (
     ? `year=${year}&month=${month}&day=${day}`
     : `year=${year}&month=${month}`;
 
-  return http.get<{
-    schedules: Schedule[];
-  }>(`/api/team-place/${teamPlaceId}/calendar/schedules?${query}`);
+  return http.get<SchedulesResponse>(
+    `/api/team-place/${teamPlaceId}/calendar/schedules?${query}`,
+  );
 };
 
 export const fetchMySchedules = (year: number, month: number, day?: number) => {
@@ -25,9 +33,7 @@ export const fetchMySchedules = (year: number, month: number, day?: number) => {
     ? `year=${year}&month=${month}&day=${day}`
     : `year=${year}&month=${month}`;
 
-  return http.get<{
-    schedules: ScheduleWithTeamPlaceId[];
-  }>(`/api/my-calendar/schedules?${query}`);
+  return http.get<MySchedulesResponse>(`/api/my-calendar/schedules?${query}`);
 };
 
 export const fetchScheduleById = (teamPlaceId: number, scheduleId: number) => {

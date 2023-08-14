@@ -1,5 +1,4 @@
 import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
-import { PATH_NAME } from '~/constants/routes';
 
 export const http = {
   get: async <T>(url: RequestInfo | URL): Promise<T> => {

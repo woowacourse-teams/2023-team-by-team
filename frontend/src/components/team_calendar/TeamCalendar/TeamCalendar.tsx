@@ -23,7 +23,6 @@ import { useTeamPlace } from '~/hooks/useTeamPlace';
 
 const TeamCalendar = () => {
   const { teamPlaceId } = useTeamPlace();
-
   const {
     year,
     month,
@@ -39,6 +38,7 @@ const TeamCalendar = () => {
     modalPosition,
     handlers: { handleScheduleModalOpen },
   } = useScheduleModal();
+
   const [clickedDate, setClickedDate] = useState(currentDate);
   const [modalType, setModalType] = useState<ModalOpenType>(
     MODAL_OPEN_TYPE.ADD,
@@ -48,6 +48,7 @@ const TeamCalendar = () => {
     row: 0,
     column: 0,
   });
+
   const scheduleBars = generateScheduleBars(year, month, schedules);
 
   const handleModalOpen = (modalOpenType: ModalOpenType) => {
@@ -125,6 +126,7 @@ const TeamCalendar = () => {
                     {scheduleBars.map((scheduleBar) => {
                       const { id, scheduleId, row, column, level, duration } =
                         scheduleBar;
+
                       if (row === rowIndex && level > 2)
                         return arrayOf(duration).map((_, index) => {
                           const date = getDateByPosition(
@@ -133,6 +135,7 @@ const TeamCalendar = () => {
                             row,
                             column + index,
                           );
+
                           return (
                             <ScheduleMoreCell
                               key={id + index}
