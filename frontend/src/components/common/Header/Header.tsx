@@ -75,7 +75,10 @@ const Header = () => {
     <>
       <S.Container tabIndex={0}>
         <S.InnerContainer>
-          <Link to={PATH_NAME.TEAM_OVERVIEW} aria-label="홈 페이지로 가기">
+          <Link
+            to={PATH_NAME.TEAM_OVERVIEW}
+            aria-label="모아보기 페이지로 가기"
+          >
             <LogoIcon />
           </Link>
           <div>
