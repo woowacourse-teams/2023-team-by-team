@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { LogoIcon, TeamIcon } from '~/assets/svg';
+import { BellIcon, LogoIcon, TeamIcon } from '~/assets/svg';
 import * as S from './Header.styled';
 import TeamBadge from '~/components/team/TeamBadge/TeamBadge';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
@@ -12,6 +12,7 @@ import TeamPlaceInfoModal from '~/components/team/TeamPlaceInfoModal/TeamPlaceIn
 import { useModal } from '~/hooks/useModal';
 import { useFetchUserInfo } from '~/hooks/queries/useFetchUserInfo';
 import UserInfoModal from '~/components/user/UserInfoModal/UserInfoModal';
+import NotificationListModal from '~/components/feed/NotificationListModal/NotificationListModal';
 
 const Header = () => {
   const {
@@ -25,7 +26,9 @@ const Header = () => {
   const { openModal } = useModal();
   const { userInfo } = useFetchUserInfo();
   const [teamName, setTeamName] = useState(displayName ?? '');
-  const [modalOpenType, setModalOpenType] = useState<'team' | 'user'>();
+  const [modalOpenType, setModalOpenType] = useState<
+    'notification' | 'team' | 'user'
+  >();
 
   const handleTeamNameChange = useCallback(
     (value: string) => {
@@ -52,6 +55,11 @@ const Header = () => {
     /*eslint-disable-next-line*/
     [changeTeamPlace, teamPlaces],
   );
+
+  const handleNotificationButtonClick = () => {
+    setModalOpenType(() => 'notification');
+    openModal();
+  };
 
   const handleTeamButtonClick = () => {
     setModalOpenType(() => 'team');
@@ -91,9 +99,21 @@ const Header = () => {
 
         <S.ButtonContainer>
           <Button
+            type="button"
+            variant="plain"
+            onClick={handleNotificationButtonClick}
+            css={S.notificationButton}
+            aria-label="알림 목록 보기"
+          >
+            <BellIcon />
+          </Button>
+
+          <Button
+            type="button"
             variant="plain"
             onClick={handleTeamButtonClick}
             css={S.teamPlaceInfoButton}
+            aria-label="팀 정보 보기"
           >
             <TeamIcon />
           </Button>
@@ -105,12 +125,14 @@ const Header = () => {
             variant="plain"
             css={S.userInfoButton}
             onClick={handleUserButtonClick}
+            aria-label="프로필 보기"
           >
             <S.ProfileImage src={userInfo?.profileImageUrl} alt="프로필 사진" />
           </Button>
         </S.ButtonContainer>
       </S.Container>
 
+      {modalOpenType === 'notification' && <NotificationListModal />}
       {modalOpenType === 'team' && <TeamPlaceInfoModal />}
       {modalOpenType === 'user' && <UserInfoModal />}
     </>
