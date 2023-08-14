@@ -46,6 +46,6 @@ public class SharedLink extends BaseEntity {
         if (teamPlaceId.equals(this.teamPlaceId)) {
             return;
         }
-        throw new SharedLinkException.OwnerForbiddenException();
+        throw new SharedLinkException.OwnerForbiddenException(teamPlaceId, id);
     }
 }
