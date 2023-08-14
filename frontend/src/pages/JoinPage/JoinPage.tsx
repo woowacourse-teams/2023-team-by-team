@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTeamJoin } from '~/hooks/team/useTeamJoin';
 import IntroCardPile from '~/components/landing/IntroCardPile/IntroCardPile';
 import LandingHeader from '~/components/common/LandingHeader/LandingHeader';
+import BackButton from '~/components/common/BackButton/BackButton';
 
 const JoinPage = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -78,13 +79,16 @@ const JoinPage = () => {
                 </Button>
               </div>
             </S.BodyContainer>
-            <Button
-              css={S.submitButton}
-              disabled={inviteCode.length < 8}
-              aria-label="팀 참가"
-            >
-              팀 참가
-            </Button>
+            <S.ConfirmButtonsContainer>
+              <BackButton label="이전 단계로" />
+              <Button
+                css={S.submitButton}
+                disabled={inviteCode.length < 8}
+                aria-label="팀 참가"
+              >
+                팀 참가
+              </Button>
+            </S.ConfirmButtonsContainer>
           </S.InviteCodeForm>
         </S.InnerContainer>
       </S.MainContainer>

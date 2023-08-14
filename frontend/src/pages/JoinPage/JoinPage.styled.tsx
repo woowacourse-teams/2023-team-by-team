@@ -62,6 +62,11 @@ export const InputContainer = styled.div`
   gap: 4px;
 `;
 
+export const ConfirmButtonsContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 export const createPageButton = css`
   padding: 0;
 

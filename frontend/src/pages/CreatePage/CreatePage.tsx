@@ -6,6 +6,7 @@ import Button from '~/components/common/Button/Button';
 import { useTeamCreate } from '~/hooks/team/useTeamCreate';
 import IntroCardPile from '~/components/landing/IntroCardPile/IntroCardPile';
 import LandingHeader from '~/components/common/LandingHeader/LandingHeader';
+import BackButton from '~/components/common/BackButton/BackButton';
 
 const CreatePage = () => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -41,9 +42,12 @@ const CreatePage = () => {
                 간단한 입력으로 쉽게 팀을 만들어 보세요!
               </Text>
             </S.BodyContainer>
-            <Button css={S.submitButton} aria-label="팀 생성">
-              팀 생성
-            </Button>
+            <S.ConfirmButtonsContainer>
+              <BackButton label="이전 단계로" />
+              <Button css={S.submitButton} aria-label="팀 생성">
+                팀 생성
+              </Button>
+            </S.ConfirmButtonsContainer>
           </S.TeamNameForm>
         </S.InnerContainer>
         <IntroCardPile animation={false} />

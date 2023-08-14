@@ -55,6 +55,11 @@ export const InputWrapper = styled.div`
     0 5px 10px #1b1d1f1f;
 `;
 
+export const ConfirmButtonsContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 export const explainText = css`
   display: flex;
   justify-content: center;
