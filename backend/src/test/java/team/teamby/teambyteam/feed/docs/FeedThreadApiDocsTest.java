@@ -32,6 +32,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
@@ -73,6 +74,7 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
                     .andDo(print())
                     .andDo(document("feeds/write/success",
                                     preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint()),
                                     pathParameters(
                                             parameterWithName("teamPlaceId").description("멤버가 속한 팀 플레이스 ID")
                                     ),
@@ -105,6 +107,7 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
                     .andDo(print())
                     .andDo(document("feeds/write/fail/blankContent",
                                     preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint()),
                                     pathParameters(
                                             parameterWithName("teamPlaceId").description("멤버가 속한 팀 플레이스 ID")
                                     ),
@@ -136,6 +139,7 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
                     .andDo(print())
                     .andDo(document("feeds/write/fail/notParticipatedTeamPlace",
                                     preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint()),
                                     pathParameters(
                                             parameterWithName("teamPlaceId").description("멤버가 속한 팀 플레이스 ID")
                                     ),
@@ -167,6 +171,7 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
                     .andDo(print())
                     .andDo(document("feeds/write/fail/unAuthorized",
                                     preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint()),
                                     pathParameters(
                                             parameterWithName("teamPlaceId").description("멤버가 속한 팀 플레이스 ID")
                                     ),
@@ -206,6 +211,7 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
                     .andDo(print())
                     .andDo(document("feeds/read/first/success",
                                     preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint()),
                                     pathParameters(
                                             parameterWithName("teamPlaceId").description("멤버가 속한 팀 플레이스 ID")
                                     ),
@@ -237,6 +243,7 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
                     .andDo(print())
                     .andDo(document("feeds/read/first/fail/unAuthorized",
                                     preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint()),
                                     pathParameters(
                                             parameterWithName("teamPlaceId").description("멤버가 속한 팀 플레이스 ID")
                                     ),
@@ -268,6 +275,7 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
                     .andDo(print())
                     .andDo(document("feeds/read/first/fail/notParticipated",
                                     preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint()),
                                     pathParameters(
                                             parameterWithName("teamPlaceId").description("멤버가 속한 팀 플레이스 ID")
                                     ),
@@ -308,6 +316,7 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
                     .andDo(print())
                     .andDo(document("feeds/read/repeat/success",
                                     preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint()),
                                     pathParameters(
                                             parameterWithName("teamPlaceId").description("멤버가 속한 팀 플레이스 ID")
                                     ),
@@ -344,6 +353,7 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
                     .andDo(print())
                     .andDo(document("feeds/read/repeat/fail/unAuthorized",
                                     preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint()),
                                     pathParameters(
                                             parameterWithName("teamPlaceId").description("멤버가 속한 팀 플레이스 ID")
                                     ),
@@ -380,6 +390,7 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
                     .andDo(print())
                     .andDo(document("feeds/read/repeat/fail/notParticipated",
                                     preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint()),
                                     pathParameters(
                                             parameterWithName("teamPlaceId").description("멤버가 속한 팀 플레이스 ID")
                                     ),
