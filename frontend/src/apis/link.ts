@@ -1,6 +1,10 @@
 import { http } from '~/apis/http';
 import type { TeamLink, TeamLinkWithoutInfo } from '~/types/link';
 
+interface TeamLinksResponse {
+  teamLinks: TeamLink[];
+}
+
 export const sendTeamLink = (
   teamPlaceId: number,
   body: TeamLinkWithoutInfo,
@@ -9,7 +13,7 @@ export const sendTeamLink = (
 };
 
 export const fetchTeamLinks = (teamPlaceId: number) => {
-  return http.get<{ teamLinks: TeamLink[] }>(
+  return http.get<TeamLinksResponse>(
     `/api/team-place/${teamPlaceId}/team-links`,
   );
 };
