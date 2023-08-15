@@ -108,8 +108,9 @@ public class TeamPlaceControlApiDocsTest extends ApiDocsTest {
         @DisplayName("팀플레이스 이름이 30자 초과시 400")
         void badRequestForLongTeamPlaceName() throws Exception {
             // given
-            final TeamPlaceCreateRequest request = new TeamPlaceCreateRequest("a".repeat(31));
-            willThrow(new TeamPlaceException.NameLengthException())
+            final String longName = "a".repeat(31);
+            final TeamPlaceCreateRequest request = new TeamPlaceCreateRequest(longName);
+            willThrow(new TeamPlaceException.NameLengthException(30, longName))
                     .given(teamPlaceService)
                     .create(any(MemberEmailDto.class), any(TeamPlaceCreateRequest.class));
 
@@ -170,7 +171,7 @@ public class TeamPlaceControlApiDocsTest extends ApiDocsTest {
         void forbiddenWithUnparticipatedTeamPlace() throws Exception {
             // given
             final Long teamPlaceId = 2L;
-            willThrow(new TeamPlaceException.TeamPlaceAccessForbidden())
+            willThrow(new TeamPlaceException.TeamPlaceAccessForbidden(teamPlaceId, "test@email.com"))
                     .given(teamPlaceParticipationInterceptor)
                     .preHandle(any(), any(), any());
 
