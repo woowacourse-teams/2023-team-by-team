@@ -8,6 +8,9 @@ export const useFetchScheduleById = (
   const { data: scheduleById } = useQuery(
     ['schedule', teamPlaceId, scheduleId],
     () => fetchScheduleById(teamPlaceId, scheduleId),
+    {
+      enabled: teamPlaceId > 0,
+    },
   );
 
   return { scheduleById };

@@ -18,7 +18,7 @@ import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
 import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
 import team.teamby.teambyteam.feed.domain.Feed;
 import team.teamby.teambyteam.feed.domain.FeedThread;
-import team.teamby.teambyteam.feed.domain.notification.ScheduleNotification;
+import team.teamby.teambyteam.feed.domain.notification.schedulenotification.ScheduleNotification;
 import team.teamby.teambyteam.feed.domain.vo.Content;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;

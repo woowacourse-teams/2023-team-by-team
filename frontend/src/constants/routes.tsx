@@ -5,6 +5,8 @@ export const PATH_NAME = {
   JOIN: '/join',
   CREATE: '/create',
   TEAM_SELECT: '/team',
+  TEAM_OVERVIEW: '/team/overview',
   TEAM_CALENDAR: '/team/calendar',
   TEAM_FEED: '/team/feed',
+  TEAM_LINK: '/team/link',
 };

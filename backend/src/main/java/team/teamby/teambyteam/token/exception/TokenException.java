@@ -7,8 +7,8 @@ public class TokenException extends RuntimeException {
     }
 
     public static class TokenNotFoundException extends TokenException {
-        public TokenNotFoundException() {
-            super("토큰을 찾을 수 없습니다.");
+        public TokenNotFoundException(final String email) {
+            super(String.format("토큰을 찾을 수 없습니다. - request info { email : %s }", email));
         }
     }
 }

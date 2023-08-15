@@ -24,7 +24,8 @@ public class TokenService {
         final String generateAccessToken = jwtTokenProvider.generateAccessToken(email);
         final String generateRefreshToken = jwtTokenProvider.generateRefreshToken(email);
         final Token token = tokenRepository.findByRefreshToken(refreshToken)
-                .orElseThrow(TokenException.TokenNotFoundException::new);
+                .orElseThrow(() -> new TokenException.TokenNotFoundException(email));
+
         token.changeToken(generateRefreshToken);
 
         log.info("인증 토큰 재발급 - 재발급 받은 사용자 이메일 : {}", email);

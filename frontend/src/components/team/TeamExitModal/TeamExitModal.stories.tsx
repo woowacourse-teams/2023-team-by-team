@@ -14,12 +14,12 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const SampleModal = () => {
-  const { openModal } = useModal();
+  const { openModal, closeModal } = useModal();
 
   return (
     <>
       <Button onClick={openModal}>모달 열기</Button>
-      <TeamExitModal />
+      <TeamExitModal onClose={closeModal} />
     </>
   );
 };

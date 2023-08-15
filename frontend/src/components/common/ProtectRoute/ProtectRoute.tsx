@@ -17,6 +17,7 @@ const ProtectRoute = () => {
 
     if (!accessToken) {
       localStorage.removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
+      localStorage.removeItem(LOCAL_STORAGE_KEY.REFRESH_TOKEN);
       alert('로그인이 필요합니다.');
       navigate(PATH_NAME.LANDING);
     }
@@ -24,6 +25,7 @@ const ProtectRoute = () => {
 
   const resetAccessToken = () => {
     localStorage.removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
+    localStorage.removeItem(LOCAL_STORAGE_KEY.REFRESH_TOKEN);
 
     window.location.href = PATH_NAME.LANDING;
   };

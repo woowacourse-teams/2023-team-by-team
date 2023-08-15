@@ -1,31 +1,20 @@
-import Button from '~/components/common/Button/Button';
-import TeamExitModal from '~/components/team/TeamExitModal/TeamExitModal';
-import { useTeamPlace } from '~/hooks/useTeamPlace';
-import { useModal } from '~/hooks/useModal';
 import { PATH_NAME } from '~/constants/routes';
 import {
   CalendarIcon,
-  ExitIcon,
   FeedIcon,
   HomeIcon,
+  ChainIcon,
   TeamAddIcon,
 } from '~/assets/svg';
 import * as S from './NavigationBar.styled';
 
 const NavigationBar = () => {
-  const { displayName } = useTeamPlace();
-  const { openModal } = useModal();
-
-  const handleExitButtonClick = () => {
-    openModal();
-  };
-
   return (
     <>
       <S.Container>
         <S.MenuContainer>
           <S.MenuLink
-            to={PATH_NAME.TEAM_CALENDAR}
+            to={PATH_NAME.TEAM_OVERVIEW}
             aria-label="모아보기 페이지로 이동하기 버튼"
           >
             <HomeIcon />
@@ -43,24 +32,19 @@ const NavigationBar = () => {
             <FeedIcon />
           </S.MenuLink>
           <S.MenuLink
+            to={PATH_NAME.TEAM_LINK}
+            aria-label="팀 링크 페이지로 이동하기 버튼"
+          >
+            <ChainIcon />
+          </S.MenuLink>
+          <S.MenuLink
             to={PATH_NAME.START}
             aria-label="팀 시작 페이지로 이동하기 버튼"
           >
             <TeamAddIcon />
           </S.MenuLink>
-          <Button
-            type="button"
-            variant="plain"
-            disabled={displayName === ''}
-            css={S.exitButton}
-            aria-label="팀 플레이스 탈퇴하기"
-            onClick={handleExitButtonClick}
-          >
-            <ExitIcon />
-          </Button>
         </S.MenuContainer>
       </S.Container>
-      <TeamExitModal />
     </>
   );
 };

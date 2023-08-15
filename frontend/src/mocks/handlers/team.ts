@@ -2,6 +2,8 @@ import { rest } from 'msw';
 import {
   teamPlaces as teamPlacesData,
   inviteTeams,
+  INVITE_CODE,
+  MEMBERS,
 } from '~/mocks/fixtures/team';
 
 const teamPlaces = [...teamPlacesData];
@@ -62,6 +64,32 @@ export const teamHandlers = [
     return res(
       ctx.status(201),
       ctx.json({ teamPlaceId: inviteTeams[index].id }),
+    );
+  }),
+
+  // 팀플레이스 초대코드 조회
+  rest.get(
+    '/api/team-places/:teamPlaceId/invite-code',
+    async (req, res, ctx) => {
+      const { teamPlaceId } = req.params;
+
+      return res(
+        ctx.status(200),
+        ctx.json({
+          teamPlaceId: Number(teamPlaceId),
+          inviteCode: INVITE_CODE,
+        }),
+      );
+    },
+  ),
+
+  // 팀플레이스 팀원 목록 조회
+  rest.get('/api/team-places/:teamPlaceId/members', async (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        members: MEMBERS,
+      }),
     );
   }),
 ];

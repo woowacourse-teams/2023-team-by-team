@@ -1,4 +1,4 @@
-package team.teamby.teambyteam.feed.domain.notification;
+package team.teamby.teambyteam.feed.domain.notification.schedulenotification;
 
 import team.teamby.teambyteam.feed.domain.vo.Content;
 import team.teamby.teambyteam.schedule.application.event.ScheduleEvent;
@@ -6,7 +6,7 @@ import team.teamby.teambyteam.schedule.application.event.ScheduleEvent;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class NotificationContentGenerator {
+public class ScheduleNotificationContentGenerator {
 
     private static final String NOTIFICATION_LOCAL_DATE_TIME_FORMAT = "yyyy년 M월 d일 HH시 mm분";
 

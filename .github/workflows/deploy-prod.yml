@@ -1,0 +1,88 @@
+# 운영서버 배포 워크플로우
+# 백엔드 + 프런트엔드 동시 배포
+name: deploy production
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: '배포할 Version Tag'
+        required: true
+        type: string
+      
+
+permissions:
+  contents: read
+
+env:
+  VERSION_TAG: ${{ inputs.version }}
+
+jobs:
+  build-backend:
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Set up Repository
+        uses: actions/checkout@v3
+        with:
+          ref: $VERSION_TAG
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'corretto'
+
+      - name: Give permission for Gradle
+        run: chmod +x gradlew
+      
+      - name: Cache Gradle
+        id: cache-gradle
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      
+      - name: Build with Gradle
+        run: ./gradlew bootJar
+      
+      - name: Upload jar file artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: BackendApplicationJar
+          path: backend/build/libs/*.jar
+
+  deploy-backend:
+    needs: build-backend
+    runs-on: self-hosted
+    env:
+      PROD_PROPERTY: ${{ secrets.PROD_BACK_PROPERTY }}
+      PROD_DEPLOY_SCRIPT: ${{ secrets.PROD_BACK_DEPLOY_SCRIPT }}
+
+    steps:
+      - name: Remove previous version jar
+        working-directory: backend/prod/
+        run: rm -f team-by-team-*.jar
+
+      - name: Download jar file from artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: BackendApplicationJar
+          path: backend/prod/
+
+      - name : Make prod application.yml
+        working-directory: backend/prod/
+        run: echo "$PROD_PROPERTY" > application-prod.yml
+
+      - name: Deploy to production server
+        working-directory: backend/dev/
+        run: |
+          echo "$PROD_DEPLOY_SCRIPT" > prod-deploy.sh
+          chmod 700 prod-deploy.sh
+          ./prod-deploy.sh
+          
