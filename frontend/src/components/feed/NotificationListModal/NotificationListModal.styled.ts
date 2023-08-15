@@ -31,7 +31,6 @@ export const Container = styled.div`
 export const NotificationList = styled.ul`
   display: flex;
   flex-direction: column;
-
   overflow-x: hidden;
   overflow-y: auto;
 
