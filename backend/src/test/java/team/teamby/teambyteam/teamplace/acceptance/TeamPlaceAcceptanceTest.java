@@ -2,22 +2,40 @@ package team.teamby.teambyteam.teamplace.acceptance;
 
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.http.HttpStatus;
 import team.teamby.teambyteam.common.AcceptanceTest;
 import team.teamby.teambyteam.common.fixtures.MemberFixtures;
 import team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures;
 import team.teamby.teambyteam.member.application.dto.TeamPlacesResponse;
 import team.teamby.teambyteam.member.domain.Member;
+import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceInviteCodeResponse;
+import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceMemberResponse;
+import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceMembersResponse;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ENDEL;
+import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
+import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ROY;
+import static team.teamby.teambyteam.common.fixtures.MemberFixtures.SEONGHA;
+import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
+import static team.teamby.teambyteam.common.fixtures.TokenFixtures.EXPIRED_ACCESS_TOKEN;
+import static team.teamby.teambyteam.common.fixtures.TokenFixtures.MALFORMED_JWT_TOKEN;
+import static team.teamby.teambyteam.common.fixtures.TokenFixtures.MISSING_CLAIM_ACCESS_TOKEN;
 import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptanceFixture.GET_PARTICIPATED_TEAM_PLACES;
 import static team.teamby.teambyteam.common.fixtures.acceptance.TeamPlaceAcceptanceFixture.CREATE_TEAM_PLACE;
+import static team.teamby.teambyteam.common.fixtures.acceptance.TeamPlaceAcceptanceFixture.GET_MEMBERS_REQUEST;
 import static team.teamby.teambyteam.common.fixtures.acceptance.TeamPlaceAcceptanceFixture.GET_TEAM_PLACE_INVITE_CODE;
 
 public class TeamPlaceAcceptanceTest extends AcceptanceTest {
@@ -41,7 +59,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
             //then
             final ExtractableResponse<Response> response = GET_PARTICIPATED_TEAM_PLACES(ENDL_TOKEN);
             TeamPlacesResponse teamPlacesResponse = response.body().as(TeamPlacesResponse.class);
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(createResponse.statusCode()).isEqualTo(HttpStatus.CREATED.value());
                 softly.assertThat(createResponse.jsonPath().getLong("teamPlaceId")).isNotNull();
                 softly.assertThat(teamPlacesResponse.teamPlaces()).hasSize(1);
@@ -61,7 +79,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
             final ExtractableResponse<Response> response = CREATE_TEAM_PLACE(WRONG_TOKEN, request);
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
                 softly.assertThat(response.body().asString()).contains("인증이 실패했습니다.");
             });
@@ -80,7 +98,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
             final ExtractableResponse<Response> response = CREATE_TEAM_PLACE(ENDL_TOKEN, request);
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
                 softly.assertThat(response.body().asString()).contains("팀플레이스 이름이 있어야 합니다.");
             });
@@ -98,7 +116,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
             final ExtractableResponse<Response> response = CREATE_TEAM_PLACE(ENDL_TOKEN, request);
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
                 softly.assertThat(response.body().asString()).contains("팀 플레이스 이름의 길이가 최대 이름 길이를 초과했습니다.");
             });
@@ -124,7 +142,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
 
             //then
             final TeamPlaceInviteCodeResponse codeResponse = extractableResponse.body().as(TeamPlaceInviteCodeResponse.class);
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(extractableResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
                 softly.assertThat(generatedCodeResponse).isEqualTo(codeResponse);
             });
@@ -144,7 +162,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
 
             //then
             final TeamPlaceInviteCodeResponse codeResponse = extractableResponse.body().as(TeamPlaceInviteCodeResponse.class);
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(extractableResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
                 softly.assertThat(codeResponse.teamPlaceId()).isEqualTo(teamPlace.getId());
                 softly.assertThat(codeResponse.inviteCode()).isNotEmpty();
@@ -163,7 +181,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
             final ExtractableResponse<Response> extractableResponse = GET_TEAM_PLACE_INVITE_CODE(PHILIP_TOKEN, notExistTeamPlaceId);
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(extractableResponse.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
             });
         }
@@ -180,7 +198,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
             final ExtractableResponse<Response> extractableResponse = GET_TEAM_PLACE_INVITE_CODE(PHILIP_TOKEN, notParticipatedTeamPlaceId);
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(extractableResponse.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
             });
         }
@@ -196,8 +214,87 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
             final ExtractableResponse<Response> extractableResponse = GET_TEAM_PLACE_INVITE_CODE(WRONG_TOKEN, teamPlace.getId());
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(extractableResponse.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+            });
+        }
+    }
+
+    @Nested
+    @DisplayName("팀 플레이스 참여 멤버 조회 시")
+    class FindMembers {
+
+        private Member member1;
+        private Member member2;
+        private Member member3;
+        private Member member4;
+        private TeamPlace teamPlace;
+        private MemberTeamPlace memberTeamPlace1;
+        private MemberTeamPlace memberTeamPlace2;
+        private MemberTeamPlace memberTeamPlace3;
+        private MemberTeamPlace memberTeamPlace4;
+
+        @BeforeEach
+        void setUp() {
+            member1 = testFixtureBuilder.buildMember(PHILIP());
+            member2 = testFixtureBuilder.buildMember(ROY());
+            member3 = testFixtureBuilder.buildMember(SEONGHA());
+            member4 = testFixtureBuilder.buildMember(ENDEL());
+            teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            memberTeamPlace1 = testFixtureBuilder.buildMemberTeamPlace(member1, teamPlace);
+            memberTeamPlace2 = testFixtureBuilder.buildMemberTeamPlace(member2, teamPlace);
+            memberTeamPlace3 = testFixtureBuilder.buildMemberTeamPlace(member3, teamPlace);
+            memberTeamPlace4 = testFixtureBuilder.buildMemberTeamPlace(member4, teamPlace);
+        }
+
+        @Test
+        @DisplayName("팀 플레이스 참여 멤버 조회에 성공한다.")
+        void success() {
+            // given
+            final TeamPlaceMembersResponse response = TeamPlaceMembersResponse.from(List.of(
+                    memberTeamPlace1, memberTeamPlace2, memberTeamPlace3, memberTeamPlace4
+            ));
+            final List<TeamPlaceMemberResponse> expectedResponse = response.members();
+
+            final String accessToken = jwtTokenProvider.generateAccessToken(member1.getEmail().getValue());
+
+            // when
+            final ExtractableResponse<Response> membersResponse = GET_MEMBERS_REQUEST(accessToken, teamPlace.getId());
+            final List<TeamPlaceMemberResponse> actualResponse = membersResponse.jsonPath().getList("members", TeamPlaceMemberResponse.class);
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(membersResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
+                softly.assertThat(actualResponse).usingRecursiveFieldByFieldElementComparator()
+                        .isEqualTo(expectedResponse);
+            });
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {EXPIRED_ACCESS_TOKEN, MALFORMED_JWT_TOKEN, MISSING_CLAIM_ACCESS_TOKEN})
+        @DisplayName("올바르지 않은 토큰으로 요청하면 실패한다.")
+        void failWhenWrongToken(String wrongToken) {
+            // when
+            final ExtractableResponse<Response> response = GET_MEMBERS_REQUEST(wrongToken, teamPlace.getId());
+
+            // then
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+        }
+
+        @Test
+        @DisplayName("소속되지 않은 팀 플레이스의 멤버를 조회하면 실패한다.")
+        void failWhenNotParticipatedTeamPlace() {
+            // given
+            final String accessToken = jwtTokenProvider.generateAccessToken(member1.getEmail().getValue());
+            long notParticipatedTeamPlaceId = teamPlace.getId() + 1;
+
+            // when
+            final ExtractableResponse<Response> response = GET_MEMBERS_REQUEST(accessToken, notParticipatedTeamPlaceId);
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+                softly.assertThat(response.jsonPath().getString("error")).contains("접근할 수 없는 팀플레이스입니다.");
             });
         }
     }

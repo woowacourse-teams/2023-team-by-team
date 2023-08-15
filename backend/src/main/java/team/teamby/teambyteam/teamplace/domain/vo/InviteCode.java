@@ -15,7 +15,7 @@ import java.util.Objects;
 @Getter
 public final class InviteCode {
 
-    private static final int LENGTH = 8;
+    public static final int LENGTH = 8;
 
     @Column(name = "invite_code", nullable = false, length = LENGTH, unique = true)
     private String value;

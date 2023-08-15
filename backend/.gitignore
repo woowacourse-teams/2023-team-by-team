@@ -39,5 +39,8 @@ out/
 ### REST Docs ###
 src/main/resources/static/docs/
 
+### LOG Files ###
+logs
+
 ### PROPERTY ###
 src/main/resources/*-*.yml

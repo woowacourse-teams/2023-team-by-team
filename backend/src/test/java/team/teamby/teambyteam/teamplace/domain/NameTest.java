@@ -21,7 +21,7 @@ class NameTest {
         // when & then
         assertThatThrownBy(() -> new Name(nullName))
                 .isInstanceOf(NullPointerException.class)
-                .hasMessage("팀 플레이스 이름은 null일 수 없습니다.");
+                .hasMessageContaining("팀 플레이스 이름은 null일 수 없습니다.");
     }
 
     @Test
@@ -34,7 +34,7 @@ class NameTest {
         // when & then
         assertThatThrownBy(() -> new Name(overLengthName))
                 .isInstanceOf(TeamPlaceException.NameLengthException.class)
-                .hasMessage("팀 플레이스 이름의 길이가 최대 이름 길이를 초과했습니다.");
+                .hasMessageContaining("팀 플레이스 이름의 길이가 최대 이름 길이를 초과했습니다.");
     }
 
     @ParameterizedTest
@@ -44,6 +44,6 @@ class NameTest {
         // when & then
         assertThatThrownBy(() -> new Name(blankName))
                 .isInstanceOf(TeamPlaceException.NameBlankException.class)
-                .hasMessage("팀 플레이스 이름은 공백을 제외한 1자 이상이어야합니다.");
+                .hasMessageContaining("팀 플레이스 이름은 공백을 제외한 1자 이상이어야합니다.");
     }
 }

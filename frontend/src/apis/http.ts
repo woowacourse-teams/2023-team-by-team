@@ -1,10 +1,4 @@
-import { PATH_NAME } from '~/constants/routes';
-
-const resetAccessToken = () => {
-  localStorage.removeItem('accessToken');
-  alert('로그인이 필요합니다.');
-  window.location.href = PATH_NAME.LANDING;
-};
+import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
 
 export const http = {
   get: async <T>(url: RequestInfo | URL): Promise<T> => {
@@ -12,13 +6,14 @@ export const http = {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        Authorization: `Bearer ${localStorage.getItem(
+          LOCAL_STORAGE_KEY.ACCESS_TOKEN,
+        )}`,
       },
     });
 
     if (response.status === 401) {
-      resetAccessToken();
-      throw new Error('유효한 사용자 정보가 아닙니다.');
+      throw response;
     }
 
     if (!response.ok) {
@@ -33,14 +28,15 @@ export const http = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        Authorization: `Bearer ${localStorage.getItem(
+          LOCAL_STORAGE_KEY.ACCESS_TOKEN,
+        )}`,
       },
       body: JSON.stringify(body),
     });
 
-    if (response.status === 401) {
-      resetAccessToken();
-      throw new Error('유효한 사용자 정보가 아닙니다.');
+    if (response.status === 401 || response.status === 404) {
+      throw response;
     }
 
     if (!response.ok) {
@@ -55,14 +51,15 @@ export const http = {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        Authorization: `Bearer ${localStorage.getItem(
+          LOCAL_STORAGE_KEY.ACCESS_TOKEN,
+        )}`,
       },
       body: JSON.stringify(body),
     });
 
     if (response.status === 401) {
-      resetAccessToken();
-      throw new Error('유효한 사용자 정보가 아닙니다.');
+      throw response;
     }
 
     if (!response.ok) {
@@ -77,13 +74,14 @@ export const http = {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        Authorization: `Bearer ${localStorage.getItem(
+          LOCAL_STORAGE_KEY.ACCESS_TOKEN,
+        )}`,
       },
     });
 
     if (response.status === 401) {
-      resetAccessToken();
-      throw new Error('유효한 사용자 정보가 아닙니다.');
+      throw response;
     }
 
     if (!response.ok) {

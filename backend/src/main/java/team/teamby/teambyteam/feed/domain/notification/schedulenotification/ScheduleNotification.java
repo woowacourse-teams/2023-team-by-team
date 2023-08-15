@@ -1,4 +1,4 @@
-package team.teamby.teambyteam.feed.domain.notification;
+package team.teamby.teambyteam.feed.domain.notification.schedulenotification;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -6,15 +6,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.teamby.teambyteam.feed.domain.FeedType;
+import team.teamby.teambyteam.feed.domain.notification.Notification;
 import team.teamby.teambyteam.feed.domain.vo.Content;
 import team.teamby.teambyteam.schedule.application.event.ScheduleEvent;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
 public class ScheduleNotification extends Notification {
 
     @Id
@@ -30,8 +29,13 @@ public class ScheduleNotification extends Notification {
     }
 
     @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
     public Long getAuthorId() {
-        return getScheduleId();
+        return scheduleId;
     }
 
     protected ScheduleNotification(final Long teamPlaceId, final Content content, final Long scheduleId) {

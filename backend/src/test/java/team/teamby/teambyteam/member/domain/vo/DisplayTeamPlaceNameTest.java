@@ -37,6 +37,6 @@ class DisplayTeamPlaceNameTest {
         // when & then
         Assertions.assertThatThrownBy(() -> new DisplayTeamPlaceName(".".repeat(31)))
                 .isInstanceOf(MemberTeamPlaceException.TeamPlaceDisplayNameLengthException.class)
-                .hasMessage("팀플레이스의 이름의 길이가 최대 이름 길이를 초과했습니다.");
+                .hasMessageContaining("팀플레이스의 이름의 길이가 최대 이름 길이를 초과했습니다.");
     }
 }

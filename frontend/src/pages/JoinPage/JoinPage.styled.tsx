@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { css, styled } from 'styled-components';
 
 export const Container = styled.div`
@@ -49,6 +48,12 @@ export const InputWrapper = styled.div`
     0 5px 10px #1b1d1f1f;
 `;
 
+export const InputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+
 export const createPageButton = css`
   padding: 0;
 
@@ -88,7 +93,7 @@ export const inputTitle = css`
   border-radius: 14px;
   background-color: transparent;
 
-  font-size: 20px;
+  font-size: 32px;
 `;
 
 export const submitButton = css`
@@ -99,4 +104,10 @@ export const submitButton = css`
   width: 100px;
 
   border-radius: 10px;
+`;
+
+export const warningText = css`
+  height: 16px;
+
+  color: ${({ theme }) => theme.color.RED};
 `;

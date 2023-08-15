@@ -15,6 +15,7 @@ export const useFetchThreads = (teamPlaceId: number) => {
         if (lastPage.threads.length !== THREAD_SIZE) return undefined;
         return lastPage.threads[THREAD_SIZE - 1].id;
       },
+      enabled: teamPlaceId > 0,
     },
   );
 

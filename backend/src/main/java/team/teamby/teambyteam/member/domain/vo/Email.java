@@ -33,7 +33,7 @@ public class Email {
         }
 
         if (isNotMatchEmailForm(value)) {
-            throw new MemberException.EmailRegexException();
+            throw new MemberException.EmailRegexException(value);
         }
     }
 

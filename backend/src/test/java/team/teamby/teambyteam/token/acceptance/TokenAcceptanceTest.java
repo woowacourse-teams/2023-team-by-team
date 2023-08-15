@@ -54,7 +54,7 @@ public class TokenAcceptanceTest extends AcceptanceTest {
         // then
         assertSoftly(softly -> {
             softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
-            softly.assertThat(response.body().asString()).isEqualTo("토큰이 만료되었습니다.");
+            softly.assertThat(response.jsonPath().getString("error")).isEqualTo("EXPIRED_REFRESH_TOKEN");
             softly.assertThat(response.header(ACCESS_TOKEN_HEADER)).isNull();
             softly.assertThat(response.header(REFRESH_TOKEN_HEADER)).isNull();
         });
@@ -74,7 +74,7 @@ public class TokenAcceptanceTest extends AcceptanceTest {
         // then
         assertSoftly(softly -> {
             softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
-            softly.assertThat(response.body().asString()).isEqualTo("인증이 실패했습니다.");
+            softly.assertThat(response.jsonPath().getString("error")).isEqualTo("인증이 실패했습니다.");
             softly.assertThat(response.header(ACCESS_TOKEN_HEADER)).isNull();
             softly.assertThat(response.header(REFRESH_TOKEN_HEADER)).isNull();
         });
@@ -94,7 +94,7 @@ public class TokenAcceptanceTest extends AcceptanceTest {
         // then
         assertSoftly(softly -> {
             softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
-            softly.assertThat(response.body().asString()).isEqualTo("인증이 실패했습니다.");
+            softly.assertThat(response.jsonPath().getString("error")).isEqualTo("인증이 실패했습니다.");
             softly.assertThat(response.header(ACCESS_TOKEN_HEADER)).isNull();
             softly.assertThat(response.header(REFRESH_TOKEN_HEADER)).isNull();
         });
@@ -112,7 +112,7 @@ public class TokenAcceptanceTest extends AcceptanceTest {
         // then
         assertSoftly(softly -> {
             softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
-            softly.assertThat(response.body().asString()).isEqualTo("토큰을 찾을 수 없습니다.");
+            softly.assertThat(response.jsonPath().getString("error")).contains("토큰을 찾을 수 없습니다.");
             softly.assertThat(response.header(ACCESS_TOKEN_HEADER)).isNull();
             softly.assertThat(response.header(REFRESH_TOKEN_HEADER)).isNull();
         });
