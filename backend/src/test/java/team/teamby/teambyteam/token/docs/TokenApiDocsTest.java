@@ -176,7 +176,7 @@ public class TokenApiDocsTest extends ApiDocsTest {
             // given
             final String refreshToken = CORRECT_REFRESH_TOKEN;
             given(jwtTokenExtractor.extractRefreshToken(any())).willReturn(refreshToken);
-            willThrow(new TokenException.TokenNotFoundException())
+            willThrow(new TokenException.TokenNotFoundException(PHILIP_EMAIL))
                     .given(tokenService)
                     .reissueToken(refreshToken);
 
