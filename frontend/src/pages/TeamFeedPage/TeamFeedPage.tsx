@@ -5,8 +5,14 @@ import ThreadAddBottomSheet from '~/components/feed/ThreadAddBottomSheet/ThreadA
 import { ArrowUpIcon, WriteIcon } from '~/assets/svg';
 import { useEffect, useRef, useState } from 'react';
 import ThreadList from '~/components/feed/ThreadList/ThreadList';
+import type { ThreadSize } from '~/types/size';
 
-const TeamFeedPage = () => {
+interface TeamFeedPageProps {
+  threadSize?: ThreadSize;
+}
+
+const TeamFeedPage = (props: TeamFeedPageProps) => {
+  const { threadSize = 'md' } = props;
   const { isModalOpen, openModal } = useModal();
   const [isShowScrollTopButton, setIsShowScrollTopButton] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -41,7 +47,7 @@ const TeamFeedPage = () => {
 
   return (
     <S.ThreadContainer ref={ref}>
-      <ThreadList />
+      <ThreadList size={threadSize} />
       <S.MenuButtonWrapper>
         {isShowScrollTopButton && (
           <Button

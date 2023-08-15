@@ -12,7 +12,7 @@ const TeamSelectPage = () => {
   useEffect(() => {
     const teamPlaceId = localStorage.getItem(LOCAL_STORAGE_KEY.TEAM_PLACE_ID);
 
-    if (teamPlaceId) navigate(PATH_NAME.TEAM_CALENDAR);
+    if (teamPlaceId) navigate(PATH_NAME.TEAM_OVERVIEW);
   }, [navigate]);
 
   return (
