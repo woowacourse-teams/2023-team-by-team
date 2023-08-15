@@ -164,7 +164,7 @@ public final class SharedLinkApiDocsTest extends ApiDocsTest {
             final Long teamPlaceId = 1L;
             final SharedLinkCreateRequest sharedLinkCreateRequest = new SharedLinkCreateRequest("title", "url");
             given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willThrow(AuthenticationException.FailAuthenticationException.class);
+                    .willThrow(new AuthenticationException.FailAuthenticationException());
 
             // when & then
             mockMvc.perform(post("/api/team-place/{teamPlaceId}/team-links", teamPlaceId)
@@ -198,7 +198,7 @@ public final class SharedLinkApiDocsTest extends ApiDocsTest {
             final Long teamPlaceId = 1L;
             final SharedLinkCreateRequest sharedLinkCreateRequest = new SharedLinkCreateRequest("title", "url");
             given(teamPlaceParticipationInterceptor.preHandle(any(), any(), any()))
-                    .willThrow(TeamPlaceException.TeamPlaceAccessForbidden.class);
+                    .willThrow(new TeamPlaceException.TeamPlaceAccessForbidden(teamPlaceId,"사용자 email"));
 
             // when & then
             mockMvc.perform(post("/api/team-place/{teamPlaceId}/team-links", teamPlaceId)
@@ -266,7 +266,7 @@ public final class SharedLinkApiDocsTest extends ApiDocsTest {
             // given
             final Long teamPlaceId = 1L;
             given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willThrow(AuthenticationException.FailAuthenticationException.class);
+                    .willThrow(new AuthenticationException.FailAuthenticationException());
 
             // when & then
             mockMvc.perform(get("/api/team-place/{teamPlaceId}/team-links", teamPlaceId)
@@ -294,7 +294,7 @@ public final class SharedLinkApiDocsTest extends ApiDocsTest {
             // given
             final Long teamPlaceId = 1L;
             given(teamPlaceParticipationInterceptor.preHandle(any(), any(), any()))
-                    .willThrow(TeamPlaceException.TeamPlaceAccessForbidden.class);
+                    .willThrow(new TeamPlaceException.TeamPlaceAccessForbidden(teamPlaceId,"사용자 email"));
 
             // when & then
             mockMvc.perform(get("/api/team-place/{teamPlaceId}/team-links", teamPlaceId)
@@ -355,7 +355,7 @@ public final class SharedLinkApiDocsTest extends ApiDocsTest {
             // given
             final Long teamPlaceId = 1L;
             final Long teamLinkId = 1L;
-            doThrow(SharedLinkException.NotFoundException.class)
+            doThrow(new SharedLinkException.NotFoundException(teamLinkId))
                     .when(sharedLinkService)
                     .deleteLink(any(), any());
 
@@ -387,7 +387,7 @@ public final class SharedLinkApiDocsTest extends ApiDocsTest {
             final Long teamPlaceId = 1L;
             final Long teamLinkId = 1L;
             given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willThrow(AuthenticationException.FailAuthenticationException.class);
+                    .willThrow(new AuthenticationException.FailAuthenticationException());
 
             // when & then
             mockMvc.perform(delete("/api/team-place/{teamPlaceId}/team-links/{teamLinkId}", teamPlaceId, teamLinkId)
@@ -417,7 +417,7 @@ public final class SharedLinkApiDocsTest extends ApiDocsTest {
             final Long teamPlaceId = 1L;
             final Long teamLinkId = 1L;
             given(teamPlaceParticipationInterceptor.preHandle(any(), any(), any()))
-                    .willThrow(TeamPlaceException.TeamPlaceAccessForbidden.class);
+                    .willThrow(new TeamPlaceException.TeamPlaceAccessForbidden(teamPlaceId,"사용자 email"));
 
             // when & then
             mockMvc.perform(delete("/api/team-place/{teamPlaceId}/team-links/{teamLinkId}", teamPlaceId, teamLinkId)
