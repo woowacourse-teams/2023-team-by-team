@@ -11,7 +11,7 @@ import { useModal } from '~/hooks/useModal';
 import { useToast } from '~/hooks/useToast';
 import { linkTableHeaderValues } from '~/constants/link';
 
-const TeamLinkTable = () => {
+const LinkTable = () => {
   const { openModal, isModalOpen } = useModal();
   const { teamPlaceId } = useTeamPlace();
   const teamLinks = useFetchTeamLinks(teamPlaceId);
@@ -100,4 +100,4 @@ const TeamLinkTable = () => {
   );
 };
 
-export default TeamLinkTable;
+export default LinkTable;

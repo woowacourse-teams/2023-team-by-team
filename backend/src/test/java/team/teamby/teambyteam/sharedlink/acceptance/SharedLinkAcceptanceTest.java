@@ -60,11 +60,12 @@ public final class SharedLinkAcceptanceTest extends AcceptanceTest {
             final SharedLinkCreateRequest sharedLinkCreateRequest = new SharedLinkCreateRequest(invalidTitle, "/");
 
             // when
-            final ExtractableResponse<Response> successRequest = REGISTER_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), sharedLinkCreateRequest);
+            final ExtractableResponse<Response> response = REGISTER_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), sharedLinkCreateRequest);
 
             // then
             assertSoftly(softly -> {
-                softly.assertThat(successRequest.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+                softly.assertThat(response.jsonPath().getString("error")).isEqualTo("공유 링크의 제목은 공백일 수 없습니다.");
             });
         }
 
@@ -80,11 +81,12 @@ public final class SharedLinkAcceptanceTest extends AcceptanceTest {
 
 
             // when
-            final ExtractableResponse<Response> successRequest = REGISTER_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), sharedLinkCreateRequest);
+            final ExtractableResponse<Response> response = REGISTER_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), sharedLinkCreateRequest);
 
             // then
             assertSoftly(softly -> {
-                softly.assertThat(successRequest.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+                softly.assertThat(response.jsonPath().getString("error")).isEqualTo("공유 링크의 링크는 공백일 수 없습니다.");
             });
         }
 
@@ -98,11 +100,12 @@ public final class SharedLinkAcceptanceTest extends AcceptanceTest {
             final SharedLinkCreateRequest sharedLinkCreateRequest = new SharedLinkCreateRequest("title", "/");
 
             // when
-            final ExtractableResponse<Response> successRequest = REGISTER_SHARED_LINK_REQUEST(MALFORMED_JWT_TOKEN, ENGLISH_TEAM_PLACE.getId(), sharedLinkCreateRequest);
+            final ExtractableResponse<Response> response = REGISTER_SHARED_LINK_REQUEST(MALFORMED_JWT_TOKEN, ENGLISH_TEAM_PLACE.getId(), sharedLinkCreateRequest);
 
             // then
             assertSoftly(softly -> {
-                softly.assertThat(successRequest.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+                softly.assertThat(response.jsonPath().getString("error")).isEqualTo("인증이 실패했습니다.");
             });
         }
 
@@ -115,11 +118,12 @@ public final class SharedLinkAcceptanceTest extends AcceptanceTest {
             final SharedLinkCreateRequest sharedLinkCreateRequest = new SharedLinkCreateRequest("title", "/");
 
             // when
-            final ExtractableResponse<Response> successRequest = REGISTER_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), invalidTeamPlaceId, sharedLinkCreateRequest);
+            final ExtractableResponse<Response> response = REGISTER_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), invalidTeamPlaceId, sharedLinkCreateRequest);
 
             // then
             assertSoftly(softly -> {
-                softly.assertThat(successRequest.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+                softly.assertThat(response.jsonPath().getString("error")).contains("접근할 수 없는 팀플레이스입니다.");
             });
         }
     }
@@ -158,11 +162,12 @@ public final class SharedLinkAcceptanceTest extends AcceptanceTest {
             final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
 
             // when
-            final ExtractableResponse<Response> successRequest = GET_SHARED_LINK_REQUEST(MALFORMED_JWT_TOKEN, ENGLISH_TEAM_PLACE.getId());
+            final ExtractableResponse<Response> response = GET_SHARED_LINK_REQUEST(MALFORMED_JWT_TOKEN, ENGLISH_TEAM_PLACE.getId());
 
             // then
             assertSoftly(softly -> {
-                softly.assertThat(successRequest.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+                softly.assertThat(response.jsonPath().getString("error")).isEqualTo("인증이 실패했습니다.");
             });
         }
 
@@ -174,11 +179,12 @@ public final class SharedLinkAcceptanceTest extends AcceptanceTest {
             final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
 
             // when
-            final ExtractableResponse<Response> successRequest = GET_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId());
+            final ExtractableResponse<Response> response = GET_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId());
 
             // then
             assertSoftly(softly -> {
-                softly.assertThat(successRequest.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+                softly.assertThat(response.jsonPath().getString("error")).contains("접근할 수 없는 팀플레이스입니다.");
             });
         }
     }
@@ -215,17 +221,18 @@ public final class SharedLinkAcceptanceTest extends AcceptanceTest {
             final Long invalidId = -1L;
 
             // when
-            final ExtractableResponse<Response> successRequest = DELETE_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), invalidId);
+            final ExtractableResponse<Response> response = DELETE_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), invalidId);
 
             // then
             assertSoftly(softly -> {
-                softly.assertThat(successRequest.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
+                softly.assertThat(response.jsonPath().getString("error")).contains("존재하지 않는 공유 링크입니다.");
             });
         }
 
         @Test
         @DisplayName("동일한 팀플레이스의 다른 멤버가 요청 해도 삭제한다.")
-        void failIfNotCreatedMember() {
+        void successIfNotCreatedMember() {
             // given
             final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
@@ -244,6 +251,26 @@ public final class SharedLinkAcceptanceTest extends AcceptanceTest {
         }
 
         @Test
+        @DisplayName("참여한 팀플레이스가 아닌 다른 팀플레이스의 공유 링크를 삭제하는 경우 실패한다.")
+        void failIfNotSharedLinkOwnerTeamPlace() {
+            // given
+            final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            testFixtureBuilder.buildMemberTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
+            final Long anotherTeamPlaceId = -1L;
+            final SharedLink sharedLink = testFixtureBuilder.buildSharedLink(TEAM_BY_TEAM_LINK(anotherTeamPlaceId, PHILIP.getId()));
+
+            // when
+            final ExtractableResponse<Response> response = DELETE_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), sharedLink.getId());
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+                softly.assertThat(response.jsonPath().getString("error")).contains("팀플레이스에 소속되지 않은 공유링크입니다.");
+            });
+        }
+
+        @Test
         @DisplayName("인증되지 않은 사용자면 예외를 반환한다.")
         void failIfUnAuthorized() {
             // given
@@ -253,11 +280,12 @@ public final class SharedLinkAcceptanceTest extends AcceptanceTest {
             final SharedLink sharedLink = testFixtureBuilder.buildSharedLink(TEAM_BY_TEAM_LINK(ENGLISH_TEAM_PLACE.getId(), PHILIP.getId()));
 
             // when
-            final ExtractableResponse<Response> successRequest = DELETE_SHARED_LINK_REQUEST(MALFORMED_JWT_TOKEN, ENGLISH_TEAM_PLACE.getId(), sharedLink.getId());
+            final ExtractableResponse<Response> response = DELETE_SHARED_LINK_REQUEST(MALFORMED_JWT_TOKEN, ENGLISH_TEAM_PLACE.getId(), sharedLink.getId());
 
             // then
             assertSoftly(softly -> {
-                softly.assertThat(successRequest.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+                softly.assertThat(response.jsonPath().getString("error")).isEqualTo("인증이 실패했습니다.");
             });
         }
 
@@ -272,11 +300,12 @@ public final class SharedLinkAcceptanceTest extends AcceptanceTest {
             final Member SEONGHA = testFixtureBuilder.buildMember(SEONGHA());
 
             // when
-            final ExtractableResponse<Response> successRequest = DELETE_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(SEONGHA.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), sharedLink.getId());
+            final ExtractableResponse<Response> response = DELETE_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(SEONGHA.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), sharedLink.getId());
 
             // then
             assertSoftly(softly -> {
-                softly.assertThat(successRequest.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+                softly.assertThat(response.jsonPath().getString("error")).contains("접근할 수 없는 팀플레이스입니다.");
             });
         }
     }

@@ -1,12 +1,11 @@
 import { PATH_NAME } from '~/constants/routes';
 import {
   CalendarIcon,
-  ExitIcon,
   FeedIcon,
   HomeIcon,
   ChainIcon,
   TeamAddIcon,
-} from '~/assets/svg'
+} from '~/assets/svg';
 import * as S from './NavigationBar.styled';
 
 const NavigationBar = () => {
@@ -15,7 +14,7 @@ const NavigationBar = () => {
       <S.Container>
         <S.MenuContainer>
           <S.MenuLink
-            to={PATH_NAME.TEAM_CALENDAR}
+            to={PATH_NAME.TEAM_OVERVIEW}
             aria-label="모아보기 페이지로 이동하기 버튼"
           >
             <HomeIcon />
