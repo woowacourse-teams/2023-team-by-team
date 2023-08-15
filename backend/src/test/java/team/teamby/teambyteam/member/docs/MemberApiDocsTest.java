@@ -79,7 +79,7 @@ public final class MemberApiDocsTest extends ApiDocsTest {
         void failIfUnAuthorized() throws Exception {
             // given
             given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willThrow(AuthenticationException.FailAuthenticationException.class);
+                    .willThrow(new AuthenticationException.FailAuthenticationException());
 
             // when & then
             mockMvc.perform(get("/api/me")
@@ -134,7 +134,7 @@ public final class MemberApiDocsTest extends ApiDocsTest {
         void failIfUnAuthentication() throws Exception {
             // given
             given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willThrow(AuthenticationException.FailAuthenticationException.class);
+                    .willThrow(new AuthenticationException.FailAuthenticationException());
 
             // when & then
             mockMvc.perform(get("/api/me/team-places")
@@ -190,7 +190,7 @@ public final class MemberApiDocsTest extends ApiDocsTest {
             // given
             final Long teamPlaceId = 1L;
             given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willThrow(AuthenticationException.FailAuthenticationException.class);
+                    .willThrow(new AuthenticationException.FailAuthenticationException());
 
             // when & then
             mockMvc.perform(delete("/api/me/team-places/{teamPlaceId}", teamPlaceId)
@@ -218,7 +218,7 @@ public final class MemberApiDocsTest extends ApiDocsTest {
             // given
             final Long teamPlaceId = 1L;
             given(teamPlaceParticipationInterceptor.preHandle(any(), any(), any()))
-                    .willThrow(TeamPlaceException.TeamPlaceAccessForbidden.class);
+                    .willThrow(new TeamPlaceException.TeamPlaceAccessForbidden(teamPlaceId, "사용자 email"));
 
             // when & then
             mockMvc.perform(delete("/api/me/team-places/{teamPlaceId}", teamPlaceId)
@@ -280,7 +280,7 @@ public final class MemberApiDocsTest extends ApiDocsTest {
             // given
             final String invalidInviteCode = "aaaa1234";
             given(memberService.participateTeamPlace(any(), any()))
-                    .willThrow(TeamPlaceInviteCodeException.NotFoundException.class);
+                    .willThrow(new TeamPlaceInviteCodeException.NotFoundException(invalidInviteCode));
 
             // when & then
             mockMvc.perform(post("/api/me/team-places/{inviteCode}", invalidInviteCode)
@@ -308,7 +308,7 @@ public final class MemberApiDocsTest extends ApiDocsTest {
             // given
             final String invalidInviteCode = "123456789";
             given(memberService.participateTeamPlace(any(), any()))
-                    .willThrow(TeamPlaceInviteCodeException.LengthException.class);
+                    .willThrow(new TeamPlaceInviteCodeException.LengthException(8, invalidInviteCode));
 
             // when & then
             mockMvc.perform(post("/api/me/team-places/{inviteCode}", invalidInviteCode)
@@ -336,7 +336,7 @@ public final class MemberApiDocsTest extends ApiDocsTest {
             // given
             final String inviteCode = "aaaa1234";
             given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willThrow(AuthenticationException.FailAuthenticationException.class);
+                    .willThrow(new AuthenticationException.FailAuthenticationException());
 
             // when & then
             mockMvc.perform(post("/api/me/team-places/{inviteCode}", inviteCode)
