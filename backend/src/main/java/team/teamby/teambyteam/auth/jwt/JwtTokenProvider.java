@@ -20,6 +20,8 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
+    private static final String EXPIRED_ACCESS_TOKEN_MESSAGE = "EXPIRED_ACCESS_TOKEN";
+    private static final String EXPIRED_REFRESH_TOKEN_MESSAGE = "EXPIRED_REFRESH_TOKEN";
     private final String EMAIL_KEY = "email";
 
     @Value("${jwt.access.secret}")
@@ -67,7 +69,7 @@ public class JwtTokenProvider {
         } catch (MalformedJwtException | UnsupportedJwtException e) {
             throw new AuthenticationException.FailAuthenticationException();
         } catch (ExpiredJwtException e) {
-            throw new ExpiredJwtException(null, null, "토큰이 만료되었습니다.");
+            throw new ExpiredJwtException(null, null, EXPIRED_ACCESS_TOKEN_MESSAGE);
         }
     }
 
@@ -106,7 +108,7 @@ public class JwtTokenProvider {
         } catch (MalformedJwtException | UnsupportedJwtException e) {
             throw new AuthenticationException.FailAuthenticationException();
         } catch (ExpiredJwtException e) {
-            throw new ExpiredJwtException(null, null, "토큰이 만료되었습니다.");
+            throw new ExpiredJwtException(null, null, EXPIRED_REFRESH_TOKEN_MESSAGE);
         }
     }
 }

@@ -32,7 +32,7 @@ public class Content {
             throw new NullPointerException("피드 내용은 null일 수 없습니다.");
         }
         if (value.length() > MAX_LENGTH) {
-            throw new FeedException.ContentLengthException();
+            throw new FeedException.ContentLengthException(MAX_LENGTH, value);
         }
     }
 }

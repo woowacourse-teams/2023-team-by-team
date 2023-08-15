@@ -4,8 +4,10 @@ import Button from '~/components/common/Button/Button';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PATH_NAME } from '~/constants/routes';
+import { START_TYPE } from '~/constants/team';
+import IntroCardPile from '~/components/landing/IntroCardPile/IntroCardPile';
 
-type StartType = 'create' | 'join';
+type StartType = (typeof START_TYPE)[keyof typeof START_TYPE];
 
 const StartPage = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -19,7 +21,7 @@ const StartPage = () => {
 
     ref.current.getAnimations().forEach((animation) => {
       animation.onfinish = () =>
-        clickedButton === 'create'
+        clickedButton === START_TYPE.CREATE
           ? navigate(PATH_NAME.CREATE)
           : navigate(PATH_NAME.JOIN);
     });
@@ -39,7 +41,7 @@ const StartPage = () => {
           <Button
             variant="primary"
             css={S.startTeamButton()}
-            onClick={() => handleButtonClick('create')}
+            onClick={() => handleButtonClick(START_TYPE.CREATE)}
             aria-label="팀 생성하기"
           >
             팀 생성하기
@@ -52,13 +54,14 @@ const StartPage = () => {
           <Button
             variant="normal"
             css={S.startTeamButton('normal')}
-            onClick={() => handleButtonClick('join')}
+            onClick={() => handleButtonClick(START_TYPE.JOIN)}
             aria-label="팀 참가하기"
           >
             팀 참가하기
           </Button>
         </S.ButtonContainer>
       </S.InnerContainer>
+      <IntroCardPile animation={false} />
     </S.Container>
   );
 };

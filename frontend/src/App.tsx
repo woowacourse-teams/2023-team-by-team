@@ -10,6 +10,9 @@ import StartPage from '~/pages/StartPage/StartPage';
 import TeamSelectPage from '~/pages/TeamSelectPage/TeamSelectPage';
 import CreatePage from '~/pages/CreatePage/CreatePage';
 import JoinPage from '~/pages/JoinPage/JoinPage';
+import TeamLinkPage from '~/pages/TeamLinkPage/TeamLinkPage';
+import TeamOverviewPage from '~/pages/TeamOverviewPage/TeamOverviewPage';
+import { ModalProvider } from './components/common/Modal/ModalContext';
 
 const App = () => {
   return (
@@ -23,10 +26,15 @@ const App = () => {
         <Route element={<PageTemplate />}>
           <Route path={PATH_NAME.TEAM_SELECT} element={<TeamSelectPage />} />
           <Route
+            path={PATH_NAME.TEAM_OVERVIEW}
+            element={<TeamOverviewPage />}
+          />
+          <Route
             path={PATH_NAME.TEAM_CALENDAR}
             element={<TeamCalendarPage />}
           />
           <Route path={PATH_NAME.TEAM_FEED} element={<TeamFeedPage />} />
+          <Route path={PATH_NAME.TEAM_LINK} element={<TeamLinkPage />} />
         </Route>
       </Route>
     </Routes>

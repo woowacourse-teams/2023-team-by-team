@@ -11,6 +11,7 @@ import team.teamby.teambyteam.auth.jwt.JwtTokenProvider;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
+import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
 import java.util.Map;
@@ -36,14 +37,14 @@ public final class TeamPlaceParticipationInterceptor implements HandlerIntercept
         final Long teamPlaceId = Long.parseLong(pathVariables.get(PATH_VARIABLE_KEY));
 
         if (hasNotMemberInTeamPlace(teamPlaceId, email)) {
-            throw new TeamPlaceException.TeamPlaceAccessForbidden();
+            throw new TeamPlaceException.TeamPlaceAccessForbidden(teamPlaceId, email);
         }
         return true;
     }
 
     private boolean hasNotMemberInTeamPlace(final Long teamPlaceId, final String email) {
         final Member member = memberRepository.findByEmail(new Email(email))
-                .orElseThrow(TeamPlaceException.NotFoundException::new);
+                .orElseThrow(() -> new MemberException.MemberNotFoundException(email));
         return !member.isMemberOf(teamPlaceId);
     }
 }

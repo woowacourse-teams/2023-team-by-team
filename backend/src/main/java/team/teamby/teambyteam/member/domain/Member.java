@@ -15,6 +15,7 @@ import team.teamby.teambyteam.global.domain.BaseEntity;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.domain.vo.Name;
 import team.teamby.teambyteam.member.domain.vo.ProfileImageUrl;
+import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
 import java.util.ArrayList;
@@ -24,6 +25,11 @@ import java.util.List;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseEntity {
+
+    public static final String UNKNOWN_MEMBER_NAME = "(알수없음)";
+    public static final String UNKNOWN_MEMBER_EMAIL = "unknown@teamby.team";
+    public static final String UNKNOWN_MEMBER_PROFILE_URL = "";
+    public static final Member UNKNOWN_MEMBER = new Member(UNKNOWN_MEMBER_NAME, UNKNOWN_MEMBER_EMAIL, UNKNOWN_MEMBER_PROFILE_URL);
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -80,5 +86,17 @@ public class Member extends BaseEntity {
         return getMemberTeamPlaces().stream()
                 .mapToLong(memberTeamPlace -> memberTeamPlace.getTeamPlace().getId())
                 .anyMatch(teamPlaceId -> teamPlaceId == targetTeamPlaceId);
+    }
+
+    public MemberTeamPlace leaveTeamPlace(final Long teamPlaceId) {
+        final MemberTeamPlace teamPlaceToLeave = memberTeamPlaces.stream()
+                .filter(memberTeamPlace -> memberTeamPlace.getTeamPlace().getId().equals(teamPlaceId))
+                .findAny()
+                .orElseThrow(() ->
+                        new MemberTeamPlaceException.NotFoundParticipatedTeamPlaceException(this.email.getValue(), teamPlaceId)
+                );
+
+        memberTeamPlaces.remove(teamPlaceToLeave);
+        return teamPlaceToLeave;
     }
 }

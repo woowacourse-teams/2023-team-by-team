@@ -1,6 +1,7 @@
 package team.teamby.teambyteam.auth.oauth.application;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,41 +13,68 @@ import team.teamby.teambyteam.auth.oauth.client.GoogleOAuthClient;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
+import team.teamby.teambyteam.member.domain.vo.Name;
+import team.teamby.teambyteam.token.domain.Token;
+import team.teamby.teambyteam.token.domain.TokenRepository;
 
 import java.util.Base64;
+import java.util.Optional;
 
+@Slf4j
 @RequiredArgsConstructor
 @Transactional
 @Service
 public class GoogleOAuthService {
 
     private static final int PAYLOAD_INDEX = 1;
+    private static final int NAME_BEGIN_INDEX = 0;
 
     private final JwtTokenProvider jwtTokenProvider;
     private final GoogleOAuthClient googleOAuthClient;
     private final MemberRepository memberRepository;
+    private final TokenRepository tokenRepository;
 
     public TokenResponse createToken(final String code) {
         final GoogleTokenResponse googleTokenResponse = googleOAuthClient.getGoogleAccessToken(code);
         final OAuthMember oAuthMember = createOAuthMember(googleTokenResponse.idToken());
-        createMemberIfNotExist(oAuthMember);
-        return new TokenResponse(jwtTokenProvider.generateAccessToken(oAuthMember.email()));
+        final Member member = createMemberIfNotExist(oAuthMember);
+
+        final String accessToken = jwtTokenProvider.generateAccessToken(oAuthMember.email());
+        final String refreshToken = jwtTokenProvider.generateRefreshToken(oAuthMember.email());
+
+        saveOrUpdateRefreshToken(member, refreshToken);
+
+        log.info("토큰 생성 - 사용자 이메일 : {}", oAuthMember.email());
+        return new TokenResponse(accessToken, refreshToken);
+    }
+
+    private void saveOrUpdateRefreshToken(Member member, String refreshToken) {
+        tokenRepository.findByMember(member)
+                .ifPresentOrElse(
+                        token -> token.changeToken(refreshToken),
+                        () -> tokenRepository.save(new Token(member, refreshToken))
+                );
     }
 
     private OAuthMember createOAuthMember(final String googleIdToken) {
         final String email = extractElementFromToken(googleIdToken, "email");
-        final String name = extractElementFromToken(googleIdToken, "name");
+        final String rawName = extractElementFromToken(googleIdToken, "name");
         final String picture = extractElementFromToken(googleIdToken, "picture");
 
-        return new OAuthMember(email, name, picture);
+        if (rawName.length() > Name.MAX_LENGTH) {
+            final String substringName = rawName.substring(NAME_BEGIN_INDEX, Name.MAX_LENGTH);
+            return new OAuthMember(email, substringName, picture);
+        }
+        return new OAuthMember(email, rawName, picture);
     }
 
-    private void createMemberIfNotExist(final OAuthMember oAuthMember) {
-        if (memberRepository.existsByEmail(new Email(oAuthMember.email()))) {
-            return;
+    private Member createMemberIfNotExist(final OAuthMember oAuthMember) {
+        Optional<Member> optionalMember = memberRepository.findByEmail(new Email(oAuthMember.email()));
+        if (optionalMember.isPresent()) {
+            return optionalMember.get();
         }
         final Member member = new Member(oAuthMember.displayName(), oAuthMember.email(), oAuthMember.imageUrl());
-        memberRepository.save(member);
+        return memberRepository.save(member);
     }
 
     private String extractElementFromToken(final String googleIdToken, final String key) {

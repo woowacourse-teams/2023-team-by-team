@@ -16,6 +16,9 @@ import team.teamby.teambyteam.teamplace.domain.vo.Name;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TeamPlace extends BaseEntity {
 
+    public static final String UNKNOWN_TEAM_PLACE_NAME = "알수없음";
+    public static final TeamPlace UNKNOWN_TEAM_PLACE = new TeamPlace(new Name(UNKNOWN_TEAM_PLACE_NAME));
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

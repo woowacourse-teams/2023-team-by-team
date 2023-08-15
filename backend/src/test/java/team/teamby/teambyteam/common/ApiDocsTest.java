@@ -12,7 +12,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import team.teamby.teambyteam.auth.jwt.JwtTokenProvider;
 import team.teamby.teambyteam.auth.presentation.MemberInterceptor;
 import team.teamby.teambyteam.auth.presentation.TeamPlaceParticipationInterceptor;
-import team.teamby.teambyteam.schedule.application.TeamCalendarScheduleService;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -39,10 +38,6 @@ public abstract class ApiDocsTest {
 
     @MockBean
     protected JwtTokenProvider jwtTokenProvider;
-
-    @MockBean
-    protected TeamCalendarScheduleService teamCalendarScheduleService;
-
 
     @BeforeEach
     void setup() throws Exception {

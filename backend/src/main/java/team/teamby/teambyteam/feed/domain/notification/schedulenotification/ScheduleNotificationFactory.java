@@ -1,4 +1,4 @@
-package team.teamby.teambyteam.feed.domain.notification;
+package team.teamby.teambyteam.feed.domain.notification.schedulenotification;
 
 import team.teamby.teambyteam.feed.domain.vo.Content;
 import team.teamby.teambyteam.schedule.application.event.EventType;
@@ -21,7 +21,7 @@ public class ScheduleNotificationFactory {
     private static ScheduleNotification generateScheduleNotificationCreateEvent(final ScheduleEvent scheduleEvent) {
         final Long scheduleId = scheduleEvent.getScheduleId();
         final Long teamPlaceId = scheduleEvent.getTeamPlaceId();
-        final Content content = NotificationContentGenerator.generateScheduleCreateContent(scheduleEvent);
+        final Content content = ScheduleNotificationContentGenerator.generateScheduleCreateContent(scheduleEvent);
 
         return new ScheduleNotification(teamPlaceId, content, scheduleId);
     }
@@ -29,7 +29,7 @@ public class ScheduleNotificationFactory {
     private static ScheduleNotification generateScheduleNotificationUpdateEvent(final ScheduleEvent scheduleEvent) {
         final Long scheduleId = scheduleEvent.getScheduleId();
         final Long teamPlaceId = scheduleEvent.getTeamPlaceId();
-        final Content content = NotificationContentGenerator.generateScheduleUpdateContent(scheduleEvent);
+        final Content content = ScheduleNotificationContentGenerator.generateScheduleUpdateContent(scheduleEvent);
 
         return new ScheduleNotification(teamPlaceId, content, scheduleId);
     }
@@ -38,7 +38,7 @@ public class ScheduleNotificationFactory {
     private static ScheduleNotification generateScheduleNotificationDeleteEvent(final ScheduleEvent scheduleEvent) {
         final Long scheduleId = scheduleEvent.getScheduleId();
         final Long teamPlaceId = scheduleEvent.getTeamPlaceId();
-        final Content content = NotificationContentGenerator.generateScheduleDeleteContent(scheduleEvent);
+        final Content content = ScheduleNotificationContentGenerator.generateScheduleDeleteContent(scheduleEvent);
 
         return new ScheduleNotification(teamPlaceId, content, scheduleId);
     }

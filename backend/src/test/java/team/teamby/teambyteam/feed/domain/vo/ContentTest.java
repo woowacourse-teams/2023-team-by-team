@@ -31,7 +31,7 @@ class ContentTest {
         // when & then
         assertThatThrownBy(() -> new Content(contentValue))
                 .isInstanceOf(expectedExceptionClazz)
-                .hasMessage(expectedMessage);
+                .hasMessageContaining(expectedMessage);
     }
 
     private static Stream<Arguments> provideWrongContentValueAndResult() {

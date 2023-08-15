@@ -18,6 +18,7 @@ import team.teamby.teambyteam.common.fixtures.NoticeFixtures;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.notice.application.dto.NoticeRegisterRequest;
+import team.teamby.teambyteam.notice.application.dto.NoticeResponse;
 import team.teamby.teambyteam.notice.domain.Notice;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
@@ -27,7 +28,9 @@ import java.util.List;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ROY;
-import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.*;
+import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.NOTICE_1ST;
+import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.NOTICE_2ND;
+import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.NOTICE_3RD;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.JAPANESE_TEAM_PLACE;
 import static team.teamby.teambyteam.common.fixtures.acceptance.NoticeAcceptanceFixtures.GET_NOTICE_REQUEST;
@@ -186,6 +189,31 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
         }
 
         @Test
+        @DisplayName("팀 내 다른 사용자가 등록한 공지를 조회한다.")
+        void successFindingNoticeWrittenByOtherMember() {
+            //given
+            final Member otherMember = testFixtureBuilder.buildMember(ROY());
+            testFixtureBuilder.buildMemberTeamPlace(otherMember, participatedTeamPlace);
+            final Notice recentRegisteredNotice = registeredNotices.get(registeredNotices.size() - 1);
+
+            final String otherMemberToken = jwtTokenProvider.generateAccessToken(otherMember.getEmail().getValue());
+
+            // when
+            final ExtractableResponse<Response> response = GET_NOTICE_REQUEST(otherMemberToken, participatedTeamPlace.getId());
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+                softly.assertThat(response.jsonPath().getLong("id")).isEqualTo(recentRegisteredNotice.getId());
+                softly.assertThat(response.jsonPath().getString("content")).isEqualTo(recentRegisteredNotice.getContent().getValue());
+                softly.assertThat(response.jsonPath().getLong("authorId")).isEqualTo(authedMember.getId());
+                softly.assertThat(response.jsonPath().getString("authorName")).isEqualTo(participatedMemberTeamPlace.getDisplayMemberName().getValue());
+                softly.assertThat(response.jsonPath().getString("profileImageUrl")).isEqualTo(authedMember.getProfileImageUrl().getValue());
+                softly.assertThat(response.jsonPath().getString("createdAt")).isEqualTo(DATE_TIME_FORMATTER.format(recentRegisteredNotice.getCreatedAt()));
+            });
+        }
+
+        @Test
         @DisplayName("팀플레이스에 등록 된 공지가 없을 경우 빈 값이 반환된다.")
         void successFindingEmptyNotice() {
             // given
@@ -201,6 +229,61 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
             assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
                 softly.assertThat(StringUtils.isBlank(response.body().asString())).isTrue();
+            });
+        }
+
+        @Test
+        @DisplayName("팀플레이스를 탈퇴한 사용자가 작성한 공지를 조회한다.")
+        void getRecentNoticeWhichWrittenByLeavedTeamPlaceMember() {
+            // given
+            final Member otherMember = testFixtureBuilder.buildMember(ROY());
+            testFixtureBuilder.buildMemberTeamPlace(otherMember, participatedTeamPlace);
+            authedMember.leaveTeamPlace(participatedTeamPlace.getId());
+            testFixtureBuilder.deleteMemberTeamPlace(participatedMemberTeamPlace);
+            final String otherMemberToken = jwtTokenProvider.generateAccessToken(otherMember.getEmail().getValue());
+
+            final Notice recentRegisteredNotice = registeredNotices.get(registeredNotices.size() - 1);
+
+            // when
+            final ExtractableResponse<Response> response = GET_NOTICE_REQUEST(otherMemberToken, participatedTeamPlace.getId());
+
+            //then
+            final NoticeResponse noticeResponse = response.body().as(NoticeResponse.class);
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+                softly.assertThat(noticeResponse.id()).isEqualTo(recentRegisteredNotice.getId());
+                softly.assertThat(noticeResponse.content()).isEqualTo(recentRegisteredNotice.getContent().getValue());
+                softly.assertThat(noticeResponse.authorId()).isNull();
+                softly.assertThat(noticeResponse.authorName()).isEqualTo(Member.UNKNOWN_MEMBER_NAME);
+                softly.assertThat(noticeResponse.profileImageUrl()).isEqualTo(Member.UNKNOWN_MEMBER_PROFILE_URL);
+                softly.assertThat(noticeResponse.createdAt()).isEqualTo(DATE_TIME_FORMATTER.format(recentRegisteredNotice.getCreatedAt()));
+            });
+        }
+
+        @Test
+        @DisplayName("탈퇴한 사용자가 작성한 공지를 조회한다.")
+        void getRecentNoticeWhichWrittenByLeavedServiceMember() {
+            // given
+            final Member otherMember = testFixtureBuilder.buildMember(ROY());
+            testFixtureBuilder.buildMemberTeamPlace(otherMember, participatedTeamPlace);
+            testFixtureBuilder.deleteMember(authedMember);
+            final String otherMemberToken = jwtTokenProvider.generateAccessToken(otherMember.getEmail().getValue());
+
+            final Notice recentRegisteredNotice = registeredNotices.get(registeredNotices.size() - 1);
+
+            // when
+            final ExtractableResponse<Response> response = GET_NOTICE_REQUEST(otherMemberToken, participatedTeamPlace.getId());
+
+            //then
+            final NoticeResponse noticeResponse = response.body().as(NoticeResponse.class);
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+                softly.assertThat(noticeResponse.id()).isEqualTo(recentRegisteredNotice.getId());
+                softly.assertThat(noticeResponse.content()).isEqualTo(recentRegisteredNotice.getContent().getValue());
+                softly.assertThat(noticeResponse.authorId()).isNull();
+                softly.assertThat(noticeResponse.authorName()).isEqualTo(Member.UNKNOWN_MEMBER_NAME);
+                softly.assertThat(noticeResponse.profileImageUrl()).isEqualTo(Member.UNKNOWN_MEMBER_PROFILE_URL);
+                softly.assertThat(noticeResponse.createdAt()).isEqualTo(DATE_TIME_FORMATTER.format(recentRegisteredNotice.getCreatedAt()));
             });
         }
 

@@ -11,7 +11,7 @@ import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
 import team.teamby.teambyteam.feed.domain.Feed;
 import team.teamby.teambyteam.feed.domain.FeedThread;
 import team.teamby.teambyteam.feed.domain.FeedType;
-import team.teamby.teambyteam.feed.domain.notification.ScheduleNotification;
+import team.teamby.teambyteam.feed.domain.notification.schedulenotification.ScheduleNotification;
 import team.teamby.teambyteam.feed.domain.vo.Content;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.Member;
@@ -70,7 +70,7 @@ class FeedThreadServiceTest extends ServiceTest {
             // when & then
             assertThatThrownBy(() -> feedThreadService.write(request, new MemberEmailDto(author.getEmail().getValue() + "x"), teamPlace.getId()))
                     .isInstanceOf(MemberException.MemberNotFoundException.class)
-                    .hasMessage("조회한 멤버가 존재하지 않습니다.");
+                    .hasMessageContaining("조회한 멤버가 존재하지 않습니다.");
         }
     }
 
@@ -302,22 +302,26 @@ class FeedThreadServiceTest extends ServiceTest {
         }
 
         @Test
-        @DisplayName("존재하지 않는 멤버로 조회하면 예외가 발생한다.(피드 스레드의 경우)")
+        @DisplayName("존재하지 않는 멤버로 조회하면 (알수없음)작성자로 조회가 된다.")
         void failFeedThreadMemberNotFound() {
             // given
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             final List<Feed> feeds = new ArrayList<>();
             final int size = 10;
             feeds.add(new FeedThread(teamPlace.getId(), new Content("Hello"), 0L));
-            feeds.add(new FeedThread(teamPlace.getId(), new Content("Hello"), 0L));
-            feeds.add(new FeedThread(teamPlace.getId(), new Content("Hello"), 0L));
 
             testFixtureBuilder.buildFeeds(feeds);
 
-            //when & then
-            assertThatThrownBy(() -> feedThreadService.firstRead(teamPlace.getId(), size))
-                    .isInstanceOf(MemberException.MemberNotFoundException.class)
-                    .hasMessage("조회한 멤버가 존재하지 않습니다.");
+            // when
+            final FeedsResponse feedsResponse = feedThreadService.firstRead(teamPlace.getId(), size);
+
+            // then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(feedsResponse.threads()).hasSize(1);
+                softly.assertThat(feedsResponse.threads().get(0).authorId()).isNull();
+                softly.assertThat(feedsResponse.threads().get(0).authorName()).isEqualTo(Member.UNKNOWN_MEMBER_NAME);
+                softly.assertThat(feedsResponse.threads().get(0).profileImageUrl()).isEqualTo(Member.UNKNOWN_MEMBER_PROFILE_URL);
+            });
         }
     }
 }

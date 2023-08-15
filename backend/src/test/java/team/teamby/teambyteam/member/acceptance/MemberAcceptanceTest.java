@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import team.teamby.teambyteam.common.AcceptanceTest;
 import team.teamby.teambyteam.common.fixtures.MemberFixtures;
 import team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures;
+import team.teamby.teambyteam.common.fixtures.TokenFixtures;
 import team.teamby.teambyteam.member.application.dto.TeamPlacesResponse;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceParticipantResponse;
@@ -18,10 +19,53 @@ import team.teamby.teambyteam.teamplace.domain.TeamPlaceInviteCode;
 import team.teamby.teambyteam.teamplace.domain.vo.InviteCode;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptanceFixture.DELETE_LEAVE_TEAM_PLACE;
+import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptanceFixture.GET_MY_INFORMATION;
 import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptanceFixture.GET_PARTICIPATED_TEAM_PLACES;
 import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptanceFixture.PARTICIPATE_TEAM_PLACE_REQUEST;
 
 public class MemberAcceptanceTest extends AcceptanceTest {
+
+
+    @Nested
+    @DisplayName("내 정보 조회시")
+    class GetMyInformation {
+
+        @Test
+        @DisplayName("내 정보 조회에 성공한다.")
+        void success() {
+            // given
+            final Member AUTHORIZED_MEMBER = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
+            final String TOKEN = jwtTokenProvider.generateAccessToken(AUTHORIZED_MEMBER.getEmail().getValue());
+
+            // when
+            final ExtractableResponse<Response> response = GET_MY_INFORMATION(TOKEN);
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+                softly.assertThat(response.jsonPath().getLong("id")).isEqualTo(AUTHORIZED_MEMBER.getId());
+                softly.assertThat(response.jsonPath().getString("name")).isEqualTo(AUTHORIZED_MEMBER.getName().getValue());
+                softly.assertThat(response.jsonPath().getString("profileImageUrl")).isEqualTo(AUTHORIZED_MEMBER.getProfileImageUrl().getValue());
+                softly.assertThat(response.jsonPath().getString("email")).isEqualTo(AUTHORIZED_MEMBER.getEmail().getValue());
+            });
+        }
+
+        @Test
+        @DisplayName("인증되지 않은 사용자의 요청에서 실패한다.")
+        void failWithUnauthorizedMember() {
+            // given
+
+            // when
+            final ExtractableResponse<Response> response = GET_MY_INFORMATION(TokenFixtures.MALFORMED_JWT_TOKEN);
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+                softly.assertThat(response.body().asString()).contains("인증이 실패했습니다.");
+            });
+        }
+    }
 
     @Nested
     @DisplayName("사용자가 소속된 팀플레이스들의 정보를 조회시")
@@ -84,6 +128,71 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     }
 
     @Nested
+    @DisplayName("사용자가 팀플레이스 탈퇴 요청시")
+    class LeaveTeamPlace {
+
+        @Test
+        @DisplayName("팀플레이스 탈퇴에 성공한다.")
+        void success() {
+            // given
+            final Member ENDEL = testFixtureBuilder.buildMember(MemberFixtures.ENDEL());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
+            testFixtureBuilder.buildMemberTeamPlace(ENDEL, ENGLISH_TEAM_PLACE);
+
+            final String ENDEL_TOKEN = jwtTokenProvider.generateAccessToken(ENDEL.getEmail().getValue());
+
+            // when
+            final ExtractableResponse<Response> response = DELETE_LEAVE_TEAM_PLACE(ENDEL_TOKEN, ENGLISH_TEAM_PLACE.getId());
+
+            //then
+            final TeamPlacesResponse teamPlacesResponse = GET_PARTICIPATED_TEAM_PLACES(ENDEL_TOKEN).body().as(TeamPlacesResponse.class);
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+                softly.assertThat(teamPlacesResponse.teamPlaces()).hasSize(0);
+            });
+        }
+
+        @Test
+        @DisplayName("인증되지 않은 사용자로 요청시 실패한다.")
+        void failWithUnAuthorizedMember() {
+            // given
+            final Member ENDEL = testFixtureBuilder.buildMember(MemberFixtures.ENDEL());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
+            testFixtureBuilder.buildMemberTeamPlace(ENDEL, ENGLISH_TEAM_PLACE);
+
+            final String UNAUTHORIZED_TOKEN = "1232irpjsdigjadf.asdf9p23jrisjfajdiuw.dsafih23rhoiwejoi";
+
+            // when
+            final ExtractableResponse<Response> response = DELETE_LEAVE_TEAM_PLACE(UNAUTHORIZED_TOKEN, ENGLISH_TEAM_PLACE.getId());
+
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+                softly.assertThat(response.body().asString()).contains("인증이 실패했습니다.");
+            });
+        }
+
+        @Test
+        @DisplayName("소속되지 않은 팀플레이스의 탈퇴 요청시 실패한다.")
+        void failWithUnParticipatedTeamPlace() {
+            // given
+            final Member ENDEL = testFixtureBuilder.buildMember(MemberFixtures.ENDEL());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
+            final TeamPlace JAPANESE_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.JAPANESE_TEAM_PLACE());
+            testFixtureBuilder.buildMemberTeamPlace(ENDEL, ENGLISH_TEAM_PLACE);
+
+            final String ENDEL_TOKEN = jwtTokenProvider.generateAccessToken(ENDEL.getEmail().getValue());
+
+            // when
+            final ExtractableResponse<Response> response = DELETE_LEAVE_TEAM_PLACE(ENDEL_TOKEN, JAPANESE_TEAM_PLACE.getId());
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+                softly.assertThat(response.body().asString()).contains("접근할 수 없는 팀플레이스입니다.");
+            });
+        }
+    }
+
     @DisplayName("사용자가 참여코드로 팀플레이스 참가 시")
     class ParticipantTeamPlace {
 
@@ -108,7 +217,6 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             });
         }
 
-        @Test
         @DisplayName("이미 참여한 팀플레이스 기준으로 응답한다.")
         void successIfDuplicateRequest() {
             // given
@@ -181,6 +289,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             //then
             SoftAssertions.assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+                softly.assertThat(response.body().asString()).contains("인증이 실패했습니다.");
             });
         }
     }

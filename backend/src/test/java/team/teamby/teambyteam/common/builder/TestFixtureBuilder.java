@@ -7,6 +7,7 @@ import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.notice.domain.Notice;
 import team.teamby.teambyteam.schedule.domain.Schedule;
+import team.teamby.teambyteam.sharedlink.domain.SharedLink;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceInviteCode;
 import team.teamby.teambyteam.token.domain.Token;
@@ -27,8 +28,16 @@ public class TestFixtureBuilder {
         return bs.memberRepository().save(member);
     }
 
+    public void deleteMember(final Member member) {
+        bs.memberRepository().delete(member);
+    }
+
     public MemberTeamPlace buildMemberTeamPlace(final MemberTeamPlace memberTeamPlace) {
         return bs.memberTeamPlaceRepository().save(memberTeamPlace);
+    }
+
+    public void deleteMemberTeamPlace(final MemberTeamPlace memberTeamPlace) {
+        bs.memberTeamPlaceRepository().delete(memberTeamPlace);
     }
 
     public TeamPlace buildTeamPlace(final TeamPlace teamPlace) {
@@ -79,5 +88,9 @@ public class TestFixtureBuilder {
 
     public Token buildToken(final Token token) {
         return bs.tokenRepository().save(token);
+    }
+
+    public SharedLink buildSharedLink(final SharedLink sharedLink) {
+        return bs.sharedLinkRepository().save(sharedLink);
     }
 }

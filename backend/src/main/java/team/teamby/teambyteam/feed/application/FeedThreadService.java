@@ -1,6 +1,7 @@
 package team.teamby.teambyteam.feed.application;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -16,7 +17,6 @@ import team.teamby.teambyteam.feed.domain.FeedType;
 import team.teamby.teambyteam.feed.domain.vo.Content;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.IdOnly;
-import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
@@ -25,14 +25,17 @@ import team.teamby.teambyteam.member.exception.MemberException;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class FeedThreadService {
 
+    public static final String BLANK_PROFILE_IMAGE_URL = "";
     private static final String SORT_CRITERIA = "id";
     private static final Sort.Direction SORT_DIRECTION = Sort.Direction.DESC;
     private static final int FIRST_PAGE = 0;
+    public static final String AUTHOR_NAME_SCHEDULE = "schedule";
 
     private final FeedRepository feedRepository;
     private final MemberRepository memberRepository;
@@ -46,11 +49,13 @@ public class FeedThreadService {
 
         final Content content = new Content(feedThreadWritingRequest.content());
         final IdOnly memberId = memberRepository.findIdByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(MemberException.MemberNotFoundException::new);
+                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
 
         final Feed feed = new FeedThread(teamPlaceId, content, memberId.id());
 
         final Feed savedFeed = feedRepository.save(feed);
+
+        log.info("스레드 생성 - 생성자 이메일 : {}, 스레드 아이디 : {}", memberEmailDto.email(), savedFeed.getId());
         return savedFeed.getId();
     }
 
@@ -83,12 +88,11 @@ public class FeedThreadService {
     private FeedResponse mapToResponse(final Feed feed) {
         if (FeedType.THREAD == feed.getType()) {
             final MemberTeamPlace memberTeamPlace = memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(feed.getTeamPlaceId(), feed.getAuthorId())
-                    .orElseThrow(MemberException.MemberNotFoundException::new);
-            final Member member = memberTeamPlace.getMember();
-            return FeedResponse.from(feed, memberTeamPlace.getDisplayMemberName().getValue(), member.getProfileImageUrl().getValue());
+                    .orElse(MemberTeamPlace.UNKNOWN_MEMBER_TEAM_PLACE);
+            return FeedResponse.from(feed, memberTeamPlace);
         }
         if (FeedType.NOTIFICATION == feed.getType()) {
-            return FeedResponse.from(feed, "schedule", "");
+            return FeedResponse.from(feed, AUTHOR_NAME_SCHEDULE, BLANK_PROFILE_IMAGE_URL);
         }
         throw new IllegalArgumentException("지원하지 않는 타입입니다.");
     }
