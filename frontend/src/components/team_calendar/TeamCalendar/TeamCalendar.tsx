@@ -20,8 +20,14 @@ import type { Position, ModalOpenType } from '~/types/schedule';
 import DailyScheduleModal from '~/components/team_calendar/DailyScheduleModal/DailyScheduleModal';
 import { getDateByPosition } from '~/utils/getDateByPosition';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
+import type { CalendarSize } from '~/types/size';
 
-const TeamCalendar = () => {
+interface TeamCalendarProps {
+  calendarSize?: CalendarSize;
+}
+
+const TeamCalendar = (props: TeamCalendarProps) => {
+  const { calendarSize = 'md' } = props;
   const { teamPlaceId } = useTeamPlace();
   const {
     year,
@@ -82,7 +88,7 @@ const TeamCalendar = () => {
 
   return (
     <>
-      <S.Container>
+      <S.Container calendarSize={calendarSize}>
         <S.CalendarHeader>
           <div />
           <S.ButtonContainer>
@@ -90,22 +96,24 @@ const TeamCalendar = () => {
               variant="plain"
               onClick={handlePrevButtonClick}
               aria-label="이전 달로 이동하기"
+              css={S.arrowButton(calendarSize)}
             >
               <ArrowLeftIcon />
             </Button>
-            <Text css={S.calendarTitle}>
+            <Text weight="semiBold" css={S.calendarTitle(calendarSize)}>
               {year}년 {month + 1}월
             </Text>
             <Button
               variant="plain"
               onClick={handleNextButtonClick}
+              css={S.arrowButton(calendarSize)}
               aria-label="다음 달로 이동하기"
             >
               <ArrowRightIcon />
             </Button>
           </S.ButtonContainer>
           <Button
-            css={S.scheduleAddButton}
+            css={S.scheduleAddButton(calendarSize)}
             onClick={handleScheduleAddButtonClick}
             aria-label="새로운 일정 등록하기"
           >
@@ -113,7 +121,7 @@ const TeamCalendar = () => {
           </Button>
         </S.CalendarHeader>
         <div>
-          <S.DaysOfWeek>
+          <S.DaysOfWeek calendarSize={calendarSize}>
             {DAYS_OF_WEEK.map((day) => {
               return <S.DayOfWeek key={day}>{day}</S.DayOfWeek>;
             })}
@@ -139,6 +147,7 @@ const TeamCalendar = () => {
                           return (
                             <ScheduleMoreCell
                               key={id + index}
+                              calendarSize={calendarSize}
                               column={column + index}
                               onClick={() =>
                                 handleDailyScheduleModalOpen(
@@ -155,6 +164,7 @@ const TeamCalendar = () => {
                         return (
                           <ScheduleBar
                             key={id}
+                            calendarSize={calendarSize}
                             onClick={() => {
                               setModalType(() => MODAL_OPEN_TYPE.VIEW);
                               handleScheduleModalOpen({
@@ -171,7 +181,7 @@ const TeamCalendar = () => {
                       return null;
                     })}
                   </S.ScheduleBarContainer>
-                  <S.DateView>
+                  <S.DateView calendarSize={calendarSize}>
                     {week.map((day, colIndex) => {
                       return (
                         <DateCell
