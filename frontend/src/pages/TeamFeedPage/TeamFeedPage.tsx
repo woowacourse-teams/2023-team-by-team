@@ -8,11 +8,11 @@ import ThreadList from '~/components/feed/ThreadList/ThreadList';
 import type { ThreadSize } from '~/types/size';
 
 interface TeamFeedPageProps {
-  size?: ThreadSize;
+  threadSize?: ThreadSize;
 }
 
 const TeamFeedPage = (props: TeamFeedPageProps) => {
-  const { size = 'md' } = props;
+  const { threadSize = 'md' } = props;
   const { isModalOpen, openModal } = useModal();
   const [isShowScrollTopButton, setIsShowScrollTopButton] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -47,7 +47,7 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
 
   return (
     <S.ThreadContainer ref={ref}>
-      <ThreadList size={size} />
+      <ThreadList size={threadSize} />
       <S.MenuButtonWrapper>
         {isShowScrollTopButton && (
           <Button

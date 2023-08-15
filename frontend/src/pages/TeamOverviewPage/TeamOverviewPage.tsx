@@ -19,7 +19,7 @@ const TeamOverviewPage = () => {
       </S.TeamLinkSection>
       <S.TeamFeedSection>
         <ModalProvider>
-          <TeamFeedPage size="sm" />
+          <TeamFeedPage threadSize="sm" />
         </ModalProvider>
       </S.TeamFeedSection>
     </S.Container>
