@@ -226,7 +226,7 @@ class SharedLinkServiceTest extends ServiceTest {
             SoftAssertions.assertSoftly(softly -> {
                 softly.assertThatThrownBy(() -> sharedLinkService.deleteLink(teamPlace.getId(), invalidSharedLinkId))
                         .isInstanceOf(SharedLinkException.NotFoundException.class)
-                        .hasMessage("존재하지 않는 공유 링크입니다.");
+                        .hasMessageContaining("존재하지 않는 공유 링크입니다.");
             });
         }
 
@@ -244,7 +244,7 @@ class SharedLinkServiceTest extends ServiceTest {
             SoftAssertions.assertSoftly(softly -> {
                 softly.assertThatThrownBy(() -> sharedLinkService.deleteLink(invalidTeamPlaceId, sharedLink.getId()))
                         .isInstanceOf(SharedLinkException.OwnerForbiddenException.class)
-                        .hasMessage("요청 권한이 없는 공유링크입니다.");
+                        .hasMessageContaining("팀플레이스에 소속되지 않은 공유링크입니다.");
             });
         }
     }

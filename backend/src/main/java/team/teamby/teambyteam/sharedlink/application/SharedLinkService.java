@@ -1,6 +1,7 @@
 package team.teamby.teambyteam.sharedlink.application;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,7 @@ import team.teamby.teambyteam.sharedlink.exception.SharedLinkException;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -39,8 +41,10 @@ public class SharedLinkService {
                 .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
         final SharedLink sharedLink = new SharedLink(teamPlaceId, member.getId(), new Title(sharedLinkCreateRequest.title()), new SharedURL(sharedLinkCreateRequest.url()));
         final SharedLink saved = sharedLinkRepository.save(sharedLink);
+        log.info("공유 링크 등록 - 팀플레이스 아이디 : {}, 공유 링크 아이디 : {}", teamPlaceId, saved.getId());
 
         eventPublisher.publishEvent(new SharedLinkCreateEvent(saved.getId(), teamPlaceId, saved.getTitle(), saved.getSharedURL()));
+        log.info("공유 링크 등록 이벤트 발행 - 공유 링크 아이디 : {}", saved.getId());
 
         return saved.getId();
     }
@@ -64,11 +68,12 @@ public class SharedLinkService {
 
     public void deleteLink(final Long teamPlaceId, final Long sharedLinkId) {
         final SharedLink sharedLink = sharedLinkRepository.findById(sharedLinkId)
-                .orElseThrow(SharedLinkException.NotFoundException::new);
+                .orElseThrow(() -> new SharedLinkException.NotFoundException(sharedLinkId));
         sharedLink.validateOwnerTeamPlace(teamPlaceId);
+        sharedLinkRepository.delete(sharedLink);
+        log.info("공유 링크 삭제 - 팀플레이스 아이디 : {}, 공유 링크 아이디 : {}", teamPlaceId, sharedLinkId);
 
         eventPublisher.publishEvent(new SharedLinkDeleteEvent(sharedLinkId, teamPlaceId, sharedLink.getTitle(), sharedLink.getSharedURL()));
-
-        sharedLinkRepository.delete(sharedLink);
+        log.info("공유 링크 삭제 이벤트 발행 - 공유 링크 아이디 : {}", sharedLinkId);
     }
 }

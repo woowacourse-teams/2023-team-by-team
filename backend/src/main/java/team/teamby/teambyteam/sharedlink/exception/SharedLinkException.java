@@ -19,14 +19,18 @@ public class SharedLinkException extends RuntimeException {
     }
 
     public static class NotFoundException extends SharedLinkException {
-        public NotFoundException() {
-            super("존재하지 않는 공유 링크입니다.");
+        public NotFoundException(final Long sharedLinkId) {
+            super(String.format("존재하지 않는 공유 링크입니다. - request info { sharedLinkId : %d }", sharedLinkId));
         }
     }
 
     public static class OwnerForbiddenException extends SharedLinkException {
-        public OwnerForbiddenException() {
-            super("요청 권한이 없는 공유링크입니다.");
+        public OwnerForbiddenException(final Long teamPlaceId, final Long sharedLinkId) {
+            super(String.format(
+                    "팀플레이스에 소속되지 않은 공유링크입니다. - request info { team_place_id : %d, sharedLinkId : %d }",
+                    teamPlaceId,
+                    sharedLinkId)
+            );
         }
     }
 }
