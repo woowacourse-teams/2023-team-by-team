@@ -77,7 +77,7 @@ jobs:
         run: echo "$PROD_PROPERTY" > application-prod.yml
 
       - name: Deploy to production server
-        working-directory: backend/dev/
+        working-directory: backend/prod/
         run: |
           echo "$PROD_DEPLOY_SCRIPT" > prod-deploy.sh
           chmod 700 prod-deploy.sh
@@ -137,7 +137,7 @@ jobs:
           path: frontend/prod/dist
 
       - name: Deploy to production server
-        working-directory: frontend/dev/
+        working-directory: frontend/prod/
         run: |
           echo "$PROD_DEPLOY_SCRIPT" > prod-deploy.sh
           chmod 700 prod-deploy.sh
