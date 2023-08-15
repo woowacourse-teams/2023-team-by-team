@@ -34,7 +34,7 @@ const StartPage = () => {
 
   return (
     <S.Container>
-      <LandingHeader />
+      <LandingHeader href={PATH_NAME.TEAM_SELECT} />
       <S.MainContainer>
         <S.InnerContainer ref={ref} clickedButton={clickedButton}>
           <S.ButtonContainer>

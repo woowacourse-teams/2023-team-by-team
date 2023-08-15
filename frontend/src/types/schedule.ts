@@ -24,6 +24,15 @@ export interface SchedulePosition extends Position {
   level: number;
 }
 
+export interface XYPosition {
+  x: number;
+  y: number;
+}
+
+export interface XYPositionWithScheduleId extends XYPosition {
+  scheduleId: number;
+}
+
 export interface ScheduleCircle {
   teamPlaceIds: number[];
 }

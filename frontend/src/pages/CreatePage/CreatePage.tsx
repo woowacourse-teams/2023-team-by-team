@@ -7,6 +7,7 @@ import { useTeamCreate } from '~/hooks/team/useTeamCreate';
 import IntroCardPile from '~/components/landing/IntroCardPile/IntroCardPile';
 import LandingHeader from '~/components/common/LandingHeader/LandingHeader';
 import BackButton from '~/components/common/BackButton/BackButton';
+import { PATH_NAME } from '~/constants/routes';
 
 const CreatePage = () => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -18,7 +19,7 @@ const CreatePage = () => {
 
   return (
     <S.Container>
-      <LandingHeader />
+      <LandingHeader href={PATH_NAME.TEAM_SELECT} />
       <S.MainContainer>
         <S.InnerContainer>
           <Text weight="semiBold" css={S.titleText}>

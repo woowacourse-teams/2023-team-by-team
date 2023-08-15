@@ -1,12 +1,18 @@
 import * as S from './LandingHeader.styled';
 import Text from '~/components/common/Text/Text';
-import { PATH_NAME } from '~/constants/routes';
+import type { PATH_NAME } from '~/constants/routes';
 import { LogoIcon } from '~/assets/svg';
 
-const LandingHeader = () => {
+interface LandingHeaderProps {
+  href: (typeof PATH_NAME)[keyof typeof PATH_NAME];
+}
+
+const LandingHeader = (props: LandingHeaderProps) => {
+  const { href } = props;
+
   return (
     <S.Container>
-      <S.LandingPageLink to={PATH_NAME.LANDING}>
+      <S.LandingPageLink to={href}>
         <LogoIcon />
         <Text as="h1" css={S.headerTitle}>
           팀바팀
