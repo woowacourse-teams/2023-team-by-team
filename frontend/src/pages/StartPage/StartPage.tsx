@@ -45,9 +45,9 @@ const StartPage = () => {
               variant="primary"
               css={S.startTeamButton()}
               onClick={() => handleButtonClick(START_TYPE.CREATE)}
-              aria-label="팀 생성하기"
+              aria-label="팀 개설하기"
             >
-              팀 생성하기
+              팀 개설하기
             </Button>
           </S.ButtonContainer>
           <S.ButtonContainer>

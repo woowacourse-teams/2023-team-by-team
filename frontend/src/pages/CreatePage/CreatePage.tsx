@@ -45,8 +45,8 @@ const CreatePage = () => {
             </S.BodyContainer>
             <S.ConfirmButtonsContainer>
               <BackButton label="이전 단계로" />
-              <Button css={S.submitButton} aria-label="팀 생성">
-                팀 생성
+              <Button css={S.submitButton} aria-label="팀 개설">
+                팀 개설
               </Button>
             </S.ConfirmButtonsContainer>
           </S.TeamNameForm>
