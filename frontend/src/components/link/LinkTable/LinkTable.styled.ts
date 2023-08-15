@@ -1,4 +1,5 @@
 import { styled, css } from 'styled-components';
+import type { LinkSize } from '~/types/size';
 
 export const Container = styled.div`
   display: flex;
@@ -9,24 +10,24 @@ export const Container = styled.div`
   height: 100%;
 `;
 
-export const MenuHeader = styled.header`
+export const MenuHeader = styled.header<{ linkSize: LinkSize }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
 
   width: 100%;
-  height: 70px;
+  height: ${({ linkSize }) => (linkSize === 'md' ? 70 : 30)}px;
   padding: 8px;
 `;
 
-export const TableContainer = styled.div`
+export const TableContainer = styled.div<{ linkSize: LinkSize }>`
   display: flex;
   flex-direction: column;
   align-items: center;
 
   width: 100%;
-  height: calc(100% - 70px);
-  padding: 30px;
+  height: calc(100% - ${({ linkSize }) => (linkSize === 'md' ? 70 : 30)}px);
+  padding: ${({ linkSize }) => (linkSize === 'md' ? 30 : 10)}px;
 
   background-color: ${({ theme }) => theme.color.WHITE};
 
@@ -111,17 +112,17 @@ export const Table = styled.table`
   }
 `;
 
-export const linkTableTitle = css`
-  font-size: 28px;
+export const linkTableTitle = (linkSize: LinkSize) => css`
+  font-size: ${linkSize === 'md' ? 28 : 18}px;
 `;
 
-export const linkAddButton = css`
+export const linkAddButton = (linkSize: LinkSize) => css`
   display: flex;
   justify-content: center;
   align-items: center;
 
-  width: 30px;
-  height: 30px;
+  width: ${linkSize === 'md' ? 30 : 20}px;
+  height: ${linkSize === 'md' ? 30 : 20}px;
   padding: 4px;
 
   font-size: 24px;
