@@ -39,9 +39,7 @@ const NotificationListModal = () => {
                   <Text as="span" size="sm" css={S.createdAtText}>
                     {createdAt}
                   </Text>
-                  <Text as="span" css={S.content}>
-                    {content}
-                  </Text>
+                  <Text css={S.content}>{content}</Text>
                 </S.NotificationItem>
               );
             });

@@ -5,7 +5,7 @@ import { css } from 'styled-components';
 export const Nav = styled.nav`
   display: flex;
 
-  width: 100px;
+  width: 70px;
   height: 100%;
   padding: 14px 0 18px 0;
 `;
