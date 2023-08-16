@@ -5,7 +5,7 @@ import { formatWriteTime } from '~/utils/formatWriteTime';
 import type { ThreadSize } from '~/types/size';
 
 interface ThreadProps {
-  size?: ThreadSize;
+  threadSize?: ThreadSize;
   authorName: string;
   profileImageUrl: string;
   createdAt: YYYYMMDDHHMM;
@@ -14,7 +14,7 @@ interface ThreadProps {
 
 const Thread = (props: ThreadProps) => {
   const {
-    size = 'md',
+    threadSize = 'md',
     authorName,
     profileImageUrl,
     createdAt,
@@ -23,22 +23,24 @@ const Thread = (props: ThreadProps) => {
   const createdTime = formatWriteTime(createdAt);
 
   return (
-    <S.Container>
-      {size === 'md' && (
-        <S.ThreadHeader>
-          <S.Author>
-            <S.ProfileImg src={profileImageUrl} alt={authorName} />
-            <Text size="lg" weight="bold">
-              {authorName}
-            </Text>
-          </S.Author>
-          <S.Divider />
-          <time>
-            <Text size="lg">{createdTime}</Text>
-          </time>
-        </S.ThreadHeader>
-      )}
-      <Text size="xl" css={S.contentField}>
+    <S.Container threadSize={threadSize}>
+      <S.ThreadHeader>
+        <S.Author>
+          <S.ProfileImg
+            threadSize={threadSize}
+            src={profileImageUrl}
+            alt={authorName}
+          />
+          <Text weight="bold" css={S.threadInfoText(threadSize)}>
+            {authorName}
+          </Text>
+        </S.Author>
+        <S.Divider />
+        <time>
+          <Text css={S.threadInfoText(threadSize)}>{createdTime}</Text>
+        </time>
+      </S.ThreadHeader>
+      <Text size="xl" css={S.contentField(threadSize)}>
         {content}
       </Text>
     </S.Container>

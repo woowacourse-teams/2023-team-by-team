@@ -1,26 +1,42 @@
 import { css, styled } from 'styled-components';
 import type { NotificationProps } from '~/components/feed/Notification/Notification';
+import type { ThreadSize } from '~/types/size';
 
 export const Wrapper = styled.div<
-  Pick<NotificationProps, 'teamPlaceColor' | 'size'>
+  Pick<NotificationProps, 'teamPlaceColor' | 'threadSize'>
 >`
   display: flex;
   justify-content: center;
   align-items: center;
 
   width: 100%;
-  padding: 10px 50px;
-  height: ${({ size }) => (size === 'md' ? 50 : 42)}px;
 
   color: ${({ theme }) => theme.color.WHITE};
   white-space: pre-wrap;
 
   background-color: ${({ theme, teamPlaceColor = 0 }) =>
     theme.teamColor[teamPlaceColor]};
-  border-radius: 20px;
 
   filter: brightness(1.2);
   box-shadow: 0 0 8px ${({ theme }) => theme.color.GRAY500};
+
+  ${({ threadSize }) => {
+    if (threadSize === 'md')
+      return css`
+        padding: 10px 50px;
+        height: 50px;
+
+        border-radius: 20px;
+      `;
+
+    if (threadSize === 'sm')
+      return css`
+        padding: 10px 20px;
+        height: 42px;
+
+        border-radius: 16px;
+      `;
+  }}
 
   &.can-hover {
     &:hover {
@@ -41,13 +57,13 @@ export const Inner = styled.div`
   height: 100%;
 `;
 
-export const notification = css`
+export const notification = (threadSize: ThreadSize) => css`
   overflow: hidden;
 
   width: 100%;
   max-height: 100%;
 
-  font-size: 18px;
+  font-size: ${threadSize === 'md' ? 18 : 16}px;
   font-weight: 500;
   letter-spacing: 0.8px;
 `;
