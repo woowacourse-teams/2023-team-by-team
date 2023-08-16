@@ -7,8 +7,7 @@ export const Container = styled.main`
   grid-template-areas:
     'calendar feed'
     'link feed';
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: auto;
 
   width: 100%;
   height: 100%;
@@ -20,12 +19,12 @@ export const Container = styled.main`
 export const TeamCalendarSection = styled.section`
   position: relative;
   grid-area: calendar;
-  overflow: auto;
 
   padding: 0 40px;
 
   & > div {
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 `;
 
