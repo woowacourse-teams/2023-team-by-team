@@ -28,7 +28,7 @@ export const LinkHandlers = [
 
   // 팀 링크목록 조회
   rest.get('/api/team-place/:teamPlaceId/team-links', async (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ teamLinks: [] }));
+    return res(ctx.status(200), ctx.json({ teamLinks }));
   }),
 
   // 팀 링크 삭제
