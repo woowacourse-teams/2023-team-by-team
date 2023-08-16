@@ -1,12 +1,14 @@
 import { css, styled } from 'styled-components';
-import type { Position } from '~/types/schedule';
+import type { ScheduleMoreCellProps } from '~/components/team_calendar/ScheduleMoreCell/ScheduleMoreCell';
 
-export const Wrapper = styled.div<Pick<Position, 'column'>>`
+export const Wrapper = styled.div<
+  Pick<ScheduleMoreCellProps, 'column' | 'calendarSize'>
+>`
   position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
-  top: 90px;
+  top: ${({ calendarSize }) => (calendarSize === 'md' ? 90 : 62)}px;
   left: ${({ column }) => (column * 100) / 7}%;
 
   width: calc(100% / 7);
