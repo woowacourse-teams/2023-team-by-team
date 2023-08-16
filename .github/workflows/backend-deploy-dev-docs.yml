@@ -49,7 +49,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: DocsHtml
-        path: backend/src/main/resources/docs/index.html
+        path: backend/src/main/resources/static/docs/index.html
         
   deploy:
     needs: build-and-upload
@@ -65,4 +65,5 @@ jobs:
         working-directory: backend/dev/
         run: |
           mv docs/index.html /home/ubuntu/team-by-team/docs/
+          chmod g+r /home/ubuntu/team-by-team/docs/index.html
       
