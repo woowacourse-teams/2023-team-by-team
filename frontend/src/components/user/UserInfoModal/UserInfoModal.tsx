@@ -36,7 +36,7 @@ const UserInfoModal = () => {
     <Modal>
       <S.Backdrop onClick={closeModal} />
       <S.Container>
-        <Text size="lg" weight="semiBold">
+        <Text as="span" size="lg" weight="semiBold">
           프로필
         </Text>
         <S.ProfileImage src={profileImageUrl} alt="프로필 이미지" />
