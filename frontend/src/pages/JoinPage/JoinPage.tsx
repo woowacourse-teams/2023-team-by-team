@@ -7,6 +7,8 @@ import { PATH_NAME } from '~/constants/routes';
 import { useNavigate } from 'react-router-dom';
 import { useTeamJoin } from '~/hooks/team/useTeamJoin';
 import IntroCardPile from '~/components/landing/IntroCardPile/IntroCardPile';
+import LandingHeader from '~/components/common/LandingHeader/LandingHeader';
+import BackButton from '~/components/common/BackButton/BackButton';
 
 const JoinPage = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -34,56 +36,62 @@ const JoinPage = () => {
     ref.current.getAnimations().forEach((animation) => {
       animation.onfinish = () => navigate(PATH_NAME.CREATE);
     });
-  }, [isClicked]);
+  }, [isClicked, navigate]);
 
   return (
     <S.Container>
-      <S.InnerContainer ref={ref} isLinkClicked={isClicked}>
-        <Text weight="semiBold" css={S.titleText}>
-          팀 참가하기
-        </Text>
-        <S.InviteCodeForm onSubmit={handleTeamNameSubmit}>
-          <S.BodyContainer>
-            <S.InputContainer>
-              <S.InputWrapper>
-                <Input
-                  width="100%"
-                  height="100%"
-                  placeholder="8자리 초대코드 입력"
-                  ref={inputRef}
-                  value={inviteCode}
-                  onChange={handleInviteCodeChange}
-                  css={S.inputTitle}
-                  required={isRequired}
-                />
-              </S.InputWrapper>
-              <Text size="sm" weight="semiBold" css={S.warningText}>
-                {warningText}
-              </Text>
-            </S.InputContainer>
-            <div>
-              <Text as="span" weight="semiBold" css={S.explainText}>
-                초대코드가 없으신가요?
-              </Text>
+      <LandingHeader href={PATH_NAME.TEAM_SELECT} />
+      <S.MainContainer>
+        <S.InnerContainer ref={ref} isLinkClicked={isClicked}>
+          <Text weight="semiBold" css={S.titleText}>
+            팀 참가하기
+          </Text>
+          <S.InviteCodeForm onSubmit={handleTeamNameSubmit}>
+            <S.BodyContainer>
+              <S.InputContainer>
+                <S.InputWrapper>
+                  <Input
+                    width="100%"
+                    height="100%"
+                    placeholder="8자리 초대코드 입력"
+                    ref={inputRef}
+                    value={inviteCode}
+                    onChange={handleInviteCodeChange}
+                    css={S.inputTitle}
+                    required={isRequired}
+                  />
+                </S.InputWrapper>
+                <Text size="sm" weight="semiBold" css={S.warningText}>
+                  {warningText}
+                </Text>
+              </S.InputContainer>
+              <div>
+                <Text as="span" weight="semiBold" css={S.explainText}>
+                  초대코드가 없으신가요?
+                </Text>
+                <Button
+                  variant="plain"
+                  css={S.createPageButton}
+                  aria-label="팀 개설하기 페이지 이동"
+                  onClick={handleCreatePageClicked}
+                >
+                  직접 팀을 만들어보세요!
+                </Button>
+              </div>
+            </S.BodyContainer>
+            <S.ConfirmButtonsContainer>
+              <BackButton label="이전 단계로" />
               <Button
-                variant="plain"
-                css={S.createPageButton}
-                aria-label="팀 생성하기 페이지 이동"
-                onClick={handleCreatePageClicked}
+                css={S.submitButton}
+                disabled={inviteCode.length < 8}
+                aria-label="팀 참가"
               >
-                직접 팀을 만들어보세요!
+                팀 참가
               </Button>
-            </div>
-          </S.BodyContainer>
-          <Button
-            css={S.submitButton}
-            disabled={inviteCode.length < 8}
-            aria-label="팀 참가"
-          >
-            팀 참가
-          </Button>
-        </S.InviteCodeForm>
-      </S.InnerContainer>
+            </S.ConfirmButtonsContainer>
+          </S.InviteCodeForm>
+        </S.InnerContainer>
+      </S.MainContainer>
       <IntroCardPile animation={false} />
     </S.Container>
   );

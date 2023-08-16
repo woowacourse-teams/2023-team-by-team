@@ -83,12 +83,15 @@ const LinkTable = (props: LinkTableProps) => {
                       </a>
                     </td>
                     <td title={memberName}>{memberName}</td>
-                    <td>{updatedAt}</td>
+                    <td>
+                      <time>{updatedAt}</time>
+                    </td>
                     <td>
                       <Button
                         variant="plain"
                         css={S.deleteButton}
                         onClick={() => handleDeleteTeamLink(id, title)}
+                        aria-label="링크 삭제하기"
                       >
                         <DeleteIcon />
                       </Button>

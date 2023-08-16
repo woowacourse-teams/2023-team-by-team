@@ -1,0 +1,111 @@
+== 공유 링크 API
+공유 링크 추가, 조회, 삭제를 할 수 있다.
+
+=== 1. 공유 링크 추가
+
+====== 요청 Header
+include::{snippets}/sharedLinks/create/success/request-headers.adoc[]
+
+==== Request
+include::{snippets}/sharedLinks/create/success/http-request.adoc[]
+include::{snippets}/sharedLinks/create/success/path-parameters.adoc[]
+include::{snippets}/sharedLinks/create/success/request-fields.adoc[]
+
+==== Response
+include::{snippets}/sharedLinks/create/success/http-response.adoc[]
+
+=== 1-1. 공유 링크 추가 실패 (빈칸으로 구성된 제목)
+
+==== Request
+include::{snippets}/sharedLinks/create/fail/blankTitle/http-request.adoc[]
+
+==== Response
+include::{snippets}/sharedLinks/create/fail/blankTitle/http-response.adoc[]
+
+=== 1-2. 공유 링크 추가 실패 (빈칸으로 구성된 url)
+
+==== Request
+include::{snippets}/sharedLinks/create/fail/blankURL/http-request.adoc[]
+
+==== Response
+include::{snippets}/sharedLinks/create/fail/blankURL/http-response.adoc[]
+
+=== 1-3. 공유 링크 추가 실패 (인증되지 않은 사용자)
+
+==== Request
+include::{snippets}/sharedLinks/create/fail/unAuthorized/http-request.adoc[]
+
+==== Response
+include::{snippets}/sharedLinks/create/fail/unAuthorized/http-response.adoc[]
+
+=== 1-4. 공유 링크 추가 실패 (참여하지 않은 팀플레이스)
+
+==== Request
+include::{snippets}/sharedLinks/create/fail/notParticipated/http-request.adoc[]
+
+==== Response
+include::{snippets}/sharedLinks/create/fail/notParticipated/http-response.adoc[]
+
+=== 2. 공유 링크 조회
+
+====== 요청 Header
+include::{snippets}/sharedLinks/get/success/request-headers.adoc[]
+
+==== Request
+include::{snippets}/sharedLinks/get/success/http-request.adoc[]
+include::{snippets}/sharedLinks/get/success/path-parameters.adoc[]
+
+==== Response
+include::{snippets}/sharedLinks/get/success/http-response.adoc[]
+
+=== 2-1. 공유 링크 조회 실패 (인증되지 않은 사용자)
+
+==== Request
+include::{snippets}/sharedLinks/get/fail/unAuthorized/http-request.adoc[]
+
+==== Response
+include::{snippets}/sharedLinks/get/fail/unAuthorized/http-response.adoc[]
+
+=== 2-2. 공유 링크 조회 실패 (참여하지 않은 팀플레이스)
+
+==== Request
+include::{snippets}/sharedLinks/get/fail/notParticipated/http-request.adoc[]
+
+==== Response
+include::{snippets}/sharedLinks/get/fail/notParticipated/http-response.adoc[]
+
+=== 3. 공유 링크 삭제
+
+====== 요청 Header
+include::{snippets}/sharedLinks/delete/success/request-headers.adoc[]
+
+==== Request
+include::{snippets}/sharedLinks/delete/success/http-request.adoc[]
+include::{snippets}/sharedLinks/delete/success/path-parameters.adoc[]
+
+==== Response
+include::{snippets}/sharedLinks/delete/success/http-response.adoc[]
+
+=== 3-1. 공유 링크 삭제 실패 (존재하지 않은 공유 링크)
+
+==== Request
+include::{snippets}/sharedLinks/delete/fail/notFound/http-request.adoc[]
+
+==== Response
+include::{snippets}/sharedLinks/delete/fail/notFound/http-response.adoc[]
+
+=== 3-2. 공유 링크 삭제 실패 (인증되지 않은 사용자)
+
+==== Request
+include::{snippets}/sharedLinks/delete/fail/unAuthorized/http-request.adoc[]
+
+==== Response
+include::{snippets}/sharedLinks/delete/fail/unAuthorized/http-response.adoc[]
+
+=== 3-3. 공유 링크 삭제 실패 (참여하지 않은 팀플레이스)
+
+==== Request
+include::{snippets}/sharedLinks/delete/fail/notParticipated/http-request.adoc[]
+
+==== Response
+include::{snippets}/sharedLinks/delete/fail/notParticipated/http-response.adoc[]

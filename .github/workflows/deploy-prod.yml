@@ -14,9 +14,6 @@ on:
 permissions:
   contents: read
 
-env:
-  VERSION_TAG: ${{ inputs.version }}
-
 jobs:
   build-backend:
     runs-on: ubuntu-22.04
@@ -28,7 +25,7 @@ jobs:
       - name: Set up Repository
         uses: actions/checkout@v3
         with:
-          ref: $VERSION_TAG
+          ref: ${{  github.event.inputs.version  }}
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -80,9 +77,69 @@ jobs:
         run: echo "$PROD_PROPERTY" > application-prod.yml
 
       - name: Deploy to production server
-        working-directory: backend/dev/
+        working-directory: backend/prod/
         run: |
           echo "$PROD_DEPLOY_SCRIPT" > prod-deploy.sh
           chmod 700 prod-deploy.sh
           ./prod-deploy.sh
           
+
+  build-frontend:
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Set up Repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{  github.event.inputs.version  }}
+
+      - name: Setup node with cache
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+
+      - name: Setup environment variables
+        run: |
+          echo "REACT_APP_ACCESS_TOKEN=${{ secrets.REACT_APP_ACCESS_TOKEN }}" >> .env
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build App
+        run: npm run build
+
+      - name: Upload frontend build file to artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: FrontendApplication
+          path: frontend/dist
+
+
+  deploy-frontend:
+    needs: build-frontend
+    runs-on: self-hosted
+    env:
+      PROD_DEPLOY_SCRIPT: ${{  secrets.PROD_FRONT_DEPLOY_SCRIPT  }}
+    steps:
+      - name: Remove previous version app
+        working-directory: frontend/prod/
+        run: rm -rf dist
+
+      - name: Download build file from artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: FrontendApplication
+          path: frontend/prod/dist
+
+      - name: Deploy to production server
+        working-directory: frontend/prod/
+        run: |
+          echo "$PROD_DEPLOY_SCRIPT" > prod-deploy.sh
+          chmod 700 prod-deploy.sh
+          ./prod-deploy.sh
+

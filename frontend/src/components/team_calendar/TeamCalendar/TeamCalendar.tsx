@@ -100,9 +100,11 @@ const TeamCalendar = (props: TeamCalendarProps) => {
             >
               <ArrowLeftIcon />
             </Button>
-            <Text weight="semiBold" css={S.calendarTitle(calendarSize)}>
-              {year}년 {month + 1}월
-            </Text>
+            <time>
+              <Textweight="semiBold" css={S.calendarTitle(calendarSize)}>
+                {year}년 {month + 1}월
+              </Text>
+            </time>
             <Button
               variant="plain"
               onClick={handleNextButtonClick}

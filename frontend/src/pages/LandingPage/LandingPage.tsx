@@ -6,9 +6,9 @@ import * as S from './LandingPage.styled';
 import Button from '~/components/common/Button/Button';
 import IntroCardPile from '~/components/landing/IntroCardPile/IntroCardPile';
 import Text from '~/components/common/Text/Text';
-import { LogoIcon } from '~/assets/svg';
 import { googleLogo } from '~/assets/png';
 import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
+import LandingHeader from '~/components/common/LandingHeader/LandingHeader';
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -36,14 +36,7 @@ const LandingPage = () => {
 
   return (
     <S.Container>
-      <S.SampleHeader>
-        <S.LandingPageLink to={PATH_NAME.LANDING}>
-          <LogoIcon />
-          <Text as="h1" css={S.headerTitle}>
-            팀바팀
-          </Text>
-        </S.LandingPageLink>
-      </S.SampleHeader>
+      <LandingHeader href={PATH_NAME.LANDING} />
       <S.MainContainer>
         <S.Main>
           <Text as="h2" css={S.mainPrefix}>

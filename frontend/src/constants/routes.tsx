@@ -9,4 +9,4 @@ export const PATH_NAME = {
   TEAM_CALENDAR: '/team/calendar',
   TEAM_FEED: '/team/feed',
   TEAM_LINK: '/team/link',
-};
+} as const;
