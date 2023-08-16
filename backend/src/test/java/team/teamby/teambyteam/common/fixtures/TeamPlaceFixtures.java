@@ -1,5 +1,6 @@
 package team.teamby.teambyteam.common.fixtures;
 
+import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateRequest;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 import team.teamby.teambyteam.teamplace.domain.vo.Name;
 
@@ -39,5 +40,9 @@ public class TeamPlaceFixtures {
 
     public static TeamPlace MATERIALS_TEAM_PLACE() {
         return new TeamPlace(new Name(MATERIALS_TEAM_PLACE_NAME));
+    }
+
+    public static TeamPlaceCreateRequest CREATE_ENGLISH_TEAM_PLACE_REQUEST() {
+        return new TeamPlaceCreateRequest(ENGLISH_TEAM_PLACE_NAME);
     }
 }

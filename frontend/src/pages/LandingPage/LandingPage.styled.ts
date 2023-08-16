@@ -69,13 +69,6 @@ export const GoogleLogo = styled.img`
   width: 26px;
 `;
 
-export const headerTitle = css`
-  font-size: 32px;
-  font-weight: 800;
-  color: ${({ theme }) => theme.color.PRIMARY};
-  text-align: right;
-`;
-
 export const mainPrefix = css`
   font-size: 60px;
   font-weight: 900;

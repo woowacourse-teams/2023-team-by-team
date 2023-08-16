@@ -11,7 +11,7 @@ import org.springframework.data.domain.Sort;
 import team.teamby.teambyteam.common.RepositoryTest;
 import team.teamby.teambyteam.common.fixtures.ScheduleEventFixtures;
 import team.teamby.teambyteam.feed.domain.notification.Notification;
-import team.teamby.teambyteam.feed.domain.notification.ScheduleNotification;
+import team.teamby.teambyteam.feed.domain.notification.schedulenotification.ScheduleNotification;
 import team.teamby.teambyteam.feed.domain.vo.Content;
 import team.teamby.teambyteam.schedule.application.event.ScheduleCreateEvent;
 import team.teamby.teambyteam.schedule.domain.Schedule;

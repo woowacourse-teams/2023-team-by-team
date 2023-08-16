@@ -1,0 +1,104 @@
+== 멤버 API
+나의 정보 조회, 나의 참여한 팀플에이스 조회, 팀플레이스 탈퇴, 팀플레이스 참여
+
+=== 1. 나의 정보 조회
+
+====== 요청 Header
+include::{snippets}/members/retrieveMyInformation/success/request-headers.adoc[]
+
+==== Request
+include::{snippets}/members/retrieveMyInformation/success/http-request.adoc[]
+
+==== Response
+include::{snippets}/members/retrieveMyInformation/success/http-response.adoc[]
+
+=== 1-1. 나의 정보 조회 실패 (인증되지 않은 사용자)
+
+==== Request
+include::{snippets}/members/retrieveMyInformation/fail/unAuthorized/http-request.adoc[]
+
+==== Response
+include::{snippets}/members/retrieveMyInformation/fail/unAuthorized/http-response.adoc[]
+
+=== 2. 나의 참여한 팀플레이스 조회
+
+====== 요청 Header
+include::{snippets}/members/retrieveParticipatedTeamPlaces/success/request-headers.adoc[]
+
+==== Request
+include::{snippets}/members/retrieveParticipatedTeamPlaces/success/http-request.adoc[]
+
+==== Response
+include::{snippets}/members/retrieveParticipatedTeamPlaces/success/http-response.adoc[]
+
+=== 2-1. 나의 참여한 팀플레이스 조회 실패 (인증되지 않은 사용자)
+
+==== Request
+include::{snippets}/members/retrieveParticipatedTeamPlaces/fail/unAuthorized/http-request.adoc[]
+
+==== Response
+include::{snippets}/members/retrieveParticipatedTeamPlaces/fail/unAuthorized/http-response.adoc[]
+
+=== 3. 팀플레이스 탈퇴
+
+====== 요청 Header
+include::{snippets}/members/leaveTeamPlace/success/request-headers.adoc[]
+
+==== Request
+include::{snippets}/members/leaveTeamPlace/success/http-request.adoc[]
+include::{snippets}/members/leaveTeamPlace/success/path-parameters.adoc[]
+
+==== Response
+include::{snippets}/members/leaveTeamPlace/success/http-response.adoc[]
+
+=== 3-1. 팀플레이스 탈퇴 실패 (인증되지 않은 사용자)
+
+==== Request
+include::{snippets}/members/leaveTeamPlace/fail/unAuthorized/http-request.adoc[]
+
+==== Response
+include::{snippets}/members/leaveTeamPlace/fail/unAuthorized/http-response.adoc[]
+
+=== 3-2. 팀플레이스 탈퇴 실패 (참여하지 않은 팀플레이스에 요청)
+
+==== Request
+include::{snippets}/members/leaveTeamPlace/fail/notParticipated/http-request.adoc[]
+
+==== Response
+include::{snippets}/members/leaveTeamPlace/fail/notParticipated/http-response.adoc[]
+
+=== 4. 팀플레이스 참여
+
+====== 요청 Header
+include::{snippets}/members/particiPateTeamPlace/success/request-headers.adoc[]
+
+==== Request
+include::{snippets}/members/particiPateTeamPlace/success/http-request.adoc[]
+include::{snippets}/members/particiPateTeamPlace/success/path-parameters.adoc[]
+
+==== Response
+include::{snippets}/members/particiPateTeamPlace/success/http-response.adoc[]
+
+=== 4-1. 팀플레이스 참여 실패 (인증되지 않은 사용자)
+
+==== Request
+include::{snippets}/members/particiPateTeamPlace/fail/unAuthorized/http-request.adoc[]
+
+==== Response
+include::{snippets}/members/particiPateTeamPlace/fail/unAuthorized/http-response.adoc[]
+
+=== 4-2. 팀플레이스 참여 실패 (존재하지 않는 참여 코드)
+
+==== Request
+include::{snippets}/members/particiPateTeamPlace/fail/notFoundInviteCode/http-request.adoc[]
+
+==== Response
+include::{snippets}/members/particiPateTeamPlace/fail/notFoundInviteCode/http-response.adoc[]
+
+=== 4-3. 팀플레이스 참여 실패 (8글자가 아닌 참여 코드)
+
+==== Request
+include::{snippets}/members/particiPateTeamPlace/fail/invalidLengthInviteCode/http-request.adoc[]
+
+==== Response
+include::{snippets}/members/particiPateTeamPlace/fail/invalidLengthInviteCode/http-response.adoc[]

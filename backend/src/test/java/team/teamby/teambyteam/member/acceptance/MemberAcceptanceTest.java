@@ -193,6 +193,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         }
     }
 
+    @Nested
     @DisplayName("사용자가 참여코드로 팀플레이스 참가 시")
     class ParticipantTeamPlace {
 
@@ -217,6 +218,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             });
         }
 
+        @Test
         @DisplayName("이미 참여한 팀플레이스 기준으로 응답한다.")
         void successIfDuplicateRequest() {
             // given

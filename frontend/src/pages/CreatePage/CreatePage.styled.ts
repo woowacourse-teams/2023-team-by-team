@@ -2,12 +2,20 @@ import { css, styled } from 'styled-components';
 
 export const Container = styled.div`
   display: flex;
+  flex-direction: column;
+
+  width: 100vw;
+  height: 100vh;
+`;
+
+export const MainContainer = styled.main`
+  display: flex;
   justify-content: flex-end;
   align-items: center;
   overflow-x: hidden;
 
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   padding-right: 120px;
 `;
 
@@ -45,6 +53,11 @@ export const InputWrapper = styled.div`
     0 0 1px #1b1d1f33,
     0 15px 25px #1b1d1f33,
     0 5px 10px #1b1d1f1f;
+`;
+
+export const ConfirmButtonsContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
 export const explainText = css`

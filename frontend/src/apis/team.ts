@@ -1,27 +1,33 @@
 import { http } from '~/apis/http';
-import type { TeamInfo, TeamPlace } from '~/types/team';
+import type { TeamInfo, TeamPlace, UserInfo } from '~/types/team';
+
+interface TeamPlacesResponse {
+  teamPlaces: TeamPlace[];
+}
+
+interface TeamPlaceInviteCodeResponse {
+  teamPlaceId: TeamPlace['id'];
+  inviteCode: string;
+}
+
+interface TeamPlaceMembersResponse {
+  members: Omit<UserInfo, 'email'>[];
+}
 
 export const fetchTeamPlaces = () => {
-  return http.get<{
-    teamPlaces: TeamPlace[];
-  }>('/api/me/team-places');
+  return http.get<TeamPlacesResponse>('/api/me/team-places');
 };
 
 export const fetchTeamPlaceInviteCode = (teamPlaceId: number) => {
-  return http.get<{
-    teamPlaceId: number;
-    inviteCode: string;
-  }>(`/api/team-places/${teamPlaceId}/invite-code`);
+  return http.get<TeamPlaceInviteCodeResponse>(
+    `/api/team-places/${teamPlaceId}/invite-code`,
+  );
 };
 
 export const fetchTeamPlaceMembers = (teamPlaceId: number) => {
-  return http.get<{
-    members: {
-      id: number;
-      name: string;
-      profileImageUrl: string;
-    }[];
-  }>(`/api/team-places/${teamPlaceId}/members`);
+  return http.get<TeamPlaceMembersResponse>(
+    `/api/team-places/${teamPlaceId}/members`,
+  );
 };
 
 export const deleteTeamPlace = (teamPlaceId: number) => {

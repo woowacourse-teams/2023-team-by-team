@@ -44,7 +44,9 @@ const NoticeThread = (props: NoticeThreadProps) => {
               {authorName}
             </Text>
             <S.Divider />
-            <Text size="lg">{formatWriteTime(createdAt)}</Text>
+            <time>
+              <Text size="lg">{formatWriteTime(createdAt)}</Text>
+            </time>
           </S.ThreadHeader>
         )}
         <S.ContentWrapper ref={contentRef}>

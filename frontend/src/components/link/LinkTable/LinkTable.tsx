@@ -11,7 +11,7 @@ import { useModal } from '~/hooks/useModal';
 import { useToast } from '~/hooks/useToast';
 import { linkTableHeaderValues } from '~/constants/link';
 
-const TeamLinkTable = () => {
+const LinkTable = () => {
   const { openModal, isModalOpen } = useModal();
   const { teamPlaceId } = useTeamPlace();
   const teamLinks = useFetchTeamLinks(teamPlaceId);
@@ -76,12 +76,15 @@ const TeamLinkTable = () => {
                       </a>
                     </td>
                     <td title={memberName}>{memberName}</td>
-                    <td>{updatedAt}</td>
+                    <td>
+                      <time>{updatedAt}</time>
+                    </td>
                     <td>
                       <Button
                         variant="plain"
                         css={S.deleteButton}
                         onClick={() => handleDeleteTeamLink(id, title)}
+                        aria-label="링크 삭제하기"
                       >
                         <DeleteIcon />
                       </Button>
@@ -100,4 +103,4 @@ const TeamLinkTable = () => {
   );
 };
 
-export default TeamLinkTable;
+export default LinkTable;

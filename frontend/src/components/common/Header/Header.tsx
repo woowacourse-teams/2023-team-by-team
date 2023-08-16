@@ -49,7 +49,7 @@ const Header = () => {
       setTeamName(() => value);
 
       if (location.pathname === PATH_NAME.TEAM_SELECT) {
-        navigate(PATH_NAME.TEAM_CALENDAR);
+        navigate(PATH_NAME.TEAM_OVERVIEW);
       }
     },
     /*eslint-disable-next-line*/
@@ -81,9 +81,12 @@ const Header = () => {
 
   return (
     <>
-      <S.Container tabIndex={0}>
+      <S.Header tabIndex={0}>
         <S.InnerContainer>
-          <Link to={PATH_NAME.TEAM_CALENDAR} aria-label="홈 페이지로 가기 버튼">
+          <Link
+            to={PATH_NAME.TEAM_OVERVIEW}
+            aria-label="모아보기 페이지로 가기"
+          >
             <LogoIcon />
           </Link>
           <div>
@@ -130,7 +133,7 @@ const Header = () => {
             <S.ProfileImage src={userInfo?.profileImageUrl} alt="프로필 사진" />
           </Button>
         </S.ButtonContainer>
-      </S.Container>
+      </S.Header>
 
       {modalOpenType === 'notification' && <NotificationListModal />}
       {modalOpenType === 'team' && <TeamPlaceInfoModal />}
