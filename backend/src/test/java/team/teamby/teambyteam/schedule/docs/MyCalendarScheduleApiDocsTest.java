@@ -57,7 +57,7 @@ public class MyCalendarScheduleApiDocsTest extends ApiDocsTest {
             final List<Schedule> schedules = List.of(schedule1, schedule2);
             SchedulesWithTeamPlaceIdResponse response = SchedulesWithTeamPlaceIdResponse.of(schedules);
 
-            given(myCalendarScheduleService.findDailySchedule(any(), anyInt(), anyInt(), anyInt()))
+            given(myCalendarScheduleService.findScheduleInPeriod(any(), anyInt(), anyInt(), anyInt()))
                     .willReturn(response);
 
             // when & then

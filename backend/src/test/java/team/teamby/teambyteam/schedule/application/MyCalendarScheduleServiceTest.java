@@ -97,7 +97,7 @@ public class MyCalendarScheduleServiceTest extends ServiceTest {
 
             // when
             final SchedulesWithTeamPlaceIdResponse dailyScheduleResponse =
-                    myCalendarScheduleService.findDailySchedule(memberEmailDto, year, month, day);
+                    myCalendarScheduleService.findScheduleInPeriod(memberEmailDto, year, month, day);
             final List<ScheduleWithTeamPlaceIdResponse> dailySchedules = dailyScheduleResponse.schedules();
 
             // then
@@ -122,7 +122,7 @@ public class MyCalendarScheduleServiceTest extends ServiceTest {
 
             // when
             final SchedulesWithTeamPlaceIdResponse dailyScheduleResponse =
-                    myCalendarScheduleService.findDailySchedule(memberEmailDto, year, month, day);
+                    myCalendarScheduleService.findScheduleInPeriod(memberEmailDto, year, month, day);
 
             // then
             assertThat(dailyScheduleResponse.schedules()).hasSize(0);

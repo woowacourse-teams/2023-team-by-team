@@ -94,7 +94,7 @@ public class TeamCalendarScheduleService {
     }
 
     @Transactional(readOnly = true)
-    public SchedulesResponse findDailySchedule(
+    public SchedulesResponse findScheduleInPeriod(
             final Long teamPlaceId,
             final int targetYear,
             final int targetMonth,

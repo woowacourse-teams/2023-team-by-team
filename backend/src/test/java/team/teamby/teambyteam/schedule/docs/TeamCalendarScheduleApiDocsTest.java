@@ -504,7 +504,7 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
             List<Schedule> schedules = List.of(schedule1, schedule2);
             SchedulesResponse response = SchedulesResponse.of(schedules);
 
-            given(teamCalendarScheduleService.findDailySchedule(teamPlaceId, 2023, 7, 12))
+            given(teamCalendarScheduleService.findScheduleInPeriod(teamPlaceId, 2023, 7, 12))
                     .willReturn(response);
 
             // when & then
@@ -549,7 +549,7 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
 
             willThrow(new TeamPlaceException.NotFoundException(teamPlaceId))
                     .given(teamCalendarScheduleService)
-                    .findDailySchedule(teamPlaceId, 2023, 7, 12);
+                    .findScheduleInPeriod(teamPlaceId, 2023, 7, 12);
 
             // when & then
             mockMvc.perform(get("/api/team-place/{teamPlaceId}/calendar/schedules", teamPlaceId)
