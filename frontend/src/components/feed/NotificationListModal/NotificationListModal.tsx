@@ -15,7 +15,9 @@ const NotificationListModal = () => {
   const observeRef = useRef<HTMLDivElement>(null);
 
   const onIntersect: IntersectionObserverCallback = ([entry]) => {
-    entry.isIntersecting && fetchNextPage();
+    if (entry.isIntersecting && teamPlaceId > 0) {
+      fetchNextPage();
+    }
   };
 
   useIntersectionObserver(observeRef, onIntersect);
