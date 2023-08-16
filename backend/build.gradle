@@ -1,0 +1,78 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.1.1'
+    id 'io.spring.dependency-management' version '1.1.0'
+    id 'org.asciidoctor.jvm.convert' version '3.3.2'
+}
+
+group = 'team.teamby'
+version = 'v0.1.0'
+
+java {
+    sourceCompatibility = '17'
+}
+
+configurations {
+    asciidoctorExtensions // dependencies 에서 적용한 것 추가
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    set('snippetsDir', file("build/generated-snippets"))
+}
+
+dependencies {
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-logging'
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    implementation 'mysql:mysql-connector-java:8.0.33'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+    asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+
+    runtimeOnly 'com.h2database:h2'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    testImplementation 'io.rest-assured:rest-assured:5.3.1'
+}
+
+tasks.named('test') {
+    outputs.dir snippetsDir
+    useJUnitPlatform()
+}
+
+asciidoctor {
+    configurations 'asciidoctorExtensions'
+    baseDirFollowsSourceFile()
+    inputs.dir snippetsDir
+    dependsOn test
+}
+
+asciidoctor.doFirst {
+    delete file('src/main/resources/static/docs')
+}
+
+tasks.register('copyDocument', Copy) {
+    dependsOn asciidoctor
+
+    from "${asciidoctor.outputDir}"
+    into file("src/main/resources/static/docs")
+}
+
+bootJar {
+    dependsOn copyDocument
+}

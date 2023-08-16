@@ -1,0 +1,34 @@
+name: Bug Report
+description: 버그 리포트 제출
+title: "[FE | BE | ALL | 버그] "
+labels: ["🚨 버그"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        버그를 제보해 주셔서 감사합니다!
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 어떤 버그가 발생했나요?
+      description: 어떤 동작을 기대했는지 말씀해 주시면 더 좋습니다!
+      placeholder: Tell us what you see!
+      value: "버그가 발생했어요!"
+    validations:
+      required: true
+  - type: dropdown
+    id: browsers
+    attributes:
+      label: 어떤 브라우저에서 버그가 발생했나요?
+      multiple: true
+      options:
+        - Firefox
+        - Chrome
+        - Safari
+        - Microsoft Edge
+  - type: textarea
+    id: logs
+    attributes:
+      label: 로그 / 코드 아웃풋
+      description: 버그와 관련된 로그나 코드를 붙여넣어 주세요.
+      render: shell

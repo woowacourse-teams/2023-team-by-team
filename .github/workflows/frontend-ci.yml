@@ -1,0 +1,41 @@
+name: frontend test for PR to develop
+
+on:
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - frontend/**
+
+defaults:
+  run:
+    working-directory: frontend
+
+jobs:
+  unit-test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup node with cache
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run build
+        run: npm run build
+
+      - name: Run unit test
+        run: npm run test:ci

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+    <property name="LOG_PATH" value="./logs"/>
+    <property name="LOG_FILE" value="${LOG_PATH}/tbt-%d{yyyy-MM-dd}-%i.log"/>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+        <file>${LOG_PATH}/tbt.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE}</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>10</maxHistory>
+            <totalSizeCap>100MB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+
+    <springProfile name="test">
+        <logger level="INFO" name="org.springframework.boot">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+        <logger level="INFO" name="team.teamby.teambyteam">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+        <logger level="TRACE" name="org.hibernate.type.descriptor.sql.BasicBinder">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+    </springProfile>
+
+
+    <springProfile name="local">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="dev">
+        <logger level="INFO" name="org.springframework.boot">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
+        </logger>
+        <logger level="INFO" name="team.teamby.teambyteam">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
+        </logger>
+    </springProfile>
+
+    <springProfile name="prod">
+        <logger level="WARN" name="org.springframework.boot">
+            <appender-ref ref="FILE"/>
+        </logger>
+        <logger level="WARN" name="team.teamby.teambyteam">
+            <appender-ref ref="FILE"/>
+        </logger>
+    </springProfile>
+
+</configuration>

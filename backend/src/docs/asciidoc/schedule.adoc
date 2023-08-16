@@ -1,0 +1,224 @@
+== 팀 캘린더 일정 등록 API
+
+=== 일정 등록 성공
+
+===== Request
+include::{snippets}/team-calendar/schedules/register/success/http-request.adoc[]
+
+==== Request Header
+include::{snippets}/team-calendar/schedules/register/success/request-headers.adoc[]
+
+==== Request Body
+include::{snippets}/team-calendar/schedules/register/success/request-fields.adoc[]
+
+==== Response
+include::{snippets}/team-calendar/schedules/register/success/http-response.adoc[]
+
+
+=== 일정 등록 실패 (등록할 일정 제목 빈 값)
+
+==== Request
+include::{snippets}/team-calendar/schedules/register/failBlankTitle/http-request.adoc[]
+
+==== Response
+include::{snippets}/team-calendar/schedules/register/failBlankTitle/http-response.adoc[]
+
+=== 일정 등록 실패 (존재하지 않는 팀 플레이스 ID)
+
+==== Request
+include::{snippets}/team-calendar/schedules/register/failNotExistTeamPlaceId/http-request.adoc[]
+
+==== Response
+include::{snippets}/team-calendar/schedules/register/failNotExistTeamPlaceId/http-response.adoc[]
+
+=== 일정 등록 실패 (등록할 시작 날짜가 등록할 종료 날짜보다 이후)
+
+==== Request
+include::{snippets}/team-calendar/schedules/register/failSpanWrongOrder/http-request.adoc[]
+
+==== Response
+include::{snippets}/team-calendar/schedules/register/failSpanWrongOrder/http-response.adoc[]
+
+=== 일정 등록 실패 (등록할 날짜 형식 잘못된 경우)
+
+==== Request
+include::{snippets}/team-calendar/schedules/register/failWrongDateTimeType/http-request.adoc[]
+
+==== Response
+include::{snippets}/team-calendar/schedules/register/failWrongDateTimeType/http-response.adoc[]
+
+== 팀 캘린더 일정 수정 API
+
+=== 일정 수정 성공
+
+====== 요청 Header
+include::{snippets}/team-calendar/schedules/update/success/request-headers.adoc[]
+
+==== Request
+include::{snippets}/team-calendar/schedules/update/success/http-request.adoc[]
+include::{snippets}/team-calendar/schedules/update/success/request-fields.adoc[]
+
+
+==== Response
+include::{snippets}/team-calendar/schedules/update/success/http-response.adoc[]
+
+=== 일정 수정 실패 (수정할 일정 제목 빈 값)
+
+==== Request
+include::{snippets}/team-calendar/schedules/update/failBlankTitle/http-request.adoc[]
+
+==== Response
+include::{snippets}/team-calendar/schedules/update/failBlankTitle/http-response.adoc[]
+
+=== 일정 수정 실패 (존재하지 않는 팀 플레이스 ID)
+
+==== Request
+include::{snippets}/team-calendar/schedules/update/failNotExistTeamPlaceId/http-request.adoc[]
+
+==== Response
+include::{snippets}/team-calendar/schedules/update/failNotExistTeamPlaceId/http-response.adoc[]
+
+=== 일정 수정 실패 (수정할 시작 날짜가 등록할 종료 날짜보다 이후)
+
+==== Request
+include::{snippets}/team-calendar/schedules/update/failSpanWrongOrder/http-request.adoc[]
+
+==== Response
+include::{snippets}/team-calendar/schedules/update/failSpanWrongOrder/http-response.adoc[]
+
+=== 일정 수정 실패 (수정할 날짜 형식 잘못된 경우)
+
+==== Request
+include::{snippets}/team-calendar/schedules/update/failWrongDateTimeType/http-request.adoc[]
+
+==== Response
+include::{snippets}/team-calendar/schedules/update/failWrongDateTimeType/http-response.adoc[]
+
+=== 일정 수정 실패 (존재하지 않는 수정할 일정 ID)
+
+==== Request
+include::{snippets}/team-calendar/schedules/update/failNotExistScheduleId/http-request.adoc[]
+
+==== Response
+include::{snippets}/team-calendar/schedules/update/failNotExistScheduleId/http-response.adoc[]
+
+== 팀 캘린더 일정 기간 조회 API
+
+=== 일정 기간 조회 성공
+
+==== Request
+include::{snippets}/team-calendar/schedules/findSchedulesInPeriod/success/http-request.adoc[]
+
+==== Path Parameters
+include::{snippets}/team-calendar/schedules/findSchedulesInPeriod/success/path-parameters.adoc[]
+
+==== Query Parameters
+include::{snippets}/team-calendar/schedules/findSchedulesInPeriod/success/query-parameters.adoc[]
+
+==== Response
+include::{snippets}/team-calendar/schedules/findSchedulesInPeriod/success/http-response.adoc[]
+
+==== Response Field
+include::{snippets}/team-calendar/schedules/findSchedulesInPeriod/success/response-fields.adoc[]
+
+=== 일정 기간 조회 실패 (존재하지 않는 팀 플레이스 ID)
+
+==== Request
+include::{snippets}/team-calendar/schedules/findSchedulesInPeriod/failNotExistTeamplaceId/http-request.adoc[]
+
+==== Response
+include::{snippets}/team-calendar/schedules/findSchedulesInPeriod/failNotExistTeamplaceId/http-response.adoc[]
+
+== 팀 캘린더 일정 하루 조회 API
+
+=== 일정 하루 조회 성공
+
+==== Request
+include::{snippets}/team-calendar/schedules/findDailySchedule/success/http-request.adoc[]
+
+==== Path Parameters
+include::{snippets}/team-calendar/schedules/findDailySchedule/success/path-parameters.adoc[]
+
+==== Query Parameters
+include::{snippets}/team-calendar/schedules/findDailySchedule/success/query-parameters.adoc[]
+
+==== Response
+include::{snippets}/team-calendar/schedules/findDailySchedule/success/http-response.adoc[]
+
+==== Response Field
+include::{snippets}/team-calendar/schedules/findDailySchedule/success/response-fields.adoc[]
+
+
+=== 일정 하루 조회 실패 (존재하지 않는 팀 플레이스 ID)
+
+==== Request
+include::{snippets}/team-calendar/schedules/findDailySchedule/failNotExistTeamplaceId/http-request.adoc[]
+
+==== Response
+include::{snippets}/team-calendar/schedules/findDailySchedule/failNotExistTeamplaceId/http-response.adoc[]
+
+
+== 팀 캘린더 특정 일정 조회 API
+
+=== 특정 일정 조회 성공
+
+==== Request
+include::{snippets}/team-calendar/schedules/findSchedule/success/http-request.adoc[]
+
+==== Path Parameters
+include::{snippets}/team-calendar/schedules/findSchedule/success/path-parameters.adoc[]
+
+==== Response
+include::{snippets}/team-calendar/schedules/findSchedule/success/http-response.adoc[]
+
+==== Response Field
+include::{snippets}/team-calendar/schedules/findSchedule/success/response-fields.adoc[]
+
+
+=== 특정 일정 조회 실패 (존재하지 않는 팀 플레이스 ID)
+
+==== Request
+include::{snippets}/team-calendar/schedules/findSchedule/failNotExistTeamplaceId/http-request.adoc[]
+
+==== Response
+include::{snippets}/team-calendar/schedules/findSchedule/failNotExistTeamplaceId/http-response.adoc[]
+
+=== 특정 일정 조회 실패 (존재하지 않는 일정 ID)
+
+==== Request
+include::{snippets}/team-calendar/schedules/findSchedule/failNotExistScheduleId/http-request.adoc[]
+
+==== Response
+include::{snippets}/team-calendar/schedules/findSchedule/failNotExistScheduleId/http-response.adoc[]
+
+
+== 팀 캘린더 일정 삭제 API
+
+=== 일정 삭제 성공
+
+==== Request
+include::{snippets}/team-calendar/schedules/delete/success/http-request.adoc[]
+
+==== Path Parameters
+include::{snippets}/team-calendar/schedules/delete/success/path-parameters.adoc[]
+
+==== Response
+include::{snippets}/team-calendar/schedules/delete/success/http-response.adoc[]
+
+
+=== 일정 삭제 실패 (존재하지 않는 팀 플레이스 ID)
+
+==== Request
+include::{snippets}/team-calendar/schedules/delete/failNotExistTeamplaceId/http-request.adoc[]
+
+==== Response
+include::{snippets}/team-calendar/schedules/delete/failNotExistTeamplaceId/http-response.adoc[]
+
+
+=== 일정 삭제 실패 (존재하지 않는 일정 ID)
+
+==== Request
+include::{snippets}/team-calendar/schedules/delete/failNotExistScheduleId/http-request.adoc[]
+
+==== Response
+include::{snippets}/team-calendar/schedules/delete/failNotExistScheduleId/http-response.adoc[]

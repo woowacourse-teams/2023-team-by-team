@@ -1,0 +1,42 @@
+spring:
+  profiles:
+    active: test
+
+  # for test
+  h2:
+    console:
+      enabled: true
+  datasource:
+    # for test
+    url: jdbc:h2:~/team-by-team-test;MODE=MySQL
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop # for test
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL57Dialect
+        format_sql: true # for test
+    show-sql: true # for test
+
+jwt:
+  access:
+    secret: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    expiration: 1800000 # 30분
+
+  refresh:
+    secret: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    expiration: 86400000 # 1일
+
+oauth:
+  google:
+    client-id: client-id
+    client-secret: client-secret
+    end-point: https://accounts.google.com/o/oauth2/v2/auth
+    response-type: code
+    scopes: scope1, scope2
+    access-type: access-type
+    token-uri: https://oauth2.googleapis.com/token
+    redirect-uri: redirect-uri
