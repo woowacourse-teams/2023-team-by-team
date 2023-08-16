@@ -11,10 +11,7 @@ export const useFetchNotifications = (teamPlaceId: number) => {
     ['threadData', teamPlaceId],
     ({ pageParam = undefined }) => fetchThreads(teamPlaceId, pageParam),
     {
-      getNextPageParam: (lastPage) => {
-        if (lastPage.threads.length !== THREAD_SIZE) return undefined;
-        return lastPage.threads[THREAD_SIZE - 1].id;
-      },
+      enabled: teamPlaceId > 0,
       select: (data) => ({
         pages: data.pages.map((page) => {
           const { threads } = page;
@@ -29,7 +26,10 @@ export const useFetchNotifications = (teamPlaceId: number) => {
         }),
         pageParams: data.pageParams,
       }),
-      enabled: teamPlaceId > 0,
+      getNextPageParam: (lastPage) => {
+        if (lastPage.threads.length !== THREAD_SIZE) return undefined;
+        return lastPage.threads[THREAD_SIZE - 1].id;
+      },
     },
   );
 
