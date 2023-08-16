@@ -65,4 +65,5 @@ jobs:
         working-directory: backend/dev/
         run: |
           mv docs/index.html /home/ubuntu/team-by-team/docs/
+          chmod g+r /home/ubuntu/team-by-team/docs/index.html
       
