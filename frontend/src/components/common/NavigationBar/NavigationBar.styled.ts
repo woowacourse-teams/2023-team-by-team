@@ -25,9 +25,9 @@ export const MenuLink = styled(Link)`
   justify-content: center;
   flex-direction: column;
 
-  width: 64px;
-  height: 64px;
-  padding: 0;
+  width: 62px;
+  height: 62px;
+  padding: 4px;
 
   border-radius: 50%;
 
@@ -37,7 +37,7 @@ export const MenuLink = styled(Link)`
   }
 
   & > span {
-    margin-top: 4px;
+    margin-top: 3px;
     font-size: 13px;
   }
 
