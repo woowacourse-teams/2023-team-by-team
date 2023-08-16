@@ -18,6 +18,7 @@ export const useIntersectionObserver = <T extends HTMLElement>(
         observer.current?.unobserve(targetRef.current);
         return;
       }
+
       observer.current.observe(targetRef.current);
     }
 
