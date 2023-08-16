@@ -11,6 +11,7 @@ import { useModal } from '~/hooks/useModal';
 import { useToast } from '~/hooks/useToast';
 import { linkTableHeaderValues } from '~/constants/link';
 import type { LinkSize } from '~/types/size';
+import { ensureHttpsPrefix } from '~/utils/ensureHttpsPrefix';
 
 interface LinkTableProps {
   linkSize?: LinkSize;
@@ -74,7 +75,7 @@ const LinkTable = (props: LinkTableProps) => {
                   <tr key={id}>
                     <td>
                       <a
-                        href={url}
+                        href={ensureHttpsPrefix(url)}
                         target="_blank"
                         rel="noreferrer"
                         title={title}
