@@ -2,9 +2,9 @@ import { PATH_NAME } from '~/constants/routes';
 import {
   CalendarIcon,
   FeedIcon,
-  HomeIcon,
   ChainIcon,
   TeamAddIcon,
+  HomeIcon,
 } from '~/assets/svg';
 import * as S from './NavigationBar.styled';
 
