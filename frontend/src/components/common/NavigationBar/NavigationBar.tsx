@@ -31,7 +31,7 @@ const NavigationBar = () => {
         </S.MenuLink>
         <S.MenuLink to={PATH_NAME.START}>
           <TeamAddIcon />
-          <Text as="span">팀 참가/생성</Text>
+          <Text as="span">팀 참가/개설</Text>
         </S.MenuLink>
       </S.MenuContainer>
     </S.Nav>
