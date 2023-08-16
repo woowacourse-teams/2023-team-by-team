@@ -3,6 +3,7 @@ import { useEffect, type RefObject, useRef } from 'react';
 export const useIntersectionObserver = <T extends HTMLElement>(
   targetRef: RefObject<T>,
   onIntersect: IntersectionObserverCallback,
+  hasNextPage: boolean | undefined,
 ) => {
   const observer = useRef<IntersectionObserver>();
   useEffect(() => {
@@ -12,6 +13,11 @@ export const useIntersectionObserver = <T extends HTMLElement>(
         rootMargin: '0px',
         threshold: 1.0,
       });
+
+      if (!hasNextPage) {
+        observer.current?.unobserve(targetRef.current);
+        return;
+      }
 
       observer.current.observe(targetRef.current);
     }

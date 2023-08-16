@@ -29,7 +29,7 @@ const ThreadList = (props: ThreadListProps) => {
     }
   };
 
-  useIntersectionObserver(observeRef, onIntersect);
+  useIntersectionObserver(observeRef, onIntersect, hasNextPage);
 
   return (
     <>

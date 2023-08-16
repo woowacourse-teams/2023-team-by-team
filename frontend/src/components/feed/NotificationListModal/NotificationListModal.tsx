@@ -20,7 +20,7 @@ const NotificationListModal = () => {
     }
   };
 
-  useIntersectionObserver(observeRef, onIntersect);
+  useIntersectionObserver(observeRef, onIntersect, hasNextPage);
 
   return (
     <Modal>
