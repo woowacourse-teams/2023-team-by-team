@@ -7,7 +7,7 @@ export const Container = styled.main`
   grid-template-areas:
     'calendar feed'
     'link feed';
-  overflow: auto;
+  overflow: hidden;
 
   width: 100%;
   height: 100%;
