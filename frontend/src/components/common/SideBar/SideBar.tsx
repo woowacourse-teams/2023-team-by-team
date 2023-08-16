@@ -14,7 +14,7 @@ const SideBar = () => {
   };
 
   return (
-    <S.Container>
+    <S.Aside>
       <S.InnerContainer>
         <div>
           <Text size="xxl" css={S.highLight}>
@@ -32,7 +32,7 @@ const SideBar = () => {
         </div>
         <MyDailyScheduleList rawDate={dailyScheduleDate} />
       </S.InnerContainer>
-    </S.Container>
+    </S.Aside>
   );
 };
 

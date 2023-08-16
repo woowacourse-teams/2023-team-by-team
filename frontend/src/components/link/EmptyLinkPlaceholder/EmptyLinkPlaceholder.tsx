@@ -19,7 +19,7 @@ const EmptyLinkPlaceholder = (props: EmptyLinkPlaceholderProps) => {
         aria-label="새로운 링크 등록하기"
       >
         <S.PlaceholderContainer>
-          <S.LinkEmptyImage src={linkEmptyImage} />
+          <S.LinkEmptyImage src={linkEmptyImage} alt="비어있는 링크 이미지" />
           <Text weight="bold" css={S.titleText}>
             등록된 링크가 없어요
           </Text>

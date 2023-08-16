@@ -93,9 +93,11 @@ const TeamCalendar = () => {
             >
               <ArrowLeftIcon />
             </Button>
-            <Text css={S.calendarTitle}>
-              {year}년 {month + 1}월
-            </Text>
+            <time>
+              <Text css={S.calendarTitle}>
+                {year}년 {month + 1}월
+              </Text>
+            </time>
             <Button
               variant="plain"
               onClick={handleNextButtonClick}

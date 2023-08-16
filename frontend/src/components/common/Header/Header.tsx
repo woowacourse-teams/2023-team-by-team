@@ -73,7 +73,7 @@ const Header = () => {
 
   return (
     <>
-      <S.Container tabIndex={0}>
+      <S.Header tabIndex={0}>
         <S.InnerContainer>
           <Link
             to={PATH_NAME.TEAM_OVERVIEW}
@@ -112,7 +112,7 @@ const Header = () => {
             <S.ProfileImage src={userInfo?.profileImageUrl} alt="프로필 사진" />
           </Button>
         </S.ButtonContainer>
-      </S.Container>
+      </S.Header>
 
       {modalOpenType === 'team' && <TeamPlaceInfoModal />}
       {modalOpenType === 'user' && <UserInfoModal />}
