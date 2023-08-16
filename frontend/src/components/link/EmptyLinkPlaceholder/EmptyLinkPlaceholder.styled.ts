@@ -20,8 +20,7 @@ export const PlaceholderContainer = styled.div`
 `;
 
 export const LinkEmptyImage = styled.img`
-  width: 120px;
-  height: 120px;
+  width: 18%;
   margin-bottom: 10px;
 `;
 

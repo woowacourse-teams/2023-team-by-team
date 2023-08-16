@@ -121,8 +121,8 @@ export const linkAddButton = (linkSize: LinkSize) => css`
   justify-content: center;
   align-items: center;
 
-  width: ${linkSize === 'md' ? 30 : 20}px;
-  height: ${linkSize === 'md' ? 30 : 20}px;
+  width: ${linkSize === 'md' ? 30 : 24}px;
+  height: ${linkSize === 'md' ? 30 : 24}px;
   padding: 4px;
 
   font-size: 24px;

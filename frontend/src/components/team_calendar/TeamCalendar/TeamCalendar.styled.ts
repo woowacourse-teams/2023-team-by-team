@@ -77,8 +77,8 @@ export const scheduleAddButton = (calendarSize: CalendarSize) => css`
   justify-content: center;
   align-items: center;
 
-  width: ${calendarSize === 'md' ? 30 : 20}px;
-  height: ${calendarSize === 'md' ? 30 : 20}px;
+  width: ${calendarSize === 'md' ? 30 : 24}px;
+  height: ${calendarSize === 'md' ? 30 : 24}px;
   padding: 4px;
 
   font-size: 24px;
