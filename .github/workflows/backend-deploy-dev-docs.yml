@@ -49,7 +49,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: DocsHtml
-        path: backend/src/main/resources/docs/index.html
+        path: backend/src/main/resources/static/docs/index.html
         
   deploy:
     needs: build-and-upload
