@@ -23,4 +23,10 @@
 
 == API
 
+
 include::schedule.adoc[]
+include::feed.adoc[]
+include::sharedlink.adoc[]
+include::teamPlace.adoc[]
+include::token.adoc[]
+include::member.adoc[]
