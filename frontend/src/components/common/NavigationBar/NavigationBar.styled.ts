@@ -23,9 +23,10 @@ export const MenuLink = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 
-  width: 56px;
-  height: 56px;
+  width: 64px;
+  height: 64px;
   padding: 0;
 
   border-radius: 50%;
@@ -33,6 +34,15 @@ export const MenuLink = styled(Link)`
   &:hover,
   &:focus {
     background-color: ${({ theme }) => theme.color.GRAY200};
+  }
+
+  & > span {
+    margin-top: 4px;
+    font-size: 13px;
+  }
+
+  &:last-child > span {
+    font-size: 11px;
   }
 `;
 

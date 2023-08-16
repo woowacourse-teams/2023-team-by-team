@@ -7,40 +7,31 @@ import {
   HomeIcon,
 } from '~/assets/svg';
 import * as S from './NavigationBar.styled';
+import Text from '~/components/common/Text/Text';
 
 const NavigationBar = () => {
   return (
     <S.Nav>
       <S.MenuContainer>
-        <S.MenuLink
-          to={PATH_NAME.TEAM_OVERVIEW}
-          aria-label="모아보기 페이지로 이동하기 버튼"
-        >
+        <S.MenuLink to={PATH_NAME.TEAM_OVERVIEW}>
           <HomeIcon />
+          <Text as="span">모아보기</Text>
         </S.MenuLink>
-        <S.MenuLink
-          to={PATH_NAME.TEAM_CALENDAR}
-          aria-label="팀 캘린더 페이지로 이동하기 버튼"
-        >
+        <S.MenuLink to={PATH_NAME.TEAM_CALENDAR}>
           <CalendarIcon />
+          <Text as="span">캘린더</Text>
         </S.MenuLink>
-        <S.MenuLink
-          to={PATH_NAME.TEAM_FEED}
-          aria-label="팀 피드 페이지로 이동하기 버튼"
-        >
+        <S.MenuLink to={PATH_NAME.TEAM_FEED}>
           <FeedIcon />
+          <Text as="span">피드</Text>
         </S.MenuLink>
-        <S.MenuLink
-          to={PATH_NAME.TEAM_LINK}
-          aria-label="팀 링크 페이지로 이동하기 버튼"
-        >
+        <S.MenuLink to={PATH_NAME.TEAM_LINK}>
           <ChainIcon />
+          <Text as="span">링크</Text>
         </S.MenuLink>
-        <S.MenuLink
-          to={PATH_NAME.START}
-          aria-label="팀 시작 페이지로 이동하기 버튼"
-        >
+        <S.MenuLink to={PATH_NAME.START}>
           <TeamAddIcon />
+          <Text as="span">팀 참가/생성</Text>
         </S.MenuLink>
       </S.MenuContainer>
     </S.Nav>
