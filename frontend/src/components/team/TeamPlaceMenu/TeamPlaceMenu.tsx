@@ -24,7 +24,11 @@ const TeamPlaceMenu = (props: TeamPlaceMenuProps) => {
 
   return (
     <Menu>
-      <Menu.Button css={S.teamPlaceButton} aira-label="목록에서 팀 선택하기">
+      <Menu.Button
+        type="button"
+        css={S.teamPlaceButton}
+        aria-label="목록에서 팀 선택하기"
+      >
         <Text as="span" css={S.teamPlaceName}>
           {displayValue}
         </Text>
