@@ -3,6 +3,8 @@ import { styled, css } from 'styled-components';
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
 
   width: 100%;
   height: 100%;
@@ -10,8 +12,6 @@ export const Container = styled.div`
   gap: 10px;
 
   background-color: ${({ theme }) => theme.color.GRAY100};
-
-  overflow: hidden;
 
   @media screen and (max-width: 1320px) {
     padding: 10px 50px 30px;
