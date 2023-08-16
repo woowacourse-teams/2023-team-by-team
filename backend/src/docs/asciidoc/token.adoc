@@ -1,0 +1,56 @@
+== 토큰 재발급 API
+
+- 토큰 재발급 API 요청 Refresh Token에 의한 실패 케이스
+
+1. 만료된 Refresh Token으로 요청 시
+2. 잘못된 형식의 Refresh Token으로 요청 시
+3. 이메일 Claim이 누락된 Refresh Token으로 요청 시
+
+각각의 실패 케이스 토큰 정보들은 각각 실패 문서의 토큰 디코딩하면 나옵니다!
+
+=== 토큰 재발급 성공
+
+==== Request
+include::{snippets}/token/reissue/success/http-request.adoc[]
+
+==== Request Header
+include::{snippets}/token/reissue/success/request-headers.adoc[]
+
+==== Response
+include::{snippets}/token/reissue/success/http-response.adoc[]
+
+==== Response Header
+include::{snippets}/token/reissue/success/response-headers.adoc[]
+
+
+=== 토큰 재발급 실패 (만료된 리프레시 토큰으로 요청)
+
+==== Request
+include::{snippets}/token/reissue/failExpiredRefreshToken/http-request.adoc[]
+
+==== Response
+include::{snippets}/token/reissue/failExpiredRefreshToken/http-response.adoc[]
+
+=== 토큰 재발급 실패 (잘못된 형식의 리프레시 토큰으로 요청)
+
+==== Request
+include::{snippets}/token/reissue/failMalFormedRefreshToken/http-request.adoc[]
+
+==== Response
+include::{snippets}/token/reissue/failMalFormedRefreshToken/http-response.adoc[]
+
+=== 토큰 재발급 실패 (이메일 Claim이 누락된 리프레시 토큰으로 요청)
+
+==== Request
+include::{snippets}/token/reissue/failMissingClaimRefreshToken/http-request.adoc[]
+
+==== Response
+include::{snippets}/token/reissue/failMissingClaimRefreshToken/http-response.adoc[]
+
+=== 토큰 재발급 실패 (요청한 Refresh Token이 DB에 존재하지 않을 때)
+
+==== Request
+include::{snippets}/token/reissue/failNotExistTokenDb/http-request.adoc[]
+
+==== Response
+include::{snippets}/token/reissue/failNotExistTokenDb/http-response.adoc[]
