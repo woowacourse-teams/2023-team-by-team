@@ -12,6 +12,7 @@ const ProtectRoute = () => {
   const queryClient = useQueryClient();
   const { showToast } = useToast();
   const { mutateSendTokenReissue } = useSendTokenReissue();
+
   useEffect(() => {
     const accessToken = localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
 
@@ -37,10 +38,6 @@ const ProtectRoute = () => {
 
       if (data.error === 'EXPIRED_ACCESS_TOKEN') {
         mutateSendTokenReissue();
-        showToast(
-          'error',
-          '네트워크 통신에러가 발생했습니다.\n다시 시도해주세요.',
-        );
         return;
       }
       resetAccessToken();
