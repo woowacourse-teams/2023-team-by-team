@@ -106,7 +106,7 @@ const LinkTable = (props: LinkTableProps) => {
           )}
         </S.TableContainer>
       </S.Container>
-      {isModalOpen && <LinkAddModal />}
+      {isModalOpen && <LinkAddModal linkSize={linkSize} />}
     </>
   );
 };
