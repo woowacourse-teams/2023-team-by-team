@@ -14,6 +14,8 @@ export interface DailyScheduleModalProps {
   calendarSize?: CalendarSize;
   position: Position;
   rawDate: Date;
+  calendarWidth: number;
+  calendarLeft: number;
   onScheduleModalOpen: ({
     scheduleId,
     row,
@@ -28,8 +30,10 @@ export interface DailyScheduleModalProps {
 const DailyScheduleModal = (props: DailyScheduleModalProps) => {
   const {
     rawDate,
-    position,
     calendarSize = 'md',
+    calendarWidth,
+    calendarLeft,
+    position,
     onScheduleModalOpen,
     onSetModalType,
   } = props;
@@ -43,7 +47,9 @@ const DailyScheduleModal = (props: DailyScheduleModalProps) => {
   return (
     <Modal>
       <S.Backdrop onClick={closeModal} />
-      <S.Container css={S.modalLocation(row, column, 0, 1, 1, calendarSize)}>
+      <S.Container
+        css={S.modalLocation(row, column, calendarWidth, calendarLeft, calendarSize)}
+      >
         <S.Header>
           <Text>
             {month + 1}월 {date}일

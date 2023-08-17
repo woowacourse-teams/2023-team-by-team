@@ -101,7 +101,6 @@ export const teamName = css`
 export const modalLocation = (
   row: number,
   column: number,
-  level: number,
   calendarWidth: number,
   calendarLeft: number,
   calendarSize: CalendarSize,
@@ -109,12 +108,8 @@ export const modalLocation = (
   if (calendarSize === 'md')
     return css`
       position: absolute;
-      top: ${(row < 3 ? 92 : -199) + (row + 1) * 110 + level * 18}px;
-      left: ${(column > 3
-        ? calendarWidth / 7 - 550
-        : column === 3
-        ? -136.7
-        : 0) +
+      top: ${(row > 3 ? -228 : 0) + 148 + 110 * row}px;
+      left: ${(column > 3 ? -300 : calendarWidth / 7) +
       calendarLeft +
       (calendarWidth * column) / 7}px;
     `;

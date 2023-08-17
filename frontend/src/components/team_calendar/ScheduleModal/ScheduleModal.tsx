@@ -14,6 +14,8 @@ import { useTeamPlace } from '~/hooks/useTeamPlace';
 import type { CalendarSize } from '~/types/size';
 
 interface ScheduleModalProps {
+  calendarWidth: number;
+  calendarLeft: number;
   calendarSize?: CalendarSize;
   scheduleId: number;
   position: SchedulePosition;
@@ -22,6 +24,8 @@ interface ScheduleModalProps {
 
 const ScheduleModal = (props: ScheduleModalProps) => {
   const {
+    calendarWidth,
+    calendarLeft,
     scheduleId,
     position,
     onOpenScheduleEditModal,
@@ -36,7 +40,6 @@ const ScheduleModal = (props: ScheduleModalProps) => {
 
   if (scheduleById === undefined) return;
   const { title, startDateTime, endDateTime } = scheduleById;
-
   const { row, column, level } = position;
 
   const handleScheduleDelete = () => {
@@ -54,7 +57,14 @@ const ScheduleModal = (props: ScheduleModalProps) => {
     <Modal>
       <S.Backdrop onClick={closeModal} />
       <S.Container
-        css={S.modalLocation(row, column, level, 1, 1, calendarSize)}
+        css={S.modalLocation(
+          row,
+          column,
+          level,
+          calendarWidth,
+          calendarLeft,
+          calendarSize,
+        )}
       >
         <S.Header>
           <S.TeamWrapper>

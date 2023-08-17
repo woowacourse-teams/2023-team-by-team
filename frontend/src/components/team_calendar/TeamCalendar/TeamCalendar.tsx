@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useRef } from 'react';
 import Text from '~/components/common/Text/Text';
 import Button from '~/components/common/Button/Button';
 import DateCell from '~/components/common/DateCell/DateCell';
@@ -21,6 +21,7 @@ import DailyScheduleModal from '~/components/team_calendar/DailyScheduleModal/Da
 import { getDateByPosition } from '~/utils/getDateByPosition';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import type { CalendarSize } from '~/types/size';
+import { useCalendarResizePosition } from '~/hooks/useCalendarResizePosition';
 
 interface TeamCalendarProps {
   calendarSize?: CalendarSize;
@@ -54,6 +55,8 @@ const TeamCalendar = (props: TeamCalendarProps) => {
     row: 0,
     column: 0,
   });
+  const calendarRef = useRef<HTMLDivElement>(null);
+  const { width, left } = useCalendarResizePosition(calendarRef);
 
   const scheduleBars = generateScheduleBars(year, month, schedules);
 
@@ -122,7 +125,7 @@ const TeamCalendar = (props: TeamCalendarProps) => {
             <PlusIcon />
           </Button>
         </S.CalendarHeader>
-        <div>
+        <div ref={calendarRef}>
           <S.DaysOfWeek calendarSize={calendarSize}>
             {DAYS_OF_WEEK.map((day) => {
               return <S.DayOfWeek key={day}>{day}</S.DayOfWeek>;
@@ -219,6 +222,8 @@ const TeamCalendar = (props: TeamCalendarProps) => {
       )}
       {isModalOpen && modalType === MODAL_OPEN_TYPE.VIEW && (
         <ScheduleModal
+          calendarWidth={width}
+          calendarLeft={left}
           calendarSize={calendarSize}
           scheduleId={modalScheduleId}
           position={modalPosition}
@@ -236,6 +241,8 @@ const TeamCalendar = (props: TeamCalendarProps) => {
       )}
       {isModalOpen && modalType === MODAL_OPEN_TYPE.DAILY && (
         <DailyScheduleModal
+          calendarWidth={width}
+          calendarLeft={left}
           calendarSize={calendarSize}
           rawDate={dailyModalDate}
           position={dailyModalPosition}

@@ -20,6 +20,8 @@ const SampleModal = () => {
     <>
       <Button onClick={openModal}>모달 열기</Button>
       <DailyScheduleModal
+        calendarLeft={200}
+        calendarWidth={1000}
         onScheduleModalOpen={({ scheduleId, row, column, level }) =>
           alert(`${scheduleId}, ${row}, ${column}, ${level}`)
         }
@@ -34,6 +36,8 @@ const SampleModal = () => {
 export const Default: Story = {
   render: () => <SampleModal />,
   args: {
+    calendarLeft: 200,
+    calendarWidth: 1000,
     onScheduleModalOpen: ({
       scheduleId,
       row,
