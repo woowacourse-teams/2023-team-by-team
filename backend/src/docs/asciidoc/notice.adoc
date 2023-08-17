@@ -1,0 +1,174 @@
+== 공지 등록 API
+
+=== 공지 등록 성공
+
+===== Request
+include::{snippets}/notice/register/success/http-request.adoc[]
+
+===== Path Parameter
+include::{snippets}/notice/register/success/path-parameters.adoc[]
+
+==== Request Header
+include::{snippets}/notice/register/success/request-headers.adoc[]
+
+==== Request Body
+include::{snippets}/notice/register/success/request-fields.adoc[]
+
+==== Response
+include::{snippets}/notice/register/success/http-response.adoc[]
+
+
+=== 공지 등록 실패 (등록할 알림 내용 빈 값)
+
+==== Request
+include::{snippets}/notice/register/fail/blankContent/http-request.adoc[]
+
+===== Path Parameter
+include::{snippets}/notice/register/fail/blankContent/path-parameters.adoc[]
+
+==== Request Header
+include::{snippets}/notice/register/fail/blankContent/request-headers.adoc[]
+
+==== Request Body
+include::{snippets}/notice/register/fail/blankContent/request-fields.adoc[]
+
+==== Response
+include::{snippets}/notice/register/fail/blankContent/http-response.adoc[]
+
+
+=== 공지 등록 실패 (사용자가 속하지 않은 팀플레이스 Id로 요청)
+
+==== Request
+include::{snippets}/notice/register/fail/forbiddenTeamPlace/http-request.adoc[]
+
+===== Path Parameter
+include::{snippets}/notice/register/fail/forbiddenTeamPlace/path-parameters.adoc[]
+
+==== Request Header
+include::{snippets}/notice/register/fail/forbiddenTeamPlace/request-headers.adoc[]
+
+==== Request Body
+include::{snippets}/notice/register/fail/forbiddenTeamPlace/request-fields.adoc[]
+
+==== Response
+include::{snippets}/notice/register/fail/forbiddenTeamPlace/http-response.adoc[]
+
+
+=== 공지 등록 실패 (존재하지 않는 팀플레이스 Id)
+
+==== Request
+include::{snippets}/notice/register/fail/nonExistTeamPlace/http-request.adoc[]
+
+===== Path Parameter
+include::{snippets}/notice/register/fail/nonExistTeamPlace/path-parameters.adoc[]
+
+==== Request Header
+include::{snippets}/notice/register/fail/nonExistTeamPlace/request-headers.adoc[]
+
+==== Request Body
+include::{snippets}/notice/register/fail/nonExistTeamPlace/request-fields.adoc[]
+
+==== Response
+include::{snippets}/notice/register/fail/nonExistTeamPlace/http-response.adoc[]
+
+
+=== 공지 등록 실패 (존재하지 않는 사용자 Id)
+
+==== Request
+include::{snippets}/notice/register/fail/nonExistMember/http-request.adoc[]
+
+===== Path Parameter
+include::{snippets}/notice/register/fail/nonExistMember/path-parameters.adoc[]
+
+==== Request Header
+include::{snippets}/notice/register/fail/nonExistMember/request-headers.adoc[]
+
+==== Request Body
+include::{snippets}/notice/register/fail/nonExistMember/request-fields.adoc[]
+
+==== Response
+include::{snippets}/notice/register/fail/nonExistMember/http-response.adoc[]
+
+
+== 공지 조회 API
+
+
+=== 공지 조회 성공 (하나 이상의 공지가 등록된 경우)
+
+==== Request
+include::{snippets}/notice/find/success/http-request.adoc[]
+
+===== Path Parameter
+include::{snippets}/notice/find/success/path-parameters.adoc[]
+
+==== Request Header
+include::{snippets}/notice/find/success/request-headers.adoc[]
+
+==== Response
+include::{snippets}/notice/find/success/http-response.adoc[]
+
+==== Response Field
+include::{snippets}/notice/find/success/response-fields.adoc[]
+
+
+=== 공지 조회 성공 (등록된 공지가 없을 경우)
+
+==== Request
+include::{snippets}/notice/find/success/nonExistNotice/http-request.adoc[]
+
+===== Path Parameter
+include::{snippets}/notice/find/success/nonExistNotice/path-parameters.adoc[]
+
+==== Request Header
+include::{snippets}/notice/find/success/nonExistNotice/request-headers.adoc[]
+
+==== Response
+include::{snippets}/notice/find/success/nonExistNotice/http-response.adoc[]
+
+
+=== 공지 조회 성공 (팀플레이스를 탈퇴한 멤버가 등록한 공지 조회)
+
+==== Request
+include::{snippets}/notice/find/success/writtenByLeavedMember/http-request.adoc[]
+
+===== Path Parameter
+include::{snippets}/notice/find/success/writtenByLeavedMember/path-parameters.adoc[]
+
+==== Request Header
+include::{snippets}/notice/find/success/writtenByLeavedMember/request-headers.adoc[]
+
+==== Response
+include::{snippets}/notice/find/success/writtenByLeavedMember/http-response.adoc[]
+
+==== Response Field
+include::{snippets}/notice/find/success/writtenByLeavedMember/response-fields.adoc[]
+
+
+=== 공지 조회 실패 (존재하지 않는 팀플레이스 Id)
+
+==== Request
+include::{snippets}/notice/find/fail/NonExistTeamPlaceId/http-request.adoc[]
+
+===== Path Parameter
+include::{snippets}/notice/find/fail/NonExistTeamPlaceId/path-parameters.adoc[]
+
+==== Request Header
+include::{snippets}/notice/find/fail/NonExistTeamPlaceId/request-headers.adoc[]
+
+==== Response
+include::{snippets}/notice/find/fail/NonExistTeamPlaceId/http-response.adoc[]
+
+
+=== 공지 조회 실패 (사용자가 속하지 않은 팀플레이스 Id로 요청)
+
+==== Request
+include::{snippets}/notice/find/fail/forbiddenTeamPlace/http-request.adoc[]
+
+===== Path Parameter
+include::{snippets}/notice/find/fail/forbiddenTeamPlace/path-parameters.adoc[]
+
+==== Request Header
+include::{snippets}/notice/find/fail/forbiddenTeamPlace/request-headers.adoc[]
+
+==== Response
+include::{snippets}/notice/find/fail/forbiddenTeamPlace/http-response.adoc[]
