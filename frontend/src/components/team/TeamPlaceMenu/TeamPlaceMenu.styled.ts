@@ -10,12 +10,15 @@ export const teamPlaceButton = css`
 `;
 
 export const teamPlaceName = css`
+  display: block;
   overflow: hidden;
-  white-space: nowrap;
   text-overflow: ellipsis;
 
-  font-size: 26px;
-  font-weight: bold;
+  width: 300px;
+  margin-left: 6px;
+
+  font: bold 24px/26px 'Pretendard';
+  white-space: nowrap;
 `;
 
 export const teamName = css`
