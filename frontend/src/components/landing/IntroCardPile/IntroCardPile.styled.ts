@@ -99,7 +99,7 @@ export const Blind = styled.div<{ animation: boolean }>`
     css`
       opacity: 1;
 
-      animation: ${invertedFadeInOut} 7s 2.5s infinite;
+      animation: ${invertedFadeInOut} 7s 1.6s infinite;
     `}
 `;
 

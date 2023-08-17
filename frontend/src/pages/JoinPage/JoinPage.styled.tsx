@@ -106,7 +106,7 @@ export const inputTitle = css`
   border-radius: 14px;
   background-color: transparent;
 
-  font-size: 32px;
+  font-size: 24px;
 `;
 
 export const submitButton = css`
