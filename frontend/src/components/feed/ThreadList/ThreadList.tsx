@@ -35,7 +35,7 @@ const ThreadList = (props: ThreadListProps) => {
     <>
       {noticeThread && noticeThread.id && (
         <NoticeThread
-          size={size}
+          threadSize={size}
           authorName={noticeThread.authorName}
           createdAt={noticeThread.createdAt}
           profileImageUrl={noticeThread.profileImageUrl}
@@ -49,7 +49,7 @@ const ThreadList = (props: ThreadListProps) => {
           return type === THREAD_TYPE.THREAD ? (
             <Thread
               key={id}
-              size={size}
+              threadSize={size}
               profileImageUrl={profileImageUrl}
               content={content}
               {...rest}
@@ -58,7 +58,7 @@ const ThreadList = (props: ThreadListProps) => {
             <Notification
               teamPlaceColor={teamPlaceColor}
               key={id}
-              size={size}
+              threadSize={size}
               content={content}
             />
           );

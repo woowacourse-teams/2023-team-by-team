@@ -34,7 +34,7 @@ export const ShortContent: Story = {
 
 export const Small: Story = {
   args: {
-    size: 'sm',
+    threadSize: 'sm',
     authorName: '팀바팀_필립',
     profileImageUrl:
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYZjvO1QuvfgCfQxBwwzmJcHIT5pTXIBGOLeyBDIbZknn6Dhkd40WrU0ZCdjt-IoXLzI0&usqp=CAU',
