@@ -36,7 +36,7 @@ public class MyCalendarScheduleController {
             @RequestParam final Integer month,
             @RequestParam final Integer day
     ) {
-        final SchedulesWithTeamPlaceIdResponse responseBody = myCalendarScheduleService.findDailySchedule(memberEmailDto, year, month, day);
+        final SchedulesWithTeamPlaceIdResponse responseBody = myCalendarScheduleService.findScheduleInPeriod(memberEmailDto, year, month, day);
 
         return ResponseEntity.ok(responseBody);
     }

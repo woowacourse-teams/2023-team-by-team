@@ -6,8 +6,15 @@ import Text from '~/components/common/Text/Text';
 import Input from '~/components/common/Input/Input';
 import { useRef } from 'react';
 import { useTeamLinkAddModal } from '~/hooks/link/useTeamLinkAddModal';
+import type { LinkSize } from '~/types/size';
 
-const LinkAddModal = () => {
+interface LinkAddModalProps {
+  linkSize?: LinkSize;
+}
+
+const LinkAddModal = (props: LinkAddModalProps) => {
+  const { linkSize = 'md' } = props;
+
   const linkRef = useRef<HTMLInputElement>(null);
 
   const {
@@ -25,7 +32,7 @@ const LinkAddModal = () => {
   return (
     <Modal>
       <S.Backdrop onClick={handleClose} />
-      <S.Container>
+      <S.Container linkSize={linkSize}>
         <S.IconWrapper>
           <Button
             variant="plain"

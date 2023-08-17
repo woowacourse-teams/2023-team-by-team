@@ -1,4 +1,5 @@
-import { css, styled } from 'styled-components';
+import { type CSSProp, css, styled } from 'styled-components';
+import type { CalendarSize } from '~/types/size';
 import type { TeamPlaceColor } from '~/types/team';
 
 export const Backdrop = styled.div`
@@ -9,7 +10,7 @@ export const Backdrop = styled.div`
   left: 0;
 `;
 
-export const Container = styled.div`
+export const Container = styled.div<{ css: CSSProp }>`
   display: flex;
   position: absolute;
   flex-direction: column;
@@ -26,6 +27,8 @@ export const Container = styled.div`
     0 0 1px #1b1d1f33,
     0 15px 25px #1b1d1f33,
     0 5px 10px #1b1d1f1f;
+
+  ${({ css }) => css};
 `;
 
 export const Header = styled.div`
@@ -94,3 +97,27 @@ export const teamName = css`
 
   max-width: 200px;
 `;
+
+export const modalLocation = (
+  row: number,
+  column: number,
+  calendarWidth: number,
+  calendarLeft: number,
+  calendarSize: CalendarSize,
+) => {
+  if (calendarSize === 'md')
+    return css`
+      position: absolute;
+      top: ${(row > 3 ? -228 : 0) + 148 + 110 * row}px;
+      left: ${(column > 3 ? -300 : calendarWidth / 7) +
+      calendarLeft +
+      (calendarWidth * column) / 7}px;
+    `;
+
+  if (calendarSize == 'sm')
+    return css`
+      position: fixed;
+      top: 23%;
+      left: 19%;
+    `;
+};

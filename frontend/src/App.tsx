@@ -12,7 +12,6 @@ import CreatePage from '~/pages/CreatePage/CreatePage';
 import JoinPage from '~/pages/JoinPage/JoinPage';
 import TeamLinkPage from '~/pages/TeamLinkPage/TeamLinkPage';
 import TeamOverviewPage from '~/pages/TeamOverviewPage/TeamOverviewPage';
-import { ModalProvider } from './components/common/Modal/ModalContext';
 
 const App = () => {
   return (

@@ -46,7 +46,7 @@ public class MyCalendarScheduleService {
     }
 
     @Transactional(readOnly = true)
-    public SchedulesWithTeamPlaceIdResponse findDailySchedule(
+    public SchedulesWithTeamPlaceIdResponse findScheduleInPeriod(
             final MemberEmailDto memberEmailDto,
             final int targetYear,
             final int targetMonth,

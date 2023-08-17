@@ -1,0 +1,33 @@
+== 통합 일정 조회 API
+
+== 기간 내 일정 조회
+
+=== Request
+==== header
+include::{snippets}/my-calendar/schedules/findSchedulesInPeriodDaily/success/request-headers.adoc[]
+
+=== Query Param
+include::{snippets}/my-calendar/schedules/findSchedulesInPeriodDaily/success/query-parameters.adoc[]
+
+=== Response
+==== Body
+include::{snippets}/my-calendar/schedules/findSchedulesInPeriodDaily/success/response-fields.adoc[]
+
+---
+
+=== Example
+
+==== 하루 일정 조회시
+==== Request
+include::{snippets}/my-calendar/schedules/findSchedulesInPeriodDaily/success/http-request.adoc[]
+
+=== Response
+include::{snippets}/my-calendar/schedules/findSchedulesInPeriodDaily/success/http-response.adoc[]
+
+
+=== 한달 일정 조회시
+==== Request
+include::{snippets}/my-calendar/schedules/findSchedulesInPeriodMonthly/success/http-request.adoc[]
+
+==== Response
+include::{snippets}/my-calendar/schedules/findSchedulesInPeriodMonthly/success/http-response.adoc[]

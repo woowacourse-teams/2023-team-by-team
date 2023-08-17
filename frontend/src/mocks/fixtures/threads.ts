@@ -9,7 +9,7 @@ export const threads: Thread[] = [
     authorName: 'schedule',
     profileImageUrl: '',
     createdAt: '2021-11-24 10:30',
-    content: '오늘 예정된 일정이 있습니다.',
+    content: '오늘 예정된 일정이 있습니다.\n오늘 예정된 일정이 있습니다.',
   },
   {
     id: 2,

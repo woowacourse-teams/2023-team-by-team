@@ -55,7 +55,7 @@ public class TeamCalendarScheduleController {
             @RequestParam final Integer month,
             @RequestParam final Integer day
     ) {
-        final SchedulesResponse response = teamCalendarScheduleService.findDailySchedule(teamPlaceId, year, month, day);
+        final SchedulesResponse response = teamCalendarScheduleService.findScheduleInPeriod(teamPlaceId, year, month, day);
 
         return ResponseEntity.ok(response);
     }

@@ -8,6 +8,7 @@ export const useDeleteTeamLink = (teamPlaceId: number) => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['teamLinks', teamPlaceId]);
+        queryClient.invalidateQueries(['threadData', teamPlaceId]);
       },
     },
   );

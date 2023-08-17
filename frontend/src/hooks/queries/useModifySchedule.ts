@@ -15,6 +15,7 @@ export const useModifySchedule = (
         queryClient.invalidateQueries(['schedule', teamPlaceId, scheduleId]);
         queryClient.invalidateQueries(['mySchedules']);
         queryClient.invalidateQueries(['myDailySchedules']);
+        queryClient.invalidateQueries(['threadData', teamPlaceId]);
       },
     },
   );

@@ -52,6 +52,11 @@ export const NotificationItem = styled.li`
 `;
 
 export const content = css`
+  overflow: hidden;
+
+  width: 100%;
+  white-space: pre-wrap;
+
   line-height: 1.5;
 `;
 
