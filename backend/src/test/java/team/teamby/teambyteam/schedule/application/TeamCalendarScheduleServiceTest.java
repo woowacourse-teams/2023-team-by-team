@@ -197,7 +197,7 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
 
             // when
             final SchedulesResponse dailySchedulesResponse =
-                    teamCalendarScheduleService.findDailySchedule(ENGLISH_TEAM_PLACE_ID, year, month, day);
+                    teamCalendarScheduleService.findScheduleInPeriod(ENGLISH_TEAM_PLACE_ID, year, month, day);
             final List<ScheduleResponse> dailyTeamCalendarSchedulesResponses = dailySchedulesResponse.schedules();
 
             // then
@@ -229,7 +229,7 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
                 final int day = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getStartDateTime().getDayOfMonth();
 
                 // when & then
-                assertThatThrownBy(() -> teamCalendarScheduleService.findDailySchedule(ENGLISH_TEAM_PLACE_ID, wrongYear, month, day))
+                assertThatThrownBy(() -> teamCalendarScheduleService.findScheduleInPeriod(ENGLISH_TEAM_PLACE_ID, wrongYear, month, day))
                         .isInstanceOf(DateTimeException.class)
                         .hasMessageContaining("Invalid value for Year (valid values -999999999 - 999999999)");
             }
@@ -246,7 +246,7 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
                 final int day = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getStartDateTime().getDayOfMonth();
 
                 // when & then
-                assertThatThrownBy(() -> teamCalendarScheduleService.findDailySchedule(ENGLISH_TEAM_PLACE_ID, year, wrongMonth, day))
+                assertThatThrownBy(() -> teamCalendarScheduleService.findScheduleInPeriod(ENGLISH_TEAM_PLACE_ID, year, wrongMonth, day))
                         .isInstanceOf(DateTimeException.class)
                         .hasMessageContaining("Invalid value for MonthOfYear (valid values 1 - 12)");
             }
@@ -263,7 +263,7 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
                 final int wrongDay = -1;
 
                 // when & then
-                assertThatThrownBy(() -> teamCalendarScheduleService.findDailySchedule(ENGLISH_TEAM_PLACE_ID, year, month, wrongDay))
+                assertThatThrownBy(() -> teamCalendarScheduleService.findScheduleInPeriod(ENGLISH_TEAM_PLACE_ID, year, month, wrongDay))
                         .isInstanceOf(DateTimeException.class)
                         .hasMessageContaining("Invalid value for DayOfMonth (valid values 1 - 28/31)");
             }
@@ -279,7 +279,7 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
             final int day = 1;
 
             // when
-            SchedulesResponse schedules = teamCalendarScheduleService.findDailySchedule(ENGLISH_TEAM_PLACE.getId(), year, month, day);
+            SchedulesResponse schedules = teamCalendarScheduleService.findScheduleInPeriod(ENGLISH_TEAM_PLACE.getId(), year, month, day);
 
             // then
             assertThat(schedules.schedules()).hasSize(0);
@@ -295,7 +295,7 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
             final int day = 1;
 
             // when & then
-            assertThatThrownBy(() -> teamCalendarScheduleService.findDailySchedule(notExistTeamPlaceId, year, month, day))
+            assertThatThrownBy(() -> teamCalendarScheduleService.findScheduleInPeriod(notExistTeamPlaceId, year, month, day))
                     .isInstanceOf(TeamPlaceException.NotFoundException.class)
                     .hasMessageContaining("조회한 팀 플레이스가 존재하지 않습니다.");
         }

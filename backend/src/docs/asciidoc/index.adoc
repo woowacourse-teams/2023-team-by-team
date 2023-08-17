@@ -27,7 +27,9 @@
 
 
 include::schedule.adoc[]
+include::myScehdule.adoc[]
 include::feed.adoc[]
+include::notice.adoc[]
 include::sharedlink.adoc[]
 include::teamPlace.adoc[]
 include::token.adoc[]
