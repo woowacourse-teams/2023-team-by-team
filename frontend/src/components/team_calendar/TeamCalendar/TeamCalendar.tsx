@@ -21,7 +21,7 @@ import DailyScheduleModal from '~/components/team_calendar/DailyScheduleModal/Da
 import { getDateByPosition } from '~/utils/getDateByPosition';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import type { CalendarSize } from '~/types/size';
-import { useCalendarWidthLeft } from '~/hooks/useCalendarWidthLeft';
+import { useCalendarResizePosition } from '~/hooks/useCalendarResizePosition';
 
 interface TeamCalendarProps {
   calendarSize?: CalendarSize;
@@ -56,7 +56,7 @@ const TeamCalendar = (props: TeamCalendarProps) => {
     column: 0,
   });
   const calendarRef = useRef<HTMLDivElement>(null);
-  const { width, left } = useCalendarWidthLeft(calendarRef);
+  const { width, left } = useCalendarResizePosition(calendarRef);
 
   const scheduleBars = generateScheduleBars(year, month, schedules);
 

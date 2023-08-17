@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { RefObject } from 'react';
 
-export const useCalendarWidthLeft = (targetRef: RefObject<HTMLElement>) => {
+export const useCalendarResizePosition = (
+  targetRef: RefObject<HTMLElement>,
+) => {
   const [width, setWidth] = useState(0);
   const [left, setLeft] = useState(0);
 
