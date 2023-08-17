@@ -30,6 +30,7 @@ const LandingHeader = (props: LandingHeaderProps) => {
         variant="plain"
         css={S.landingPageLinkButton}
         onClick={handleLinkButtonClick}
+        aria-label="모아보기 페이지로 이동하기"
       >
         <LogoIcon />
         <Text as="h1" css={S.headerTitle}>
