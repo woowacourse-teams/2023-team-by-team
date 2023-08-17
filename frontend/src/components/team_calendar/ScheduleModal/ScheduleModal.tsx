@@ -1,4 +1,3 @@
-import type { CSSProperties } from 'react';
 import Modal from '~/components/common/Modal/Modal';
 import Text from '~/components/common/Text/Text';
 import { useModal } from '~/hooks/useModal';
@@ -12,15 +11,26 @@ import { useDeleteSchedule } from '~/hooks/queries/useDeleteSchedule';
 import TeamBadge from '~/components/team/TeamBadge/TeamBadge';
 import { useToast } from '~/hooks/useToast';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
+import type { CalendarSize } from '~/types/size';
 
 interface ScheduleModalProps {
+  calendarWidth: number;
+  calendarLeft: number;
+  calendarSize?: CalendarSize;
   scheduleId: number;
   position: SchedulePosition;
   onOpenScheduleEditModal: () => void;
 }
 
 const ScheduleModal = (props: ScheduleModalProps) => {
-  const { scheduleId, position, onOpenScheduleEditModal } = props;
+  const {
+    calendarWidth,
+    calendarLeft,
+    scheduleId,
+    position,
+    onOpenScheduleEditModal,
+    calendarSize = 'md',
+  } = props;
   const { closeModal } = useModal();
   const { showToast } = useToast();
   const { teamPlaceColor, teamPlaceId, displayName } = useTeamPlace();
@@ -30,15 +40,7 @@ const ScheduleModal = (props: ScheduleModalProps) => {
 
   if (scheduleById === undefined) return;
   const { title, startDateTime, endDateTime } = scheduleById;
-
   const { row, column, level } = position;
-  const modalLocation: CSSProperties = {
-    position: 'absolute',
-    top: row < 3 ? `${(row + 1) * 120 + level * 18 + 60}px` : 'none',
-    bottom: row >= 3 ? `${(6 - row) * 120 - level * 18}px` : 'none',
-    left: column < 3 ? `${(column * 100) / 7}%` : 'none',
-    right: column >= 3 ? `${((6 - column) * 100) / 7}%` : 'none',
-  };
 
   const handleScheduleDelete = () => {
     if (confirm('일정을 삭제하시겠어요?')) {
@@ -54,7 +56,16 @@ const ScheduleModal = (props: ScheduleModalProps) => {
   return (
     <Modal>
       <S.Backdrop onClick={closeModal} />
-      <S.Container style={modalLocation}>
+      <S.Container
+        css={S.modalLocation(
+          row,
+          column,
+          level,
+          calendarWidth,
+          calendarLeft,
+          calendarSize,
+        )}
+      >
         <S.Header>
           <S.TeamWrapper>
             <TeamBadge teamPlaceColor={teamPlaceColor} size="lg" />

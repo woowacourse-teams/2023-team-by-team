@@ -29,6 +29,8 @@ const SampleModal = () => {
         );
       })}
       <ScheduleModal
+        calendarWidth={1000}
+        calendarLeft={200}
         scheduleId={1}
         position={{
           row: 0,
@@ -46,6 +48,8 @@ const SampleModal = () => {
 export const Default: Story = {
   render: () => <SampleModal />,
   args: {
+    calendarWidth: 1000,
+    calendarLeft: 200,
     scheduleId: 1,
     position: {
       row: 0,

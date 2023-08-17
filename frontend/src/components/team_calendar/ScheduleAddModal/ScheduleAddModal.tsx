@@ -11,13 +11,15 @@ import TeamBadge from '~/components/team/TeamBadge/TeamBadge';
 import TimeTableMenu from '~/components/team_calendar/TimeTableMenu/TimeTableMenu';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useRef, useEffect } from 'react';
+import type { CalendarSize } from '~/types/size';
 
 interface ScheduleAddModalProps {
+  calendarSize?: CalendarSize;
   clickedDate: Date;
 }
 
 const ScheduleAddModal = (props: ScheduleAddModalProps) => {
-  const { clickedDate } = props;
+  const { clickedDate, calendarSize = 'md' } = props;
   const { closeModal } = useModal();
   const { teamPlaceColor, displayName } = useTeamPlace();
   const {
@@ -42,7 +44,7 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
   return (
     <Modal>
       <S.Backdrop onClick={closeModal} />
-      <S.Container>
+      <S.Container calendarSize={calendarSize}>
         <S.Header>
           <Button
             variant="plain"

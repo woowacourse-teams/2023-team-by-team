@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export const Container = styled.header`
   height: 64px;
-  padding: 8px;
+  padding: 0 14px;
 `;
 
 export const LandingPageLink = styled(Link)`
