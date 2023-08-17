@@ -7,7 +7,7 @@ export const ScheduleWrapper = styled.div`
   overflow-x: hidden;
 
   width: 280px;
-  height: 320px;
+  max-height: 320px;
   gap: 10px;
 `;
 

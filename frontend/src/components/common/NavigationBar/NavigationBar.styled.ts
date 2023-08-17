@@ -1,11 +1,11 @@
 import { styled } from 'styled-components';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { css } from 'styled-components';
 
 export const Nav = styled.nav`
   display: flex;
 
-  width: 100px;
+  width: 70px;
   height: 100%;
   padding: 14px 0 18px 0;
 `;
@@ -19,19 +19,33 @@ export const MenuContainer = styled.div`
   gap: 30px;
 `;
 
-export const MenuLink = styled(Link)`
+export const MenuLink = styled(NavLink)`
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 
-  width: 56px;
-  height: 56px;
-  padding: 0;
+  width: 62px;
+  height: 62px;
+  padding: 4px;
 
   border-radius: 50%;
 
   &:hover,
   &:focus {
+    background-color: ${({ theme }) => theme.color.GRAY200};
+  }
+
+  & > span {
+    margin-top: 3px;
+    font-size: 13px;
+  }
+
+  &:last-child > span {
+    font-size: 11px;
+  }
+
+  &.active {
     background-color: ${({ theme }) => theme.color.GRAY200};
   }
 `;

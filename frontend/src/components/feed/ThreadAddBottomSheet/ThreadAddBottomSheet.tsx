@@ -4,8 +4,14 @@ import Button from '~/components/common/Button/Button';
 import Checkbox from '~/components/common/Checkbox/Checkbox';
 import { useThreadAddBottomSheet } from '~/hooks/thread/useThreadAddBottomSheet';
 import { useKeydownEffect } from '~/hooks/useKeydownEffect';
+import type { ThreadSize } from '~/types/size';
 
-const ThreadAddBottomSheet = () => {
+interface ThreadAddBottomSheetProps {
+  threadSize?: ThreadSize;
+}
+
+const ThreadAddBottomSheet = (props: ThreadAddBottomSheetProps) => {
+  const { threadSize = 'md' } = props;
   const {
     content,
     isNotice,
@@ -27,11 +33,11 @@ const ThreadAddBottomSheet = () => {
       <form onSubmit={handleSubmit}>
         <S.Container isClosing={isClosing}>
           <S.TitleWrapper>
-            <Text as="h3" css={S.title}>
+            <Text as="h3" css={S.title} size={threadSize}>
               팀 피드 작성하기
             </Text>
             <S.NoticeWrapper>
-              <Text as="span" css={S.notice}>
+              <Text as="span" css={S.notice} size={threadSize}>
                 공지로 등록
               </Text>
               <Checkbox isChecked={isNotice} onChange={handleIsNoticeChange} />
@@ -44,7 +50,7 @@ const ThreadAddBottomSheet = () => {
             onChange={handleContentChange}
             required
           />
-          <S.ButtonWrapper>
+          <S.ButtonWrapper size={threadSize}>
             <Button
               type="button"
               css={S.cancelButton}

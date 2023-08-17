@@ -1,4 +1,5 @@
 import { css, styled } from 'styled-components';
+import type { ThreadSize } from '~/types/size';
 
 export const Backdrop = styled.div`
   position: fixed;
@@ -60,21 +61,34 @@ export const Textarea = styled.textarea`
   resize: none;
 `;
 
-export const ButtonWrapper = styled.div`
+export const ButtonWrapper = styled.div<{ size: ThreadSize }>`
   display: flex;
+  ${({ size }) => {
+    if (size === 'sm') {
+      return css`
+        justify-content: center;
+        column-gap: 30px;
+      `;
+    }
+
+    if (size === 'md') {
+      return css`
+        margin-left: auto;
+        column-gap: 20px;
+      `;
+    }
+  }}
 
   margin-top: 10px;
-  margin-left: auto;
-  column-gap: 20px;
 `;
 
-export const title = css`
-  font-size: 24px;
+export const title = (size: ThreadSize) => css`
+  font-size: ${size === 'md' ? '24px' : '20px'};
   font-weight: 700;
 `;
 
-export const notice = css`
-  font-size: 18px;
+export const notice = (size: ThreadSize) => css`
+  font-size: ${size === 'md' ? '18px' : '16px'};
   font-weight: 500;
 `;
 
