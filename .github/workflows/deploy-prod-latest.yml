@@ -12,6 +12,8 @@ permissions:
 
 jobs:
   build-backend:
+    name: Run for main branch only
+    if: github.event.release.target_commitish == 'main'
     runs-on: ubuntu-22.04
     defaults:
       run:
@@ -51,6 +53,8 @@ jobs:
           path: backend/build/libs/*.jar
 
   build-frontend:
+    name: Run for main branch only
+    if: github.event.release.target_commitish == 'main'
     runs-on: ubuntu-22.04
     defaults:
       run:
