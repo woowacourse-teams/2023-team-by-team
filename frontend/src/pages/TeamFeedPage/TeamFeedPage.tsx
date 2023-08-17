@@ -69,7 +69,7 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
         </Button>
       </S.MenuButtonWrapper>
       <S.BottomSheetWrapper>
-        {isModalOpen && <ThreadAddBottomSheet size={threadSize} />}
+        {isModalOpen && <ThreadAddBottomSheet threadSize={threadSize} />}
       </S.BottomSheetWrapper>
     </S.ThreadContainer>
   );
