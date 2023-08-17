@@ -8,6 +8,7 @@ import { useSendTeamLink } from '~/hooks/queries/useSendTeamLink';
 import { useModal } from '~/hooks/useModal';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useToast } from '~/hooks/useToast';
+import { generateHttpsUrl } from '~/utils/generateHttpsUrl';
 
 const URL_REGEX =
   /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i;
@@ -50,7 +51,7 @@ export const useTeamLinkAddModal = (linkRef: RefObject<HTMLInputElement>) => {
     mutateSendTeamLink(
       {
         title: linkName,
-        url: link,
+        url: generateHttpsUrl(link),
       },
       {
         onSuccess: () => {

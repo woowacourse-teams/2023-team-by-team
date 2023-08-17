@@ -1,5 +1,5 @@
-import { styled, css } from 'styled-components';
-import type { CSSProp } from 'styled-components';
+import { styled, css, type CSSProp } from 'styled-components';
+import type { CalendarSize } from '~/types/size';
 
 export const Container = styled.div<{ css: CSSProp }>`
   display: flex;
@@ -97,14 +97,25 @@ export const modalLocation = (
   level: number,
   calendarWidth: number,
   calendarLeft: number,
-) => css`
-  position: absolute;
-  top: ${(row < 3 ? 92 : -199) + (row + 1) * 110 + level * 18}px;
-  left: ${(column > 3
-    ? calendarWidth / 7 - 550
-    : column === 3
-    ? calendarWidth / 14 - 275
-    : 0) +
-  calendarLeft +
-  (calendarWidth * column) / 7}px;
-`;
+  calendarSize: CalendarSize,
+) =>  {
+  if (calendarSize === 'md')
+    return css`
+      position: absolute;
+      top: ${(row < 3 ? 92 : -199) + (row + 1) * 110 + level * 18}px;
+      left: ${(column > 3
+        ? calendarWidth / 7 - 550
+        : column === 3
+        ? calendarWidth / 14 - 275
+        : 0) +
+      calendarLeft +
+      (calendarWidth * column) / 7}px;
+    `;
+
+  if (calendarSize == 'sm')
+    return css`
+      position: fixed;
+      top: 26%;
+      left: 12%;
+    `;
+};

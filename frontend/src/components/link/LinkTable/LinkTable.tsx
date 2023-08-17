@@ -11,6 +11,7 @@ import { useModal } from '~/hooks/useModal';
 import { useToast } from '~/hooks/useToast';
 import { linkTableHeaderValues } from '~/constants/link';
 import type { LinkSize } from '~/types/size';
+import { generateHttpsUrl } from '~/utils/generateHttpsUrl';
 
 interface LinkTableProps {
   linkSize?: LinkSize;
@@ -74,7 +75,7 @@ const LinkTable = (props: LinkTableProps) => {
                   <tr key={id}>
                     <td>
                       <a
-                        href={url}
+                        href={generateHttpsUrl(url)}
                         target="_blank"
                         rel="noreferrer"
                         title={title}
@@ -105,7 +106,7 @@ const LinkTable = (props: LinkTableProps) => {
           )}
         </S.TableContainer>
       </S.Container>
-      {isModalOpen && <LinkAddModal />}
+      {isModalOpen && <LinkAddModal linkSize={linkSize} />}
     </>
   );
 };

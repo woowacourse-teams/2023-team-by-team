@@ -8,8 +8,10 @@ import { parseDate } from '~/utils/parseDate';
 import { useFetchDailySchedules } from '~/hooks/queries/useFetchDailySchedules';
 import type { Position, SchedulePosition } from '~/types/schedule';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
+import type { CalendarSize } from '~/types/size';
 
 export interface DailyScheduleModalProps {
+  calendarSize?: CalendarSize;
   position: Position;
   rawDate: Date;
   calendarWidth: number;
@@ -28,6 +30,7 @@ export interface DailyScheduleModalProps {
 const DailyScheduleModal = (props: DailyScheduleModalProps) => {
   const {
     rawDate,
+    calendarSize = 'md',
     calendarWidth,
     calendarLeft,
     position,
@@ -45,7 +48,7 @@ const DailyScheduleModal = (props: DailyScheduleModalProps) => {
     <Modal>
       <S.Backdrop onClick={closeModal} />
       <S.Container
-        css={S.modalLocation(row, column, calendarWidth, calendarLeft)}
+        css={S.modalLocation(row, column, calendarWidth, calendarLeft, calendarSize)}
       >
         <S.Header>
           <Text>

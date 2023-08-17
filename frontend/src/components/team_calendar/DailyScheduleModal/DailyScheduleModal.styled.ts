@@ -1,4 +1,5 @@
-import { css, styled } from 'styled-components';
+import { type CSSProp, css, styled } from 'styled-components';
+import type { CalendarSize } from '~/types/size';
 import type { TeamPlaceColor } from '~/types/team';
 import type { CSSProp } from 'styled-components';
 
@@ -100,13 +101,24 @@ export const teamName = css`
 
 export const modalLocation = (
   row: number,
-  column: number,
+  column: number, 
   calendarWidth: number,
   calendarLeft: number,
-) => css`
-  position: absolute;
-  top: ${(row > 3 ? -228 : 0) + 148 + 110 * row}px;
-  left: ${(column > 3 ? -300 : calendarWidth / 7) +
-  calendarLeft +
-  (calendarWidth * column) / 7}px;
-`;
+  calendarSize: CalendarSize,
+) => {
+  if (calendarSize === 'md')
+    return css`
+      position: absolute;
+      top: ${(row > 3 ? -228 : 0) + 148 + 110 * row}px;
+      left: ${(column > 3 ? -300 : calendarWidth / 7) +
+      calendarLeft +
+      (calendarWidth * column) / 7}px;
+    `;
+
+  if (calendarSize == 'sm')
+    return css`
+      position: fixed;
+      top: 23%;
+      left: 19%;
+    `;
+};

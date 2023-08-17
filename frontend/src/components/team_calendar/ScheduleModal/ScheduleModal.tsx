@@ -11,10 +11,12 @@ import { useDeleteSchedule } from '~/hooks/queries/useDeleteSchedule';
 import TeamBadge from '~/components/team/TeamBadge/TeamBadge';
 import { useToast } from '~/hooks/useToast';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
+import type { CalendarSize } from '~/types/size';
 
 interface ScheduleModalProps {
   calendarWidth: number;
   calendarLeft: number;
+  calendarSize?: CalendarSize;
   scheduleId: number;
   position: SchedulePosition;
   onOpenScheduleEditModal: () => void;
@@ -27,6 +29,7 @@ const ScheduleModal = (props: ScheduleModalProps) => {
     scheduleId,
     position,
     onOpenScheduleEditModal,
+    calendarSize = 'md',
   } = props;
   const { closeModal } = useModal();
   const { showToast } = useToast();
@@ -54,9 +57,9 @@ const ScheduleModal = (props: ScheduleModalProps) => {
     <Modal>
       <S.Backdrop onClick={closeModal} />
       <S.Container
-        css={S.modalLocation(row, column, level, calendarWidth, calendarLeft)}
+        css={S.modalLocation(row, column, level, calendarWidth, calendarLeft, calendarSize)}
       >
-        <S.Header>
+    <S.Header>
           <S.TeamWrapper>
             <TeamBadge teamPlaceColor={teamPlaceColor} size="lg" />
             <div title={displayName}>

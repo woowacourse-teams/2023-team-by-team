@@ -215,12 +215,16 @@ const TeamCalendar = (props: TeamCalendarProps) => {
         </div>
       </S.Container>
       {isModalOpen && modalType === MODAL_OPEN_TYPE.ADD && (
-        <ScheduleAddModal clickedDate={clickedDate} />
+        <ScheduleAddModal
+          calendarSize={calendarSize}
+          clickedDate={clickedDate}
+        />
       )}
       {isModalOpen && modalType === MODAL_OPEN_TYPE.VIEW && (
         <ScheduleModal
           calendarWidth={width}
           calendarLeft={left}
+          calendarSize={calendarSize}
           scheduleId={modalScheduleId}
           position={modalPosition}
           onOpenScheduleEditModal={() => handleModalOpen(MODAL_OPEN_TYPE.EDIT)}
@@ -228,6 +232,7 @@ const TeamCalendar = (props: TeamCalendarProps) => {
       )}
       {isModalOpen && modalType === MODAL_OPEN_TYPE.EDIT && (
         <ScheduleEditModal
+          calendarSize={calendarSize}
           scheduleId={modalScheduleId}
           initialSchedule={schedules.find(
             (schedule) => schedule.id === modalScheduleId,
@@ -238,6 +243,7 @@ const TeamCalendar = (props: TeamCalendarProps) => {
         <DailyScheduleModal
           calendarWidth={width}
           calendarLeft={left}
+          calendarSize={calendarSize}
           rawDate={dailyModalDate}
           position={dailyModalPosition}
           onScheduleModalOpen={handleScheduleModalOpen}

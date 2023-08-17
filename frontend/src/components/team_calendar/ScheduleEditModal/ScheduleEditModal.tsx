@@ -11,14 +11,16 @@ import TeamBadge from '~/components/team/TeamBadge/TeamBadge';
 import TimeTableMenu from '~/components/team_calendar/TimeTableMenu/TimeTableMenu';
 import Checkbox from '~/components/common/Checkbox/Checkbox';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
+import type { CalendarSize } from '~/types/size';
 
 interface ScheduleEditModalProps {
+  calendarSize?: CalendarSize;
   scheduleId: Schedule['id'];
   initialSchedule?: Schedule;
 }
 
 const ScheduleEditModal = (props: ScheduleEditModalProps) => {
-  const { scheduleId, initialSchedule } = props;
+  const { scheduleId, initialSchedule, calendarSize = 'md' } = props;
   const { closeModal } = useModal();
   const { teamPlaceColor, displayName } = useTeamPlace();
 
@@ -42,7 +44,7 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
   return (
     <Modal>
       <S.Backdrop onClick={closeModal} />
-      <S.Container>
+      <S.Container calendarSize={calendarSize}>
         <S.Header>
           <Button
             variant="plain"

@@ -46,6 +46,8 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: join(__dirname, './public/index.html'),
+      hash: true,
+      favicon: join(__dirname, './public/favicon.ico'),
     }),
     new DefinePlugin({
       'process.env': JSON.stringify(process.env),
