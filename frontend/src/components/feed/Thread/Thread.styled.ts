@@ -15,6 +15,7 @@ export const Container = styled.div<{ threadSize: ThreadSize }>`
         gap: 16px;
 
         padding: 30px 50px;
+
         border-radius: 40px;
       `;
     if (threadSize === 'sm')
@@ -22,6 +23,7 @@ export const Container = styled.div<{ threadSize: ThreadSize }>`
         gap: 8px;
 
         padding: 16px 30px;
+
         border-radius: 20px;
       `;
   }}
