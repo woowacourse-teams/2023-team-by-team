@@ -1,7 +1,10 @@
 import * as S from './LandingHeader.styled';
 import Text from '~/components/common/Text/Text';
-import type { PATH_NAME } from '~/constants/routes';
 import { LogoIcon } from '~/assets/svg';
+import Button from '~/components/common/Button/Button';
+import type { PATH_NAME } from '~/constants/routes';
+import { useNavigate } from 'react-router-dom';
+import { useTeamPlace } from '~/hooks/useTeamPlace';
 
 interface LandingHeaderProps {
   href: (typeof PATH_NAME)[keyof typeof PATH_NAME];
@@ -9,15 +12,30 @@ interface LandingHeaderProps {
 
 const LandingHeader = (props: LandingHeaderProps) => {
   const { href } = props;
+  const navigate = useNavigate();
+  const { teamPlaces } = useTeamPlace();
+
+  const handleLinkButtonClick = () => {
+    if (teamPlaces.length === 0) {
+      return;
+    }
+
+    navigate(href);
+  };
 
   return (
     <S.Container>
-      <S.LandingPageLink to={href}>
+      <Button
+        type="button"
+        variant="plain"
+        css={S.landingPageLinkButton}
+        onClick={handleLinkButtonClick}
+      >
         <LogoIcon />
         <Text as="h1" css={S.headerTitle}>
           팀바팀
         </Text>
-      </S.LandingPageLink>
+      </Button>
     </S.Container>
   );
 };
