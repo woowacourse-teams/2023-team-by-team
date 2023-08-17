@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { css } from 'styled-components';
 
 export const Nav = styled.nav`
@@ -19,7 +19,7 @@ export const MenuContainer = styled.div`
   gap: 30px;
 `;
 
-export const MenuLink = styled(Link)`
+export const MenuLink = styled(NavLink)`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -43,6 +43,10 @@ export const MenuLink = styled(Link)`
 
   &:last-child > span {
     font-size: 11px;
+  }
+
+  &.active {
+    background-color: ${({ theme }) => theme.color.GRAY200};
   }
 `;
 
