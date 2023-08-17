@@ -1,4 +1,5 @@
 import { styled, css } from 'styled-components';
+import type { CalendarSize } from '~/types/size';
 
 export const Backdrop = styled.div`
   position: fixed;
@@ -8,11 +9,22 @@ export const Backdrop = styled.div`
   height: 100%;
 `;
 
-export const Container = styled.div`
+export const Container = styled.div<{ calendarSize: CalendarSize }>`
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  ${({ calendarSize }) => {
+    if (calendarSize === 'md')
+      return css`
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      `;
+
+    if (calendarSize === 'sm')
+      return css`
+        top: 20%;
+        left: 13.5%;
+      `;
+  }}
   display: flex;
   flex-direction: column;
 
