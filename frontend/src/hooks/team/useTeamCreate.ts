@@ -24,7 +24,7 @@ export const useTeamCreate = (inputRef: RefObject<HTMLInputElement>) => {
   const handleTeamNameSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
-    const isRightName = confirm(`"${teamName}"으로 팀을 생성하시겠습니까?`);
+    const isRightName = confirm(`"${teamName}"으로 팀을 개설하시겠습니까?`);
 
     if (!isRightName) {
       inputRef.current?.focus();
