@@ -7,8 +7,10 @@ export const useSendTeamLink = (teamPlaceId: number) => {
   const { mutate } = useMutation(
     (body: TeamLinkWithoutInfo) => sendTeamLink(teamPlaceId, body),
     {
-      onSuccess: () =>
-        queryClient.invalidateQueries(['teamLinks', teamPlaceId]),
+      onSuccess: () => {
+        queryClient.invalidateQueries(['teamLinks', teamPlaceId]);
+        queryClient.invalidateQueries(['threadData', teamPlaceId]);
+      },
     },
   );
 

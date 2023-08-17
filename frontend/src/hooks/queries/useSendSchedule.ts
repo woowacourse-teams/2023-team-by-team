@@ -11,6 +11,7 @@ export const useSendSchedule = (teamPlaceId: number) => {
         queryClient.invalidateQueries(['schedules', teamPlaceId]);
         queryClient.invalidateQueries(['mySchedules']);
         queryClient.invalidateQueries(['myDailySchedules']);
+        queryClient.invalidateQueries(['threadData', teamPlaceId]);
       },
     },
   );
