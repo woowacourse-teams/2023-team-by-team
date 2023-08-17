@@ -16,7 +16,7 @@ export const MenuContainer = styled.div`
   align-items: center;
 
   width: 100%;
-  gap: 20px;
+  gap: 30px;
 `;
 
 export const MenuLink = styled(Link)`
