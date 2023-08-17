@@ -1,5 +1,6 @@
 import { css, styled } from 'styled-components';
 import type { ScheduleBarProps } from '~/components/team_calendar/ScheduleBar/ScheduleBar';
+import type { CalendarSize } from '~/types/size';
 import type { TeamPlaceColor } from '~/types/team';
 
 interface InnerProps {
@@ -14,15 +15,31 @@ interface InnerProps {
 export const Wrapper = styled.div<
   Pick<
     ScheduleBarProps,
-    'level' | 'column' | 'duration' | 'roundedStart' | 'roundedEnd'
+    | 'calendarSize'
+    | 'level'
+    | 'column'
+    | 'duration'
+    | 'roundedStart'
+    | 'roundedEnd'
   >
 >`
   position: absolute;
-  top: ${({ level }) => level * 18 + 36}px;
+  ${({ calendarSize, level }) => {
+    if (calendarSize === 'md')
+      return css`
+        top: ${level * 18 + 36}px;
+        height: 16px;
+      `;
+    if (calendarSize === 'sm')
+      return css`
+        top: ${level * 14 + 22}px;
+        height: 12px;
+      `;
+  }}
+
   left: ${({ column }) => (column * 100) / 7}%;
 
   width: ${({ duration }) => (duration * 100) / 7}%;
-  height: 16px;
 
   padding: ${({ roundedStart, roundedEnd }) =>
     `0 ${roundedEnd ? '4px' : 0} 0 ${roundedStart ? '4px' : 0}`};
@@ -52,7 +69,7 @@ export const Inner = styled.div<InnerProps>`
   }
 `;
 
-export const scheduleBarTitle = css`
+export const scheduleBarTitle = (calendarSize: CalendarSize) => css`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -60,6 +77,6 @@ export const scheduleBarTitle = css`
   max-width: 100px;
   height: 100%;
 
-  font-size: 13px;
+  font-size: ${calendarSize === 'md' ? 12 : 10}px;
   color: ${({ theme }) => theme.color.WHITE};
 `;

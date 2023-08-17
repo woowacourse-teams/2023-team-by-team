@@ -13,7 +13,7 @@ interface NoticeThreadProps {
   profileImageUrl: string;
   createdAt: YYYYMMDDHHMM;
   content: string;
-  size?: NoticeThreadSize;
+  threadSize?: NoticeThreadSize;
 }
 
 const NoticeThread = (props: NoticeThreadProps) => {
@@ -22,7 +22,7 @@ const NoticeThread = (props: NoticeThreadProps) => {
     profileImageUrl,
     createdAt,
     content,
-    size = 'md',
+    threadSize = 'md',
   } = props;
   const threadRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -36,25 +36,35 @@ const NoticeThread = (props: NoticeThreadProps) => {
         ref={threadRef}
         height={resultHeight}
         isExpanded={isExpanded}
+        threadSize={threadSize}
       >
-        {size === 'md' && (
-          <S.ThreadHeader>
-            <S.ProfileImage src={profileImageUrl} rel="프로필 사진" />
-            <Text size="lg" weight="bold">
-              {authorName}
+        <S.ThreadHeader>
+          <S.ProfileImage
+            threadSize={threadSize}
+            src={profileImageUrl}
+            rel="프로필 사진"
+          />
+          <Text weight="bold" css={S.threadInfoText(threadSize)}>
+            {authorName}
+          </Text>
+          <S.Divider />
+          <time>
+            <Text css={S.threadInfoText(threadSize)}>
+              {formatWriteTime(createdAt)}
             </Text>
-            <S.Divider />
-            <Text size="lg">{formatWriteTime(createdAt)}</Text>
-          </S.ThreadHeader>
-        )}
+          </time>
+        </S.ThreadHeader>
+
         <S.ContentWrapper ref={contentRef}>
-          <Text size="lg">{content}</Text>
+          <Text size="xl" css={S.contentField(threadSize)}>
+            {content}
+          </Text>
         </S.ContentWrapper>
         {shouldShowExpandButton && (
           <ExpandButton isExpanded={isExpanded} onClick={toggleExpanded} />
         )}
       </S.InnerContainer>
-      <NoticeTag size={size} css={S.primaryNoticeTag} />
+      <NoticeTag size={threadSize} css={S.primaryNoticeTag} />
     </S.Container>
   );
 };

@@ -22,7 +22,7 @@ export const Small: Story = {
   args: {
     teamPlaceColor: 0,
     content: "'범죄심리학 발표자료..' 일정이 수정되었습니다.",
-    size: 'sm',
+    threadSize: 'sm',
   },
 };
 

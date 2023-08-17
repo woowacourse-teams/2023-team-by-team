@@ -1,6 +1,6 @@
 import { css, styled } from 'styled-components';
 
-export const Container = styled.div`
+export const Header = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -54,6 +54,22 @@ export const teamPlaceName = css`
   font-weight: bold;
 `;
 
+export const notificationButton = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
+  padding: 0;
+
+  border-radius: 50%;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.color.GRAY200};
+  }
+`;
+
 export const teamPlaceInfoButton = css`
   display: flex;
   align-items: center;
@@ -66,7 +82,6 @@ export const teamPlaceInfoButton = css`
   border-radius: 50%;
 
   &:hover {
-    cursor: pointer;
     background-color: ${({ theme }) => theme.color.GRAY200};
   }
 `;

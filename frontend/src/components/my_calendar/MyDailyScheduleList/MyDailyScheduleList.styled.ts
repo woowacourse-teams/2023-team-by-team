@@ -3,10 +3,11 @@ import { css, styled } from 'styled-components';
 export const ScheduleWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 
   width: 280px;
-  height: 320px;
+  max-height: 320px;
   gap: 10px;
 `;
 

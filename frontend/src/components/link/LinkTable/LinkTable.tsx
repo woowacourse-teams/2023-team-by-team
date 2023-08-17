@@ -10,8 +10,15 @@ import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useModal } from '~/hooks/useModal';
 import { useToast } from '~/hooks/useToast';
 import { linkTableHeaderValues } from '~/constants/link';
+import type { LinkSize } from '~/types/size';
 
-const LinkTable = () => {
+interface LinkTableProps {
+  linkSize?: LinkSize;
+}
+
+const LinkTable = (props: LinkTableProps) => {
+  const { linkSize = 'md' } = props;
+
   const { openModal, isModalOpen } = useModal();
   const { teamPlaceId } = useTeamPlace();
   const teamLinks = useFetchTeamLinks(teamPlaceId);
@@ -42,19 +49,19 @@ const LinkTable = () => {
   return (
     <>
       <S.Container>
-        <S.MenuHeader>
-          <Text as="h2" css={S.linkTableTitle}>
+        <S.MenuHeader linkSize={linkSize}>
+          <Text as="h2" css={S.linkTableTitle(linkSize)}>
             팀 링크
           </Text>
           <Button
-            css={S.linkAddButton}
+            css={S.linkAddButton(linkSize)}
             aria-label="새로운 링크 등록하기"
             onClick={openModal}
           >
             <PlusIcon />
           </Button>
         </S.MenuHeader>
-        <S.TableContainer>
+        <S.TableContainer linkSize={linkSize}>
           <S.TableHeader>
             {linkTableHeaderValues.map((value) => (
               <th key={value}>{value}</th>
@@ -76,12 +83,15 @@ const LinkTable = () => {
                       </a>
                     </td>
                     <td title={memberName}>{memberName}</td>
-                    <td>{updatedAt}</td>
+                    <td>
+                      <time>{updatedAt}</time>
+                    </td>
                     <td>
                       <Button
                         variant="plain"
                         css={S.deleteButton}
                         onClick={() => handleDeleteTeamLink(id, title)}
+                        aria-label="링크 삭제하기"
                       >
                         <DeleteIcon />
                       </Button>

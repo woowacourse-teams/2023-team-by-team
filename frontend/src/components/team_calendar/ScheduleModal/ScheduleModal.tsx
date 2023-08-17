@@ -91,9 +91,13 @@ const ScheduleModal = (props: ScheduleModalProps) => {
         </S.Header>
         <Text as="h4">{title}</Text>
         <S.PeriodWrapper>
-          <Text size="lg">{formatDateTime(startDateTime)}</Text>
+          <time>
+            <Text size="lg">{formatDateTime(startDateTime)}</Text>
+          </time>
           <Text size="lg">~</Text>
-          <Text size="lg">{formatDateTime(endDateTime)}</Text>
+          <time>
+            <Text size="lg">{formatDateTime(endDateTime)}</Text>
+          </time>
         </S.PeriodWrapper>
         <Button
           type="button"

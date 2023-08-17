@@ -141,7 +141,7 @@ export const MousePointer = styled.img<{ animation: boolean }>`
 `;
 
 export const calendarHeaderText = css`
-  color: ${({ theme }) => theme.color.BLUE400};
+  color: ${({ theme }) => theme.color.BLUE600};
 
   font-weight: 600;
   font-size: 28px;

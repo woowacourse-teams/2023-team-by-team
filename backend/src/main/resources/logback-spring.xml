@@ -50,4 +50,13 @@
         </logger>
     </springProfile>
 
+    <springProfile name="prod">
+        <logger level="WARN" name="org.springframework.boot">
+            <appender-ref ref="FILE"/>
+        </logger>
+        <logger level="WARN" name="team.teamby.teambyteam">
+            <appender-ref ref="FILE"/>
+        </logger>
+    </springProfile>
+
 </configuration>

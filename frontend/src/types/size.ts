@@ -17,3 +17,7 @@ export type NoticeTagSize = Extract<Size, 'sm' | 'md'>;
 export type NoticeThreadSize = Extract<Size, 'sm' | 'md'>;
 
 export type TeamBadgeSize = Extract<Size, 'sm' | 'md' | 'lg'>;
+
+export type CalendarSize = Extract<Size, 'sm' | 'md'>;
+
+export type LinkSize = Extract<Size, 'sm' | 'md'>;

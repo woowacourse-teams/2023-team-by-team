@@ -7,18 +7,20 @@ import { ModalProvider } from '~/components/common/Modal/ModalContext';
 
 const PageTemplate = () => {
   return (
-    <>
+    <S.PageContainer>
       <ModalProvider>
         <Header />
       </ModalProvider>
       <S.Container>
         <NavigationBar />
         <ModalProvider>
-          <Outlet />
+          <S.PageWrapper>
+            <Outlet />
+          </S.PageWrapper>
         </ModalProvider>
         <SideBar />
       </S.Container>
-    </>
+    </S.PageContainer>
   );
 };
 

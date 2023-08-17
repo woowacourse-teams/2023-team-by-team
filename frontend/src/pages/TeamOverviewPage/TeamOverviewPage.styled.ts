@@ -2,7 +2,7 @@ import { styled } from 'styled-components';
 
 export const Container = styled.main`
   display: grid;
-  grid-template-rows: 50% 50%;
+  grid-template-rows: 64% 36%;
   grid-template-columns: 60% 40%;
   grid-template-areas:
     'calendar feed'
@@ -19,16 +19,20 @@ export const Container = styled.main`
 export const TeamCalendarSection = styled.section`
   position: relative;
   grid-area: calendar;
-  overflow: auto;
+
+  padding: 0 40px;
 
   & > div {
     overflow-y: auto;
+    overflow-x: hidden;
   }
 `;
 
 export const TeamLinkSection = styled.section`
   position: relative;
   grid-area: link;
+
+  padding: 10px 40px;
 `;
 
 export const TeamFeedSection = styled.section`

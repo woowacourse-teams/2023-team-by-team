@@ -16,7 +16,6 @@ export const useSendTokenReissue = () => {
       localStorage.removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
       localStorage.removeItem(LOCAL_STORAGE_KEY.REFRESH_TOKEN);
 
-      alert('다시 로그인 해주세요');
       window.location.href = PATH_NAME.LANDING;
     },
   });
