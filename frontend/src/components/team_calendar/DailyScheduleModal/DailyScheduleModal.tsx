@@ -7,10 +7,11 @@ import Text from '~/components/common/Text/Text';
 import { parseDate } from '~/utils/parseDate';
 import { useFetchDailySchedules } from '~/hooks/queries/useFetchDailySchedules';
 import type { Position, SchedulePosition } from '~/types/schedule';
-import type { CSSProperties } from 'react';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
+import type { CalendarSize } from '~/types/size';
 
 export interface DailyScheduleModalProps {
+  calendarSize?: CalendarSize;
   position: Position;
   rawDate: Date;
   onScheduleModalOpen: ({
@@ -25,24 +26,24 @@ export interface DailyScheduleModalProps {
 }
 
 const DailyScheduleModal = (props: DailyScheduleModalProps) => {
-  const { rawDate, position, onScheduleModalOpen, onSetModalType } = props;
+  const {
+    rawDate,
+    position,
+    calendarSize = 'md',
+    onScheduleModalOpen,
+    onSetModalType,
+  } = props;
   const { row, column } = position;
   const { closeModal } = useModal();
   const { teamPlaceColor, teamPlaceId } = useTeamPlace();
 
   const { year, month, date } = parseDate(rawDate);
   const schedules = useFetchDailySchedules(teamPlaceId, year, month, date);
-  const modalLocation: CSSProperties = {
-    top: row < 3 ? `${(row + 2) * 118}px` : 'none',
-    bottom: row >= 3 ? `${(7 - row) * 120}px` : 'none',
-    left: column < 3 ? `${(column * 100) / 7}%` : 'none',
-    right: column >= 3 ? `${((6 - column) * 100) / 7}%` : 'none',
-  };
 
   return (
     <Modal>
       <S.Backdrop onClick={closeModal} />
-      <S.Container style={modalLocation}>
+      <S.Container css={S.modalLocation(row, column, 0, 1, 1, calendarSize)}>
         <S.Header>
           <Text>
             {month + 1}월 {date}일
