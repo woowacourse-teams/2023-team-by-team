@@ -120,7 +120,7 @@
 
 ## ⚙️ Infra
 
-<img width="600px" src='https://github.com/woowacourse-teams/2023-team-by-team/assets/79538610/7cef30eb-522b-462e-866a-d3b660371aa9'  alt="Infra"/>
+<img width="600px" src='https://github.com/woowacourse-teams/2023-team-by-team/assets/79538610/960c5be5-e5b6-4a87-b04d-2621df98d26e'  alt="Infra"/>
 
 ## 🪄 CI/CD
 
