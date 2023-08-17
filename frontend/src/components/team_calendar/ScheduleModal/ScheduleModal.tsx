@@ -57,9 +57,16 @@ const ScheduleModal = (props: ScheduleModalProps) => {
     <Modal>
       <S.Backdrop onClick={closeModal} />
       <S.Container
-        css={S.modalLocation(row, column, level, calendarWidth, calendarLeft, calendarSize)}
+        css={S.modalLocation(
+          row,
+          column,
+          level,
+          calendarWidth,
+          calendarLeft,
+          calendarSize,
+        )}
       >
-    <S.Header>
+        <S.Header>
           <S.TeamWrapper>
             <TeamBadge teamPlaceColor={teamPlaceColor} size="lg" />
             <div title={displayName}>

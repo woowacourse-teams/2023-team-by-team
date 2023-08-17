@@ -1,7 +1,6 @@
 import { type CSSProp, css, styled } from 'styled-components';
 import type { CalendarSize } from '~/types/size';
 import type { TeamPlaceColor } from '~/types/team';
-import type { CSSProp } from 'styled-components';
 
 export const Backdrop = styled.div`
   position: fixed;
@@ -101,7 +100,7 @@ export const teamName = css`
 
 export const modalLocation = (
   row: number,
-  column: number, 
+  column: number,
   calendarWidth: number,
   calendarLeft: number,
   calendarSize: CalendarSize,
