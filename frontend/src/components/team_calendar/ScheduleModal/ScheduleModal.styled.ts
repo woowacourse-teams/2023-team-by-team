@@ -1,6 +1,7 @@
-import { styled, css } from 'styled-components';
+import { styled, css, type CSSProp } from 'styled-components';
+import type { CalendarSize } from '~/types/size';
 
-export const Container = styled.div`
+export const Container = styled.div<{ css: CSSProp }>`
   display: flex;
   flex-direction: column;
   z-index: ${({ theme }) => theme.zIndex.MODAL};
@@ -17,6 +18,8 @@ export const Container = styled.div`
     0 0 1px #1b1d1f33,
     0 15px 25px #1b1d1f33,
     0 5px 10px #1b1d1f1f;
+
+  ${({ css }) => css};
 `;
 
 export const Backdrop = styled.div`
@@ -87,3 +90,32 @@ export const closeButton = css`
 
   cursor: pointer;
 `;
+
+export const modalLocation = (
+  row: number,
+  column: number,
+  level: number,
+  calendarWidth: number,
+  calendarLeft: number,
+  calendarSize: CalendarSize,
+) => {
+  if (calendarSize === 'md')
+    return css`
+      position: absolute;
+      top: ${(row < 3 ? 92 : -199) + (row + 1) * 110 + level * 18}px;
+      left: ${(column > 3
+        ? calendarWidth / 7 - 550
+        : column === 3
+        ? -136.7
+        : 0) +
+      calendarLeft +
+      (calendarWidth * column) / 7}px;
+    `;
+
+  if (calendarSize == 'sm')
+    return css`
+      position: fixed;
+      top: 26%;
+      left: 12%;
+    `;
+};
