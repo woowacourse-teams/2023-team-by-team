@@ -1,4 +1,5 @@
 import { css, styled } from 'styled-components';
+import type { LinkSize } from '~/types/size';
 
 export const Backdrop = styled.div`
   position: fixed;
@@ -8,11 +9,24 @@ export const Backdrop = styled.div`
   height: 100%;
 `;
 
-export const Container = styled.div`
+export const Container = styled.div<{ linkSize: LinkSize }>`
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  ${({ linkSize }) => {
+    if (linkSize === 'md')
+      return css`
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      `;
+
+    if (linkSize === 'sm')
+      return css`
+        top: 100%;
+        left: 14%;
+        transform: translateY(-300px);
+      `;
+  }}
+
   display: flex;
   flex-direction: column;
 
