@@ -1,3 +1,4 @@
+import { useLocation, useNavigate } from 'react-router-dom';
 import { PATH_NAME } from '~/constants/routes';
 import {
   CalendarIcon,
@@ -8,8 +9,16 @@ import {
 } from '~/assets/svg';
 import * as S from './NavigationBar.styled';
 import Text from '~/components/common/Text/Text';
+import Button from '~/components/common/Button/Button';
 
 const NavigationBar = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleTeamAddButtonClick = () => {
+    navigate(PATH_NAME.START, { state: { from: location } });
+  };
+
   return (
     <S.Nav>
       <S.MenuContainer>
@@ -29,10 +38,17 @@ const NavigationBar = () => {
           <ChainIcon />
           <Text as="span">링크</Text>
         </S.MenuLink>
-        <S.MenuLink to={PATH_NAME.START}>
+        <Button
+          type="button"
+          variant="plain"
+          css={S.teamAddButton}
+          onClick={handleTeamAddButtonClick}
+        >
           <TeamAddIcon />
-          <Text as="span">팀 참가/개설</Text>
-        </S.MenuLink>
+          <Text as="span" css={S.teamAddText}>
+            팀 참가/개설
+          </Text>
+        </Button>
       </S.MenuContainer>
     </S.Nav>
   );

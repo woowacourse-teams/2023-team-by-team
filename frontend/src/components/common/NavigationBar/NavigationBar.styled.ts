@@ -41,21 +41,29 @@ export const MenuLink = styled(NavLink)`
     font-size: 13px;
   }
 
-  &:last-child > span {
-    font-size: 11px;
-  }
-
   &.active {
     background-color: ${({ theme }) => theme.color.GRAY200};
   }
 `;
 
-export const exitButton = css`
-  margin-top: auto;
+export const teamAddButton = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  width: 62px;
+  height: 62px;
+  padding: 4px;
 
   border-radius: 50%;
 
-  &:not(:disabled):hover {
+  &:hover,
+  &:focus {
     background-color: ${({ theme }) => theme.color.GRAY200};
   }
+`;
+
+export const teamAddText = css`
+  font-size: 11px;
 `;
