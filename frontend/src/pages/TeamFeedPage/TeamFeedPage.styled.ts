@@ -10,7 +10,10 @@ export const Container = styled.div`
   height: 100%;
 `;
 
-export const ThreadContainer = styled.div<{ threadSize: ThreadSize }>`
+export const ThreadContainer = styled.div<{
+  threadSize: ThreadSize;
+  isModalOpen: boolean;
+}>`
   display: flex;
   flex-direction: column;
   position: relative;
@@ -24,6 +27,8 @@ export const ThreadContainer = styled.div<{ threadSize: ThreadSize }>`
 
   overflow-x: hidden;
   overflow-y: auto;
+
+  ${({ isModalOpen }) => isModalOpen && 'overflow: hidden'};
 `;
 
 export const BottomSheetWrapper = styled.div`

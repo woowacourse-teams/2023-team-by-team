@@ -10,6 +10,8 @@ import { useFetchNoticeThread } from '~/hooks/queries/useFetchNoticeThread';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import Notification from '~/components/feed/Notification/Notification';
 import Thread from '~/components/feed/Thread/Thread';
+import EmptyFeedPlaceholder from '~/components/feed/EmptyFeedPlaceholder/EmptyFeedPlaceholder';
+import { useModal } from '~/hooks/useModal';
 
 interface ThreadListProps {
   size?: ThreadSize;
@@ -22,6 +24,7 @@ const ThreadList = (props: ThreadListProps) => {
     useFetchThreads(teamPlaceId);
   const { noticeThread } = useFetchNoticeThread(teamPlaceId);
   const observeRef = useRef<HTMLDivElement>(null);
+  const { openModal } = useModal();
 
   const onIntersect: IntersectionObserverCallback = ([entry]) => {
     if (entry.isIntersecting && teamPlaceId > 0) {
@@ -64,11 +67,18 @@ const ThreadList = (props: ThreadListProps) => {
           );
         }),
       )}
-      {!hasNextPage && (
-        <Text size="lg" css={S.lastThreadText}>
-          마지막 스레드 입니다.
-        </Text>
-      )}
+      {!(noticeThread && noticeThread.id) &&
+        threadPages &&
+        threadPages.pages[0].threads.length === 0 && (
+          <EmptyFeedPlaceholder onClick={openModal} />
+        )}
+      {!hasNextPage &&
+        threadPages &&
+        threadPages.pages[0].threads.length > 0 && (
+          <Text size="lg" css={S.lastThreadText}>
+            마지막 스레드 입니다.
+          </Text>
+        )}
       <div ref={observeRef} />
     </>
   );

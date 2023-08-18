@@ -2,18 +2,27 @@ import Text from '~/components/common/Text/Text';
 import * as S from './StartPage.styled';
 import Button from '~/components/common/Button/Button';
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { PATH_NAME } from '~/constants/routes';
 import { START_TYPE } from '~/constants/team';
 import IntroCardPile from '~/components/landing/IntroCardPile/IntroCardPile';
 import LandingHeader from '~/components/common/LandingHeader/LandingHeader';
+import BackButton from '~/components/common/BackButton/BackButton';
 
 type StartType = (typeof START_TYPE)[keyof typeof START_TYPE];
 
 const StartPage = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const previousPath = location.state?.from?.pathname;
+  const isShowBackButton = previousPath?.includes(PATH_NAME.TEAM_SELECT);
+
   const ref = useRef<HTMLDivElement>(null);
   const [clickedButton, setClickedButton] = useState<StartType>();
-  const navigate = useNavigate();
+
+  const handleButtonClick = (value: StartType) => {
+    setClickedButton(() => value);
+  };
 
   useEffect(() => {
     if (!clickedButton || ref.current === null) {
@@ -27,10 +36,6 @@ const StartPage = () => {
           : navigate(PATH_NAME.JOIN);
     });
   }, [clickedButton, navigate]);
-
-  const handleButtonClick = (value: StartType) => {
-    setClickedButton(() => value);
-  };
 
   return (
     <S.Container>
@@ -63,6 +68,7 @@ const StartPage = () => {
               팀 참가하기
             </Button>
           </S.ButtonContainer>
+          {isShowBackButton && <BackButton label="이전 페이지로 이동" />}
         </S.InnerContainer>
       </S.MainContainer>
       <IntroCardPile animation={false} />
