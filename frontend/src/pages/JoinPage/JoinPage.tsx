@@ -71,6 +71,7 @@ const JoinPage = () => {
                 </Text>
                 <Button
                   variant="plain"
+                  type="button"
                   css={S.createPageButton}
                   aria-label="팀 개설하기 페이지 이동"
                   onClick={handleCreatePageClicked}
