@@ -46,7 +46,11 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
   }, []);
 
   return (
-    <S.ThreadContainer ref={ref} threadSize={threadSize}>
+    <S.ThreadContainer
+      ref={ref}
+      threadSize={threadSize}
+      isModalOpen={isModalOpen}
+    >
       <ThreadList size={threadSize} />
       <S.MenuButtonWrapper>
         {isShowScrollTopButton && (
