@@ -23,6 +23,8 @@ import java.time.format.DateTimeParseException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    private static final String INTERNAL_SERVER_ERROR_MESSAGE = "관리자에게 문의하세요.";
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(final MethodArgumentNotValidException exception) {
         final String defaultErrorMessage = exception.getBindingResult().getAllErrors().get(0).getDefaultMessage();
@@ -97,5 +99,16 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse(message));
+    }
+
+    @ExceptionHandler(value = {
+            RuntimeException.class
+    })
+    public ResponseEntity<ErrorResponse> handleRuntimeException(final RuntimeException exception) {
+        final String message = exception.getMessage();
+        log.warn(message);
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErrorResponse(INTERNAL_SERVER_ERROR_MESSAGE));
     }
 }
