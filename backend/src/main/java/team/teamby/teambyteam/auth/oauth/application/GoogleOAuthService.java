@@ -59,7 +59,7 @@ public class GoogleOAuthService {
     private OAuthMember createOAuthMember(final String googleIdToken) {
         final String email = extractElementFromToken(googleIdToken, "email");
         final String rawName = extractElementFromToken(googleIdToken, "name");
-        final String picture = extractElementFromToken(googleIdToken, "picture");
+        final String picture = extractURLElementFromToken(googleIdToken, "picture");
 
         if (rawName.length() > Name.MAX_LENGTH) {
             final String substringName = rawName.substring(NAME_BEGIN_INDEX, Name.MAX_LENGTH);
@@ -75,6 +75,14 @@ public class GoogleOAuthService {
         }
         final Member member = new Member(oAuthMember.displayName(), oAuthMember.email(), oAuthMember.imageUrl());
         return memberRepository.save(member);
+    }
+
+    private String extractURLElementFromToken(final String googleIdToken, final String key) {
+        final String payLoad = googleIdToken.split("\\.")[PAYLOAD_INDEX];
+        final String decodedPayLoad = new String(Base64.getUrlDecoder().decode(payLoad));
+        final JacksonJsonParser jacksonJsonParser = new JacksonJsonParser();
+        return (String) jacksonJsonParser.parseMap(decodedPayLoad)
+                .get(key);
     }
 
     private String extractElementFromToken(final String googleIdToken, final String key) {
