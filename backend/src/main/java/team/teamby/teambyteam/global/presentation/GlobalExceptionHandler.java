@@ -4,9 +4,11 @@ import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import team.teamby.teambyteam.auth.exception.AuthenticationException;
 import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
@@ -17,11 +19,13 @@ import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeException;
 import team.teamby.teambyteam.token.exception.TokenException;
 
 import java.time.DateTimeException;
-import java.time.format.DateTimeParseException;
 
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    private static final String DEFAULT_ERROR_MESSAGE = "관리자에게 문의하세요.";
+    private static final String DEFAULT_FORMAT_ERROR_MESSAGE = "잘못된 형식입니다.";
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(final MethodArgumentNotValidException exception) {
@@ -33,7 +37,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = {
-            DateTimeParseException.class,
+            HttpMessageNotReadableException.class,
             DateTimeException.class
     })
     public ResponseEntity<ErrorResponse> handleDateTimeParseException(final DateTimeException exception) {
@@ -41,6 +45,16 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.badRequest()
                 .body(new ErrorResponse("DateTime 형식이 잘못되었습니다. 서버 관리자에게 문의해주세요."));
+    }
+
+    @ExceptionHandler(value = {
+            MethodArgumentTypeMismatchException.class
+    })
+    public ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatch(final MethodArgumentTypeMismatchException exception) {
+        log.warn(exception.getMessage());
+
+        return ResponseEntity.badRequest()
+                .body(new ErrorResponse(DEFAULT_FORMAT_ERROR_MESSAGE));
     }
 
     @ExceptionHandler(value = {
@@ -97,5 +111,16 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse(message));
+    }
+
+    @ExceptionHandler(value = {
+            RuntimeException.class
+    })
+    public ResponseEntity<ErrorResponse> handleRuntimeException(final RuntimeException exception) {
+        final String message = exception.getMessage();
+        log.warn(message);
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErrorResponse(DEFAULT_ERROR_MESSAGE));
     }
 }
