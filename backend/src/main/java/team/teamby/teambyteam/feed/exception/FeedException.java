@@ -15,5 +15,4 @@ public class FeedException extends RuntimeException {
             );
         }
     }
-
 }
