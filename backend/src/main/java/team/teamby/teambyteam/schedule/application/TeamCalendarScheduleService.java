@@ -116,17 +116,17 @@ public class TeamCalendarScheduleService {
                 .orElseThrow(() -> new ScheduleException.ScheduleNotFoundException(scheduleId));
         validateScheduleOwnerTeam(teamPlaceId, previousSchedule);
 
-        Title previousTitle = previousSchedule.getTitle();
-        Span previousSpan = previousSchedule.getSpan();
+        final Title previousTitle = previousSchedule.getTitle();
+        final Span previousSpan = previousSchedule.getSpan();
 
-        String titleToUpdate = scheduleUpdateRequest.title();
-        LocalDateTime startDateTimeToUpdate = scheduleUpdateRequest.startDateTime();
-        LocalDateTime endDateTimeToUpdate = scheduleUpdateRequest.endDateTime();
+        final String titleToUpdate = scheduleUpdateRequest.title();
+        final LocalDateTime startDateTimeToUpdate = scheduleUpdateRequest.startDateTime();
+        final LocalDateTime endDateTimeToUpdate = scheduleUpdateRequest.endDateTime();
 
         previousSchedule.change(titleToUpdate, startDateTimeToUpdate, endDateTimeToUpdate);
         log.info("일정 수정 - 팀플레이스 아이디 : {}, 일정 아이디 : {}", teamPlaceId, scheduleId);
 
-        ScheduleUpdateEventDto scheduleUpdateEventDto =
+        final ScheduleUpdateEventDto scheduleUpdateEventDto =
                 ScheduleUpdateEventDto.of(titleToUpdate, startDateTimeToUpdate, endDateTimeToUpdate);
 
         eventPublisher.publishEvent(new ScheduleUpdateEvent(scheduleId, teamPlaceId,
