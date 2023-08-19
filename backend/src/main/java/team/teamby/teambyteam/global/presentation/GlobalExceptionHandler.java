@@ -25,6 +25,7 @@ import java.time.DateTimeException;
 public class GlobalExceptionHandler {
 
     private static final String DEFAULT_ERROR_MESSAGE = "관리자에게 문의하세요.";
+    private static final String DEFAULT_FORMAT_ERROR_MESSAGE = "잘못된 형식입니다.";
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(final MethodArgumentNotValidException exception) {
@@ -53,7 +54,7 @@ public class GlobalExceptionHandler {
         log.warn(exception.getMessage());
 
         return ResponseEntity.badRequest()
-                .body(new ErrorResponse(DEFAULT_ERROR_MESSAGE));
+                .body(new ErrorResponse(DEFAULT_FORMAT_ERROR_MESSAGE));
     }
 
     @ExceptionHandler(value = {
