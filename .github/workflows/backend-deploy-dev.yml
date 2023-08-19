@@ -69,7 +69,7 @@ jobs:
 
       - name: Make backup
         run: |
-          rm -f /home/ubuntu/team-by-team/backend/backup/*
+          rm -rf /home/ubuntu/team-by-team/backend/backup/*
           mv /home/ubuntu/team-by-team/backend/current/* /home/ubuntu/team-by-team/backend/backup/
 
       - name: Download jar file from artifact
