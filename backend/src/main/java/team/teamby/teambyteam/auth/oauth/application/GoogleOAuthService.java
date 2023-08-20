@@ -59,10 +59,10 @@ public class GoogleOAuthService {
     }
 
     private OAuthMember createOAuthMember(final String googleIdToken) {
-        final Map<String, String> parsedPayLoad = parsePayLoad(googleIdToken);
-        final String email = parsedPayLoad.get("email");
-        final String rawName = parsedPayLoad.get("name");
-        final String picture = parsedPayLoad.get("picture");
+        final Map<String, Object> parsedPayLoad = parsePayLoad(googleIdToken);
+        final String email = (String) parsedPayLoad.get("email");
+        final String rawName = (String) parsedPayLoad.get("name");
+        final String picture = (String) parsedPayLoad.get("picture");
 
         if (rawName.length() > Name.MAX_LENGTH) {
             final String substringName = rawName.substring(NAME_BEGIN_INDEX, Name.MAX_LENGTH);
@@ -80,13 +80,10 @@ public class GoogleOAuthService {
         return memberRepository.save(member);
     }
 
-    private Map<String, String> parsePayLoad(final String googleIdToken) {
+    private Map<String, Object> parsePayLoad(final String googleIdToken) {
         final String payLoad = googleIdToken.split("\\.")[PAYLOAD_INDEX];
         final String decodedPayLoad = new String(Base64.getUrlDecoder().decode(payLoad));
         final JacksonJsonParser jacksonJsonParser = new JacksonJsonParser();
-        return jacksonJsonParser.parseMap(decodedPayLoad)
-                .entrySet()
-                .stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, e -> (String) e.getValue()));
+        return jacksonJsonParser.parseMap(decodedPayLoad);
     }
 }
