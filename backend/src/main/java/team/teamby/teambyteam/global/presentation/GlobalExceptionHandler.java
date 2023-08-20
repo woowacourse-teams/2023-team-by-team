@@ -33,6 +33,8 @@ public class GlobalExceptionHandler {
     private static final String CHARACTERS = "abcdefghijklmnopqrstuvwxyz";
     private static final int ERROR_KEY_LENGTH = 5;
 
+    private static final String EXCEPTION_CLASS_TYPE_MESSAGE_FORMANT = "%n class type : %s";
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(final MethodArgumentNotValidException exception) {
         final String defaultErrorMessage = exception.getBindingResult().getAllErrors().get(0).getDefaultMessage();
@@ -130,7 +132,9 @@ public class GlobalExceptionHandler {
             sb.append(CHARACTERS.charAt(random.nextInt(CHARACTERS.length())));
         }
         final String errorKeyInfo = String.format(ERROR_KEY_FORMAT, sb.toString());
-        log.error(message + errorKeyInfo);
+        final String exceptionTypeInfo = String.format(EXCEPTION_CLASS_TYPE_MESSAGE_FORMANT, exception.getClass());
+
+        log.error(message + errorKeyInfo + exceptionTypeInfo);
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ErrorResponse(DEFAULT_ERROR_MESSAGE + errorKeyInfo));
