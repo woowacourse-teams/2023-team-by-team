@@ -18,7 +18,9 @@ import team.teamby.teambyteam.token.domain.Token;
 import team.teamby.teambyteam.token.domain.TokenRepository;
 
 import java.util.Base64;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -57,9 +59,10 @@ public class GoogleOAuthService {
     }
 
     private OAuthMember createOAuthMember(final String googleIdToken) {
-        final String email = extractElementFromToken(googleIdToken, "email");
-        final String rawName = extractElementFromToken(googleIdToken, "name");
-        final String picture = extractElementFromToken(googleIdToken, "picture");
+        final Map<String, Object> parsedPayLoad = parsePayLoad(googleIdToken);
+        final String email = (String) parsedPayLoad.get("email");
+        final String rawName = (String) parsedPayLoad.get("name");
+        final String picture = (String) parsedPayLoad.get("picture");
 
         if (rawName.length() > Name.MAX_LENGTH) {
             final String substringName = rawName.substring(NAME_BEGIN_INDEX, Name.MAX_LENGTH);
@@ -77,11 +80,10 @@ public class GoogleOAuthService {
         return memberRepository.save(member);
     }
 
-    private String extractElementFromToken(final String googleIdToken, final String key) {
+    private Map<String, Object> parsePayLoad(final String googleIdToken) {
         final String payLoad = googleIdToken.split("\\.")[PAYLOAD_INDEX];
-        final String decodedPayLoad = new String(Base64.getDecoder().decode(payLoad));
+        final String decodedPayLoad = new String(Base64.getUrlDecoder().decode(payLoad));
         final JacksonJsonParser jacksonJsonParser = new JacksonJsonParser();
-        return (String) jacksonJsonParser.parseMap(decodedPayLoad)
-                .get(key);
+        return jacksonJsonParser.parseMap(decodedPayLoad);
     }
 }
