@@ -5,6 +5,7 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceChangeColorRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateRequest;
 
 public class TeamPlaceAcceptanceFixture {
@@ -33,6 +34,20 @@ public class TeamPlaceAcceptanceFixture {
         return RestAssured.given().log().all()
                 .header(HttpHeaders.AUTHORIZATION, JWT_PREFIX + token)
                 .get("/api/team-places/{teamPlaceId}/members", teamPlaceId)
+                .then().log().all()
+                .extract();
+    }
+
+    public static ExtractableResponse<Response> CHANGE_MEMBER_TEAM_PLACE_COLOR(
+            final String token,
+            final Long teamPlaceId,
+            final TeamPlaceChangeColorRequest request
+    ) {
+        return RestAssured.given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, JWT_PREFIX + token)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(request)
+                .patch("/api/team-places/{teamPlaceId}/color", teamPlaceId)
                 .then().log().all()
                 .extract();
     }
