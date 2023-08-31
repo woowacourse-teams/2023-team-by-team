@@ -1,5 +1,6 @@
 export const PATH_NAME = {
   LANDING: '/',
+  POLICY: '/policy',
   LOGIN: '/login',
   START: '/start',
   JOIN: '/join',
