@@ -1,11 +1,19 @@
-import LandingHeader from '~/components/common/LandingHeader/LandingHeader';
-import { PATH_NAME } from '~/constants/routes';
 import * as S from './PolicyPage.styled';
+import Button from '~/components/common/Button/Button';
+import { LogoIcon } from '~/assets/svg';
+import Text from '~/components/common/Text/Text';
 
 const PolicyPage = () => {
   return (
     <>
-      <LandingHeader href={PATH_NAME.POLICY} />
+      <S.HeaderContainer>
+        <Button type="button" variant="plain" css={S.landingPageLinkButton}>
+          <LogoIcon />
+          <Text as="h1" css={S.headerTitle}>
+            팀바팀
+          </Text>
+        </Button>
+      </S.HeaderContainer>
       <S.Container>
         <p>
           <em>
