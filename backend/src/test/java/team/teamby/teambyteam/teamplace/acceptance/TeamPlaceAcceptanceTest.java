@@ -15,6 +15,7 @@ import team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures;
 import team.teamby.teambyteam.member.application.dto.TeamPlacesResponse;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
+import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceChangeColorRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceInviteCodeResponse;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceMemberResponse;
@@ -34,6 +35,7 @@ import static team.teamby.teambyteam.common.fixtures.TokenFixtures.EXPIRED_ACCES
 import static team.teamby.teambyteam.common.fixtures.TokenFixtures.MALFORMED_JWT_TOKEN;
 import static team.teamby.teambyteam.common.fixtures.TokenFixtures.MISSING_CLAIM_ACCESS_TOKEN;
 import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptanceFixture.GET_PARTICIPATED_TEAM_PLACES;
+import static team.teamby.teambyteam.common.fixtures.acceptance.TeamPlaceAcceptanceFixture.CHANGE_MEMBER_TEAM_PLACE_COLOR;
 import static team.teamby.teambyteam.common.fixtures.acceptance.TeamPlaceAcceptanceFixture.CREATE_TEAM_PLACE;
 import static team.teamby.teambyteam.common.fixtures.acceptance.TeamPlaceAcceptanceFixture.GET_MEMBERS_REQUEST;
 import static team.teamby.teambyteam.common.fixtures.acceptance.TeamPlaceAcceptanceFixture.GET_TEAM_PLACE_INVITE_CODE;
@@ -290,6 +292,151 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
 
             // when
             final ExtractableResponse<Response> response = GET_MEMBERS_REQUEST(accessToken, notParticipatedTeamPlaceId);
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+                softly.assertThat(response.jsonPath().getString("error")).contains("접근할 수 없는 팀플레이스입니다.");
+            });
+        }
+    }
+
+    @Nested
+    @DisplayName("팀 플레이스 색상 변경 시")
+    class ChangeMemberTeamPlaceColor {
+        private Member member;
+        private TeamPlace teamPlace;
+        private MemberTeamPlace memberTeamPlace;
+
+        @BeforeEach
+        void setUp() {
+            member = testFixtureBuilder.buildMember(SEONGHA());
+            teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            memberTeamPlace = testFixtureBuilder.buildMemberTeamPlace(member, teamPlace);
+        }
+
+        @Test
+        @DisplayName("팀 플레이스 색상 변경에 성공한다.")
+        void success() {
+            // given
+            final int teamPlaceColorToChange = 1;
+            final String token = jwtTokenProvider.generateAccessToken(member.getEmail().getValue());
+            final Long teamPlaceId = teamPlace.getId();
+            final TeamPlaceChangeColorRequest request = new TeamPlaceChangeColorRequest(teamPlaceColorToChange);
+
+            // when
+            final ExtractableResponse<Response> response = CHANGE_MEMBER_TEAM_PLACE_COLOR(token, teamPlaceId, request);
+
+            // then
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        }
+
+        @Test
+        @DisplayName("존재하지 않는 회원이면 실패한다.")
+        void failWhenNotExistMember() {
+            // given
+            final int teamPlaceColorToChange = 1;
+            final String notExistMemberToken = jwtTokenProvider.generateAccessToken("notExistMemberEmail@gmail.com");
+            final Long teamPlaceId = teamPlace.getId();
+            final TeamPlaceChangeColorRequest request = new TeamPlaceChangeColorRequest(teamPlaceColorToChange);
+
+            // when
+            final ExtractableResponse<Response> response = CHANGE_MEMBER_TEAM_PLACE_COLOR(notExistMemberToken, teamPlaceId, request);
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
+                softly.assertThat(response.jsonPath().getString("error")).contains("조회한 멤버가 존재하지 않습니다.");
+            });
+        }
+
+        @Test
+        @DisplayName("만료된 토큰으로 요청을 보내면 실패한다.")
+        void failWhenExpiredToken() {
+            // given
+            final int teamPlaceColorToChange = 1;
+            final String expiredToken = EXPIRED_ACCESS_TOKEN;
+            final Long teamPlaceId = teamPlace.getId();
+            final TeamPlaceChangeColorRequest request = new TeamPlaceChangeColorRequest(teamPlaceColorToChange);
+
+            // when
+            final ExtractableResponse<Response> response = CHANGE_MEMBER_TEAM_PLACE_COLOR(expiredToken, teamPlaceId, request);
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+                softly.assertThat(response.jsonPath().getString("error")).isEqualTo("EXPIRED_ACCESS_TOKEN");
+            });
+        }
+
+        @Test
+        @DisplayName("잘못된 토큰 형식으로 요청을 보내면 실패한다.")
+        void failWhenWrongToken() {
+            // given
+            final int teamPlaceColorToChange = 1;
+            final String malformedToken = MALFORMED_JWT_TOKEN;
+            final Long teamPlaceId = teamPlace.getId();
+            final TeamPlaceChangeColorRequest request = new TeamPlaceChangeColorRequest(teamPlaceColorToChange);
+
+            // when
+            final ExtractableResponse<Response> response = CHANGE_MEMBER_TEAM_PLACE_COLOR(malformedToken, teamPlaceId, request);
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+                softly.assertThat(response.jsonPath().getString("error")).isEqualTo("인증이 실패했습니다.");
+            });
+        }
+
+        @Test
+        @DisplayName("이메일이 누락된 토큰으로 요청을 보내면 실패한다.")
+        void failWhenMissingClaimToken() {
+            // given
+            final int teamPlaceColorToChange = 1;
+            final String missingClaimToken = MISSING_CLAIM_ACCESS_TOKEN;
+            final Long teamPlaceId = teamPlace.getId();
+            final TeamPlaceChangeColorRequest request = new TeamPlaceChangeColorRequest(teamPlaceColorToChange);
+
+            // when
+            final ExtractableResponse<Response> response = CHANGE_MEMBER_TEAM_PLACE_COLOR(missingClaimToken, teamPlaceId, request);
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+                softly.assertThat(response.jsonPath().getString("error")).isEqualTo("인증이 실패했습니다.");
+            });
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {-1, 10})
+        @DisplayName("요청한 색상 번호가 존재하지 않으면 실패한다.")
+        void failWhenNotExistTeamPlaceColor(int notExistTeamPlaceColor) {
+            // given
+            final String token = jwtTokenProvider.generateAccessToken(member.getEmail().getValue());
+            final Long teamPlaceId = teamPlace.getId();
+            final TeamPlaceChangeColorRequest request = new TeamPlaceChangeColorRequest(notExistTeamPlaceColor);
+
+            // when
+            final ExtractableResponse<Response> response = CHANGE_MEMBER_TEAM_PLACE_COLOR(token, teamPlaceId, request);
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+                softly.assertThat(response.jsonPath().getString("error")).contains("존재하지 않는 팀 플레이스 색상입니다.");
+            });
+        }
+
+        @Test
+        @DisplayName("회원이 소속된 팀플레이스가 아니라면 실패한다.")
+        void failWhenNotParticipatedTeamPlace() {
+            // given
+            final int teamPlaceColorToChange = 1;
+            final String token = jwtTokenProvider.generateAccessToken(member.getEmail().getValue());
+            final Long notParticipatedTeamPlaceId = 2L;
+            final TeamPlaceChangeColorRequest request = new TeamPlaceChangeColorRequest(teamPlaceColorToChange);
+
+            // when
+            final ExtractableResponse<Response> response = CHANGE_MEMBER_TEAM_PLACE_COLOR(token, notParticipatedTeamPlaceId, request);
 
             // then
             assertSoftly(softly -> {
