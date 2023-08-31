@@ -15,6 +15,8 @@ import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.DisplayMemberName;
 import team.teamby.teambyteam.member.domain.vo.DisplayTeamPlaceName;
 import team.teamby.teambyteam.member.exception.MemberException;
+import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
+import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceChangeColorRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateResponse;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceInviteCodeResponse;
@@ -33,6 +35,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ENDEL;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ROY;
@@ -185,6 +188,75 @@ class TeamPlaceServiceTest extends ServiceTest {
 
             // then
             assertThat(actualResponse).usingRecursiveComparison().isEqualTo(expectedResponse);
+        }
+    }
+
+    @Nested
+    @DisplayName("팀 플레이스 색상 변경 시")
+    class ChangeTeamPlaceColor {
+
+        @Test
+        @DisplayName("변경에 성공한다.")
+        void success() {
+            // given
+            final Member member = testFixtureBuilder.buildMember(PHILIP());
+            final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            testFixtureBuilder.buildMemberTeamPlace(member, teamPlace);
+
+            final MemberEmailDto memberEmailDto = new MemberEmailDto(member.getEmail().getValue());
+            final Long teamPlaceId = teamPlace.getId();
+            final int teamPlaceColorToChange = 9;
+            final TeamPlaceChangeColorRequest request = new TeamPlaceChangeColorRequest(teamPlaceColorToChange);
+
+            // when
+            teamPlaceService.changeMemberTeamPlaceColor(memberEmailDto, teamPlaceId, request);
+            final MemberTeamPlace findMemberTeamPlace =
+                    memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(teamPlace.getId(), member.getId()).get();
+
+            // then
+            assertThat(findMemberTeamPlace.getTeamPlaceColor().getColorNumber()).isEqualTo(teamPlaceColorToChange);
+        }
+
+        @Test
+        @DisplayName("이메일에 해당하는 멤버가 없으면 예외가 발생한다.")
+        void failWhenNotExistMemberEmail() {
+            // given
+            final Member member = testFixtureBuilder.buildMember(PHILIP());
+            final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            testFixtureBuilder.buildMemberTeamPlace(member, teamPlace);
+            final String notExistMemberEmail = "notExistMemberEmail@gmail.com";
+
+            final MemberEmailDto memberEmailDto = new MemberEmailDto(notExistMemberEmail);
+            final Long teamPlaceId = teamPlace.getId();
+            final int teamPlaceColorToChange = 9;
+            final TeamPlaceChangeColorRequest request = new TeamPlaceChangeColorRequest(teamPlaceColorToChange);
+
+            // when & then
+            assertThatThrownBy(() -> teamPlaceService.changeMemberTeamPlaceColor(memberEmailDto, teamPlaceId, request))
+                    .isInstanceOf(MemberException.MemberNotFoundException.class)
+                    .hasMessage(String.format("조회한 멤버가 존재하지 않습니다. - request info { email : %s }",
+                            notExistMemberEmail));
+        }
+
+        @Test
+        @DisplayName("팀 플레이스 ID, 멤버 ID에 해당하는 MemberTeamPlace가 없으면 예외가 발생한다.")
+        void failWhenNotExistMemberTeamPlace() {
+            // given
+            final Member member = testFixtureBuilder.buildMember(PHILIP());
+            final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+
+            final  MemberEmailDto memberEmailDto = new MemberEmailDto(member.getEmail().getValue());
+            final Long teamPlaceId = teamPlace.getId();
+            final int teamPlaceColorToChange = 9;
+            final TeamPlaceChangeColorRequest request = new TeamPlaceChangeColorRequest(teamPlaceColorToChange);
+
+            // when & then
+            assertThatThrownBy(() -> teamPlaceService.changeMemberTeamPlaceColor(memberEmailDto, teamPlaceId, request))
+                    .isInstanceOf(MemberTeamPlaceException.NotFoundParticipatedTeamPlaceException.class)
+                    .hasMessage(String.format(
+                            "해당 팀 플레이스에 가입되어 있지 않습니다. - request info { member_email : %s, team_place_id : %d }",
+                            memberEmailDto.email(),
+                            teamPlaceId));
         }
     }
 }
