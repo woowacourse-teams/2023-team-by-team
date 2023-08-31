@@ -2,6 +2,9 @@ package team.teamby.teambyteam.member.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
+
+import java.util.Arrays;
 
 @Getter
 @RequiredArgsConstructor
@@ -19,4 +22,11 @@ public enum TeamPlaceColor {
     J(9);
 
     private final int colorNumber;
+
+    public static TeamPlaceColor findTeamPlaceColor(int colorNumber) {
+        return Arrays.stream(values())
+                .filter(teamPlaceColor -> teamPlaceColor.colorNumber == colorNumber)
+                .findAny()
+                .orElseThrow(() -> new MemberTeamPlaceException.TeamPlaceColorNotExistException(colorNumber));
+    }
 }
