@@ -2,6 +2,7 @@ import { http } from '~/apis/http';
 import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
 import type { UserInfo } from '~/types/team';
 
+let reissuePromise: Promise<Response> | null = null;
 interface GoogleLoginResponse {
   googleLoginUrl: string;
 }
@@ -15,7 +16,11 @@ export const fetchUserInfo = () => {
 };
 
 export const sendTokenReissue = async () => {
-  const response = await fetch('/api/token/reissue', {
+  if (reissuePromise !== null) {
+    return reissuePromise;
+  }
+
+  reissuePromise = fetch('/api/token/reissue', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -24,6 +29,8 @@ export const sendTokenReissue = async () => {
       )}`,
     },
   });
+
+  const response = await reissuePromise;
 
   if (!response.ok) {
     throw new Error('네트워크 통신 중 에러가 발생했습니다.');
