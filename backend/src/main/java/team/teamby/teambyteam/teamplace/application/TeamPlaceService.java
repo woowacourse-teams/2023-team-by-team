@@ -102,14 +102,14 @@ public class TeamPlaceService {
     public void changeMemberTeamPlaceColor(final MemberEmailDto memberEmailDto,
                                            final Long teamPlaceId,
                                            final TeamPlaceChangeColorRequest request) {
-        String memberEmail = memberEmailDto.email();
-        IdOnly memberId = memberRepository.findIdByEmail(new Email(memberEmail))
+        final String memberEmail = memberEmailDto.email();
+        final IdOnly memberId = memberRepository.findIdByEmail(new Email(memberEmail))
                 .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmail));
 
-        MemberTeamPlace memberTeamPlace = memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(teamPlaceId, memberId.id())
+        final MemberTeamPlace memberTeamPlace = memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(teamPlaceId, memberId.id())
                 .orElseThrow(() -> new MemberTeamPlaceException.NotFoundParticipatedTeamPlaceException(memberEmail, teamPlaceId));
 
-        TeamPlaceColor findTeamPlaceColor = TeamPlaceColor.findTeamPlaceColor(request.teamPlaceColor());
+        final TeamPlaceColor findTeamPlaceColor = TeamPlaceColor.findTeamPlaceColor(request.teamPlaceColor());
         memberTeamPlace.changeTeamPlaceColor(findTeamPlaceColor);
     }
 }
