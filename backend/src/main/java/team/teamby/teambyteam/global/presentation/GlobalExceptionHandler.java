@@ -112,7 +112,9 @@ public class GlobalExceptionHandler {
             TeamPlaceInviteCodeException.LengthException.class,
             TeamPlaceException.NameLengthException.class,
             TeamPlaceException.NameBlankException.class,
-            MemberTeamPlaceException.TeamPlaceColorNotExistException.class
+            MemberTeamPlaceException.TeamPlaceColorNotExistException.class,
+            MemberTeamPlaceException.MemberNameBlankException.class,
+            MemberTeamPlaceException.MemberDisplayNameLengthException.class
     })
     public ResponseEntity<ErrorResponse> handleCustomBadRequestException(final RuntimeException exception) {
         final String message = exception.getMessage();
