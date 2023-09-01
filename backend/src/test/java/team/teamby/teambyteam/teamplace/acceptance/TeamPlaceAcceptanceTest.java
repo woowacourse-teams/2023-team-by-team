@@ -251,9 +251,12 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
         @DisplayName("팀 플레이스 참여 멤버 조회에 성공한다.")
         void success() {
             // given
-            final TeamPlaceMembersResponse response = TeamPlaceMembersResponse.from(List.of(
-                    memberTeamPlace1, memberTeamPlace2, memberTeamPlace3, memberTeamPlace4
-            ));
+            final List<MemberTeamPlace> memberTeamPlaces = List.of(memberTeamPlace1, memberTeamPlace2, memberTeamPlace3, memberTeamPlace4);
+            final List<TeamPlaceMemberResponse> teamPlaceMembers = memberTeamPlaces.stream()
+                    .map(memberTeamPlace -> TeamPlaceMemberResponse.of(memberTeamPlace, member1))
+                    .toList();
+
+            final TeamPlaceMembersResponse response = TeamPlaceMembersResponse.from(teamPlaceMembers);
             final List<TeamPlaceMemberResponse> expectedResponse = response.members();
 
             final String accessToken = jwtTokenProvider.generateAccessToken(member1.getEmail().getValue());
