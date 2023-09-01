@@ -19,6 +19,7 @@ export const sendTokenReissue = async () => {
   if (reissuePromise !== null) {
     return reissuePromise;
   }
+
   reissuePromise = fetch('/api/token/reissue', {
     method: 'POST',
     headers: {
@@ -28,6 +29,7 @@ export const sendTokenReissue = async () => {
       )}`,
     },
   });
+
   const response = await reissuePromise;
 
   if (!response.ok) {
