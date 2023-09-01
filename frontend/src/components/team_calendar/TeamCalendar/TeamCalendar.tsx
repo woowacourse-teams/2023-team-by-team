@@ -14,6 +14,7 @@ import { useFetchSchedules } from '~/hooks/queries/useFetchSchedules';
 import { useModal } from '~/hooks/useModal';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useCalendarResizePosition } from '~/hooks/useCalendarResizePosition';
+import { usePrefetchSchedules } from '~/hooks/queries/usePrefetchSchedules';
 import { DAYS_OF_WEEK, MODAL_OPEN_TYPE } from '~/constants/calendar';
 import { generateScheduleBars } from '~/utils/generateScheduleBars';
 import { arrayOf } from '~/utils/arrayOf';
@@ -22,7 +23,6 @@ import type { Position, ModalOpenType } from '~/types/schedule';
 import type { CalendarSize } from '~/types/size';
 import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from '~/assets/svg';
 import * as S from './TeamCalendar.styled';
-import { usePrefetchSchedules } from '~/hooks/queries/usePrefetchSchedules';
 
 interface TeamCalendarProps {
   calendarSize?: CalendarSize;
