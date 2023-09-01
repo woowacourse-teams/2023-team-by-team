@@ -2,20 +2,18 @@ import Modal from '~/components/common/Modal/Modal';
 import Button from '~/components/common/Button/Button';
 import Text from '~/components/common/Text/Text';
 import Input from '~/components/common/Input/Input';
-import { useModal } from '~/hooks/useModal';
 import { useUserInfoModal } from '~/hooks/user/useUserInfoModal';
 import { CheckBlackIcon, EditIcon, LogoutIcon } from '~/assets/svg';
 import * as S from './UserInfoModal.styled';
 
 const UserInfoModal = () => {
-  const { closeModal } = useModal();
-
   const {
     userInfo,
     containerRef,
     isUserInfoEditing,
 
     handlers: {
+      handleClose,
       handleLogoutClick,
       handleUserInfoEditButtonClick,
       handleUserInfoSubmit,
@@ -31,7 +29,7 @@ const UserInfoModal = () => {
 
   return (
     <Modal>
-      <S.Backdrop onClick={closeModal} />
+      <S.Backdrop onClick={handleClose} />
       <S.Container ref={containerRef} onClick={handleContainerClick}>
         <Text as="span" size="lg" weight="semiBold">
           프로필

@@ -5,17 +5,24 @@ import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
 import { PATH_NAME } from '~/constants/routes';
 import { useFetchUserInfo } from '~/hooks/queries/useFetchUserInfo';
 import { useModifyUserInfo } from '~/hooks/queries/useModifyUserInfo';
+import { useModal } from '~/hooks/useModal';
 import { useToast } from '~/hooks/useToast';
 
 export const useUserInfoModal = () => {
   const navigate = useNavigate();
   const { showToast } = useToast();
+  const { closeModal } = useModal();
 
   const { mutateModifyUserInfo } = useModifyUserInfo();
   const { userInfo } = useFetchUserInfo();
 
   const [isUserInfoEditing, setIsUserInfoEditing] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleClose = () => {
+    setIsUserInfoEditing(() => false);
+    closeModal();
+  };
 
   const handleLogoutClick = () => {
     const isLogout = confirm('로그아웃 하시겠습니까?');
@@ -88,6 +95,7 @@ export const useUserInfoModal = () => {
     isUserInfoEditing,
 
     handlers: {
+      handleClose,
       handleLogoutClick,
       handleUserInfoEditButtonClick,
       handleUserInfoSubmit,
