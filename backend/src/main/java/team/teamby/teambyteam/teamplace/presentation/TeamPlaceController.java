@@ -71,7 +71,7 @@ public class TeamPlaceController {
     public ResponseEntity<Void> changeDisplayMemberName(
             @AuthPrincipal final MemberEmailDto memberEmailDto,
             @PathVariable final Long teamPlaceId,
-            @RequestBody final DisplayMemberNameChangeRequest request
+            @RequestBody @Valid final DisplayMemberNameChangeRequest request
     ) {
         teamPlaceService.changeDisplayMemberName(teamPlaceId, request, memberEmailDto);
 
