@@ -45,7 +45,7 @@ const ProtectRoute = () => {
 
   queryClient.setDefaultOptions({
     queries: {
-      retry: 1,
+      retry: false,
       onError,
     },
     mutations: {
