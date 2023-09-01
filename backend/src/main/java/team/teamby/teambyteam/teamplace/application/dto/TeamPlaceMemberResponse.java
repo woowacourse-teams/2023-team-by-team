@@ -8,7 +8,7 @@ public record TeamPlaceMemberResponse(Long id, String name, String profileImageU
     public static TeamPlaceMemberResponse of(final MemberTeamPlace memberTeamPlace, final Member loginMember) {
         return new TeamPlaceMemberResponse(
                 memberTeamPlace.findMemberId(),
-                memberTeamPlace.findMemberName(),
+                memberTeamPlace.getDisplayMemberNameValue(),
                 memberTeamPlace.findMemberProfileImageUrl(),
                 memberTeamPlace.isOwnedBy(loginMember)
         );
