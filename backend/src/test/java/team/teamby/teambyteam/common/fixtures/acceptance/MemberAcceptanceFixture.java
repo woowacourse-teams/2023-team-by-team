@@ -5,6 +5,8 @@ import io.restassured.http.Header;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import team.teamby.teambyteam.member.configuration.dto.MemberUpdateRequest;
 
 public class MemberAcceptanceFixture {
 
@@ -42,6 +44,16 @@ public class MemberAcceptanceFixture {
                 .header(new Header(HttpHeaders.AUTHORIZATION, JWT_PREFIX + token))
                 .when().log().all()
                 .post("/api/me/team-places/{inviteCode}", inviteCode)
+                .then().log().all()
+                .extract();
+    }
+
+    public static ExtractableResponse<Response> UPDATE_MEMBER_INFORMATION(final String token, final MemberUpdateRequest request) {
+        return RestAssured.given().log().all()
+                .header(new Header(HttpHeaders.AUTHORIZATION, JWT_PREFIX + token))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(request)
+                .patch("/api/me")
                 .then().log().all()
                 .extract();
     }
