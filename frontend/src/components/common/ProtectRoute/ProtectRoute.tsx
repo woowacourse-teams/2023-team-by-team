@@ -5,12 +5,10 @@ import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
 import { PATH_NAME } from '~/constants/routes';
 import { TeamPlaceProvider } from '~/contexts/TeamPlaceContext';
 import { useSendTokenReissue } from '~/hooks/queries/useSendTokenReissue';
-import { useToast } from '~/hooks/useToast';
 
 const ProtectRoute = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { showToast } = useToast();
   const { mutateSendTokenReissue } = useSendTokenReissue();
 
   useEffect(() => {
@@ -47,6 +45,7 @@ const ProtectRoute = () => {
 
   queryClient.setDefaultOptions({
     queries: {
+      retry: 1,
       onError,
     },
     mutations: {
