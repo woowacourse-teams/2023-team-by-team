@@ -23,7 +23,7 @@ public class Name {
 
     public Name(final String value) {
         validate(value);
-        this.value = value;
+        this.value = value.trim();
     }
 
     private void validate(final String value) {
@@ -36,5 +36,9 @@ public class Name {
         if (value.isBlank()) {
             throw new MemberException.NameBlankException();
         }
+    }
+
+    public Name change(final String name) {
+        return new Name(name);
     }
 }
