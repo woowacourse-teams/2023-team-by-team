@@ -10,7 +10,7 @@ public record TeamPlaceMemberResponse(Long id, String name, String profileImageU
                 memberTeamPlace.findMemberId(),
                 memberTeamPlace.findMemberName(),
                 memberTeamPlace.findMemberProfileImageUrl(),
-                memberTeamPlace.getMember().equals(loginMember)
+                memberTeamPlace.isOwnedBy(loginMember)
         );
     }
 }

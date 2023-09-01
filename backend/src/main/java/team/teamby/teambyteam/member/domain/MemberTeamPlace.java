@@ -104,6 +104,10 @@ public class MemberTeamPlace extends BaseEntity {
         this.displayMemberName = displayMemberName;
     }
 
+    public boolean isOwnedBy(final Member member) {
+        return this.member.equals(member);
+    }
+
     public Long findMemberId() {
         return member.getId();
     }
