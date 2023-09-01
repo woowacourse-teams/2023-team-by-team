@@ -6,22 +6,23 @@ import ScheduleModal from '~/components/team_calendar/ScheduleModal/ScheduleModa
 import ScheduleBar from '~/components/team_calendar/ScheduleBar/ScheduleBar';
 import ScheduleAddModal from '~/components/team_calendar/ScheduleAddModal/ScheduleAddModal';
 import ScheduleEditModal from '~/components/team_calendar/ScheduleEditModal/ScheduleEditModal';
-import * as S from './TeamCalendar.styled';
+import ScheduleMoreCell from '~/components/team_calendar/ScheduleMoreCell/ScheduleMoreCell';
+import DailyScheduleModal from '~/components/team_calendar/DailyScheduleModal/DailyScheduleModal';
 import useCalendar from '~/hooks/useCalendar';
 import { useScheduleModal } from '~/hooks/schedule/useScheduleModal';
 import { useFetchSchedules } from '~/hooks/queries/useFetchSchedules';
 import { useModal } from '~/hooks/useModal';
-import { generateScheduleBars } from '~/utils/generateScheduleBars';
-import { DAYS_OF_WEEK, MODAL_OPEN_TYPE } from '~/constants/calendar';
-import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from '~/assets/svg';
-import { arrayOf } from '~/utils/arrayOf';
-import ScheduleMoreCell from '~/components/team_calendar/ScheduleMoreCell/ScheduleMoreCell';
-import type { Position, ModalOpenType } from '~/types/schedule';
-import DailyScheduleModal from '~/components/team_calendar/DailyScheduleModal/DailyScheduleModal';
-import { getDateByPosition } from '~/utils/getDateByPosition';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
-import type { CalendarSize } from '~/types/size';
 import { useCalendarResizePosition } from '~/hooks/useCalendarResizePosition';
+import { DAYS_OF_WEEK, MODAL_OPEN_TYPE } from '~/constants/calendar';
+import { generateScheduleBars } from '~/utils/generateScheduleBars';
+import { arrayOf } from '~/utils/arrayOf';
+import { getDateByPosition } from '~/utils/getDateByPosition';
+import type { Position, ModalOpenType } from '~/types/schedule';
+import type { CalendarSize } from '~/types/size';
+import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from '~/assets/svg';
+import * as S from './TeamCalendar.styled';
+import { usePrefetchSchedules } from '~/hooks/queries/usePrefetchSchedules';
 
 interface TeamCalendarProps {
   calendarSize?: CalendarSize;
@@ -29,6 +30,7 @@ interface TeamCalendarProps {
 
 const TeamCalendar = (props: TeamCalendarProps) => {
   const { calendarSize = 'md' } = props;
+
   const { teamPlaceId } = useTeamPlace();
   const {
     year,
@@ -38,13 +40,16 @@ const TeamCalendar = (props: TeamCalendarProps) => {
 
     handlers: { handlePrevButtonClick, handleNextButtonClick },
   } = useCalendar();
-  const schedules = useFetchSchedules(teamPlaceId, year, month);
   const { isModalOpen, openModal } = useModal();
   const {
     modalScheduleId,
     modalPosition,
     handlers: { handleScheduleModalOpen },
   } = useScheduleModal();
+
+  const schedules = useFetchSchedules(teamPlaceId, year, month);
+  usePrefetchSchedules(teamPlaceId, year, month - 1);
+  usePrefetchSchedules(teamPlaceId, year, month + 1);
 
   const [clickedDate, setClickedDate] = useState(currentDate);
   const [modalType, setModalType] = useState<ModalOpenType>(
