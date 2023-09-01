@@ -19,6 +19,7 @@ import team.teamby.teambyteam.teamplace.domain.TeamPlaceInviteCode;
 import team.teamby.teambyteam.teamplace.domain.vo.InviteCode;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptanceFixture.DELETE_ACCOUNT;
 import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptanceFixture.DELETE_LEAVE_TEAM_PLACE;
 import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptanceFixture.GET_MY_INFORMATION;
 import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptanceFixture.GET_PARTICIPATED_TEAM_PLACES;
@@ -293,6 +294,39 @@ public class MemberAcceptanceTest extends AcceptanceTest {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
                 softly.assertThat(response.body().asString()).contains("인증이 실패했습니다.");
             });
+        }
+    }
+
+    @Nested
+    @DisplayName("사용자가 탈퇴 요청시")
+    class DeleteAccount {
+
+        @Test
+        @DisplayName("탈퇴에 성공한다.")
+        void success() {
+            // given
+            final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
+            final String PHILIP_TOKEN = jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue());
+
+            // when
+            final ExtractableResponse<Response> response = DELETE_ACCOUNT(PHILIP_TOKEN);
+
+            //then
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+        }
+
+        @Test
+        @DisplayName("인증되지 않은 사용자로 요청시 실패한다.")
+        void failWithUnAuthorizedMember() {
+            // given
+            final String mail = "notRegistered@gmail.com";
+            final String NOT_REGISTERED_MEMBER_TOKEN = jwtTokenProvider.generateAccessToken(mail);
+
+            // when
+            final ExtractableResponse<Response> response = DELETE_ACCOUNT(NOT_REGISTERED_MEMBER_TOKEN);
+
+            //then
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
         }
     }
 }

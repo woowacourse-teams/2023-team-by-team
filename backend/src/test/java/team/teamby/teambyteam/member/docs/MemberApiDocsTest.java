@@ -12,6 +12,7 @@ import team.teamby.teambyteam.member.application.MemberService;
 import team.teamby.teambyteam.member.application.dto.MemberInfoResponse;
 import team.teamby.teambyteam.member.application.dto.TeamPlaceResponse;
 import team.teamby.teambyteam.member.application.dto.TeamPlacesResponse;
+import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.member.presentation.MemberController;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceParticipantResponse;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
@@ -350,6 +351,56 @@ public final class MemberApiDocsTest extends ApiDocsTest {
                                     pathParameters(
                                             parameterWithName("inviteCode").description("참여할 팀플레이스의 초대코드")
                                     ),
+                                    requestHeaders(
+                                            headerWithName(AUTHORIZATION_HEADER_KEY).description("사용자 JWT 인증 정보")
+                                    ),
+                                    responseBody()
+                            )
+                    );
+        }
+    }
+
+    @Nested
+    @DisplayName("멤버 탈퇴 문서화")
+    class DeleteAccountDocs {
+
+        @Test
+        @DisplayName("멤버 탈퇴 성공")
+        void success() throws Exception {
+            // when & then
+            mockMvc.perform(delete("/api/me/account")
+                            .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isNoContent())
+                    .andDo(print())
+                    .andDo(document("members/leaveAccount/success",
+                                    preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint()),
+                                    requestHeaders(
+                                            headerWithName(AUTHORIZATION_HEADER_KEY).description("사용자 JWT 인증 정보")
+                                    ),
+                                    responseBody()
+                            )
+                    );
+        }
+
+        @Test
+        @DisplayName("없는 멤버 탈퇴 실패")
+        void failIfNotRegisteredMember() throws Exception {
+            //given
+            given(memberInterceptor.preHandle(any(), any(), any()))
+                    .willThrow(new MemberException.MemberNotFoundException("없는 이메일"));
+
+
+            // when & then
+            mockMvc.perform(delete("/api/me/account")
+                            .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isNotFound())
+                    .andDo(print())
+                    .andDo(document("members/leaveAccount/fail/notRegistered",
+                                    preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint()),
                                     requestHeaders(
                                             headerWithName(AUTHORIZATION_HEADER_KEY).description("사용자 JWT 인증 정보")
                                     ),
