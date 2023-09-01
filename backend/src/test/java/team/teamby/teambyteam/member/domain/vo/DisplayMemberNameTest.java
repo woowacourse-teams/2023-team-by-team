@@ -7,6 +7,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 class DisplayMemberNameTest {
 
     @Test
@@ -38,5 +40,19 @@ class DisplayMemberNameTest {
         Assertions.assertThatThrownBy(() -> new DisplayMemberName(".".repeat(21)))
                 .isInstanceOf(MemberTeamPlaceException.MemberDisplayNameLengthException.class)
                 .hasMessageContaining("멤버 이름의 길이가 최대 이름 길이를 초과했습니다.");
+    }
+
+    @Test
+    @DisplayName("이름 등록시 좌우 공백을 제거하고 등록한다.")
+    void trimSpaces() {
+        // given
+        final String inputValue = " display name ";
+
+        // when
+        final DisplayMemberName displayMemberName = new DisplayMemberName(inputValue);
+
+        //then
+        final String trimmedValue = "display name";
+        assertThat(displayMemberName.getValue()).isEqualTo(trimmedValue);
     }
 }
