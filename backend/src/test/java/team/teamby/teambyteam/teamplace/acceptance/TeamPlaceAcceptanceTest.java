@@ -494,5 +494,62 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
                 softly.assertThat(changedMyInfo.get().name()).isEqualTo(NEW_NAME);
             });
         }
+
+        @Test
+        @DisplayName("소속되어있지 않은 팀플레이스에스로 이름 변경 요청을 하면 실패한다.")
+        void failWithUnparticipatedTeamPlace() {
+            // given
+            final String NEW_NAME = "새로온 필립";
+            final DisplayMemberNameChangeRequest requestBody = new DisplayMemberNameChangeRequest(NEW_NAME);
+            final long WRONG_TEAM_PLACE_ID = -1L;
+
+            // when
+            final ExtractableResponse<Response> response = PATCH_DISPLAY_MEMBER_NAME_CHANGE(PHILIP_ACCESS_TOKEN, WRONG_TEAM_PLACE_ID, requestBody);
+
+            // then
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+        }
+
+        @Test
+        @DisplayName("공백문자로 이름변경 요청시 실패한다.")
+        void failWithBlankNewName() {
+            // given
+            final String NEW_NAME = "  ";
+            final DisplayMemberNameChangeRequest requestBody = new DisplayMemberNameChangeRequest(NEW_NAME);
+
+            // when
+            final ExtractableResponse<Response> response = PATCH_DISPLAY_MEMBER_NAME_CHANGE(PHILIP_ACCESS_TOKEN, STATICS_TEAM_PLACE.getId(), requestBody);
+
+            // then
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        }
+
+        @Test
+        @DisplayName("20자 이상의 이름변경 요청시 실패한다.")
+        void failWithNameLengthOver20() {
+            // given
+            final String NEW_NAME = "a".repeat(21);
+            final DisplayMemberNameChangeRequest requestBody = new DisplayMemberNameChangeRequest(NEW_NAME);
+
+            // when
+            final ExtractableResponse<Response> response = PATCH_DISPLAY_MEMBER_NAME_CHANGE(PHILIP_ACCESS_TOKEN, STATICS_TEAM_PLACE.getId(), requestBody);
+
+            // then
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        }
+
+        @Test
+        @DisplayName("잘못된 토큰으로 이름 변경 요청을 하면 실패한다.")
+        void failWithWrongAccessToken() {
+            // given
+            final String NEW_NAME = "새로온 필립";
+            final DisplayMemberNameChangeRequest requestBody = new DisplayMemberNameChangeRequest(NEW_NAME);
+
+            // when
+            final ExtractableResponse<Response> response = PATCH_DISPLAY_MEMBER_NAME_CHANGE(MISSING_CLAIM_ACCESS_TOKEN, STATICS_TEAM_PLACE.getId(), requestBody);
+
+            // then
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+        }
     }
 }
