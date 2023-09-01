@@ -11,9 +11,11 @@ import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.TeamPlaceColor;
+import team.teamby.teambyteam.member.domain.vo.DisplayMemberName;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
+import team.teamby.teambyteam.teamplace.application.dto.DisplayMemberNameChangeRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceChangeColorRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateResponse;
@@ -111,5 +113,20 @@ public class TeamPlaceService {
 
         final TeamPlaceColor findTeamPlaceColor = TeamPlaceColor.findTeamPlaceColor(request.teamPlaceColor());
         memberTeamPlace.changeTeamPlaceColor(findTeamPlaceColor);
+    }
+
+    public void changeDisplayMemberName(
+            final Long teamPlaceId,
+            final DisplayMemberNameChangeRequest request,
+            final MemberEmailDto memberEmailDto
+    ) {
+        final String memberEmail = memberEmailDto.email();
+
+        final IdOnly memberId = memberRepository.findIdByEmail(new Email(memberEmail))
+                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmail));
+        final MemberTeamPlace memberTeamPlace = memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(teamPlaceId, memberId.id())
+                .orElseThrow(() -> new MemberTeamPlaceException.NotFoundParticipatedTeamPlaceException(memberEmail, teamPlaceId));
+
+        memberTeamPlace.changeDisplayMemberName(new DisplayMemberName(request.name()));
     }
 }
