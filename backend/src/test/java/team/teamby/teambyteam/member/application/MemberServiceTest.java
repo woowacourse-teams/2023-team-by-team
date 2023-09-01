@@ -1,21 +1,22 @@
 package team.teamby.teambyteam.member.application;
 
-import org.assertj.core.api.Assertions;
-import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import team.teamby.teambyteam.common.ServiceTest;
 import team.teamby.teambyteam.common.fixtures.MemberFixtures;
-import team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures;
 import team.teamby.teambyteam.member.application.dto.MemberInfoResponse;
 import team.teamby.teambyteam.member.application.dto.TeamPlaceResponse;
 import team.teamby.teambyteam.member.application.dto.TeamPlacesResponse;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
+import team.teamby.teambyteam.member.configuration.dto.MemberUpdateRequest;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
+import team.teamby.teambyteam.member.domain.vo.DisplayMemberName;
 import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceParticipantResponse;
@@ -26,6 +27,10 @@ import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static team.teamby.teambyteam.common.fixtures.MemberFixtures.*;
+import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.*;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceInviteCodeFixtures.TEAM_PLACE_INVITE_CODE;
 
 class MemberServiceTest extends ServiceTest {
@@ -45,9 +50,9 @@ class MemberServiceTest extends ServiceTest {
         void success() {
             // given
             final Member ENDEL = testFixtureBuilder.buildMember(MemberFixtures.ENDEL());
-            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
-            final TeamPlace JAPANESE_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.JAPANESE_TEAM_PLACE());
-            final TeamPlace STATICS_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.STATICS_TEAM_PLACE());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final TeamPlace JAPANESE_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(JAPANESE_TEAM_PLACE());
+            final TeamPlace STATICS_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(STATICS_TEAM_PLACE());
 
             testFixtureBuilder.buildMemberTeamPlace(ENDEL, ENGLISH_TEAM_PLACE);
             testFixtureBuilder.buildMemberTeamPlace(ENDEL, JAPANESE_TEAM_PLACE);
@@ -58,7 +63,7 @@ class MemberServiceTest extends ServiceTest {
 
             //then
             final List<TeamPlaceResponse> teamPlaceResponses = response.teamPlaces();
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(teamPlaceResponses).hasSize(3);
                 softly.assertThat(teamPlaceResponses.get(0).id()).isEqualTo(ENGLISH_TEAM_PLACE.getId());
                 softly.assertThat(teamPlaceResponses.get(0).displayName()).isEqualTo(ENGLISH_TEAM_PLACE.getName().getValue());
@@ -93,7 +98,7 @@ class MemberServiceTest extends ServiceTest {
         void success() {
             // given
             final Member ENDEL = testFixtureBuilder.buildMember(MemberFixtures.ENDEL());
-            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(ENDEL, ENGLISH_TEAM_PLACE);
 
             // when
@@ -109,11 +114,11 @@ class MemberServiceTest extends ServiceTest {
         void failWithMemberWithoutDb() {
             // given
             final Member ENDEL = testFixtureBuilder.buildMember(MemberFixtures.ENDEL());
-            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(ENDEL, ENGLISH_TEAM_PLACE);
 
             // when & then
-            Assertions.assertThatThrownBy(() -> memberService.leaveTeamPlace(new MemberEmailDto(MemberFixtures.PHILIP_EMAIL), ENGLISH_TEAM_PLACE.getId()))
+            assertThatThrownBy(() -> memberService.leaveTeamPlace(new MemberEmailDto(MemberFixtures.PHILIP_EMAIL), ENGLISH_TEAM_PLACE.getId()))
                     .isInstanceOf(MemberException.MemberNotFoundException.class)
                     .hasMessageContaining("조회한 멤버가 존재하지 않습니다.");
         }
@@ -123,12 +128,12 @@ class MemberServiceTest extends ServiceTest {
         void failWithUnParticipatedTeamPlace() {
             // given
             final Member ENDEL = testFixtureBuilder.buildMember(MemberFixtures.ENDEL());
-            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
-            final TeamPlace JAPANESE_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.JAPANESE_TEAM_PLACE());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final TeamPlace JAPANESE_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(JAPANESE_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(ENDEL, ENGLISH_TEAM_PLACE);
 
             // when & then
-            Assertions.assertThatThrownBy(() -> memberService.leaveTeamPlace(new MemberEmailDto(ENDEL.getEmail().getValue()), JAPANESE_TEAM_PLACE.getId()))
+            assertThatThrownBy(() -> memberService.leaveTeamPlace(new MemberEmailDto(ENDEL.getEmail().getValue()), JAPANESE_TEAM_PLACE.getId()))
                     .isInstanceOf(MemberTeamPlaceException.NotFoundParticipatedTeamPlaceException.class)
                     .hasMessageContaining("해당 팀 플레이스에 가입되어 있지 않습니다.");
         }
@@ -143,7 +148,7 @@ class MemberServiceTest extends ServiceTest {
         void success() {
             // given
             final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
-            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             final String inviteCode = "aaaaaaaa";
             testFixtureBuilder.buildTeamPlaceInviteCode(TEAM_PLACE_INVITE_CODE(new InviteCode(inviteCode), ENGLISH_TEAM_PLACE));
 
@@ -151,7 +156,7 @@ class MemberServiceTest extends ServiceTest {
             final TeamPlaceParticipantResponse response = memberService.participateTeamPlace(new MemberEmailDto(PHILIP.getEmail().getValue()), inviteCode);
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(PHILIP.isMemberOf(ENGLISH_TEAM_PLACE.getId())).isTrue();
                 softly.assertThat(response.teamPlaceId()).isEqualTo(ENGLISH_TEAM_PLACE.getId());
             });
@@ -162,7 +167,7 @@ class MemberServiceTest extends ServiceTest {
         void ifDuplicateRequest() {
             // given
             final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
-            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
             final String inviteCode = "aaaaaaaa";
             testFixtureBuilder.buildTeamPlaceInviteCode(TEAM_PLACE_INVITE_CODE(new InviteCode(inviteCode), ENGLISH_TEAM_PLACE));
@@ -172,7 +177,7 @@ class MemberServiceTest extends ServiceTest {
             final TeamPlaceParticipantResponse response = memberService.participateTeamPlace(new MemberEmailDto(PHILIP.getEmail().getValue()), inviteCode);
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(PHILIP.isMemberOf(ENGLISH_TEAM_PLACE.getId())).isTrue();
                 softly.assertThat(response.teamPlaceId()).isEqualTo(ENGLISH_TEAM_PLACE.getId());
             });
@@ -182,13 +187,13 @@ class MemberServiceTest extends ServiceTest {
         @DisplayName("존재하지 않는 사용자의 경우 예외가 발생한다.")
         void failIfNotExistsMember() {
             // given
-            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             final String inviteCode = "aaaaaaaa";
             testFixtureBuilder.buildTeamPlaceInviteCode(TEAM_PLACE_INVITE_CODE(new InviteCode(inviteCode), ENGLISH_TEAM_PLACE));
             final String invalidEmail = "email@email.com";
 
             // when & then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThatThrownBy(() -> memberService.participateTeamPlace(new MemberEmailDto(invalidEmail), inviteCode))
                         .isInstanceOf(MemberException.MemberNotFoundException.class)
                         .hasMessageContaining("조회한 멤버가 존재하지 않습니다.");
@@ -200,11 +205,11 @@ class MemberServiceTest extends ServiceTest {
         void failIfNotExistsInviteCode() {
             // given
             final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
-            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             final String invalidInviteCode = "aaaaaaaa";
 
             // when & then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThatThrownBy(() -> memberService.participateTeamPlace(new MemberEmailDto(PHILIP.getEmail().getValue()), invalidInviteCode))
                         .isInstanceOf(TeamPlaceInviteCodeException.NotFoundException.class)
                         .hasMessageContaining("존재하지 않는 초대코드 입니다.");
@@ -226,7 +231,7 @@ class MemberServiceTest extends ServiceTest {
             final MemberInfoResponse response = memberService.getMemberInformation(new MemberEmailDto(REGISTERED_MEMBER.getEmail().getValue()));
 
             // then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(response.id()).isEqualTo(REGISTERED_MEMBER.getId());
                 softly.assertThat(response.name()).isEqualTo(REGISTERED_MEMBER.getName().getValue());
                 softly.assertThat(response.profileImageUrl()).isEqualTo(REGISTERED_MEMBER.getProfileImageUrl().getValue());
@@ -238,12 +243,146 @@ class MemberServiceTest extends ServiceTest {
         @DisplayName("존재하지 않는 사용자이메일로 조회시 실패한다.")
         void failWithNotRegisteredMember() {
             // given
-            final Member NON_REGISTERED_MEMBER = MemberFixtures.ROY();
+            final Member NON_REGISTERED_MEMBER = ROY();
 
             // when & then
-            Assertions.assertThatThrownBy(() -> memberService.getMemberInformation(new MemberEmailDto(NON_REGISTERED_MEMBER.getEmail().getValue())))
+            assertThatThrownBy(() -> memberService.getMemberInformation(new MemberEmailDto(NON_REGISTERED_MEMBER.getEmail().getValue())))
                     .isInstanceOf(MemberException.MemberNotFoundException.class)
                     .hasMessageContaining("조회한 멤버가 존재하지 않습니다.");
+        }
+    }
+
+    @Nested
+    @DisplayName("사용자 이름 수정 시")
+    class updateMyInformation {
+
+        @Test
+        @DisplayName("사용자 정보 수정에 성공한다.")
+        void successUpdateMyInfo() {
+            // given
+            final Member member = testFixtureBuilder.buildMember(ROY());
+            final String nameToUpdate = "김덕우";
+
+            // when
+            final MemberUpdateRequest memberUpdateRequest = new MemberUpdateRequest(nameToUpdate);
+            memberService.updateMemberInformation(memberUpdateRequest, new MemberEmailDto(member.getEmail().getValue()));
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(member.getName().getValue()).isEqualTo(nameToUpdate);
+                softly.assertThat(member.getEmail()).isEqualTo(ROY().getEmail());
+                softly.assertThat(member.getProfileImageUrl()).isEqualTo(ROY().getProfileImageUrl());
+            });
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {" 김덕우", "김덕우 ", " 김덕우 ", "   김덕우   "})
+        @DisplayName("변경할 사용자명의 앞뒤에 공백이 존재할 경우 자동으로 공백이 제거된다.")
+        void successWithTrimmedMemberNameToUpdate(final String nameToUpdate) {
+            // given
+            final Member member = testFixtureBuilder.buildMember(ROY());
+            final String trimmedNameToUpdate = "김덕우";
+
+            // when
+            final MemberUpdateRequest memberUpdateRequest = new MemberUpdateRequest(nameToUpdate);
+            memberService.updateMemberInformation(memberUpdateRequest, new MemberEmailDto(member.getEmail().getValue()));
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(member.getName().getValue()).isEqualTo(trimmedNameToUpdate);
+                softly.assertThat(member.getEmail()).isEqualTo(ROY().getEmail());
+                softly.assertThat(member.getProfileImageUrl()).isEqualTo(ROY().getProfileImageUrl());
+            });
+        }
+
+        @Test
+        @DisplayName("존재하지 않는 사용자 이메일로 정보 변경 요청 시 실패한다.")
+        void failWithNotRegisteredMember() {
+            // given
+            final Member NON_REGISTERED_MEMBER = PHILIP();
+            final String nameToUpdate = "김덕우";
+            final MemberUpdateRequest memberUpdateRequest = new MemberUpdateRequest(nameToUpdate);
+
+            // when & then
+            assertThatThrownBy(() -> memberService.updateMemberInformation(memberUpdateRequest, new MemberEmailDto(NON_REGISTERED_MEMBER.getEmail().getValue())))
+                    .isInstanceOf(MemberException.MemberNotFoundException.class)
+                    .hasMessageContaining("조회한 멤버가 존재하지 않습니다.");
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {"", " ", "   "})
+        @DisplayName("변경할 사용자명이 빈 값일 경우 예외가 발생한다.")
+        void failWithEmptyMemberNameToUpdate(final String memberNameToUpdate) {
+            // given
+            final Member member = testFixtureBuilder.buildMember(ROY());
+
+            // when
+            final MemberUpdateRequest memberUpdateRequest = new MemberUpdateRequest(memberNameToUpdate);
+
+            // then
+            assertThatThrownBy(() -> memberService.updateMemberInformation(memberUpdateRequest, new MemberEmailDto(member.getEmail().getValue())))
+                    .isInstanceOf(MemberException.NameBlankException.class)
+                    .hasMessage("멤버 이름은 공백을 제외한 1자 이상이어야합니다.");
+        }
+
+        @Test
+        @DisplayName("변경할 사용자명이 20자를 초과할 경우 예외가 발생한다.")
+        void failWithMemberNameToUpdate() {
+            // given
+            final Member member = testFixtureBuilder.buildMember(ROY());
+
+            // when
+            final String memberNameToUpdate = "a".repeat(21);
+            final MemberUpdateRequest memberUpdateRequest = new MemberUpdateRequest(memberNameToUpdate);
+
+            // then
+            assertThatThrownBy(() -> memberService.updateMemberInformation(memberUpdateRequest, new MemberEmailDto(member.getEmail().getValue())))
+                    .isInstanceOf(MemberException.NameLengthException.class)
+                    .hasMessageContaining("멤버 이름의 길이가 최대 이름 길이를 초과했습니다.");
+        }
+
+        @Test
+        @DisplayName("기존 사용자명이 DisplayName과 같을 경우 DisplayName도 변경된다.")
+        void successWithUpdateDisplayName() {
+            // given
+            final Member member = testFixtureBuilder.buildMember(ROY());
+            final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final MemberTeamPlace memberTeamPlace = testFixtureBuilder.buildMemberTeamPlace(member, teamPlace);
+            final String nameToUpdate = "김덕우";
+
+            // when
+            final MemberUpdateRequest memberUpdateRequest = new MemberUpdateRequest(nameToUpdate);
+            memberService.updateMemberInformation(memberUpdateRequest, new MemberEmailDto(member.getEmail().getValue()));
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(member.getName().getValue()).isEqualTo(nameToUpdate);
+                softly.assertThat(memberTeamPlace.getDisplayMemberName().getValue()).isEqualTo(nameToUpdate);
+            });
+        }
+
+        @Test
+        @DisplayName("기존 사용자명이 DisplayName과 다를 경우 DisplayName은 변경되지 않는다.")
+        void successWithNonUpdateDisplayName() {
+            // given
+            final Member member = testFixtureBuilder.buildMember(ROY());
+            final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final MemberTeamPlace memberTeamPlace = testFixtureBuilder.buildMemberTeamPlace(member, teamPlace);
+            final String nameToUpdate = "김덕우";
+
+            // when
+            final String displayNameToChange = PHILIP_NAME;
+            memberTeamPlace.changeDisplayMemberName(new DisplayMemberName(displayNameToChange));
+
+            final MemberUpdateRequest memberUpdateRequest = new MemberUpdateRequest(nameToUpdate);
+            memberService.updateMemberInformation(memberUpdateRequest, new MemberEmailDto(member.getEmail().getValue()));
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(member.getName().getValue()).isEqualTo(nameToUpdate);
+                softly.assertThat(memberTeamPlace.getDisplayMemberName().getValue()).isNotEqualTo(nameToUpdate);
+                softly.assertThat(memberTeamPlace.getDisplayMemberName().getValue()).isEqualTo(displayNameToChange);
+            });
         }
     }
 }

@@ -99,4 +99,8 @@ public class Member extends BaseEntity {
         memberTeamPlaces.remove(teamPlaceToLeave);
         return teamPlaceToLeave;
     }
+
+    public void change(final String nameToUpdate) {
+        this.name = name.change(nameToUpdate);
+    }
 }

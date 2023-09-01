@@ -7,11 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 import team.teamby.teambyteam.member.application.dto.MemberInfoResponse;
 import team.teamby.teambyteam.member.application.dto.TeamPlacesResponse;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
+import team.teamby.teambyteam.member.configuration.dto.MemberUpdateRequest;
 import team.teamby.teambyteam.member.domain.IdOnly;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
+import team.teamby.teambyteam.member.domain.vo.DisplayMemberName;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceParticipantResponse;
@@ -88,5 +90,20 @@ public class MemberService {
                 .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
 
         return MemberInfoResponse.of(member);
+    }
+
+    public void updateMemberInformation(final MemberUpdateRequest memberUpdateRequest, final MemberEmailDto memberEmailDto) {
+        final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
+                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
+
+        final List<MemberTeamPlace> memberTeamPlaces = member.getMemberTeamPlaces();
+
+        for (final MemberTeamPlace memberTeamPlace : memberTeamPlaces) {
+            if (memberTeamPlace.getDisplayMemberName().getValue().equals(member.getName().getValue())) {
+                memberTeamPlace.changeDisplayMemberName(new DisplayMemberName(memberUpdateRequest.name()));
+            }
+        }
+
+        member.change(memberUpdateRequest.name());
     }
 }
