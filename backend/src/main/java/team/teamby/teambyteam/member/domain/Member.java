@@ -100,7 +100,7 @@ public class Member extends BaseEntity {
         return teamPlaceToLeave;
     }
 
-    public void change(final String nameToUpdate) {
+    public void changeName(final String nameToUpdate) {
         this.name = name.change(nameToUpdate);
     }
 }

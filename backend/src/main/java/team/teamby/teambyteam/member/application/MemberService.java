@@ -104,6 +104,6 @@ public class MemberService {
             }
         }
 
-        member.change(memberUpdateRequest.name());
+        member.changeName(memberUpdateRequest.name());
     }
 }
