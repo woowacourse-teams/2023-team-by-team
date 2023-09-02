@@ -540,7 +540,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
 
         @Test
         @DisplayName("잘못된 토큰으로 이름 변경 요청을 하면 실패한다.")
-        void failWithWrongAccessToken() {
+        void failWithWrongAccessTokenClaimMissing() {
             // given
             final String NEW_NAME = "새로온 필립";
             final DisplayMemberNameChangeRequest requestBody = new DisplayMemberNameChangeRequest(NEW_NAME);
@@ -550,6 +550,20 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
 
             // then
             assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+        }
+
+        @Test
+        @DisplayName("잘못된 토큰으로 이름 변경 요청을 하면 실패한다.")
+        void failWithWrognAccessTokenUnauthorized() {
+            final String NEW_NAME = "새로온 필립";
+            final DisplayMemberNameChangeRequest requestBody = new DisplayMemberNameChangeRequest(NEW_NAME);
+            final String UNAUTHORIZED_MEMBER_TOKEN = jwtTokenProvider.generateAccessToken(MemberFixtures.ENDEL_EMAIL);
+
+            // when
+            final ExtractableResponse<Response> response = PATCH_DISPLAY_MEMBER_NAME_CHANGE(UNAUTHORIZED_MEMBER_TOKEN, STATICS_TEAM_PLACE.getId(), requestBody);
+
+            // then
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
         }
     }
 }
