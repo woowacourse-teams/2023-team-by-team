@@ -104,6 +104,10 @@ public class MemberTeamPlace extends BaseEntity {
         this.displayMemberName = displayMemberName;
     }
 
+    public void changeTeamPlaceColor(final TeamPlaceColor teamPlaceColor) {
+        this.teamPlaceColor = teamPlaceColor;
+    }
+
     public boolean isOwnedBy(final Member member) {
         return this.member.equals(member);
     }

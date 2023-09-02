@@ -9,7 +9,9 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import team.teamby.teambyteam.common.ApiDocsTest;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
+import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
 import team.teamby.teambyteam.teamplace.application.TeamPlaceService;
+import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceChangeColorRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateResponse;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceInviteCodeResponse;
@@ -17,12 +19,15 @@ import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 import team.teamby.teambyteam.teamplace.presentation.TeamPlaceController;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.BDDMockito.willThrow;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
@@ -35,6 +40,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static team.teamby.teambyteam.common.fixtures.MemberFixtures.SEONGHA_EMAIL;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.CREATE_ENGLISH_TEAM_PLACE_REQUEST;
 
 @WebMvcTest(TeamPlaceController.class)
@@ -182,6 +188,91 @@ public class TeamPlaceControlApiDocsTest extends ApiDocsTest {
                     .andExpect(status().isForbidden())
                     .andDo(print())
                     .andDo(document("teamPlaces/getInviteCode/failWithForbiddenMember",
+                                    preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint())
+                            )
+                    );
+        }
+    }
+
+    @Nested
+    @DisplayName("팀플레이스 색상 변경 문서화")
+    class ChangeMemberTeamPlaceColor {
+
+        @Test
+        @DisplayName("팀 플레이스 색상 변경 성공")
+        void success() throws Exception {
+            // given
+            final Long teamPlaceId = 1L;
+            final TeamPlaceChangeColorRequest request = new TeamPlaceChangeColorRequest(1);
+            willDoNothing().given(teamPlaceService).changeMemberTeamPlaceColor(any(MemberEmailDto.class), eq(teamPlaceId), any(TeamPlaceChangeColorRequest.class));
+
+            // when & then
+            mockMvc.perform(patch("/api/team-places/{teamPlaceId}/color", teamPlaceId)
+                            .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isOk())
+                    .andDo(print())
+                    .andDo(document("teamPlaces/changeTeamPlaceColor/success",
+                                    preprocessRequest(prettyPrint()),
+                                    pathParameters(
+                                            parameterWithName("teamPlaceId").description("멤버가 속한 팀 플레이스 ID")
+                                    ),
+                                    requestHeaders(
+                                            headerWithName(AUTHORIZATION_HEADER_KEY).description("사용자 JWT 인증 정보")
+                                    ),
+                                    requestFields(
+                                            fieldWithPath("teamPlaceColor").type(JsonFieldType.NUMBER).description("수정할 팀 플레이스 색상 번호")
+                                    )
+                            )
+                    );
+        }
+
+        @Test
+        @DisplayName("회원이 소속된 팀 플레이스가 아니면 실패")
+        void failWhenNotParticipatedTeamPlace() throws Exception {
+            // given
+            final Long notParticipatedTeamPlaceId = -1L;
+            final TeamPlaceChangeColorRequest request = new TeamPlaceChangeColorRequest(1);
+            String seonghaEmail = SEONGHA_EMAIL;
+            willThrow(new TeamPlaceException.TeamPlaceAccessForbidden(notParticipatedTeamPlaceId, seonghaEmail))
+                    .given(teamPlaceService)
+                    .changeMemberTeamPlaceColor(any(MemberEmailDto.class), eq(notParticipatedTeamPlaceId), any(TeamPlaceChangeColorRequest.class));
+
+            // when & then
+            mockMvc.perform(patch("/api/team-places/{teamPlaceId}/color", notParticipatedTeamPlaceId)
+                            .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isForbidden())
+                    .andDo(print())
+                    .andDo(document("teamPlaces/changeTeamPlaceColor/failWhenNotParticipatedTeamPlace",
+                                    preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint())
+                            )
+                    );
+        }
+
+        @Test
+        @DisplayName("요청한 색상 번호가 존재하지 않으면 실패")
+        void failWhenNotExistTeamPlaceColor() throws Exception {
+            // given
+            final Long teamPlaceId = 1L;
+            int notExistTeamPlaceColor = -1;
+            final TeamPlaceChangeColorRequest request = new TeamPlaceChangeColorRequest(notExistTeamPlaceColor);
+            willThrow(new MemberTeamPlaceException.TeamPlaceColorNotExistException(notExistTeamPlaceColor))
+                    .given(teamPlaceService)
+                    .changeMemberTeamPlaceColor(any(MemberEmailDto.class), eq(teamPlaceId), any(TeamPlaceChangeColorRequest.class));
+
+            // when & then
+            mockMvc.perform(patch("/api/team-places/{teamPlaceId}/color", teamPlaceId)
+                            .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isBadRequest())
+                    .andDo(print())
+                    .andDo(document("teamPlaces/changeTeamPlaceColor/failWhenNotExistTeamPlaceColor",
                                     preprocessRequest(prettyPrint()),
                                     preprocessResponse(prettyPrint())
                             )
