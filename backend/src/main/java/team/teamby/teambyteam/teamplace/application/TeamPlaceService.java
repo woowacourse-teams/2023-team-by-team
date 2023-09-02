@@ -18,6 +18,7 @@ import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceChangeColorRequ
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateResponse;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceInviteCodeResponse;
+import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceMemberResponse;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceMembersResponse;
 import team.teamby.teambyteam.teamplace.domain.RandomInviteCodeGenerator;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
@@ -86,9 +87,16 @@ public class TeamPlaceService {
     }
 
     @Transactional(readOnly = true)
-    public TeamPlaceMembersResponse findMembers(final Long teamPlaceId) {
+    public TeamPlaceMembersResponse findMembers(final Long teamPlaceId, final MemberEmailDto memberEmailDto) {
+        final Member loginMember = memberRepository.findByEmail(new Email(memberEmailDto.email()))
+                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
         final List<MemberTeamPlace> memberTeamPlaces = memberTeamPlaceRepository.findAllByTeamPlaceId(teamPlaceId);
-        return TeamPlaceMembersResponse.from(memberTeamPlaces);
+
+        final List<TeamPlaceMemberResponse> teamPlaceMembers = memberTeamPlaces.stream()
+                .map(memberTeamPlace -> TeamPlaceMemberResponse.of(memberTeamPlace, loginMember))
+                .toList();
+
+        return TeamPlaceMembersResponse.from(teamPlaceMembers);
     }
 
     public void changeMemberTeamPlaceColor(final MemberEmailDto memberEmailDto,

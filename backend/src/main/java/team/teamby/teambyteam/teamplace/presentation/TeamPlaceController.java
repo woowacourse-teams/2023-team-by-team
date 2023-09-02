@@ -48,9 +48,10 @@ public class TeamPlaceController {
 
     @GetMapping("/{teamPlaceId}/members")
     public ResponseEntity<TeamPlaceMembersResponse> getTeamPlaceMembers(
+            @AuthPrincipal final MemberEmailDto memberEmailDto,
             @PathVariable final Long teamPlaceId
     ) {
-        final TeamPlaceMembersResponse response = teamPlaceService.findMembers(teamPlaceId);
+        final TeamPlaceMembersResponse response = teamPlaceService.findMembers(teamPlaceId, memberEmailDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

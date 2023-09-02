@@ -20,6 +20,7 @@ import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceChangeColorRequ
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateResponse;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceInviteCodeResponse;
+import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceMemberResponse;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceMembersResponse;
 import team.teamby.teambyteam.teamplace.domain.RandomInviteCodeGenerator;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
@@ -175,12 +176,15 @@ class TeamPlaceServiceTest extends ServiceTest {
             final MemberTeamPlace memberTeamPlace3 = testFixtureBuilder.buildMemberTeamPlace(SEONGHA, ENGLISH_TEAM_PLACE);
             final MemberTeamPlace memberTeamPlace4 = testFixtureBuilder.buildMemberTeamPlace(ENDEL, ENGLISH_TEAM_PLACE);
 
-            final TeamPlaceMembersResponse expectedResponse = TeamPlaceMembersResponse.from(List.of(
-                    memberTeamPlace1, memberTeamPlace2, memberTeamPlace3, memberTeamPlace4
-            ));
+            final List<MemberTeamPlace> memberTeamPlaces = List.of(memberTeamPlace1, memberTeamPlace2, memberTeamPlace3, memberTeamPlace4);
+            final List<TeamPlaceMemberResponse> teamPlaceMembers = memberTeamPlaces.stream()
+                    .map(memberTeamPlace -> TeamPlaceMemberResponse.of(memberTeamPlace, PHILIP))
+                    .toList();
+
+            final TeamPlaceMembersResponse expectedResponse = TeamPlaceMembersResponse.from(teamPlaceMembers);
 
             // when
-            final TeamPlaceMembersResponse actualResponse = teamPlaceService.findMembers(ENGLISH_TEAM_PLACE.getId());
+            final TeamPlaceMembersResponse actualResponse = teamPlaceService.findMembers(ENGLISH_TEAM_PLACE.getId(), new MemberEmailDto(PHILIP.getEmail().getValue()));
 
             // then
             assertThat(actualResponse).usingRecursiveComparison().isEqualTo(expectedResponse);
