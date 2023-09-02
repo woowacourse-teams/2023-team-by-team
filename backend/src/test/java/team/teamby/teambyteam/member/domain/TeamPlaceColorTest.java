@@ -28,7 +28,7 @@ class TeamPlaceColorTest {
     @ParameterizedTest
     @ValueSource(ints = {-1, 10})
     @DisplayName("존재하지 않는 색상 번호로 해당 팀 플레이스 색상을 찾을 시 예외가 발생한다.")
-    void failFindTeamPlaceColorWhenNotExistColorNumber(int notExistColorNumber) {
+    void failFindTeamPlaceColorWhenNotExistColorNumber(final int notExistColorNumber) {
         // when & then
         assertThatThrownBy(() -> TeamPlaceColor.findTeamPlaceColor(notExistColorNumber))
                 .isInstanceOf(MemberTeamPlaceException.TeamPlaceColorNotExistException.class)
