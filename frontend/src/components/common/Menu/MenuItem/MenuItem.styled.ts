@@ -13,7 +13,7 @@ export const Wrapper = styled.li<Omit<MenuItemProps, 'value'>>`
   }
 
   &.selected {
-    background-color: ${({ theme }) => theme.color.GRAY100};
+    background-color: ${({ theme }) => theme.color.GRAY200};
   }
 
   ${({ css }) => css}
