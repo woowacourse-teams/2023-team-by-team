@@ -6,8 +6,8 @@ import type {
 } from 'react';
 import { useMenu } from '~/hooks/useMenu';
 import useClickOutside from '~/hooks/useClickOutside';
-import * as S from './MenuList.styled';
 import { MENU_TRIGGER_KEYS } from '~/constants/menu';
+import * as S from './MenuList.styled';
 
 export interface MenuListProps {
   width?: string;
