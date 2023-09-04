@@ -7,13 +7,12 @@ import type {
 import { useMenu } from '~/hooks/useMenu';
 import useClickOutside from '~/hooks/useClickOutside';
 import * as S from './MenuList.styled';
+import { MENU_TRIGGER_KEYS } from '~/constants/menu';
 
 export interface MenuListProps {
   width?: string;
   onSelect?: (value: string) => void;
 }
-
-const MENU_TRIGGER_KEYS = ['ArrowDown', 'ArrowUp', 'Enter', 'Escape'];
 
 const MenuList = (props: PropsWithChildren<MenuListProps>) => {
   const { children, onSelect, width = '100%' } = props;
