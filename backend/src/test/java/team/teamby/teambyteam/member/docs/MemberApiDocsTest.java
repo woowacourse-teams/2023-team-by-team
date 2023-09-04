@@ -408,5 +408,29 @@ public final class MemberApiDocsTest extends ApiDocsTest {
                             )
                     );
         }
+
+        @Test
+        @DisplayName("인증되지 않은 요청 시 실패")
+        void failIfNotAuthenticated() throws Exception {
+            // given
+            given(memberInterceptor.preHandle(any(), any(), any()))
+                    .willThrow(new AuthenticationException.FailAuthenticationException());
+
+            // when & then
+            mockMvc.perform(delete("/api/me/account")
+                            .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isUnauthorized())
+                    .andDo(print())
+                    .andDo(document("members/leaveAccount/fail/unAuthorized",
+                                    preprocessRequest(prettyPrint()),
+                                    preprocessResponse(prettyPrint()),
+                                    requestHeaders(
+                                            headerWithName(AUTHORIZATION_HEADER_KEY).description("사용자 JWT 인증 정보")
+                                    ),
+                                    responseBody()
+                            )
+                    );
+        }
     }
 }

@@ -114,10 +114,18 @@ include::{snippets}/members/leaveAccount/success/http-request.adoc[]
 ==== Response
 include::{snippets}/members/leaveAccount/success/http-response.adoc[]
 
-=== 5-1. 회원 탈퇴 실패 (인증되지 않은 사용자)
+=== 5-1. 회원 탈퇴 실패 (존재하지 않는 사용자)
 
 ==== Request
 include::{snippets}/members/leaveAccount/fail/notRegistered/http-request.adoc[]
 
 ==== Response
 include::{snippets}/members/leaveAccount/fail/notRegistered/http-response.adoc[]
+
+=== 5-2. 회원 탈퇴 실패 (인증되지 않은 사용자)
+
+==== Request
+include::{snippets}/members/leaveAccount/fail/unAuthorized/http-request.adoc[]
+
+==== Response
+include::{snippets}/members/leaveAccount/fail/unAuthorized/http-response.adoc[]
