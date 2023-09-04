@@ -88,7 +88,7 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
               {!isAllDay && (
                 <TimeTableMenu
                   displayValue={times['startTime']}
-                  onClickMenu={handleStartTimeChange}
+                  onSelect={handleStartTimeChange}
                 />
               )}
             </S.InputWrapper>
@@ -112,7 +112,7 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
               {!isAllDay && (
                 <TimeTableMenu
                   displayValue={times['endTime']}
-                  onClickMenu={handleEndTimeChange}
+                  onSelect={handleEndTimeChange}
                 />
               )}
             </S.InputWrapper>

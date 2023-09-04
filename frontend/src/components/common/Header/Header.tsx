@@ -94,7 +94,7 @@ const Header = () => {
             <S.TeamNameWrapper>
               <TeamPlaceMenu
                 displayValue={teamName}
-                onClickMenu={handleTeamNameChange}
+                onSelect={handleTeamNameChange}
               />
             </S.TeamNameWrapper>
           </div>
