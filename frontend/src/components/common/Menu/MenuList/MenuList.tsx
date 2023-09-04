@@ -40,6 +40,19 @@ const MenuList = (props: PropsWithChildren<MenuListProps>) => {
     handleMenuOpen();
   });
 
+  const handleMouseEnter: MouseEventHandler<HTMLUListElement> = () => {
+    const children = Array.from(ref.current?.children ?? []);
+    const selectedChildIndex = children.findIndex((child) =>
+      child.classList.contains('selected'),
+    );
+
+    if (selectedChildIndex === -1) {
+      return;
+    }
+
+    children[selectedChildIndex].classList.remove('selected');
+  };
+
   const handleMenuClick: MouseEventHandler<HTMLUListElement> = (e) => {
     const { target } = e;
 
@@ -53,9 +66,7 @@ const MenuList = (props: PropsWithChildren<MenuListProps>) => {
       return;
     }
 
-    onSelect?.(textContent);
-    handleSelectedValueChange(textContent);
-    handleMenuOpen();
+    selectItem(textContent);
   };
 
   const handleKeyDown: KeyboardEventHandler<HTMLUListElement> = (e) => {
@@ -79,13 +90,13 @@ const MenuList = (props: PropsWithChildren<MenuListProps>) => {
       return;
     }
 
-    if (e.key === 'ArrowDown') {
-      focusNextChild(children, selectedChildIndex);
+    if (e.key === 'ArrowUp') {
+      focusPrevChild(children, selectedChildIndex);
       return;
     }
 
-    if (e.key === 'ArrowUp') {
-      focusPrevChild(children, selectedChildIndex);
+    if (e.key === 'ArrowDown') {
+      focusNextChild(children, selectedChildIndex);
       return;
     }
 
@@ -97,9 +108,7 @@ const MenuList = (props: PropsWithChildren<MenuListProps>) => {
         return;
       }
 
-      onSelect?.(textContent);
-      handleSelectedValueChange(textContent);
-      handleMenuOpen();
+      selectItem(textContent);
     }
   };
 
@@ -141,6 +150,12 @@ const MenuList = (props: PropsWithChildren<MenuListProps>) => {
     ref.current?.scrollTo(0, offsetTop);
   };
 
+  const selectItem = (value: string) => {
+    onSelect?.(value);
+    handleSelectedValueChange(value);
+    handleMenuOpen();
+  };
+
   useEffect(() => {
     if (isMenuOpen && ref.current) {
       ref.current.focus();
@@ -177,6 +192,7 @@ const MenuList = (props: PropsWithChildren<MenuListProps>) => {
           ref={ref}
           width={width}
           onClick={handleMenuClick}
+          onMouseEnter={handleMouseEnter}
           onKeyDown={handleKeyDown}
           tabIndex={0}
         >
