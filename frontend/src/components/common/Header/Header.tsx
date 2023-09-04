@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { BellIcon, LogoIcon, TeamIcon } from '~/assets/svg';
+import { BellIcon, EditIcon, LogoIcon, TeamIcon } from '~/assets/svg';
 import * as S from './Header.styled';
 import TeamBadge from '~/components/team/TeamBadge/TeamBadge';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
@@ -90,7 +90,12 @@ const Header = () => {
             <LogoIcon />
           </Link>
           <div>
-            <TeamBadge teamPlaceColor={teamPlaceColor} />
+            <S.TeamBadgeWrapper>
+              <TeamBadge size="lg" teamPlaceColor={teamPlaceColor} />
+              <S.TeamBadgeEditIconWrapper>
+                <EditIcon />
+              </S.TeamBadgeEditIconWrapper>
+            </S.TeamBadgeWrapper>
             <S.TeamNameWrapper>
               <TeamPlaceMenu
                 displayValue={teamName}

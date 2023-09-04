@@ -35,6 +35,44 @@ export const Divider = styled.div`
   background-color: ${({ theme }) => theme.color.GRAY500};
 `;
 
+export const TeamBadgeWrapper = styled.div`
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+
+  & svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    opacity: 0;
+  }
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &:hover svg {
+    opacity: 1;
+  }
+`;
+
+export const TeamBadgeEditIconWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  svg {
+    width: 20px;
+    height: 20px;
+
+    color: ${({ theme }) => theme.color.WHITE};
+  }
+`;
+
 export const TeamNameWrapper = styled.div`
   display: flex;
   align-items: center;
