@@ -328,5 +328,21 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             //then
             assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
         }
+
+        @Test
+        @DisplayName("잘못된 인증 토큰으로 요청시 401 에러를 반환한다.")
+        void failWithWrongToken() {
+            // given
+            final String WRONG_TOKEN = "12j40jf390.0we9ru2i3hr8.912jrkejfi23j";
+
+            // when
+            final ExtractableResponse<Response> response = DELETE_ACCOUNT(WRONG_TOKEN);
+
+            //then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+                softly.assertThat(response.body().asString()).contains("인증이 실패했습니다.");
+            });
+        }
     }
 }
