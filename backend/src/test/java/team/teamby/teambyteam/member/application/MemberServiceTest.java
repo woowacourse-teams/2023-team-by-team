@@ -14,6 +14,7 @@ import team.teamby.teambyteam.member.application.dto.TeamPlaceResponse;
 import team.teamby.teambyteam.member.application.dto.TeamPlacesResponse;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.Member;
+import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.exception.MemberException;
@@ -26,6 +27,7 @@ import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceInviteCodeFixtures.TEAM_PLACE_INVITE_CODE;
 
 class MemberServiceTest extends ServiceTest {
@@ -35,6 +37,9 @@ class MemberServiceTest extends ServiceTest {
 
     @Autowired
     private MemberTeamPlaceRepository memberTeamPlaceRepository;
+
+    @Autowired
+    private MemberRepository memberRepository;
 
     @Nested
     @DisplayName("사용자가 속한 팀플레이스들의 정보 조회시")
@@ -242,6 +247,51 @@ class MemberServiceTest extends ServiceTest {
 
             // when & then
             Assertions.assertThatThrownBy(() -> memberService.getMemberInformation(new MemberEmailDto(NON_REGISTERED_MEMBER.getEmail().getValue())))
+                    .isInstanceOf(MemberException.MemberNotFoundException.class)
+                    .hasMessageContaining("조회한 멤버가 존재하지 않습니다.");
+        }
+    }
+
+    @Nested
+    @DisplayName("사용자의 회원 탈퇴 시")
+    class DeleteAccount {
+
+        @Test
+        @DisplayName("회원 탈퇴에 성공한다.")
+        void success() {
+            // given
+            final Member REGISTERED_MEMBER = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
+
+            // when & then
+            assertDoesNotThrow(() -> memberService.leaveMember(new MemberEmailDto(REGISTERED_MEMBER.getEmail().getValue())));
+        }
+
+        @Test
+        @DisplayName("회원 탈퇴를 하면서 팀플레이스를 탈퇴한다.")
+        void successWithMemberTeamPlace() {
+            // given
+            final Member REGISTERED_MEMBER = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
+            testFixtureBuilder.buildMemberTeamPlace(REGISTERED_MEMBER, ENGLISH_TEAM_PLACE);
+
+            // when
+            memberService.leaveMember(new MemberEmailDto(REGISTERED_MEMBER.getEmail().getValue()));
+
+            // then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(memberTeamPlaceRepository.findAllByMemberId(REGISTERED_MEMBER.getId())).isEmpty();
+                softly.assertThat(memberRepository.existsByEmail(REGISTERED_MEMBER.getEmail())).isFalse();
+            });
+        }
+
+        @Test
+        @DisplayName("없는 회원은 탈퇴를 실패한다.")
+        void failIfNotRegisteredMember() {
+            // given
+            final Member NON_REGISTERED_MEMBER = MemberFixtures.ROY();
+
+            // when & then
+            Assertions.assertThatThrownBy(() -> memberService.leaveMember(new MemberEmailDto(NON_REGISTERED_MEMBER.getEmail().getValue())))
                     .isInstanceOf(MemberException.MemberNotFoundException.class)
                     .hasMessageContaining("조회한 멤버가 존재하지 않습니다.");
         }
