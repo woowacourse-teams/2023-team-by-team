@@ -18,7 +18,8 @@ public class JwtTokenExtractor {
         if (StringUtils.hasText(accessToken) && accessToken.startsWith(PREFIX_BEARER)) {
             return accessToken.substring(PREFIX_BEARER.length());
         }
-        throw new AuthenticationException.FailAuthenticationException();
+        String logMessage = "인증 실패(액세스 토큰 추출 실패) - 토큰 : " + accessToken;
+        throw new AuthenticationException.FailAuthenticationException(logMessage);
     }
 
     public String extractRefreshToken(final HttpServletRequest request) {
@@ -26,6 +27,7 @@ public class JwtTokenExtractor {
         if (StringUtils.hasText(refreshToken) && refreshToken.startsWith(PREFIX_BEARER)) {
             return refreshToken.substring(PREFIX_BEARER.length());
         }
-        throw new AuthenticationException.FailAuthenticationException();
+        String logMessage = "인증 실패(리프레시 토큰 추출 실패) - 토큰 : " + refreshToken;
+        throw new AuthenticationException.FailAuthenticationException(logMessage);
     }
 }

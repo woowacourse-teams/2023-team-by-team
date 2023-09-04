@@ -7,8 +7,8 @@ public class AuthenticationException extends RuntimeException {
     }
 
     public static class FailAuthenticationException extends AuthenticationException {
-        public FailAuthenticationException() {
-            super("인증이 실패했습니다.");
+        public FailAuthenticationException(final String logMessage) {
+            super(logMessage);
         }
     }
 }

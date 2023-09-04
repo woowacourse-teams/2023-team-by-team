@@ -80,7 +80,7 @@ public final class MemberApiDocsTest extends ApiDocsTest {
         void failIfUnAuthorized() throws Exception {
             // given
             given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willThrow(new AuthenticationException.FailAuthenticationException());
+                    .willThrow(new AuthenticationException.FailAuthenticationException("잘못된 액세스 토큰"));
 
             // when & then
             mockMvc.perform(get("/api/me")
@@ -135,7 +135,7 @@ public final class MemberApiDocsTest extends ApiDocsTest {
         void failIfUnAuthentication() throws Exception {
             // given
             given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willThrow(new AuthenticationException.FailAuthenticationException());
+                    .willThrow(new AuthenticationException.FailAuthenticationException("잘못된 액세스 토큰"));
 
             // when & then
             mockMvc.perform(get("/api/me/team-places")
@@ -191,7 +191,7 @@ public final class MemberApiDocsTest extends ApiDocsTest {
             // given
             final Long teamPlaceId = 1L;
             given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willThrow(new AuthenticationException.FailAuthenticationException());
+                    .willThrow(new AuthenticationException.FailAuthenticationException("잘못된 액세스 토큰"));
 
             // when & then
             mockMvc.perform(delete("/api/me/team-places/{teamPlaceId}", teamPlaceId)
@@ -337,7 +337,7 @@ public final class MemberApiDocsTest extends ApiDocsTest {
             // given
             final String inviteCode = "aaaa1234";
             given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willThrow(new AuthenticationException.FailAuthenticationException());
+                    .willThrow(new AuthenticationException.FailAuthenticationException("잘못된 액세스 토큰"));
 
             // when & then
             mockMvc.perform(post("/api/me/team-places/{inviteCode}", inviteCode)
@@ -414,7 +414,7 @@ public final class MemberApiDocsTest extends ApiDocsTest {
         void failIfNotAuthenticated() throws Exception {
             // given
             given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willThrow(new AuthenticationException.FailAuthenticationException());
+                    .willThrow(new AuthenticationException.FailAuthenticationException("잘못된 액세스 토큰"));
 
             // when & then
             mockMvc.perform(delete("/api/me/account")

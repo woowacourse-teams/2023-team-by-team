@@ -8,6 +8,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import team.teamby.teambyteam.auth.exception.AuthenticationException;
@@ -18,6 +19,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Component
+@Slf4j
 public class JwtTokenProvider {
 
     private static final String EXPIRED_ACCESS_TOKEN_MESSAGE = "EXPIRED_ACCESS_TOKEN";
@@ -52,7 +54,9 @@ public class JwtTokenProvider {
         final Jws<Claims> claimsJws = getAccessTokenParser().parseClaimsJws(token);
         String extractedEmail = claimsJws.getBody().get(EMAIL_KEY, String.class);
         if (extractedEmail == null) {
-            throw new AuthenticationException.FailAuthenticationException();
+            String logMessage = "인증 실패(JWT 액세스 토큰 Payload 이메일 누락) - 토큰 : " + token;
+
+            throw new AuthenticationException.FailAuthenticationException(logMessage);
         }
         return extractedEmail;
     }
@@ -67,7 +71,9 @@ public class JwtTokenProvider {
         try {
             final Claims claims = getAccessTokenParser().parseClaimsJws(token).getBody();
         } catch (MalformedJwtException | UnsupportedJwtException e) {
-            throw new AuthenticationException.FailAuthenticationException();
+            String logMessage = "인증 실패(잘못된 액세스 토큰) - 토큰 : " + token;
+
+            throw new AuthenticationException.FailAuthenticationException(logMessage);
         } catch (ExpiredJwtException e) {
             throw new ExpiredJwtException(null, null, EXPIRED_ACCESS_TOKEN_MESSAGE);
         }
@@ -91,7 +97,9 @@ public class JwtTokenProvider {
         final Jws<Claims> claimsJws = getRefreshTokenParser().parseClaimsJws(token);
         String extractedEmail = claimsJws.getBody().get(EMAIL_KEY, String.class);
         if (extractedEmail == null) {
-            throw new AuthenticationException.FailAuthenticationException();
+            String logMessage = "인증 실패(JWT 리프레시 토큰 Payload 이메일 누락) - 토큰 : " + token;
+
+            throw new AuthenticationException.FailAuthenticationException(logMessage);
         }
         return extractedEmail;
     }
@@ -106,7 +114,9 @@ public class JwtTokenProvider {
         try {
             final Claims claims = getRefreshTokenParser().parseClaimsJws(token).getBody();
         } catch (MalformedJwtException | UnsupportedJwtException e) {
-            throw new AuthenticationException.FailAuthenticationException();
+            String logMessage = "인증 실패(잘못된 리프레시 토큰) - 토큰 : " + token;
+
+            throw new AuthenticationException.FailAuthenticationException(logMessage);
         } catch (ExpiredJwtException e) {
             throw new ExpiredJwtException(null, null, EXPIRED_REFRESH_TOKEN_MESSAGE);
         }

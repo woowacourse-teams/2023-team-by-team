@@ -2,7 +2,6 @@ package team.teamby.teambyteam.member.acceptance;
 
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -19,6 +18,7 @@ import team.teamby.teambyteam.teamplace.domain.TeamPlaceInviteCode;
 import team.teamby.teambyteam.teamplace.domain.vo.InviteCode;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptanceFixture.DELETE_ACCOUNT;
 import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptanceFixture.DELETE_LEAVE_TEAM_PLACE;
 import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptanceFixture.GET_MY_INFORMATION;
@@ -43,7 +43,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             final ExtractableResponse<Response> response = GET_MY_INFORMATION(TOKEN);
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
                 softly.assertThat(response.jsonPath().getLong("id")).isEqualTo(AUTHORIZED_MEMBER.getId());
                 softly.assertThat(response.jsonPath().getString("name")).isEqualTo(AUTHORIZED_MEMBER.getName().getValue());
@@ -61,7 +61,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             final ExtractableResponse<Response> response = GET_MY_INFORMATION(TokenFixtures.MALFORMED_JWT_TOKEN);
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
                 softly.assertThat(response.body().asString()).contains("인증이 실패했습니다.");
             });
@@ -92,7 +92,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
             //then
             final TeamPlacesResponse teamPlacesResponse = response.body().as(TeamPlacesResponse.class);
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
                 softly.assertThat(teamPlacesResponse.teamPlaces()).hasSize(3);
                 softly.assertThat(teamPlacesResponse.teamPlaces().get(0).id()).isEqualTo(ENGLISH_TEAM_PLACE.getId());
@@ -124,7 +124,10 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             final ExtractableResponse<Response> response = GET_PARTICIPATED_TEAM_PLACES(UNAUTHORIZED_TOKEN);
 
             //then
-            assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+                softly.assertThat(response.body().asString()).contains("인증이 실패했습니다.");
+            });
         }
     }
 
@@ -147,7 +150,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
             //then
             final TeamPlacesResponse teamPlacesResponse = GET_PARTICIPATED_TEAM_PLACES(ENDEL_TOKEN).body().as(TeamPlacesResponse.class);
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
                 softly.assertThat(teamPlacesResponse.teamPlaces()).hasSize(0);
             });
@@ -166,7 +169,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             // when
             final ExtractableResponse<Response> response = DELETE_LEAVE_TEAM_PLACE(UNAUTHORIZED_TOKEN, ENGLISH_TEAM_PLACE.getId());
 
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
                 softly.assertThat(response.body().asString()).contains("인증이 실패했습니다.");
             });
@@ -187,7 +190,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             final ExtractableResponse<Response> response = DELETE_LEAVE_TEAM_PLACE(ENDEL_TOKEN, JAPANESE_TEAM_PLACE.getId());
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
                 softly.assertThat(response.body().asString()).contains("접근할 수 없는 팀플레이스입니다.");
             });
@@ -213,7 +216,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
             //then
             TeamPlaceParticipantResponse teamPlaceParticipantResponse = response.body().as(TeamPlaceParticipantResponse.class);
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
                 softly.assertThat(teamPlaceParticipantResponse.teamPlaceId()).isEqualTo(ENGLISH_TEAM_PLACE.getId());
             });
@@ -235,7 +238,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
             //then
             TeamPlaceParticipantResponse teamPlaceParticipantResponse = response.body().as(TeamPlaceParticipantResponse.class);
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
                 softly.assertThat(teamPlaceParticipantResponse.teamPlaceId()).isEqualTo(ENGLISH_TEAM_PLACE.getId());
             });
@@ -254,7 +257,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             final ExtractableResponse<Response> response = PARTICIPATE_TEAM_PLACE_REQUEST(PHILIP_TOKEN, invalidInviteCode);
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
             });
         }
@@ -272,7 +275,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             final ExtractableResponse<Response> response = PARTICIPATE_TEAM_PLACE_REQUEST(PHILIP_TOKEN, invalidInviteCode);
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
             });
         }
@@ -290,7 +293,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             final ExtractableResponse<Response> response = PARTICIPATE_TEAM_PLACE_REQUEST(WRONG_TOKEN, inviteCode);
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
                 softly.assertThat(response.body().asString()).contains("인증이 실패했습니다.");
             });
@@ -326,7 +329,10 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             final ExtractableResponse<Response> response = DELETE_ACCOUNT(NOT_REGISTERED_MEMBER_TOKEN);
 
             //then
-            assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+                softly.assertThat(response.body().asString()).contains("인증이 실패했습니다.");
+            });
         }
 
         @Test
@@ -339,7 +345,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             final ExtractableResponse<Response> response = DELETE_ACCOUNT(WRONG_TOKEN);
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
                 softly.assertThat(response.body().asString()).contains("인증이 실패했습니다.");
             });
