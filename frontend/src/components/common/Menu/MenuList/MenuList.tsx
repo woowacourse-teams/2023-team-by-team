@@ -25,6 +25,7 @@ const MenuList = (props: PropsWithChildren<MenuListProps>) => {
   } = useMenu();
 
   const ref = useRef<HTMLUListElement>(null);
+  const isMouseOver = useRef(false);
 
   useClickOutside(ref, (e: Event) => {
     const { target } = e;
@@ -41,6 +42,8 @@ const MenuList = (props: PropsWithChildren<MenuListProps>) => {
   });
 
   const handleMouseEnter: MouseEventHandler<HTMLUListElement> = () => {
+    isMouseOver.current = true;
+
     const children = Array.from(ref.current?.children ?? []);
     const selectedChildIndex = children.findIndex((child) =>
       child.classList.contains('selected'),
@@ -51,6 +54,10 @@ const MenuList = (props: PropsWithChildren<MenuListProps>) => {
     }
 
     children[selectedChildIndex].classList.remove('selected');
+  };
+
+  const handleMouseLeave: MouseEventHandler<HTMLUListElement> = () => {
+    isMouseOver.current = false;
   };
 
   const handleMenuClick: MouseEventHandler<HTMLUListElement> = (e) => {
@@ -86,16 +93,54 @@ const MenuList = (props: PropsWithChildren<MenuListProps>) => {
       child.classList.contains('selected'),
     );
 
-    if (selectedChildIndex === -1) {
-      return;
-    }
-
     if (e.key === 'ArrowUp') {
+      if (selectedChildIndex === -1) {
+        if (isMouseOver.current) {
+          const hoveredChild = ref.current?.querySelector(':hover');
+          const hoveredChildIndex = children.findIndex(
+            (child) => child === hoveredChild,
+          );
+
+          if (hoveredChildIndex === -1) {
+            return;
+          }
+
+          focusPrevChild(children, hoveredChildIndex);
+        } else {
+          const lastChild = children[children.length - 1];
+          lastChild.classList.add('selected');
+          scrollToChild(lastChild);
+        }
+
+        return;
+      }
+
       focusPrevChild(children, selectedChildIndex);
       return;
     }
 
     if (e.key === 'ArrowDown') {
+      if (selectedChildIndex === -1) {
+        if (isMouseOver.current) {
+          const hoveredChild = ref.current?.querySelector(':hover');
+          const hoveredChildIndex = children.findIndex(
+            (child) => child === hoveredChild,
+          );
+
+          if (hoveredChildIndex === -1) {
+            return;
+          }
+
+          focusNextChild(children, hoveredChildIndex);
+        } else {
+          const firstChild = children[0];
+          firstChild.classList.add('selected');
+          scrollToChild(firstChild);
+        }
+
+        return;
+      }
+
       focusNextChild(children, selectedChildIndex);
       return;
     }
@@ -193,6 +238,7 @@ const MenuList = (props: PropsWithChildren<MenuListProps>) => {
           width={width}
           onClick={handleMenuClick}
           onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
           onKeyDown={handleKeyDown}
           tabIndex={0}
         >
