@@ -95,22 +95,9 @@ const MenuList = (props: PropsWithChildren<MenuListProps>) => {
 
     if (e.key === 'ArrowUp') {
       if (selectedChildIndex === -1) {
-        if (isMouseOver.current) {
-          const hoveredChild = ref.current?.querySelector(':hover');
-          const hoveredChildIndex = children.findIndex(
-            (child) => child === hoveredChild,
-          );
-
-          if (hoveredChildIndex === -1) {
-            return;
-          }
-
-          focusPrevChild(children, hoveredChildIndex);
-        } else {
-          const lastChild = children[children.length - 1];
-          lastChild.classList.add('selected');
-          scrollToChild(lastChild);
-        }
+        isMouseOver.current
+          ? focusPrevChild(children, getHoveredChildIndex(children))
+          : focusChild(children[children.length - 1]);
 
         return;
       }
@@ -121,22 +108,9 @@ const MenuList = (props: PropsWithChildren<MenuListProps>) => {
 
     if (e.key === 'ArrowDown') {
       if (selectedChildIndex === -1) {
-        if (isMouseOver.current) {
-          const hoveredChild = ref.current?.querySelector(':hover');
-          const hoveredChildIndex = children.findIndex(
-            (child) => child === hoveredChild,
-          );
-
-          if (hoveredChildIndex === -1) {
-            return;
-          }
-
-          focusNextChild(children, hoveredChildIndex);
-        } else {
-          const firstChild = children[0];
-          firstChild.classList.add('selected');
-          scrollToChild(firstChild);
-        }
+        isMouseOver.current
+          ? focusNextChild(children, getHoveredChildIndex(children))
+          : focusChild(children[0]);
 
         return;
       }
@@ -146,6 +120,10 @@ const MenuList = (props: PropsWithChildren<MenuListProps>) => {
     }
 
     if (e.key === 'Enter') {
+      if (selectedChildIndex === -1) {
+        return;
+      }
+
       const selectedChild = children[selectedChildIndex];
       const { textContent } = selectedChild;
 
@@ -157,6 +135,15 @@ const MenuList = (props: PropsWithChildren<MenuListProps>) => {
     }
   };
 
+  const getHoveredChildIndex = (children: Element[]) => {
+    const hoveredChild = ref.current?.querySelector(':hover');
+    const hoveredChildIndex = children.findIndex(
+      (child) => child === hoveredChild,
+    );
+
+    return hoveredChildIndex;
+  };
+
   const focusPrevChild = (children: Element[], selectedChildIndex: number) => {
     if (selectedChildIndex === 0) {
       return;
@@ -166,9 +153,8 @@ const MenuList = (props: PropsWithChildren<MenuListProps>) => {
     const prevChild = children[selectedChildIndex - 1];
 
     currentChild.classList.remove('selected');
-    prevChild.classList.add('selected');
 
-    scrollToChild(prevChild);
+    focusChild(prevChild);
   };
 
   const focusNextChild = (children: Element[], selectedChildIndex: number) => {
@@ -180,9 +166,14 @@ const MenuList = (props: PropsWithChildren<MenuListProps>) => {
     const nextChild = children[selectedChildIndex + 1];
 
     currentChild.classList.remove('selected');
-    nextChild.classList.add('selected');
 
-    scrollToChild(nextChild);
+    focusChild(nextChild);
+  };
+
+  const focusChild = (child: Element) => {
+    child.classList.add('selected');
+
+    scrollToChild(child);
   };
 
   const scrollToChild = (child: Element) => {
