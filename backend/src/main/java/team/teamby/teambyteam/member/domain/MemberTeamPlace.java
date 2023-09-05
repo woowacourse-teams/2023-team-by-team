@@ -123,4 +123,8 @@ public class MemberTeamPlace extends BaseEntity {
     public Long findTeamPlaceId() {
         return teamPlace.getId();
     }
+
+    public boolean isDefaultDisplayMemberName(String defaultMemberName) {
+        return this.displayMemberName.getValue().equals(defaultMemberName);
+    }
 }

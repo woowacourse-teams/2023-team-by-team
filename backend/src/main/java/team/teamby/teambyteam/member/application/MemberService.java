@@ -96,13 +96,7 @@ public class MemberService {
         final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
                 .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
 
-        final List<MemberTeamPlace> memberTeamPlaces = member.getMemberTeamPlaces();
-
-        for (final MemberTeamPlace memberTeamPlace : memberTeamPlaces) {
-            if (memberTeamPlace.getDisplayMemberName().getValue().equals(member.getName().getValue())) {
-                memberTeamPlace.changeDisplayMemberName(new DisplayMemberName(memberUpdateRequest.name()));
-            }
-        }
+        member.changeDisplayName(new DisplayMemberName(memberUpdateRequest.name()));
 
         member.changeName(memberUpdateRequest.name());
     }
