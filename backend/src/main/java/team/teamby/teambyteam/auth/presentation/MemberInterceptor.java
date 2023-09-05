@@ -3,7 +3,6 @@ package team.teamby.teambyteam.auth.presentation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import team.teamby.teambyteam.auth.exception.AuthenticationException;
@@ -14,7 +13,6 @@ import team.teamby.teambyteam.member.domain.vo.Email;
 
 @RequiredArgsConstructor
 @Component
-@Slf4j
 public final class MemberInterceptor implements HandlerInterceptor {
 
     private final JwtTokenExtractor jwtTokenExtractor;
