@@ -8,7 +8,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import team.teamby.teambyteam.auth.exception.AuthenticationException;
@@ -19,7 +18,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Component
-@Slf4j
 public class JwtTokenProvider {
 
     private static final String EXPIRED_ACCESS_TOKEN_MESSAGE = "EXPIRED_ACCESS_TOKEN";
