@@ -14,7 +14,11 @@ import team.teamby.teambyteam.token.exception.TokenException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
-import static team.teamby.teambyteam.common.fixtures.TokenFixtures.*;
+import static team.teamby.teambyteam.common.fixtures.TokenFixtures.CORRECT_REFRESH_TOKEN;
+import static team.teamby.teambyteam.common.fixtures.TokenFixtures.EXPIRED_REFRESH_TOKEN;
+import static team.teamby.teambyteam.common.fixtures.TokenFixtures.MALFORMED_JWT_TOKEN;
+import static team.teamby.teambyteam.common.fixtures.TokenFixtures.MISSING_CLAIM_REFRESH_TOKEN;
+import static team.teamby.teambyteam.common.fixtures.TokenFixtures.TOKEN_ENTITY;
 
 class TokenServiceTest extends ServiceTest {
 
@@ -65,7 +69,7 @@ class TokenServiceTest extends ServiceTest {
         // when & then
         assertThatThrownBy(() -> tokenService.reissueToken(missingClaimRefreshToken))
                 .isInstanceOf(AuthenticationException.FailAuthenticationException.class)
-                .hasMessage("인증이 실패했습니다.");
+                .hasMessage("인증 실패(JWT 리프레시 토큰 Payload 이메일 누락) - 토큰 : " + token.getRefreshToken());
     }
 
     @Test
@@ -79,7 +83,7 @@ class TokenServiceTest extends ServiceTest {
         // when & then
         assertThatThrownBy(() -> tokenService.reissueToken(malformedJwtToken))
                 .isInstanceOf(AuthenticationException.FailAuthenticationException.class)
-                .hasMessage("인증이 실패했습니다.");
+                .hasMessage("인증 실패(잘못된 리프레시 토큰) - 토큰 : " + token.getRefreshToken());
     }
 
     @Test

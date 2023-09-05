@@ -81,16 +81,26 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = {
-            AuthenticationException.FailAuthenticationException.class,
             ExpiredJwtException.class,
             TokenException.TokenNotFoundException.class
     })
-    public ResponseEntity<ErrorResponse> handleAuthenticationException(final RuntimeException exception) {
+    public ResponseEntity<ErrorResponse> handleVariousCaseAuthenticationException(final RuntimeException exception) {
         final String message = exception.getMessage();
         log.warn(message);
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(new ErrorResponse(message));
+    }
+
+    @ExceptionHandler(
+            value = AuthenticationException.FailAuthenticationException.class
+    )
+    public ResponseEntity<ErrorResponse> handleVariousCaseAuthenticationException(final AuthenticationException exception) {
+        final String logMessage = exception.getMessage();
+        log.warn(logMessage);
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(new ErrorResponse("인증이 실패했습니다."));
     }
 
     @ExceptionHandler(value = {

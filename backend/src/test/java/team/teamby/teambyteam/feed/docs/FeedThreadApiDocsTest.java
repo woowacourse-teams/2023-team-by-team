@@ -160,7 +160,7 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
             final Long teamPlaceId = 1L;
             final FeedThreadWritingRequest request = FeedThreadFixtures.HELLO_WRITING_REQUEST;
             given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willThrow(new AuthenticationException.FailAuthenticationException());
+                    .willThrow(new AuthenticationException.FailAuthenticationException("잘못된 액세스 토큰"));
 
             // when & then
             mockMvc.perform(post("/api/team-place/{teamPlaceId}/feed/threads", teamPlaceId)
@@ -233,7 +233,7 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
             final Long teamPlaceId = 1L;
             final int size = 3;
             given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willThrow(new AuthenticationException.FailAuthenticationException());
+                    .willThrow(new AuthenticationException.FailAuthenticationException("잘못된 액세스 토큰"));
 
             // when & then
             mockMvc.perform(get("/api/team-place/{teamPlaceId}/feed/threads", teamPlaceId)
@@ -340,7 +340,7 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
             final Long lastThreadId = 5L;
             final int size = 3;
             given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willThrow(new AuthenticationException.FailAuthenticationException());
+                    .willThrow(new AuthenticationException.FailAuthenticationException("잘못된 액세스 토큰"));
 
             // when & then
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();

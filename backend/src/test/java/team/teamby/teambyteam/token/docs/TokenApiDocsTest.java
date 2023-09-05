@@ -130,7 +130,7 @@ public class TokenApiDocsTest extends ApiDocsTest {
             // given
             final String malFormedRefreshToken = MALFORMED_JWT_TOKEN;
             given(jwtTokenExtractor.extractRefreshToken(any())).willReturn(malFormedRefreshToken);
-            willThrow(new AuthenticationException.FailAuthenticationException())
+            willThrow(new AuthenticationException.FailAuthenticationException("잘못된 리프레시 토큰"))
                     .given(tokenService)
                     .reissueToken(malFormedRefreshToken);
 
@@ -153,7 +153,7 @@ public class TokenApiDocsTest extends ApiDocsTest {
             // given
             final String missingClaimRefreshToken = MISSING_CLAIM_REFRESH_TOKEN;
             given(jwtTokenExtractor.extractRefreshToken(any())).willReturn(missingClaimRefreshToken);
-            willThrow(new AuthenticationException.FailAuthenticationException())
+            willThrow(new AuthenticationException.FailAuthenticationException("JWT 리프레시 토큰 Payload 이메일 누락"))
                     .given(tokenService)
                     .reissueToken(missingClaimRefreshToken);
 

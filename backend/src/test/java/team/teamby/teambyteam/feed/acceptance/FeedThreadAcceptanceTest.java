@@ -2,7 +2,6 @@ package team.teamby.teambyteam.feed.acceptance;
 
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -31,6 +30,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ROY;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
@@ -70,7 +70,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             final ExtractableResponse<Response> response = POST_FEED_THREAD_REQUEST(authToken, participatedTeamPlace, request);
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
                 softly.assertThat(response.header(HttpHeaders.LOCATION)).contains("/api/team-place/" + participatedMemberTeamPlace.getTeamPlace().getId() + "/feed/threads");
             });
@@ -87,7 +87,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             final ExtractableResponse<Response> response = POST_FEED_THREAD_REQUEST(authToken, participatedTeamPlace, request);
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
                 softly.assertThat(response.body().asString()).contains("스레드 내용이 있어야 합니다.");
             });
@@ -105,7 +105,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             final ExtractableResponse<Response> response = POST_FEED_THREAD_REQUEST(authToken, UN_PARTICIPATED_TEAM_PLACE, request);
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
                 softly.assertThat(response.body().asString()).contains("접근할 수 없는 팀플레이스입니다.");
             });
@@ -122,9 +122,9 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             final ExtractableResponse<Response> response = POST_FEED_THREAD_REQUEST(unauthorizedToken, participatedTeamPlace, request);
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
-                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
-                softly.assertThat(response.body().asString()).contains("조회한 멤버가 존재하지 않습니다.");
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+                softly.assertThat(response.body().asString()).contains("인증이 실패했습니다.");
             });
         }
     }
@@ -158,7 +158,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             FeedsResponse feedsResponse = response.as(FeedsResponse.class);
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
                 softly.assertThat(feedsResponse.threads()).isEmpty();
             });
@@ -185,7 +185,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             FeedsResponse feedsResponse = response.as(FeedsResponse.class);
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
                 softly.assertThat(feedsResponse.threads().size()).isEqualTo(size);
             });
@@ -211,7 +211,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             FeedsResponse feedsResponse = response.as(FeedsResponse.class);
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
                 softly.assertThat(feedsResponse.threads().size()).isEqualTo(1);
                 softly.assertThat(feedsResponse.threads().get(0).authorId()).isNull();
@@ -239,7 +239,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             FeedsResponse feedsResponse = response.as(FeedsResponse.class);
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
                 softly.assertThat(feedsResponse.threads().size()).isEqualTo(size);
                 softly.assertThat(feedsResponse.threads().get(0).id()).isEqualTo(5);
@@ -270,7 +270,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             FeedsResponse feedsResponse = response.as(FeedsResponse.class);
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
                 softly.assertThat(feedsResponse.threads().size()).isEqualTo(insertFeeds.size());
             });
@@ -297,7 +297,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             FeedsResponse feedsResponse = response.as(FeedsResponse.class);
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
                 softly.assertThat(feedsResponse.threads().size()).isEqualTo(size);
             });
@@ -324,7 +324,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             FeedsResponse feedsResponse = response.as(FeedsResponse.class);
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
                 softly.assertThat(feedsResponse.threads().size()).isEqualTo(2);
             });
@@ -350,7 +350,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             FeedsResponse feedsResponse = response.as(FeedsResponse.class);
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
                 softly.assertThat(feedsResponse.threads()).isEmpty();
             });
@@ -371,7 +371,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             final ExtractableResponse<Response> response = GET_FEED_THREAD_FIRST("invalidToken", teamPlaceId, size);
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
             });
         }
@@ -392,7 +392,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             final ExtractableResponse<Response> response = GET_FEED_THREAD_REPEAT("invalidToken", teamPlaceId, lastThreadId, size);
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
             });
         }
@@ -412,7 +412,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             final ExtractableResponse<Response> response = GET_FEED_THREAD_FIRST(authToken, invalidTeamPlaceId, size);
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
             });
         }
@@ -433,7 +433,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             final ExtractableResponse<Response> response = GET_FEED_THREAD_REPEAT(authToken, invalidTeamPlaceId, lastThreadId, size);
 
             //then
-            SoftAssertions.assertSoftly(softly -> {
+            assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
             });
         }

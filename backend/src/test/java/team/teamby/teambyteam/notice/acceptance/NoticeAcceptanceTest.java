@@ -127,7 +127,7 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
 
         @Test
         @DisplayName("인증되지 않은 사용자로 요청 시 등록이 실패한다.")
-        void fail() {
+        void failUnAuthorizedMember() {
             // given
             final NoticeRegisterRequest request = NoticeFixtures.FIRST_NOTICE_REGISTER_REQUEST;
             final String unauthorizedToken = jwtTokenProvider.generateAccessToken(ROY().getEmail().getValue());
@@ -137,8 +137,8 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
 
             // then
             assertSoftly(softly -> {
-                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
-                softly.assertThat(response.body().asString()).contains("조회한 멤버가 존재하지 않습니다.");
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+                softly.assertThat(response.body().asString()).contains("인증이 실패했습니다.");
             });
         }
     }
