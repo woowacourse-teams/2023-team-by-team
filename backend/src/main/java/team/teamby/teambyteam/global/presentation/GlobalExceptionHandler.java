@@ -111,7 +111,9 @@ public class GlobalExceptionHandler {
             ScheduleException.SpanWrongOrderException.class,
             TeamPlaceInviteCodeException.LengthException.class,
             TeamPlaceException.NameLengthException.class,
-            TeamPlaceException.NameBlankException.class
+            TeamPlaceException.NameBlankException.class,
+            MemberException.NameLengthException.class,
+            MemberException.NameBlankException.class
     })
     public ResponseEntity<ErrorResponse> handleCustomBadRequestException(final RuntimeException exception) {
         final String message = exception.getMessage();
