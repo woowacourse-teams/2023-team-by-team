@@ -10,6 +10,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import team.teamby.teambyteam.common.AcceptanceTest;
+import team.teamby.teambyteam.common.fixtures.MemberFixtures;
 import team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures;
 import team.teamby.teambyteam.common.fixtures.TokenFixtures;
 import team.teamby.teambyteam.member.application.dto.TeamPlacesResponse;
@@ -125,7 +126,10 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             final ExtractableResponse<Response> response = GET_PARTICIPATED_TEAM_PLACES(UNAUTHORIZED_TOKEN);
 
             //then
-            assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+                softly.assertThat(response.body().asString()).contains("인증이 실패했습니다.");
+            });
         }
     }
 
@@ -353,7 +357,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             final ExtractableResponse<Response> response = UPDATE_MEMBER_INFORMATION(UNAUTHORIZED_TOKEN, request);
 
             //then
-            assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
         }
 
         @ParameterizedTest
@@ -407,6 +411,58 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
             // then
             assertThat(member.getName().getValue()).isEqualTo(changedName);
+        }
+    }
+
+    @Nested
+    @DisplayName("사용자가 탈퇴 요청시")
+    class DeleteAccount {
+
+        @Test
+        @DisplayName("탈퇴에 성공한다.")
+        void success() {
+            // given
+            final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
+            final String PHILIP_TOKEN = jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue());
+
+            // when
+            final ExtractableResponse<Response> response = DELETE_ACCOUNT(PHILIP_TOKEN);
+
+            //then
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+        }
+
+        @Test
+        @DisplayName("인증되지 않은 사용자로 요청시 실패한다.")
+        void failWithUnAuthorizedMember() {
+            // given
+            final String mail = "notRegistered@gmail.com";
+            final String NOT_REGISTERED_MEMBER_TOKEN = jwtTokenProvider.generateAccessToken(mail);
+
+            // when
+            final ExtractableResponse<Response> response = DELETE_ACCOUNT(NOT_REGISTERED_MEMBER_TOKEN);
+
+            //then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+                softly.assertThat(response.body().asString()).contains("인증이 실패했습니다.");
+            });
+        }
+
+        @Test
+        @DisplayName("잘못된 인증 토큰으로 요청시 401 에러를 반환한다.")
+        void failWithWrongToken() {
+            // given
+            final String WRONG_TOKEN = "12j40jf390.0we9ru2i3hr8.912jrkejfi23j";
+
+            // when
+            final ExtractableResponse<Response> response = DELETE_ACCOUNT(WRONG_TOKEN);
+
+            //then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+                softly.assertThat(response.body().asString()).contains("인증이 실패했습니다.");
+            });
         }
     }
 }

@@ -10,7 +10,9 @@ import team.teamby.teambyteam.auth.exception.AuthenticationException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP_EMAIL;
-import static team.teamby.teambyteam.common.fixtures.TokenFixtures.*;
+import static team.teamby.teambyteam.common.fixtures.TokenFixtures.MALFORMED_JWT_TOKEN;
+import static team.teamby.teambyteam.common.fixtures.TokenFixtures.MISSING_CLAIM_ACCESS_TOKEN;
+import static team.teamby.teambyteam.common.fixtures.TokenFixtures.MISSING_CLAIM_REFRESH_TOKEN;
 
 @SpringBootTest
 class JwtTokenProviderTest {
@@ -58,7 +60,7 @@ class JwtTokenProviderTest {
             // when & then
             assertThatThrownBy(() -> jwtTokenProvider.extractEmailFromAccessToken(malFormedJwtToken))
                     .isInstanceOf(AuthenticationException.FailAuthenticationException.class)
-                    .hasMessage("인증이 실패했습니다.");
+                    .hasMessageContaining("인증 실패(잘못된 액세스 토큰) - 토큰 : ");
         }
 
         @Test
@@ -70,7 +72,7 @@ class JwtTokenProviderTest {
             // when & then
             assertThatThrownBy(() -> jwtTokenProvider.extractEmailFromAccessToken(missingClaimToken))
                     .isInstanceOf(AuthenticationException.FailAuthenticationException.class)
-                    .hasMessage("인증이 실패했습니다.");
+                    .hasMessageContaining("인증 실패(JWT 액세스 토큰 Payload 이메일 누락) - 토큰 : " + missingClaimToken);
         }
     }
 
@@ -114,7 +116,7 @@ class JwtTokenProviderTest {
             // when & then
             assertThatThrownBy(() -> jwtTokenProvider.extractEmailFromRefreshToken(malFormedJwtToken))
                     .isInstanceOf(AuthenticationException.FailAuthenticationException.class)
-                    .hasMessage("인증이 실패했습니다.");
+                    .hasMessageContaining("인증 실패(잘못된 리프레시 토큰) - 토큰 : " + malFormedJwtToken);
         }
 
         @Test
@@ -126,7 +128,7 @@ class JwtTokenProviderTest {
             // when & then
             assertThatThrownBy(() -> jwtTokenProvider.extractEmailFromRefreshToken(missingClaimToken))
                     .isInstanceOf(AuthenticationException.FailAuthenticationException.class)
-                    .hasMessage("인증이 실패했습니다.");
+                    .hasMessage("인증 실패(JWT 리프레시 토큰 Payload 이메일 누락) - 토큰 : " + missingClaimToken);
         }
     }
 }

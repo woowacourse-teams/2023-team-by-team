@@ -69,3 +69,36 @@ include::{snippets}/teamPlaces/getInviteCode/failWithForbiddenMember/http-reques
 ==== Response
 
 include::{snippets}/teamPlaces/getInviteCode/failWithForbiddenMember/http-response.adoc[]
+
+=== 3. 팀플레이스 색상 변경
+
+====== 요청 Header
+include::{snippets}/teamPlaces/changeTeamPlaceColor/success/request-headers.adoc[]
+
+==== Request
+include::{snippets}/teamPlaces/changeTeamPlaceColor/success/http-request.adoc[]
+include::{snippets}/teamPlaces/changeTeamPlaceColor/success/request-fields.adoc[]
+
+
+==== Response
+include::{snippets}/teamPlaces/changeTeamPlaceColor/success/http-response.adoc[]
+
+=== 3.1 소속되지 않은 팀플레이스 색상 변경 실패
+
+==== Request
+
+include::{snippets}/teamPlaces/changeTeamPlaceColor/failWhenNotParticipatedTeamPlace/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/teamPlaces/changeTeamPlaceColor/failWhenNotParticipatedTeamPlace/http-response.adoc[]
+
+=== 3.2 존재하지 않는 팀플레이스 색상 번호 요청 시 실패
+
+==== Request
+
+include::{snippets}/teamPlaces/changeTeamPlaceColor/failWhenNotExistTeamPlaceColor/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/teamPlaces/changeTeamPlaceColor/failWhenNotExistTeamPlaceColor/http-response.adoc[]

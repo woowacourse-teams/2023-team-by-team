@@ -2,6 +2,7 @@ package team.teamby.teambyteam.teamplace.acceptance;
 
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -15,6 +16,8 @@ import team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures;
 import team.teamby.teambyteam.member.application.dto.TeamPlacesResponse;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
+import team.teamby.teambyteam.teamplace.application.dto.DisplayMemberNameChangeRequest;
+import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceChangeColorRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceInviteCodeResponse;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceMemberResponse;
@@ -22,6 +25,7 @@ import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceMembersResponse
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -34,15 +38,17 @@ import static team.teamby.teambyteam.common.fixtures.TokenFixtures.EXPIRED_ACCES
 import static team.teamby.teambyteam.common.fixtures.TokenFixtures.MALFORMED_JWT_TOKEN;
 import static team.teamby.teambyteam.common.fixtures.TokenFixtures.MISSING_CLAIM_ACCESS_TOKEN;
 import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptanceFixture.GET_PARTICIPATED_TEAM_PLACES;
+import static team.teamby.teambyteam.common.fixtures.acceptance.TeamPlaceAcceptanceFixture.CHANGE_MEMBER_TEAM_PLACE_COLOR;
 import static team.teamby.teambyteam.common.fixtures.acceptance.TeamPlaceAcceptanceFixture.CREATE_TEAM_PLACE;
 import static team.teamby.teambyteam.common.fixtures.acceptance.TeamPlaceAcceptanceFixture.GET_MEMBERS_REQUEST;
 import static team.teamby.teambyteam.common.fixtures.acceptance.TeamPlaceAcceptanceFixture.GET_TEAM_PLACE_INVITE_CODE;
+import static team.teamby.teambyteam.common.fixtures.acceptance.TeamPlaceAcceptanceFixture.PATCH_DISPLAY_MEMBER_NAME_CHANGE;
 
 public class TeamPlaceAcceptanceTest extends AcceptanceTest {
 
     @Nested
     @DisplayName("팀플레이스 생성시")
-    public class CreateTeamPlaceTest {
+    class CreateTeamPlaceTest {
 
         @Test
         @DisplayName("생성에 성공하고, 요청한 사용자가 생성된 팀플레이스에 소속된다.")
@@ -125,7 +131,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
 
     @Nested
     @DisplayName("팀플레이스 초대코드 조회시")
-    public class TeamPlaceInviteCodeTest {
+    class TeamPlaceInviteCodeTest {
 
         @Test
         @DisplayName("팀플레이스에 초대코드가 이미 있는 경우 해당 초대코드를 가져온다.")
@@ -298,6 +304,269 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
             assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
                 softly.assertThat(response.jsonPath().getString("error")).contains("접근할 수 없는 팀플레이스입니다.");
+            });
+        }
+    }
+
+    @Nested
+    @DisplayName("팀 플레이스 색상 변경 시")
+    class ChangeMemberTeamPlaceColor {
+        private Member member;
+        private TeamPlace teamPlace;
+        private MemberTeamPlace memberTeamPlace;
+
+        @BeforeEach
+        void setUp() {
+            member = testFixtureBuilder.buildMember(SEONGHA());
+            teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            memberTeamPlace = testFixtureBuilder.buildMemberTeamPlace(member, teamPlace);
+        }
+
+        @Test
+        @DisplayName("팀 플레이스 색상 변경에 성공한다.")
+        void success() {
+            // given
+            final int teamPlaceColorToChange = 1;
+            final String token = jwtTokenProvider.generateAccessToken(member.getEmail().getValue());
+            final Long teamPlaceId = teamPlace.getId();
+            final TeamPlaceChangeColorRequest request = new TeamPlaceChangeColorRequest(teamPlaceColorToChange);
+
+            // when
+            final ExtractableResponse<Response> response = CHANGE_MEMBER_TEAM_PLACE_COLOR(token, teamPlaceId, request);
+
+            // then
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        }
+
+        @Test
+        @DisplayName("존재하지 않는 회원이면 실패한다.")
+        void failWhenNotExistMember() {
+            // given
+            final int teamPlaceColorToChange = 1;
+            final String notExistMemberToken = jwtTokenProvider.generateAccessToken("notExistMemberEmail@gmail.com");
+            final Long teamPlaceId = teamPlace.getId();
+            final TeamPlaceChangeColorRequest request = new TeamPlaceChangeColorRequest(teamPlaceColorToChange);
+
+            // when
+            final ExtractableResponse<Response> response = CHANGE_MEMBER_TEAM_PLACE_COLOR(notExistMemberToken, teamPlaceId, request);
+
+            // then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+                softly.assertThat(response.body().asString()).contains("인증이 실패했습니다.");
+            });
+        }
+
+        @Test
+        @DisplayName("만료된 토큰으로 요청을 보내면 실패한다.")
+        void failWhenExpiredToken() {
+            // given
+            final int teamPlaceColorToChange = 1;
+            final String expiredToken = EXPIRED_ACCESS_TOKEN;
+            final Long teamPlaceId = teamPlace.getId();
+            final TeamPlaceChangeColorRequest request = new TeamPlaceChangeColorRequest(teamPlaceColorToChange);
+
+            // when
+            final ExtractableResponse<Response> response = CHANGE_MEMBER_TEAM_PLACE_COLOR(expiredToken, teamPlaceId, request);
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+                softly.assertThat(response.jsonPath().getString("error")).isEqualTo("EXPIRED_ACCESS_TOKEN");
+            });
+        }
+
+        @Test
+        @DisplayName("잘못된 토큰 형식으로 요청을 보내면 실패한다.")
+        void failWhenWrongToken() {
+            // given
+            final int teamPlaceColorToChange = 1;
+            final String malformedToken = MALFORMED_JWT_TOKEN;
+            final Long teamPlaceId = teamPlace.getId();
+            final TeamPlaceChangeColorRequest request = new TeamPlaceChangeColorRequest(teamPlaceColorToChange);
+
+            // when
+            final ExtractableResponse<Response> response = CHANGE_MEMBER_TEAM_PLACE_COLOR(malformedToken, teamPlaceId, request);
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+                softly.assertThat(response.jsonPath().getString("error")).isEqualTo("인증이 실패했습니다.");
+            });
+        }
+
+        @Test
+        @DisplayName("이메일이 누락된 토큰으로 요청을 보내면 실패한다.")
+        void failWhenMissingClaimToken() {
+            // given
+            final int teamPlaceColorToChange = 1;
+            final String missingClaimToken = MISSING_CLAIM_ACCESS_TOKEN;
+            final Long teamPlaceId = teamPlace.getId();
+            final TeamPlaceChangeColorRequest request = new TeamPlaceChangeColorRequest(teamPlaceColorToChange);
+
+            // when
+            final ExtractableResponse<Response> response = CHANGE_MEMBER_TEAM_PLACE_COLOR(missingClaimToken, teamPlaceId, request);
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+                softly.assertThat(response.jsonPath().getString("error")).isEqualTo("인증이 실패했습니다.");
+            });
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {-1, 10})
+        @DisplayName("요청한 색상 번호가 존재하지 않으면 실패한다.")
+        void failWhenNotExistTeamPlaceColor(int notExistTeamPlaceColor) {
+            // given
+            final String token = jwtTokenProvider.generateAccessToken(member.getEmail().getValue());
+            final Long teamPlaceId = teamPlace.getId();
+            final TeamPlaceChangeColorRequest request = new TeamPlaceChangeColorRequest(notExistTeamPlaceColor);
+
+            // when
+            final ExtractableResponse<Response> response = CHANGE_MEMBER_TEAM_PLACE_COLOR(token, teamPlaceId, request);
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+                softly.assertThat(response.jsonPath().getString("error")).contains("존재하지 않는 팀 플레이스 색상입니다.");
+            });
+        }
+
+        @Test
+        @DisplayName("회원이 소속된 팀플레이스가 아니라면 실패한다.")
+        void failWhenNotParticipatedTeamPlace() {
+            // given
+            final int teamPlaceColorToChange = 1;
+            final String token = jwtTokenProvider.generateAccessToken(member.getEmail().getValue());
+            final Long notParticipatedTeamPlaceId = 2L;
+            final TeamPlaceChangeColorRequest request = new TeamPlaceChangeColorRequest(teamPlaceColorToChange);
+
+            // when
+            final ExtractableResponse<Response> response = CHANGE_MEMBER_TEAM_PLACE_COLOR(token, notParticipatedTeamPlaceId, request);
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+                softly.assertThat(response.jsonPath().getString("error")).contains("접근할 수 없는 팀플레이스입니다.");
+            });
+        }
+    }
+
+    @Nested
+    @DisplayName("팀플래에스 내에서 보일 이름 변경 요청시")
+    class ChangeDisplayMemberName {
+
+
+        private Member PHILIP;
+        private TeamPlace STATICS_TEAM_PLACE;
+        private String PHILIP_ACCESS_TOKEN;
+
+        @BeforeEach
+        void setup() {
+            PHILIP = testFixtureBuilder.buildMember(PHILIP());
+            STATICS_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.STATICS_TEAM_PLACE());
+            testFixtureBuilder.buildMemberTeamPlace(PHILIP, STATICS_TEAM_PLACE);
+            PHILIP_ACCESS_TOKEN = jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue());
+        }
+
+        @Test
+        @DisplayName("변경 요쳥에 성공한다.")
+        void success() {
+            // given
+            final String NEW_NAME = "새로온 필립";
+            final DisplayMemberNameChangeRequest requestBody = new DisplayMemberNameChangeRequest(NEW_NAME);
+
+            // when
+            final ExtractableResponse<Response> response = PATCH_DISPLAY_MEMBER_NAME_CHANGE(PHILIP_ACCESS_TOKEN, STATICS_TEAM_PLACE.getId(), requestBody);
+
+            // then
+            final List<TeamPlaceMemberResponse> teamMembers = GET_MEMBERS_REQUEST(PHILIP_ACCESS_TOKEN, STATICS_TEAM_PLACE.getId())
+                    .body()
+                    .as(TeamPlaceMembersResponse.class)
+                    .members();
+
+            final Optional<TeamPlaceMemberResponse> changedMyInfo = teamMembers.stream()
+                    .filter(TeamPlaceMemberResponse::isMe)
+                    .findAny();
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+                softly.assertThat(changedMyInfo).isPresent();
+                softly.assertThat(changedMyInfo.get().name()).isEqualTo(NEW_NAME);
+            });
+        }
+
+        @Test
+        @DisplayName("소속되어있지 않은 팀플레이스에스로 이름 변경 요청을 하면 실패한다.")
+        void failWithUnparticipatedTeamPlace() {
+            // given
+            final String NEW_NAME = "새로온 필립";
+            final DisplayMemberNameChangeRequest requestBody = new DisplayMemberNameChangeRequest(NEW_NAME);
+            final long WRONG_TEAM_PLACE_ID = -1L;
+
+            // when
+            final ExtractableResponse<Response> response = PATCH_DISPLAY_MEMBER_NAME_CHANGE(PHILIP_ACCESS_TOKEN, WRONG_TEAM_PLACE_ID, requestBody);
+
+            // then
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+        }
+
+        @Test
+        @DisplayName("공백문자로 이름변경 요청시 실패한다.")
+        void failWithBlankNewName() {
+            // given
+            final String NEW_NAME = "  ";
+            final DisplayMemberNameChangeRequest requestBody = new DisplayMemberNameChangeRequest(NEW_NAME);
+
+            // when
+            final ExtractableResponse<Response> response = PATCH_DISPLAY_MEMBER_NAME_CHANGE(PHILIP_ACCESS_TOKEN, STATICS_TEAM_PLACE.getId(), requestBody);
+
+            // then
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        }
+
+        @Test
+        @DisplayName("20자 이상의 이름변경 요청시 실패한다.")
+        void failWithNameLengthOver20() {
+            // given
+            final String NEW_NAME = "a".repeat(21);
+            final DisplayMemberNameChangeRequest requestBody = new DisplayMemberNameChangeRequest(NEW_NAME);
+
+            // when
+            final ExtractableResponse<Response> response = PATCH_DISPLAY_MEMBER_NAME_CHANGE(PHILIP_ACCESS_TOKEN, STATICS_TEAM_PLACE.getId(), requestBody);
+
+            // then
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        }
+
+        @Test
+        @DisplayName("잘못된 토큰으로 이름 변경 요청을 하면 실패한다.")
+        void failWithWrongAccessTokenClaimMissing() {
+            // given
+            final String NEW_NAME = "새로온 필립";
+            final DisplayMemberNameChangeRequest requestBody = new DisplayMemberNameChangeRequest(NEW_NAME);
+
+            // when
+            final ExtractableResponse<Response> response = PATCH_DISPLAY_MEMBER_NAME_CHANGE(MISSING_CLAIM_ACCESS_TOKEN, STATICS_TEAM_PLACE.getId(), requestBody);
+
+            // then
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+        }
+
+        @Test
+        @DisplayName("잘못된 토큰으로 이름 변경 요청을 하면 실패한다.")
+        void failWithWrongAccessTokenUnauthorized() {
+            final String NEW_NAME = "새로온 필립";
+            final DisplayMemberNameChangeRequest requestBody = new DisplayMemberNameChangeRequest(NEW_NAME);
+            final String UNAUTHORIZED_MEMBER_TOKEN = jwtTokenProvider.generateAccessToken(MemberFixtures.ENDEL_EMAIL);
+
+            // when
+            final ExtractableResponse<Response> response = PATCH_DISPLAY_MEMBER_NAME_CHANGE(UNAUTHORIZED_MEMBER_TOKEN, STATICS_TEAM_PLACE.getId(), requestBody);
+
+            // then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+                softly.assertThat(response.body().asString()).contains("인증이 실패했습니다.");
             });
         }
     }

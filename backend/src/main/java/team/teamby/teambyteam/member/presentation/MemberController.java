@@ -67,4 +67,10 @@ public class MemberController {
 
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/account")
+    public ResponseEntity<Void> deleteAccount(@AuthPrincipal final MemberEmailDto memberEmailDto) {
+        memberService.leaveMember(memberEmailDto);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }
