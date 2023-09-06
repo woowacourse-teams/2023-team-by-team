@@ -13,7 +13,6 @@ import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
-import team.teamby.teambyteam.member.domain.vo.DisplayMemberName;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceParticipantResponse;
@@ -96,7 +95,7 @@ public class MemberService {
         final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
                 .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
 
-        member.changeDisplayName(new DisplayMemberName(memberUpdateRequest.name()));
+        member.changeDisplayName(memberUpdateRequest.name());
 
         member.changeName(memberUpdateRequest.name());
     }
