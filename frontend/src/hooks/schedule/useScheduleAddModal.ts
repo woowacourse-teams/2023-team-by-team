@@ -18,8 +18,8 @@ const useScheduleAddModal = (clickedDate: Date) => {
     endDateTime: dateString,
   });
   const [times, setTimes] = useState({
-    startTime: '00:00',
-    endTime: '00:00',
+    startTime: '09:00',
+    endTime: '10:00',
   });
   const [isAllDay, setIsAllDay] = useState(false);
   const { closeModal } = useModal();

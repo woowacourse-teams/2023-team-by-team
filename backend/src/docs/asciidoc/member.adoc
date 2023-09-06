@@ -1,5 +1,5 @@
 == 멤버 API
-나의 정보 조회, 나의 참여한 팀플에이스 조회, 팀플레이스 탈퇴, 팀플레이스 참여
+나의 정보 조회, 나의 참여한 팀플레이스 조회, 팀플레이스 탈퇴, 팀플레이스 참여
 
 === 1. 나의 정보 조회
 
@@ -102,3 +102,30 @@ include::{snippets}/members/particiPateTeamPlace/fail/invalidLengthInviteCode/ht
 
 ==== Response
 include::{snippets}/members/particiPateTeamPlace/fail/invalidLengthInviteCode/http-response.adoc[]
+
+=== 5. 회원 탈퇴
+
+====== 요청 Header
+include::{snippets}/members/leaveAccount/success/request-headers.adoc[]
+
+==== Request
+include::{snippets}/members/leaveAccount/success/http-request.adoc[]
+
+==== Response
+include::{snippets}/members/leaveAccount/success/http-response.adoc[]
+
+=== 5-1. 회원 탈퇴 실패 (존재하지 않는 사용자)
+
+==== Request
+include::{snippets}/members/leaveAccount/fail/notRegistered/http-request.adoc[]
+
+==== Response
+include::{snippets}/members/leaveAccount/fail/notRegistered/http-response.adoc[]
+
+=== 5-2. 회원 탈퇴 실패 (인증되지 않은 사용자)
+
+==== Request
+include::{snippets}/members/leaveAccount/fail/unAuthorized/http-request.adoc[]
+
+==== Response
+include::{snippets}/members/leaveAccount/fail/unAuthorized/http-response.adoc[]

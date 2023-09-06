@@ -5,15 +5,22 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
+import team.teamby.teambyteam.member.domain.IdOnly;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
+import team.teamby.teambyteam.member.domain.TeamPlaceColor;
+import team.teamby.teambyteam.member.domain.vo.DisplayMemberName;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.exception.MemberException;
+import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
+import team.teamby.teambyteam.teamplace.application.dto.DisplayMemberNameChangeRequest;
+import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceChangeColorRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateResponse;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceInviteCodeResponse;
+import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceMemberResponse;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceMembersResponse;
 import team.teamby.teambyteam.teamplace.domain.RandomInviteCodeGenerator;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
@@ -82,8 +89,44 @@ public class TeamPlaceService {
     }
 
     @Transactional(readOnly = true)
-    public TeamPlaceMembersResponse findMembers(final Long teamPlaceId) {
+    public TeamPlaceMembersResponse findMembers(final Long teamPlaceId, final MemberEmailDto memberEmailDto) {
+        final Member loginMember = memberRepository.findByEmail(new Email(memberEmailDto.email()))
+                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
         final List<MemberTeamPlace> memberTeamPlaces = memberTeamPlaceRepository.findAllByTeamPlaceId(teamPlaceId);
-        return TeamPlaceMembersResponse.from(memberTeamPlaces);
+
+        final List<TeamPlaceMemberResponse> teamPlaceMembers = memberTeamPlaces.stream()
+                .map(memberTeamPlace -> TeamPlaceMemberResponse.of(memberTeamPlace, loginMember))
+                .toList();
+
+        return TeamPlaceMembersResponse.from(teamPlaceMembers);
+    }
+
+    public void changeMemberTeamPlaceColor(final MemberEmailDto memberEmailDto,
+                                           final Long teamPlaceId,
+                                           final TeamPlaceChangeColorRequest request) {
+        final String memberEmail = memberEmailDto.email();
+        final IdOnly memberId = memberRepository.findIdByEmail(new Email(memberEmail))
+                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmail));
+
+        final MemberTeamPlace memberTeamPlace = memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(teamPlaceId, memberId.id())
+                .orElseThrow(() -> new MemberTeamPlaceException.NotFoundParticipatedTeamPlaceException(memberEmail, teamPlaceId));
+
+        final TeamPlaceColor findTeamPlaceColor = TeamPlaceColor.findTeamPlaceColor(request.teamPlaceColor());
+        memberTeamPlace.changeTeamPlaceColor(findTeamPlaceColor);
+    }
+
+    public void changeDisplayMemberName(
+            final Long teamPlaceId,
+            final DisplayMemberNameChangeRequest request,
+            final MemberEmailDto memberEmailDto
+    ) {
+        final String memberEmail = memberEmailDto.email();
+
+        final IdOnly memberId = memberRepository.findIdByEmail(new Email(memberEmail))
+                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmail));
+        final MemberTeamPlace memberTeamPlace = memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(teamPlaceId, memberId.id())
+                .orElseThrow(() -> new MemberTeamPlaceException.NotFoundParticipatedTeamPlaceException(memberEmail, teamPlaceId));
+
+        memberTeamPlace.changeDisplayMemberName(new DisplayMemberName(request.name()));
     }
 }

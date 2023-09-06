@@ -22,14 +22,19 @@ public class DisplayMemberName {
     private String value;
 
     public DisplayMemberName(final String value) {
-        validate(value);
-        this.value = value;
+        validateNullValue(value);
+        final String trimmedValue = value.trim();
+        validate(trimmedValue);
+        this.value = trimmedValue;
     }
 
-    private void validate(final String value) {
+    private void validateNullValue(final String value) {
         if (Objects.isNull(value)) {
             throw new NullPointerException("멤버 이름은 null일 수 없습니다.");
         }
+    }
+
+    private void validate(final String value) {
         if (value.length() > MAX_LENGTH) {
             throw new MemberTeamPlaceException.MemberDisplayNameLengthException(MAX_LENGTH, value);
         }
