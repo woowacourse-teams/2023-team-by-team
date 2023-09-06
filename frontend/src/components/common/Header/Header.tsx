@@ -13,6 +13,9 @@ import { useModal } from '~/hooks/useModal';
 import { useFetchUserInfo } from '~/hooks/queries/useFetchUserInfo';
 import UserInfoModal from '~/components/user/UserInfoModal/UserInfoModal';
 import NotificationListModal from '~/components/feed/NotificationListModal/NotificationListModal';
+import TeamColorEditModal from '~/components/team/TeamColorEditModal/TeamColorEditModal';
+
+export type HeaderModalType = 'notification' | 'team' | 'user' | 'teamColor';
 
 const Header = () => {
   const {
@@ -23,12 +26,10 @@ const Header = () => {
     displayName,
   } = useTeamPlace();
   const navigate = useNavigate();
-  const { openModal } = useModal();
+  const { openModal, isModalOpen } = useModal();
   const { userInfo } = useFetchUserInfo();
   const [teamName, setTeamName] = useState(displayName ?? '');
-  const [modalOpenType, setModalOpenType] = useState<
-    'notification' | 'team' | 'user'
-  >();
+  const [modalOpenType, setModalOpenType] = useState<HeaderModalType>();
 
   const handleTeamNameChange = useCallback(
     (value: string) => {
@@ -71,6 +72,11 @@ const Header = () => {
     openModal();
   };
 
+  const handleTeamColorButtonClick = () => {
+    setModalOpenType(() => 'teamColor');
+    openModal();
+  };
+
   useEffect(() => {
     const id = localStorage.getItem(LOCAL_STORAGE_KEY.TEAM_PLACE_ID);
 
@@ -90,12 +96,18 @@ const Header = () => {
             <LogoIcon />
           </Link>
           <div>
-            <S.TeamBadgeWrapper>
+            <Button
+              type="button"
+              variant="plain"
+              onClick={handleTeamColorButtonClick}
+              css={S.teamColorButton(modalOpenType, isModalOpen)}
+              aria-label="팀 색상 변경하기"
+            >
               <TeamBadge size="lg" teamPlaceColor={teamPlaceColor} />
               <S.TeamBadgeEditIconWrapper>
                 <EditIcon />
               </S.TeamBadgeEditIconWrapper>
-            </S.TeamBadgeWrapper>
+            </Button>
             <S.TeamNameWrapper>
               <TeamPlaceMenu
                 displayValue={teamName}
@@ -143,6 +155,7 @@ const Header = () => {
       {modalOpenType === 'notification' && <NotificationListModal />}
       {modalOpenType === 'team' && <TeamPlaceInfoModal />}
       {modalOpenType === 'user' && <UserInfoModal />}
+      {modalOpenType === 'teamColor' && <TeamColorEditModal />}
     </>
   );
 };

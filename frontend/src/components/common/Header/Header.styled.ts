@@ -1,4 +1,5 @@
 import { css, styled } from 'styled-components';
+import type { HeaderModalType } from '~/components/common/Header/Header';
 
 export const Header = styled.header`
   display: flex;
@@ -33,32 +34,6 @@ export const Divider = styled.div`
   height: 24px;
 
   background-color: ${({ theme }) => theme.color.GRAY500};
-`;
-
-export const TeamBadgeWrapper = styled.div`
-  display: flex;
-  position: relative;
-  justify-content: center;
-  align-items: center;
-
-  cursor: pointer;
-
-  & svg {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-    opacity: 0;
-  }
-
-  &:hover {
-    opacity: 0.8;
-  }
-
-  &:hover svg {
-    opacity: 1;
-  }
 `;
 
 export const TeamBadgeEditIconWrapper = styled.div`
@@ -131,4 +106,34 @@ export const userInfoButton = css`
   width: 50px;
   height: 50px;
   padding: 0;
+`;
+
+export const teamColorButton = (
+  modalOpenType: HeaderModalType | undefined,
+  isModalOpen: boolean,
+) => css`
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+
+  cursor: pointer;
+
+  & svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    opacity: ${modalOpenType === 'teamColor' && isModalOpen ? 1 : 0};
+  }
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &:hover svg {
+    opacity: 1;
+  }
 `;
