@@ -7,20 +7,22 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import team.teamby.teambyteam.common.AcceptanceTest;
 import team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures;
 import team.teamby.teambyteam.common.fixtures.TokenFixtures;
-import team.teamby.teambyteam.member.configuration.dto.MemberUpdateRequest;
 import team.teamby.teambyteam.member.application.dto.TeamPlacesResponse;
+import team.teamby.teambyteam.member.configuration.dto.MemberUpdateRequest;
 import team.teamby.teambyteam.member.domain.Member;
+import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceParticipantResponse;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceInviteCode;
 import team.teamby.teambyteam.teamplace.domain.vo.InviteCode;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.SoftAssertions.*;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.*;
 import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptanceFixture.*;
 
@@ -300,6 +302,9 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     @DisplayName("사용자 이름 정보 수정 시")
     class updateMemberInformation {
 
+        @Autowired
+        MemberRepository memberRepository;
+
         @Test
         @DisplayName("이름 수정에 성공한다.")
         void success() {
@@ -367,6 +372,41 @@ public class MemberAcceptanceTest extends AcceptanceTest {
 
             // then
             assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        }
+
+        @Test
+        @DisplayName("변경할 사용자 이름이 20자를 초과활 경우 실패한다. ")
+        void failWithNameLength() {
+            // given
+            final Member AUTHORIZED_MEMBER = testFixtureBuilder.buildMember(PHILIP());
+
+            final String VALID_TOKEN = jwtTokenProvider.generateAccessToken(AUTHORIZED_MEMBER.getEmail().getValue());
+            final String wrongNameToChange = "a".repeat(21);
+            final MemberUpdateRequest request = new MemberUpdateRequest(wrongNameToChange);
+
+            // when
+            final ExtractableResponse<Response> response = UPDATE_MEMBER_INFORMATION(VALID_TOKEN, request);
+
+            // then
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        }
+
+        @Test
+        @DisplayName("변경할 사용자 이름의 앞 뒤에 공백이 있을 경우 공백이 제거된다.")
+        void successWithTrimmedNameToChange() {
+            // given
+            final Member AUTHORIZED_MEMBER = testFixtureBuilder.buildMember(PHILIP());
+            final String VALID_TOKEN = jwtTokenProvider.generateAccessToken(AUTHORIZED_MEMBER.getEmail().getValue());
+            final String nameToChange = " 재피리 ";
+            final MemberUpdateRequest request = new MemberUpdateRequest(nameToChange);
+            final String changedName = "재피리";
+
+            // when
+            final ExtractableResponse<Response> response = UPDATE_MEMBER_INFORMATION(VALID_TOKEN, request);
+            final Member member = memberRepository.findByEmail(AUTHORIZED_MEMBER.getEmail()).get();
+
+            // then
+            assertThat(member.getName().getValue()).isEqualTo(changedName);
         }
     }
 }
