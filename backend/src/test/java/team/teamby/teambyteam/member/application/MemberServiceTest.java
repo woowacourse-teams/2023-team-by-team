@@ -275,26 +275,6 @@ class MemberServiceTest extends ServiceTest {
             });
         }
 
-        @ParameterizedTest
-        @ValueSource(strings = {" 김덕우", "김덕우 ", " 김덕우 ", "   김덕우   "})
-        @DisplayName("변경할 사용자명의 앞뒤에 공백이 존재할 경우 자동으로 공백이 제거된다.")
-        void successWithTrimmedMemberNameToUpdate(final String nameToUpdate) {
-            // given
-            final Member member = testFixtureBuilder.buildMember(ROY());
-            final String trimmedNameToUpdate = "김덕우";
-
-            // when
-            final MemberUpdateRequest memberUpdateRequest = new MemberUpdateRequest(nameToUpdate);
-            memberService.updateMemberInformation(memberUpdateRequest, new MemberEmailDto(member.getEmail().getValue()));
-
-            // then
-            assertSoftly(softly -> {
-                softly.assertThat(member.getName().getValue()).isEqualTo(trimmedNameToUpdate);
-                softly.assertThat(member.getEmail()).isEqualTo(ROY().getEmail());
-                softly.assertThat(member.getProfileImageUrl()).isEqualTo(ROY().getProfileImageUrl());
-            });
-        }
-
         @Test
         @DisplayName("존재하지 않는 사용자 이메일로 정보 변경 요청 시 실패한다.")
         void failWithNotRegisteredMember() {
@@ -315,13 +295,11 @@ class MemberServiceTest extends ServiceTest {
         void failWithEmptyMemberNameToUpdate(final String memberNameToUpdate) {
             // given
             final Member member = testFixtureBuilder.buildMember(ROY());
-
-            // when
             final MemberUpdateRequest memberUpdateRequest = new MemberUpdateRequest(memberNameToUpdate);
 
             // then
             assertThatThrownBy(() -> memberService.updateMemberInformation(memberUpdateRequest, new MemberEmailDto(member.getEmail().getValue())))
-                    .isInstanceOf(MemberTeamPlaceException.MemberNameBlankException.class)
+                    .isInstanceOf(MemberException.NameBlankException.class)
                     .hasMessage("멤버 이름은 공백을 제외한 1자 이상이어야합니다.");
         }
 
@@ -337,7 +315,7 @@ class MemberServiceTest extends ServiceTest {
 
             // then
             assertThatThrownBy(() -> memberService.updateMemberInformation(memberUpdateRequest, new MemberEmailDto(member.getEmail().getValue())))
-                    .isInstanceOf(MemberTeamPlaceException.MemberDisplayNameLengthException.class)
+                    .isInstanceOf(MemberException.NameLengthException.class)
                     .hasMessageContaining("멤버 이름의 길이가 최대 이름 길이를 초과했습니다.");
         }
 
