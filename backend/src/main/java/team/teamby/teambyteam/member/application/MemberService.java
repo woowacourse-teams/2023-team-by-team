@@ -95,8 +95,6 @@ public class MemberService {
         final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
                 .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
 
-        member.changeDisplayName(memberUpdateRequest.name());
-
         member.changeName(memberUpdateRequest.name());
     }
 

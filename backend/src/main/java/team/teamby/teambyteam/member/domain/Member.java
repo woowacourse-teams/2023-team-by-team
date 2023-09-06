@@ -102,12 +102,13 @@ public class Member extends BaseEntity {
     }
 
     public void changeName(final String nameToUpdate) {
+        changeAllDefaultDisplayName(nameToUpdate);
         this.name = name.change(nameToUpdate);
     }
 
-    public void changeDisplayName(final String name) {
+    private void changeAllDefaultDisplayName(final String name) {
         for (final MemberTeamPlace memberTeamPlace : this.memberTeamPlaces) {
-            if (memberTeamPlace.isDefaultDisplayName(this.name.getValue())) {
+            if (memberTeamPlace.isDefaultDisplayName()) {
                 memberTeamPlace.changeDisplayMemberName(new DisplayMemberName(name));
             }
         }

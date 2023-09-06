@@ -132,7 +132,7 @@ public class MemberTeamPlace extends BaseEntity {
         return teamPlace.getId();
     }
 
-    public boolean isDefaultDisplayName(final String defaultMemberName) {
-        return this.displayMemberName.getValue().equals(defaultMemberName);
+    public boolean isDefaultDisplayName() {
+        return this.displayMemberName.getValue().equals(member.getName().getValue());
     }
 }
