@@ -12,12 +12,14 @@ import CreatePage from '~/pages/CreatePage/CreatePage';
 import JoinPage from '~/pages/JoinPage/JoinPage';
 import TeamLinkPage from '~/pages/TeamLinkPage/TeamLinkPage';
 import TeamOverviewPage from '~/pages/TeamOverviewPage/TeamOverviewPage';
+import PolicyPage from '~/pages/PolicyPage/PolicyPage';
 
 const App = () => {
   return (
     <Routes>
       <Route path={PATH_NAME.LANDING} element={<LandingPage />} />
       <Route path={PATH_NAME.LOGIN} element={<LoginPage />} />
+      <Route path={PATH_NAME.POLICY} element={<PolicyPage />} />
       <Route element={<ProtectRoute />}>
         <Route path={PATH_NAME.START} element={<StartPage />} />
         <Route path={PATH_NAME.CREATE} element={<CreatePage />} />
