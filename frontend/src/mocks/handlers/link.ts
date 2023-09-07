@@ -1,5 +1,6 @@
 import { rest } from 'msw';
 import { teamLinks } from '../fixtures/link';
+import { teamPlaces } from '~/mocks/fixtures/team';
 
 let incrementalId = 1;
 
@@ -28,6 +29,13 @@ export const LinkHandlers = [
 
   // 팀 링크목록 조회
   rest.get('/api/team-place/:teamPlaceId/team-links', async (req, res, ctx) => {
+    const teamPlaceId = Number(req.params.teamPlaceId);
+    const index = teamPlaces.findIndex(
+      (teamPlace) => teamPlace.id === teamPlaceId,
+    );
+
+    if (index === -1) return res(ctx.status(403));
+
     return res(ctx.status(200), ctx.json({ teamLinks }));
   }),
 
