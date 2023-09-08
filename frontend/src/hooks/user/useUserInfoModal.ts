@@ -1,12 +1,13 @@
-import type { MouseEventHandler } from 'react';
-import { useState, type FormEventHandler, useRef } from 'react';
+import { useState, useRef } from 'react';
+import type { FormEventHandler } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
-import { PATH_NAME } from '~/constants/routes';
 import { useFetchUserInfo } from '~/hooks/queries/useFetchUserInfo';
 import { useModifyUserInfo } from '~/hooks/queries/useModifyUserInfo';
+import useClickOutside from '~/hooks/useClickOutside';
 import { useModal } from '~/hooks/useModal';
 import { useToast } from '~/hooks/useToast';
+import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
+import { PATH_NAME } from '~/constants/routes';
 
 export const useUserInfoModal = () => {
   const navigate = useNavigate();
@@ -17,7 +18,13 @@ export const useUserInfoModal = () => {
   const { userInfo } = useFetchUserInfo();
 
   const [isUserInfoEditing, setIsUserInfoEditing] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const userNameRef = useRef<HTMLDivElement>(null);
+
+  useClickOutside(userNameRef, () => {
+    if (isUserInfoEditing) {
+      setIsUserInfoEditing(() => false);
+    }
+  });
 
   const handleClose = () => {
     setIsUserInfoEditing(() => false);
@@ -79,19 +86,9 @@ export const useUserInfoModal = () => {
     );
   };
 
-  const handleContainerClick: MouseEventHandler<HTMLDivElement> = (e) => {
-    if (e.target !== containerRef.current) {
-      return;
-    }
-
-    if (isUserInfoEditing) {
-      setIsUserInfoEditing(() => false);
-    }
-  };
-
   return {
     userInfo,
-    containerRef,
+    userNameRef,
     isUserInfoEditing,
 
     handlers: {
@@ -99,7 +96,6 @@ export const useUserInfoModal = () => {
       handleLogoutClick,
       handleUserInfoEditButtonClick,
       handleUserInfoSubmit,
-      handleContainerClick,
     },
   };
 };

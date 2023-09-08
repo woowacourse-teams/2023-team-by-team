@@ -9,7 +9,7 @@ import * as S from './UserInfoModal.styled';
 const UserInfoModal = () => {
   const {
     userInfo,
-    containerRef,
+    userNameRef,
     isUserInfoEditing,
 
     handlers: {
@@ -17,7 +17,6 @@ const UserInfoModal = () => {
       handleLogoutClick,
       handleUserInfoEditButtonClick,
       handleUserInfoSubmit,
-      handleContainerClick,
     },
   } = useUserInfoModal();
 
@@ -30,12 +29,12 @@ const UserInfoModal = () => {
   return (
     <Modal>
       <S.Backdrop onClick={handleClose} />
-      <S.Container ref={containerRef} onClick={handleContainerClick}>
+      <S.Container>
         <Text as="span" size="lg" weight="semiBold">
           프로필
         </Text>
         <S.ProfileImage src={profileImageUrl} alt="프로필 이미지" />
-        <S.UserNameContainer>
+        <S.UserNameContainer ref={userNameRef}>
           {isUserInfoEditing ? (
             <S.UserInfoForm onSubmit={handleUserInfoSubmit}>
               <Input
