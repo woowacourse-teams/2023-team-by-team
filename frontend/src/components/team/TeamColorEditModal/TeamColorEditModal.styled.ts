@@ -43,6 +43,7 @@ export const Triangle = styled.div`
 
   transform: rotate(135deg);
 `;
+
 export const InnerContainer = styled.div`
   display: flex;
   flex-direction: column;

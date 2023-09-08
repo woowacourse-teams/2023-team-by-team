@@ -4,19 +4,48 @@ import type { TeamPlaceColor } from '~/types/team';
 import TeamBadge from '~/components/team/TeamBadge/TeamBadge';
 import { arrayOf } from '~/utils/arrayOf';
 import Modal from '~/components/common/Modal/Modal';
-import { type MouseEvent, useState } from 'react';
+import { type MouseEvent, useState, type MouseEventHandler } from 'react';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import Text from '~/components/common/Text/Text';
 import Button from '~/components/common/Button/Button';
+import { useModifyTeamPlaceColor } from '~/hooks/queries/useModifyTeamPlaceColor';
+import { useToast } from '~/hooks/useToast';
 
 const TeamColorEditModal = () => {
   const { closeModal } = useModal();
-  const { teamPlaceColor } = useTeamPlace();
-
+  const { teamPlaceId, teamPlaceColor, displayName } = useTeamPlace();
+  const { showToast } = useToast();
+  const { mutateModifyTeamPlaceColor } = useModifyTeamPlaceColor(teamPlaceId);
   const [teamColor, setTeamColor] = useState<TeamPlaceColor>(teamPlaceColor);
 
   const handleTeamColorChange = (teamColor: TeamPlaceColor) => {
     setTeamColor(() => teamColor);
+  };
+
+  const handleTeamPlaceColorEdit: MouseEventHandler<HTMLButtonElement> = (
+    e,
+  ) => {
+    e.preventDefault();
+
+    console.log(teamColor);
+
+    if (teamColor === teamPlaceColor) {
+      handleModalClose();
+      return;
+    }
+
+    mutateModifyTeamPlaceColor(
+      { teamPlaceColor: teamColor },
+      {
+        onSuccess: () => {
+          showToast('success', `'${displayName}' 팀 색상이 변경되었습니다.`);
+        },
+        onError: () => {
+          showToast('error', '팀 색상 변경이 실패했습니다.');
+        },
+      },
+    );
+    closeModal();
   };
 
   const handleModalClose = () => {
@@ -48,9 +77,8 @@ const TeamColorEditModal = () => {
             ))}
           </S.BadgeContainer>
           <Button
-            type="button"
             variant="normal"
-            onClick={() => console.log('clicked')}
+            onClick={handleTeamPlaceColorEdit}
             css={S.colorEditButton}
           >
             변경하기
