@@ -65,7 +65,7 @@ export const useUserInfoModal = () => {
       return;
     }
 
-    const name = nameInput.value;
+    const name = nameInput.value.trim();
 
     if (name === '' || name === userInfo?.name) {
       setIsUserInfoEditing(() => false);

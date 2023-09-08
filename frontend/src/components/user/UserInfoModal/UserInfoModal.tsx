@@ -41,6 +41,7 @@ const UserInfoModal = () => {
                 width="200px"
                 height="32px"
                 placeholder={name}
+                minLength={1}
                 maxLength={20}
               />
               <Button variant="plain" css={S.userInfoSubmitButton}>
