@@ -125,10 +125,14 @@ public class MemberTeamPlace extends BaseEntity {
     }
 
     public String findMemberProfileImageUrl() {
-       return member.getProfileImageUrl().getValue();
+        return member.getProfileImageUrl().getValue();
     }
 
     public Long findTeamPlaceId() {
         return teamPlace.getId();
+    }
+
+    public boolean isDefaultDisplayName() {
+        return this.displayMemberName.getValue().equals(member.getName().getValue());
     }
 }
