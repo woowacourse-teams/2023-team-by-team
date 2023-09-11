@@ -40,6 +40,7 @@ export const TeamBadgeEditIconWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
   svg {
     width: 20px;
     height: 20px;

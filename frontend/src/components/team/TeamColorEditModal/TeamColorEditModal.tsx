@@ -27,10 +27,8 @@ const TeamColorEditModal = () => {
   ) => {
     e.preventDefault();
 
-    console.log(teamColor);
-
     if (teamColor === teamPlaceColor) {
-      handleModalClose();
+      closeModal();
       return;
     }
 
