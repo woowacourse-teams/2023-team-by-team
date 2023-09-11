@@ -3,18 +3,21 @@ import Button from '~/components/common/Button/Button';
 import Text from '~/components/common/Text/Text';
 import Input from '~/components/common/Input/Input';
 import { useUserInfoModal } from '~/hooks/user/useUserInfoModal';
+import { MAX_USER_NAME_LENGTH } from '~/constants/user';
 import { CheckBlackIcon, EditIcon, LogoutIcon } from '~/assets/svg';
 import * as S from './UserInfoModal.styled';
 
 const UserInfoModal = () => {
   const {
     userInfo,
+    userName,
     userNameRef,
     isUserInfoEditing,
 
     handlers: {
       handleClose,
       handleLogoutClick,
+      handleUserNameChange,
       handleUserInfoEditButtonClick,
       handleUserInfoSubmit,
     },
@@ -37,13 +40,23 @@ const UserInfoModal = () => {
         <S.UserNameContainer ref={userNameRef}>
           {isUserInfoEditing ? (
             <S.UserInfoForm onSubmit={handleUserInfoSubmit}>
-              <Input
-                width="200px"
-                height="32px"
-                placeholder={name}
-                minLength={1}
-                maxLength={20}
-              />
+              <S.UserNameInputContainer>
+                <Input
+                  width="160px"
+                  height="32px"
+                  placeholder={name}
+                  value={userName}
+                  onChange={handleUserNameChange}
+                  minLength={1}
+                  maxLength={MAX_USER_NAME_LENGTH}
+                  css={S.userNameInput}
+                  autoFocus
+                />
+                <Text
+                  as="span"
+                  css={S.userNameLength}
+                >{`${userName.length}/${MAX_USER_NAME_LENGTH}`}</Text>
+              </S.UserNameInputContainer>
               <Button variant="plain" css={S.userInfoSubmitButton}>
                 <CheckBlackIcon />
               </Button>

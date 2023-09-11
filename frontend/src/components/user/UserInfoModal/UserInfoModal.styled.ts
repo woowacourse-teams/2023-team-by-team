@@ -36,6 +36,17 @@ export const UserInfoForm = styled.form`
   align-items: center;
 
   column-gap: 6px;
+
+  &:focus {
+    outline: ${({ theme }) => theme.color.PRIMARY};
+  }
+`;
+
+export const UserNameInputContainer = styled.div`
+  width: 200px;
+
+  border: 1px solid ${({ theme }) => theme.color.GRAY200};
+  border-radius: 4px;
 `;
 
 export const UserNameContainer = styled.div`
@@ -113,5 +124,20 @@ export const userInfoSubmitButton = css`
 
   &:hover {
     background-color: ${({ theme }) => theme.color.GRAY200};
+  }
+`;
+
+export const userNameLength = css`
+  font-size: 12px;
+  color: ${({ theme }) => theme.color.GRAY600};
+  white-space: pre;
+`;
+
+export const userNameInput = css`
+  border: none;
+  border-radius: 4px;
+
+  &:focus {
+    outline: none;
   }
 `;
