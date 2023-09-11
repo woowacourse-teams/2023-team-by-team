@@ -71,8 +71,8 @@ export const userName = css`
 
   font-weight: 500;
 
-  white-space: nowrap;
   overflow: hidden;
+  white-space: pre;
   text-overflow: ellipsis;
   text-align: center;
 `;
