@@ -60,12 +60,14 @@ export const useUserInfoModal = () => {
   const handleUserInfoSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
-    if (userName === '' || userName === userInfo?.name) {
+    const name = userName.trim();
+
+    if (name === '' || name === userInfo?.name) {
       setIsUserInfoEditing(() => false);
       return;
     }
 
-    if (userName.length > MAX_USER_NAME_LENGTH) {
+    if (name.length > MAX_USER_NAME_LENGTH) {
       showToast(
         'error',
         `닉네임은 최대 ${MAX_USER_NAME_LENGTH}자까지 입력할 수 있습니다.`,
@@ -74,7 +76,7 @@ export const useUserInfoModal = () => {
     }
 
     mutateModifyUserInfo(
-      { name: userName },
+      { name },
       {
         onSuccess: () => {
           setIsUserInfoEditing(() => false);
