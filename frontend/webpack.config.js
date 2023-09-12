@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const BundleAnalyzerPlugin =
   require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const PreloadWebpackPlugin = require('@vue/preload-webpack-plugin');
 
 const Dotenv = require('dotenv');
 
@@ -69,6 +70,12 @@ module.exports = {
     new BundleAnalyzerPlugin(),
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash].css',
+    }),
+    new PreloadWebpackPlugin({
+      rel: 'preload',
+      fileWhitelist: [/\.woff2$/],
+      include: 'allAssets',
+      as: 'font',
     }),
   ],
 };
