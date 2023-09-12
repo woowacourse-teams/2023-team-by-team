@@ -1,18 +1,27 @@
-import { useNavigate } from 'react-router-dom';
 import Modal from '~/components/common/Modal/Modal';
-import * as S from './UserInfoModal.styled';
-import { useModal } from '~/hooks/useModal';
-import { useFetchUserInfo } from '~/hooks/queries/useFetchUserInfo';
-import { LogoutIcon } from '~/assets/svg';
 import Button from '~/components/common/Button/Button';
-import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
-import { PATH_NAME } from '~/constants/routes';
 import Text from '~/components/common/Text/Text';
+import Input from '~/components/common/Input/Input';
+import { useUserInfoModal } from '~/hooks/user/useUserInfoModal';
+import { MAX_USER_NAME_LENGTH } from '~/constants/user';
+import { CheckBlackIcon, EditIcon, LogoutIcon } from '~/assets/svg';
+import * as S from './UserInfoModal.styled';
 
 const UserInfoModal = () => {
-  const { userInfo } = useFetchUserInfo();
-  const { closeModal } = useModal();
-  const navigate = useNavigate();
+  const {
+    userInfo,
+    userName,
+    userNameRef,
+    isUserInfoEditing,
+
+    handlers: {
+      handleClose,
+      handleLogoutClick,
+      handleUserNameChange,
+      handleUserInfoEditButtonClick,
+      handleUserInfoSubmit,
+    },
+  } = useUserInfoModal();
 
   if (!userInfo) {
     return <></>;
@@ -20,29 +29,55 @@ const UserInfoModal = () => {
 
   const { name, profileImageUrl, email } = userInfo;
 
-  const handleLogoutClick = () => {
-    const isLogout = confirm('로그아웃 하시겠습니까?');
-
-    if (!isLogout) return;
-
-    alert('로그아웃 되었습니다.');
-    localStorage.removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
-    localStorage.removeItem(LOCAL_STORAGE_KEY.TEAM_PLACE_ID);
-
-    navigate(PATH_NAME.LANDING);
-  };
-
   return (
     <Modal>
-      <S.Backdrop onClick={closeModal} />
+      <S.Backdrop onClick={handleClose} />
       <S.Container>
         <Text as="span" size="lg" weight="semiBold">
           프로필
         </Text>
         <S.ProfileImage src={profileImageUrl} alt="프로필 이미지" />
-        <Text as="span" size="xl" css={S.userName}>
-          {name}
-        </Text>
+        <S.UserNameContainer ref={userNameRef}>
+          {isUserInfoEditing ? (
+            <S.UserInfoForm onSubmit={handleUserInfoSubmit}>
+              <S.UserNameInputContainer>
+                <Input
+                  width="160px"
+                  height="32px"
+                  placeholder={name}
+                  value={userName}
+                  onChange={handleUserNameChange}
+                  minLength={1}
+                  maxLength={MAX_USER_NAME_LENGTH}
+                  css={S.userNameInput}
+                  autoFocus
+                />
+                <Text
+                  as="span"
+                  css={S.userNameLength}
+                >{`${userName.length}/${MAX_USER_NAME_LENGTH}`}</Text>
+              </S.UserNameInputContainer>
+              <Button variant="plain" css={S.userInfoSubmitButton}>
+                <CheckBlackIcon />
+              </Button>
+            </S.UserInfoForm>
+          ) : (
+            <>
+              <Text as="span" size="xl" css={S.userName}>
+                {name}
+              </Text>
+              <Button
+                type="button"
+                variant="plain"
+                aria-label="닉네임 수정하기"
+                css={S.userInfoEditButton}
+                onClick={handleUserInfoEditButtonClick}
+              >
+                <EditIcon />
+              </Button>
+            </>
+          )}
+        </S.UserNameContainer>
         <Text as="span" css={S.email}>
           {email}
         </Text>
