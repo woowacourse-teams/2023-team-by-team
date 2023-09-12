@@ -42,7 +42,7 @@ module.exports = {
     ],
   },
   output: {
-    filename: 'bundle.js',
+    filename: '[name].[contenthash].js',
     path: resolve(__dirname, 'dist'),
     clean: true,
   },
