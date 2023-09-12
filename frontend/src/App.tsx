@@ -13,6 +13,7 @@ import JoinPage from '~/pages/JoinPage/JoinPage';
 import TeamLinkPage from '~/pages/TeamLinkPage/TeamLinkPage';
 import TeamOverviewPage from '~/pages/TeamOverviewPage/TeamOverviewPage';
 import PolicyPage from '~/pages/PolicyPage/PolicyPage';
+import './App.css';
 
 const App = () => {
   return (
