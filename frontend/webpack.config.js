@@ -1,6 +1,9 @@
 const { join, resolve } = require('path');
 const { DefinePlugin } = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const BundleAnalyzerPlugin =
+  require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 const Dotenv = require('dotenv');
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -55,5 +58,6 @@ module.exports = {
         isProduction ? 'production' : 'development',
       ),
     }),
+    new BundleAnalyzerPlugin(),
   ],
 };
