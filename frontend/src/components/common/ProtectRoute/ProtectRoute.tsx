@@ -1,18 +1,15 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
 import { PATH_NAME } from '~/constants/routes';
 import { TeamPlaceProvider } from '~/contexts/TeamPlaceContext';
 import { useSendTokenReissue } from '~/hooks/queries/useSendTokenReissue';
-import { useToast } from '~/hooks/useToast';
 
 const ProtectRoute = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { showToast } = useToast();
   const { mutateSendTokenReissue } = useSendTokenReissue();
-  const [isWrongTeam, setIsWrongTeam] = useState(false);
 
   useEffect(() => {
     const accessToken = localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
