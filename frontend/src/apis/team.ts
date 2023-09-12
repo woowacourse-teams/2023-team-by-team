@@ -14,18 +14,8 @@ interface TeamPlaceMembersResponse {
   members: Omit<UserInfo, 'email'>[];
 }
 
-let teamPlacePromise: Promise<TeamPlacesResponse> | null = null;
-
 export const fetchTeamPlaces = async () => {
-  if (teamPlacePromise !== null) {
-    return teamPlacePromise;
-  }
-
-  teamPlacePromise = http.get<TeamPlacesResponse>('/api/me/team-places');
-
-  const response = await teamPlacePromise;
-  teamPlacePromise = null;
-  return response;
+  return http.get<TeamPlacesResponse>('/api/me/team-places');
 };
 
 export const fetchTeamPlaceInviteCode = (teamPlaceId: number) => {

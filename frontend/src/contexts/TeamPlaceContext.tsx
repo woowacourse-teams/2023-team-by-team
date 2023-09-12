@@ -49,13 +49,15 @@ export const TeamPlaceProvider = (props: PropsWithChildren) => {
 
   useEffect(() => {
     if (!isFetched) return;
-    console.log('a');
+
     if (teamPlaces.length === 0) return;
-    console.log('b');
+
     const id = localStorage.getItem(LOCAL_STORAGE_KEY.TEAM_PLACE_ID);
-    console.log('id' + id);
-    const initTeamPlaceId = id === null ? teamPlaces[0].id : Number(id);
-    console.log('initTeamPlaceId' + initTeamPlaceId);
+    const teamPlaceIdIndex = teamPlaces.findIndex(
+      (teamPlace) => teamPlace.id === Number(id),
+    );
+    const initTeamPlaceId =
+      teamPlaceIdIndex === -1 ? teamPlaces[0].id : Number(id);
 
     changeTeamPlace(initTeamPlaceId);
   }, [isFetched, changeTeamPlace, teamPlaces]);
