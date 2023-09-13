@@ -67,7 +67,6 @@ module.exports = {
         isProduction ? 'production' : 'development',
       ),
     }),
-    new BundleAnalyzerPlugin(),
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash].css',
     }),
