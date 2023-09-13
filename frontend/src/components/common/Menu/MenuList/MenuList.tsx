@@ -2,8 +2,8 @@ import { useRef, useEffect } from 'react';
 import type { MouseEventHandler, PropsWithChildren } from 'react';
 import { useMenu } from '~/hooks/useMenu';
 import useClickOutside from '~/hooks/useClickOutside';
-import * as S from './MenuList.styled';
 import { useListKeyboardNavigation } from '~/hooks/useListKeyboardNavigation';
+import * as S from './MenuList.styled';
 
 export interface MenuListProps {
   width?: string;
@@ -78,7 +78,7 @@ const MenuList = (props: PropsWithChildren<MenuListProps>) => {
     }
 
     const target = Array.from(ref.current.children).find(
-      (child) => child.textContent === selectedValue,
+      (child) => child.textContent?.replace('✓', '') === selectedValue,
     );
 
     if (!(target instanceof HTMLLIElement)) {
