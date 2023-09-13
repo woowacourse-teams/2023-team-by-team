@@ -4,7 +4,12 @@ import type { TeamPlaceColor } from '~/types/team';
 import TeamBadge from '~/components/team/TeamBadge/TeamBadge';
 import { arrayOf } from '~/utils/arrayOf';
 import Modal from '~/components/common/Modal/Modal';
-import { type MouseEvent, useState, type MouseEventHandler } from 'react';
+import {
+  type MouseEvent,
+  useState,
+  type MouseEventHandler,
+  useEffect,
+} from 'react';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import Text from '~/components/common/Text/Text';
 import Button from '~/components/common/Button/Button';
@@ -17,6 +22,10 @@ const TeamColorEditModal = () => {
   const { showToast } = useToast();
   const { mutateModifyTeamPlaceColor } = useModifyTeamPlaceColor(teamPlaceId);
   const [teamColor, setTeamColor] = useState<TeamPlaceColor>(teamPlaceColor);
+
+  useEffect(() => {
+    setTeamColor(() => teamPlaceColor);
+  }, [teamPlaceColor]);
 
   const handleTeamColorChange = (teamColor: TeamPlaceColor) => {
     setTeamColor(() => teamColor);
@@ -55,7 +64,7 @@ const TeamColorEditModal = () => {
     <Modal>
       <S.Backdrop onClick={handleModalClose} />
       <S.BubbleContainer onClick={handleModalClose}>
-        <S.Triangle></S.Triangle>
+        <S.Triangle />
         <S.InnerContainer>
           <Text size="sm" weight="semiBold">
             팀 색상 변경
