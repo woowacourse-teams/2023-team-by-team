@@ -164,7 +164,7 @@ public final class SharedLinkApiDocsTest extends ApiDocsTest {
             final Long teamPlaceId = 1L;
             final SharedLinkCreateRequest sharedLinkCreateRequest = new SharedLinkCreateRequest("title", "url");
             given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willThrow(new AuthenticationException.FailAuthenticationException());
+                    .willThrow(new AuthenticationException.FailAuthenticationException("잘못된 액세스 토큰"));
 
             // when & then
             mockMvc.perform(post("/api/team-place/{teamPlaceId}/team-links", teamPlaceId)
@@ -266,7 +266,7 @@ public final class SharedLinkApiDocsTest extends ApiDocsTest {
             // given
             final Long teamPlaceId = 1L;
             given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willThrow(new AuthenticationException.FailAuthenticationException());
+                    .willThrow(new AuthenticationException.FailAuthenticationException("잘못된 액세스 토큰"));
 
             // when & then
             mockMvc.perform(get("/api/team-place/{teamPlaceId}/team-links", teamPlaceId)
@@ -387,7 +387,7 @@ public final class SharedLinkApiDocsTest extends ApiDocsTest {
             final Long teamPlaceId = 1L;
             final Long teamLinkId = 1L;
             given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willThrow(new AuthenticationException.FailAuthenticationException());
+                    .willThrow(new AuthenticationException.FailAuthenticationException("잘못된 액세스 토큰"));
 
             // when & then
             mockMvc.perform(delete("/api/team-place/{teamPlaceId}/team-links/{teamLinkId}", teamPlaceId, teamLinkId)

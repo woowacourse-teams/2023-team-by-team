@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.teamby.teambyteam.member.application.dto.MemberInfoResponse;
 import team.teamby.teambyteam.member.application.dto.TeamPlacesResponse;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
+import team.teamby.teambyteam.member.configuration.dto.MemberUpdateRequest;
 import team.teamby.teambyteam.member.domain.IdOnly;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberRepository;
@@ -88,6 +89,13 @@ public class MemberService {
                 .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
 
         return MemberInfoResponse.of(member);
+    }
+
+    public void updateMemberInformation(final MemberUpdateRequest memberUpdateRequest, final MemberEmailDto memberEmailDto) {
+        final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
+                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
+
+        member.changeName(memberUpdateRequest.name());
     }
 
     public void leaveMember(final MemberEmailDto memberEmailDto) {

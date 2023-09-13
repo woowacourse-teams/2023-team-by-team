@@ -2,6 +2,7 @@ package team.teamby.teambyteam.teamplace.acceptance;
 
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -47,7 +48,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
 
     @Nested
     @DisplayName("팀플레이스 생성시")
-    public class CreateTeamPlaceTest {
+    class CreateTeamPlaceTest {
 
         @Test
         @DisplayName("생성에 성공하고, 요청한 사용자가 생성된 팀플레이스에 소속된다.")
@@ -130,7 +131,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
 
     @Nested
     @DisplayName("팀플레이스 초대코드 조회시")
-    public class TeamPlaceInviteCodeTest {
+    class TeamPlaceInviteCodeTest {
 
         @Test
         @DisplayName("팀플레이스에 초대코드가 이미 있는 경우 해당 초대코드를 가져온다.")
@@ -350,9 +351,9 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
             final ExtractableResponse<Response> response = CHANGE_MEMBER_TEAM_PLACE_COLOR(notExistMemberToken, teamPlaceId, request);
 
             // then
-            assertSoftly(softly -> {
-                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
-                softly.assertThat(response.jsonPath().getString("error")).contains("조회한 멤버가 존재하지 않습니다.");
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+                softly.assertThat(response.body().asString()).contains("인증이 실패했습니다.");
             });
         }
 
@@ -554,7 +555,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
 
         @Test
         @DisplayName("잘못된 토큰으로 이름 변경 요청을 하면 실패한다.")
-        void failWithWrognAccessTokenUnauthorized() {
+        void failWithWrongAccessTokenUnauthorized() {
             final String NEW_NAME = "새로온 필립";
             final DisplayMemberNameChangeRequest requestBody = new DisplayMemberNameChangeRequest(NEW_NAME);
             final String UNAUTHORIZED_MEMBER_TOKEN = jwtTokenProvider.generateAccessToken(MemberFixtures.ENDEL_EMAIL);
@@ -563,7 +564,10 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
             final ExtractableResponse<Response> response = PATCH_DISPLAY_MEMBER_NAME_CHANGE(UNAUTHORIZED_MEMBER_TOKEN, STATICS_TEAM_PLACE.getId(), requestBody);
 
             // then
-            assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+                softly.assertThat(response.body().asString()).contains("인증이 실패했습니다.");
+            });
         }
     }
 }

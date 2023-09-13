@@ -1,21 +1,25 @@
-import type { ComponentPropsWithoutRef, MouseEventHandler } from 'react';
-import { useRef, type PropsWithChildren, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
+import type { MouseEventHandler, PropsWithChildren } from 'react';
 import { useMenu } from '~/hooks/useMenu';
 import useClickOutside from '~/hooks/useClickOutside';
+import { useListKeyboardNavigation } from '~/hooks/useListKeyboardNavigation';
 import * as S from './MenuList.styled';
 
-export interface MenuListProps extends ComponentPropsWithoutRef<'ul'> {
+export interface MenuListProps {
   width?: string;
+  onSelect?: (value: string) => void;
 }
 
 const MenuList = (props: PropsWithChildren<MenuListProps>) => {
-  const { children, onClick, width = '100%' } = props;
+  const { children, onSelect, width = '100%' } = props;
+
   const {
     isMenuOpen,
     selectedValue,
     handleMenuOpen,
     handleSelectedValueChange,
   } = useMenu();
+
   const ref = useRef<HTMLUListElement>(null);
 
   useClickOutside(ref, (e: Event) => {
@@ -45,10 +49,24 @@ const MenuList = (props: PropsWithChildren<MenuListProps>) => {
       return;
     }
 
-    onClick?.(e);
-    handleSelectedValueChange(textContent);
+    selectItem(textContent);
+  };
+
+  const selectItem = (value: string) => {
+    onSelect?.(value);
+    handleSelectedValueChange(value);
     handleMenuOpen();
   };
+
+  const {
+    handlers: { handleMouseEnter, handleMouseLeave, handleKeyDown },
+  } = useListKeyboardNavigation(ref, handleMenuOpen, selectItem);
+
+  useEffect(() => {
+    if (isMenuOpen && ref.current) {
+      ref.current.focus();
+    }
+  }, [isMenuOpen]);
 
   useEffect(() => {
     if (selectedValue === '' || !isMenuOpen) {
@@ -60,7 +78,7 @@ const MenuList = (props: PropsWithChildren<MenuListProps>) => {
     }
 
     const target = Array.from(ref.current.children).find(
-      (child) => child.textContent === selectedValue,
+      (child) => child.textContent?.replace('✓', '') === selectedValue,
     );
 
     if (!(target instanceof HTMLLIElement)) {
@@ -80,6 +98,10 @@ const MenuList = (props: PropsWithChildren<MenuListProps>) => {
           ref={ref}
           width={width}
           onClick={handleMenuClick}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          onKeyDown={handleKeyDown}
+          tabIndex={0}
         >
           {children}
         </S.Wrapper>

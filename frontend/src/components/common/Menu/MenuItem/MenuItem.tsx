@@ -1,7 +1,8 @@
-import * as S from './MenuItem.styled';
 import type { PropsWithChildren } from 'react';
 import type { CSSProp } from 'styled-components';
+import Text from '~/components/common/Text/Text';
 import { useMenu } from '~/hooks/useMenu';
+import * as S from './MenuItem.styled';
 
 export interface MenuItemProps {
   value: string;
@@ -11,15 +12,23 @@ export interface MenuItemProps {
 const MenuItem = (props: PropsWithChildren<MenuItemProps>) => {
   const { children, value, css } = props;
   const { selectedValue } = useMenu();
+  const isSelected = selectedValue === value;
 
   return (
-    <S.Wrapper
-      role="menuitem"
-      css={css}
-      className={selectedValue === value ? 'selected' : ''}
-    >
-      {children}
-    </S.Wrapper>
+    <>
+      <S.Wrapper
+        role="menuitem"
+        css={css}
+        className={isSelected ? 'selected' : ''}
+      >
+        {isSelected && (
+          <Text as="span" css={S.checkMark}>
+            ✓
+          </Text>
+        )}
+        {children}
+      </S.Wrapper>
+    </>
   );
 };
 

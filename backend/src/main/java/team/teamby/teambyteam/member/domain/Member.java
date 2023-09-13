@@ -12,6 +12,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.teamby.teambyteam.global.domain.BaseEntity;
+import team.teamby.teambyteam.member.domain.vo.DisplayMemberName;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.domain.vo.Name;
 import team.teamby.teambyteam.member.domain.vo.ProfileImageUrl;
@@ -98,5 +99,18 @@ public class Member extends BaseEntity {
 
         memberTeamPlaces.remove(teamPlaceToLeave);
         return teamPlaceToLeave;
+    }
+
+    public void changeName(final String nameToUpdate) {
+        changeAllDefaultDisplayName(nameToUpdate);
+        this.name = name.change(nameToUpdate);
+    }
+
+    private void changeAllDefaultDisplayName(final String name) {
+        for (final MemberTeamPlace memberTeamPlace : this.memberTeamPlaces) {
+            if (memberTeamPlace.isDefaultDisplayName()) {
+                memberTeamPlace.changeDisplayMemberName(new DisplayMemberName(name));
+            }
+        }
     }
 }

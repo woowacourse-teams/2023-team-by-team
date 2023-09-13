@@ -81,7 +81,6 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = {
-            AuthenticationException.FailAuthenticationException.class,
             ExpiredJwtException.class,
             TokenException.TokenNotFoundException.class
     })
@@ -91,6 +90,17 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(new ErrorResponse(message));
+    }
+
+    @ExceptionHandler(
+            value = AuthenticationException.FailAuthenticationException.class
+    )
+    public ResponseEntity<ErrorResponse> handleVariousCaseAuthenticationException(final AuthenticationException exception) {
+        final String logMessage = exception.getMessage();
+        log.warn(logMessage);
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(new ErrorResponse("인증이 실패했습니다."));
     }
 
     @ExceptionHandler(value = {
@@ -114,7 +124,9 @@ public class GlobalExceptionHandler {
             TeamPlaceException.NameBlankException.class,
             MemberTeamPlaceException.TeamPlaceColorNotExistException.class,
             MemberTeamPlaceException.MemberNameBlankException.class,
-            MemberTeamPlaceException.MemberDisplayNameLengthException.class
+            MemberTeamPlaceException.MemberDisplayNameLengthException.class,
+            MemberException.NameLengthException.class,
+            MemberException.NameBlankException.class
     })
     public ResponseEntity<ErrorResponse> handleCustomBadRequestException(final RuntimeException exception) {
         final String message = exception.getMessage();

@@ -1,26 +1,20 @@
 import Menu from '~/components/common/Menu/Menu';
-import * as S from './TeamPlaceMenu.styled';
-import { useTeamPlace } from '~/hooks/useTeamPlace';
-import type { MouseEventHandler } from 'react';
 import Text from '~/components/common/Text/Text';
 import TeamBadge from '~/components/team/TeamBadge/TeamBadge';
+import { useTeamPlace } from '~/hooks/useTeamPlace';
+import * as S from './TeamPlaceMenu.styled';
 
 interface TeamPlaceMenuProps {
   displayValue: string;
-  onClickMenu: (value: string) => void;
+  onSelect: (value: string) => void;
 }
 
 const TeamPlaceMenu = (props: TeamPlaceMenuProps) => {
-  const { displayValue, onClickMenu } = props;
+  const { displayValue, onSelect } = props;
   const { teamPlaces } = useTeamPlace();
 
-  const handleMenuClick: MouseEventHandler<HTMLUListElement> = (e) => {
-    const { target } = e;
-
-    if (!(target instanceof HTMLLIElement)) {
-      return;
-    }
-    onClickMenu(target.textContent ?? '');
+  const handleSelect = (value: string) => {
+    onSelect(value);
   };
 
   return (
@@ -30,12 +24,13 @@ const TeamPlaceMenu = (props: TeamPlaceMenuProps) => {
         css={S.teamPlaceButton}
         aria-label="목록에서 팀 선택하기"
         title={displayValue}
+        value={displayValue}
       >
         <Text as="span" css={S.teamPlaceName}>
           {displayValue}
         </Text>
       </Menu.Button>
-      <Menu.List onClick={handleMenuClick}>
+      <Menu.List onSelect={handleSelect}>
         {teamPlaces.map((teamPlace) => (
           <Menu.Item
             key={teamPlace.id}
