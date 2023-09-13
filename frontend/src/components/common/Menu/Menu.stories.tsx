@@ -1,9 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { css } from 'styled-components';
 import Menu from '~/components/common/Menu/Menu';
-import MenuButton from '~/components/common/Menu/MenuButton/MenuButton';
-import MenuItem from '~/components/common/Menu/MenuItem/MenuItem';
-import MenuList from '~/components/common/Menu/MenuList/MenuList';
 
 const meta = {
   title: 'common/Menu',
