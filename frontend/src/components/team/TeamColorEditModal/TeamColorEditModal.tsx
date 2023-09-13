@@ -63,7 +63,7 @@ const TeamColorEditModal = () => {
   return (
     <Modal>
       <S.Backdrop onClick={handleModalClose} />
-      <S.BubbleContainer onClick={handleModalClose}>
+      <S.BubbleContainer>
         <S.Triangle />
         <S.InnerContainer>
           <Text size="sm" weight="semiBold">
