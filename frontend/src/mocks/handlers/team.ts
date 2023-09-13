@@ -7,6 +7,7 @@ import {
 } from '~/mocks/fixtures/team';
 
 const teamPlaces = [...teamPlacesData];
+
 export const teamHandlers = [
   // 팀플레이스 목록 조회
   rest.get('/api/me/team-places', async (_, res, ctx) => {
@@ -84,12 +85,26 @@ export const teamHandlers = [
   ),
 
   // 팀플레이스 팀원 목록 조회
-  rest.get('/api/team-places/:teamPlaceId/members', async (req, res, ctx) => {
+  rest.get('/api/team-places/:teamPlaceId/members', async (_, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
         members: MEMBERS,
       }),
     );
+  }),
+
+  rest.patch('/api/team-places/:teamPlaceId/color', async (req, res, ctx) => {
+    const teamPlaceId = Number(req.params.teamPlaceId);
+    const { teamPlaceColor } = await req.json();
+
+    const index = teamPlaces.findIndex(
+      (teamPlace) => teamPlace.id === teamPlaceId,
+    );
+    if (index === -1) return res(ctx.status(403));
+
+    teamPlaces[index].teamPlaceColor = teamPlaceColor;
+
+    return res(ctx.status(200));
   }),
 ];

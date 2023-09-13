@@ -1,5 +1,6 @@
 import Menu from '~/components/common/Menu/Menu';
 import Text from '~/components/common/Text/Text';
+import TeamBadge from '~/components/team/TeamBadge/TeamBadge';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import * as S from './TeamPlaceMenu.styled';
 
@@ -31,7 +32,13 @@ const TeamPlaceMenu = (props: TeamPlaceMenuProps) => {
       </Menu.Button>
       <Menu.List onSelect={handleSelect}>
         {teamPlaces.map((teamPlace) => (
-          <Menu.Item key={teamPlace.id} value={teamPlace.displayName}>
+          <Menu.Item
+            key={teamPlace.id}
+            value={teamPlace.displayName}
+            css={S.teamInfo}
+          >
+            <TeamBadge size="sm" teamPlaceColor={teamPlace.teamPlaceColor} />
+
             {teamPlace.displayName}
           </Menu.Item>
         ))}

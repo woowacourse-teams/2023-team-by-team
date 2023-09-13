@@ -1,4 +1,10 @@
-import { css } from 'styled-components';
+import styled, { css } from 'styled-components';
+
+export const teamInfo = css`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
 
 export const teamPlaceButton = css`
   width: 300px;

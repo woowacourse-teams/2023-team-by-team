@@ -2,7 +2,6 @@ import Button from '~/components/common/Button/Button';
 import Modal from '~/components/common/Modal/Modal';
 import Text from '~/components/common/Text/Text';
 import Input from '~/components/common/Input/Input';
-import { Backdrop } from '~/components/feed/ThreadAddBottomSheet/ThreadAddBottomSheet.styled';
 import useTeamExitModal from '~/hooks/team/useTeamExitModal';
 import { CloseIcon, LogoutIcon } from '~/assets/svg';
 import * as S from './TeamExitModal.styled';
@@ -34,7 +33,7 @@ const TeamExitModal = (props: TeamExitModalProps) => {
         <LogoutIcon />
       </Button>
       <Modal>
-        <Backdrop onClick={handleClose} />
+        <S.Backdrop onClick={handleClose} />
         <form onSubmit={handleSubmit}>
           <S.Container>
             <S.Header>
