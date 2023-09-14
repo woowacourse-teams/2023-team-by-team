@@ -1,5 +1,5 @@
 import * as S from './PageIndicator.styled';
-import Text from '../Text/Text';
+import Text from '~/components/common/Text/Text';
 import { arrayOf } from '~/utils/arrayOf';
 
 interface PageIndicatorProps {
