@@ -1,36 +1,36 @@
+import { Fragment } from 'react';
 import Modal from '~/components/common/Modal/Modal';
 import Text from '~/components/common/Text/Text';
 import TeamExitModal from '~/components/team/TeamExitModal/TeamExitModal';
-import { useModal } from '~/hooks/useModal';
-import { useTeamPlace } from '~/hooks/useTeamPlace';
-import { useFetchTeamPlaceMembers } from '~/hooks/queries/useFetchTeamPlaceMembers';
-import { useFetchTeamPlaceInviteCode } from '~/hooks/queries/useFetchTeamPlaceInviteCode';
-import * as S from './TeamPlaceInfoModal.styled';
-import { ModalProvider } from '~/components/common/Modal/ModalContext';
 import Button from '~/components/common/Button/Button';
-import { useToast } from '~/hooks/useToast';
 import TeamBadge from '~/components/team/TeamBadge/TeamBadge';
-import { ClipboardIcon } from '~/assets/svg';
+import Input from '~/components/common/Input/Input';
+import { ModalProvider } from '~/components/common/Modal/ModalContext';
+import { useModal } from '~/hooks/useModal';
+import { MAX_USER_NAME_LENGTH } from '~/constants/user';
+import { CheckBlackIcon, ClipboardIcon, EditIcon } from '~/assets/svg';
+
+import * as S from './TeamPlaceInfoModal.styled';
+import { useTeamPlaceInfoModal } from '~/hooks/team/useTeamPlaceInfoModal';
 
 const TeamPlaceInfoModal = () => {
   const { closeModal } = useModal();
-  const { teamPlaceId, teamPlaceColor, displayName } = useTeamPlace();
-  const { members } = useFetchTeamPlaceMembers(teamPlaceId);
-  const { inviteCode } = useFetchTeamPlaceInviteCode(teamPlaceId);
-  const { showToast } = useToast();
+  const {
+    teamPlaceColor,
+    displayName,
+    members,
+    inviteCode,
+    isEditing,
+    myUserName,
+    myUserInfoRef,
 
-  const handleCopyButtonClick = () => {
-    if (!inviteCode) {
-      return;
-    }
-
-    try {
-      navigator.clipboard.writeText(inviteCode);
-      showToast('success', '초대 코드가 복사되었습니다.');
-    } catch (error) {
-      showToast('error', '초대 코드 복사에 실패했습니다.');
-    }
-  };
+    handlers: {
+      handleCopyButtonClick,
+      handleMyUserInfoSubmit,
+      handleMyUserNameChange,
+      handleUserInfoEditButtonClick,
+    },
+  } = useTeamPlaceInfoModal();
 
   return (
     <>
@@ -50,17 +50,71 @@ const TeamPlaceInfoModal = () => {
             <Text as="span" weight="semiBold">
               팀원 목록
             </Text>
-            <Text as="span">총 {members?.length}명</Text>
+            <Text as="span">총 {members.length}명</Text>
           </S.MemberDescription>
           <S.MemberList>
-            {members?.map((member) => {
-              const { id, name, profileImageUrl } = member;
+            {members.map((member) => {
+              const { id, name, profileImageUrl, isMe } = member;
 
-              return (
-                <S.MemberListItem key={id}>
-                  <S.ProfileImage src={profileImageUrl} alt={name} />
-                  <Text as="span">{name}</Text>
-                </S.MemberListItem>
+              return isMe ? (
+                <Fragment key={id}>
+                  <S.MemberListItem>
+                    <S.ProfileImage src={profileImageUrl} alt={name} />
+                    {isEditing ? (
+                      <S.MyUserInfoForm onSubmit={handleMyUserInfoSubmit}>
+                        <S.MyUserInfo ref={myUserInfoRef}>
+                          <S.UserNameInputContainer>
+                            <Input
+                              width="120px"
+                              height="100%"
+                              placeholder={name}
+                              value={myUserName}
+                              onChange={handleMyUserNameChange}
+                              minLength={1}
+                              maxLength={MAX_USER_NAME_LENGTH}
+                              css={S.userNameInput}
+                              autoFocus
+                            />
+                            <Text
+                              as="span"
+                              css={S.userNameLength}
+                            >{`${myUserName.length}/${MAX_USER_NAME_LENGTH}`}</Text>
+                          </S.UserNameInputContainer>
+                          <Button variant="plain" css={S.userInfoSubmitButton}>
+                            <CheckBlackIcon />
+                          </Button>
+                        </S.MyUserInfo>
+                      </S.MyUserInfoForm>
+                    ) : (
+                      <S.MyUserInfo>
+                        <Text as="span" css={S.userName}>
+                          {name}
+                        </Text>
+                        <S.Badge>
+                          <Text weight="semiBold" as="span" size="xs">
+                            나
+                          </Text>
+                        </S.Badge>
+                        <Button
+                          type="button"
+                          variant="plain"
+                          aria-label="닉네임 수정하기"
+                          css={S.userInfoEditButton}
+                          onClick={handleUserInfoEditButtonClick}
+                        >
+                          <EditIcon />
+                        </Button>
+                      </S.MyUserInfo>
+                    )}
+                  </S.MemberListItem>
+                </Fragment>
+              ) : (
+                <Fragment key={id}>
+                  <S.MemberListItem>
+                    <S.ProfileImage src={profileImageUrl} alt={name} />
+                    <Text as="span">{name}</Text>
+                  </S.MemberListItem>
+                </Fragment>
               );
             })}
           </S.MemberList>

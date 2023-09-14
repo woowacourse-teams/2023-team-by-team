@@ -105,6 +105,43 @@ export const Divider = styled.div`
   background-color: ${({ theme }) => theme.color.GRAY400};
 `;
 
+export const MyUserInfo = styled.div`
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  column-gap: 10px;
+`;
+
+export const Badge = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 20px;
+  height: 20px;
+
+  border-radius: 50%;
+
+  background-color: ${({ theme }) => theme.color.GRAY600};
+
+  color: ${({ theme }) => theme.color.WHITE};
+`;
+
+export const MyUserInfoForm = styled.form`
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+`;
+
+export const UserNameInputContainer = styled.div`
+  width: 160px;
+
+  border: 1px solid ${({ theme }) => theme.color.GRAY200};
+  border-radius: 4px;
+`;
+
 export const teamName = css`
   overflow: hidden;
   white-space: nowrap;
@@ -124,4 +161,64 @@ export const copyButton = css`
 
   background-color: ${({ theme }) => theme.color.GRAY100};
   border-radius: 0 8px 8px 0;
+`;
+
+export const userInfoEditButton = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 22px;
+  height: 22px;
+  padding: 2px;
+  margin-left: auto;
+
+  border-radius: 50%;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.color.GRAY200};
+  }
+`;
+
+export const userInfoSubmitButton = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 22px;
+  height: 22px;
+  padding: 2px;
+  margin-left: auto;
+
+  border-radius: 50%;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.color.GRAY200};
+  }
+`;
+
+export const userNameLength = css`
+  font-size: 12px;
+  color: ${({ theme }) => theme.color.GRAY600};
+  white-space: pre;
+`;
+
+export const userNameInput = css`
+  border: none;
+  border-radius: 4px;
+
+  &:focus {
+    outline: none;
+  }
+`;
+
+export const userName = css`
+  max-width: 120px;
+
+  font-weight: 500;
+
+  overflow: hidden;
+  white-space: pre;
+  text-overflow: ellipsis;
+  text-align: center;
 `;
