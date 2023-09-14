@@ -42,6 +42,7 @@ const Carousel = (props: CarouselProps) => {
           onClick={() =>
             onPageChange(getPreviousPageIndex(images.length, currentPage))
           }
+          aria-label="이전 이미지 보기"
         >
           <ArrowCircleLeftIcon />
         </Button>
@@ -53,6 +54,7 @@ const Carousel = (props: CarouselProps) => {
           onClick={() =>
             onPageChange(getNextPageIndex(images.length, currentPage))
           }
+          aria-label="다음 이미지 보기"
         >
           <ArrowCircleRightIcon />
         </Button>

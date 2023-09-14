@@ -13,7 +13,9 @@ const PageIndicator = (props: PageIndicatorProps) => {
 
   return (
     <S.Container>
-      <S.NumericIndicator>
+      <S.NumericIndicator
+        aria-label={`${pageCount}개의 페이지 중 ${currentPage}번째 페이지`}
+      >
         <Text as="span" weight="semiBold" css={S.currentPageText}>
           {currentPage}
         </Text>
@@ -29,6 +31,7 @@ const PageIndicator = (props: PageIndicatorProps) => {
             key={index}
             onClick={() => onPageChange(index + 1)}
             selected={index + 1 === currentPage}
+            aria-label={`${index + 1}번째 페이지 보기`}
           />
         ))}
       </S.DotIndicator>
