@@ -14,7 +14,7 @@ interface TeamPlaceMembersResponse {
   members: Omit<UserInfo, 'email'>[];
 }
 
-export const fetchTeamPlaces = async () => {
+export const fetchTeamPlaces = () => {
   return http.get<TeamPlacesResponse>('/api/me/team-places');
 };
 
