@@ -107,4 +107,21 @@ export const teamHandlers = [
 
     return res(ctx.status(200));
   }),
+
+  // 팀플레이스 내 정보 수정
+  rest.patch(
+    '/api/team-places/:teamPlaceId/members/me',
+    async (req, res, ctx) => {
+      const newUserInfo = await req.json();
+      const me = MEMBERS.find((member) => member.isMe);
+
+      if (!me) {
+        return res(ctx.status(404));
+      }
+
+      Object.assign(me, newUserInfo);
+
+      return res(ctx.status(200));
+    },
+  ),
 ];
