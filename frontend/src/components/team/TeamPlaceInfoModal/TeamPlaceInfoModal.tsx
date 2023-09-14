@@ -7,11 +7,10 @@ import TeamBadge from '~/components/team/TeamBadge/TeamBadge';
 import Input from '~/components/common/Input/Input';
 import { ModalProvider } from '~/components/common/Modal/ModalContext';
 import { useModal } from '~/hooks/useModal';
+import { useTeamPlaceInfoModal } from '~/hooks/team/useTeamPlaceInfoModal';
 import { MAX_USER_NAME_LENGTH } from '~/constants/user';
 import { CheckBlackIcon, ClipboardIcon, EditIcon } from '~/assets/svg';
-
 import * as S from './TeamPlaceInfoModal.styled';
-import { useTeamPlaceInfoModal } from '~/hooks/team/useTeamPlaceInfoModal';
 
 const TeamPlaceInfoModal = () => {
   const { closeModal } = useModal();
