@@ -16,4 +16,5 @@ export interface UserInfo {
   name: string;
   profileImageUrl: string;
   email: string;
+  isMe: boolean;
 }
