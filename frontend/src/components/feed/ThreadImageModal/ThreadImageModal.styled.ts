@@ -36,9 +36,13 @@ export const PageIndicatorWrapper = styled.div`
 `;
 
 export const title = css`
+  overflow: hidden;
+
   font-size: 32px;
   color: ${({ theme }) => theme.color.WHITE};
   line-height: 40px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 
 export const closeButton = css`
