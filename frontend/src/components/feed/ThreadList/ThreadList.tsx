@@ -38,10 +38,8 @@ const ThreadList = (props: ThreadListProps) => {
     <>
       {noticeThread && noticeThread.id && (
         <NoticeThread
-          threadSize={size}
           authorName={noticeThread.authorName}
           createdAt={noticeThread.createdAt}
-          profileImageUrl={noticeThread.profileImageUrl}
           content={noticeThread.content}
         />
       )}

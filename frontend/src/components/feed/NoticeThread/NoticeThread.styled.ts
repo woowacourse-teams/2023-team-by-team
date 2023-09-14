@@ -1,101 +1,161 @@
 import { styled, css } from 'styled-components';
 import { noticeThreadBackground } from '~/assets/png';
-import type { ThreadSize } from '~/types/size';
+import type { NoticeSize } from '~/types/size';
 
-interface BoardProps {
-  threadSize: ThreadSize;
-  isExpanded: boolean;
-  height: number;
-}
+export const Container = styled.div<{ noticeSize: NoticeSize }>`
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
 
-export const Container = styled.div`
-  position: relative;
-`;
+  padding-top: 10px;
 
-export const InnerContainer = styled.div<BoardProps>`
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  row-gap: 20px;
-  position: relative;
+  background-color: ${({ theme }) => theme.color.GRAY100};
+  border-bottom: 2px solid ${({ theme }) => theme.color.PRIMARY200};
+  transition: 0.3s;
 
-  width: 100%;
-  min-height: 200px;
-  max-height: ${({ height }) => height}px;
-  ${({ threadSize }) => {
-    if (threadSize === 'md')
+  ${({ noticeSize }) => {
+    if (noticeSize === 'sm')
       return css`
-        padding: 30px 40px;
-        border-radius: 40px;
+        height: 80px;
       `;
-    if (threadSize === 'sm')
+    if (noticeSize === 'md')
       return css`
-        padding: 16px 20px;
-        border-radius: 20px;
+        height: 140px;
+      `;
+    if (noticeSize === 'lg')
+      return css`
+        height: 610px;
       `;
   }}
-  padding-bottom: ${({ isExpanded }) => (isExpanded ? '90px' : '26px')};
+`;
 
-  box-shadow: 0 0 16px ${({ theme }) => theme.color.GRAY300};
+export const BackgroundContainer = styled.div<{ noticeSize: NoticeSize }>`
+  display: flex;
+  border-radius: 20px 20px 0 0;
   background-image: url(${noticeThreadBackground});
   background-size: 100%;
 
-  transition: 0.3s;
-`;
-
-export const ThreadHeader = styled.header`
-  display: flex;
-  align-items: center;
-  column-gap: 8px;
-
-  width: 100%;
-  height: 36px;
-`;
-
-export const ProfileImage = styled.img<{ threadSize: ThreadSize }>`
-  ${({ threadSize }) => {
-    if (threadSize === 'md')
+  ${({ noticeSize }) => {
+    if (noticeSize === 'sm')
       return css`
-        width: 40px;
-        height: 40px;
-
-        border-radius: 12px;
+        padding: 18px 20px 18px 28px;
       `;
-    if (threadSize === 'sm')
+    if (noticeSize === 'md')
       return css`
-        width: 30px;
-        height: 30px;
-
-        border-radius: 8px;
+        padding: 18px 20px 18px 28px;
+      `;
+    if (noticeSize === 'lg')
+      return css`
+        flex-direction: column;
+        padding: 18px 20px 10px 28px;
       `;
   }}
 `;
 
-export const ContentWrapper = styled.div``;
+export const InnerContainer = styled.div<{ noticeSize: NoticeSize }>`
+  display: flex;
+  ${({ noticeSize }) => {
+    if (noticeSize === 'sm')
+      return css`
+        width: calc(100% - 64px);
+
+        gap: 26px;
+      `;
+    if (noticeSize === 'md')
+      return css`
+        width: calc(100% - 64px);
+        gap: 26px;
+      `;
+    if (noticeSize === 'lg')
+      return css`
+        flex-direction: column;
+        row-gap: 20px;
+      `;
+  }}
+`;
+
+export const ArrowContainer = styled.div`
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+`;
+
+export const ArrowIcon = styled.div<{ disabled: boolean }>`
+  width: 32px;
+  height: 32px;
+  color: ${({ theme }) => theme.color.PRIMARY900};
+  opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
+`;
+
+export const MegaPhoneWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const AuthorInfo = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  overflow: hidden;
+  column-gap: 8px;
+
+  height: 16px;
+`;
+
+export const ContentContainer = styled.div<{ noticeSize: NoticeSize }>`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  ${({ noticeSize }) => {
+    if (noticeSize === 'lg')
+      return css`
+        gap: 20px;
+        height: 450px;
+      `;
+  }}
+`;
 
 export const Divider = styled.span`
   display: inline-block;
 
   width: 1.5px;
-  height: 20px;
+  height: 16px;
   margin: 0 4px;
 
   background-color: ${({ theme }) => theme.color.GRAY400};
 `;
 
-export const primaryNoticeTag = css`
-  position: absolute;
-  top: 22px;
-  right: -18px;
+export const authorInfoText = css`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: ${({ theme }) => theme.color.GRAY500};
 `;
 
-export const threadInfoText = (threadSize: ThreadSize) => css`
-  font-size: ${threadSize === 'md' ? 18 : 16}px;
+export const timeInfoText = css`
+  color: ${({ theme }) => theme.color.GRAY500};
 `;
 
-export const contentField = (threadSize: ThreadSize) => css`
-  width: 100%;
-  white-space: pre-wrap;
+export const contentField = (noticeSize: NoticeSize) => {
+  let height = '';
 
-  font-size: ${threadSize === 'md' ? 22 : 18}px;
+  if (noticeSize === 'sm') height = '24px';
+  if (noticeSize === 'md') height = '72px';
+  if (noticeSize === 'lg') height = '100%';
+
+  return css`
+    overflow: ${noticeSize === 'lg' ? ' auto' : ' hidden'};
+    text-overflow: ellipsis;
+    white-space: pre-wrap;
+
+    width: 100%;
+    height: ${height};
+  `;
+};
+
+export const arrowButton = css`
+  padding: 0;
 `;

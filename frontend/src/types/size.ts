@@ -14,7 +14,7 @@ export type CheckboxSize = Extract<Size, 'sm' | 'md' | 'lg' | 'xl'>;
 
 export type NoticeTagSize = Extract<Size, 'sm' | 'md'>;
 
-export type NoticeThreadSize = Extract<Size, 'sm' | 'md'>;
+export type NoticeSize = Extract<Size, 'sm' | 'md' | 'lg'>;
 
 export type TeamBadgeSize = Extract<Size, 'sm' | 'md' | 'lg'>;
 

@@ -1,15 +1,6 @@
 import { css, styled } from 'styled-components';
 import type { ThreadSize } from '~/types/size';
 
-export const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  position: relative;
-
-  width: 100%;
-  height: 100%;
-`;
-
 export const ThreadContainer = styled.div<{
   threadSize: ThreadSize;
   isModalOpen: boolean;
@@ -20,7 +11,8 @@ export const ThreadContainer = styled.div<{
 
   width: 100%;
   height: 100%;
-  padding: 10px ${({ threadSize }) => (threadSize === 'md' ? 54 : 40)}px 0;
+  padding: 0 ${({ threadSize }) => (threadSize === 'md' ? 54 : 40)}px;
+
   gap: 24px;
 
   background-color: ${({ theme }) => theme.color.GRAY100};
