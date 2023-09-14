@@ -1,6 +1,8 @@
 import * as S from './Carousel.styled';
 import Button from '~/components/common/Button/Button';
+import Text from '~/components/common/Text/Text';
 import { ArrowCircleLeftIcon, ArrowCircleRightIcon } from '~/assets/svg';
+import type { ThreadImage } from '~/types/feed';
 
 export const getNextPageIndex = (pageCount: number, currentPage: number) => {
   return currentPage === pageCount ? 1 : currentPage + 1;
@@ -16,7 +18,7 @@ export const getPreviousPageIndex = (
 interface CarouselProps {
   width: string;
   height: string;
-  images: string[];
+  images: ThreadImage[];
   currentPage: number;
   onPageChange: (page: number) => void;
 }
@@ -28,9 +30,15 @@ const Carousel = (props: CarouselProps) => {
     <S.Container width={width} height={height}>
       <S.SlidesView>
         <S.Slides currentPage={currentPage}>
-          {images.map((image, index) => (
-            <S.Slide key={index}>
-              <img src={image} />
+          {images.map(({ id, isExpired, url }) => (
+            <S.Slide key={id}>
+              {isExpired ? (
+                <Text as="span" size="xxl" css={S.expiredText}>
+                  죄송합니다. 이 이미지는 기간이 만료되었습니다.
+                </Text>
+              ) : (
+                <img src={url} />
+              )}
             </S.Slide>
           ))}
         </S.Slides>

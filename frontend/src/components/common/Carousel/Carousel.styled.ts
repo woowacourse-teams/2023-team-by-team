@@ -75,3 +75,7 @@ export const arrowButton = css`
     height: 60px;
   }
 `;
+
+export const expiredText = css`
+  color: white;
+`;

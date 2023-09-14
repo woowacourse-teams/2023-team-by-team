@@ -7,9 +7,10 @@ import * as S from './ThreadImageModal.styled';
 import { useState } from 'react';
 import { useModal } from '~/hooks/useModal';
 import { CloseIcon } from '~/assets/svg';
+import type { ThreadImage } from '~/types/feed';
 
 interface ThreadImageModalProps {
-  images: string[];
+  images: ThreadImage[];
   initialPage: number;
 }
 
@@ -23,7 +24,7 @@ const ThreadImageModal = (props: ThreadImageModalProps) => {
       <S.Container>
         <S.HeaderWrapper>
           <Text as="span" size="xxl" weight="semiBold" css={S.title}>
-            test-image.png
+            {images[currentPage - 1].name}
           </Text>
           <Button
             variant="plain"
