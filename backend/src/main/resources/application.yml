@@ -34,6 +34,7 @@ aws:
   s3:
     region: abcd
     bucket: abcd
+    directory: a/b/c
   cloud-front:
     domain: abcd
 
