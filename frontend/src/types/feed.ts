@@ -14,3 +14,10 @@ export interface Thread {
 export type NoticeThread = Omit<Thread, 'type'> | Record<string, never>;
 
 export type ThreadContent = Pick<Thread, 'content'>;
+
+export interface ThreadImage {
+  id: number;
+  isExpired: boolean;
+  name: string;
+  url: string;
+}
