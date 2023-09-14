@@ -12,7 +12,7 @@ export const SlidesView = styled.div`
 
   width: 100%;
   height: 100%;
-  padding: 50px 0;
+  padding: 20px 0;
 `;
 
 export const Slides = styled.div<{ currentPage: number }>`
@@ -59,6 +59,11 @@ export const ArrowCircleRightButtonWrapper = styled.div`
   ${buttonWrapper}
 
   right: 0;
+`;
+
+export const closeButton = css`
+  width: 40px;
+  height: 40px;
 `;
 
 export const arrowButton = css`

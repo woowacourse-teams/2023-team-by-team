@@ -28,7 +28,7 @@ export const Dot = styled.button<{ selected: boolean }>`
 
   border-radius: 50%;
   background-color: ${({ theme, selected }) =>
-    selected ? theme.color.WHITE : theme.color.GRAY500};
+    selected ? theme.color.WHITE : theme.color.GRAY600};
 
   transition: 0.2s;
 `;
@@ -40,7 +40,7 @@ export const currentPageText = css`
 `;
 
 export const pageCountText = css`
-  color: ${({ theme }) => theme.color.GRAY500};
+  color: ${({ theme }) => theme.color.GRAY600};
   font-size: 28px;
   line-height: 34px;
 `;
