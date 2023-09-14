@@ -1,4 +1,4 @@
-import Carousel from '~/components/common/Carousel/Carousel';
+import Carousel from '~/components/feed/Carousel/Carousel';
 import PageIndicator from '~/components/common/PageIndicator/PageIndicator';
 import Modal from '~/components/common/Modal/Modal';
 import Button from '~/components/common/Button/Button';
