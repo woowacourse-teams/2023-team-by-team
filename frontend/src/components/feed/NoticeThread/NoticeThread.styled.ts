@@ -60,7 +60,6 @@ export const InnerContainer = styled.div<{ noticeSize: NoticeSize }>`
     if (noticeSize === 'sm')
       return css`
         width: calc(100% - 64px);
-
         gap: 26px;
       `;
     if (noticeSize === 'md')
@@ -85,11 +84,13 @@ export const ArrowContainer = styled.div`
 export const ArrowIcon = styled.div<{ disabled: boolean }>`
   width: 32px;
   height: 32px;
-  color: ${({ theme }) => theme.color.PRIMARY900};
+
   opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
+
+  color: ${({ theme }) => theme.color.PRIMARY900};
 `;
 
-export const MegaPhoneWrapper = styled.div`
+export const MegaphoneWrapper = styled.div`
   display: flex;
   align-items: center;
 `;
