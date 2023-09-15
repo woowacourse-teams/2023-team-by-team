@@ -13,6 +13,7 @@ export const Container = styled.div<{ noticeSize: NoticeSize }>`
 
   background-color: ${({ theme }) => theme.color.GRAY100};
   border-bottom: 2px solid ${({ theme }) => theme.color.PRIMARY200};
+
   transition: 0.3s;
 
   ${({ noticeSize }) => {
@@ -33,9 +34,15 @@ export const Container = styled.div<{ noticeSize: NoticeSize }>`
 
 export const BackgroundContainer = styled.div<{ noticeSize: NoticeSize }>`
   display: flex;
+  justify-content: space-between;
+
+  height: 100%;
+
   border-radius: 20px 20px 0 0;
   background-image: url(${noticeThreadBackground});
   background-size: 100%;
+
+  transition: 0.3s;
 
   ${({ noticeSize }) => {
     if (noticeSize === 'sm')
@@ -49,6 +56,7 @@ export const BackgroundContainer = styled.div<{ noticeSize: NoticeSize }>`
     if (noticeSize === 'lg')
       return css`
         flex-direction: column;
+
         padding: 18px 20px 10px 28px;
       `;
   }}
@@ -56,23 +64,7 @@ export const BackgroundContainer = styled.div<{ noticeSize: NoticeSize }>`
 
 export const InnerContainer = styled.div<{ noticeSize: NoticeSize }>`
   display: flex;
-  ${({ noticeSize }) => {
-    if (noticeSize === 'sm')
-      return css`
-        width: calc(100% - 64px);
-        gap: 26px;
-      `;
-    if (noticeSize === 'md')
-      return css`
-        width: calc(100% - 64px);
-        gap: 26px;
-      `;
-    if (noticeSize === 'lg')
-      return css`
-        flex-direction: column;
-        row-gap: 20px;
-      `;
-  }}
+  gap: 10px;
 `;
 
 export const ArrowContainer = styled.div`
@@ -91,8 +83,7 @@ export const ArrowIcon = styled.div<{ disabled: boolean }>`
 `;
 
 export const MegaphoneWrapper = styled.div`
-  display: flex;
-  align-items: center;
+  width: 40px;
 `;
 
 export const AuthorInfo = styled.div`
@@ -110,11 +101,13 @@ export const ContentContainer = styled.div<{ noticeSize: NoticeSize }>`
   flex-direction: column;
   justify-content: space-between;
 
+  width: 100%;
+  gap: 4px;
+
   ${({ noticeSize }) => {
     if (noticeSize === 'lg')
       return css`
-        gap: 20px;
-        height: 450px;
+        height: 550px;
       `;
   }}
 `;
@@ -133,6 +126,7 @@ export const authorInfoText = css`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+
   color: ${({ theme }) => theme.color.GRAY500};
 `;
 
