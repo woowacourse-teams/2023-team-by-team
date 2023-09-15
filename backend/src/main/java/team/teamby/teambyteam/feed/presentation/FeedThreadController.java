@@ -2,6 +2,7 @@ package team.teamby.teambyteam.feed.presentation;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,11 +11,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import team.teamby.teambyteam.aws.s3.application.S3UploadService;
 import team.teamby.teambyteam.feed.application.FeedThreadService;
 import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
 import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
 import team.teamby.teambyteam.member.configuration.AuthPrincipal;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
+import team.teamby.teambyteam.teamplace.application.dto.PresignedUrlsRequest;
+import team.teamby.teambyteam.teamplace.application.dto.PresignedUrlsResponse;
 
 import java.net.URI;
 
@@ -24,6 +28,7 @@ import java.net.URI;
 public class FeedThreadController {
 
     private final FeedThreadService feedThreadService;
+    private final S3UploadService s3UploadService;
 
     @PostMapping("/{teamPlaceId}/feed/threads")
     public ResponseEntity<Void> write(
@@ -56,5 +61,13 @@ public class FeedThreadController {
         FeedsResponse feeds = feedThreadService.reRead(teamPlaceId, threadId, size);
 
         return ResponseEntity.ok(feeds);
+    }
+
+    @PostMapping("/{teamPlaceId}/feed/threads/images")
+    public ResponseEntity<PresignedUrlsResponse> receivePresignedUrl(
+            @AuthPrincipal final MemberEmailDto memberEmailDto,
+            @RequestBody final PresignedUrlsRequest images) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(s3UploadService.getImageUploadPresignedUrl(memberEmailDto, images));
     }
 }

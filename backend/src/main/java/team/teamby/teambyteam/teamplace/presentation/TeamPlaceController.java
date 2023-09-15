@@ -11,13 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import team.teamby.teambyteam.aws.s3.application.S3UploadService;
 import team.teamby.teambyteam.member.configuration.AuthPrincipal;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.teamplace.application.TeamPlaceService;
 import team.teamby.teambyteam.teamplace.application.dto.DisplayMemberNameChangeRequest;
-import team.teamby.teambyteam.teamplace.application.dto.PresignedUrlsRequest;
-import team.teamby.teambyteam.teamplace.application.dto.PresignedUrlsResponse;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceChangeColorRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateResponse;
@@ -30,7 +27,6 @@ import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceMembersResponse
 public class TeamPlaceController {
 
     private final TeamPlaceService teamPlaceService;
-    private final S3UploadService s3UploadService;
 
     @PostMapping
     public ResponseEntity<TeamPlaceCreateResponse> createTeamPlace(
@@ -80,13 +76,5 @@ public class TeamPlaceController {
         teamPlaceService.changeDisplayMemberName(teamPlaceId, request, memberEmailDto);
 
         return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/{teamPlaceId}/feed/threads/images")
-    public ResponseEntity<PresignedUrlsResponse> receivePresignedUrl(
-            @AuthPrincipal final MemberEmailDto memberEmailDto,
-            @RequestBody final PresignedUrlsRequest images) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(s3UploadService.getImageUploadPresignedUrl(memberEmailDto, images));
     }
 }
