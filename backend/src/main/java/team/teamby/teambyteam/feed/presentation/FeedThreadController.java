@@ -17,8 +17,8 @@ import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
 import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
 import team.teamby.teambyteam.member.configuration.AuthPrincipal;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
-import team.teamby.teambyteam.teamplace.application.dto.PresignedUrlsRequest;
-import team.teamby.teambyteam.teamplace.application.dto.PresignedUrlsResponse;
+import team.teamby.teambyteam.feed.application.dto.PresignedUrlsRequest;
+import team.teamby.teambyteam.feed.application.dto.PresignedUrlsResponse;
 
 import java.net.URI;
 

@@ -5,10 +5,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import team.teamby.teambyteam.aws.s3.S3PresignedUrlProvider;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
-import team.teamby.teambyteam.teamplace.application.dto.PreSignedUrlResponse;
-import team.teamby.teambyteam.teamplace.application.dto.PresignedUrlRequest;
-import team.teamby.teambyteam.teamplace.application.dto.PresignedUrlsRequest;
-import team.teamby.teambyteam.teamplace.application.dto.PresignedUrlsResponse;
+import team.teamby.teambyteam.feed.application.dto.PreSignedUrlResponse;
+import team.teamby.teambyteam.feed.application.dto.PresignedUrlRequest;
+import team.teamby.teambyteam.feed.application.dto.PresignedUrlsRequest;
+import team.teamby.teambyteam.feed.application.dto.PresignedUrlsResponse;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;

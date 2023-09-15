@@ -1,4 +1,4 @@
-package team.teamby.teambyteam.teamplace.application.dto;
+package team.teamby.teambyteam.feed.application.dto;
 
 import jakarta.validation.constraints.Size;
 
