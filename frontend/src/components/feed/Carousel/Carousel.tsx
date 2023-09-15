@@ -46,6 +46,7 @@ const Carousel = (props: CarouselProps) => {
       <S.ArrowCircleLeftButtonWrapper>
         <Button
           variant="plain"
+          type="button"
           css={S.arrowButton}
           onClick={() =>
             onPageChange(getPreviousPageIndex(images.length, currentPage))
@@ -58,6 +59,7 @@ const Carousel = (props: CarouselProps) => {
       <S.ArrowCircleRightButtonWrapper>
         <Button
           variant="plain"
+          type="button"
           css={S.arrowButton}
           onClick={() =>
             onPageChange(getNextPageIndex(images.length, currentPage))

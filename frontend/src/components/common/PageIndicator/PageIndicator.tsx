@@ -29,6 +29,7 @@ const PageIndicator = (props: PageIndicatorProps) => {
         {arrayOf(pageCount).map((_, index) => (
           <S.Dot
             key={index}
+            type="button"
             onClick={() => onPageChange(index + 1)}
             selected={index + 1 === currentPage}
             aria-label={`${index + 1}번째 페이지 보기`}
