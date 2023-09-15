@@ -77,5 +77,5 @@ export const arrowButton = css`
 `;
 
 export const expiredText = css`
-  color: white;
+  color: ${({ theme }) => theme.color.WHITE};
 `;

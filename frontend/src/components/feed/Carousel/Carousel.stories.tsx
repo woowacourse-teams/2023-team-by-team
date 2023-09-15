@@ -5,7 +5,7 @@ import Carousel from '~/components/feed/Carousel/Carousel';
  * `Carousel`는 이미지를 보여주며 자연스럽게 이미지 전환을 가능케 하는 슬라이드 쇼 컴포넌트입니다.
  */
 const meta = {
-  title: 'common/Carousel',
+  title: 'feed/Carousel',
   component: Carousel,
   tags: ['autodocs'],
   decorators: [
