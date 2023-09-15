@@ -92,7 +92,9 @@ export const useTeamPlaceInfoModal = () => {
   };
 
   const handleMyUserNameChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setMyUserName(() => e.target.value);
+    if (e.target.value.length <= MAX_USER_NAME_LENGTH) {
+      setMyUserName(() => e.target.value);
+    }
   };
 
   useEffect(() => {
