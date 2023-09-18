@@ -30,6 +30,15 @@ jwt:
     secret: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
     expiration: 86400000 # 1일
 
+aws:
+  s3:
+    region: abcd
+    bucket: abcd
+    directory: a/b/c
+  cloud-front:
+    domain: abcd
+
+
 oauth:
   google:
     client-id: client-id
