@@ -31,7 +31,7 @@ public class S3UploadService {
                 new String(Base64.getUrlEncoder().encode(memberEmailDto.email().getBytes(StandardCharsets.UTF_8)));
 
         for (final PresignedUrlRequest request : presignedUrlsRequest.images()) {
-            String customKey = directory + "/" + UUID.randomUUID() + encodedEmail;
+            final String customKey = directory + "/" + UUID.randomUUID() + encodedEmail;
             final String url = s3PresignedUrlProvider.getImageUploadPresignedUrl(request.checkSum(), request.contentLength(), customKey);
             responses.add(new PreSignedUrlResponse(request.imageName(), url));
         }
