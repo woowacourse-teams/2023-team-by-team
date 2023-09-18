@@ -27,7 +27,7 @@
         <logger level="INFO" name="team.teamby.teambyteam">
             <appender-ref ref="CONSOLE"/>
         </logger>
-        <logger level="TRACE" name="org.hibernate.type.descriptor.sql.BasicBinder">
+        <logger level="TRACE" name="org.hibernate.orm.jdbc.bind">
             <appender-ref ref="CONSOLE"/>
         </logger>
     </springProfile>

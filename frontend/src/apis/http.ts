@@ -16,6 +16,10 @@ export const http = {
       throw response;
     }
 
+    if (response.status === 403) {
+      throw response;
+    }
+
     if (!response.ok) {
       throw new Error('네트워크 통신 중 에러가 발생했습니다.');
     }

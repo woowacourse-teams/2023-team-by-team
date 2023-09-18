@@ -14,8 +14,8 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     displayValue: '00:00',
-    onClickMenu: () => {
-      alert('Clicked!');
+    onSelect: (value: string) => {
+      alert(value);
     },
   },
 };

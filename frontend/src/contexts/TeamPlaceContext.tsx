@@ -41,18 +41,23 @@ export const TeamPlaceProvider = (props: PropsWithChildren) => {
   );
 
   const resetTeamPlace = () => {
+    localStorage.removeItem(LOCAL_STORAGE_KEY.TEAM_PLACE_ID);
     setTeamPlaceId(() => 0);
     setDisplayName(() => '');
     setTeamPlaceColor(() => 100);
-    localStorage.removeItem('teamPlaceId');
   };
 
   useEffect(() => {
     if (!isFetched) return;
 
     if (teamPlaces.length === 0) return;
+
     const id = localStorage.getItem(LOCAL_STORAGE_KEY.TEAM_PLACE_ID);
-    const initTeamPlaceId = id === null ? teamPlaces[0].id : Number(id);
+    const teamPlaceIdIndex = teamPlaces.findIndex(
+      (teamPlace) => teamPlace.id === Number(id),
+    );
+    const initTeamPlaceId =
+      teamPlaceIdIndex === -1 ? teamPlaces[0].id : Number(id);
 
     changeTeamPlace(initTeamPlaceId);
   }, [isFetched, changeTeamPlace, teamPlaces]);

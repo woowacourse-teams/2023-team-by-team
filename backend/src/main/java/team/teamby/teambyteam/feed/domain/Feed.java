@@ -30,7 +30,6 @@ public abstract class Feed extends BaseEntity {
     private Long teamPlaceId;
 
     @Embedded
-    @Column(nullable = false)
     private Content content;
 
     public Feed(final Long teamPlaceId, final Content content) {

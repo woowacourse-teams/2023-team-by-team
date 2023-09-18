@@ -60,7 +60,7 @@ export const Inner = styled.div<InnerProps>`
       roundedStart ? '4px' : '0'
     }`};
 
-  filter: brightness(${({ level }) => 1 + level * 0.5});
+  filter: brightness(${({ level }) => 1 + level * 0.4});
 
   cursor: pointer;
 
