@@ -67,7 +67,8 @@ public class FeedThreadController {
     public ResponseEntity<PresignedUrlsResponse> receivePresignedUrl(
             @AuthPrincipal final MemberEmailDto memberEmailDto,
             @RequestBody final PresignedUrlsRequest images) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(s3UploadService.getImageUploadPresignedUrl(memberEmailDto, images));
+        final PresignedUrlsResponse response = s3UploadService.getImageUploadPresignedUrl(memberEmailDto, images);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }
