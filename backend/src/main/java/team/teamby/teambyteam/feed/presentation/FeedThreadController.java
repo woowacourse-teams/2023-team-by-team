@@ -21,6 +21,7 @@ import team.teamby.teambyteam.feed.application.dto.PresignedUrlsRequest;
 import team.teamby.teambyteam.feed.application.dto.PresignedUrlsResponse;
 
 import java.net.URI;
+import java.security.NoSuchAlgorithmException;
 
 @RestController
 @RequestMapping("/api/team-place")
@@ -66,7 +67,7 @@ public class FeedThreadController {
     @PostMapping("/{teamPlaceId}/feed/threads/images")
     public ResponseEntity<PresignedUrlsResponse> receivePresignedUrl(
             @AuthPrincipal final MemberEmailDto memberEmailDto,
-            @RequestBody final PresignedUrlsRequest images) {
+            @RequestBody final PresignedUrlsRequest images) throws NoSuchAlgorithmException {
         final PresignedUrlsResponse response = s3UploadService.getImageUploadPresignedUrl(memberEmailDto, images);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
