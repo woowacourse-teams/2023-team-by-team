@@ -22,9 +22,6 @@ public class S3PresignedUrlProvider {
         final PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                 .key(key)
                 .bucket(bucket)
-                .contentType("image/*")
-                .contentLength(contentLength)
-                .checksumSHA256(checkSum)
                 .build();
 
         final PutObjectPresignRequest putObjectPresignRequest = PutObjectPresignRequest.builder()
