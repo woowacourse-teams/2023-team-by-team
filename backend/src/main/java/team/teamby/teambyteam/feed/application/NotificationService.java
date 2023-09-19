@@ -16,6 +16,7 @@ import team.teamby.teambyteam.sharedlink.application.event.SharedLinkEvent;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Deprecated
 public class NotificationService {
 
     private final FeedRepository feedRepository;

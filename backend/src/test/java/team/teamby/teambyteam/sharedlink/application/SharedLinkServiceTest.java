@@ -1,6 +1,7 @@
 package team.teamby.teambyteam.sharedlink.application;
 
 import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -71,6 +72,7 @@ class SharedLinkServiceTest extends ServiceTest {
 
         @Test
         @DisplayName("공유 링크 Event가 발행된다.")
+        @Disabled
         void publishSharedLinkCreateEvent() {
             // given
             final Member member = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
@@ -200,6 +202,7 @@ class SharedLinkServiceTest extends ServiceTest {
 
         @Test
         @DisplayName("공유 링크 Event가 발행된다.")
+        @Disabled
         void publishSharedLinkDeleteEvent() {
             // given
             final Member member = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());

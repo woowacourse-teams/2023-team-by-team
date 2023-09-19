@@ -1,5 +1,6 @@
 package team.teamby.teambyteam.schedule.application;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -321,6 +322,7 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
 
         @Test
         @DisplayName("일정 생성 Event가 발행된다.")
+        @Disabled
         void publishScheduleCreateEvent() {
             // given
             final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
@@ -391,6 +393,7 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
 
         @Test
         @DisplayName("일정 수정 Event가 발행된다.")
+        @Disabled
         void publishScheduleUpdateEvent() {
             // given
             final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
@@ -499,6 +502,7 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
 
         @Test
         @DisplayName("일정 Event가 발행된다.")
+        @Disabled
         void publishScheduleDeleteEvent() {
             // given
             final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());

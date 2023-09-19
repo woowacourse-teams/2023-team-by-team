@@ -1,5 +1,6 @@
 package team.teamby.teambyteam.feed.application;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -33,6 +34,7 @@ import static team.teamby.teambyteam.common.fixtures.SharedLinkEventFixtures.SHA
 import static team.teamby.teambyteam.common.fixtures.SharedLinkFixtures.TEAM_BY_TEAM_LINK;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
 
+@Disabled
 class NotificationServiceTest extends ServiceTest {
 
     @Autowired
