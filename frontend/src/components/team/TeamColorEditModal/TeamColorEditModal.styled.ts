@@ -29,7 +29,7 @@ export const BubbleContainer = styled.div`
 
 export const Triangle = styled.div`
   position: absolute;
-  z-index: 2;
+  z-index: ${({ theme }) => theme.zIndex.MODAL} + 1;
   top: -12px;
   left: 20%;
 

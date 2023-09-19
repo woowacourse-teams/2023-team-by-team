@@ -3,6 +3,8 @@ import { keyframes } from 'styled-components';
 const color = {
   LOGO: '#3145FF',
   PRIMARY: '#516FFF',
+  PRIMARY200: '#B7BAFF',
+  PRIMARY900: '#5054FF',
   WHITE: '#fff',
   BLACK: '#000',
   RED: '#FF5B5B',
