@@ -1,36 +1,57 @@
 import { css, styled } from 'styled-components';
 import type { ThreadSize } from '~/types/size';
 
-export const Container = styled.div<{ threadSize: ThreadSize }>`
+export const Container = styled.div<{ isMe: boolean }>`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
 
   width: 100%;
+  gap: 10px;
+
+  align-items: ${({ isMe }) => (isMe ? 'flex-end' : 'flex-start')};
+`;
+
+export const ContentContainer = styled.div<{ isMe: boolean }>`
+  display: flex;
+
+  align-items: flex-end;
+
+  gap: 10px;
+
+  ${({ isMe }) => isMe && `flex-direction: row-reverse`}
+`;
+
+export const ContentWrapper = styled.div<{
+  threadSize: ThreadSize;
+  isMe: boolean;
+}>`
+  max-width: 80%;
   height: auto;
 
   ${({ threadSize }) => {
     if (threadSize === 'md')
       return css`
-        gap: 16px;
-
-        padding: 30px 50px;
-
-        border-radius: 40px;
+        padding: 28px;
       `;
+
     if (threadSize === 'sm')
       return css`
-        gap: 8px;
-
-        padding: 16px 30px;
-
-        border-radius: 20px;
+        padding: 16px 28px;
       `;
   }}
 
-  background: ${({ theme }) => theme.color.WHITE};
+  ${({ isMe, theme }) => {
+    if (isMe)
+      return css`
+        background: ${theme.color.PRIMARY900};
+        border-radius: 12px 12px 0 12px;
+      `;
 
-  box-shadow: 0 0 8px ${({ theme }) => theme.color.GRAY300};
+    return css`
+      background: ${theme.color.GRAY150};
+      border-radius: 12px 12px 12px 0;
+    `;
+  }}
 `;
 
 export const ThreadHeader = styled.div`
@@ -48,43 +69,34 @@ export const Author = styled.div`
 `;
 
 export const ProfileImg = styled.img<{ threadSize: ThreadSize }>`
+  border-radius: 50%;
+
   ${({ threadSize }) => {
     if (threadSize === 'md')
       return css`
         width: 40px;
         height: 40px;
-
-        border-radius: 12px;
       `;
     if (threadSize === 'sm')
       return css`
         width: 30px;
         height: 30px;
-
-        border-radius: 8px;
       `;
   }}
 
   object-fit: cover;
 `;
 
-export const Divider = styled.span`
-  display: inline-block;
-
-  width: 1.5px;
-  height: 20px;
-  margin: 0 4px;
-
-  background-color: ${({ theme }) => theme.color.GRAY400};
-`;
-
 export const threadInfoText = (threadSize: ThreadSize) => css`
+  white-space: pre-wrap;
+
   font-size: ${threadSize === 'md' ? 18 : 16}px;
 `;
 
-export const contentField = (threadSize: ThreadSize) => css`
+export const contentField = (threadSize: ThreadSize, isMe: boolean) => css`
   width: 100%;
   white-space: pre-wrap;
 
   font-size: ${threadSize === 'md' ? 20 : 16}px;
+  color: ${({ theme }) => (isMe ? theme.color.WHITE : theme.color.BLACK)};
 `;
