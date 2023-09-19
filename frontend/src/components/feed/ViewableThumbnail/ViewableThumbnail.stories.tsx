@@ -36,3 +36,17 @@ export const Default: Story = {
     },
   },
 };
+
+export const ExpiredThumbnail: Story = {
+  args: {
+    image: {
+      id: 1029,
+      isExpired: true,
+      name: '만료된 이미지',
+      url: '',
+    },
+    onClick: () => {
+      alert('onClick()');
+    },
+  },
+};
