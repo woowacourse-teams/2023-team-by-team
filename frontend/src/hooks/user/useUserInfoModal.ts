@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import type { ChangeEventHandler, FormEventHandler } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFetchUserInfo } from '~/hooks/queries/useFetchUserInfo';
@@ -19,7 +19,7 @@ export const useUserInfoModal = () => {
   const { userInfo } = useFetchUserInfo();
 
   const [isUserInfoEditing, setIsUserInfoEditing] = useState(false);
-  const [userName, setUserName] = useState(userInfo?.name ?? '');
+  const [userName, setUserName] = useState('');
   const userNameRef = useRef<HTMLDivElement>(null);
 
   useClickOutside(userNameRef, () => {
@@ -50,7 +50,6 @@ export const useUserInfoModal = () => {
 
   const handleUserInfoEditButtonClick = () => {
     setIsUserInfoEditing(() => true);
-    setUserName(() => userInfo?.name ?? '');
   };
 
   const handleUserNameChange: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -88,6 +87,12 @@ export const useUserInfoModal = () => {
       },
     );
   };
+
+  useEffect(() => {
+    if (userInfo) {
+      setUserName(() => userInfo.name);
+    }
+  }, [userInfo, isUserInfoEditing]);
 
   return {
     userInfo,
