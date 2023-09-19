@@ -2,6 +2,8 @@ import * as S from './ThumbnailList.styled';
 import DeletableThumbnail from '~/components/feed/DeletableThumbnail/DeletableThumbnail';
 import ViewableThumbnail from '~/components/feed/ViewableThumbnail/ViewableThumbnail';
 import type { ThreadImage } from '~/types/feed';
+import { MAX_UPLOAD_IMAGE_COUNT } from '~/constants/feed';
+import ImageAddButton from '../ImageAddButton/ImageAddButton';
 
 type ThumbnailListProps = DeletableThumbnails | ViewableThumbnails;
 
@@ -9,6 +11,7 @@ interface DeletableThumbnails {
   mode: 'delete';
   images: ThreadImage[];
   onDelete: (imageId: number) => void;
+  onClickAddButton: () => void;
 }
 
 interface ViewableThumbnails {
@@ -36,6 +39,9 @@ const ThumbnailList = (props: ThumbnailListProps) => {
             onClick={() => props.onClick(images, index + 1)}
           />
         ),
+      )}
+      {mode === 'delete' && images.length < MAX_UPLOAD_IMAGE_COUNT && (
+        <ImageAddButton onClick={props.onClickAddButton} />
       )}
     </S.Container>
   );

@@ -76,6 +76,38 @@ export const DeletableList: Story = {
     onDelete: (imageId: number) => {
       alert(`onDelete(${imageId});`);
     },
+    onClickAddButton: () => {
+      alert('onClickAddButton()');
+    },
+  },
+};
+
+/**
+ * `mode = delete`이고, 이미지 개수가 최대로 올릴 수 있는 이미지 개수를 넘지 않았다면, 이미지 추가 버튼이 보이게 됩니다.
+ */
+export const NotMaxDeletableList: Story = {
+  args: {
+    mode: 'delete',
+    images: images.slice(0, 2),
+    onDelete: (imageId: number) => {
+      alert(`onDelete(${imageId});`);
+    },
+    onClickAddButton: () => {
+      alert('onClickAddButton()');
+    },
+  },
+};
+
+export const EmptyDeletableList: Story = {
+  args: {
+    mode: 'delete',
+    images: [],
+    onDelete: (imageId: number) => {
+      alert(`onDelete(${imageId});`);
+    },
+    onClickAddButton: () => {
+      alert('onClickAddButton()');
+    },
   },
 };
 
