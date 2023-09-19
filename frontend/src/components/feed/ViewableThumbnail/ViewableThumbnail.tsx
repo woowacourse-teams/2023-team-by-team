@@ -19,6 +19,7 @@ const ViewableThumbnail = (props: ViewableThumbnailProps) => {
         type="button"
         css={S.viewButton}
         onClick={onClick}
+        aria-label={`${name} 이미지 자세히 보기`}
       >
         <S.Image src={isExpired ? thumbnailFallbackImage : url} alt={name} />
       </Button>

@@ -21,6 +21,7 @@ const DeletableThumbnail = (props: DeletableThumbnailProps) => {
         type="button"
         css={S.deleteButton}
         onClick={() => onDelete(id)}
+        aria-label={`${name} 이미지 삭제하기`}
       >
         <Close2Icon />
       </Button>
