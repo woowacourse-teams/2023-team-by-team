@@ -24,6 +24,8 @@ import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.exception.MemberException;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -63,7 +65,7 @@ public class FeedThreadService {
     public FeedsResponse firstRead(final Long teamPlaceId, final MemberEmailDto memberEmailDto, final Integer size) {
         final Pageable pageSize = getPageableInitSize(size);
         final List<Feed> list = feedRepository.findByTeamPlaceId(teamPlaceId, pageSize);
-        final List<FeedResponse> feedResponses = mapFeedResponses(list, memberEmailDto.email());
+        final List<FeedResponse> feedResponses = mapFeedResponses(list, memberEmailDto.email(), teamPlaceId);
 
         return FeedsResponse.of(feedResponses);
     }
@@ -72,7 +74,7 @@ public class FeedThreadService {
     public FeedsResponse reRead(final Long teamPlaceId, final MemberEmailDto memberEmailDto, final Long feedId, final Integer size) {
         final Pageable pageSize = getPageableInitSize(size);
         final List<Feed> list = feedRepository.findByTeamPlaceIdAndIdLessThan(teamPlaceId, feedId, pageSize);
-        final List<FeedResponse> feedResponses = mapFeedResponses(list, memberEmailDto.email());
+        final List<FeedResponse> feedResponses = mapFeedResponses(list, memberEmailDto.email(), teamPlaceId);
 
         return FeedsResponse.of(feedResponses);
     }
@@ -81,18 +83,28 @@ public class FeedThreadService {
         return PageRequest.of(FIRST_PAGE, size, SORT_DIRECTION, SORT_CRITERIA);
     }
 
-    private List<FeedResponse> mapFeedResponses(final List<Feed> feeds, final String loginMemberEmail) {
+    private List<FeedResponse> mapFeedResponses(final List<Feed> feeds, final String loginMemberEmail, final Long teamPlaceId) {
+        final Map<Long, MemberTeamPlace> teamPlaceMembers = getTeamPlaceMembers(teamPlaceId);
         return feeds.stream()
-                .map(feed -> mapToResponse(feed, loginMemberEmail))
+                .map(feed -> mapToResponse(
+                        feed,
+                        teamPlaceMembers.getOrDefault(feed.getAuthorId(), MemberTeamPlace.UNKNOWN_MEMBER_TEAM_PLACE),
+                        loginMemberEmail)
+                )
                 .toList();
     }
 
-    private FeedResponse mapToResponse(final Feed feed, final String loginMemberEmail) {
+    private Map<Long, MemberTeamPlace> getTeamPlaceMembers(final Long teamPlaceId) {
+        return memberTeamPlaceRepository.findAllByTeamPlaceId(teamPlaceId).stream()
+                .collect(Collectors.toMap(
+                        MemberTeamPlace::findMemberId,
+                        e -> e
+                ));
+    }
+
+    private FeedResponse mapToResponse(final Feed feed, final MemberTeamPlace author, final String loginMemberEmail) {
         if (FeedType.THREAD == feed.getType()) {
-            final MemberTeamPlace memberTeamPlace = memberTeamPlaceRepository
-                    .findByTeamPlaceIdAndMemberId(feed.getTeamPlaceId(), feed.getAuthorId())
-                    .orElse(MemberTeamPlace.UNKNOWN_MEMBER_TEAM_PLACE);
-            return FeedResponse.from(feed, memberTeamPlace, loginMemberEmail);
+            return FeedResponse.from(feed, author, loginMemberEmail);
         }
         if (FeedType.NOTIFICATION == feed.getType()) {
             return FeedResponse.from(feed, AUTHOR_NAME_SCHEDULE, BLANK_PROFILE_IMAGE_URL);
