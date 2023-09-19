@@ -13,7 +13,7 @@ export const Container = styled.div<{ noticeSize: NoticeSize }>`
 
   background-color: ${({ theme }) => theme.color.GRAY100};
   border-bottom: 2px solid ${({ theme }) => theme.color.PRIMARY200};
-  
+
   transition: 0.3s;
 
   ${({ noticeSize }) => {
@@ -64,28 +64,6 @@ export const BackgroundContainer = styled.div<{ noticeSize: NoticeSize }>`
 
 export const InnerContainer = styled.div<{ noticeSize: NoticeSize }>`
   display: flex;
-  ${({ noticeSize }) => {
-    if (noticeSize === 'sm')
-      return css`
-        width: calc(100% - 64px);
-
-        gap: 26px;
-      `;
-    if (noticeSize === 'md')
-      return css`
-        width: calc(100% - 64px);
-        gap: 26px;
-      `;
-    if (noticeSize === 'lg')
-      return css`
-        flex-direction: column;
-        row-gap: 20px;
-      `;
-  }}
-`;
-
-export const InnerContainer = styled.div<{ noticeSize: NoticeSize }>`
-  display: flex;
   gap: 10px;
 `;
 
@@ -122,7 +100,6 @@ export const ContentContainer = styled.div<{ noticeSize: NoticeSize }>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
 
   width: 100%;
   gap: 4px;
