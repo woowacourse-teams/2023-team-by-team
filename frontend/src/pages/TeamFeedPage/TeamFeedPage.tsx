@@ -2,7 +2,7 @@ import Button from '~/components/common/Button/Button';
 import * as S from './TeamFeedPage.styled';
 import { useModal } from '~/hooks/useModal';
 import ThreadAddBottomSheet from '~/components/feed/ThreadAddBottomSheet/ThreadAddBottomSheet';
-import { ArrowUpIcon, WriteIcon } from '~/assets/svg';
+import { ArrowExpandMoreIcon, WriteIcon } from '~/assets/svg';
 import { useEffect, useRef, useState } from 'react';
 import ThreadList from '~/components/feed/ThreadList/ThreadList';
 import type { ThreadSize } from '~/types/size';
@@ -18,7 +18,10 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
   const ref = useRef<HTMLDivElement>(null);
 
   const handleScrollTopButtonClick = () => {
-    ref.current?.scrollTo({ top: 0, behavior: 'smooth' });
+    if (!ref.current) return;
+    const { scrollHeight } = ref.current;
+
+    ref.current.scrollTo({ top: scrollHeight, behavior: 'smooth' });
   };
 
   useEffect(() => {
@@ -26,22 +29,21 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
       return;
     }
 
-    const handleScrollTop = () => {
+    const handleScrollBottom = () => {
       if (ref.current === null) {
         return;
       }
 
-      const { scrollTop } = ref.current;
-
-      setIsShowScrollTopButton(() => scrollTop > 700);
+      const { scrollTop, scrollHeight } = ref.current;
+      setIsShowScrollTopButton(() => scrollHeight - scrollTop > 100);
     };
 
     const current = ref.current;
 
-    current.addEventListener('scroll', handleScrollTop);
+    current.addEventListener('scroll', handleScrollBottom);
 
     return () => {
-      current.removeEventListener('scroll', handleScrollTop);
+      current.removeEventListener('scroll', handleScrollBottom);
     };
   }, []);
 
@@ -51,17 +53,17 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
       threadSize={threadSize}
       isModalOpen={isModalOpen}
     >
-      <ThreadList size={threadSize} />
+      <ThreadList containerRef={ref} size={threadSize} />
       <S.MenuButtonWrapper>
         {isShowScrollTopButton && (
           <Button
             type="button"
             variant="plain"
-            aria-label="화면 상단으로 스크롤 이동하기"
+            aria-label="화면 하단으로 스크롤 이동하기"
             css={S.scrollTopButton}
             onClick={handleScrollTopButtonClick}
           >
-            <ArrowUpIcon />
+            <ArrowExpandMoreIcon />
           </Button>
         )}
         <Button

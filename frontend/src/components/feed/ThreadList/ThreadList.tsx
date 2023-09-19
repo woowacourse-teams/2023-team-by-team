@@ -3,7 +3,7 @@ import * as S from './ThreadList.styled';
 import type { ThreadSize } from '~/types/size';
 import { THREAD_TYPE } from '~/constants/feed';
 import NoticeThread from '~/components/feed/NoticeThread/NoticeThread';
-import { useRef } from 'react';
+import { type RefObject, useRef, useEffect, useState } from 'react';
 import { useIntersectionObserver } from '~/hooks/useIntersectionObserver';
 import Text from '~/components/common/Text/Text';
 import { useFetchNoticeThread } from '~/hooks/queries/useFetchNoticeThread';
@@ -14,16 +14,18 @@ import EmptyFeedPlaceholder from '~/components/feed/EmptyFeedPlaceholder/EmptyFe
 import { useModal } from '~/hooks/useModal';
 
 interface ThreadListProps {
+  containerRef?: RefObject<HTMLDivElement>;
   size?: ThreadSize;
 }
 
 const ThreadList = (props: ThreadListProps) => {
-  const { size = 'md' } = props;
+  const { containerRef, size = 'md' } = props;
   const { teamPlaceId, teamPlaceColor } = useTeamPlace();
   const { threadPages, hasNextPage, fetchNextPage } =
     useFetchThreads(teamPlaceId);
   const { noticeThread } = useFetchNoticeThread(teamPlaceId);
   const observeRef = useRef<HTMLDivElement>(null);
+  const [scrollHeight, setScrollHeight] = useState(0);
   const { openModal } = useModal();
 
   const onIntersect: IntersectionObserverCallback = ([entry]) => {
@@ -34,8 +36,19 @@ const ThreadList = (props: ThreadListProps) => {
 
   useIntersectionObserver(observeRef, onIntersect, hasNextPage);
 
+  useEffect(() => {
+    if (!containerRef) return;
+
+    if (containerRef.current) {
+      const scrollTop = containerRef.current.scrollHeight - scrollHeight;
+      containerRef.current.scrollTop = scrollTop;
+      setScrollHeight(containerRef.current.scrollHeight);
+    }
+  }, [threadPages?.pages.length]);
+
   return (
     <>
+      <div ref={observeRef} />
       {noticeThread && noticeThread.id && (
         <NoticeThread
           authorName={noticeThread.authorName}
@@ -43,33 +56,6 @@ const ThreadList = (props: ThreadListProps) => {
           content={noticeThread.content}
         />
       )}
-      {threadPages?.pages.map((page) =>
-        page.threads.map((thread) => {
-          const { id, type, profileImageUrl, content, ...rest } = thread;
-
-          return type === THREAD_TYPE.THREAD ? (
-            <Thread
-              key={id}
-              threadSize={size}
-              profileImageUrl={profileImageUrl}
-              content={content}
-              {...rest}
-            />
-          ) : (
-            <Notification
-              teamPlaceColor={teamPlaceColor}
-              key={id}
-              threadSize={size}
-              content={content}
-            />
-          );
-        }),
-      )}
-      {!(noticeThread && noticeThread.id) &&
-        threadPages &&
-        threadPages.pages[0].threads.length === 0 && (
-          <EmptyFeedPlaceholder onClick={openModal} />
-        )}
       {!hasNextPage &&
         threadPages &&
         threadPages.pages[0].threads.length > 0 && (
@@ -77,7 +63,39 @@ const ThreadList = (props: ThreadListProps) => {
             마지막 스레드 입니다.
           </Text>
         )}
-      <div ref={observeRef} />
+      {threadPages?.pages
+        .slice()
+        .reverse()
+        .map((page) =>
+          page.threads
+            .slice()
+            .reverse()
+            .map((thread) => {
+              const { id, type, profileImageUrl, content, ...rest } = thread;
+
+              return type === THREAD_TYPE.THREAD ? (
+                <Thread
+                  key={id}
+                  threadSize={size}
+                  profileImageUrl={profileImageUrl}
+                  content={content}
+                  {...rest}
+                />
+              ) : (
+                <Notification
+                  teamPlaceColor={teamPlaceColor}
+                  key={id}
+                  threadSize={size}
+                  content={content}
+                />
+              );
+            }),
+        )}
+      {!(noticeThread && noticeThread.id) &&
+        threadPages &&
+        threadPages.pages[0].threads.length === 0 && (
+          <EmptyFeedPlaceholder onClick={openModal} />
+        )}
     </>
   );
 };
