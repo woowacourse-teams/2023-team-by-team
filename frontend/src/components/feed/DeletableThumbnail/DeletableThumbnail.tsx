@@ -3,12 +3,12 @@ import Button from '~/components/common/Button/Button';
 import type { ThreadImage } from '~/types/feed';
 import { Close2Icon } from '~/assets/svg';
 
-interface ImageAddButtonProps {
+interface DeletableThumbnailProps {
   image: ThreadImage;
   onDelete: (imageId: number) => void;
 }
 
-const DeletableThumbnail = (props: ImageAddButtonProps) => {
+const DeletableThumbnail = (props: DeletableThumbnailProps) => {
   const { image, onDelete } = props;
   const { id, name, url } = image;
 
