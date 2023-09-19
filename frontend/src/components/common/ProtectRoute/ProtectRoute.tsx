@@ -41,6 +41,11 @@ const ProtectRoute = () => {
       resetAccessToken();
       throw new Error('유효한 사용자 정보가 아닙니다.');
     }
+
+    if (response.status === 403) {
+      localStorage.removeItem(LOCAL_STORAGE_KEY.TEAM_PLACE_ID);
+      navigate(PATH_NAME.TEAM_SELECT);
+    }
   };
 
   queryClient.setDefaultOptions({

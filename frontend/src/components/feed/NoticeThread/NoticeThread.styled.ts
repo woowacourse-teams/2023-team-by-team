@@ -13,6 +13,7 @@ export const Container = styled.div<{ noticeSize: NoticeSize }>`
 
   background-color: ${({ theme }) => theme.color.GRAY100};
   border-bottom: 2px solid ${({ theme }) => theme.color.PRIMARY200};
+  
   transition: 0.3s;
 
   ${({ noticeSize }) => {
@@ -33,9 +34,15 @@ export const Container = styled.div<{ noticeSize: NoticeSize }>`
 
 export const BackgroundContainer = styled.div<{ noticeSize: NoticeSize }>`
   display: flex;
+  justify-content: space-between;
+
+  height: 100%;
+
   border-radius: 20px 20px 0 0;
   background-image: url(${noticeThreadBackground});
   background-size: 100%;
+
+  transition: 0.3s;
 
   ${({ noticeSize }) => {
     if (noticeSize === 'sm')
@@ -49,6 +56,7 @@ export const BackgroundContainer = styled.div<{ noticeSize: NoticeSize }>`
     if (noticeSize === 'lg')
       return css`
         flex-direction: column;
+
         padding: 18px 20px 10px 28px;
       `;
   }}
@@ -76,6 +84,11 @@ export const InnerContainer = styled.div<{ noticeSize: NoticeSize }>`
   }}
 `;
 
+export const InnerContainer = styled.div<{ noticeSize: NoticeSize }>`
+  display: flex;
+  gap: 10px;
+`;
+
 export const ArrowContainer = styled.div`
   display: flex;
   align-items: flex-end;
@@ -85,13 +98,14 @@ export const ArrowContainer = styled.div`
 export const ArrowIcon = styled.div<{ disabled: boolean }>`
   width: 32px;
   height: 32px;
-  color: ${({ theme }) => theme.color.PRIMARY900};
+
   opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
+
+  color: ${({ theme }) => theme.color.PRIMARY900};
 `;
 
-export const MegaPhoneWrapper = styled.div`
-  display: flex;
-  align-items: center;
+export const MegaphoneWrapper = styled.div`
+  width: 40px;
 `;
 
 export const AuthorInfo = styled.div`
@@ -109,11 +123,14 @@ export const ContentContainer = styled.div<{ noticeSize: NoticeSize }>`
   flex-direction: column;
   justify-content: space-between;
 
+
+  width: 100%;
+  gap: 4px;
+
   ${({ noticeSize }) => {
     if (noticeSize === 'lg')
       return css`
-        gap: 20px;
-        height: 450px;
+        height: 550px;
       `;
   }}
 `;
@@ -132,6 +149,7 @@ export const authorInfoText = css`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+
   color: ${({ theme }) => theme.color.GRAY500};
 `;
 

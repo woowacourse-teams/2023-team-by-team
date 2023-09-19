@@ -3,6 +3,7 @@ import {
   schedules as scheduleData,
   mySchedules as myScheduleData,
 } from '~/mocks/fixtures/schedules';
+import { teamPlaces } from '~/mocks/fixtures/team';
 
 let schedules = [...scheduleData];
 let mySchedules = [...myScheduleData];
@@ -19,14 +20,24 @@ export const calendarHandlers = [
   }),
 
   //팀플레이스 일정 기간 조회
-  rest.get(`/api/team-place/:teamPlaceId/calendar/schedules`, (_, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        schedules,
-      }),
-    );
-  }),
+  rest.get(
+    `/api/team-place/:teamPlaceId/calendar/schedules`,
+    (req, res, ctx) => {
+      const teamPlaceId = Number(req.params.teamPlaceId);
+      const index = teamPlaces.findIndex(
+        (teamPlace) => teamPlace.id === teamPlaceId,
+      );
+
+      if (index === -1) return res(ctx.status(403));
+
+      return res(
+        ctx.status(200),
+        ctx.json({
+          schedules,
+        }),
+      );
+    },
+  ),
 
   //팀플레이스 특정 일정 조회
   rest.get(
@@ -34,6 +45,13 @@ export const calendarHandlers = [
     (req, res, ctx) => {
       const scheduleId = Number(req.params.scheduleId);
       const data = schedules.find((schedule) => schedule.id === scheduleId);
+
+      const teamPlaceId = Number(req.params.teamPlaceId);
+      const index = teamPlaces.findIndex(
+        (teamPlace) => teamPlace.id === teamPlaceId,
+      );
+
+      if (index === -1) return res(ctx.status(403));
 
       if (data === undefined) return res(ctx.status(404));
       return res(ctx.status(200), ctx.json(data));
@@ -52,6 +70,11 @@ export const calendarHandlers = [
         endDateTime,
       };
       const teamPlaceId = Number(req.params.teamPlaceId);
+      const index = teamPlaces.findIndex(
+        (teamPlace) => teamPlace.id === teamPlaceId,
+      );
+
+      if (index === -1) return res(ctx.status(403));
 
       schedules.push(newSchedule);
       mySchedules.push({ ...newSchedule, teamPlaceId: 1 });

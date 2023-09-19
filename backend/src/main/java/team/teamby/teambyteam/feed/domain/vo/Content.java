@@ -18,7 +18,7 @@ public class Content {
 
     public static final int MAX_LENGTH = 10000;
 
-    @Column(name = "content", nullable = false)
+    @Column(name = "content", columnDefinition = "text",nullable = false)
     @Lob
     private String value;
 

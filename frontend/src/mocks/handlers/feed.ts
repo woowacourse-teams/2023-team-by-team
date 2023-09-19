@@ -1,6 +1,8 @@
 import { rest } from 'msw';
 import { threads as threadData } from '~/mocks/fixtures/threads';
 import { noticeThread as noticeData } from '~/mocks/fixtures/threads';
+import { teamPlaces } from '~/mocks/fixtures/team';
+
 import type { YYYYMMDDHHMM } from '~/types/schedule';
 
 const threads = [...threadData];
@@ -13,6 +15,12 @@ export const feedHandlers = [
     async (req, res, ctx) => {
       const lastThreadId = Number(req.url.searchParams.get('last-thread-id'));
       const size = Number(req.url.searchParams.get('size'));
+      const teamPlaceId = Number(req.params.teamPlaceId);
+      const teamIndex = teamPlaces.findIndex(
+        (teamPlace) => teamPlace.id === teamPlaceId,
+      );
+
+      if (teamIndex === -1) return res(ctx.status(403));
 
       const index = threads.findIndex((thread) => thread.id === lastThreadId);
 
@@ -29,6 +37,13 @@ export const feedHandlers = [
   rest.get(
     '/api/team-place/:teamPlaceId/feed/notice/recent',
     async (req, res, ctx) => {
+      const teamPlaceId = Number(req.params.teamPlaceId);
+      const teamIndex = teamPlaces.findIndex(
+        (teamPlace) => teamPlace.id === teamPlaceId,
+      );
+
+      if (teamIndex === -1) return res(ctx.status(403));
+
       return res(ctx.status(200), ctx.json(noticeThread));
     },
   ),
@@ -47,9 +62,11 @@ export const feedHandlers = [
         type: 'thread',
         authorId: 1,
         authorName: '유스',
+        isMe: true,
         profileImageUrl: 'https://avatars.githubusercontent.com/u/49154600?v=4',
         createdAt: '2023-08-01 12:00' as YYYYMMDDHHMM,
         content,
+        images: [],
       };
 
       threads.unshift(newThread);

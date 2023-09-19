@@ -22,13 +22,13 @@ const NoticeThread = (props: NoticeThreadProps) => {
 
   const [noticeSize, setNoticeSize] = useState<NoticeSize>('md');
 
-  const handleExpendMoreClick = () => {
+  const handleExpandMoreClick = () => {
     if (noticeSize === 'sm') setNoticeSize(() => 'md');
 
     if (noticeSize === 'md') setNoticeSize(() => 'lg');
   };
 
-  const handleExpendLessClick = () => {
+  const handleExpandLessClick = () => {
     if (noticeSize === 'lg') setNoticeSize(() => 'md');
 
     if (noticeSize === 'md') setNoticeSize(() => 'sm');
@@ -41,9 +41,9 @@ const NoticeThread = (props: NoticeThreadProps) => {
           noticeSize={noticeSize}
           aria-label={`${authorName}의 공지`}
         >
-          <S.MegaPhoneWrapper>
+          <S.MegaphoneWrapper>
             <MegaphoneIcon />
-          </S.MegaPhoneWrapper>
+          </S.MegaphoneWrapper>
 
           <S.ContentContainer noticeSize={noticeSize}>
             <Text size="xl" weight="semiBold" css={S.contentField(noticeSize)}>
@@ -69,9 +69,9 @@ const NoticeThread = (props: NoticeThreadProps) => {
             type="button"
             variant="plain"
             disabled={noticeSize === 'sm'}
-            onClick={handleExpendLessClick}
+            onClick={handleExpandLessClick}
             css={S.arrowButton}
-            aria-label="접기 버튼"
+            aria-label="공지 접기"
           >
             <S.ArrowIcon disabled={noticeSize === 'sm'}>
               <ArrowExpandLessIcon />
@@ -81,9 +81,9 @@ const NoticeThread = (props: NoticeThreadProps) => {
             type="button"
             variant="plain"
             disabled={noticeSize === 'lg'}
-            onClick={handleExpendMoreClick}
+            onClick={handleExpandMoreClick}
             css={S.arrowButton}
-            aria-label="펼치기 버튼"
+            aria-label="공지 펼치기"
           >
             <S.ArrowIcon disabled={noticeSize === 'lg'}>
               <ArrowExpandMoreIcon />
