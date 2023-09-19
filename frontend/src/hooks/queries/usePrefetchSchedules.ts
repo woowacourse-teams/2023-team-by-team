@@ -7,8 +7,12 @@ export const usePrefetchSchedules = async (
   month: number,
 ) => {
   const queryClient = useQueryClient();
+  const enabled = teamPlaceId > 0;
 
-  await queryClient.prefetchQuery(['schedules', teamPlaceId, year, month], () =>
-    fetchSchedules(teamPlaceId, year, month + 1),
-  );
+  if (enabled) {
+    await queryClient.prefetchQuery(
+      ['schedules', teamPlaceId, year, month],
+      () => fetchSchedules(teamPlaceId, year, month + 1),
+    );
+  }
 };
