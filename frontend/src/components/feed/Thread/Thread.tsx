@@ -13,6 +13,7 @@ interface ThreadProps {
   createdAt: YYYYMMDDHHMM;
   content: string;
   images: ThreadImage[];
+  isContinuity: boolean;
 }
 
 const Thread = (props: ThreadProps) => {
@@ -24,12 +25,13 @@ const Thread = (props: ThreadProps) => {
     createdAt,
     content,
     images,
+    isContinuity,
   } = props;
   const createdTime = formatWriteTime(createdAt).split(' ').join('\n');
 
   return (
     <S.Container isMe={isMe}>
-      {!isMe && (
+      {!isMe && !isContinuity && (
         <S.ThreadHeader>
           <S.Author>
             <S.ProfileImg
