@@ -34,7 +34,7 @@ const Carousel = (props: CarouselProps) => {
             <S.Slide key={id}>
               {isExpired ? (
                 <Text as="span" size="xxl" css={S.expiredText}>
-                  죄송합니다. 이 이미지는 기간이 만료되었습니다.
+                  이 이미지는 기간이 만료되었습니다.
                 </Text>
               ) : (
                 <img src={url} />
