@@ -15,6 +15,7 @@ export const ContentContainer = styled.div<{ isMe: boolean }>`
   display: flex;
 
   align-items: flex-end;
+  width: 100%;
 
   gap: 10px;
 
@@ -87,10 +88,11 @@ export const ProfileImg = styled.img<{ threadSize: ThreadSize }>`
   object-fit: cover;
 `;
 
-export const threadInfoText = (threadSize: ThreadSize) => css`
+export const threadInfoText = (threadSize: ThreadSize, isMe: boolean) => css`
   white-space: pre-wrap;
 
   font-size: ${threadSize === 'md' ? 18 : 16}px;
+  color: ${({ theme }) => (isMe ? theme.color.PRIMARY900 : theme.color.BLACK)};
 `;
 
 export const contentField = (threadSize: ThreadSize, isMe: boolean) => css`
@@ -99,4 +101,6 @@ export const contentField = (threadSize: ThreadSize, isMe: boolean) => css`
 
   font-size: ${threadSize === 'md' ? 20 : 16}px;
   color: ${({ theme }) => (isMe ? theme.color.WHITE : theme.color.BLACK)};
+
+  word-break: break-all;
 `;
