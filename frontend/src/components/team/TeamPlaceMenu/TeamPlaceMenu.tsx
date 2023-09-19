@@ -2,7 +2,7 @@ import Menu from '~/components/common/Menu/Menu';
 import Text from '~/components/common/Text/Text';
 import TeamBadge from '~/components/team/TeamBadge/TeamBadge';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
-import { ArrowDownRoundedIcon } from '~/assets/svg';
+import { ArrowExpandMoreIcon } from '~/assets/svg';
 import * as S from './TeamPlaceMenu.styled';
 
 interface TeamPlaceMenuProps {
@@ -30,7 +30,7 @@ const TeamPlaceMenu = (props: TeamPlaceMenuProps) => {
         <Text as="span" weight="bold" css={S.teamPlaceName}>
           {displayValue}
         </Text>
-        <ArrowDownRoundedIcon />
+        <ArrowExpandMoreIcon />
       </Menu.Button>
       <Menu.List onSelect={handleSelect}>
         {teamPlaces.map((teamPlace) => (
