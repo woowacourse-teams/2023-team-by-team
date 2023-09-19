@@ -10,7 +10,7 @@ export const Container = styled.div`
   width: 100%;
   height: 100%;
 
-  background-color: #00000070;
+  background: ${({ theme }) => theme.gradient.SMOOTH_BLACK};
   backdrop-filter: blur(20px);
 `;
 

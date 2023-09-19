@@ -74,6 +74,10 @@ export const arrowButton = css`
     width: 60px;
     height: 60px;
   }
+
+  & svg > path {
+    stroke: ${({ theme }) => theme.color.WHITE};
+  }
 `;
 
 export const expiredText = css`

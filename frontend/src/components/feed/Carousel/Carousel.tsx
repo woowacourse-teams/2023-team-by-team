@@ -1,7 +1,7 @@
 import * as S from './Carousel.styled';
 import Button from '~/components/common/Button/Button';
 import Text from '~/components/common/Text/Text';
-import { ArrowCircleLeftIcon, ArrowCircleRightIcon } from '~/assets/svg';
+import { ArrowLeftIcon, ArrowRightIcon } from '~/assets/svg';
 import type { ThreadImage } from '~/types/feed';
 
 export const getNextPageIndex = (pageCount: number, currentPage: number) => {
@@ -53,7 +53,7 @@ const Carousel = (props: CarouselProps) => {
           }
           aria-label="이전 이미지 보기"
         >
-          <ArrowCircleLeftIcon />
+          <ArrowLeftIcon />
         </Button>
       </S.ArrowCircleLeftButtonWrapper>
       <S.ArrowCircleRightButtonWrapper>
@@ -66,7 +66,7 @@ const Carousel = (props: CarouselProps) => {
           }
           aria-label="다음 이미지 보기"
         >
-          <ArrowCircleRightIcon />
+          <ArrowRightIcon />
         </Button>
       </S.ArrowCircleRightButtonWrapper>
     </S.Container>
