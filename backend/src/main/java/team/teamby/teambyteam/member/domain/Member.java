@@ -113,4 +113,8 @@ public class Member extends BaseEntity {
             }
         }
     }
+
+    public String getEmailValue() {
+        return email.getValue();
+    }
 }

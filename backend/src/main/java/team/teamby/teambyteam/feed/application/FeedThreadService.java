@@ -60,19 +60,19 @@ public class FeedThreadService {
     }
 
     @Transactional(readOnly = true)
-    public FeedsResponse firstRead(final Long teamPlaceId, final Integer size) {
+    public FeedsResponse firstRead(final Long teamPlaceId, final MemberEmailDto memberEmailDto, final Integer size) {
         final Pageable pageSize = getPageableInitSize(size);
         final List<Feed> list = feedRepository.findByTeamPlaceId(teamPlaceId, pageSize);
-        final List<FeedResponse> feedResponses = mapFeedResponses(list);
+        final List<FeedResponse> feedResponses = mapFeedResponses(list, memberEmailDto.email());
 
         return FeedsResponse.of(feedResponses);
     }
 
     @Transactional(readOnly = true)
-    public FeedsResponse reRead(final Long teamPlaceId, final Long feedId, final Integer size) {
+    public FeedsResponse reRead(final Long teamPlaceId, final MemberEmailDto memberEmailDto, final Long feedId, final Integer size) {
         final Pageable pageSize = getPageableInitSize(size);
         final List<Feed> list = feedRepository.findByTeamPlaceIdAndIdLessThan(teamPlaceId, feedId, pageSize);
-        final List<FeedResponse> feedResponses = mapFeedResponses(list);
+        final List<FeedResponse> feedResponses = mapFeedResponses(list, memberEmailDto.email());
 
         return FeedsResponse.of(feedResponses);
     }
@@ -81,15 +81,18 @@ public class FeedThreadService {
         return PageRequest.of(FIRST_PAGE, size, SORT_DIRECTION, SORT_CRITERIA);
     }
 
-    private List<FeedResponse> mapFeedResponses(final List<Feed> feeds) {
-        return feeds.stream().map(this::mapToResponse).toList();
+    private List<FeedResponse> mapFeedResponses(final List<Feed> feeds, final String loginMemberEmail) {
+        return feeds.stream()
+                .map(feed -> mapToResponse(feed, loginMemberEmail))
+                .toList();
     }
 
-    private FeedResponse mapToResponse(final Feed feed) {
+    private FeedResponse mapToResponse(final Feed feed, final String loginMemberEmail) {
         if (FeedType.THREAD == feed.getType()) {
-            final MemberTeamPlace memberTeamPlace = memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(feed.getTeamPlaceId(), feed.getAuthorId())
+            final MemberTeamPlace memberTeamPlace = memberTeamPlaceRepository
+                    .findByTeamPlaceIdAndMemberId(feed.getTeamPlaceId(), feed.getAuthorId())
                     .orElse(MemberTeamPlace.UNKNOWN_MEMBER_TEAM_PLACE);
-            return FeedResponse.from(feed, memberTeamPlace);
+            return FeedResponse.from(feed, memberTeamPlace, loginMemberEmail);
         }
         if (FeedType.NOTIFICATION == feed.getType()) {
             return FeedResponse.from(feed, AUTHOR_NAME_SCHEDULE, BLANK_PROFILE_IMAGE_URL);

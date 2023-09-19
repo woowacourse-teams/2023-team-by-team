@@ -20,6 +20,7 @@ import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
 import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
 import team.teamby.teambyteam.feed.domain.FeedType;
 import team.teamby.teambyteam.feed.presentation.FeedThreadController;
+import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
 import java.util.List;
@@ -202,9 +203,9 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
             final int size = 3;
             final Long authorId = 1L;
 
-            FeedResponse feedResponse = new FeedResponse(1L, FeedType.THREAD.name(), authorId, "author", "/", "created", "hello");
+            FeedResponse feedResponse = new FeedResponse(1L, FeedType.THREAD.name(), authorId, "author", "/", "created", "hello", false);
             final FeedsResponse feedsResponse = new FeedsResponse(List.of(feedResponse));
-            given(feedThreadService.firstRead(teamPlaceId, size))
+            given(feedThreadService.firstRead(any(), any(), any()))
                     .willReturn(feedsResponse);
 
             // when & then
@@ -304,9 +305,9 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
             final Long authorId = 1L;
 
 
-            final FeedResponse feedResponse = new FeedResponse(1L, FeedType.THREAD.name(), authorId, "author", "/", "created", "hello");
+            final FeedResponse feedResponse = new FeedResponse(1L, FeedType.THREAD.name(), authorId, "author", "/", "created", "hello", false);
             final FeedsResponse feedsResponse = new FeedsResponse(List.of(feedResponse));
-            given(feedThreadService.reRead(teamPlaceId, lastThreadId, size))
+            given(feedThreadService.reRead(any(), any(), any(), any()))
                     .willReturn(feedsResponse);
 
             // when & then

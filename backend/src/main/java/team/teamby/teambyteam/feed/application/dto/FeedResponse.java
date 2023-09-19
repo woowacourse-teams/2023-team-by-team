@@ -12,7 +12,8 @@ public record FeedResponse(
         String authorName,
         String profileImageUrl,
         String createdAt,
-        String content
+        String content,
+        Boolean isMe
 ) {
     private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm";
 
@@ -27,11 +28,12 @@ public record FeedResponse(
                 authorName,
                 profileImageUrl,
                 createdAt,
-                feed.getContent().getValue()
+                feed.getContent().getValue(),
+                false
         );
     }
 
-    public static FeedResponse from(final Feed feed, final MemberTeamPlace threadAuthorInfo) {
+    public static FeedResponse from(final Feed feed, final MemberTeamPlace threadAuthorInfo, final String loginMemberEmail) {
         final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
         String createdAt = feed.getCreatedAt().format(dateTimeFormatter);
 
@@ -42,7 +44,8 @@ public record FeedResponse(
                 threadAuthorInfo.getDisplayMemberName().getValue(),
                 threadAuthorInfo.findMemberProfileImageUrl(),
                 createdAt,
-                feed.getContent().getValue()
+                feed.getContent().getValue(),
+                threadAuthorInfo.isEmail(loginMemberEmail)
         );
     }
 }

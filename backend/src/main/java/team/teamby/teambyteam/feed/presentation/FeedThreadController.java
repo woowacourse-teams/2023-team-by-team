@@ -15,10 +15,10 @@ import team.teamby.teambyteam.aws.s3.application.S3UploadService;
 import team.teamby.teambyteam.feed.application.FeedThreadService;
 import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
 import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
-import team.teamby.teambyteam.member.configuration.AuthPrincipal;
-import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.feed.application.dto.PresignedUrlsRequest;
 import team.teamby.teambyteam.feed.application.dto.PresignedUrlsResponse;
+import team.teamby.teambyteam.member.configuration.AuthPrincipal;
+import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 
 import java.net.URI;
 import java.security.NoSuchAlgorithmException;
@@ -46,9 +46,10 @@ public class FeedThreadController {
     @GetMapping(value = "/{teamPlaceId}/feed/threads", params = {"size"})
     public ResponseEntity<FeedsResponse> read(
             @PathVariable final Long teamPlaceId,
+            @AuthPrincipal final MemberEmailDto memberEmailDto,
             @RequestParam final Integer size
     ) {
-        FeedsResponse feeds = feedThreadService.firstRead(teamPlaceId, size);
+        FeedsResponse feeds = feedThreadService.firstRead(teamPlaceId, memberEmailDto, size);
 
         return ResponseEntity.ok(feeds);
     }
@@ -56,10 +57,11 @@ public class FeedThreadController {
     @GetMapping(value = "/{teamPlaceId}/feed/threads", params = {"last-thread-id", "size"})
     public ResponseEntity<FeedsResponse> read(
             @PathVariable final Long teamPlaceId,
+            @AuthPrincipal final MemberEmailDto memberEmailDto,
             @RequestParam("last-thread-id") final Long threadId,
             @RequestParam final Integer size
     ) {
-        FeedsResponse feeds = feedThreadService.reRead(teamPlaceId, threadId, size);
+        FeedsResponse feeds = feedThreadService.reRead(teamPlaceId, memberEmailDto, threadId, size);
 
         return ResponseEntity.ok(feeds);
     }
