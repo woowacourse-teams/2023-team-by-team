@@ -58,7 +58,6 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
       }
 
       const { scrollTop, scrollHeight } = ref.current;
-      console.log(scrollTop, scrollHeight);
 
       setIsShowScrollBottomButton(() => scrollHeight - scrollTop > 1000);
     };
