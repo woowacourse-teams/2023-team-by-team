@@ -62,11 +62,9 @@ export const feedHandlers = [
         type: 'thread',
         authorId: 1,
         authorName: '유스',
-        isMe: true,
         profileImageUrl: 'https://avatars.githubusercontent.com/u/49154600?v=4',
         createdAt: '2023-08-01 12:00' as YYYYMMDDHHMM,
         content,
-        images: [],
       };
 
       threads.unshift(newThread);
