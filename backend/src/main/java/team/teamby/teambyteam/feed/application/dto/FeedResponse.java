@@ -4,6 +4,7 @@ import team.teamby.teambyteam.feed.domain.Feed;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public record FeedResponse(
         Long id,
@@ -13,6 +14,7 @@ public record FeedResponse(
         String profileImageUrl,
         String createdAt,
         String content,
+        List<FeedImageResponse> images,
         Boolean isMe
 ) {
     private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm";
@@ -29,6 +31,7 @@ public record FeedResponse(
                 profileImageUrl,
                 createdAt,
                 feed.getContent().getValue(),
+                List.of(),
                 false
         );
     }
@@ -45,6 +48,7 @@ public record FeedResponse(
                 threadAuthorInfo.findMemberProfileImageUrl(),
                 createdAt,
                 feed.getContent().getValue(),
+                List.of(),
                 threadAuthorInfo.isEmail(loginMemberEmail)
         );
     }

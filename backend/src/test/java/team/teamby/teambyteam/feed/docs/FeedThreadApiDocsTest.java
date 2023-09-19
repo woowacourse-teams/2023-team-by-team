@@ -203,7 +203,7 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
             final int size = 3;
             final Long authorId = 1L;
 
-            FeedResponse feedResponse = new FeedResponse(1L, FeedType.THREAD.name(), authorId, "author", "/", "created", "hello", false);
+            FeedResponse feedResponse = new FeedResponse(1L, FeedType.THREAD.name(), authorId, "author", "/", "created", "hello", List.of(), false);
             final FeedsResponse feedsResponse = new FeedsResponse(List.of(feedResponse));
             given(feedThreadService.firstRead(any(), any(), any()))
                     .willReturn(feedsResponse);
@@ -305,7 +305,7 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
             final Long authorId = 1L;
 
 
-            final FeedResponse feedResponse = new FeedResponse(1L, FeedType.THREAD.name(), authorId, "author", "/", "created", "hello", false);
+            final FeedResponse feedResponse = new FeedResponse(1L, FeedType.THREAD.name(), authorId, "author", "/", "created", "hello", List.of(), false);
             final FeedsResponse feedsResponse = new FeedsResponse(List.of(feedResponse));
             given(feedThreadService.reRead(any(), any(), any(), any()))
                     .willReturn(feedsResponse);
