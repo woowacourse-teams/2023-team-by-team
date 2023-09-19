@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import * as S from './NoticeThread.styled';
 import Text from '~/components/common/Text/Text';
+import Button from '~/components/common/Button/Button';
 import type { YYYYMMDDHHMM } from '~/types/schedule';
 import { formatWriteTime } from '~/utils/formatWriteTime';
 import type { NoticeSize } from '~/types/size';
@@ -9,7 +9,7 @@ import {
   ArrowExpandMoreIcon,
   MegaphoneIcon,
 } from '~/assets/svg';
-import Button from '~/components/common/Button/Button';
+import * as S from './NoticeThread.styled';
 
 interface NoticeThreadProps {
   authorName: string;
@@ -29,9 +29,7 @@ const NoticeThread = (props: NoticeThreadProps) => {
   };
 
   const handleExpandLessClick = () => {
-    if (noticeSize === 'lg') setNoticeSize(() => 'md');
-
-    if (noticeSize === 'md') setNoticeSize(() => 'sm');
+    if (noticeSize === 'lg') setNoticeSize(() => 'sm');
   };
 
   return (
