@@ -20,7 +20,7 @@ interface NoticeThreadProps {
 const NoticeThread = (props: NoticeThreadProps) => {
   const { authorName, createdAt, content } = props;
 
-  const [noticeSize, setNoticeSize] = useState<NoticeSize>('md');
+  const [noticeSize, setNoticeSize] = useState<NoticeSize>('sm');
 
   const handleExpandMoreClick = () => {
     if (noticeSize === 'sm') setNoticeSize(() => 'md');
@@ -46,7 +46,7 @@ const NoticeThread = (props: NoticeThreadProps) => {
           </S.MegaphoneWrapper>
 
           <S.ContentContainer noticeSize={noticeSize}>
-            <Text size="xl" weight="semiBold" css={S.contentField(noticeSize)}>
+            <Text size="lg" weight="semiBold" css={S.contentField(noticeSize)}>
               {content}
             </Text>
             {noticeSize !== 'sm' && (
