@@ -48,6 +48,10 @@ const teamColor = {
   100: '#fff',
 } as const;
 
+const gradient = {
+  SMOOTH_BLACK: 'linear-gradient(45deg, #121212, #303030)',
+};
+
 const zIndex = {
   LANDING_CARD: -1,
   MODAL: 1,
@@ -114,6 +118,7 @@ const animation = {
 export const theme = {
   color,
   teamColor,
+  gradient,
   zIndex,
   animation,
 } as const;

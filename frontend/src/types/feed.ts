@@ -25,3 +25,10 @@ export type NoticeThread =
   | Record<string, never>;
 
 export type ThreadContent = Pick<Thread, 'content'>;
+
+export interface ThreadImage {
+  id: number;
+  isExpired: boolean;
+  name: string;
+  url: string;
+}
