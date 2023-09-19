@@ -31,6 +31,34 @@ export const Container = styled.div`
   overflow: hidden;
 `;
 
+export const UserInfoForm = styled.form`
+  display: flex;
+  align-items: center;
+
+  column-gap: 6px;
+
+  &:focus {
+    outline: ${({ theme }) => theme.color.PRIMARY};
+  }
+`;
+
+export const UserNameInputContainer = styled.div`
+  width: 200px;
+
+  border: 1px solid ${({ theme }) => theme.color.GRAY200};
+  border-radius: 4px;
+`;
+
+export const UserNameContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 20px;
+  column-gap: 5px;
+`;
+
 export const ProfileImage = styled.img`
   width: 200px;
   height: 200px;
@@ -44,15 +72,20 @@ export const logoutButton = css`
   display: flex;
   align-items: center;
 
+  margin: 0 auto;
   padding: 8px;
   gap: 2px;
-  margin: 0 auto;
 `;
 
 export const userName = css`
-  margin: 0 auto;
+  max-width: 140px;
 
   font-weight: 500;
+
+  overflow: hidden;
+  white-space: pre;
+  text-overflow: ellipsis;
+  text-align: center;
 `;
 
 export const email = css`
@@ -60,4 +93,51 @@ export const email = css`
 
   font-size: 14px;
   color: ${({ theme }) => theme.color.GRAY600};
+`;
+
+export const userInfoEditButton = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 22px;
+  height: 22px;
+  padding: 2px;
+
+  border-radius: 50%;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.color.GRAY200};
+  }
+`;
+
+export const userInfoSubmitButton = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 22px;
+  height: 22px;
+  padding: 2px;
+
+  border-radius: 50%;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.color.GRAY200};
+  }
+`;
+
+export const userNameLength = css`
+  font-size: 12px;
+  color: ${({ theme }) => theme.color.GRAY600};
+  white-space: pre;
+`;
+
+export const userNameInput = css`
+  border: none;
+  border-radius: 4px;
+
+  &:focus {
+    outline: none;
+  }
 `;

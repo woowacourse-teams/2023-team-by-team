@@ -41,3 +41,17 @@ export const sendJoinTeamPlace = (inviteCode: string) => {
 export const sendCreateTeamPlace = (body: Pick<TeamInfo, 'name'>) => {
   return http.post('/api/team-places', body);
 };
+
+export const modifyTeamPlaceColor = (
+  teamPlaceId: number,
+  body: Pick<TeamPlace, 'teamPlaceColor'>,
+) => {
+  return http.patch(`/api/team-places/${teamPlaceId}/color`, body);
+};
+
+export const modifyMyTeamPlaceUserInfo = (
+  teamPlaceId: number,
+  body: Pick<UserInfo, 'name'>,
+) => {
+  return http.patch(`/api/team-places/${teamPlaceId}/members/me`, body);
+};

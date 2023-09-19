@@ -29,7 +29,7 @@ const MenuButton = (props: PropsWithChildren<MenuButtonProps>) => {
       onClick={handleMenuOpen}
       {...rest}
     >
-      {value === '' ? children : <Text as="span">{value}</Text>}
+      {children ? children : <Text as="span">{value}</Text>}
     </Button>
   );
 };

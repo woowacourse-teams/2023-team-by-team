@@ -11,6 +11,7 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import team.teamby.teambyteam.auth.exception.AuthenticationException;
+import team.teamby.teambyteam.aws.s3.application.S3UploadService;
 import team.teamby.teambyteam.common.ApiDocsTest;
 import team.teamby.teambyteam.common.fixtures.FeedThreadFixtures;
 import team.teamby.teambyteam.feed.application.FeedThreadService;
@@ -49,6 +50,9 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
 
     @MockBean
     private FeedThreadService feedThreadService;
+
+    @MockBean
+    private S3UploadService s3UploadService;
 
     @Nested
     @DisplayName("스레드 등록 문서화")

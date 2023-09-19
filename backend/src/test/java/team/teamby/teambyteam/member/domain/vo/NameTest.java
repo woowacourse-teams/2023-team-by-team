@@ -43,4 +43,16 @@ class NameTest {
                 .isInstanceOf(MemberException.NameBlankException.class)
                 .hasMessageContaining("멤버 이름은 공백을 제외한 1자 이상이어야합니다.");
     }
+
+    @ParameterizedTest
+    @ValueSource(strings = {" roy", "roy ", " roy ", "  roy  "})
+    @DisplayName("멤버 이름의 앞뒤에 공백이 존재할 경우 해당 공백이 제거된다.")
+    void successWithTrimmedMemberName(final String untrimmedName) {
+        // given & when
+        final Name name = new Name(untrimmedName);
+        final String expectedTrimmedName = "roy";
+
+        // then
+        Assertions.assertThat(name.getValue()).isEqualTo(expectedTrimmedName);
+    }
 }

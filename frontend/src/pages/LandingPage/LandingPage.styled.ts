@@ -67,6 +67,7 @@ export const GoogleLoginButtonAppearance = styled.div`
 
 export const GoogleLogo = styled.img`
   width: 26px;
+  height: 27px;
 `;
 
 export const mainPrefix = css`

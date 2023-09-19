@@ -14,8 +14,8 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     displayValue: '팀 선택하기',
-    onClickMenu: () => {
-      alert('Clicked!');
+    onSelect: (value: string) => {
+      alert(value);
     },
   },
 };

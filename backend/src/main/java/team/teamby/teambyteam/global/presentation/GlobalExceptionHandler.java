@@ -84,7 +84,7 @@ public class GlobalExceptionHandler {
             ExpiredJwtException.class,
             TokenException.TokenNotFoundException.class
     })
-    public ResponseEntity<ErrorResponse> handleVariousCaseAuthenticationException(final RuntimeException exception) {
+    public ResponseEntity<ErrorResponse> handleAuthenticationException(final RuntimeException exception) {
         final String message = exception.getMessage();
         log.warn(message);
 
@@ -124,7 +124,9 @@ public class GlobalExceptionHandler {
             TeamPlaceException.NameBlankException.class,
             MemberTeamPlaceException.TeamPlaceColorNotExistException.class,
             MemberTeamPlaceException.MemberNameBlankException.class,
-            MemberTeamPlaceException.MemberDisplayNameLengthException.class
+            MemberTeamPlaceException.MemberDisplayNameLengthException.class,
+            MemberException.NameLengthException.class,
+            MemberException.NameBlankException.class
     })
     public ResponseEntity<ErrorResponse> handleCustomBadRequestException(final RuntimeException exception) {
         final String message = exception.getMessage();

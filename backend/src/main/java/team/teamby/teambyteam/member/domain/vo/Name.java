@@ -22,19 +22,28 @@ public class Name {
     private String value;
 
     public Name(final String value) {
-        validate(value);
-        this.value = value;
+        validateNull(value);
+        final String trimmedValue = value.trim();
+        validate(trimmedValue);
+        this.value = trimmedValue;
     }
 
-    private void validate(final String value) {
+    private void validateNull(final String value) {
         if (Objects.isNull(value)) {
             throw new NullPointerException("멤버 이름은 null일 수 없습니다.");
         }
+    }
+
+    private void validate(final String value) {
         if (value.length() > MAX_LENGTH) {
             throw new MemberException.NameLengthException(MAX_LENGTH, value);
         }
         if (value.isBlank()) {
             throw new MemberException.NameBlankException();
         }
+    }
+
+    public Name change(final String name) {
+        return new Name(name);
     }
 }
