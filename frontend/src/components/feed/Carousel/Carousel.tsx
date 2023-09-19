@@ -30,14 +30,14 @@ const Carousel = (props: CarouselProps) => {
     <S.Container width={width} height={height}>
       <S.SlidesView>
         <S.Slides currentPage={currentPage}>
-          {images.map(({ id, isExpired, url }) => (
+          {images.map(({ id, isExpired, url, name }) => (
             <S.Slide key={id}>
               {isExpired ? (
                 <Text as="span" size="xxl" css={S.expiredText}>
                   이 이미지는 기간이 만료되었습니다.
                 </Text>
               ) : (
-                <img src={url} />
+                <img src={url} alt={name} />
               )}
             </S.Slide>
           ))}
