@@ -1,11 +1,16 @@
-import Button from '~/components/common/Button/Button';
-import * as S from './TeamFeedPage.styled';
-import { useModal } from '~/hooks/useModal';
-import ThreadAddBottomSheet from '~/components/feed/ThreadAddBottomSheet/ThreadAddBottomSheet';
-import { ArrowExpandMoreIcon, WriteIcon } from '~/assets/svg';
+import type { ChangeEventHandler } from 'react';
 import { useEffect, useRef, useState } from 'react';
+import Button from '~/components/common/Button/Button';
 import ThreadList from '~/components/feed/ThreadList/ThreadList';
+import Text from '~/components/common/Text/Text';
+import NoticeThread from '~/components/feed/NoticeThread/NoticeThread';
+import Checkbox from '~/components/common/Checkbox/Checkbox';
+import { useFetchNoticeThread } from '~/hooks/queries/useFetchNoticeThread';
+import { useTeamPlace } from '~/hooks/useTeamPlace';
+import theme from '~/styles/theme';
+import { AirplaneIcon, ArrowExpandMoreIcon, ImageIcon } from '~/assets/svg';
 import type { ThreadSize } from '~/types/size';
+import * as S from './TeamFeedPage.styled';
 
 interface TeamFeedPageProps {
   threadSize?: ThreadSize;
@@ -13,12 +18,30 @@ interface TeamFeedPageProps {
 
 const TeamFeedPage = (props: TeamFeedPageProps) => {
   const { threadSize = 'md' } = props;
-  const { isModalOpen, openModal } = useModal();
-  const [isShowScrollTopButton, setIsShowScrollTopButton] = useState(false);
+  const { teamPlaceId } = useTeamPlace();
+  const { noticeThread } = useFetchNoticeThread(teamPlaceId);
+
+  const [isNotice, setIsNotice] = useState(false);
+  const [isShowScrollBottomButton, setIsShowScrollBottomButton] =
+    useState(false);
+  const [chatContent, setChatContent] = useState('');
   const ref = useRef<HTMLDivElement>(null);
 
-  const handleScrollTopButtonClick = () => {
-    if (!ref.current) return;
+  const handleIsNoticeChange = () => {
+    setIsNotice((prev) => !prev);
+  };
+
+  const handleChatContentChange: ChangeEventHandler<HTMLTextAreaElement> = (
+    e,
+  ) => {
+    setChatContent(() => e.target.value);
+  };
+
+  const handleScrollBottomButtonClick = () => {
+    if (!ref.current) {
+      return;
+    }
+
     const { scrollHeight } = ref.current;
 
     ref.current.scrollTo({ top: scrollHeight, behavior: 'smooth' });
@@ -35,7 +58,9 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
       }
 
       const { scrollTop, scrollHeight } = ref.current;
-      setIsShowScrollTopButton(() => scrollHeight - scrollTop > 100);
+      console.log(scrollTop, scrollHeight);
+
+      setIsShowScrollBottomButton(() => scrollHeight - scrollTop > 1000);
     };
 
     const current = ref.current;
@@ -48,36 +73,67 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
   }, []);
 
   return (
-    <S.ThreadContainer
-      ref={ref}
-      threadSize={threadSize}
-      isModalOpen={isModalOpen}
-    >
-      <ThreadList containerRef={ref} size={threadSize} />
-      <S.MenuButtonWrapper>
-        {isShowScrollTopButton && (
-          <Button
-            type="button"
-            variant="plain"
-            aria-label="화면 하단으로 스크롤 이동하기"
-            css={S.scrollTopButton}
-            onClick={handleScrollTopButtonClick}
-          >
-            <ArrowExpandMoreIcon />
-          </Button>
-        )}
-        <Button
-          type="button"
-          onClick={openModal}
-          aria-label="새로운 스레드 작성하기"
-        >
-          <WriteIcon />
-        </Button>
-      </S.MenuButtonWrapper>
-      <S.BottomSheetWrapper>
-        {isModalOpen && <ThreadAddBottomSheet threadSize={threadSize} />}
-      </S.BottomSheetWrapper>
-    </S.ThreadContainer>
+    <S.Container threadSize={threadSize}>
+      <S.Inner>
+        <S.ThreadContainer ref={ref}>
+          {noticeThread && noticeThread.id && (
+            <NoticeThread
+              authorName={noticeThread.authorName}
+              createdAt={noticeThread.createdAt}
+              content={noticeThread.content}
+            />
+          )}
+          <S.ThreadListWrapper>
+            <ThreadList containerRef={ref} size={threadSize} />
+          </S.ThreadListWrapper>
+          <S.MenuButtonWrapper>
+            {isShowScrollBottomButton && (
+              <Button
+                type="button"
+                variant="plain"
+                aria-label="화면 하단으로 스크롤 이동하기"
+                css={S.scrollBottomButton}
+                onClick={handleScrollBottomButtonClick}
+              >
+                <ArrowExpandMoreIcon />
+              </Button>
+            )}
+          </S.MenuButtonWrapper>
+        </S.ThreadContainer>
+        <form>
+          <S.Textarea
+            value={chatContent}
+            onChange={handleChatContentChange}
+            placeholder="여기에 채팅을 입력하세요."
+            maxLength={10000}
+            autoFocus
+          />
+          <S.ButtonContainer>
+            <Button
+              type="button"
+              variant="plain"
+              aria-label="이미지 업로드하기"
+            >
+              <ImageIcon />
+            </Button>
+            <div>
+              <Checkbox
+                isChecked={isNotice}
+                onChange={handleIsNoticeChange}
+                color={theme.color.PURPLE100}
+                size="lg"
+              />
+              <Text as="span" weight="semiBold" size="lg" css={S.noticeText}>
+                공지로 등록
+              </Text>
+              <Button variant="plain" aria-label="채팅 전송하기">
+                <AirplaneIcon />
+              </Button>
+            </div>
+          </S.ButtonContainer>
+        </form>
+      </S.Inner>
+    </S.Container>
   );
 };
 
