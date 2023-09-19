@@ -23,6 +23,7 @@ const ImageUploadDrawer = (
           type="button"
           css={S.closeButton}
           onClick={onClose}
+          aria-label="이미지 업로드 메뉴 닫기"
         >
           <Close2Icon />
         </Button>
