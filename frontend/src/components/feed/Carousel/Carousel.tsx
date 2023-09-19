@@ -20,11 +20,11 @@ interface CarouselProps {
   height: string;
   images: ThreadImage[];
   currentPage: number;
-  onPageChange: (page: number) => void;
+  onChangePage: (page: number) => void;
 }
 
 const Carousel = (props: CarouselProps) => {
-  const { width, height, images, currentPage, onPageChange } = props;
+  const { width, height, images, currentPage, onChangePage } = props;
 
   return (
     <S.Container width={width} height={height}>
@@ -49,7 +49,7 @@ const Carousel = (props: CarouselProps) => {
           type="button"
           css={S.arrowButton}
           onClick={() =>
-            onPageChange(getPreviousPageIndex(images.length, currentPage))
+            onChangePage(getPreviousPageIndex(images.length, currentPage))
           }
           aria-label="이전 이미지 보기"
         >
@@ -62,7 +62,7 @@ const Carousel = (props: CarouselProps) => {
           type="button"
           css={S.arrowButton}
           onClick={() =>
-            onPageChange(getNextPageIndex(images.length, currentPage))
+            onChangePage(getNextPageIndex(images.length, currentPage))
           }
           aria-label="다음 이미지 보기"
         >

@@ -34,8 +34,8 @@ export const Default: Story = {
   args: {
     pageCount: 4,
     currentPage: 1,
-    onPageChange: (page: number) => {
-      alert(`onPageChange(${page});`);
+    onChangePage: (page: number) => {
+      alert(`onChangePage(${page});`);
     },
   },
 };

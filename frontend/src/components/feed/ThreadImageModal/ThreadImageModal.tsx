@@ -41,14 +41,14 @@ const ThreadImageModal = (props: ThreadImageModalProps) => {
             height="100%"
             images={images}
             currentPage={currentPage}
-            onPageChange={setCurrentPage}
+            onChangePage={setCurrentPage}
           />
         </S.CarouselWrapper>
         <S.PageIndicatorWrapper>
           <PageIndicator
             pageCount={images.length}
             currentPage={currentPage}
-            onPageChange={setCurrentPage}
+            onChangePage={setCurrentPage}
           />
         </S.PageIndicatorWrapper>
       </S.Container>

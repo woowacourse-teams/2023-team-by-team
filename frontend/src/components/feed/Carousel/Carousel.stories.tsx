@@ -60,8 +60,8 @@ export const Default: Story = {
     height: '700px',
     images,
     currentPage: 1,
-    onPageChange: (page: number) => {
-      alert(`onPageChange(${page});`);
+    onChangePage: (page: number) => {
+      alert(`onChangePage(${page});`);
     },
   },
 };

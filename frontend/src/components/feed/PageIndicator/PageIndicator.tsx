@@ -5,11 +5,11 @@ import { arrayOf } from '~/utils/arrayOf';
 interface PageIndicatorProps {
   pageCount: number;
   currentPage: number;
-  onPageChange: (page: number) => void;
+  onChangePage: (page: number) => void;
 }
 
 const PageIndicator = (props: PageIndicatorProps) => {
-  const { pageCount, currentPage, onPageChange } = props;
+  const { pageCount, currentPage, onChangePage } = props;
 
   return (
     <S.Container>
@@ -30,7 +30,7 @@ const PageIndicator = (props: PageIndicatorProps) => {
           <S.Dot
             key={index}
             type="button"
-            onClick={() => onPageChange(index + 1)}
+            onClick={() => onChangePage(index + 1)}
             selected={index + 1 === currentPage}
             aria-label={`${index + 1}번째 페이지 보기`}
           />
