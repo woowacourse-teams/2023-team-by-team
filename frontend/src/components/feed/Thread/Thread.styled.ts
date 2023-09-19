@@ -7,38 +7,54 @@ export const Container = styled.div<{ isMe: boolean }>`
 
   width: 100%;
   gap: 10px;
-
-  align-items: ${({ isMe }) => (isMe ? 'flex-end' : 'flex-start')};
 `;
 
-export const ContentContainer = styled.div<{ isMe: boolean }>`
+export const BodyContainer = styled.div<{ isMe: boolean }>`
   display: flex;
-
   align-items: flex-end;
-  width: 100%;
 
   gap: 10px;
 
   ${({ isMe }) => isMe && `flex-direction: row-reverse`}
 `;
 
+export const ContentContainer = styled.div<{ isMe: boolean; height: number }>`
+  display: flex;
+
+  width: 80%;
+  max-height: ${({ height }) => height}px;
+`;
+
 export const ContentWrapper = styled.div<{
   threadSize: ThreadSize;
   isMe: boolean;
+  isExpanded: boolean;
 }>`
-  max-width: 80%;
-  height: auto;
+  position: relative;
+  overflow: hidden;
 
-  ${({ threadSize }) => {
-    if (threadSize === 'md')
+  ${({ threadSize, isExpanded }) => {
+    if (threadSize === 'md') {
+      if (isExpanded)
+        return css`
+          padding: 28px 28px 80px;
+        `;
+
       return css`
         padding: 28px;
       `;
+    }
 
-    if (threadSize === 'sm')
+    if (threadSize === 'sm') {
+      if (isExpanded)
+        return css`
+          padding: 16px 28px 80px;
+        `;
+
       return css`
         padding: 16px 28px;
       `;
+    }
   }}
 
   ${({ isMe, theme }) => {
@@ -78,6 +94,7 @@ export const ProfileImg = styled.img<{ threadSize: ThreadSize }>`
         width: 40px;
         height: 40px;
       `;
+
     if (threadSize === 'sm')
       return css`
         width: 30px;
