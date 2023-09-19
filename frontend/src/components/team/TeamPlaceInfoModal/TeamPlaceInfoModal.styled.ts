@@ -122,7 +122,6 @@ export const Badge = styled.div`
   height: 20px;
 
   border-radius: 50%;
-
   background-color: ${({ theme }) => theme.color.GRAY600};
 
   color: ${({ theme }) => theme.color.WHITE};
