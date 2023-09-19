@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import PageIndicator from '~/components/common/PageIndicator/PageIndicator';
+import PageIndicator from '~/components/feed/PageIndicator/PageIndicator';
 
 /**
  * `PageIndicator`는 현재 메뉴의 페이지가 몇 페이지인지를 시각적으로 표현하고, 페이지 전환 기능을 제공합니다. 슬라이드 쇼 등의 메뉴에서 사용하기에 적합합니다.

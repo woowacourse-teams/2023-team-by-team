@@ -1,5 +1,5 @@
 import Carousel from '~/components/feed/Carousel/Carousel';
-import PageIndicator from '~/components/common/PageIndicator/PageIndicator';
+import PageIndicator from '~/components/feed/PageIndicator/PageIndicator';
 import Modal from '~/components/common/Modal/Modal';
 import Button from '~/components/common/Button/Button';
 import Text from '~/components/common/Text/Text';
