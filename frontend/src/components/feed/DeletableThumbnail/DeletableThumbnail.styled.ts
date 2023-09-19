@@ -6,6 +6,8 @@ export const Container = styled.div`
 
   width: 96px;
   height: 96px;
+
+  border-radius: 12px;
 `;
 
 export const Image = styled.img`
@@ -32,9 +34,5 @@ export const deleteButton = css`
 
   & svg {
     width: 24px;
-  }
-
-  & svg > path {
-    width:;
   }
 `;
