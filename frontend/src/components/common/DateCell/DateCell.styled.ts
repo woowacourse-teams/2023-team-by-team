@@ -1,5 +1,4 @@
 import { css, styled } from 'styled-components';
-import { DateCellProps } from '~/components/common/DateCell/DateCell';
 import type { DateCellSize } from '~/types/size';
 
 interface WrapperProps {
