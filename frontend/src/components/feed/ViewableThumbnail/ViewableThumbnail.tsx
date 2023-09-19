@@ -1,6 +1,7 @@
 import * as S from './ViewableThumbnail.styled';
 import Button from '~/components/common/Button/Button';
 import type { ThreadImage } from '~/types/feed';
+import { thumbnailFallbackImage } from '~/assets/png';
 
 interface ViewableThumbnailProps {
   image: ThreadImage;
@@ -9,12 +10,19 @@ interface ViewableThumbnailProps {
 
 const ViewableThumbnail = (props: ViewableThumbnailProps) => {
   const { image, onClick } = props;
-  const { name, url } = image;
+  const { isExpired, name, url } = image;
 
   return (
-    <Button variant="plain" type="button" css={S.viewButton} onClick={onClick}>
-      <S.Image src={url} alt={name} />
-    </Button>
+    <S.Container>
+      <Button
+        variant="plain"
+        type="button"
+        css={S.viewButton}
+        onClick={onClick}
+      >
+        <S.Image src={isExpired ? thumbnailFallbackImage : url} alt={name} />
+      </Button>
+    </S.Container>
   );
 };
 

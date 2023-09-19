@@ -2,6 +2,7 @@ import * as S from './DeletableThumbnail.styled';
 import Button from '~/components/common/Button/Button';
 import type { ThreadImage } from '~/types/feed';
 import { Close2Icon } from '~/assets/svg';
+import { thumbnailFallbackImage } from '~/assets/png';
 
 interface DeletableThumbnailProps {
   image: ThreadImage;
@@ -10,11 +11,11 @@ interface DeletableThumbnailProps {
 
 const DeletableThumbnail = (props: DeletableThumbnailProps) => {
   const { image, onDelete } = props;
-  const { id, name, url } = image;
+  const { id, isExpired, name, url } = image;
 
   return (
     <S.Container>
-      <S.Image src={url} alt={name} />
+      <S.Image src={isExpired ? thumbnailFallbackImage : url} alt={name} />
       <Button
         variant="plain"
         type="button"
