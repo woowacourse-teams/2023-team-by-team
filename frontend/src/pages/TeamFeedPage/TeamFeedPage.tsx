@@ -1,12 +1,9 @@
-import type { ChangeEventHandler } from 'react';
-import { useEffect, useRef, useState } from 'react';
 import Button from '~/components/common/Button/Button';
 import ThreadList from '~/components/feed/ThreadList/ThreadList';
 import Text from '~/components/common/Text/Text';
 import NoticeThread from '~/components/feed/NoticeThread/NoticeThread';
 import Checkbox from '~/components/common/Checkbox/Checkbox';
-import { useFetchNoticeThread } from '~/hooks/queries/useFetchNoticeThread';
-import { useTeamPlace } from '~/hooks/useTeamPlace';
+import { useTeamFeedPage } from '~/hooks/team/useTeamFeedPage';
 import theme from '~/styles/theme';
 import { AirplaneIcon, ArrowExpandMoreIcon, ImageIcon } from '~/assets/svg';
 import type { ThreadSize } from '~/types/size';
@@ -18,58 +15,21 @@ interface TeamFeedPageProps {
 
 const TeamFeedPage = (props: TeamFeedPageProps) => {
   const { threadSize = 'md' } = props;
-  const { teamPlaceId } = useTeamPlace();
-  const { noticeThread } = useFetchNoticeThread(teamPlaceId);
+  const {
+    ref,
+    noticeThread,
+    isNotice,
+    isShowScrollBottomButton,
+    chatContent,
 
-  const [isNotice, setIsNotice] = useState(false);
-  const [isShowScrollBottomButton, setIsShowScrollBottomButton] =
-    useState(false);
-  const [chatContent, setChatContent] = useState('');
-  const ref = useRef<HTMLDivElement>(null);
-
-  const handleIsNoticeChange = () => {
-    setIsNotice((prev) => !prev);
-  };
-
-  const handleChatContentChange: ChangeEventHandler<HTMLTextAreaElement> = (
-    e,
-  ) => {
-    setChatContent(() => e.target.value);
-  };
-
-  const handleScrollBottomButtonClick = () => {
-    if (!ref.current) {
-      return;
-    }
-
-    const { scrollHeight } = ref.current;
-
-    ref.current.scrollTo({ top: scrollHeight, behavior: 'smooth' });
-  };
-
-  useEffect(() => {
-    if (ref.current === null) {
-      return;
-    }
-
-    const handleScrollBottom = () => {
-      if (ref.current === null) {
-        return;
-      }
-
-      const { scrollTop, scrollHeight } = ref.current;
-
-      setIsShowScrollBottomButton(() => scrollHeight - scrollTop > 1000);
-    };
-
-    const current = ref.current;
-
-    current.addEventListener('scroll', handleScrollBottom);
-
-    return () => {
-      current.removeEventListener('scroll', handleScrollBottom);
-    };
-  }, []);
+    handlers: {
+      handleIsNoticeChange,
+      handleChatContentChange,
+      handleEnterKeydown,
+      handleScrollBottomButtonClick,
+      handleSubmit,
+    },
+  } = useTeamFeedPage();
 
   return (
     <S.Container threadSize={threadSize}>
@@ -99,10 +59,11 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
             )}
           </S.MenuButtonWrapper>
         </S.ThreadContainer>
-        <form>
+        <form onSubmit={handleSubmit}>
           <S.Textarea
             value={chatContent}
             onChange={handleChatContentChange}
+            onKeyDown={handleEnterKeydown}
             placeholder="여기에 채팅을 입력하세요."
             maxLength={10000}
             autoFocus
