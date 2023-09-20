@@ -50,4 +50,12 @@ public class Schedule extends BaseEntity {
         this.title = title.change(titleToUpdate);
         this.span = span.change(startDateTimeToUpdate, endDateTimeToUpdate);
     }
+
+    public LocalDateTime getStartDateTime() {
+        return span.getStartDateTime();
+    }
+
+    public LocalDateTime getEndDateTime() {
+        return span.getEndDateTime();
+    }
 }
