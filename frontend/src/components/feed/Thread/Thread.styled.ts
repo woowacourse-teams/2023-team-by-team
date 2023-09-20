@@ -105,11 +105,11 @@ export const ProfileImg = styled.img<{ threadSize: ThreadSize }>`
   object-fit: cover;
 `;
 
-export const threadInfoText = (threadSize: ThreadSize, isMe: boolean) => css`
+export const threadInfoText = (threadSize: ThreadSize) => css`
   white-space: pre-wrap;
 
   font-size: ${threadSize === 'md' ? 18 : 16}px;
-  color: ${({ theme }) => (isMe ? theme.color.PRIMARY900 : theme.color.BLACK)};
+  color: ${({ theme }) => theme.color.BLACK};
 `;
 
 export const contentField = (threadSize: ThreadSize, isMe: boolean) => css`

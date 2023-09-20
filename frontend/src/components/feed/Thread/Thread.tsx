@@ -48,7 +48,7 @@ const Thread = (props: ThreadProps) => {
               src={profileImageUrl}
               alt={authorName}
             />
-            <Text weight="semiBold" css={S.threadInfoText(threadSize, isMe)}>
+            <Text weight="semiBold" css={S.threadInfoText(threadSize)}>
               {authorName}
             </Text>
           </S.Author>
@@ -71,7 +71,7 @@ const Thread = (props: ThreadProps) => {
           </S.ContentWrapper>
         </S.ContentContainer>
         <time>
-          <Text css={S.threadInfoText(threadSize, isMe)}>{createdTime}</Text>
+          <Text css={S.threadInfoText(threadSize)}>{createdTime}</Text>
         </time>
       </S.BodyContainer>
     </S.Container>
