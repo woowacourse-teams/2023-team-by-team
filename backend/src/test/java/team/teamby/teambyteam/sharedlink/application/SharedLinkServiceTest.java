@@ -70,24 +70,6 @@ class SharedLinkServiceTest extends ServiceTest {
             });
         }
 
-        @Test
-        @DisplayName("공유 링크 Event가 발행된다.")
-        @Disabled
-        void publishSharedLinkCreateEvent() {
-            // given
-            final Member member = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
-            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
-            final MemberEmailDto memberEmailDto = new MemberEmailDto(member.getEmail().getValue());
-            final SharedLink sharedLink = TEAM_BY_TEAM_LINK(ENGLISH_TEAM_PLACE.getId(), member.getId());
-            final SharedLinkCreateRequest sharedLinkCreateRequest = new SharedLinkCreateRequest(sharedLink.getTitle().getValue(), sharedLink.getSharedURL().getValue());
-
-            // when
-            sharedLinkService.create(memberEmailDto, ENGLISH_TEAM_PLACE.getId(), sharedLinkCreateRequest);
-
-            // then
-            assertThat(applicationEvents.stream(SharedLinkCreateEvent.class).count()).isEqualTo(1);
-        }
-
         @ParameterizedTest
         @DisplayName("빈 제목으로 생성 시 실패한다..")
         @ValueSource(strings = {"", " ", "          "})
@@ -198,22 +180,6 @@ class SharedLinkServiceTest extends ServiceTest {
             SoftAssertions.assertSoftly(softly -> {
                 softly.assertThat(beforeSize - 1).isEqualTo(afterSize);
             });
-        }
-
-        @Test
-        @DisplayName("공유 링크 Event가 발행된다.")
-        @Disabled
-        void publishSharedLinkDeleteEvent() {
-            // given
-            final Member member = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
-            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
-            final SharedLink sharedLink = testFixtureBuilder.buildSharedLink(TEAM_BY_TEAM_LINK(ENGLISH_TEAM_PLACE.getId(), member.getId()));
-
-            // when
-            sharedLinkService.deleteLink(ENGLISH_TEAM_PLACE.getId(), sharedLink.getId());
-
-            // then
-            assertThat(applicationEvents.stream(SharedLinkDeleteEvent.class).count()).isEqualTo(1);
         }
 
         @Test
