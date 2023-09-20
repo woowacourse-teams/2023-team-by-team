@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from 'react';
 import * as S from './ImageUploadDrawer.styled';
 import Button from '~/components/common/Button/Button';
-import { Close2Icon } from '~/assets/svg';
+import { CloseBoldIcon } from '~/assets/svg';
 
 interface ImageUploadDrawerProps {
   isOpen: boolean;
@@ -25,7 +25,7 @@ const ImageUploadDrawer = (
           onClick={onClose}
           aria-label="이미지 업로드 메뉴 닫기"
         >
-          <Close2Icon />
+          <CloseBoldIcon />
         </Button>
       </S.CloseButtonWrapper>
     </S.Container>
