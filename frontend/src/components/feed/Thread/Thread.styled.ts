@@ -15,7 +15,7 @@ export const BodyContainer = styled.div<{ isMe: boolean }>`
 
   gap: 10px;
 
-  ${({ isMe }) => isMe && `flex-direction: row-reverse`}
+  ${({ isMe }) => isMe && 'flex-direction: row-reverse'};
 `;
 
 export const ContentContainer = styled.div<{ isMe: boolean; height: number }>`
@@ -66,7 +66,7 @@ export const ContentWrapper = styled.div<{
 
     return css`
       background: ${theme.color.GRAY150};
-      border-radius: 12px 12px 12px 0;
+      border-radius: 0 12px 12px 12px;
     `;
   }}
 `;
