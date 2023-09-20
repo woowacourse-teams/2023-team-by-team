@@ -2,6 +2,7 @@ package team.teamby.teambyteam.auth.oauth.presentation;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,10 @@ public class AuthController {
     private static final String QUERY_AND_MARK = "&";
     private static final String QUERY_PARAM_ACCESS_TOKEN_KEY = "accessToken=";
     private static final String QUERY_PARAM_REFRESH_TOKEN_KEY = "refreshToken=";
+
+    @Value("${base-domain.front}")
+    private String baseDomain;
+
     private final OAuthUriGenerator oAuthUriGenerator;
     private final GoogleOAuthService googleOAuthService;
 
@@ -45,7 +50,8 @@ public class AuthController {
 
     private String generateUrl(final String baseUrl, final String accessToken, final String refreshToken) {
         StringBuilder sb = new StringBuilder();
-        StringBuilder url = sb.append(baseUrl)
+        StringBuilder url = sb.append(baseDomain)
+                .append(baseUrl)
                 .append(QUERY_START_MARK)
                 .append(QUERY_PARAM_ACCESS_TOKEN_KEY)
                 .append(accessToken)
