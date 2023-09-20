@@ -58,9 +58,10 @@ const gradient = {
 
 const zIndex = {
   LANDING_CARD: -1,
-  MODAL: 1,
-  MENU: 2,
-  TOAST: 3,
+  NOTICE: 1,
+  MODAL: 2,
+  MENU: 3,
+  TOAST: 4,
 } as const;
 
 const animation = {
