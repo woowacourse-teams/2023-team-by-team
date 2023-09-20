@@ -9,7 +9,10 @@ const Error404Page = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   useEffect(() => {
-    const isLoggedIn = !!localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
+    const isLoggedIn = Boolean(
+      localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN),
+    );
+
     setIsLoggedIn(() => isLoggedIn);
   }, []);
 
