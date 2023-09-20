@@ -72,6 +72,10 @@ jobs:
           cache: "npm"
           cache-dependency-path: "**/package-lock.json"
 
+      - name: Setup environment variables
+        run: |
+          echo "REACT_APP_BASE_URL=${{ secrets.REACT_APP_BASE_URL }}" >> .env.production
+
       - name: Install dependencies
         run: npm ci
 
