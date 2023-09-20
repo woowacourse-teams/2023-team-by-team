@@ -25,6 +25,19 @@ export const Default: Story = {
   },
 };
 
+export const DefaultIsyMe: Story = {
+  args: {
+    authorName: '팀바팀_루루',
+    isMe: true,
+    profileImageUrl:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYZjvO1QuvfgCfQxBwwzmJcHIT5pTXIBGOLeyBDIbZknn6Dhkd40WrU0ZCdjt-IoXLzI0&usqp=CAU',
+    createdAt: '2023-09-20 15:44',
+    content: '낼름',
+    images: [],
+    isContinue: false,
+  },
+};
+
 export const Small: Story = {
   args: {
     threadSize: 'sm',
