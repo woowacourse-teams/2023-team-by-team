@@ -74,7 +74,7 @@ const ThreadList = (props: ThreadListProps) => {
               const { id, type, profileImageUrl, content, authorId, ...rest } =
                 thread;
 
-              const isContinuity =
+              const isContinue =
                 index - 1 >= 0 && authorId === threads[index - 1].authorId;
 
               return type === THREAD_TYPE.THREAD ? (
@@ -83,7 +83,7 @@ const ThreadList = (props: ThreadListProps) => {
                   threadSize={size}
                   profileImageUrl={profileImageUrl}
                   content={content}
-                  isContinuity={isContinuity}
+                  isContinue={isContinue}
                   {...rest}
                 />
               ) : (

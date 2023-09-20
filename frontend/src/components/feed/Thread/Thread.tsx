@@ -16,7 +16,7 @@ interface ThreadProps {
   createdAt: YYYYMMDDHHMM;
   content: string;
   images: ThreadImage[];
-  isContinuity: boolean;
+  isContinue: boolean;
 }
 
 const Thread = (props: ThreadProps) => {
@@ -28,7 +28,7 @@ const Thread = (props: ThreadProps) => {
     createdAt,
     content,
     images,
-    isContinuity,
+    isContinue,
   } = props;
   const createdTime = formatWriteTime(createdAt).split(' ').join('\n');
 
@@ -40,7 +40,7 @@ const Thread = (props: ThreadProps) => {
 
   return (
     <S.Container isMe={isMe}>
-      {!isMe && !isContinuity && (
+      {!isMe && !isContinue && (
         <S.ThreadHeader>
           <S.Author>
             <S.ProfileImg
@@ -48,7 +48,7 @@ const Thread = (props: ThreadProps) => {
               src={profileImageUrl}
               alt={authorName}
             />
-            <Text weight="bold" css={S.threadInfoText(threadSize, isMe)}>
+            <Text weight="semiBold" css={S.threadInfoText(threadSize, isMe)}>
               {authorName}
             </Text>
           </S.Author>
