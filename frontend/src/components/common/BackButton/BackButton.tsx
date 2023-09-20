@@ -3,13 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft2Icon } from '~/assets/svg';
 import Button from '~/components/common/Button/Button';
 import Text from '~/components/common/Text/Text';
+import type { PATH_NAME } from '~/constants/routes';
 
 interface BackButtonProps {
   label: string;
+  href?: (typeof PATH_NAME)[keyof typeof PATH_NAME];
 }
 
 const BackButton = (props: BackButtonProps) => {
-  const { label } = props;
+  const { label, href } = props;
   const navigate = useNavigate();
 
   return (
@@ -17,7 +19,9 @@ const BackButton = (props: BackButtonProps) => {
       type="button"
       variant="plain"
       css={S.backButton}
-      onClick={() => navigate(-1)}
+      onClick={() => {
+        href ? navigate(href) : navigate(-1);
+      }}
     >
       <S.ArrowLeftIconWrapper>
         <ArrowLeft2Icon />
