@@ -35,6 +35,11 @@ export const useTeamFeedPage = () => {
   };
 
   const handleEnterKeydown: KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
+    // NOTE: 한글 입력 시 마지막 문자가 포함된 이벤트가 두 번 발생하는 문제를 해결하기 위해 isComposing을 체크한다.
+    if (e.nativeEvent.isComposing) {
+      return;
+    }
+
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
 
