@@ -19,10 +19,7 @@ const CreatePage = () => {
 
   return (
     <S.Container>
-      <LandingHeader
-        href={PATH_NAME.TEAM_SELECT}
-        ariaLabel="팀 선택 페이지로 이동하기"
-      />
+      <LandingHeader href={PATH_NAME.TEAM_SELECT} />
       <S.MainContainer>
         <S.InnerContainer>
           <Text weight="semiBold" css={S.titleText}>

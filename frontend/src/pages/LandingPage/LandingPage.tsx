@@ -36,7 +36,7 @@ const LandingPage = () => {
 
   return (
     <S.Container>
-      <LandingHeader href={PATH_NAME.LANDING} ariaLabel="랜딩 페이지로" />
+      <LandingHeader href={PATH_NAME.LANDING} />
       <S.MainContainer>
         <S.Main>
           <Text as="h2" css={S.mainPrefix}>

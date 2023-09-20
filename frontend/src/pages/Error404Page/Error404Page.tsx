@@ -17,9 +17,6 @@ const Error404Page = () => {
     <S.Container>
       <LandingHeader
         href={isLoggedIn ? PATH_NAME.TEAM_OVERVIEW : PATH_NAME.LANDING}
-        ariaLabel={
-          isLoggedIn ? '모아보기 페이지로 이동하기' : '랜딩 페이지로 이동하기'
-        }
       />
       <S.Error404Wrapper>
         <Error404 isLoggedIn={isLoggedIn} />
