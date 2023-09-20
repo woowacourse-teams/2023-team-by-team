@@ -25,7 +25,7 @@ export const Default: Story = {
   },
 };
 
-export const DefaultIsyMe: Story = {
+export const DefaultIsMe: Story = {
   args: {
     authorName: '팀바팀_루루',
     isMe: true,
