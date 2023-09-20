@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom';
 import Header from '~/components/common/Header/Header';
 import { ModalProvider } from '~/components/common/Modal/ModalContext';
 import { Suspense } from 'react';
-import HeaderFallback from '~/components/common/HeaderFallback/HeaderFallback';
+import HeaderFallback from '~/components/common/Header/HeaderFallback/HeaderFallback';
 
 const PageTemplate = () => {
   return (

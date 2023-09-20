@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import HeaderFallback from '~/components/common/HeaderFallback/HeaderFallback';
+import HeaderFallback from '~/components/common/Header/HeaderFallback/HeaderFallback';
 
 const meta = {
   title: 'common/HeaderFallback',
