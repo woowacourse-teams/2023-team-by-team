@@ -1,7 +1,7 @@
 import * as S from './DeletableThumbnail.styled';
 import Button from '~/components/common/Button/Button';
 import type { ThreadImage } from '~/types/feed';
-import { Close2Icon } from '~/assets/svg';
+import { CloseBoldIcon } from '~/assets/svg';
 import { thumbnailFallbackImage } from '~/assets/png';
 
 interface DeletableThumbnailProps {
@@ -23,7 +23,7 @@ const DeletableThumbnail = (props: DeletableThumbnailProps) => {
         onClick={() => onDelete(id)}
         aria-label={`${name} 이미지 삭제하기`}
       >
-        <Close2Icon />
+        <CloseBoldIcon />
       </Button>
     </S.Container>
   );
