@@ -43,7 +43,7 @@ module.exports = {
         use: ['@svgr/webpack', 'url-loader'],
       },
       {
-        test: /\.(png|jpg)$/,
+        test: /\.(png|jpg|webp)$/,
         type: 'asset/resource',
       },
     ],
