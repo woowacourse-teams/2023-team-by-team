@@ -1,6 +1,6 @@
 import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
 
-export const { BASE_URL: baseUrl } = process.env;
+export const { REACT_APP_BASE_URL: baseUrl } = process.env;
 
 const BASE_URL = baseUrl === undefined ? '' : baseUrl;
 
