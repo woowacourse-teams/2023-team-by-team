@@ -13,17 +13,12 @@ import net.fortuna.ical4j.model.property.TzOffsetFrom;
 import net.fortuna.ical4j.model.property.TzOffsetTo;
 import net.fortuna.ical4j.model.property.XProperty;
 import net.fortuna.ical4j.model.property.immutable.ImmutableMethod;
-import net.fortuna.ical4j.util.UidGenerator;
 import org.springframework.stereotype.Component;
 import team.teamby.teambyteam.icalendar.domain.IcalendarParser;
 import team.teamby.teambyteam.schedule.domain.Schedule;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.time.temporal.Temporal;
 import java.util.List;
-import java.util.TimeZone;
 
 @Slf4j
 @Component
@@ -35,7 +30,8 @@ public class ICal4jParser implements IcalendarParser {
     private static final String KST = "KST";
     private static final String STANDARD_DT_START = "19700101T000000";
     private static final String SEOUL_TZ_OFFSET = "+0900";
-    private static final long ONE_DAY_OFFSET = 1L;
+
+    private final VEventParser vEventParser = new VEventParser();
 
     @Override
     public String parse(final TeamPlace teamPlace, final List<Schedule> schedules) {
@@ -43,7 +39,7 @@ public class ICal4jParser implements IcalendarParser {
         final Calendar calendar = generateCalendar(teamPlace);
 
         final List<VEvent> vEvents = schedules.stream()
-                .map(this::createEvent)
+                .map(vEventParser::parse)
                 .toList();
 
         for (VEvent vEvent : vEvents) {
@@ -84,35 +80,4 @@ public class ICal4jParser implements IcalendarParser {
         return vTimeZone;
     }
 
-    private VEvent createEvent(final Schedule schedule) {
-        final String title = schedule.getTitle().getValue();
-
-        final Temporal startTemporal = getStartTemporal(schedule);
-        final Temporal endTemporal = getEndTemporal(schedule);
-
-        final VEvent vEvent = new VEvent(startTemporal, endTemporal, title);
-
-        final UidGenerator uidGenerator = new ScheduleUidGenerator(schedule);
-        vEvent.add(uidGenerator.generateUid());
-
-        return vEvent;
-    }
-
-    private Temporal getStartTemporal(final Schedule schedule) {
-        if (schedule.isAllDay()) {
-            return schedule.getStartDateTime().toLocalDate();
-        }
-        return convertToSeoulDateTime(schedule.getStartDateTime());
-    }
-
-    private Temporal getEndTemporal(final Schedule schedule) {
-        if (schedule.isAllDay()) {
-            return schedule.getEndDateTime().toLocalDate().plusDays(ONE_DAY_OFFSET);
-        }
-        return convertToSeoulDateTime(schedule.getEndDateTime());
-    }
-
-    private ZonedDateTime convertToSeoulDateTime(final LocalDateTime startDateTime) {
-        return startDateTime.atZone(TimeZone.getTimeZone(ASIA_SEOUL).toZoneId());
-    }
 }
