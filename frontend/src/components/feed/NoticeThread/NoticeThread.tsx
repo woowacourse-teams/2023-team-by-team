@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import * as S from './NoticeThread.styled';
 import Text from '~/components/common/Text/Text';
+import Button from '~/components/common/Button/Button';
 import type { YYYYMMDDHHMM } from '~/types/schedule';
 import { formatWriteTime } from '~/utils/formatWriteTime';
 import type { NoticeSize } from '~/types/size';
@@ -9,7 +9,7 @@ import {
   ArrowExpandMoreIcon,
   MegaphoneIcon,
 } from '~/assets/svg';
-import Button from '~/components/common/Button/Button';
+import * as S from './NoticeThread.styled';
 
 interface NoticeThreadProps {
   authorName: string;
@@ -20,7 +20,7 @@ interface NoticeThreadProps {
 const NoticeThread = (props: NoticeThreadProps) => {
   const { authorName, createdAt, content } = props;
 
-  const [noticeSize, setNoticeSize] = useState<NoticeSize>('md');
+  const [noticeSize, setNoticeSize] = useState<NoticeSize>('sm');
 
   const handleExpandMoreClick = () => {
     if (noticeSize === 'sm') setNoticeSize(() => 'md');
@@ -29,9 +29,7 @@ const NoticeThread = (props: NoticeThreadProps) => {
   };
 
   const handleExpandLessClick = () => {
-    if (noticeSize === 'lg') setNoticeSize(() => 'md');
-
-    if (noticeSize === 'md') setNoticeSize(() => 'sm');
+    if (noticeSize === 'lg') setNoticeSize(() => 'sm');
   };
 
   return (
@@ -46,7 +44,7 @@ const NoticeThread = (props: NoticeThreadProps) => {
           </S.MegaphoneWrapper>
 
           <S.ContentContainer noticeSize={noticeSize}>
-            <Text size="xl" weight="semiBold" css={S.contentField(noticeSize)}>
+            <Text size="lg" weight="semiBold" css={S.contentField(noticeSize)}>
               {content}
             </Text>
             {noticeSize !== 'sm' && (
