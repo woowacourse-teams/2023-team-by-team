@@ -32,6 +32,7 @@ const color = {
   BLUE700: '#193ecb',
 
   PURPLE100: '#b7baff',
+  PURPLE400: '#8e92ff',
 
   TRANSPARENT_BLACK: '#777777aa',
 } as const;

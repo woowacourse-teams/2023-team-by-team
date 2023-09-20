@@ -80,7 +80,7 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
               <Checkbox
                 isChecked={isNotice}
                 onChange={handleIsNoticeChange}
-                color={theme.color.PURPLE100}
+                color={theme.color.PURPLE400}
                 size="lg"
               />
               <Text as="span" weight="semiBold" size="lg" css={S.noticeText}>
