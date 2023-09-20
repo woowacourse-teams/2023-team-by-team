@@ -21,7 +21,7 @@ export const BodyContainer = styled.div<{ isMe: boolean }>`
 export const ContentContainer = styled.div<{ isMe: boolean; height: number }>`
   display: flex;
 
-  width: 80%;
+  max-width: 80%;
   max-height: ${({ height }) => height}px;
 `;
 
