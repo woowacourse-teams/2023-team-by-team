@@ -49,7 +49,7 @@ public record FeedResponse(
                 createdAt,
                 feed.getContent().getValue(),
                 List.of(),
-                threadAuthorInfo.isEmail(loginMemberEmail)
+                threadAuthorInfo.isEmailEqual(loginMemberEmail)
         );
     }
 }

@@ -136,7 +136,7 @@ public class MemberTeamPlace extends BaseEntity {
         return this.displayMemberName.getValue().equals(member.getName().getValue());
     }
 
-    public Boolean isEmail(final String loginMemberEmail) {
+    public Boolean isEmailEqual(final String loginMemberEmail) {
         return member.getEmailValue().equals(loginMemberEmail);
     }
 }
