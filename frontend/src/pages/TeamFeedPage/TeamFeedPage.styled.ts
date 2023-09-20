@@ -4,22 +4,21 @@ import type { ThreadSize } from '~/types/size';
 export const Container = styled.div<{
   threadSize: ThreadSize;
 }>`
+  overflow: hidden;
+
   width: 100%;
   height: 100%;
   padding: 20px 30px 30px;
 
   background-color: ${({ theme }) => theme.color.GRAY100};
-
-  overflow: hidden;
 `;
 
 export const Inner = styled.div`
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 
   height: 100%;
-
-  overflow: hidden;
 
   & > form {
     display: flex;
@@ -30,11 +29,10 @@ export const Inner = styled.div`
 export const ThreadContainer = styled.div`
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 
   background-color: ${({ theme }) => theme.color.WHITE};
   border-bottom: 1px solid ${({ theme }) => theme.color.PURPLE};
-
-  overflow-y: auto;
 `;
 
 export const ThreadListWrapper = styled.div`
@@ -84,7 +82,6 @@ export const ButtonContainer = styled.div`
 export const MenuButtonWrapper = styled.div`
   display: flex;
   flex-direction: column;
-
   position: sticky;
   bottom: 10px;
 
