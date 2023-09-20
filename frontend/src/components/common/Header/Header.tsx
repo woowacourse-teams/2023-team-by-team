@@ -27,7 +27,9 @@ const Header = () => {
   } = useTeamPlace();
   const navigate = useNavigate();
   const { openModal, isModalOpen } = useModal();
+
   const { userInfo } = useFetchUserInfo();
+
   const [teamName, setTeamName] = useState(displayName ?? '');
   const [modalOpenType, setModalOpenType] = useState<HeaderModalType>();
 
