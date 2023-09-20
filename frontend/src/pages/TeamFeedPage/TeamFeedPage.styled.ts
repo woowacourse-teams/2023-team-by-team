@@ -1,46 +1,93 @@
 import { css, styled } from 'styled-components';
 import type { ThreadSize } from '~/types/size';
 
-export const ThreadContainer = styled.div<{
+export const Container = styled.div<{
   threadSize: ThreadSize;
-  isModalOpen: boolean;
 }>`
-  display: flex;
-  flex-direction: column;
-  position: relative;
+  overflow: hidden;
 
   width: 100%;
   height: 100%;
-  padding: 0 ${({ threadSize }) => (threadSize === 'md' ? 54 : 40)}px;
-
-  gap: 24px;
+  padding: 20px 30px 30px;
 
   background-color: ${({ theme }) => theme.color.GRAY100};
-
-  overflow-x: hidden;
-  overflow-y: auto;
-
-  ${({ isModalOpen }) => isModalOpen && 'overflow: hidden'};
 `;
 
-export const BottomSheetWrapper = styled.div`
-  position: sticky;
-  bottom: 0;
+export const Inner = styled.div`
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 
+  height: 100%;
+
+  & > form {
+    display: flex;
+    flex-direction: column;
+  }
+`;
+
+export const ThreadContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+
+  background-color: ${({ theme }) => theme.color.WHITE};
+  border-bottom: 1px solid ${({ theme }) => theme.color.PURPLE};
+`;
+
+export const ThreadListWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  row-gap: 24px;
+  padding: 20px 30px;
+
+  background-color: ${({ theme }) => theme.color.WHITE};
+`;
+
+export const Textarea = styled.textarea`
   width: 100%;
+  height: 120px;
+  padding: 20px 30px;
+
+  border: none;
+
+  font-size: 16px;
+
+  resize: none;
+
+  &:focus {
+    outline: none;
+  }
+`;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 20px;
+
+  border-radius: 0 0 20px 20px;
+  background-color: ${({ theme }) => theme.color.WHITE};
+
+  & > div {
+    display: flex;
+    align-items: center;
+
+    column-gap: 10px;
+  }
 `;
 
 export const MenuButtonWrapper = styled.div`
   display: flex;
   flex-direction: column;
-
   position: sticky;
-  bottom: 36px;
+  bottom: 10px;
 
   width: 40px;
   margin-top: auto;
-  margin-left: calc(100% - 14px);
-  row-gap: 14px;
+  margin-left: calc(100% - 64px);
 
   & > button {
     display: flex;
@@ -54,7 +101,13 @@ export const MenuButtonWrapper = styled.div`
   }
 `;
 
-export const scrollTopButton = css`
+export const scrollBottomButton = css`
   background-color: ${({ theme }) => theme.color.WHITE};
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+`;
+
+export const noticeText = css`
+  margin-right: 10px;
+
+  color: ${({ theme }) => theme.color.GRAY800};
 `;

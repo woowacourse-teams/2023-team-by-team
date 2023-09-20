@@ -31,6 +31,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.HELLO_WRITING_REQUEST;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
+import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP_EMAIL;
+import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ROY;
 import static team.teamby.teambyteam.common.fixtures.MemberTeamPlaceFixtures.PHILIP_ENGLISH_TEAM_PLACE;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.JAPANESE_TEAM_PLACE;
@@ -84,9 +86,10 @@ class FeedThreadServiceTest extends ServiceTest {
             // given
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             final int size = 10;
+            final MemberEmailDto memberEmailDto = new MemberEmailDto(PHILIP_EMAIL);
 
             // when
-            final FeedsResponse feedsResponse = feedThreadService.firstRead(teamPlace.getId(), size);
+            final FeedsResponse feedsResponse = feedThreadService.firstRead(teamPlace.getId(), memberEmailDto, size);
 
             //then
             assertThat(feedsResponse.threads()).isEmpty();
@@ -97,6 +100,7 @@ class FeedThreadServiceTest extends ServiceTest {
         void firstThreadReadUnderSizeSuccess() {
             // given
             final Member member = testFixtureBuilder.buildMember(PHILIP());
+            final MemberEmailDto memberEmailDto = new MemberEmailDto(member.getEmailValue());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(member, teamPlace);
             final List<Feed> feeds = new ArrayList<>();
@@ -107,7 +111,7 @@ class FeedThreadServiceTest extends ServiceTest {
             final int size = 10;
 
             // when
-            final FeedsResponse feedsResponse = feedThreadService.firstRead(teamPlace.getId(), size);
+            final FeedsResponse feedsResponse = feedThreadService.firstRead(teamPlace.getId(), memberEmailDto, size);
 
             //then
             SoftAssertions.assertSoftly(softly -> {
@@ -118,10 +122,41 @@ class FeedThreadServiceTest extends ServiceTest {
         }
 
         @Test
+        @DisplayName("피드 스레드 조회시 내가 작성한 글과 다른사람이 작성한 글을 구분할 수 있다.")
+        void checkAuthorByIsMe() {
+            // given
+            final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
+            final Member ROY = testFixtureBuilder.buildMember(ROY());
+            final MemberEmailDto PHILIP_EMAIL_DTO = new MemberEmailDto(PHILIP.getEmailValue());
+            final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            testFixtureBuilder.buildMemberTeamPlace(PHILIP, teamPlace);
+            testFixtureBuilder.buildMemberTeamPlace(ROY, teamPlace);
+
+            final List<Feed> feeds = new ArrayList<>();
+            feeds.add(new FeedThread(teamPlace.getId(), new Content("Hello1"), PHILIP.getId()));
+            feeds.add(new FeedThread(teamPlace.getId(), new Content("Hello2"), ROY.getId()));
+            testFixtureBuilder.buildFeeds(feeds);
+            final int size = 10;
+
+            // when
+            final FeedsResponse feedsResponse = feedThreadService.firstRead(teamPlace.getId(), PHILIP_EMAIL_DTO, size);
+            feedsResponse.threads().forEach(System.out::println);
+
+            // then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(feedsResponse.threads().get(0).isMe()).isFalse();
+                softly.assertThat(feedsResponse.threads().get(0).authorName()).isEqualTo(ROY.getName().getValue());
+                softly.assertThat(feedsResponse.threads().get(1).isMe()).isTrue();
+                softly.assertThat(feedsResponse.threads().get(1).authorName()).isEqualTo(PHILIP.getName().getValue());
+            });
+        }
+
+        @Test
         @DisplayName("피드의 스레드조회 시 팀플레이스의 이름이 나온다.")
         void threadReadTeamPlaceMemberName() {
             // given
             final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
+            final MemberEmailDto memberEmailDto = new MemberEmailDto(PHILIP.getEmailValue());
             final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             final MemberTeamPlace PHILIP_ENGLISH_TEAM_PLACE = PHILIP_ENGLISH_TEAM_PLACE();
             PHILIP_ENGLISH_TEAM_PLACE.setMemberAndTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
@@ -134,7 +169,7 @@ class FeedThreadServiceTest extends ServiceTest {
             final int size = 10;
 
             // when
-            final FeedsResponse feedsResponse = feedThreadService.firstRead(PHILIP_ENGLISH_TEAM_PLACE.getId(), size);
+            final FeedsResponse feedsResponse = feedThreadService.firstRead(PHILIP_ENGLISH_TEAM_PLACE.getId(), memberEmailDto, size);
 
             //then
             SoftAssertions.assertSoftly(softly -> {
@@ -148,6 +183,7 @@ class FeedThreadServiceTest extends ServiceTest {
         void firstThreadReadOverSizeSuccess() {
             // given
             final Member member = testFixtureBuilder.buildMember(PHILIP());
+            final MemberEmailDto memberEmailDto = new MemberEmailDto(member.getEmailValue());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(member, teamPlace);
             final List<Feed> feeds = new ArrayList<>();
@@ -160,7 +196,7 @@ class FeedThreadServiceTest extends ServiceTest {
             testFixtureBuilder.buildFeeds(feeds);
 
             // when
-            final FeedsResponse feedsResponse = feedThreadService.firstRead(teamPlace.getId(), size);
+            final FeedsResponse feedsResponse = feedThreadService.firstRead(teamPlace.getId(), memberEmailDto, size);
 
             //then
             SoftAssertions.assertSoftly(softly -> {
@@ -175,6 +211,7 @@ class FeedThreadServiceTest extends ServiceTest {
         void threadTypeLowerCase() {
             // given
             final Member member = testFixtureBuilder.buildMember(PHILIP());
+            final MemberEmailDto memberEmailDto = new MemberEmailDto(member.getEmailValue());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(member, teamPlace);
             final List<Feed> feeds = new ArrayList<>();
@@ -184,7 +221,7 @@ class FeedThreadServiceTest extends ServiceTest {
             final String type = FeedType.THREAD.name().toLowerCase();
 
             // when
-            final FeedsResponse feedsResponse = feedThreadService.firstRead(teamPlace.getId(), size);
+            final FeedsResponse feedsResponse = feedThreadService.firstRead(teamPlace.getId(), memberEmailDto, size);
 
             //then
             SoftAssertions.assertSoftly(softly -> {
@@ -202,9 +239,10 @@ class FeedThreadServiceTest extends ServiceTest {
             testFixtureBuilder.buildFeeds(feeds);
             final int size = 10;
             final String type = FeedType.NOTIFICATION.name().toLowerCase();
+            final MemberEmailDto memberEmailDto = new MemberEmailDto(PHILIP_EMAIL);
 
             // when
-            final FeedsResponse feedsResponse = feedThreadService.firstRead(teamPlace.getId(), size);
+            final FeedsResponse feedsResponse = feedThreadService.firstRead(teamPlace.getId(), memberEmailDto, size);
 
             //then
             SoftAssertions.assertSoftly(softly -> {
@@ -217,6 +255,7 @@ class FeedThreadServiceTest extends ServiceTest {
         void feedCombinationReadSuccess() {
             // given
             final Member member = testFixtureBuilder.buildMember(PHILIP());
+            final MemberEmailDto memberEmailDto = new MemberEmailDto(member.getEmailValue());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(member, teamPlace);
             final List<Feed> feeds = new ArrayList<>();
@@ -231,7 +270,7 @@ class FeedThreadServiceTest extends ServiceTest {
             final int size = 5;
 
             // when
-            final FeedsResponse feedsResponse = feedThreadService.firstRead(teamPlace.getId(), size);
+            final FeedsResponse feedsResponse = feedThreadService.firstRead(teamPlace.getId(), memberEmailDto, size);
 
             //then
             SoftAssertions.assertSoftly(softly -> {
@@ -261,7 +300,7 @@ class FeedThreadServiceTest extends ServiceTest {
             testFixtureBuilder.buildFeeds(feeds);
 
             // when
-            final FeedsResponse feedsResponse = feedThreadService.reRead(teamPlace.getId(), 4L, size);
+            final FeedsResponse feedsResponse = feedThreadService.reRead(teamPlace.getId(), new MemberEmailDto(member.getEmailValue()), 4L, size);
 
             //then
             SoftAssertions.assertSoftly(softly -> {
@@ -292,7 +331,7 @@ class FeedThreadServiceTest extends ServiceTest {
             testFixtureBuilder.buildFeeds(feeds);
 
             // when
-            final FeedsResponse feedsResponse = feedThreadService.reRead(englishTeamPlace.getId(), 5L, size);
+            final FeedsResponse feedsResponse = feedThreadService.reRead(englishTeamPlace.getId(), new MemberEmailDto(member.getEmailValue()), 5L, size);
 
             //then
             SoftAssertions.assertSoftly(softly -> {
@@ -308,12 +347,13 @@ class FeedThreadServiceTest extends ServiceTest {
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             final List<Feed> feeds = new ArrayList<>();
             final int size = 10;
+            final MemberEmailDto philipEmailDto = new MemberEmailDto(PHILIP().getEmailValue());
             feeds.add(new FeedThread(teamPlace.getId(), new Content("Hello"), 0L));
 
             testFixtureBuilder.buildFeeds(feeds);
 
             // when
-            final FeedsResponse feedsResponse = feedThreadService.firstRead(teamPlace.getId(), size);
+            final FeedsResponse feedsResponse = feedThreadService.firstRead(teamPlace.getId(), philipEmailDto, size);
 
             // then
             SoftAssertions.assertSoftly(softly -> {

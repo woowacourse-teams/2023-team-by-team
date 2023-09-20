@@ -3,13 +3,20 @@ import * as S from './Thread.styled';
 import Text from '~/components/common/Text/Text';
 import { formatWriteTime } from '~/utils/formatWriteTime';
 import type { ThreadSize } from '~/types/size';
+import type { ThreadImage } from '~/types/feed';
+import { useRef } from 'react';
+import { useThreadHeight } from '~/hooks/thread/useThreadHeight';
+import ExpandButton from '~/components/common/ExpandButton/ExpandButton';
 
 interface ThreadProps {
   threadSize?: ThreadSize;
   authorName: string;
   profileImageUrl: string;
+  isMe: boolean;
   createdAt: YYYYMMDDHHMM;
   content: string;
+  images: ThreadImage[];
+  isContinue: boolean;
 }
 
 const Thread = (props: ThreadProps) => {
@@ -17,32 +24,56 @@ const Thread = (props: ThreadProps) => {
     threadSize = 'md',
     authorName,
     profileImageUrl,
+    isMe,
     createdAt,
     content,
+    images,
+    isContinue,
   } = props;
-  const createdTime = formatWriteTime(createdAt);
+  const createdTime = formatWriteTime(createdAt).split(' ').join('\n');
+
+  const threadRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const { shouldShowExpandButton, isExpanded, toggleExpanded, resultHeight } =
+    useThreadHeight(threadRef, contentRef);
 
   return (
-    <S.Container threadSize={threadSize}>
-      <S.ThreadHeader>
-        <S.Author>
-          <S.ProfileImg
+    <S.Container isMe={isMe}>
+      {!isMe && !isContinue && (
+        <S.ThreadHeader>
+          <S.Author>
+            <S.ProfileImg
+              threadSize={threadSize}
+              src={profileImageUrl}
+              alt={authorName}
+            />
+            <Text weight="semiBold" css={S.threadInfoText(threadSize)}>
+              {authorName}
+            </Text>
+          </S.Author>
+        </S.ThreadHeader>
+      )}
+      <S.BodyContainer isMe={isMe}>
+        <S.ContentContainer isMe={isMe} ref={threadRef} height={resultHeight}>
+          <S.ContentWrapper
+            ref={contentRef}
+            isExpanded={isExpanded}
             threadSize={threadSize}
-            src={profileImageUrl}
-            alt={authorName}
-          />
-          <Text weight="bold" css={S.threadInfoText(threadSize)}>
-            {authorName}
-          </Text>
-        </S.Author>
-        <S.Divider />
+            isMe={isMe}
+          >
+            <Text size="xl" css={S.contentField(threadSize, isMe)}>
+              {content}
+            </Text>
+            {shouldShowExpandButton && (
+              <ExpandButton isExpanded={isExpanded} onClick={toggleExpanded} />
+            )}
+          </S.ContentWrapper>
+        </S.ContentContainer>
         <time>
           <Text css={S.threadInfoText(threadSize)}>{createdTime}</Text>
         </time>
-      </S.ThreadHeader>
-      <Text size="xl" css={S.contentField(threadSize)}>
-        {content}
-      </Text>
+      </S.BodyContainer>
     </S.Container>
   );
 };

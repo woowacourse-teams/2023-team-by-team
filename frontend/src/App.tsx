@@ -13,6 +13,7 @@ import JoinPage from '~/pages/JoinPage/JoinPage';
 import TeamLinkPage from '~/pages/TeamLinkPage/TeamLinkPage';
 import TeamOverviewPage from '~/pages/TeamOverviewPage/TeamOverviewPage';
 import PolicyPage from '~/pages/PolicyPage/PolicyPage';
+import Error404Page from '~/pages/Error404Page/Error404Page';
 import './App.css';
 
 const App = () => {
@@ -39,6 +40,7 @@ const App = () => {
           <Route path={PATH_NAME.TEAM_LINK} element={<TeamLinkPage />} />
         </Route>
       </Route>
+      <Route path="*" element={<Error404Page />} />
     </Routes>
   );
 };

@@ -46,9 +46,10 @@ public class FeedThreadController {
     @GetMapping(value = "/{teamPlaceId}/feed/threads", params = {"size"})
     public ResponseEntity<FeedsResponse> read(
             @PathVariable final Long teamPlaceId,
+            @AuthPrincipal final MemberEmailDto memberEmailDto,
             @RequestParam final Integer size
     ) {
-        FeedsResponse feeds = feedThreadService.firstRead(teamPlaceId, size);
+        FeedsResponse feeds = feedThreadService.firstRead(teamPlaceId, memberEmailDto, size);
 
         return ResponseEntity.ok(feeds);
     }
@@ -56,10 +57,11 @@ public class FeedThreadController {
     @GetMapping(value = "/{teamPlaceId}/feed/threads", params = {"last-thread-id", "size"})
     public ResponseEntity<FeedsResponse> read(
             @PathVariable final Long teamPlaceId,
+            @AuthPrincipal final MemberEmailDto memberEmailDto,
             @RequestParam("last-thread-id") final Long threadId,
             @RequestParam final Integer size
     ) {
-        FeedsResponse feeds = feedThreadService.reRead(teamPlaceId, threadId, size);
+        FeedsResponse feeds = feedThreadService.reRead(teamPlaceId, memberEmailDto, threadId, size);
 
         return ResponseEntity.ok(feeds);
     }

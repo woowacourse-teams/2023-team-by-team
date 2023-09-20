@@ -64,6 +64,9 @@ export const BackgroundContainer = styled.div<{ noticeSize: NoticeSize }>`
 
 export const InnerContainer = styled.div<{ noticeSize: NoticeSize }>`
   display: flex;
+  align-items: center;
+  position: relative;
+
   gap: 10px;
 `;
 
@@ -83,6 +86,9 @@ export const ArrowIcon = styled.div<{ disabled: boolean }>`
 `;
 
 export const MegaphoneWrapper = styled.div`
+  position: absolute;
+  top: 0;
+
   width: 40px;
 `;
 
@@ -101,13 +107,15 @@ export const ContentContainer = styled.div<{ noticeSize: NoticeSize }>`
   flex-direction: column;
   justify-content: space-between;
 
+  padding-left: 40px;
+
   width: 100%;
   gap: 4px;
 
   ${({ noticeSize }) => {
     if (noticeSize === 'lg')
       return css`
-        height: 550px;
+        height: 400px;
       `;
   }}
 `;
@@ -148,6 +156,8 @@ export const contentField = (noticeSize: NoticeSize) => {
 
     width: 100%;
     height: ${height};
+
+    word-break: break-all;
   `;
 };
 

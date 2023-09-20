@@ -29,7 +29,7 @@ const ExpandButton = (props: ExpandButtonProps) => {
         ) : (
           <>
             <Text weight="bold" size="lg">
-              펼치기
+              전체보기
             </Text>
             <ArrowExpandMoreIcon />
           </>

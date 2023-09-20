@@ -10,7 +10,7 @@ import { worker } from '~/mocks/browser';
 import { ToastProvider } from '~/components/common/Toast/ToastContext';
 import ToastList from '~/components/common/Toast/ToastList';
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.WORKER === 'on') {
   worker.start();
 }
 
