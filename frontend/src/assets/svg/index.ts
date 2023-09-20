@@ -1,6 +1,7 @@
 export { ReactComponent as ArrowLeftIcon } from './arrow-left.svg';
 export { ReactComponent as ArrowRightIcon } from './arrow-right.svg';
 export { ReactComponent as CloseIcon } from './close.svg';
+export { ReactComponent as CloseBoldIcon } from './close-bold.svg';
 export { ReactComponent as DeleteIcon } from './delete.svg';
 export { ReactComponent as EditIcon } from './edit.svg';
 export { ReactComponent as LogoIcon } from './logo.svg';
@@ -29,3 +30,5 @@ export { ReactComponent as BellIcon } from './bell.svg';
 export { ReactComponent as ArrowLeft2Icon } from './arrow-left2.svg';
 export { ReactComponent as CheckBlackIcon } from './check-black.svg';
 export { ReactComponent as Close2Icon } from './close2.svg';
+export { ReactComponent as AirplaneIcon } from './airplane.svg';
+export { ReactComponent as ImageIcon } from './image.svg';

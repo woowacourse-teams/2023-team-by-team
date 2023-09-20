@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import { css } from 'styled-components';
 
 export const teamInfo = css`
   display: flex;
@@ -7,23 +7,33 @@ export const teamInfo = css`
 `;
 
 export const teamPlaceButton = css`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
   width: 300px;
   height: 40px;
   padding: 0;
 
-  border: 1px solid ${({ theme }) => theme.color.GRAY200};
+  border-bottom: 1px solid ${({ theme }) => theme.color.GRAY200};
   border-radius: 4px;
+
+  & svg {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+  }
 `;
 
 export const teamPlaceName = css`
-  display: block;
   overflow: hidden;
   text-overflow: ellipsis;
 
-  width: 300px;
-  margin-left: 6px;
+  width: 260px;
 
-  font: bold 24px/26px 'Pretendard';
+  font-size: 22px;
+  line-height: 22px;
   white-space: nowrap;
 `;
 

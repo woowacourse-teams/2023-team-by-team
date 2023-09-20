@@ -1,4 +1,4 @@
-import { http } from '~/apis/http';
+import { baseUrl, http } from '~/apis/http';
 import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
 
 let reissuePromise: Promise<Response> | null = null;
@@ -15,7 +15,9 @@ export const sendTokenReissue = async () => {
     return reissuePromise;
   }
 
-  reissuePromise = fetch('/api/token/reissue', {
+  const BASE_URL = baseUrl === undefined ? '' : baseUrl;
+
+  reissuePromise = fetch(`${BASE_URL}/api/token/reissue`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
