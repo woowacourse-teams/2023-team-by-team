@@ -32,7 +32,7 @@ jobs:
 
       - name: Setup environment variables
         run: |
-          echo "REACT_APP_BASE_URL=${{ secrets.REACT_APP_DEV_BASE_URL }}" >> .env.development
+          echo "REACT_APP_BASE_URL=${{ secrets.REACT_APP_DEV_BASE_URL }}" >> .env
 
       - name: Install dependencies
         run: npm ci
