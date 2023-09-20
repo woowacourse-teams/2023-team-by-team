@@ -6,8 +6,9 @@
   "scripts": {
     "test": "jest --watchAll",
     "test:ci": "jest --ci",
-    "start": "webpack serve --open",
-    "build": "cross-env NODE_ENV=production webpack",
+    "start": "cross-env WORKER=on webpack serve --open ",
+    "build:prod": "cross-env NODE_ENV=production webpack",
+    "build:dev": "cross-env NODE_ENV=development webpack",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "prepare": "cd .. && husky install frontend/.husky && cd frontend"
