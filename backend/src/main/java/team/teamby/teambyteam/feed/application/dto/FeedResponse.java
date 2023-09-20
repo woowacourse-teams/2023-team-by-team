@@ -4,6 +4,7 @@ import team.teamby.teambyteam.feed.domain.Feed;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 
 public record FeedResponse(
@@ -31,7 +32,7 @@ public record FeedResponse(
                 profileImageUrl,
                 createdAt,
                 feed.getContent().getValue(),
-                List.of(),
+                Collections.emptyList(),
                 false
         );
     }
@@ -48,7 +49,7 @@ public record FeedResponse(
                 threadAuthorInfo.findMemberProfileImageUrl(),
                 createdAt,
                 feed.getContent().getValue(),
-                List.of(),
+                Collections.emptyList(),
                 threadAuthorInfo.isEmailEqual(loginMemberEmail)
         );
     }
