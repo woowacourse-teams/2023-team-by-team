@@ -4,10 +4,11 @@ import type { NoticeThread } from '~/types/feed';
 export const threads: Thread[] = [
   {
     id: 1,
-    type: 'notification',
-    authorId: 4,
-    authorName: 'schedule',
-    profileImageUrl: '',
+    type: 'thread',
+    authorId: 1,
+    authorName: 'John',
+    profileImageUrl:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYZjvO1QuvfgCfQxBwwzmJcHIT5pTXIBGOLeyBDIbZknn6Dhkd40WrU0ZCdjt-IoXLzI0&usqp=CAU',
     isMe: false,
     createdAt: '2021-11-24 10:30',
     content: '오늘 예정된 일정이 있습니다.\n오늘 예정된 일정이 있습니다.',
@@ -39,10 +40,11 @@ export const threads: Thread[] = [
   },
   {
     id: 4,
-    type: 'notification',
+    type: 'thread',
     authorId: 2,
-    authorName: 'schedule',
-    profileImageUrl: '',
+    authorName: 'Alice',
+    profileImageUrl:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYZjvO1QuvfgCfQxBwwzmJcHIT5pTXIBGOLeyBDIbZknn6Dhkd40WrU0ZCdjt-IoXLzI0&usqp=CAU',
     isMe: false,
     createdAt: '2021-11-23 18:30',
     content: '내일 출장이 예정되어 있습니다.',
@@ -51,8 +53,8 @@ export const threads: Thread[] = [
   {
     id: 5,
     type: 'thread',
-    authorId: 3,
-    authorName: 'David',
+    authorId: 2,
+    authorName: 'Alice',
     profileImageUrl:
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYZjvO1QuvfgCfQxBwwzmJcHIT5pTXIBGOLeyBDIbZknn6Dhkd40WrU0ZCdjt-IoXLzI0&usqp=CAU',
     isMe: false,
@@ -63,8 +65,8 @@ export const threads: Thread[] = [
   {
     id: 6,
     type: 'thread',
-    authorId: 4,
-    authorName: 'Alice',
+    authorId: 3,
+    authorName: 'David',
     profileImageUrl:
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYZjvO1QuvfgCfQxBwwzmJcHIT5pTXIBGOLeyBDIbZknn6Dhkd40WrU0ZCdjt-IoXLzI0&usqp=CAU',
     isMe: false,
@@ -86,8 +88,8 @@ export const threads: Thread[] = [
   {
     id: 8,
     type: 'thread',
-    authorId: 2,
-    authorName: 'Alice',
+    authorId: 3,
+    authorName: 'David',
     profileImageUrl:
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYZjvO1QuvfgCfQxBwwzmJcHIT5pTXIBGOLeyBDIbZknn6Dhkd40WrU0ZCdjt-IoXLzI0&usqp=CAU',
     isMe: false,
@@ -121,8 +123,8 @@ export const threads: Thread[] = [
   {
     id: 11,
     type: 'thread',
-    authorId: 3,
-    authorName: 'David',
+    authorId: 1,
+    authorName: 'John',
     profileImageUrl:
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYZjvO1QuvfgCfQxBwwzmJcHIT5pTXIBGOLeyBDIbZknn6Dhkd40WrU0ZCdjt-IoXLzI0&usqp=CAU',
     isMe: false,

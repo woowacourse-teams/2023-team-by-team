@@ -1,5 +1,6 @@
 package team.teamby.teambyteam.feed.application;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -43,6 +44,7 @@ class NotificationServiceTest extends ServiceTest {
 
     @Nested
     @DisplayName("일정 등록 시 일정 등록 알림 생성")
+    @Disabled(value = "일정 피드 알림기능 제거로 인한 테스트 disable - 추후 다른형식으로 부활 가능성 있음")
     class CreateScheduleNotificationWhenCreateSchedule {
 
         @Test
@@ -91,6 +93,7 @@ class NotificationServiceTest extends ServiceTest {
 
     @Nested
     @DisplayName("일정 삭제 시 일정 삭제 알림 생성")
+    @Disabled(value = "일정 피드 알림기능 제거로 인한 테스트 disable - 추후 다른형식으로 부활 가능성 있음")
     class CreateScheduleNotificationWhenDeleteSchedule {
 
         @Test
@@ -115,6 +118,7 @@ class NotificationServiceTest extends ServiceTest {
 
     @Nested
     @DisplayName("공유 링크 등록 시 등록 알림 생성")
+    @Disabled(value = "공유링크 피드 알림기능 제거로 인한 테스트 disable - 추후 다른형식으로 부활 가능성 있음")
     class CreateSharedLinkNotificationWhenCreateSharedLink {
 
         @Test
@@ -139,6 +143,7 @@ class NotificationServiceTest extends ServiceTest {
 
     @Nested
     @DisplayName("공유 링크 삭제 시 삭제 알림 생성")
+    @Disabled(value = "공유링크 피드 알림기능 제거로 인한 테스트 disable - 추후 다른형식으로 부활 가능성 있음")
     class CreateSharedLinkNotificationWhenDeleteSharedLink {
 
         @Test

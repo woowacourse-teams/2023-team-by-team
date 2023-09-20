@@ -13,6 +13,7 @@ const color = {
   NAVY: '#303650',
 
   GRAY100: '#f2f4f6',
+  GRAY150: '#eaeaea',
   GRAY200: '#e5e8eb',
   GRAY300: '#d1d6db',
   GRAY350: '#c9c9c9',
@@ -30,6 +31,9 @@ const color = {
   BLUE500: '#5885f5',
   BLUE600: '#2459e0',
   BLUE700: '#193ecb',
+
+  PURPLE100: '#b7baff',
+  PURPLE400: '#8e92ff',
 
   TRANSPARENT_BLACK: '#777777aa',
 } as const;
