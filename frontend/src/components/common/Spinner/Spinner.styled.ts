@@ -11,8 +11,13 @@ const spin = keyframes`
 `;
 
 export const Container = styled.div`
-  width: auto;
-  height: auto;
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
 `;
 
 export const Loader = styled.div<Pick<SpinnerProps, 'size'>>`

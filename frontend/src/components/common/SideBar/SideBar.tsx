@@ -2,8 +2,9 @@ import Text from '~/components/common/Text/Text';
 import * as S from './SideBar.styled';
 import MyCalendar from '~/components/my_calendar/MyCalendar/MyCalendar';
 import MyDailyScheduleList from '~/components/my_calendar/MyDailyScheduleList/MyDailyScheduleList';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { parseDate } from '~/utils/parseDate';
+import MyDailyScheduleListFallback from '~/components/my_calendar/MyDailyScheduleList/MyDailyScheduleListFallback/MyDailyScheduleListFallback';
 
 const SideBar = () => {
   const [dailyScheduleDate, setDailyScheduleDate] = useState(new Date());
@@ -30,7 +31,9 @@ const SideBar = () => {
             {String(date).padStart(2, '0')}일 일정
           </Text>
         </div>
-        <MyDailyScheduleList rawDate={dailyScheduleDate} />
+        <Suspense fallback={<MyDailyScheduleListFallback />}>
+          <MyDailyScheduleList rawDate={dailyScheduleDate} />
+        </Suspense>
       </S.InnerContainer>
     </S.Aside>
   );

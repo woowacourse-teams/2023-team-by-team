@@ -6,8 +6,10 @@ export const useFetchMyDailySchedules = (
   month: number,
   day: number,
 ) => {
-  const { data } = useQuery(['myDailySchedules', year, month, day], () =>
-    fetchMySchedules(year, month + 1, day),
+  const { data } = useQuery(
+    ['myDailySchedules', year, month, day],
+    () => fetchMySchedules(year, month + 1, day),
+    { suspense: true },
   );
 
   if (data === undefined) return [];
