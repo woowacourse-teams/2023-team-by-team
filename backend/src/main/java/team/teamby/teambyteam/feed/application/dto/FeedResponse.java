@@ -4,6 +4,8 @@ import team.teamby.teambyteam.feed.domain.Feed;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.List;
 
 public record FeedResponse(
         Long id,
@@ -12,7 +14,9 @@ public record FeedResponse(
         String authorName,
         String profileImageUrl,
         String createdAt,
-        String content
+        String content,
+        List<FeedImageResponse> images,
+        Boolean isMe
 ) {
     private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm";
 
@@ -27,11 +31,13 @@ public record FeedResponse(
                 authorName,
                 profileImageUrl,
                 createdAt,
-                feed.getContent().getValue()
+                feed.getContent().getValue(),
+                Collections.emptyList(),
+                false
         );
     }
 
-    public static FeedResponse from(final Feed feed, final MemberTeamPlace threadAuthorInfo) {
+    public static FeedResponse from(final Feed feed, final MemberTeamPlace threadAuthorInfo, final String loginMemberEmail) {
         final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
         String createdAt = feed.getCreatedAt().format(dateTimeFormatter);
 
@@ -42,7 +48,9 @@ public record FeedResponse(
                 threadAuthorInfo.getDisplayMemberName().getValue(),
                 threadAuthorInfo.findMemberProfileImageUrl(),
                 createdAt,
-                feed.getContent().getValue()
+                feed.getContent().getValue(),
+                Collections.emptyList(),
+                threadAuthorInfo.isEmailEqual(loginMemberEmail)
         );
     }
 }
