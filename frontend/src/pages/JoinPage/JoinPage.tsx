@@ -40,7 +40,10 @@ const JoinPage = () => {
 
   return (
     <S.Container>
-      <LandingHeader href={PATH_NAME.TEAM_SELECT} />
+      <LandingHeader
+        href={PATH_NAME.TEAM_SELECT}
+        ariaLabel="팀 선택 페이지로"
+      />
       <S.MainContainer>
         <S.InnerContainer ref={ref} isLinkClicked={isClicked}>
           <Text weight="semiBold" css={S.titleText}>
