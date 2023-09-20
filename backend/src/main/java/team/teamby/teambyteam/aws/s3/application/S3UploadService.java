@@ -3,11 +3,13 @@ package team.teamby.teambyteam.aws.s3.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import team.teamby.teambyteam.aws.s3.S3PresignedUrlProvider;
-import team.teamby.teambyteam.feed.application.dto.PreSignedUrlResponse;
-import team.teamby.teambyteam.feed.application.dto.PresignedUrlRequest;
-import team.teamby.teambyteam.feed.application.dto.PresignedUrlsRequest;
-import team.teamby.teambyteam.feed.application.dto.PresignedUrlsResponse;
+import org.springframework.web.multipart.MultipartFile;
+import team.teamby.teambyteam.aws.s3.S3Uploader;
+import team.teamby.teambyteam.feed.application.dto.ImageUrlResponse;
+import team.teamby.teambyteam.feed.application.dto.ImageUrlsResponse;
+import team.teamby.teambyteam.feed.application.dto.UploadImageRequest;
+import team.teamby.teambyteam.feed.domain.AllowedImageExtension;
+import team.teamby.teambyteam.feed.exception.FeedException;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 
 import java.security.MessageDigest;
@@ -21,28 +23,74 @@ import java.util.UUID;
 public class S3UploadService {
 
     private static final String HASHING_ALGORITHM = "SHA-256";
+    private static final String HEX_FORMAT = "%02X";
+    private static final int LIMIT_IMAGE_SIZE = 5242880;
+    private static final int LIMIT_IMAGE_COUNT = 4;
+
     @Value("${aws.s3.directory}")
     private String directory;
 
-    private final S3PresignedUrlProvider s3PresignedUrlProvider;
+    @Value("${aws.cloud-front.domain}")
+    private String cloudFrontDomain;
 
-    public PresignedUrlsResponse getImageUploadPresignedUrl(final MemberEmailDto memberEmailDto, final PresignedUrlsRequest presignedUrlsRequest) throws NoSuchAlgorithmException {
-        final List<PreSignedUrlResponse> responses = new ArrayList<>();
+    private final S3Uploader s3Uploader;
 
-        String email = memberEmailDto.email();
-        String hashedEmail = hashEmail(email);
+    public ImageUrlsResponse getImageUploadUrls(final MemberEmailDto memberEmailDto, final UploadImageRequest uploadImageRequest) {
+        final List<ImageUrlResponse> responses = new ArrayList<>();
+        validateImagesCount(uploadImageRequest.images());
 
-        for (final PresignedUrlRequest request : presignedUrlsRequest.images()) {
+        final String email = memberEmailDto.email();
+        final String hashedEmail = hashEmail(email);
+        for (final MultipartFile image : uploadImageRequest.images()) {
+            validateImage(image);
             final String customKey = directory + "/" + UUID.randomUUID() + hashedEmail;
-            final String url = s3PresignedUrlProvider.getImageUploadPresignedUrl(request.checkSum(), request.contentLength(), customKey);
-            responses.add(new PreSignedUrlResponse(request.imageName(), url));
+            s3Uploader.imageUpload(image, customKey);
+            responses.add(new ImageUrlResponse(image.getOriginalFilename(), cloudFrontDomain + customKey));
         }
 
-        return new PresignedUrlsResponse(responses);
+        return new ImageUrlsResponse(responses);
     }
 
-    private String hashEmail(String email) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance(HASHING_ALGORITHM);
-        return new String(md.digest(email.getBytes()));
+    private void validateImagesCount(final List<MultipartFile> images) {
+        if (images.size() > LIMIT_IMAGE_COUNT) {
+            throw new FeedException.ImageOverCountException(LIMIT_IMAGE_COUNT, images.size());
+        }
+    }
+
+    private void validateImage(final MultipartFile image) {
+        if (image.getSize() > LIMIT_IMAGE_SIZE) {
+            throw new FeedException.ImageSizeException(LIMIT_IMAGE_SIZE, image.getSize());
+        }
+        if (AllowedImageExtension.isNotContain(getFileExtension(image))) {
+            throw new FeedException.NotAllowedImageExtensionException(image.getOriginalFilename());
+        }
+    }
+
+    private String getFileExtension(MultipartFile file) {
+        final String originalFilename = file.getOriginalFilename();
+        if (originalFilename != null) {
+            int dotIndex = originalFilename.lastIndexOf(".");
+            if (dotIndex >= 0 && dotIndex < originalFilename.length() - 1) {
+                return originalFilename.substring(dotIndex + 1);
+            }
+        }
+
+        throw new FeedException.NotFoundImageExtensionException(originalFilename);
+    }
+
+    private String hashEmail(final String email) {
+        try {
+            final MessageDigest md = MessageDigest.getInstance(HASHING_ALGORITHM);
+            final byte[] hashBytes = md.digest(email.getBytes());
+            final StringBuilder hexString = new StringBuilder();
+            for (final byte b : hashBytes) {
+                final String hex = String.format(HEX_FORMAT, b);
+                hexString.append(hex);
+            }
+
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
