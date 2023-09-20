@@ -8,4 +8,3 @@ export const THREAD_TYPE = {
 export const THREAD_SIZE = 20;
 
 export const MAX_UPLOAD_IMAGE_COUNT = 4;
-
