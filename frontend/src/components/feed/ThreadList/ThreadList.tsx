@@ -70,8 +70,12 @@ const ThreadList = (props: ThreadListProps) => {
           page.threads
             .slice()
             .reverse()
-            .map((thread) => {
-              const { id, type, profileImageUrl, content, ...rest } = thread;
+            .map((thread, index, threads) => {
+              const { id, type, profileImageUrl, content, authorId, ...rest } =
+                thread;
+
+              const isContinue =
+                index - 1 >= 0 && authorId === threads[index - 1].authorId;
 
               return type === THREAD_TYPE.THREAD ? (
                 <Thread
@@ -79,6 +83,7 @@ const ThreadList = (props: ThreadListProps) => {
                   threadSize={size}
                   profileImageUrl={profileImageUrl}
                   content={content}
+                  isContinue={isContinue}
                   {...rest}
                 />
               ) : (

@@ -13,6 +13,7 @@ const color = {
   NAVY: '#303650',
 
   GRAY100: '#f2f4f6',
+  GRAY150: '#eaeaea',
   GRAY200: '#e5e8eb',
   GRAY300: '#d1d6db',
   GRAY350: '#c9c9c9',

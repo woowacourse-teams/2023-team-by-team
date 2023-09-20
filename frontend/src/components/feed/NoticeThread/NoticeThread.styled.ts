@@ -148,6 +148,8 @@ export const contentField = (noticeSize: NoticeSize) => {
 
     width: 100%;
     height: ${height};
+
+    word-break: break-all;
   `;
 };
 
