@@ -25,8 +25,8 @@ export const deleteButton = css`
   top: -4px;
   right: -4px;
 
-  width: 30px;
-  height: 30px;
+  width: 24px;
+  height: 24px;
   padding: 0;
 
   border-radius: 4px;
@@ -34,6 +34,7 @@ export const deleteButton = css`
   background-color: ${({ theme }) => theme.color.GRAY100};
 
   & svg {
-    width: 24px;
+    width: 18px;
+    height: 18px;
   }
 `;
