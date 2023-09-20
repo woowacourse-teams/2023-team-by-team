@@ -74,7 +74,7 @@ jobs:
 
       - name: Setup environment variables
         run: |
-          echo "REACT_APP_BASE_URL=${{ secrets.REACT_APP_PROD_BASE_URL }}" >> .env.production
+          echo "REACT_APP_BASE_URL=${{ secrets.REACT_APP_PROD_BASE_URL }}" >> .env
 
       - name: Install dependencies
         run: npm ci
