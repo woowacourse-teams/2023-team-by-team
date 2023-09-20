@@ -84,4 +84,60 @@ class ICal4jParserTest {
         );
         assertThat(parsedMetaDataLines).containsAll(expects);
     }
+
+    @Test
+    @DisplayName("종일 일정 Schedule로 ical 이벤트 메타데이터 생성 - 1일")
+    void allSingleDayScheduleParsing() {
+        // given
+        final TeamPlace teamPlace = Mockito.spy(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
+        when(teamPlace.getId()).thenReturn(2L);
+
+        final Schedule schedule = Mockito.spy(ScheduleFixtures.MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE(teamPlace.getId()));
+        when(schedule.getId()).thenReturn(1L);
+
+        final List<Schedule> schedules = List.of(schedule);
+
+        // when
+        final String parsedMetaData = parser.parse(teamPlace, schedules);
+
+        // then
+        final List<String> parsedMetaDataLines = List.of(parsedMetaData.split("\\r\\n"));
+        final List<String> expects = List.of(
+                "BEGIN:VEVENT",
+                "DTSTART;VALUE=DATE:20230712",
+                "DTEND;VALUE=DATE:20230713",
+                "SUMMARY:2번 팀플 7월 12일 종일 일정",
+                "UID:2-1",
+                "END:VEVENT"
+        );
+        assertThat(parsedMetaDataLines).containsAll(expects);
+    }
+
+    @Test
+    @DisplayName("종일 일정 Schedule로 ical 이벤트 메타데이터 생성 - n일")
+    void allMultipleDayScheduleParsing() {
+        // given
+        final TeamPlace teamPlace = Mockito.spy(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
+        when(teamPlace.getId()).thenReturn(2L);
+
+        final Schedule schedule = Mockito.spy(ScheduleFixtures.MONTH_6_AND_MONTH_7_SCHEDULE(teamPlace.getId()));
+        when(schedule.getId()).thenReturn(1L);
+
+        final List<Schedule> schedules = List.of(schedule);
+
+        // when
+        final String parsedMetaData = parser.parse(teamPlace, schedules);
+
+        // then
+        final List<String> parsedMetaDataLines = List.of(parsedMetaData.split("\\r\\n"));
+        final List<String> expects = List.of(
+                "BEGIN:VEVENT",
+                "DTSTART;VALUE=DATE:20230601",
+                "DTEND;VALUE=DATE:20230801",
+                "SUMMARY:2번 팀플 6월~7월 일정",
+                "UID:2-1",
+                "END:VEVENT"
+        );
+        assertThat(parsedMetaDataLines).containsAll(expects);
+    }
 }

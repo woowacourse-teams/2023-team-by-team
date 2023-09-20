@@ -58,4 +58,8 @@ public class Schedule extends BaseEntity {
     public LocalDateTime getEndDateTime() {
         return span.getEndDateTime();
     }
+
+    public boolean isAllDay() {
+        return span.isAllDay();
+    }
 }

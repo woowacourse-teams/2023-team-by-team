@@ -21,6 +21,7 @@ import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.time.temporal.Temporal;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -34,6 +35,7 @@ public class ICal4jParser implements IcalendarParser {
     private static final String KST = "KST";
     private static final String STANDARD_DT_START = "19700101T000000";
     private static final String SEOUL_TZ_OFFSET = "+0900";
+    private static final long ONE_DAY_OFFSET = 1L;
 
     @Override
     public String parse(final TeamPlace teamPlace, final List<Schedule> schedules) {
@@ -85,15 +87,29 @@ public class ICal4jParser implements IcalendarParser {
     private VEvent createEvent(final Schedule schedule) {
         final String title = schedule.getTitle().getValue();
 
-        final ZonedDateTime zonedStartDateTime = convertToSeoulDateTime(schedule.getStartDateTime());
-        final ZonedDateTime zonedEndDateTime = convertToSeoulDateTime(schedule.getEndDateTime());
+        final Temporal startTemporal = getStartTemporal(schedule);
+        final Temporal endTemporal = getEndTemporal(schedule);
 
-        final VEvent vEvent = new VEvent(zonedStartDateTime, zonedEndDateTime, title);
+        final VEvent vEvent = new VEvent(startTemporal, endTemporal, title);
 
         final UidGenerator uidGenerator = new ScheduleUidGenerator(schedule);
         vEvent.add(uidGenerator.generateUid());
 
         return vEvent;
+    }
+
+    private Temporal getStartTemporal(final Schedule schedule) {
+        if (schedule.isAllDay()) {
+            return schedule.getStartDateTime().toLocalDate();
+        }
+        return convertToSeoulDateTime(schedule.getStartDateTime());
+    }
+
+    private Temporal getEndTemporal(final Schedule schedule) {
+        if (schedule.isAllDay()) {
+            return schedule.getEndDateTime().toLocalDate().plusDays(ONE_DAY_OFFSET);
+        }
+        return convertToSeoulDateTime(schedule.getEndDateTime());
     }
 
     private ZonedDateTime convertToSeoulDateTime(final LocalDateTime startDateTime) {
