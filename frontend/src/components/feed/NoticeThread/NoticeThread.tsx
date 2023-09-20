@@ -29,7 +29,7 @@ const NoticeThread = (props: NoticeThreadProps) => {
   };
 
   const handleExpandLessClick = () => {
-    if (noticeSize === 'lg') setNoticeSize(() => 'sm');
+    setNoticeSize(() => 'sm');
   };
 
   return (
