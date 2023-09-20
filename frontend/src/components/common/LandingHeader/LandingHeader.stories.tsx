@@ -18,5 +18,6 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     href: PATH_NAME.LANDING,
+    ariaLabel: '랜딩 페이지로 이동하기',
   },
 };
