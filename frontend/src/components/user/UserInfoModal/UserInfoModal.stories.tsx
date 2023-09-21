@@ -18,7 +18,7 @@ const SampleModal = () => {
   return (
     <>
       <Button onClick={openModal}>모달 열기</Button>
-      <UserInfoModal />
+      <UserInfoModal onAccountDeleteButtonClick={() => alert('회원탈퇴')} />
     </>
   );
 };
@@ -26,6 +26,6 @@ const SampleModal = () => {
 export const Default: Story = {
   render: () => <SampleModal />,
   args: {
-    clickedDate: new Date(),
+    onAccountDeleteButtonClick: () => alert('회원탈퇴'),
   },
 };

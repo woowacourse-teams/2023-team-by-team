@@ -4,10 +4,19 @@ import Text from '~/components/common/Text/Text';
 import Input from '~/components/common/Input/Input';
 import { useUserInfoModal } from '~/hooks/user/useUserInfoModal';
 import { MAX_USER_NAME_LENGTH } from '~/constants/user';
-import { CheckBlackIcon, EditIcon, LogoutIcon } from '~/assets/svg';
+import {
+  CheckBlackIcon,
+  EditIcon,
+  LogoutIcon,
+  WarningIcon,
+} from '~/assets/svg';
 import * as S from './UserInfoModal.styled';
 
-const UserInfoModal = () => {
+interface UserInfoModalProps {
+  onAccountDeleteButtonClick: () => void;
+}
+
+const UserInfoModal = (props: UserInfoModalProps) => {
   const {
     userInfo,
     userName,
@@ -22,7 +31,7 @@ const UserInfoModal = () => {
       handleUserInfoSubmit,
     },
   } = useUserInfoModal();
-
+  const { onAccountDeleteButtonClick } = props;
   if (!userInfo) {
     return <></>;
   }
@@ -89,6 +98,18 @@ const UserInfoModal = () => {
         >
           로그아웃
           <LogoutIcon />
+        </Button>
+        <Button
+          type="button"
+          variant="plain"
+          css={S.dangerousButton}
+          onClick={onAccountDeleteButtonClick}
+          aria-label="회원탈퇴"
+        >
+          <S.DangerousSvgWrapper>
+            <WarningIcon />
+          </S.DangerousSvgWrapper>
+          <Text css={S.hoverText}>탈퇴하기</Text>
         </Button>
       </S.Container>
     </Modal>
