@@ -7,6 +7,7 @@ import {
   VALID_IMAGE_TYPES,
 } from '~/constants/feed';
 import { useToast } from '../useToast';
+import { generateUuid } from '~/utils/generateUuid';
 
 /**
  * `useImageUploader` 는 이미지를 로컬에 업로드하여 관리하기 위한 커스텀 훅입니다.
@@ -60,7 +61,7 @@ const useImageUploader = () => {
     }
 
     const newFilesWithId = [...newFiles].map((file) => ({
-      uuid: crypto.randomUUID(),
+      uuid: generateUuid(),
       file,
     }));
 
