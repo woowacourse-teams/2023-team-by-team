@@ -6,6 +6,9 @@ import Checkbox from '~/components/common/Checkbox/Checkbox';
 import { useTeamFeedPage } from '~/hooks/team/useTeamFeedPage';
 import theme from '~/styles/theme';
 import { AirplaneIcon, ArrowExpandMoreIcon, ImageIcon } from '~/assets/svg';
+import useImageUploader from '~/hooks/thread/useImageUploader';
+import ImageUploadDrawer from '~/components/feed/ImageUploadDrawer/ImageUploadDrawer';
+import ThumbnailList from '~/components/feed/ThumbnailList/ThumbnailList';
 import type { ThreadSize } from '~/types/size';
 import * as S from './TeamFeedPage.styled';
 
@@ -15,16 +18,20 @@ interface TeamFeedPageProps {
 
 const TeamFeedPage = (props: TeamFeedPageProps) => {
   const { threadSize = 'md' } = props;
+  const { previewImages, updateImages, deleteImageByUuid } = useImageUploader();
   const {
     ref,
     noticeThread,
     isNotice,
+    isImageDrawerOpen,
     isShowScrollBottomButton,
     chatContent,
 
     handlers: {
       handleIsNoticeChange,
       handleChatContentChange,
+      handleImageDrawerClose,
+      handleImageToggleButtonClick,
       handleEnterKeydown,
       handleScrollBottomButtonClick,
       handleSubmit,
@@ -59,7 +66,18 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
             )}
           </S.MenuButtonWrapper>
         </S.ThreadContainer>
-        <form onSubmit={handleSubmit}>
+        <ImageUploadDrawer
+          isOpen={isImageDrawerOpen}
+          onClose={handleImageDrawerClose}
+        >
+          <ThumbnailList
+            mode="delete"
+            images={previewImages}
+            onChange={updateImages}
+            onDelete={deleteImageByUuid}
+          />
+        </ImageUploadDrawer>
+        <form onSubmit={handleSubmit} style={{ zIndex: 1 }}>
           <S.Textarea
             value={chatContent}
             onChange={handleChatContentChange}
@@ -73,9 +91,7 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
               type="button"
               variant="plain"
               aria-label="이미지 업로드하기"
-              onClick={() => {
-                alert('이미지 업로드 기능을 준비중이에요! :)');
-              }}
+              onClick={handleImageToggleButtonClick}
             >
               <ImageIcon />
             </Button>

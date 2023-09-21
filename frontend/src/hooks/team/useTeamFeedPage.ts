@@ -21,11 +21,20 @@ export const useTeamFeedPage = () => {
   const [isNotice, setIsNotice] = useState(false);
   const [isShowScrollBottomButton, setIsShowScrollBottomButton] =
     useState(false);
+  const [isImageDrawerOpen, setIsImageDrawerOpen] = useState(false);
   const [chatContent, setChatContent] = useState('');
   const ref = useRef<HTMLDivElement>(null);
 
   const handleIsNoticeChange = () => {
     setIsNotice((prev) => !prev);
+  };
+
+  const handleImageDrawerClose = () => {
+    setIsImageDrawerOpen(() => false);
+  };
+
+  const handleImageToggleButtonClick = () => {
+    setIsImageDrawerOpen((prevIsImageDrawerOpen) => !prevIsImageDrawerOpen);
   };
 
   const handleChatContentChange: ChangeEventHandler<HTMLTextAreaElement> = (
@@ -144,12 +153,15 @@ export const useTeamFeedPage = () => {
     ref,
     noticeThread,
     isNotice,
+    isImageDrawerOpen,
     isShowScrollBottomButton,
     chatContent,
 
     handlers: {
       handleIsNoticeChange,
       handleChatContentChange,
+      handleImageDrawerClose,
+      handleImageToggleButtonClick,
       handleEnterKeydown,
       handleScrollBottomButtonClick,
       handleSubmit,
