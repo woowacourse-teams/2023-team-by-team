@@ -31,3 +31,4 @@ export { ReactComponent as ArrowLeft2Icon } from './arrow-left2.svg';
 export { ReactComponent as CheckBlackIcon } from './check-black.svg';
 export { ReactComponent as AirplaneIcon } from './airplane.svg';
 export { ReactComponent as ImageIcon } from './image.svg';
+export { ReactComponent as WarningIcon } from './warning.svg';
