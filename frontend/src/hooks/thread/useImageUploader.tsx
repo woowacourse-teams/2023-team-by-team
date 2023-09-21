@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { ChangeEvent } from 'react';
 import type { FileWithUuid, PreviewImage } from '~/types/feed';
-import { MAX_UPLOAD_IMAGE_COUNT } from '~/constants/feed';
+import { MAX_UPLOAD_IMAGE_COUNT, VALID_IMAGE_TYPES } from '~/constants/feed';
 import { useToast } from '../useToast';
 
 /**
@@ -37,6 +37,13 @@ const useImageUploader = () => {
         'error',
         `이미지는 최대 ${MAX_UPLOAD_IMAGE_COUNT}장까지 업로드 가능합니다.`,
       );
+
+      return;
+    }
+
+    if ([...newFiles].some(({ type }) => !VALID_IMAGE_TYPES.includes(type))) {
+      e.target.value = '';
+      showToast('error', '이미지 파일만 업로드할 수 있습니다.');
 
       return;
     }
