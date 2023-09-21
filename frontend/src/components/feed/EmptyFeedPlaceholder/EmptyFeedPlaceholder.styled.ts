@@ -15,19 +15,12 @@ export const PlaceholderContainer = styled.div`
   align-items: center;
   row-gap: 18px;
 
-  width: 100%;
-  height: 100%;
+  width: 380px;
 `;
 
 export const FeedEmptyImage = styled.img`
   width: 18%;
   margin-bottom: 10px;
-`;
-
-export const placeholderButton = css`
-  width: 380px;
-  height: 220px;
-  padding: 0;
 `;
 
 export const titleText = css`

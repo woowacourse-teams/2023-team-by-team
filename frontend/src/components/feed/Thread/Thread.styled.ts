@@ -108,7 +108,7 @@ export const ProfileImg = styled.img<{ threadSize: ThreadSize }>`
 export const threadInfoText = (threadSize: ThreadSize) => css`
   white-space: pre-wrap;
 
-  font-size: ${threadSize === 'md' ? 18 : 16}px;
+  font-size: ${threadSize === 'md' ? 16 : 14}px;
   color: ${({ theme }) => theme.color.BLACK};
 `;
 

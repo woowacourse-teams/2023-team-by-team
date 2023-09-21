@@ -1,14 +1,13 @@
-import { useFetchThreads } from '~/hooks/queries/useFetchThreads';
-import * as S from './ThreadList.styled';
-import type { ThreadSize } from '~/types/size';
-import { THREAD_TYPE } from '~/constants/feed';
 import { type RefObject, useRef, useEffect, useState } from 'react';
-import { useIntersectionObserver } from '~/hooks/useIntersectionObserver';
-import Text from '~/components/common/Text/Text';
-import { useTeamPlace } from '~/hooks/useTeamPlace';
 import Thread from '~/components/feed/Thread/Thread';
 import EmptyFeedPlaceholder from '~/components/feed/EmptyFeedPlaceholder/EmptyFeedPlaceholder';
-import { useModal } from '~/hooks/useModal';
+import Text from '~/components/common/Text/Text';
+import { useFetchThreads } from '~/hooks/queries/useFetchThreads';
+import { useIntersectionObserver } from '~/hooks/useIntersectionObserver';
+import { useTeamPlace } from '~/hooks/useTeamPlace';
+import type { ThreadSize } from '~/types/size';
+import { THREAD_TYPE } from '~/constants/feed';
+import * as S from './ThreadList.styled';
 
 interface ThreadListProps {
   containerRef?: RefObject<HTMLDivElement>;
@@ -17,12 +16,14 @@ interface ThreadListProps {
 
 const ThreadList = (props: ThreadListProps) => {
   const { containerRef, size = 'md' } = props;
+
   const { teamPlaceId } = useTeamPlace();
+
   const { threadPages, hasNextPage, fetchNextPage } =
     useFetchThreads(teamPlaceId);
+
   const observeRef = useRef<HTMLDivElement>(null);
   const [scrollHeight, setScrollHeight] = useState(0);
-  const { openModal } = useModal();
 
   const onIntersect: IntersectionObserverCallback = ([entry]) => {
     if (entry.isIntersecting && teamPlaceId > 0) {
@@ -85,7 +86,7 @@ const ThreadList = (props: ThreadListProps) => {
             }),
         )}
       {threadPages && threadPages.pages[0].threads.length === 0 && (
-        <EmptyFeedPlaceholder onClick={openModal} />
+        <EmptyFeedPlaceholder />
       )}
     </>
   );

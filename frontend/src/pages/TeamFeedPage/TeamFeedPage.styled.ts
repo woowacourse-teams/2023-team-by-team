@@ -31,6 +31,8 @@ export const ThreadContainer = styled.div`
   flex-direction: column;
   overflow-y: auto;
 
+  height: 100%;
+
   background-color: ${({ theme }) => theme.color.WHITE};
   border-bottom: 1px solid ${({ theme }) => theme.color.PURPLE};
 `;
