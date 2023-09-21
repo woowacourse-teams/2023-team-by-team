@@ -73,6 +73,9 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
               type="button"
               variant="plain"
               aria-label="이미지 업로드하기"
+              onClick={() => {
+                alert('이미지 업로드 기능을 준비중이에요! :)');
+              }}
             >
               <ImageIcon />
             </Button>
