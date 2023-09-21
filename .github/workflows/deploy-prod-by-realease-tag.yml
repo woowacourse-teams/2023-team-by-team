@@ -73,6 +73,10 @@ jobs:
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
 
+      - name: Setup environment variables
+        run: |
+          echo "REACT_APP_BASE_URL=${{ secrets.REACT_APP_PROD_BASE_URL }}" >> .env
+
       - name: Install dependencies
         run: npm ci
 
@@ -128,7 +132,5 @@ jobs:
       - name: Deploy FRONT to production server
         working-directory: frontend/prod/
         run: |
-          echo "$FRONT_DEPLOY_SCRIPT" > prod-deploy.sh
-          chmod 700 prod-deploy.sh
-          ./prod-deploy.sh
+          aws s3 sync ./dist/ s3://2023-team-project/2023-team-by-team/prod/front --delete
 
