@@ -8,3 +8,7 @@ export const fetchUserInfo = () => {
 export const modifyUserInfo = (body: Pick<UserInfo, 'name'>) => {
   return http.patch('/api/me', body);
 };
+
+export const deleteUserAccount = () => {
+  return http.delete('/api/me/account');
+};

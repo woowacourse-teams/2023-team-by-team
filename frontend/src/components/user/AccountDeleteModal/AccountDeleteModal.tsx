@@ -13,8 +13,8 @@ const AccountDeleteModal = () => {
   const {
     username,
     inputValue,
-    handleInputValueChange,
     isDeleteButtonDisabled,
+    handlers: { handleInputValueChange, handleDeleteAccountSubmit },
   } = useAccountDeleteModal();
 
   return (
@@ -48,7 +48,7 @@ const AccountDeleteModal = () => {
             <b>{ACCOUNT_DELETE_CONFIRM_TEXT}</b>를 입력해 주세요.
           </Text>
         </S.ModalBody>
-        <S.AccountDeleteForm>
+        <S.AccountDeleteForm onSubmit={handleDeleteAccountSubmit}>
           <Input
             width="100%"
             height="40px"
@@ -59,11 +59,7 @@ const AccountDeleteModal = () => {
             autoFocus
             required
           />
-          <Button
-            type="button"
-            disabled={isDeleteButtonDisabled}
-            css={S.accountDeleteButton}
-          >
+          <Button disabled={isDeleteButtonDisabled} css={S.accountDeleteButton}>
             회원 탈퇴하기
           </Button>
         </S.AccountDeleteForm>

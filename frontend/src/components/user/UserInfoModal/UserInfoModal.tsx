@@ -11,8 +11,6 @@ import {
   WarningIcon,
 } from '~/assets/svg';
 import * as S from './UserInfoModal.styled';
-import { useModal } from '~/hooks/useModal';
-import { useState } from 'react';
 
 interface UserInfoModalProps {
   onAccountDeleteButtonClick: () => void;
