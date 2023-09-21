@@ -21,3 +21,5 @@ export const VALID_IMAGE_TYPES = [
   'image/webp',
   'image/x-icon',
 ];
+
+export const MAX_IMAGE_CAPACITY = 5_242_880;
