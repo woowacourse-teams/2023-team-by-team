@@ -81,7 +81,7 @@ jobs:
         run: npm ci
 
       - name: Build App
-        run: npm run build
+        run: npm run build:prod
 
       - name: Upload frontend build file to artifact
         uses: actions/upload-artifact@v3
