@@ -1,5 +1,6 @@
 import type { THREAD_TYPE } from '~/constants/feed';
 import type { YYYYMMDDHHMM } from '~/types/schedule';
+import type { UUID } from 'crypto';
 
 export interface Thread {
   id: number;
@@ -31,4 +32,14 @@ export interface ThreadImage {
   isExpired: boolean;
   name: string;
   url: string;
+}
+
+export interface PreviewImage {
+  uuid: UUID;
+  url: string;
+}
+
+export interface FileWithUuid {
+  uuid: UUID;
+  file: File;
 }
