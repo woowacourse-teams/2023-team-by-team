@@ -1,21 +1,24 @@
 import { styled, css } from 'styled-components';
 
-export const Container = styled.div<{ bottom: number }>`
+export const Container = styled.div<{ isOpen: boolean }>`
   display: flex;
   position: absolute;
-  bottom: 0;
+  bottom: 46px;
+  left: 30px;
 
-  width: 100%;
+  width: calc(100% - 60px);
   height: 136px;
 
   border-radius: 20px 20px 0 0;
   background: linear-gradient(30deg, #bfc3ff, #eaebff);
 
   transition: 0.35s;
-  transform: translateY(${({ bottom }) => `-${bottom}px`});
+  transform: translateY(${({ isOpen }) => (isOpen ? '-162px' : '0')});
 `;
 
 export const ContentWrapper = styled.div`
+  overflow-x: auto;
+  overflow-y: hidden;
   flex-grow: 1;
 `;
 

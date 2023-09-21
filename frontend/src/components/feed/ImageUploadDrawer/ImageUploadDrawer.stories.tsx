@@ -29,10 +29,6 @@ const meta = {
       description:
         '서랍장이 열려 있는지의 여부입니다. 이 prop을 조작하여 서랍장을 열고 닫을 수 있습니다.',
     },
-    slideDistance: {
-      description:
-        '서랍장이 열리게 될 경우 얼마나 많은 거리를 위로 움직여야 할 지를 의미합니다. 단위는 `px`입니다.',
-    },
     children: {
       description:
         '랜더링할 자식 요소를 의미합니다. `ThumbnailList` 컴포넌트가 여기에 오면 됩니다.',
@@ -51,7 +47,6 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     isOpen: false,
-    slideDistance: 130,
     children: (
       <div style={{ fontSize: '32px', padding: '40px' }}>
         이 자리에 썸네일 리스트 컴포넌트가 올 것입니다.
@@ -66,7 +61,6 @@ export const Default: Story = {
 export const Opened: Story = {
   args: {
     isOpen: true,
-    slideDistance: 130,
     children: (
       <div style={{ fontSize: '32px', padding: '40px' }}>
         이 자리에 썸네일 리스트 컴포넌트가 올 것입니다.

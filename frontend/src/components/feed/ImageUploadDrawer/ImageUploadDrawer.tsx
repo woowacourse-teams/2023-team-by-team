@@ -5,17 +5,16 @@ import { CloseBoldIcon } from '~/assets/svg';
 
 interface ImageUploadDrawerProps {
   isOpen: boolean;
-  slideDistance: number;
   onClose: () => void;
 }
 
 const ImageUploadDrawer = (
   props: PropsWithChildren<ImageUploadDrawerProps>,
 ) => {
-  const { isOpen, slideDistance, onClose, children } = props;
+  const { isOpen, onClose, children } = props;
 
   return (
-    <S.Container bottom={isOpen ? slideDistance : 0}>
+    <S.Container isOpen={isOpen}>
       <S.ContentWrapper>{children}</S.ContentWrapper>
       <S.CloseButtonWrapper>
         <Button
