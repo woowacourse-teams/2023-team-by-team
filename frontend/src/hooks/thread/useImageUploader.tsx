@@ -91,23 +91,6 @@ const useImageUploader = () => {
     });
   };
 
-  const updatePreviewImages = async () => {
-    const uuids = filesWithUuid.map(({ uuid }) => uuid);
-    const readResults = await Promise.allSettled(
-      filesWithUuid.map(({ file }) => readImage(file)),
-    );
-
-    const imageUrls = readResults.map((result, index) => {
-      if (result.status === 'fulfilled') {
-        return { uuid: uuids[index], url: result.value };
-      } else {
-        return { uuid: uuids[index], url: '' };
-      }
-    });
-
-    setPreviewImages(() => imageUrls);
-  };
-
   const deleteImageByUuid = (targetUuid: string) => {
     setFilesWithUuid((prevFilesWithUuid) =>
       prevFilesWithUuid.filter(({ uuid }) => uuid !== targetUuid),
@@ -119,8 +102,24 @@ const useImageUploader = () => {
   };
 
   useEffect(() => {
+    const updatePreviewImages = async () => {
+      const uuids = filesWithUuid.map(({ uuid }) => uuid);
+      const readResults = await Promise.allSettled(
+        filesWithUuid.map(({ file }) => readImage(file)),
+      );
+
+      const imageUrls = readResults.map((result, index) => {
+        if (result.status === 'fulfilled') {
+          return { uuid: uuids[index], url: result.value };
+        } else {
+          return { uuid: uuids[index], url: '' };
+        }
+      });
+
+      setPreviewImages(() => imageUrls);
+    };
+
     updatePreviewImages();
-    /* eslint-disable-next-line */
   }, [filesWithUuid]);
 
   return {
