@@ -5,7 +5,6 @@ name: deploy latest production
 on:
   release:
     types: [published]
-      
 
 permissions:
   contents: read
@@ -28,12 +27,12 @@ jobs:
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
-          distribution: 'corretto'
+          java-version: "17"
+          distribution: "corretto"
 
       - name: Give permission for Gradle
         run: chmod +x gradlew
-      
+
       - name: Cache Gradle
         id: cache-gradle
         uses: actions/cache@v3
@@ -42,10 +41,10 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-      
+
       - name: Build with Gradle
         run: ./gradlew bootJar
-      
+
       - name: Upload jar file artifact
         uses: actions/upload-artifact@v3
         with:
@@ -70,14 +69,18 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
+          cache: "npm"
+          cache-dependency-path: "**/package-lock.json"
+
+      - name: Setup environment variables
+        run: |
+          echo "REACT_APP_BASE_URL=${{ secrets.REACT_APP_PROD_BASE_URL }}" >> .env
 
       - name: Install dependencies
         run: npm ci
 
       - name: Build App
-        run: npm run build
+        run: npm run build:prod
 
       - name: Upload frontend build file to artifact
         uses: actions/upload-artifact@v3
@@ -89,7 +92,6 @@ jobs:
     needs: [build-frontend, build-backend]
     runs-on: self-hosted
     env:
-      FRONT_DEPLOY_SCRIPT: ${{  secrets.PROD_FRONT_DEPLOY_SCRIPT  }}
       BACK_PROD_PROPERTY: ${{ secrets.PROD_BACK_PROPERTY }}
       BACK_DEPLOY_SCRIPT: ${{ secrets.PROD_BACK_DEPLOY_SCRIPT }}
 
@@ -114,7 +116,7 @@ jobs:
           name: BackendApplicationJar
           path: backend/prod/
 
-      - name : Make BACK prod application.yml
+      - name: Make BACK prod application.yml
         working-directory: backend/prod/
         run: echo "$BACK_PROD_PROPERTY" > application-prod.yml
 
@@ -128,7 +130,4 @@ jobs:
       - name: Deploy FRONT to production server
         working-directory: frontend/prod/
         run: |
-          echo "$FRONT_DEPLOY_SCRIPT" > prod-deploy.sh
-          chmod 700 prod-deploy.sh
-          ./prod-deploy.sh
-
+          aws s3 sync ./dist/ s3://2023-team-project/2023-team-by-team/prod/front --delete

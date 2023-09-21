@@ -5,6 +5,7 @@ import team.teamby.teambyteam.sharedlink.domain.vo.SharedURL;
 import team.teamby.teambyteam.sharedlink.domain.vo.Title;
 
 @Getter
+@Deprecated
 public abstract class SharedLinkEvent {
 
     private final Long sharedLinkId;

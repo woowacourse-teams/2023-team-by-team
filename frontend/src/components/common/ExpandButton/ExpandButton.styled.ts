@@ -7,7 +7,7 @@ export const Container = styled.div`
 
   width: 100%;
   height: 100%;
-  padding-top: 40px;
+  padding-top: 20px;
 `;
 
 export const expandButton = css`
@@ -16,7 +16,6 @@ export const expandButton = css`
   right: 0;
 
   width: 100%;
-  height: 100px;
   padding: 10px;
 
   background: linear-gradient(

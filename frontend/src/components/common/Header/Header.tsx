@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { BellIcon, EditIcon, LogoIcon, TeamIcon } from '~/assets/svg';
+import { EditIcon, LogoIcon, TeamIcon } from '~/assets/svg';
 import * as S from './Header.styled';
 import TeamBadge from '~/components/team/TeamBadge/TeamBadge';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
@@ -12,8 +12,8 @@ import TeamPlaceInfoModal from '~/components/team/TeamPlaceInfoModal/TeamPlaceIn
 import { useModal } from '~/hooks/useModal';
 import { useFetchUserInfo } from '~/hooks/queries/useFetchUserInfo';
 import UserInfoModal from '~/components/user/UserInfoModal/UserInfoModal';
-import NotificationListModal from '~/components/feed/NotificationListModal/NotificationListModal';
 import TeamColorEditModal from '~/components/team/TeamColorEditModal/TeamColorEditModal';
+// import NotificationListModal from '~/components/feed/NotificationListModal/NotificationListModal';
 
 export type HeaderModalType = 'notification' | 'team' | 'user' | 'teamColor';
 
@@ -27,7 +27,9 @@ const Header = () => {
   } = useTeamPlace();
   const navigate = useNavigate();
   const { openModal, isModalOpen } = useModal();
+
   const { userInfo } = useFetchUserInfo();
+
   const [teamName, setTeamName] = useState(displayName ?? '');
   const [modalOpenType, setModalOpenType] = useState<HeaderModalType>();
 
@@ -57,10 +59,10 @@ const Header = () => {
     [changeTeamPlace, teamPlaces],
   );
 
-  const handleNotificationButtonClick = () => {
-    setModalOpenType(() => 'notification');
-    openModal();
-  };
+  // const handleNotificationButtonClick = () => {
+  //   setModalOpenType(() => 'notification');
+  //   openModal();
+  // };
 
   const handleTeamButtonClick = () => {
     setModalOpenType(() => 'team');
@@ -118,7 +120,7 @@ const Header = () => {
         </S.InnerContainer>
 
         <S.ButtonContainer>
-          <Button
+          {/* <Button
             type="button"
             variant="plain"
             onClick={handleNotificationButtonClick}
@@ -126,7 +128,7 @@ const Header = () => {
             aria-label="알림 목록 보기"
           >
             <BellIcon />
-          </Button>
+          </Button> */}
 
           <Button
             type="button"
@@ -152,7 +154,7 @@ const Header = () => {
         </S.ButtonContainer>
       </S.Header>
 
-      {modalOpenType === 'notification' && <NotificationListModal />}
+      {/* {modalOpenType === 'notification' && <NotificationListModal />} */}
       {modalOpenType === 'team' && <TeamPlaceInfoModal />}
       {modalOpenType === 'user' && <UserInfoModal />}
       {modalOpenType === 'teamColor' && <TeamColorEditModal />}

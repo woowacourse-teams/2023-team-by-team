@@ -13,8 +13,10 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
+  overflow: hidden;
   top: 50px;
   right: 20px;
+  z-index: ${({ theme }) => theme.zIndex.MODAL};
 
   width: 270px;
   height: 400px;
@@ -27,8 +29,6 @@ export const Container = styled.div`
     0 15px 25px #1b1d1f33,
     0 5px 10px #1b1d1f1f;
   background-color: ${({ theme }) => theme.color.WHITE};
-
-  overflow: hidden;
 `;
 
 export const UserInfoForm = styled.form`
@@ -78,11 +78,11 @@ export const logoutButton = css`
 `;
 
 export const userName = css`
+  overflow: hidden;
+
   max-width: 140px;
 
   font-weight: 500;
-
-  overflow: hidden;
   white-space: pre;
   text-overflow: ellipsis;
   text-align: center;

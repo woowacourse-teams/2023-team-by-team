@@ -15,6 +15,7 @@ export const Container = styled.div`
   position: absolute;
   top: 50px;
   right: 20px;
+  z-index: ${({ theme }) => theme.zIndex.MODAL};
 
   width: 340px;
   max-height: 400px;

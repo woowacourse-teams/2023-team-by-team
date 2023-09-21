@@ -7,10 +7,28 @@ export interface Thread {
   authorId: number;
   authorName: string;
   profileImageUrl: string;
+  isMe: boolean;
   createdAt: YYYYMMDDHHMM;
   content: string;
+  images: ThreadImage[];
 }
 
-export type NoticeThread = Omit<Thread, 'type'> | Record<string, never>;
+export interface ThreadImage {
+  id: number;
+  isExpired: boolean;
+  name: string;
+  url: string;
+}
+
+export type NoticeThread =
+  | Omit<Thread, 'type' | 'isMe'>
+  | Record<string, never>;
 
 export type ThreadContent = Pick<Thread, 'content'>;
+
+export interface ThreadImage {
+  id: number;
+  isExpired: boolean;
+  name: string;
+  url: string;
+}

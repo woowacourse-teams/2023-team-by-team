@@ -2,6 +2,11 @@ spring:
   profiles:
     active: local
 
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 20MB
+
   # for test
   h2:
     console:
@@ -49,3 +54,6 @@ oauth:
     access-type: access-type
     token-uri: https://oauth2.googleapis.com/token
     redirect-uri: redirect-uri
+
+base-domain:
+  front: "https://localhost:8080"

@@ -3,6 +3,8 @@ import { keyframes } from 'styled-components';
 const color = {
   LOGO: '#3145FF',
   PRIMARY: '#516FFF',
+  PRIMARY200: '#B7BAFF',
+  PRIMARY900: '#5054FF',
   WHITE: '#fff',
   BLACK: '#000',
   RED: '#FF5B5B',
@@ -11,6 +13,7 @@ const color = {
   NAVY: '#303650',
 
   GRAY100: '#f2f4f6',
+  GRAY150: '#eaeaea',
   GRAY200: '#e5e8eb',
   GRAY300: '#d1d6db',
   GRAY350: '#c9c9c9',
@@ -29,6 +32,9 @@ const color = {
   BLUE600: '#2459e0',
   BLUE700: '#193ecb',
 
+  PURPLE100: '#b7baff',
+  PURPLE400: '#8e92ff',
+
   TRANSPARENT_BLACK: '#777777aa',
 } as const;
 
@@ -46,11 +52,16 @@ const teamColor = {
   100: '#fff',
 } as const;
 
+const gradient = {
+  SMOOTH_BLACK: 'linear-gradient(45deg, #121212, #303030)',
+};
+
 const zIndex = {
   LANDING_CARD: -1,
-  MODAL: 1,
-  MENU: 2,
-  TOAST: 3,
+  NOTICE: 1,
+  MODAL: 2,
+  MENU: 3,
+  TOAST: 4,
 } as const;
 
 const animation = {
@@ -106,12 +117,24 @@ const animation = {
       opacity: 0;
     }
   `,
+  loading: keyframes`
+    0% {
+      transform: translateX(-100%);
+    }
+    50% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  `,
   duration: 400,
 };
 
 export const theme = {
   color,
   teamColor,
+  gradient,
   zIndex,
   animation,
 } as const;

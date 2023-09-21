@@ -1,30 +1,29 @@
-import { useFetchThreads } from '~/hooks/queries/useFetchThreads';
-import * as S from './ThreadList.styled';
-import type { ThreadSize } from '~/types/size';
-import { THREAD_TYPE } from '~/constants/feed';
-import NoticeThread from '~/components/feed/NoticeThread/NoticeThread';
-import { useRef } from 'react';
-import { useIntersectionObserver } from '~/hooks/useIntersectionObserver';
-import Text from '~/components/common/Text/Text';
-import { useFetchNoticeThread } from '~/hooks/queries/useFetchNoticeThread';
-import { useTeamPlace } from '~/hooks/useTeamPlace';
-import Notification from '~/components/feed/Notification/Notification';
+import { type RefObject, useRef, useEffect, useState } from 'react';
 import Thread from '~/components/feed/Thread/Thread';
 import EmptyFeedPlaceholder from '~/components/feed/EmptyFeedPlaceholder/EmptyFeedPlaceholder';
-import { useModal } from '~/hooks/useModal';
+import Text from '~/components/common/Text/Text';
+import { useFetchThreads } from '~/hooks/queries/useFetchThreads';
+import { useIntersectionObserver } from '~/hooks/useIntersectionObserver';
+import { useTeamPlace } from '~/hooks/useTeamPlace';
+import type { ThreadSize } from '~/types/size';
+import { THREAD_TYPE } from '~/constants/feed';
+import * as S from './ThreadList.styled';
 
 interface ThreadListProps {
+  containerRef?: RefObject<HTMLDivElement>;
   size?: ThreadSize;
 }
 
 const ThreadList = (props: ThreadListProps) => {
-  const { size = 'md' } = props;
-  const { teamPlaceId, teamPlaceColor } = useTeamPlace();
+  const { containerRef, size = 'md' } = props;
+
+  const { teamPlaceId } = useTeamPlace();
+
   const { threadPages, hasNextPage, fetchNextPage } =
     useFetchThreads(teamPlaceId);
-  const { noticeThread } = useFetchNoticeThread(teamPlaceId);
+
   const observeRef = useRef<HTMLDivElement>(null);
-  const { openModal } = useModal();
+  const [scrollHeight, setScrollHeight] = useState(0);
 
   const onIntersect: IntersectionObserverCallback = ([entry]) => {
     if (entry.isIntersecting && teamPlaceId > 0) {
@@ -34,44 +33,19 @@ const ThreadList = (props: ThreadListProps) => {
 
   useIntersectionObserver(observeRef, onIntersect, hasNextPage);
 
+  useEffect(() => {
+    if (!containerRef) return;
+
+    if (containerRef.current) {
+      const scrollTop = containerRef.current.scrollHeight - scrollHeight;
+      containerRef.current.scrollTop = scrollTop;
+      setScrollHeight(containerRef.current.scrollHeight);
+    }
+  }, [threadPages?.pages.length]);
+
   return (
     <>
-      {noticeThread && noticeThread.id && (
-        <NoticeThread
-          threadSize={size}
-          authorName={noticeThread.authorName}
-          createdAt={noticeThread.createdAt}
-          profileImageUrl={noticeThread.profileImageUrl}
-          content={noticeThread.content}
-        />
-      )}
-      {threadPages?.pages.map((page) =>
-        page.threads.map((thread) => {
-          const { id, type, profileImageUrl, content, ...rest } = thread;
-
-          return type === THREAD_TYPE.THREAD ? (
-            <Thread
-              key={id}
-              threadSize={size}
-              profileImageUrl={profileImageUrl}
-              content={content}
-              {...rest}
-            />
-          ) : (
-            <Notification
-              teamPlaceColor={teamPlaceColor}
-              key={id}
-              threadSize={size}
-              content={content}
-            />
-          );
-        }),
-      )}
-      {!(noticeThread && noticeThread.id) &&
-        threadPages &&
-        threadPages.pages[0].threads.length === 0 && (
-          <EmptyFeedPlaceholder onClick={openModal} />
-        )}
+      <div ref={observeRef} />
       {!hasNextPage &&
         threadPages &&
         threadPages.pages[0].threads.length > 0 && (
@@ -79,7 +53,41 @@ const ThreadList = (props: ThreadListProps) => {
             마지막 스레드 입니다.
           </Text>
         )}
-      <div ref={observeRef} />
+      {threadPages?.pages
+        .slice()
+        .reverse()
+        .map((page) =>
+          page.threads
+            .slice()
+            .reverse()
+            .map((thread, index, threads) => {
+              const { id, type, profileImageUrl, content, authorId, ...rest } =
+                thread;
+
+              const isContinue =
+                index - 1 >= 0 && authorId === threads[index - 1].authorId;
+
+              return type === THREAD_TYPE.THREAD ? (
+                <Thread
+                  key={id}
+                  threadSize={size}
+                  profileImageUrl={profileImageUrl}
+                  content={content}
+                  isContinue={isContinue}
+                  {...rest}
+                />
+              ) : // <Notification
+              //   teamPlaceColor={teamPlaceColor}
+              //   key={id}
+              //   threadSize={size}
+              //   content={content}
+              // />
+              null;
+            }),
+        )}
+      {threadPages && threadPages.pages[0].threads.length === 0 && (
+        <EmptyFeedPlaceholder />
+      )}
     </>
   );
 };
