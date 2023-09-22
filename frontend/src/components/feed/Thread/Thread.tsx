@@ -43,12 +43,8 @@ const Thread = (props: ThreadProps) => {
       {!isMe && !isContinue && (
         <S.ThreadHeader>
           <S.Author>
-            <S.ProfileImg
-              threadSize={threadSize}
-              src={profileImageUrl}
-              alt={authorName}
-            />
-            <Text weight="semiBold" css={S.threadInfoText(threadSize)}>
+            <S.ProfileImg src={profileImageUrl} alt={authorName} />
+            <Text weight="semiBold" css={S.threadInfoText}>
               {authorName}
             </Text>
           </S.Author>
@@ -59,7 +55,6 @@ const Thread = (props: ThreadProps) => {
           <S.ContentWrapper
             ref={contentRef}
             isExpanded={isExpanded}
-            threadSize={threadSize}
             isMe={isMe}
           >
             <Text size="xl" css={S.contentField(threadSize, isMe)}>
@@ -71,7 +66,7 @@ const Thread = (props: ThreadProps) => {
           </S.ContentWrapper>
         </S.ContentContainer>
         <time>
-          <Text css={S.threadInfoText(threadSize)}>{createdTime}</Text>
+          <Text css={S.threadInfoText}>{createdTime}</Text>
         </time>
       </S.BodyContainer>
     </S.Container>
