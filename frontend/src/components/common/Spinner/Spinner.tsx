@@ -1,5 +1,6 @@
 import type { SpinnerSize } from '~/types/size';
 import * as S from './Spinner.styled';
+import { arrayOf } from '~/utils/arrayOf';
 
 export interface SpinnerProps {
   color?: string;
@@ -12,16 +13,9 @@ const Spinner = (props: SpinnerProps) => {
   return (
     <S.Container>
       <S.Loader size={size}>
-        <S.Ball color={color} />
-        <S.Ball color={color} />
-        <S.Ball color={color} />
-        <S.Ball color={color} />
-        <S.Ball color={color} />
-        <S.Ball color={color} />
-        <S.Ball color={color} />
-        <S.Ball color={color} />
-        <S.Ball color={color} />
-        <S.Ball color={color} />
+        {arrayOf(10).map((i) => (
+          <S.Ball key={i} color={color} />
+        ))}
       </S.Loader>
     </S.Container>
   );
