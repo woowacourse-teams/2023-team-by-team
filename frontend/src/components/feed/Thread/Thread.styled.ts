@@ -26,35 +26,21 @@ export const ContentContainer = styled.div<{ isMe: boolean; height: number }>`
 `;
 
 export const ContentWrapper = styled.div<{
-  threadSize: ThreadSize;
   isMe: boolean;
   isExpanded: boolean;
 }>`
   position: relative;
   overflow: hidden;
 
-  ${({ threadSize, isExpanded }) => {
-    if (threadSize === 'md') {
-      if (isExpanded)
-        return css`
-          padding: 28px 28px 80px;
-        `;
-
+  ${({ isExpanded }) => {
+    if (isExpanded)
       return css`
-        padding: 28px;
+        padding: 16px 28px 80px;
       `;
-    }
 
-    if (threadSize === 'sm') {
-      if (isExpanded)
-        return css`
-          padding: 16px 28px 80px;
-        `;
-
-      return css`
-        padding: 16px 28px;
-      `;
-    }
+    return css`
+      padding: 16px 28px;
+    `;
   }}
 
   ${({ isMe, theme }) => {
@@ -85,30 +71,19 @@ export const Author = styled.div`
   gap: 10px;
 `;
 
-export const ProfileImg = styled.img<{ threadSize: ThreadSize }>`
+export const ProfileImg = styled.img`
+  width: 30px;
+  height: 30px;
+
   border-radius: 50%;
-
-  ${({ threadSize }) => {
-    if (threadSize === 'md')
-      return css`
-        width: 40px;
-        height: 40px;
-      `;
-
-    if (threadSize === 'sm')
-      return css`
-        width: 30px;
-        height: 30px;
-      `;
-  }}
 
   object-fit: cover;
 `;
 
-export const threadInfoText = (threadSize: ThreadSize) => css`
+export const threadInfoText = css`
   white-space: pre-wrap;
 
-  font-size: ${threadSize === 'md' ? 16 : 14}px;
+  font-size: 14px;
   color: ${({ theme }) => theme.color.BLACK};
 `;
 
@@ -116,7 +91,7 @@ export const contentField = (threadSize: ThreadSize, isMe: boolean) => css`
   width: 100%;
   white-space: pre-wrap;
 
-  font-size: ${threadSize === 'md' ? 20 : 16}px;
+  font-size: ${threadSize === 'md' ? 18 : 16}px;
   color: ${({ theme }) => (isMe ? theme.color.WHITE : theme.color.BLACK)};
 
   word-break: break-all;
