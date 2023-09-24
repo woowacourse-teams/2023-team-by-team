@@ -1,4 +1,4 @@
-package team.teamby.teambyteam.aws.s3;
+package team.teamby.teambyteam.filesystem.awss3;
 
 import org.springframework.web.multipart.MultipartFile;
 
