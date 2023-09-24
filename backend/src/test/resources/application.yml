@@ -39,7 +39,8 @@ aws:
   s3:
     region: abcd
     bucket: abcd
-    directory: a/b/c
+    asset-root-directory: /asset/root/directory
+    temp-image-directory: /a/b
   cloud-front:
     domain: abcd
 
