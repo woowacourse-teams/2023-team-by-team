@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import team.teamby.teambyteam.aws.s3.S3Uploader;
+import team.teamby.teambyteam.aws.s3.FileCloudUploader;
 import team.teamby.teambyteam.feed.application.dto.ImageUrlResponse;
 import team.teamby.teambyteam.feed.application.dto.ImageUrlsResponse;
 import team.teamby.teambyteam.feed.application.dto.UploadImageRequest;
@@ -33,7 +33,7 @@ public class S3UploadService {
     @Value("${aws.cloud-front.domain}")
     private String cloudFrontDomain;
 
-    private final S3Uploader s3Uploader;
+    private final FileCloudUploader fileCloudUploader;
 
     public ImageUrlsResponse getImageUploadUrls(final MemberEmailDto memberEmailDto, final UploadImageRequest uploadImageRequest) {
         final List<ImageUrlResponse> responses = new ArrayList<>();
@@ -44,7 +44,7 @@ public class S3UploadService {
         for (final MultipartFile image : uploadImageRequest.images()) {
             validateImage(image);
             final String customKey = directory + "/" + UUID.randomUUID() + hashedEmail;
-            s3Uploader.imageUpload(image, customKey);
+            fileCloudUploader.upload(image, customKey);
             responses.add(new ImageUrlResponse(image.getOriginalFilename(), cloudFrontDomain + customKey));
         }
 

@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
+import team.teamby.teambyteam.aws.s3.FileCloudUploader;
+import team.teamby.teambyteam.aws.s3.S3Uploader;
 
 @Configuration
 public class S3Configuration {
@@ -17,5 +19,10 @@ public class S3Configuration {
         return S3Client.builder()
                 .region(Region.of(region))
                 .build();
+    }
+
+    @Bean
+    public FileCloudUploader fileCloudUploader() {
+        return new S3Uploader(s3Client());
     }
 }
