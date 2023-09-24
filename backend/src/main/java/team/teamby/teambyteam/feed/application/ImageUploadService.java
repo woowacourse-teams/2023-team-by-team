@@ -1,4 +1,4 @@
-package team.teamby.teambyteam.aws.s3.application;
+package team.teamby.teambyteam.feed.application;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +20,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
-public class S3UploadService {
+public class ImageUploadService {
 
     private static final String HASHING_ALGORITHM = "SHA-256";
     private static final String HEX_FORMAT = "%02X";
