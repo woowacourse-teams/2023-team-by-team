@@ -1,5 +1,6 @@
 package team.teamby.teambyteam.feed.application;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class ImageUploadService {
 
     private static final String HASHING_ALGORITHM = "SHA-256";
