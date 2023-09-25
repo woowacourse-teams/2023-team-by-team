@@ -10,7 +10,6 @@ export const useSendTokenReissue = () => {
       const accessToken = data.headers.get('Authorization');
       const refreshToken = data.headers.get('Authorization-Refresh');
 
-      console.log(accessToken, refreshToken);
       localStorage.setItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN, accessToken ?? '');
       localStorage.setItem(LOCAL_STORAGE_KEY.REFRESH_TOKEN, refreshToken ?? '');
 
