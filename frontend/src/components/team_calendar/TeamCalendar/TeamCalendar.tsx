@@ -49,16 +49,16 @@ const TeamCalendar = (props: TeamCalendarProps) => {
 
   const schedules = useFetchSchedules(teamPlaceId, year, month);
   // NOTE: month의 값은 0부터 시작하므로 1월, 11월에 해당하는 month의 값은 각각 0, 11이다.
-  // usePrefetchSchedules(
-  //   teamPlaceId,
-  //   month === 11 ? year + 1 : year,
-  //   month === 11 ? 0 : month + 1,
-  // );
-  // usePrefetchSchedules(
-  //   teamPlaceId,
-  //   month === 0 ? year - 1 : year,
-  //   month === 0 ? 11 : month - 1,
-  // );
+  usePrefetchSchedules(
+    teamPlaceId,
+    month === 11 ? year + 1 : year,
+    month === 11 ? 0 : month + 1,
+  );
+  usePrefetchSchedules(
+    teamPlaceId,
+    month === 0 ? year - 1 : year,
+    month === 0 ? 11 : month - 1,
+  );
 
   const [clickedDate, setClickedDate] = useState(currentDate);
   const [modalType, setModalType] = useState<ModalOpenType>(
