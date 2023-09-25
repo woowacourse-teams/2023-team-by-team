@@ -43,8 +43,8 @@ const ProtectRoute = () => {
     }
 
     if (response.status === 403) {
-      localStorage.removeItem(LOCAL_STORAGE_KEY.TEAM_PLACE_ID);
-      navigate(PATH_NAME.TEAM_SELECT);
+      // localStorage.removeItem(LOCAL_STORAGE_KEY.TEAM_PLACE_ID);
+      // navigate(PATH_NAME.TEAM_SELECT);
     }
   };
 
