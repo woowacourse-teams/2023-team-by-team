@@ -40,7 +40,7 @@ aws:
     region: abcd
     bucket: abcd
     asset-root-directory: /asset/root/directory
-    temp-image-directory: /a/b
+    image-directory: /a/b
   cloud-front:
     domain: abcd
 

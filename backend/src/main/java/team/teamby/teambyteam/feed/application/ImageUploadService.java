@@ -29,8 +29,8 @@ public class ImageUploadService {
     private static final int LIMIT_IMAGE_SIZE = 5242880;
     private static final int LIMIT_IMAGE_COUNT = 4;
 
-    @Value("${aws.s3.temp-image-directory}")
-    private String tempDirectory;
+    @Value("${aws.s3.image-directory}")
+    private String imageDirectory;
 
     private final FileCloudUploader fileCloudUploader;
 
@@ -42,7 +42,7 @@ public class ImageUploadService {
         final String hashedEmail = hashEmail(email);
         for (final MultipartFile image : uploadImageRequest.images()) {
             validateImage(image);
-            final String customKey = tempDirectory + "/" + UUID.randomUUID() + hashedEmail;
+            final String customKey = imageDirectory + "/" + UUID.randomUUID() + hashedEmail;
             final String uploadedFileUrl = fileCloudUploader.upload(image, customKey);
             responses.add(new ImageUrlResponse(image.getOriginalFilename(), uploadedFileUrl));
         }
