@@ -2,10 +2,12 @@ package team.teamby.teambyteam.member.application;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.teamby.teambyteam.member.application.dto.MemberInfoResponse;
 import team.teamby.teambyteam.member.application.dto.TeamPlacesResponse;
+import team.teamby.teambyteam.member.application.event.MemberLeaveEvent;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.configuration.dto.MemberUpdateRequest;
 import team.teamby.teambyteam.member.domain.IdOnly;
@@ -33,6 +35,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final MemberTeamPlaceRepository memberTeamPlaceRepository;
     private final TeamPlaceInviteCodeRepository teamPlaceInviteCodeRepository;
+    private final ApplicationEventPublisher publisher;
 
     @Transactional(readOnly = true)
     public TeamPlacesResponse getParticipatedTeamPlaces(final MemberEmailDto memberEmailDto) {
@@ -102,6 +105,8 @@ public class MemberService {
         final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
                 .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
         memberRepository.delete(member);
+
+        publisher.publishEvent(new MemberLeaveEvent(member));
 
         log.info("사용자 회원 탈퇴 - 회원 이메일 : {}", memberEmailDto.email());
     }
