@@ -24,11 +24,17 @@ import team.teamby.teambyteam.teamplace.domain.vo.InviteCode;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static team.teamby.teambyteam.common.fixtures.MemberFixtures.*;
-import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptanceFixture.*;
+import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ENDEL;
+import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
+import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ROY;
+import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptanceFixture.DELETE_ACCOUNT;
+import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptanceFixture.DELETE_LEAVE_TEAM_PLACE;
+import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptanceFixture.GET_MY_INFORMATION;
+import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptanceFixture.GET_PARTICIPATED_TEAM_PLACES;
+import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptanceFixture.PARTICIPATE_TEAM_PLACE_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptanceFixture.UPDATE_MEMBER_INFORMATION;
 
 public class MemberAcceptanceTest extends AcceptanceTest {
-
 
     @Nested
     @DisplayName("내 정보 조회시")
@@ -423,10 +429,12 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         void success() {
             // given
             final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
-            final String PHILIP_TOKEN = jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue());
+            final String PHILIP_ACCESS_TOKEN = jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue());
+            final String PHILIP_REFRESH_TOKEN = jwtTokenProvider.generateRefreshToken(PHILIP.getEmail().getValue());
+            testFixtureBuilder.buildToken(TokenFixtures.TOKEN_ENTITY(PHILIP, PHILIP_REFRESH_TOKEN));
 
             // when
-            final ExtractableResponse<Response> response = DELETE_ACCOUNT(PHILIP_TOKEN);
+            final ExtractableResponse<Response> response = DELETE_ACCOUNT(PHILIP_ACCESS_TOKEN);
 
             //then
             assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
