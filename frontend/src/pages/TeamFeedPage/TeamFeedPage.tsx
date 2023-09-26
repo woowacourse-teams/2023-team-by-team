@@ -64,7 +64,7 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
             value={chatContent}
             onChange={handleChatContentChange}
             onKeyDown={handleEnterKeydown}
-            placeholder="여기에 채팅을 입력하세요. &#13;&#10; &#13;&#10;(Shift/Ctrl/Option) + Enter로 새 행을 추가합니다."
+            placeholder="여기에 채팅을 입력하세요. &#13;&#10; &#13;&#10;Shift + Enter로 새 행을 추가합니다."
             maxLength={10000}
             autoFocus
           />

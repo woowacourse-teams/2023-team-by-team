@@ -35,14 +35,14 @@ export const useTeamFeedPage = () => {
   };
 
   const handleEnterKeydown: KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
-    if ((e.key === 'Enter' && e.ctrlKey) || (e.key === 'Enter' && e.altKey)) {
-      setChatContent((prev) => prev + '\n');
-
+    // NOTE: 한글 입력 시 마지막 문자가 포함된 이벤트가 두 번 발생하는 문제를 해결하기 위해 isComposing을 체크한다.
+    if (e.nativeEvent.isComposing) {
       return;
     }
 
-    // NOTE: 한글 입력 시 마지막 문자가 포함된 이벤트가 두 번 발생하는 문제를 해결하기 위해 isComposing을 체크한다.
-    if (e.nativeEvent.isComposing) {
+    if ((e.key === 'Enter' && e.ctrlKey) || (e.key === 'Enter' && e.altKey)) {
+      setChatContent((prev) => prev + '\n');
+
       return;
     }
 
