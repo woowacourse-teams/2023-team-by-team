@@ -23,7 +23,7 @@ public class TokenEventListener {
         tokenRepository.deleteByMember(member);
         memberRepository.delete(member);
 
-        log.info("토큰 삭제 By 사용자 회원 탈퇴 이벤트 Listen - 회원 이메일 : {}", member.getEmail());
-        log.info("사용자 회원 탈퇴 - 회원 이메일 : {}", member.getEmail());
+        log.info("토큰 삭제 By 사용자 회원 탈퇴 이벤트 Listen - 회원 이메일 : {}", member.getEmail().getValue());
+        log.info("사용자 회원 탈퇴 - 회원 이메일 : {}", member.getEmail().getValue());
     }
 }
