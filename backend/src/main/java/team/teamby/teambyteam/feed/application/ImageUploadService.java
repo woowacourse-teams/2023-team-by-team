@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import team.teamby.teambyteam.filesystem.awss3.FileCloudUploader;
+import team.teamby.teambyteam.filesystem.FileCloudUploader;
 import team.teamby.teambyteam.feed.application.dto.ImageUrlResponse;
 import team.teamby.teambyteam.feed.application.dto.ImageUrlsResponse;
 import team.teamby.teambyteam.feed.application.dto.UploadImageRequest;
