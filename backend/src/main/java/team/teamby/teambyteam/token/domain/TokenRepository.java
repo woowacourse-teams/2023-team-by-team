@@ -13,7 +13,7 @@ public interface TokenRepository extends JpaRepository<Token, Long> {
 
     Optional<Token> findByMember(final Member member);
 
-    @Query("DELETE from Token t where t.member = :member")
+    @Query("DELETE from Token t where t.member.id = :memberId")
     @Modifying
-    void deleteByMember(final Member member);
+    void deleteByMemberId(final Long memberId);
 }

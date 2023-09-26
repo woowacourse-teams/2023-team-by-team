@@ -19,7 +19,7 @@ public class TokenEventListener {
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void deleteToken(final MemberLeaveEvent memberLeaveEvent) {
         Member member = memberLeaveEvent.member();
-        tokenRepository.deleteByMember(member);
+        tokenRepository.deleteByMemberId(member.getId());
 
         log.info("토큰 삭제 By 사용자 회원 탈퇴 이벤트 Listen - 회원 이메일 : {}", member.getEmail().getValue());
     }
