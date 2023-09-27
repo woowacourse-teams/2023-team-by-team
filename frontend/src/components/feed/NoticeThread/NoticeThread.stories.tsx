@@ -38,6 +38,15 @@ export const Default: Story = {
   },
 };
 
+export const MiddleContent: Story = {
+  args: {
+    authorName: '루루',
+    createdAt: '2022-03-04 12:34',
+    content:
+      '안녕하세요! 잘 부탁드립니다.안녕하세요! 잘 부탁드립니다.안녕하세요! 잘 부탁드립니다.안녕하세요! 잘 부탁드립니다.안녕하세요! 잘 부탁드립니다.안녕하세요! 잘 부탁드립니다.안녕하세요! 잘 부탁드립니다.안녕하세요! 잘 부탁드립니다.안녕하세요! 잘 부탁드립니다.안녕하세요! 잘 부탁드립니다.안녕하세요! 잘 부탁드립니다.안녕하세요! 잘 부탁드립니다.안녕하세요! 잘 부탁드립니다.',
+  },
+};
+
 export const TooLongContent: Story = {
   args: {
     authorName: '요술토끼',

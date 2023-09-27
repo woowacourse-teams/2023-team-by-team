@@ -13,9 +13,15 @@ import { useModal } from '~/hooks/useModal';
 import { useFetchUserInfo } from '~/hooks/queries/useFetchUserInfo';
 import UserInfoModal from '~/components/user/UserInfoModal/UserInfoModal';
 import TeamColorEditModal from '~/components/team/TeamColorEditModal/TeamColorEditModal';
+import AccountDeleteModal from '~/components/user/AccountDeleteModal/AccountDeleteModal';
 // import NotificationListModal from '~/components/feed/NotificationListModal/NotificationListModal';
 
-export type HeaderModalType = 'notification' | 'team' | 'user' | 'teamColor';
+export type HeaderModalType =
+  | 'notification'
+  | 'team'
+  | 'user'
+  | 'teamColor'
+  | 'accountDelete';
 
 const Header = () => {
   const {
@@ -76,6 +82,11 @@ const Header = () => {
 
   const handleTeamColorButtonClick = () => {
     setModalOpenType(() => 'teamColor');
+    openModal();
+  };
+
+  const handleAccountDeleteButtonClick = () => {
+    setModalOpenType(() => 'accountDelete');
     openModal();
   };
 
@@ -156,8 +167,13 @@ const Header = () => {
 
       {/* {modalOpenType === 'notification' && <NotificationListModal />} */}
       {modalOpenType === 'team' && <TeamPlaceInfoModal />}
-      {modalOpenType === 'user' && <UserInfoModal />}
+      {modalOpenType === 'user' && (
+        <UserInfoModal
+          onAccountDeleteButtonClick={handleAccountDeleteButtonClick}
+        />
+      )}
       {modalOpenType === 'teamColor' && <TeamColorEditModal />}
+      {modalOpenType === 'accountDelete' && <AccountDeleteModal />}
     </>
   );
 };

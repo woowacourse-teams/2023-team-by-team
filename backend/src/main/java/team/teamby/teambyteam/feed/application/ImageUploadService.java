@@ -1,10 +1,11 @@
-package team.teamby.teambyteam.aws.s3.application;
+package team.teamby.teambyteam.feed.application;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import team.teamby.teambyteam.aws.s3.S3Uploader;
+import team.teamby.teambyteam.filesystem.FileCloudUploader;
 import team.teamby.teambyteam.feed.application.dto.ImageUrlResponse;
 import team.teamby.teambyteam.feed.application.dto.ImageUrlsResponse;
 import team.teamby.teambyteam.feed.application.dto.UploadImageRequest;
@@ -20,20 +21,18 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
-public class S3UploadService {
+@Transactional
+public class ImageUploadService {
 
     private static final String HASHING_ALGORITHM = "SHA-256";
     private static final String HEX_FORMAT = "%02X";
     private static final int LIMIT_IMAGE_SIZE = 5242880;
     private static final int LIMIT_IMAGE_COUNT = 4;
 
-    @Value("${aws.s3.directory}")
-    private String directory;
+    @Value("${aws.s3.image-directory}")
+    private String imageDirectory;
 
-    @Value("${aws.cloud-front.domain}")
-    private String cloudFrontDomain;
-
-    private final S3Uploader s3Uploader;
+    private final FileCloudUploader fileCloudUploader;
 
     public ImageUrlsResponse getImageUploadUrls(final MemberEmailDto memberEmailDto, final UploadImageRequest uploadImageRequest) {
         final List<ImageUrlResponse> responses = new ArrayList<>();
@@ -43,9 +42,9 @@ public class S3UploadService {
         final String hashedEmail = hashEmail(email);
         for (final MultipartFile image : uploadImageRequest.images()) {
             validateImage(image);
-            final String customKey = directory + "/" + UUID.randomUUID() + hashedEmail;
-            s3Uploader.imageUpload(image, customKey);
-            responses.add(new ImageUrlResponse(image.getOriginalFilename(), cloudFrontDomain + customKey));
+            final String customKey = imageDirectory + "/" + UUID.randomUUID() + hashedEmail;
+            final String uploadedFileUrl = fileCloudUploader.upload(image, customKey);
+            responses.add(new ImageUrlResponse(image.getOriginalFilename(), uploadedFileUrl));
         }
 
         return new ImageUrlsResponse(responses);

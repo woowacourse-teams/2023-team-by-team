@@ -9,7 +9,7 @@ const user = {
 
 export const userHandlers = [
   // 사용자 정보 조회
-  rest.get('/api/me', (req, res, ctx) => {
+  rest.get('/api/me', (_, res, ctx) => {
     return res(ctx.status(200), ctx.json(user));
   }),
 
@@ -24,5 +24,9 @@ export const userHandlers = [
     user['name'] = name;
 
     return res(ctx.status(200), ctx.json(user));
+  }),
+
+  rest.delete('/api/me/account', async (_, res, ctx) => {
+    return res(ctx.status(204));
   }),
 ];

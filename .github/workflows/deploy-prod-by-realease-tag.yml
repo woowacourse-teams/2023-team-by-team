@@ -81,7 +81,7 @@ jobs:
         run: npm ci
 
       - name: Build App
-        run: npm run build
+        run: npm run build:prod
 
       - name: Upload frontend build file to artifact
         uses: actions/upload-artifact@v3
@@ -133,4 +133,5 @@ jobs:
         working-directory: frontend/prod/
         run: |
           aws s3 sync ./dist/ s3://2023-team-project/2023-team-by-team/prod/front --delete
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUD_FRONT_PROD_DISTRIBUTION_ID  }} --paths "/*"
 

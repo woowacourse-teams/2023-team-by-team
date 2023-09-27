@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import team.teamby.teambyteam.aws.s3.application.S3UploadService;
+import team.teamby.teambyteam.feed.application.ImageUploadService;
 import team.teamby.teambyteam.feed.application.FeedThreadService;
 import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
 import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
@@ -29,7 +29,7 @@ import java.net.URI;
 public class FeedThreadController {
 
     private final FeedThreadService feedThreadService;
-    private final S3UploadService s3UploadService;
+    private final ImageUploadService imageUploadService;
 
     @PostMapping("/{teamPlaceId}/feed/threads")
     public ResponseEntity<Void> write(
@@ -71,7 +71,7 @@ public class FeedThreadController {
             @AuthPrincipal final MemberEmailDto memberEmailDto,
             @ModelAttribute final UploadImageRequest uploadImageRequest
     ) {
-        final ImageUrlsResponse response = s3UploadService.getImageUploadUrls(memberEmailDto, uploadImageRequest);
+        final ImageUrlsResponse response = imageUploadService.getImageUploadUrls(memberEmailDto, uploadImageRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

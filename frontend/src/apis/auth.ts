@@ -17,7 +17,7 @@ export const sendTokenReissue = async () => {
 
   const BASE_URL = baseUrl === undefined ? '' : baseUrl;
 
-  reissuePromise = fetch(`${BASE_URL}/api/token/reissue`, {
+  reissuePromise = fetch(BASE_URL + '/api/token/reissue', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

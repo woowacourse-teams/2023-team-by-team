@@ -146,7 +146,7 @@ export const contentField = (noticeSize: NoticeSize) => {
   let height = '';
 
   if (noticeSize === 'sm') height = '24px';
-  if (noticeSize === 'md') height = '72px';
+  if (noticeSize === 'md') height = '66px';
   if (noticeSize === 'lg') height = '100%';
 
   return css`

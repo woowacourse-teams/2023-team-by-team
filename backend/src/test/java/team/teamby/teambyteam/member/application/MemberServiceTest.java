@@ -14,6 +14,7 @@ import team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures;
 import team.teamby.teambyteam.member.application.dto.MemberInfoResponse;
 import team.teamby.teambyteam.member.application.dto.TeamPlaceResponse;
 import team.teamby.teambyteam.member.application.dto.TeamPlacesResponse;
+import team.teamby.teambyteam.member.application.event.MemberLeaveEvent;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.configuration.dto.MemberUpdateRequest;
 import team.teamby.teambyteam.member.domain.Member;
@@ -33,9 +34,13 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static team.teamby.teambyteam.common.fixtures.MemberFixtures.*;
-import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
+import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP_NAME;
+import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ROY;
+import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
+import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.JAPANESE_TEAM_PLACE;
+import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.STATICS_TEAM_PLACE;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceInviteCodeFixtures.TEAM_PLACE_INVITE_CODE;
 
 class MemberServiceTest extends ServiceTest {
@@ -385,6 +390,21 @@ class MemberServiceTest extends ServiceTest {
             // when & then
             assertDoesNotThrow(() -> memberService.leaveMember(new MemberEmailDto(REGISTERED_MEMBER.getEmail().getValue())));
         }
+
+        @Test
+        @DisplayName("회원 탈퇴 이벤트가 발행된다.")
+        void publishMemberLeaveEvent() {
+            // given
+            final Member REGISTERED_MEMBER = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
+
+            // when
+            memberService.leaveMember(new MemberEmailDto(REGISTERED_MEMBER.getEmail().getValue()));
+
+            // when & then
+            assertThat(applicationEvents.stream(MemberLeaveEvent.class).count()).isEqualTo(1);
+        }
+
+
 
         @Test
         @DisplayName("회원 탈퇴를 하면서 팀플레이스를 탈퇴한다.")

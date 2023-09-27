@@ -40,6 +40,12 @@ export const useTeamFeedPage = () => {
       return;
     }
 
+    if ((e.key === 'Enter' && e.ctrlKey) || (e.key === 'Enter' && e.altKey)) {
+      setChatContent((prev) => prev + '\n');
+
+      return;
+    }
+
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
 

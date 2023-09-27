@@ -33,4 +33,18 @@ class TokenRepositoryTest extends RepositoryTest {
         assertThat(findToken).usingRecursiveComparison()
                 .isEqualTo(savedToken);
     }
+
+    @Test
+    @DisplayName("토큰을 멤버 ID로 삭제한다.")
+    void deleteByMember() {
+        // given
+        final Member philip = memberRepository.save(PHILIP());
+        final Token savedToken = tokenRepository.save(new Token(philip, CORRECT_REFRESH_TOKEN));
+
+        // when
+        tokenRepository.deleteByMemberId(philip.getId());
+
+        // then
+        assertThat(tokenRepository.findByMember(philip)).isEmpty();
+    }
 }
