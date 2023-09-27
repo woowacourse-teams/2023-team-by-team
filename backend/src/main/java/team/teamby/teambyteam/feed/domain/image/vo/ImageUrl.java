@@ -1,4 +1,4 @@
-package team.teamby.teambyteam.feed.domain.vo;
+package team.teamby.teambyteam.feed.domain.image.vo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
