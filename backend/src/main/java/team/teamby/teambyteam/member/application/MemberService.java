@@ -105,7 +105,7 @@ public class MemberService {
     public void leaveMember(final MemberEmailDto memberEmailDto) {
         final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
                 .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
-        publisher.publishEvent(new MemberLeaveEvent(member));
+        publisher.publishEvent(new MemberLeaveEvent(member.getId()));
 
         memberRepository.delete(member);
         log.info("사용자 회원 탈퇴 - 회원 이메일 : {}", member.getEmail().getValue());
