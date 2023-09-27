@@ -94,6 +94,7 @@ jobs:
     env:
       BACK_PROD_PROPERTY: ${{ secrets.PROD_BACK_PROPERTY }}
       BACK_DEPLOY_SCRIPT: ${{ secrets.PROD_BACK_DEPLOY_SCRIPT }}
+      CLOUD_FRONT_DISTRIBUTION_ID: ${{ secrets.CLOUD_FRONT_PROD_DISTRIBUTION_ID}}
 
     steps:
       - name: Remove previous version FRONT app
@@ -131,5 +132,5 @@ jobs:
         working-directory: frontend/prod/
         run: |
           aws s3 sync ./dist/ s3://2023-team-project/2023-team-by-team/prod/front --delete
-          aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUD_FRONT_PROD_DISTRIBUTION_ID  }} --paths "/*"
+          aws cloudfront create-invalidation --distribution-id "$CLOUD_FRONT_DISTRIBUTION_ID" --paths "/*"
 
