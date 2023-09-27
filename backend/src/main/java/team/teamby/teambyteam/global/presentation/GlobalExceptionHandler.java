@@ -1,6 +1,8 @@
 package team.teamby.teambyteam.global.presentation;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import java.time.DateTimeException;
+import java.util.Random;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +20,6 @@ import team.teamby.teambyteam.sharedlink.exception.SharedLinkException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeException;
 import team.teamby.teambyteam.token.exception.TokenException;
-
-import java.time.DateTimeException;
-import java.util.Random;
 
 @Slf4j
 @RestControllerAdvice
@@ -131,7 +130,8 @@ public class GlobalExceptionHandler {
             FeedException.ImageSizeException.class,
             FeedException.NotFoundImageExtensionException.class,
             FeedException.NotAllowedImageExtensionException.class,
-            FeedException.ImageOverCountException.class
+            FeedException.ImageOverCountException.class,
+            FeedException.WritingRequestEmptyException.class
     })
     public ResponseEntity<ErrorResponse> handleCustomBadRequestException(final RuntimeException exception) {
         final String message = exception.getMessage();
