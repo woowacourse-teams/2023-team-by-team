@@ -11,7 +11,6 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import team.teamby.teambyteam.auth.exception.AuthenticationException;
-import team.teamby.teambyteam.feed.application.ImageUploadService;
 import team.teamby.teambyteam.common.ApiDocsTest;
 import team.teamby.teambyteam.common.fixtures.FeedThreadFixtures;
 import team.teamby.teambyteam.feed.application.FeedThreadService;
@@ -51,9 +50,6 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
     @MockBean
     private FeedThreadService feedThreadService;
 
-    @MockBean
-    private ImageUploadService imageUploadService;
-
     @Nested
     @DisplayName("스레드 등록 문서화")
     class FeedThreadWriteDocs {
@@ -63,7 +59,7 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
         void success() throws Exception {
             // given
             final Long teamPlaceId = 1L;
-            final FeedThreadWritingRequest request = FeedThreadFixtures.HELLO_WRITING_REQUEST;
+            final FeedThreadWritingRequest request = FeedThreadFixtures.CONTENT_AND_IMAGE_REQUEST;
             final Long registeredId = 1L;
             given(feedThreadService.write(any(), any(), any()))
                     .willReturn(registeredId);
@@ -86,7 +82,8 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
                                             headerWithName(AUTHORIZATION_HEADER_KEY).description("사용자 JWT 인증 정보")
                                     ),
                                     requestFields(
-                                            fieldWithPath("content").type(JsonFieldType.STRING).description("등록할 내용")
+                                            fieldWithPath("content").type(JsonFieldType.STRING).description("등록할 내용"),
+                                            fieldWithPath("images").type(JsonFieldType.ARRAY).description("등록할 이미지들")
                                     ),
                                     responseHeaders(
                                             headerWithName(HttpHeaders.LOCATION).description("create 후 location 헤더")
@@ -96,11 +93,11 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
         }
 
         @Test
-        @DisplayName("빈 값으로 요청 시 실패")
-        void failIfBlankContent() throws Exception {
+        @DisplayName("내용과 이미지가 빈 값이면 요청 시 실패")
+        void failIfEmptyContentAndImages() throws Exception {
             // given
             final Long teamPlaceId = 1L;
-            final FeedThreadWritingRequest request = new FeedThreadWritingRequest("");
+            final FeedThreadWritingRequest request = FeedThreadFixtures.EMPTY_REQUEST;
 
             // when & then
             mockMvc.perform(post("/api/team-place/{teamPlaceId}/feed/threads", teamPlaceId)
@@ -109,7 +106,7 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
                             .content(objectMapper.writeValueAsString(request)))
                     .andExpect(status().isBadRequest())
                     .andDo(print())
-                    .andDo(document("feeds/write/fail/blankContent",
+                    .andDo(document("feeds/write/fail/emptyContentAndImages",
                                     preprocessRequest(prettyPrint()),
                                     preprocessResponse(prettyPrint()),
                                     pathParameters(
@@ -119,7 +116,8 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
                                             headerWithName(AUTHORIZATION_HEADER_KEY).description("사용자 JWT 인증 정보")
                                     ),
                                     requestFields(
-                                            fieldWithPath("content").type(JsonFieldType.STRING).description("빈 content")
+                                            fieldWithPath("content").type(JsonFieldType.STRING).description("빈 content"),
+                                            fieldWithPath("images").type(JsonFieldType.ARRAY).description("빈 이미지")
                                     )
                             )
                     );
@@ -130,7 +128,7 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
         void failIfNotParticipated() throws Exception {
             // given
             final Long teamPlaceId = 1L;
-            final FeedThreadWritingRequest request = FeedThreadFixtures.HELLO_WRITING_REQUEST;
+            final FeedThreadWritingRequest request = FeedThreadFixtures.CONTENT_AND_IMAGE_REQUEST;
             given(teamPlaceParticipationInterceptor.preHandle(any(), any(), any()))
                     .willThrow(new TeamPlaceException.TeamPlaceAccessForbidden(teamPlaceId, "사용자 email"));
 
@@ -162,7 +160,7 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
         void failIfNotAuthenticated() throws Exception {
             // given
             final Long teamPlaceId = 1L;
-            final FeedThreadWritingRequest request = FeedThreadFixtures.HELLO_WRITING_REQUEST;
+            final FeedThreadWritingRequest request = FeedThreadFixtures.CONTENT_AND_IMAGE_REQUEST;
             given(memberInterceptor.preHandle(any(), any(), any()))
                     .willThrow(new AuthenticationException.FailAuthenticationException("잘못된 액세스 토큰"));
 
