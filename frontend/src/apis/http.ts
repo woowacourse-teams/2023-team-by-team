@@ -43,7 +43,11 @@ export const http = {
       body: JSON.stringify(body),
     });
 
-    if (response.status === 401 || response.status === 404) {
+    if (
+      response.status === 401 ||
+      response.status === 404 ||
+      response.status === 500
+    ) {
       throw response;
     }
 
@@ -66,7 +70,7 @@ export const http = {
       body: JSON.stringify(body),
     });
 
-    if (response.status === 401) {
+    if (response.status === 401 || response.status === 500) {
       throw response;
     }
 

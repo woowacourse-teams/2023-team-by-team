@@ -122,6 +122,11 @@ const useScheduleAddModal = (clickedDate: Date) => {
           showToast('success', '일정이 등록되었습니다.');
           closeModal();
         },
+        onError: (error) => {
+          const response = error as Response;
+          if (response.status === 500)
+            showToast('error', '일정 제목이 최대 글자(200자)를 초과했습니다.');
+        },
       },
     );
   };
