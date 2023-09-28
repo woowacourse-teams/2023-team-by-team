@@ -52,6 +52,9 @@ public class FeedThreadService {
     private static final int LIMIT_IMAGE_SIZE = 5242880;
     private static final int LIMIT_IMAGE_COUNT = 4;
 
+    @Value("${aws.s3.asset-root-directory}")
+    private String assetDirectory;
+
     @Value("${aws.s3.image-directory}")
     private String imageDirectory;
 
@@ -80,7 +83,7 @@ public class FeedThreadService {
         final FeedThread savedFeedThread = feedRepository.save(feedThread);
 
         images.forEach(image -> {
-            final String generatedImageUrl = fileCloudUploader.upload(image, imageDirectory + "/" + UUID.randomUUID());
+            final String generatedImageUrl = fileCloudUploader.upload(image, assetDirectory + imageDirectory + "/" + UUID.randomUUID());
             final ImageUrl imageUrl = new ImageUrl(generatedImageUrl);
             final ImageName imageName = new ImageName(image.getOriginalFilename());
             final FeedThreadImage feedThreadImage = new FeedThreadImage(imageUrl, imageName);
