@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import team.teamby.teambyteam.auth.exception.AuthenticationException;
 import team.teamby.teambyteam.feed.exception.FeedException;
 import team.teamby.teambyteam.member.exception.MemberException;
@@ -131,7 +132,8 @@ public class GlobalExceptionHandler {
             FeedException.NotFoundImageExtensionException.class,
             FeedException.NotAllowedImageExtensionException.class,
             FeedException.ImageOverCountException.class,
-            FeedException.WritingRequestEmptyException.class
+            FeedException.WritingRequestEmptyException.class,
+            MaxUploadSizeExceededException.class
     })
     public ResponseEntity<ErrorResponse> handleCustomBadRequestException(final RuntimeException exception) {
         final String message = exception.getMessage();

@@ -1,27 +1,21 @@
 package team.teamby.teambyteam.feed.presentation;
 
 import jakarta.validation.Valid;
+import java.net.URI;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import team.teamby.teambyteam.feed.application.ImageUploadService;
 import team.teamby.teambyteam.feed.application.FeedThreadService;
 import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
 import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
-import team.teamby.teambyteam.feed.application.dto.ImageUrlsResponse;
-import team.teamby.teambyteam.feed.application.dto.UploadImageRequest;
 import team.teamby.teambyteam.member.configuration.AuthPrincipal;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
-
-import java.net.URI;
 
 @RestController
 @RequestMapping("/api/team-place")
@@ -29,11 +23,10 @@ import java.net.URI;
 public class FeedThreadController {
 
     private final FeedThreadService feedThreadService;
-    private final ImageUploadService imageUploadService;
 
     @PostMapping("/{teamPlaceId}/feed/threads")
     public ResponseEntity<Void> write(
-            @RequestBody @Valid final FeedThreadWritingRequest request,
+            @ModelAttribute @Valid final FeedThreadWritingRequest request,
             @AuthPrincipal final MemberEmailDto memberEmailDto,
             @PathVariable final Long teamPlaceId
     ) {
@@ -64,14 +57,5 @@ public class FeedThreadController {
         FeedsResponse feeds = feedThreadService.reRead(teamPlaceId, memberEmailDto, threadId, size);
 
         return ResponseEntity.ok(feeds);
-    }
-
-    @PostMapping("/{teamPlaceId}/feed/threads/images")
-    public ResponseEntity<ImageUrlsResponse> imageUpload(
-            @AuthPrincipal final MemberEmailDto memberEmailDto,
-            @ModelAttribute final UploadImageRequest uploadImageRequest
-    ) {
-        final ImageUrlsResponse response = imageUploadService.getImageUploadUrls(memberEmailDto, uploadImageRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }
