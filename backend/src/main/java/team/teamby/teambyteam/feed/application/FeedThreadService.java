@@ -90,7 +90,7 @@ public class FeedThreadService {
             feedThreadImage.confirmFeedThread(savedFeedThread);
             feedThreadImageRepository.save(feedThreadImage);
         });
-        Long threadId = feedThread.getId();
+        Long threadId = savedFeedThread.getId();
         log.info("스레드 생성 - 생성자 이메일 : {}, 스레드 아이디 : {}", memberEmailDto.email(), threadId);
 
         return threadId;
