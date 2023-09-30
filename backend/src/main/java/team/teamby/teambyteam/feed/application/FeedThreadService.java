@@ -70,7 +70,6 @@ public class FeedThreadService {
             final MemberEmailDto memberEmailDto,
             final Long teamPlaceId
     ) {
-
         final String content = feedThreadWritingRequest.content();
         List<MultipartFile> images = feedThreadWritingRequest.images();
         validateEmptyRequest(content, images);
@@ -82,14 +81,7 @@ public class FeedThreadService {
         final FeedThread feedThread = new FeedThread(teamPlaceId, contentVo, memberId.id());
         final FeedThread savedFeedThread = feedRepository.save(feedThread);
 
-        images.forEach(image -> {
-            final String generatedImageUrl = fileCloudUploader.upload(image, assetDirectory + imageDirectory + "/" + UUID.randomUUID());
-            final ImageUrl imageUrl = new ImageUrl(generatedImageUrl);
-            final ImageName imageName = new ImageName(image.getOriginalFilename());
-            final FeedThreadImage feedThreadImage = new FeedThreadImage(imageUrl, imageName);
-            feedThreadImage.confirmFeedThread(savedFeedThread);
-            feedThreadImageRepository.save(feedThreadImage);
-        });
+        saveImages(images, savedFeedThread);
         Long threadId = savedFeedThread.getId();
         log.info("스레드 생성 - 생성자 이메일 : {}, 스레드 아이디 : {}", memberEmailDto.email(), threadId);
 
@@ -132,6 +124,17 @@ public class FeedThreadService {
         }
 
         throw new FeedException.NotFoundImageExtensionException(originalFilename);
+    }
+
+    private void saveImages(final List<MultipartFile> images, final FeedThread savedFeedThread) {
+        images.forEach(image -> {
+            final String generatedImageUrl = fileCloudUploader.upload(image, assetDirectory + imageDirectory + "/" + UUID.randomUUID());
+            final ImageUrl imageUrl = new ImageUrl(generatedImageUrl);
+            final ImageName imageName = new ImageName(image.getOriginalFilename());
+            final FeedThreadImage feedThreadImage = new FeedThreadImage(imageUrl, imageName);
+            feedThreadImage.confirmFeedThread(savedFeedThread);
+            feedThreadImageRepository.save(feedThreadImage);
+        });
     }
 
     @Transactional(readOnly = true)
