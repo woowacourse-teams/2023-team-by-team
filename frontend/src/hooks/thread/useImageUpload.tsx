@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import type { ChangeEvent } from 'react';
+import type { ChangeEventHandler } from 'react';
 import type { FileWithUuid, PreviewImage } from '~/types/feed';
 import {
   MAX_IMAGE_CAPACITY,
@@ -14,7 +14,7 @@ import { generateUuid } from '~/utils/generateUuid';
  *
  * @returns {PreviewImage[]} previewImages - 미리보기 이미지의 `src`와 식별을 위한 `uuid`를 제공합니다.
  * @returns {File[]} imageFiles - 실제 업로드에 사용될 이미지 정보들을 `File` 객체로 된 배열로 제공합니다.
- * @returns {(e: ChangeEvent<HTMLInputElement>) => void} - updateImages 이미지 업로드 시 호출하는 함수입니다.
+ * @returns {ChangeEventHandler<HTMLInputElement>} - updateImages 이미지 업로드 시 호출하는 함수입니다.
  * @returns {deleteImageByUuid} deleteImageByUuid - `uuid`를 이용해 특정 이미지를 삭제할 시 호출하는 함수입니다.
  * @returns {deleteAllImages} deleteAllImages - 모든 이미지를 삭제할 때 호출하는 함수입니다.
  */
@@ -23,7 +23,7 @@ const useImageUpload = () => {
   const [previewImages, setPreviewImages] = useState<PreviewImage[]>([]);
   const { showToast } = useToast();
 
-  const updateImages = (e: ChangeEvent<HTMLInputElement>) => {
+  const updateImages: ChangeEventHandler<HTMLInputElement> = (e) => {
     if (!(e.target instanceof HTMLInputElement)) {
       return;
     }
