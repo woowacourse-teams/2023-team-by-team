@@ -10,7 +10,7 @@ import { useToast } from '../useToast';
 import { generateUuid } from '~/utils/generateUuid';
 
 /**
- * `useImageUploader` 는 이미지를 로컬에 업로드하여 관리하기 위한 커스텀 훅입니다.
+ * `useImageUpload` 는 이미지를 로컬에 업로드하여 관리하기 위한 커스텀 훅입니다.
  *
  * @returns {PreviewImage[]} previewImages - 미리보기 이미지의 `src`와 식별을 위한 `uuid`를 제공합니다.
  * @returns {File[]} imageFiles - 실제 업로드에 사용될 이미지 정보들을 `File` 객체로 된 배열로 제공합니다.
@@ -18,7 +18,7 @@ import { generateUuid } from '~/utils/generateUuid';
  * @returns {deleteImageByUuid} deleteImageByUuid - `uuid`를 이용해 특정 이미지를 삭제할 시 호출하는 함수입니다.
  * @returns {deleteAllImages} deleteAllImages - 모든 이미지를 삭제할 때 호출하는 함수입니다.
  */
-const useImageUploader = () => {
+const useImageUpload = () => {
   const [filesWithUuid, setFilesWithUuid] = useState<FileWithUuid[]>([]);
   const [previewImages, setPreviewImages] = useState<PreviewImage[]>([]);
   const { showToast } = useToast();
@@ -131,4 +131,4 @@ const useImageUploader = () => {
   };
 };
 
-export default useImageUploader;
+export default useImageUpload;

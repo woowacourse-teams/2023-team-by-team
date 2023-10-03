@@ -6,7 +6,7 @@ import Checkbox from '~/components/common/Checkbox/Checkbox';
 import { useTeamFeedPage } from '~/hooks/team/useTeamFeedPage';
 import theme from '~/styles/theme';
 import { AirplaneIcon, ArrowExpandMoreIcon, ImageIcon } from '~/assets/svg';
-import useImageUploader from '~/hooks/thread/useImageUploader';
+import useImageUploader from '~/hooks/thread/useImageUpload';
 import ImageUploadDrawer from '~/components/feed/ImageUploadDrawer/ImageUploadDrawer';
 import ThumbnailList from '~/components/feed/ThumbnailList/ThumbnailList';
 import type { ThreadSize } from '~/types/size';
