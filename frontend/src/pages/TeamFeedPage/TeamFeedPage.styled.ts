@@ -106,6 +106,10 @@ export const MenuButtonWrapper = styled.div`
   }
 `;
 
+export const ThreadInputForm = styled.form`
+  z-index: 1;
+`;
+
 export const scrollBottomButton = css`
   background-color: ${({ theme }) => theme.color.WHITE};
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);

@@ -77,7 +77,7 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
             onDelete={deleteImageByUuid}
           />
         </ImageUploadDrawer>
-        <form onSubmit={handleSubmit} style={{ zIndex: 1 }}>
+        <S.ThreadInputForm onSubmit={handleSubmit}>
           <S.Textarea
             value={chatContent}
             onChange={handleChatContentChange}
@@ -110,7 +110,7 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
               </Button>
             </div>
           </S.ButtonContainer>
-        </form>
+        </S.ThreadInputForm>
       </S.Inner>
     </S.Container>
   );
