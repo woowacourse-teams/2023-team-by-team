@@ -1,13 +1,19 @@
 package team.teamby.teambyteam.icalendar.application;
 
 import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.BDDMockito;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
+import org.springframework.core.task.SyncTaskExecutor;
 import org.springframework.test.context.transaction.TestTransaction;
 import team.teamby.teambyteam.common.ServiceTest;
 import team.teamby.teambyteam.common.fixtures.ScheduleFixtures;
@@ -21,6 +27,7 @@ import team.teamby.teambyteam.teamplace.application.event.TeamPlaceCreatedEvent;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
 import java.util.Optional;
+import java.util.concurrent.Executor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -39,62 +46,81 @@ class IcalendarEventListenerTest extends ServiceTest {
     @MockBean
     private FileCloudUploader fileCloudUploader;
 
-    @Test
-    @DisplayName("Ical생성에 성공한다")
-    void successCreatingIcalendar() {
-        // given
-        BDDMockito.given(fileCloudUploader.upload(any(byte[].class), any(String.class)))
-                .willAnswer(invocation -> {
-                    Thread.sleep(1000L);
-                    return "https://test.com/test.ice";
-                });
-
-        final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
-
-        final TeamPlaceCreatedEvent teamPlaceCreatedEvent = new TeamPlaceCreatedEvent(ENGLISH_TEAM_PLACE.getId());
-
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
-
-        // when
-        icalendarEventListener.createIcalendar(teamPlaceCreatedEvent);
-
-        // then
-        final Optional<PublishedIcalendar> publishedIcalendar = publishedIcalendarRepository.findByTeamPlaceId(ENGLISH_TEAM_PLACE.getId());
-        final String expectedFileNamePatter = "^" + ENGLISH_TEAM_PLACE.getId() + ".+[.]ics$";
-        SoftAssertions.assertSoftly(softly -> {
-            softly.assertThat(publishedIcalendar).isPresent();
-            softly.assertThat(publishedIcalendar.get().getPublishUrlValue()).isEqualTo("https://test.com/test.ice");
-            softly.assertThat(publishedIcalendar.get().getIcalendarFileNameValue()).matches(expectedFileNamePatter);
-        });
+    @TestConfiguration
+    static class TestConfig {
+        @Bean
+        @Primary
+        public Executor executor() {
+            return new SyncTaskExecutor();
+        }
     }
 
-    @Test
-    @DisplayName("이미 생성이되어있으면 새롭게 생성하지 않는다.")
-    void doesNotGenerateNewFileIfAlreadyExist() {
-        // given
-        BDDMockito.given(fileCloudUploader.upload(any(byte[].class), any(String.class)))
-                .willAnswer(invocation -> {
-                    Thread.sleep(1000L);
-                    return "https://test.com/changed-test.ice";
-                });
+    @BeforeEach
+    void setup() {
+        Mockito.reset(fileCloudUploader);
+    }
 
-        final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
-        final PublishedIcalendar TEST_ICAL = testFixtureBuilder.buildPublishedIcalendar(TEST_ICALENDAR(ENGLISH_TEAM_PLACE.getId()));
+    @Nested
+    @DisplayName("Ical 생성 테스트")
+    class IcalendarCreateTest {
 
-        final TeamPlaceCreatedEvent teamPlaceCreatedEvent = new TeamPlaceCreatedEvent(ENGLISH_TEAM_PLACE.getId());
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
+        @Test
+        @DisplayName("Ical생성에 성공한다")
+        void successCreatingIcalendar() throws InterruptedException {
+            // given
+            BDDMockito.given(fileCloudUploader.upload(any(byte[].class), any(String.class)))
+                    .willAnswer(invocation -> {
+                        Thread.sleep(1000L);
+                        return "https://test.com/test.ice";
+                    });
 
-        // when
-        icalendarEventListener.createIcalendar(teamPlaceCreatedEvent);
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
 
-        // then
-        final Optional<PublishedIcalendar> actual = publishedIcalendarRepository.findByTeamPlaceId(ENGLISH_TEAM_PLACE.getId());
-        SoftAssertions.assertSoftly(softly -> {
-            softly.assertThat(actual).isPresent();
-            softly.assertThat(actual.get().getIcalendarFileName()).isEqualTo(TEST_ICAL.getIcalendarFileName());
-        });
+            final TeamPlaceCreatedEvent teamPlaceCreatedEvent = new TeamPlaceCreatedEvent(ENGLISH_TEAM_PLACE.getId());
+
+            TestTransaction.flagForCommit();
+            TestTransaction.end();
+
+            // when
+            icalendarEventListener.createIcalendar(teamPlaceCreatedEvent);
+
+            // then
+            final Optional<PublishedIcalendar> publishedIcalendar = publishedIcalendarRepository.findByTeamPlaceId(ENGLISH_TEAM_PLACE.getId());
+            final String expectedFileNamePatter = "^" + ENGLISH_TEAM_PLACE.getId() + ".+[.]ics$";
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(publishedIcalendar).isPresent();
+                softly.assertThat(publishedIcalendar.get().getPublishUrlValue()).isEqualTo("https://test.com/test.ice");
+                softly.assertThat(publishedIcalendar.get().getIcalendarFileNameValue()).matches(expectedFileNamePatter);
+            });
+        }
+
+        @Test
+        @DisplayName("이미 생성이되어있으면 새롭게 생성하지 않는다.")
+        void doesNotGenerateNewFileIfAlreadyExist() throws InterruptedException {
+            // given
+            BDDMockito.given(fileCloudUploader.upload(any(byte[].class), any(String.class)))
+                    .willAnswer(invocation -> {
+                        Thread.sleep(1000L);
+                        return "https://test.com/changed-test.ice";
+                    });
+
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final PublishedIcalendar TEST_ICAL = testFixtureBuilder.buildPublishedIcalendar(TEST_ICALENDAR(ENGLISH_TEAM_PLACE.getId()));
+
+            final TeamPlaceCreatedEvent teamPlaceCreatedEvent = new TeamPlaceCreatedEvent(ENGLISH_TEAM_PLACE.getId());
+            TestTransaction.flagForCommit();
+            TestTransaction.end();
+
+            // when
+            icalendarEventListener.createIcalendar(teamPlaceCreatedEvent);
+
+            // then
+            final Optional<PublishedIcalendar> actual = publishedIcalendarRepository.findByTeamPlaceId(ENGLISH_TEAM_PLACE.getId());
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(actual).isPresent();
+                softly.assertThat(actual.get().getIcalendarFileName()).isEqualTo(TEST_ICAL.getIcalendarFileName());
+            });
+        }
     }
 
     @Nested
@@ -103,7 +129,7 @@ class IcalendarEventListenerTest extends ServiceTest {
 
         @Test
         @DisplayName("이미 ical배포중인 팀플레이스에서 uploadFile이 잘 실행이 된다.")
-        void successWithAlreadyPublishedIcs() {
+        void successWithAlreadyPublishedIcs() throws InterruptedException {
             // given
             BDDMockito.given(fileCloudUploader.upload(any(byte[].class), any(String.class)))
                     .willAnswer(invocation -> {
@@ -134,7 +160,7 @@ class IcalendarEventListenerTest extends ServiceTest {
 
         @Test
         @DisplayName("ical이 배포중이지 않은 팀플레이스에서 일정변동시 생성과 초기화를 진행한다.")
-        void successWithNewIcs() {
+        void successWithNewIcs() throws InterruptedException {
             // given
             BDDMockito.given(fileCloudUploader.upload(any(byte[].class), any(String.class)))
                     .willAnswer(invocation -> {
