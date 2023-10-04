@@ -33,6 +33,7 @@ public class TeamCalendarScheduleService {
 
     private final ScheduleRepository scheduleRepository;
     private final TeamPlaceRepository teamPlaceRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     public Long register(final ScheduleRegisterRequest scheduleRegisterRequest, final Long teamPlaceId) {
         checkTeamPlaceExist(teamPlaceId);
@@ -43,6 +44,13 @@ public class TeamCalendarScheduleService {
 
         final Schedule savedSchedule = scheduleRepository.save(schedule);
         log.info("일정 등록 - 팀플레이스 아이디 : {}, 일정 아이디 : {}", teamPlaceId, savedSchedule.getId());
+
+        applicationEventPublisher.publishEvent(new ScheduleCreateEvent(
+                savedSchedule.getId(),
+                teamPlaceId,
+                savedSchedule.getTitle(),
+                savedSchedule.getSpan()
+        ));
 
         return savedSchedule.getId();
     }
@@ -108,22 +116,30 @@ public class TeamCalendarScheduleService {
     public void update(final ScheduleUpdateRequest scheduleUpdateRequest, final Long teamPlaceId, final Long scheduleId) {
         checkTeamPlaceExist(teamPlaceId);
 
-        final Schedule previousSchedule = scheduleRepository.findById(scheduleId)
+        final Schedule schedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new ScheduleException.ScheduleNotFoundException(scheduleId));
-        validateScheduleOwnerTeam(teamPlaceId, previousSchedule);
+        validateScheduleOwnerTeam(teamPlaceId, schedule);
 
-        final Title previousTitle = previousSchedule.getTitle();
-        final Span previousSpan = previousSchedule.getSpan();
+        final Title previousTitle = schedule.getTitle();
+        final Span previousSpan = schedule.getSpan();
 
         final String titleToUpdate = scheduleUpdateRequest.title();
         final LocalDateTime startDateTimeToUpdate = scheduleUpdateRequest.startDateTime();
         final LocalDateTime endDateTimeToUpdate = scheduleUpdateRequest.endDateTime();
 
-        previousSchedule.change(titleToUpdate, startDateTimeToUpdate, endDateTimeToUpdate);
+        schedule.change(titleToUpdate, startDateTimeToUpdate, endDateTimeToUpdate);
         log.info("일정 수정 - 팀플레이스 아이디 : {}, 일정 아이디 : {}", teamPlaceId, scheduleId);
 
-        final ScheduleUpdateEventDto scheduleUpdateEventDto =
+        final ScheduleUpdateEventDto updatedScheduleInfo =
                 ScheduleUpdateEventDto.of(titleToUpdate, startDateTimeToUpdate, endDateTimeToUpdate);
+
+        applicationEventPublisher.publishEvent(new ScheduleUpdateEvent(
+                scheduleId,
+                teamPlaceId,
+                previousTitle,
+                previousSpan,
+                updatedScheduleInfo
+        ));
     }
 
     public void delete(final Long teamPlaceId, final Long scheduleId) {
@@ -135,5 +151,12 @@ public class TeamCalendarScheduleService {
 
         scheduleRepository.deleteById(scheduleId);
         log.info("일정 삭제 - 팀플레이스 아이디 : {}, 일정 아이디 : {}", teamPlaceId, scheduleId);
+
+        applicationEventPublisher.publishEvent(new ScheduleDeleteEvent(
+                scheduleId,
+                teamPlaceId,
+                schedule.getTitle(),
+                schedule.getSpan()
+        ));
     }
 }

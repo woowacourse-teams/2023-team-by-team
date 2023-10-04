@@ -14,6 +14,7 @@ import team.teamby.teambyteam.icalendar.domain.IcalendarParser;
 import team.teamby.teambyteam.icalendar.domain.PublishUrl;
 import team.teamby.teambyteam.icalendar.domain.PublishedIcalendar;
 import team.teamby.teambyteam.icalendar.domain.PublishedIcalendarRepository;
+import team.teamby.teambyteam.schedule.application.event.ScheduleEvent;
 import team.teamby.teambyteam.schedule.domain.Schedule;
 import team.teamby.teambyteam.schedule.domain.ScheduleRepository;
 import team.teamby.teambyteam.teamplace.application.event.TeamPlaceCreatedEvent;
@@ -25,6 +26,8 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class IcalendarEventListener {
+
+    private static final String TEAM_PLACE_NOT_CREATED_EXCEPTION_MESSAGE = "아직 생성되지 않은 팀플레이스 아이디입니다 - ";
 
     private final PublishedIcalendarRepository publishedIcalendarRepository;
     private final TeamPlaceRepository teamPlaceRepository;
@@ -39,23 +42,44 @@ public class IcalendarEventListener {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void createIcalendar(final TeamPlaceCreatedEvent teamPlaceCreatedEvent) {
-
         final Long teamPlaceId = teamPlaceCreatedEvent.teamPlaceId();
+        createAndPublishIcalendar(teamPlaceId);
+    }
+
+    private void createAndPublishIcalendar(final Long teamPlaceId) {
         if (publishedIcalendarRepository.existsByTeamPlaceId(teamPlaceId)) {
             return;
         }
-
         final IcalendarFileName icalendarFileName = IcalendarFileName.generateRandomFileName(teamPlaceId);
         final TeamPlace teamPlace = teamPlaceRepository.findById(teamPlaceId)
-                .orElseThrow(() -> new IllegalArgumentException("아직 생성되지 않은 팀플레이스 아이디입니다 - " + teamPlaceId));
-        final List<Schedule> schedules = scheduleRepository.findAllByTeamPlaceId(teamPlaceId);
+                .orElseThrow(() -> new IllegalArgumentException(TEAM_PLACE_NOT_CREATED_EXCEPTION_MESSAGE + teamPlaceId));
 
-        final String icalString = icalendarParser.parse(teamPlace, schedules);
-
-        final String uploadedUrl = fileCloudUploader.upload(icalString.getBytes(), icalDirectory + "/" + icalendarFileName.getValue());
+        final String uploadedUrl = uploadIcalendarFile(teamPlace, icalendarFileName);
 
         final PublishedIcalendar publishedIcalendar = new PublishedIcalendar(teamPlaceId, icalendarFileName, new PublishUrl(uploadedUrl));
-
         publishedIcalendarRepository.save(publishedIcalendar);
+    }
+
+    private String uploadIcalendarFile(final TeamPlace teamPlace, final IcalendarFileName icalendarFileName) {
+        final List<Schedule> schedules = scheduleRepository.findAllByTeamPlaceId(teamPlace.getId());
+        final String icalString = icalendarParser.parse(teamPlace, schedules);
+        return fileCloudUploader.upload(icalString.getBytes(), icalDirectory + "/" + icalendarFileName.getValue());
+    }
+
+    @Async
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    public void updateIcalendar(final ScheduleEvent scheduleEvent) {
+        final Long teamPlaceId = scheduleEvent.getTeamPlaceId();
+
+        publishedIcalendarRepository.findByTeamPlaceId(teamPlaceId)
+                .ifPresentOrElse(
+                        publishedIcal -> {
+                            final TeamPlace teamPlace = teamPlaceRepository.findById(teamPlaceId)
+                                    .orElseThrow(() -> new IllegalArgumentException(TEAM_PLACE_NOT_CREATED_EXCEPTION_MESSAGE + teamPlaceId));
+                            uploadIcalendarFile(teamPlace, publishedIcal.getIcalendarFileName());
+                        },
+                        () -> createAndPublishIcalendar(teamPlaceId)
+                );
     }
 }
