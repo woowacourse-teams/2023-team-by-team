@@ -1,9 +1,20 @@
 package team.teamby.teambyteam.feed.application.dto;
 
-import jakarta.validation.constraints.NotBlank;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import org.springframework.web.multipart.MultipartFile;
 
 public record FeedThreadWritingRequest(
-        @NotBlank(message = "스레드 내용이 있어야 합니다.")
-        String content
+        String content,
+        List<MultipartFile> images
 ) {
+
+    @Override
+    public List<MultipartFile> images() {
+        if (Objects.isNull(images)) {
+            return Collections.emptyList();
+        }
+        return images;
+    }
 }

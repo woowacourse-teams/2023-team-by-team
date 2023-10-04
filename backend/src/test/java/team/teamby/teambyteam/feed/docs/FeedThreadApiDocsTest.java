@@ -1,5 +1,30 @@
 package team.teamby.teambyteam.feed.docs;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willThrow;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.multipart;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseBody;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParts;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -7,11 +32,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.mock.web.MockPart;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.multipart.MultipartFile;
 import team.teamby.teambyteam.auth.exception.AuthenticationException;
-import team.teamby.teambyteam.feed.application.ImageUploadService;
 import team.teamby.teambyteam.common.ApiDocsTest;
 import team.teamby.teambyteam.common.fixtures.FeedThreadFixtures;
 import team.teamby.teambyteam.feed.application.FeedThreadService;
@@ -19,31 +44,11 @@ import team.teamby.teambyteam.feed.application.dto.FeedResponse;
 import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
 import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
 import team.teamby.teambyteam.feed.domain.FeedType;
+import team.teamby.teambyteam.feed.exception.FeedException;
 import team.teamby.teambyteam.feed.presentation.FeedThreadController;
+import team.teamby.teambyteam.filesystem.FileCloudUploader;
+import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
-
-import java.util.List;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
-import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseBody;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(FeedThreadController.class)
 public final class FeedThreadApiDocsTest extends ApiDocsTest {
@@ -52,7 +57,13 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
     private FeedThreadService feedThreadService;
 
     @MockBean
-    private ImageUploadService imageUploadService;
+    private FileCloudUploader fileCloudUploader;
+
+    @BeforeEach
+    void setUp() {
+        given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class)))
+                .willReturn("https://s3://seongha-seeik");
+    }
 
     @Nested
     @DisplayName("스레드 등록 문서화")
@@ -63,18 +74,19 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
         void success() throws Exception {
             // given
             final Long teamPlaceId = 1L;
-            final FeedThreadWritingRequest request = FeedThreadFixtures.HELLO_WRITING_REQUEST;
             final Long registeredId = 1L;
             given(feedThreadService.write(any(), any(), any()))
                     .willReturn(registeredId);
 
             // when & then
-            mockMvc.perform(post("/api/team-place/{teamPlaceId}/feed/threads", teamPlaceId)
+            mockMvc.perform(multipart("/api/team-place/{teamPlaceId}/feed/threads", teamPlaceId)
+                            .file("images", FeedThreadFixtures.UNDER_SIZE_PNG_MOCK_MULTIPART_FILE1.getBytes())
+                            .part(new MockPart("content", "TEST".getBytes()))
                             .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(request)))
+                            .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
                     .andExpect(status().isCreated())
-                    .andExpect(header().string(HttpHeaders.LOCATION, "/api/team-place/" + teamPlaceId + "/feed/threads/" + registeredId))
+                    .andExpect(header().string(HttpHeaders.LOCATION,
+                            "/api/team-place/" + teamPlaceId + "/feed/threads/" + registeredId))
                     .andDo(print())
                     .andDo(document("feeds/write/success",
                                     preprocessRequest(prettyPrint()),
@@ -85,8 +97,9 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
                                     requestHeaders(
                                             headerWithName(AUTHORIZATION_HEADER_KEY).description("사용자 JWT 인증 정보")
                                     ),
-                                    requestFields(
-                                            fieldWithPath("content").type(JsonFieldType.STRING).description("등록할 내용")
+                                    requestParts(
+                                            partWithName("content").description("등록할 내용"),
+                                            partWithName("images").description("등록할 이미지들")
                                     ),
                                     responseHeaders(
                                             headerWithName(HttpHeaders.LOCATION).description("create 후 location 헤더")
@@ -96,20 +109,20 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
         }
 
         @Test
-        @DisplayName("빈 값으로 요청 시 실패")
-        void failIfBlankContent() throws Exception {
+        @DisplayName("내용과 이미지가 빈 값이면 요청 시 실패")
+        void failIfEmptyContentAndImages() throws Exception {
             // given
             final Long teamPlaceId = 1L;
-            final FeedThreadWritingRequest request = new FeedThreadWritingRequest("");
+            willThrow(new FeedException.WritingRequestEmptyException())
+                    .given(feedThreadService)
+                            .write(any(FeedThreadWritingRequest.class), any(MemberEmailDto.class), eq(teamPlaceId));
 
             // when & then
-            mockMvc.perform(post("/api/team-place/{teamPlaceId}/feed/threads", teamPlaceId)
-                            .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(request)))
+            mockMvc.perform(multipart("/api/team-place/{teamPlaceId}/feed/threads", teamPlaceId)
+                            .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE))
                     .andExpect(status().isBadRequest())
                     .andDo(print())
-                    .andDo(document("feeds/write/fail/blankContent",
+                    .andDo(document("feeds/write/fail/emptyContentAndImages",
                                     preprocessRequest(prettyPrint()),
                                     preprocessResponse(prettyPrint()),
                                     pathParameters(
@@ -117,9 +130,6 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
                                     ),
                                     requestHeaders(
                                             headerWithName(AUTHORIZATION_HEADER_KEY).description("사용자 JWT 인증 정보")
-                                    ),
-                                    requestFields(
-                                            fieldWithPath("content").type(JsonFieldType.STRING).description("빈 content")
                                     )
                             )
                     );
@@ -130,15 +140,16 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
         void failIfNotParticipated() throws Exception {
             // given
             final Long teamPlaceId = 1L;
-            final FeedThreadWritingRequest request = FeedThreadFixtures.HELLO_WRITING_REQUEST;
+            final FeedThreadWritingRequest request = FeedThreadFixtures.CONTENT_AND_IMAGE_REQUEST;
             given(teamPlaceParticipationInterceptor.preHandle(any(), any(), any()))
                     .willThrow(new TeamPlaceException.TeamPlaceAccessForbidden(teamPlaceId, "사용자 email"));
 
             // when & then
-            mockMvc.perform(post("/api/team-place/{teamPlaceId}/feed/threads", teamPlaceId)
+            mockMvc.perform(multipart("/api/team-place/{teamPlaceId}/feed/threads", teamPlaceId)
+                            .file("images", FeedThreadFixtures.UNDER_SIZE_PNG_MOCK_MULTIPART_FILE1.getBytes())
+                            .part(new MockPart("content", "TEST".getBytes()))
                             .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(request)))
+                            .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
                     .andExpect(status().isForbidden())
                     .andDo(print())
                     .andDo(document("feeds/write/fail/notParticipatedTeamPlace",
@@ -149,9 +160,6 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
                                     ),
                                     requestHeaders(
                                             headerWithName(AUTHORIZATION_HEADER_KEY).description("사용자 JWT 인증 정보")
-                                    ),
-                                    requestFields(
-                                            fieldWithPath("content").type(JsonFieldType.STRING).description("등록할 내용")
                                     )
                             )
                     );
@@ -162,15 +170,15 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
         void failIfNotAuthenticated() throws Exception {
             // given
             final Long teamPlaceId = 1L;
-            final FeedThreadWritingRequest request = FeedThreadFixtures.HELLO_WRITING_REQUEST;
             given(memberInterceptor.preHandle(any(), any(), any()))
                     .willThrow(new AuthenticationException.FailAuthenticationException("잘못된 액세스 토큰"));
 
             // when & then
-            mockMvc.perform(post("/api/team-place/{teamPlaceId}/feed/threads", teamPlaceId)
+            mockMvc.perform(multipart("/api/team-place/{teamPlaceId}/feed/threads", teamPlaceId)
+                            .file("images", FeedThreadFixtures.UNDER_SIZE_PNG_MOCK_MULTIPART_FILE1.getBytes())
+                            .part(new MockPart("content", "TEST".getBytes()))
                             .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(request)))
+                            .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
                     .andExpect(status().isUnauthorized())
                     .andDo(print())
                     .andDo(document("feeds/write/fail/unAuthorized",
@@ -181,9 +189,6 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
                                     ),
                                     requestHeaders(
                                             headerWithName(AUTHORIZATION_HEADER_KEY).description("사용자 JWT 인증 정보")
-                                    ),
-                                    requestFields(
-                                            fieldWithPath("content").type(JsonFieldType.STRING).description("등록할 내용")
                                     )
                             )
                     );
@@ -202,7 +207,8 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
             final int size = 3;
             final Long authorId = 1L;
 
-            FeedResponse feedResponse = new FeedResponse(1L, FeedType.THREAD.name(), authorId, "author", "/", "created", "hello", List.of(), false);
+            FeedResponse feedResponse = new FeedResponse(1L, FeedType.THREAD.name(), authorId, "author", "/", "created",
+                    "hello", List.of(), false);
             final FeedsResponse feedsResponse = new FeedsResponse(List.of(feedResponse));
             given(feedThreadService.firstRead(any(), any(), any()))
                     .willReturn(feedsResponse);
@@ -303,8 +309,8 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
             final int size = 3;
             final Long authorId = 1L;
 
-
-            final FeedResponse feedResponse = new FeedResponse(1L, FeedType.THREAD.name(), authorId, "author", "/", "created", "hello", List.of(), false);
+            final FeedResponse feedResponse = new FeedResponse(1L, FeedType.THREAD.name(), authorId, "author", "/",
+                    "created", "hello", List.of(), false);
             final FeedsResponse feedsResponse = new FeedsResponse(List.of(feedResponse));
             given(feedThreadService.reRead(any(), any(), any(), any()))
                     .willReturn(feedsResponse);
