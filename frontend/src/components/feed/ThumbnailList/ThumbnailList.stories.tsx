@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import type { PreviewImage, ThreadImage } from '~/types/feed';
 import ThumbnailList from './ThumbnailList';
-import type { ThreadImage } from '~/types/feed';
 
 /**
  * `ThumbnailList` 은 이미지 서랍, 또는 채팅에서 사용할 수 있는 썸네일 모음집입니다.
@@ -33,7 +33,26 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const images = [
+const deleteModeImages: PreviewImage[] = [
+  {
+    uuid: '69aaaf99-a02d-4800-a175-7314c64e2a84',
+    url: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80',
+  },
+  {
+    uuid: 'aaf9a0de-8289-455e-8112-37eebc42944a',
+    url: 'https://images.unsplash.com/photo-1551106652-a5bcf4b29ab6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1965&q=80',
+  },
+  {
+    uuid: 'ac49b5ed-11f4-468b-b278-5880fcf7bf16',
+    url: 'https://images.unsplash.com/photo-1591382386627-349b692688ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1887&q=80',
+  },
+  {
+    uuid: '3e658b3c-5664-4225-b94a-25e6cece4ac5',
+    url: 'https://img.icons8.com/?size=256&id=VUoFEYkLOaMn&format=png&color=1A6DFF,C822FF',
+  },
+];
+
+const viewModeImages: ThreadImage[] = [
   {
     id: 9283,
     isExpired: false,
@@ -72,12 +91,12 @@ const images = [
 export const DeletableList: Story = {
   args: {
     mode: 'delete',
-    images,
-    onDelete: (imageId: number) => {
-      alert(`onDelete(${imageId});`);
+    images: [],
+    onDelete: (imageUuid) => {
+      alert(`onDelete(${imageUuid});`);
     },
-    onClickAddButton: () => {
-      alert('onClickAddButton()');
+    onChange: () => {
+      alert(`onChange()`);
     },
   },
 };
@@ -88,12 +107,12 @@ export const DeletableList: Story = {
 export const NotMaxDeletableList: Story = {
   args: {
     mode: 'delete',
-    images: images.slice(0, 2),
-    onDelete: (imageId: number) => {
-      alert(`onDelete(${imageId});`);
+    images: deleteModeImages.slice(0, 2),
+    onDelete: (imageUuid) => {
+      alert(`onDelete(${imageUuid});`);
     },
-    onClickAddButton: () => {
-      alert('onClickAddButton()');
+    onChange: () => {
+      alert(`onChange()`);
     },
   },
 };
@@ -102,11 +121,11 @@ export const EmptyDeletableList: Story = {
   args: {
     mode: 'delete',
     images: [],
-    onDelete: (imageId: number) => {
-      alert(`onDelete(${imageId});`);
+    onDelete: (imageUuid) => {
+      alert(`onDelete(${imageUuid});`);
     },
-    onClickAddButton: () => {
-      alert('onClickAddButton()');
+    onChange: () => {
+      alert(`onChange()`);
     },
   },
 };
@@ -117,7 +136,7 @@ export const EmptyDeletableList: Story = {
 export const ViewableList: Story = {
   args: {
     mode: 'view',
-    images,
+    images: viewModeImages,
     onClick: (images: ThreadImage[], selectedImage: number) => {
       alert(`onClick(${JSON.stringify(images)}, ${selectedImage});`);
     },

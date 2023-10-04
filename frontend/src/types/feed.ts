@@ -32,3 +32,13 @@ export interface ThreadImage {
   name: string;
   url: string;
 }
+
+export interface PreviewImage {
+  uuid: string;
+  url: string;
+}
+
+export interface FileWithUuid {
+  uuid: string;
+  file: File;
+}
