@@ -28,4 +28,22 @@ public class PublishedIcalendar extends BaseEntity {
 
     @Embedded
     private PublishUrl publishUrl;
+
+    public PublishedIcalendar(
+            final Long teamPlaceId,
+            final IcalendarFileName icalendarFileName,
+            final PublishUrl publishUrl
+    ) {
+        this.teamPlaceId = teamPlaceId;
+        this.icalendarFileName = icalendarFileName;
+        this.publishUrl = publishUrl;
+    }
+
+    public String getIcalendarFileNameValue() {
+        return icalendarFileName.getValue();
+    }
+
+    public String getPublishUrlValue() {
+        return publishUrl.getValue();
+    }
 }

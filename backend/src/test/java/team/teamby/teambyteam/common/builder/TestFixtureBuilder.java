@@ -3,6 +3,7 @@ package team.teamby.teambyteam.common.builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import team.teamby.teambyteam.feed.domain.Feed;
+import team.teamby.teambyteam.icalendar.domain.PublishedIcalendar;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.notice.domain.Notice;
@@ -92,5 +93,9 @@ public class TestFixtureBuilder {
 
     public SharedLink buildSharedLink(final SharedLink sharedLink) {
         return bs.sharedLinkRepository().save(sharedLink);
+    }
+
+    public PublishedIcalendar buildPublishedIcalendar(final PublishedIcalendar publishedIcalendar) {
+        return bs.publishedIcalendarRepository().save(publishedIcalendar);
     }
 }

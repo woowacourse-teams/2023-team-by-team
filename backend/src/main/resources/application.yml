@@ -41,6 +41,7 @@ aws:
     bucket: abcd
     asset-root-directory: /asset/root/directory
     image-directory: /a/b
+    ical-directory: /i/c
   cloud-front:
     domain: abcd
 
