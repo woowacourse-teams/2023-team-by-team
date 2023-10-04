@@ -29,11 +29,7 @@ export const useTeamFeedPage = () => {
     setIsNotice((prev) => !prev);
   };
 
-  const handleImageDrawerClose = () => {
-    setIsImageDrawerOpen(() => false);
-  };
-
-  const handleImageToggleButtonClick = () => {
+  const handleImageDrawerToggle = () => {
     setIsImageDrawerOpen((prevIsImageDrawerOpen) => !prevIsImageDrawerOpen);
   };
 
@@ -160,8 +156,7 @@ export const useTeamFeedPage = () => {
     handlers: {
       handleIsNoticeChange,
       handleChatContentChange,
-      handleImageDrawerClose,
-      handleImageToggleButtonClick,
+      handleImageDrawerToggle,
       handleEnterKeydown,
       handleScrollBottomButtonClick,
       handleSubmit,

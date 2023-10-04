@@ -30,8 +30,7 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
     handlers: {
       handleIsNoticeChange,
       handleChatContentChange,
-      handleImageDrawerClose,
-      handleImageToggleButtonClick,
+      handleImageDrawerToggle,
       handleEnterKeydown,
       handleScrollBottomButtonClick,
       handleSubmit,
@@ -68,7 +67,7 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
         </S.ThreadContainer>
         <ImageUploadDrawer
           isOpen={isImageDrawerOpen}
-          onClose={handleImageDrawerClose}
+          onClose={handleImageDrawerToggle}
         >
           <ThumbnailList
             mode="delete"
@@ -91,7 +90,7 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
               type="button"
               variant="plain"
               aria-label="이미지 업로드하기"
-              onClick={handleImageToggleButtonClick}
+              onClick={handleImageDrawerToggle}
             >
               <ImageIcon />
             </Button>
