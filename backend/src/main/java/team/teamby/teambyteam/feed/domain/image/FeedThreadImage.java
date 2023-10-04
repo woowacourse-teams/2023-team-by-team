@@ -13,11 +13,12 @@ import lombok.NoArgsConstructor;
 import team.teamby.teambyteam.feed.domain.FeedThread;
 import team.teamby.teambyteam.feed.domain.image.vo.ImageName;
 import team.teamby.teambyteam.feed.domain.image.vo.ImageUrl;
+import team.teamby.teambyteam.global.domain.BaseEntity;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class FeedThreadImage {
+public class FeedThreadImage extends BaseEntity {
 
     @Id
     @GeneratedValue
