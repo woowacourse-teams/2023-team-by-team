@@ -13,6 +13,7 @@ import org.springframework.core.task.SyncTaskExecutor;
 import org.springframework.test.context.transaction.TestTransaction;
 import team.teamby.teambyteam.common.ServiceTest;
 import team.teamby.teambyteam.common.fixtures.ScheduleFixtures;
+import team.teamby.teambyteam.icalendar.application.event.CreateIcalendarEvent;
 import team.teamby.teambyteam.schedule.application.event.ScheduleCreateEvent;
 import team.teamby.teambyteam.schedule.application.event.ScheduleEvent;
 import team.teamby.teambyteam.schedule.domain.Schedule;
@@ -21,6 +22,7 @@ import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
 import java.util.concurrent.Executor;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
@@ -48,7 +50,20 @@ class IcalendarEventListenerTest extends ServiceTest {
     }
 
     @Test
-    @DisplayName("Ical생성에 성공한다")
+    @DisplayName("팀플레이스 생성 이벤트 발생시 Ical생성에 성공한다")
+    void successCallCreatingIcalendarWhenTeamPlaceCreated() {
+        // given
+        final TeamPlaceCreatedEvent teamPlaceCreatedEvent = new TeamPlaceCreatedEvent(1L);
+
+        // when
+        icalendarEventListener.createIcalendar(teamPlaceCreatedEvent);
+
+        // then
+        assertThat(applicationEvents.stream(CreateIcalendarEvent.class).count()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("Ical생성에 성공한다.")
     void successCallCreatingIcalendar() {
         // given
         final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
@@ -56,10 +71,10 @@ class IcalendarEventListenerTest extends ServiceTest {
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
-        final TeamPlaceCreatedEvent teamPlaceCreatedEvent = new TeamPlaceCreatedEvent(ENGLISH_TEAM_PLACE.getId());
+        final CreateIcalendarEvent createIcalendarEvent = new CreateIcalendarEvent(ENGLISH_TEAM_PLACE.getId());
 
         // when
-        icalendarEventListener.createIcalendar(teamPlaceCreatedEvent);
+        icalendarEventListener.createIcalendar(createIcalendarEvent);
 
         // then
         verify(icalendarPublishService, times(1)).createAndPublishIcalendar(ENGLISH_TEAM_PLACE.getId());
