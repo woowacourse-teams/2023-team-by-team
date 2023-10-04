@@ -30,7 +30,7 @@ export const useTeamFeedPage = () => {
   };
 
   const handleImageDrawerToggle = () => {
-    setIsImageDrawerOpen((prevIsImageDrawerOpen) => !prevIsImageDrawerOpen);
+    setIsImageDrawerOpen((prev) => !prev);
   };
 
   const handleChatContentChange: ChangeEventHandler<HTMLTextAreaElement> = (
