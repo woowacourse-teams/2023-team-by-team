@@ -34,6 +34,7 @@ public class IcalendarEventListener {
         final Long teamPlaceId = createIcalendarEvent.teamPlaceId();
 
         icalendarPublishService.createAndPublishIcalendar(teamPlaceId);
+        log.info("ics파일 생성 - teamPlaceId : {}", teamPlaceId);
     }
 
     @Async
@@ -43,5 +44,6 @@ public class IcalendarEventListener {
         final Long teamPlaceId = scheduleEvent.getTeamPlaceId();
 
         icalendarPublishService.updateIcalendar(teamPlaceId);
+        log.info("ics파일 업데이트 - teamPlaceId : {}", teamPlaceId);
     }
 }
