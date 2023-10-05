@@ -36,6 +36,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.TimeZone;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.BDDMockito.any;
@@ -298,6 +299,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
         void readIfImageExpired() {
             // given
             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+            formatter.withZone(TimeZone.getDefault().toZoneId());
             final String expiredDateFormat = LocalDateTime.now().plusDays(FeedThreadImageFixtures.IMAGE_EXPIRATION_DATE).format(formatter);
             given(clock.instant())
                     .willReturn(Instant.parse(expiredDateFormat));

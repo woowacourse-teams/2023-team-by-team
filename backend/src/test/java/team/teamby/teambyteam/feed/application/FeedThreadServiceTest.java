@@ -20,7 +20,6 @@ import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
 import team.teamby.teambyteam.feed.domain.Feed;
 import team.teamby.teambyteam.feed.domain.FeedThread;
 import team.teamby.teambyteam.feed.domain.FeedType;
-import team.teamby.teambyteam.feed.domain.image.FeedThreadImage;
 import team.teamby.teambyteam.feed.domain.notification.schedulenotification.ScheduleNotification;
 import team.teamby.teambyteam.feed.domain.vo.Content;
 import team.teamby.teambyteam.feed.exception.FeedException;
@@ -41,6 +40,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -253,6 +253,7 @@ class FeedThreadServiceTest extends ServiceTest {
             testFixtureBuilder.buildMemberTeamPlace(member, teamPlace);
 
             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+            formatter.withZone(TimeZone.getDefault().toZoneId());
             final String expiredDateFormat = LocalDateTime.now().plusDays(FeedThreadImageFixtures.IMAGE_EXPIRATION_DATE).format(formatter);
             given(clock.instant())
                     .willReturn(Instant.parse(expiredDateFormat));
@@ -285,6 +286,7 @@ class FeedThreadServiceTest extends ServiceTest {
             testFixtureBuilder.buildMemberTeamPlace(member, teamPlace);
 
             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+            formatter.withZone(TimeZone.getDefault().toZoneId());
             final String nowDateFormat = LocalDateTime.now().format(formatter);
             given(clock.instant())
                     .willReturn(Instant.parse(nowDateFormat));
