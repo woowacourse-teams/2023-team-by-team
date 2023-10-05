@@ -58,6 +58,33 @@ export const http = {
     return response;
   },
 
+  postFormData: async (url: RequestInfo | URL, body: unknown) => {
+    const response = await fetch(BASE_URL + url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${localStorage.getItem(
+          LOCAL_STORAGE_KEY.ACCESS_TOKEN,
+        )}`,
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (
+      response.status === 401 ||
+      response.status === 404 ||
+      response.status === 500
+    ) {
+      throw response;
+    }
+
+    if (!response.ok) {
+      throw new Error('네트워크 통신 중 에러가 발생했습니다.');
+    }
+
+    return response;
+  },
+
   patch: async (url: RequestInfo | URL, body: unknown) => {
     const response = await fetch(BASE_URL + url, {
       method: 'PATCH',

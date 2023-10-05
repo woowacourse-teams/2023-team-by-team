@@ -22,10 +22,10 @@ export const fetchNoticeThread = (teamPlaceId: number) => {
   );
 };
 
-export const sendThread = (teamPlaceId: number, body: ThreadContent) => {
-  return http.post(`/api/team-place/${teamPlaceId}/feed/threads`, body);
+export const sendThread = (teamPlaceId: number, body: FormData) => {
+  return http.postFormData(`/api/team-place/${teamPlaceId}/feed/threads`, body);
 };
 
-export const sendNoticeThread = (teamPlaceId: number, body: ThreadContent) => {
-  return http.post(`/api/team-place/${teamPlaceId}/feed/notice`, body);
+export const sendNoticeThread = (teamPlaceId: number, body: FormData) => {
+  return http.postFormData(`/api/team-place/${teamPlaceId}/feed/notice`, body);
 };
