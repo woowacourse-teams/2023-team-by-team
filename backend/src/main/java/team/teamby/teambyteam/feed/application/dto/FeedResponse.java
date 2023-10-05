@@ -22,7 +22,7 @@ public record FeedResponse(
 
     public static FeedResponse from(final Feed feed, final String authorName, final String profileImageUrl) {
         final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
-        String createdAt = feed.getCreatedAt().format(dateTimeFormatter);
+        final String createdAt = feed.getCreatedAt().format(dateTimeFormatter);
 
         return new FeedResponse(
                 feed.getId(),
@@ -37,9 +37,9 @@ public record FeedResponse(
         );
     }
 
-    public static FeedResponse from(final Feed feed, final MemberTeamPlace threadAuthorInfo, final String loginMemberEmail) {
+    public static FeedResponse from(final Feed feed, final MemberTeamPlace threadAuthorInfo, final List<FeedImageResponse> images, final String loginMemberEmail) {
         final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
-        String createdAt = feed.getCreatedAt().format(dateTimeFormatter);
+        final String createdAt = feed.getCreatedAt().format(dateTimeFormatter);
 
         return new FeedResponse(
                 feed.getId(),
@@ -49,7 +49,7 @@ public record FeedResponse(
                 threadAuthorInfo.findMemberProfileImageUrl(),
                 createdAt,
                 feed.getContent().getValue(),
-                Collections.emptyList(),
+                images,
                 threadAuthorInfo.isEmailEqual(loginMemberEmail)
         );
     }

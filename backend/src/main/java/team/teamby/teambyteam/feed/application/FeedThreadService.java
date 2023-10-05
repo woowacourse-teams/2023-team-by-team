@@ -1,10 +1,5 @@
 package team.teamby.teambyteam.feed.application;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import team.teamby.teambyteam.feed.application.dto.FeedImageResponse;
 import team.teamby.teambyteam.feed.application.dto.FeedResponse;
 import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
 import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
@@ -38,6 +34,14 @@ import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.exception.MemberException;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 @Slf4j
 @Service
 @Transactional
@@ -51,9 +55,12 @@ public class FeedThreadService {
     public static final String AUTHOR_NAME_SCHEDULE = "schedule";
     private static final int LIMIT_IMAGE_SIZE = 5242880;
     private static final int LIMIT_IMAGE_COUNT = 4;
+    private static final int IMAGE_EXPIRATION_DATE = 90;
 
     @Value("${aws.s3.image-directory}")
     private String imageDirectory;
+
+    private final Clock clock;
 
     private final FeedRepository feedRepository;
     private final MemberRepository memberRepository;
@@ -164,9 +171,12 @@ public class FeedThreadService {
                 .map(feed -> mapToResponse(
                         feed,
                         teamPlaceMembers.getOrDefault(feed.getAuthorId(), MemberTeamPlace.UNKNOWN_MEMBER_TEAM_PLACE),
-                        loginMemberEmail)
-                )
+                        loginMemberEmail))
                 .toList();
+    }
+
+    private boolean isExpired(final LocalDateTime createdAt) {
+        return createdAt.plusDays(IMAGE_EXPIRATION_DATE).isBefore(LocalDateTime.now(clock));
     }
 
     private Map<Long, MemberTeamPlace> getTeamPlaceMembers(final Long teamPlaceId) {
@@ -179,11 +189,22 @@ public class FeedThreadService {
 
     private FeedResponse mapToResponse(final Feed feed, final MemberTeamPlace author, final String loginMemberEmail) {
         if (FeedType.THREAD == feed.getType()) {
-            return FeedResponse.from(feed, author, loginMemberEmail);
+            return FeedResponse.from(feed, author, mapToFeedImageResponse((FeedThread) feed), loginMemberEmail);
         }
         if (FeedType.NOTIFICATION == feed.getType()) {
             return FeedResponse.from(feed, AUTHOR_NAME_SCHEDULE, BLANK_PROFILE_IMAGE_URL);
         }
         throw new IllegalArgumentException("지원하지 않는 타입입니다.");
+    }
+
+    private List<FeedImageResponse> mapToFeedImageResponse(final FeedThread feedThread) {
+        final List<FeedThreadImage> images = feedThreadImageRepository.findAllByFeedThread(feedThread);
+        return images.stream().map(feedThreadImage ->
+                        new FeedImageResponse(
+                                feedThreadImage.getId(),
+                                isExpired(feedThreadImage.getCreatedAt()),
+                                feedThreadImage.getImageName().getValue(),
+                                feedThreadImage.getImageUrl().getValue()))
+                .toList();
     }
 }
