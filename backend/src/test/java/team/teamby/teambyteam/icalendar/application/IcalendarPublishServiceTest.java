@@ -45,7 +45,7 @@ class IcalendarPublishServiceTest extends ServiceTest {
             BDDMockito.given(fileCloudUploader.upload(any(byte[].class), any(String.class)))
                     .willAnswer(invocation -> {
                         Thread.sleep(500L);
-                        return "https://test.com/test.ice";
+                        return "https://test.com/test.ics";
                     });
 
             final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
@@ -58,7 +58,7 @@ class IcalendarPublishServiceTest extends ServiceTest {
             final String expectedFileNamePatter = "^" + ENGLISH_TEAM_PLACE.getId() + ".+[.]ics$";
             SoftAssertions.assertSoftly(softly -> {
                 softly.assertThat(publishedIcalendar).isPresent();
-                softly.assertThat(publishedIcalendar.get().getPublishUrlValue()).isEqualTo("https://test.com/test.ice");
+                softly.assertThat(publishedIcalendar.get().getPublishUrlValue()).isEqualTo("https://test.com/test.ics");
                 softly.assertThat(publishedIcalendar.get().getIcalendarFileNameValue()).matches(expectedFileNamePatter);
             });
         }
@@ -70,7 +70,7 @@ class IcalendarPublishServiceTest extends ServiceTest {
             BDDMockito.given(fileCloudUploader.upload(any(byte[].class), any(String.class)))
                     .willAnswer(invocation -> {
                         Thread.sleep(500L);
-                        return "https://test.com/changed-test.ice";
+                        return "https://test.com/changed-test.ics";
                     });
 
             final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
@@ -99,7 +99,7 @@ class IcalendarPublishServiceTest extends ServiceTest {
             BDDMockito.given(fileCloudUploader.upload(any(byte[].class), any(String.class)))
                     .willAnswer(invocation -> {
                         Thread.sleep(500L);
-                        return "https://test.com/test.ice";
+                        return "https://test.com/test.ics";
                     });
 
             final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
@@ -125,7 +125,7 @@ class IcalendarPublishServiceTest extends ServiceTest {
             BDDMockito.given(fileCloudUploader.upload(any(byte[].class), any(String.class)))
                     .willAnswer(invocation -> {
                         Thread.sleep(500L);
-                        return "https://test.com/test.ice";
+                        return "https://test.com/test.ics";
                     });
 
             final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
