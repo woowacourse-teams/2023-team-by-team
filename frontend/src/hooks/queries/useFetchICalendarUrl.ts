@@ -9,7 +9,7 @@ export const useFetchICalendarUrl = (teamPlaceId: number) => {
       enabled: teamPlaceId > 0,
       meta: {
         errorMessage:
-          '캘린더 내보내기에 실패했습니다. \n지속되는 경우 관리자에게 문의해주세요.',
+          '일정 내보내기에 실패했습니다. \n지속되는 경우 관리자에게 문의해주세요.',
       },
     },
   );
