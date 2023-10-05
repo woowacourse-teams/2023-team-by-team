@@ -58,7 +58,7 @@ export const http = {
     return response;
   },
 
-  postFormData: async (url: RequestInfo | URL, body: unknown) => {
+  postFormData: async (url: RequestInfo | URL, body: FormData) => {
     const response = await fetch(BASE_URL + url, {
       method: 'POST',
       headers: {
@@ -67,7 +67,7 @@ export const http = {
           LOCAL_STORAGE_KEY.ACCESS_TOKEN,
         )}`,
       },
-      body: JSON.stringify(body),
+      body,
     });
 
     if (
