@@ -1,4 +1,4 @@
-package team.teamby.teambyteam.icalendar.domain;
+package team.teamby.teambyteam.icalendar.domain.vo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

@@ -1,7 +1,7 @@
 package team.teamby.teambyteam.common.fixtures;
 
-import team.teamby.teambyteam.icalendar.domain.IcalendarFileName;
-import team.teamby.teambyteam.icalendar.domain.PublishUrl;
+import team.teamby.teambyteam.icalendar.domain.vo.IcalendarFileName;
+import team.teamby.teambyteam.icalendar.domain.vo.PublishUrl;
 import team.teamby.teambyteam.icalendar.domain.PublishedIcalendar;
 
 public class PublishedIcalendarFixtures {
