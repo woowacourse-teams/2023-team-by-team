@@ -33,8 +33,6 @@ public class IcalendarEventListener {
     public void createIcalendar(final CreateIcalendarEvent createIcalendarEvent) {
         final Long teamPlaceId = createIcalendarEvent.teamPlaceId();
 
-        log.info("Icalendar 생성 시작 - 팀플레이스 아이디 : {}", teamPlaceId);
-        System.out.println("----- ical create start ------");
         icalendarPublishService.createAndPublishIcalendar(teamPlaceId);
     }
 
