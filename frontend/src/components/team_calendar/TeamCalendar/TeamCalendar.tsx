@@ -8,6 +8,7 @@ import ScheduleAddModal from '~/components/team_calendar/ScheduleAddModal/Schedu
 import ScheduleEditModal from '~/components/team_calendar/ScheduleEditModal/ScheduleEditModal';
 import ScheduleMoreCell from '~/components/team_calendar/ScheduleMoreCell/ScheduleMoreCell';
 import DailyScheduleModal from '~/components/team_calendar/DailyScheduleModal/DailyScheduleModal';
+import ICalendarModal from '~/components/team_calendar/ICalendarModal/ICalendarModal';
 import useCalendar from '~/hooks/useCalendar';
 import { useScheduleModal } from '~/hooks/schedule/useScheduleModal';
 import { useFetchSchedules } from '~/hooks/queries/useFetchSchedules';
@@ -21,7 +22,12 @@ import { arrayOf } from '~/utils/arrayOf';
 import { getDateByPosition } from '~/utils/getDateByPosition';
 import type { Position, ModalOpenType } from '~/types/schedule';
 import type { CalendarSize } from '~/types/size';
-import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from '~/assets/svg';
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  ExportIcon,
+  PlusIcon,
+} from '~/assets/svg';
 import * as S from './TeamCalendar.styled';
 
 interface TeamCalendarProps {
@@ -103,6 +109,68 @@ const TeamCalendar = (props: TeamCalendarProps) => {
     handleModalOpen(MODAL_OPEN_TYPE.ADD);
   };
 
+  const handleExportButtonClick = () => {
+    handleModalOpen(MODAL_OPEN_TYPE.EXPORT);
+  };
+
+  const getModal = (modalOpenType: ModalOpenType) => {
+    if (modalOpenType === MODAL_OPEN_TYPE.ADD) {
+      return (
+        <ScheduleAddModal
+          calendarSize={calendarSize}
+          clickedDate={clickedDate}
+        />
+      );
+    }
+
+    if (modalOpenType === MODAL_OPEN_TYPE.VIEW) {
+      return (
+        <ScheduleModal
+          calendarWidth={width}
+          calendarLeft={left}
+          calendarSize={calendarSize}
+          scheduleId={modalScheduleId}
+          position={modalPosition}
+          onOpenScheduleEditModal={() => handleModalOpen(MODAL_OPEN_TYPE.EDIT)}
+        />
+      );
+    }
+
+    if (modalOpenType === MODAL_OPEN_TYPE.EDIT) {
+      return (
+        <ScheduleEditModal
+          calendarSize={calendarSize}
+          scheduleId={modalScheduleId}
+          initialSchedule={schedules.find(
+            (schedule) => schedule.id === modalScheduleId,
+          )}
+        />
+      );
+    }
+
+    if (modalOpenType === MODAL_OPEN_TYPE.DAILY) {
+      return (
+        <DailyScheduleModal
+          calendarWidth={width}
+          calendarLeft={left}
+          calendarSize={calendarSize}
+          rawDate={dailyModalDate}
+          position={dailyModalPosition}
+          onScheduleModalOpen={handleScheduleModalOpen}
+          onSetModalType={() => setModalType(() => MODAL_OPEN_TYPE.VIEW)}
+        />
+      );
+    }
+
+    if (modalOpenType === MODAL_OPEN_TYPE.EXPORT) {
+      return <ICalendarModal />;
+    }
+
+    return null;
+  };
+
+  const modal = isModalOpen ? getModal(modalType) : null;
+
   return (
     <>
       <S.Container calendarSize={calendarSize}>
@@ -131,13 +199,22 @@ const TeamCalendar = (props: TeamCalendarProps) => {
               <ArrowRightIcon />
             </Button>
           </S.ButtonContainer>
-          <Button
-            css={S.scheduleAddButton(calendarSize)}
-            onClick={handleScheduleAddButtonClick}
-            aria-label="새로운 일정 등록하기"
-          >
-            <PlusIcon />
-          </Button>
+          <S.FeatureButtonContainer>
+            <Button
+              css={S.exportButton(calendarSize)}
+              onClick={handleExportButtonClick}
+              aria-label="일정 내보내기"
+            >
+              <ExportIcon />
+            </Button>
+            <Button
+              css={S.scheduleAddButton(calendarSize)}
+              onClick={handleScheduleAddButtonClick}
+              aria-label="새로운 일정 등록하기"
+            >
+              <PlusIcon />
+            </Button>
+          </S.FeatureButtonContainer>
         </S.CalendarHeader>
         <div ref={calendarRef}>
           <S.DaysOfWeek calendarSize={calendarSize}>
@@ -228,42 +305,7 @@ const TeamCalendar = (props: TeamCalendarProps) => {
           </div>
         </div>
       </S.Container>
-      {isModalOpen && modalType === MODAL_OPEN_TYPE.ADD && (
-        <ScheduleAddModal
-          calendarSize={calendarSize}
-          clickedDate={clickedDate}
-        />
-      )}
-      {isModalOpen && modalType === MODAL_OPEN_TYPE.VIEW && (
-        <ScheduleModal
-          calendarWidth={width}
-          calendarLeft={left}
-          calendarSize={calendarSize}
-          scheduleId={modalScheduleId}
-          position={modalPosition}
-          onOpenScheduleEditModal={() => handleModalOpen(MODAL_OPEN_TYPE.EDIT)}
-        />
-      )}
-      {isModalOpen && modalType === MODAL_OPEN_TYPE.EDIT && (
-        <ScheduleEditModal
-          calendarSize={calendarSize}
-          scheduleId={modalScheduleId}
-          initialSchedule={schedules.find(
-            (schedule) => schedule.id === modalScheduleId,
-          )}
-        />
-      )}
-      {isModalOpen && modalType === MODAL_OPEN_TYPE.DAILY && (
-        <DailyScheduleModal
-          calendarWidth={width}
-          calendarLeft={left}
-          calendarSize={calendarSize}
-          rawDate={dailyModalDate}
-          position={dailyModalPosition}
-          onScheduleModalOpen={handleScheduleModalOpen}
-          onSetModalType={() => setModalType(() => MODAL_OPEN_TYPE.VIEW)}
-        />
-      )}
+      {modal}
     </>
   );
 };
