@@ -81,7 +81,9 @@ const ICalendarModal = () => {
         <S.UrlContainer>
           <S.UrlWrapper>
             <div title={url}>
-              <Text as="span">{url}</Text>
+              <Text as="span">
+                {url === '' ? '경로를 불러오는 데 실패했습니다.' : url}
+              </Text>
             </div>
           </S.UrlWrapper>
           <Button
