@@ -3,7 +3,7 @@ import ThreadList from '~/components/feed/ThreadList/ThreadList';
 import Text from '~/components/common/Text/Text';
 import NoticeThread from '~/components/feed/NoticeThread/NoticeThread';
 import Checkbox from '~/components/common/Checkbox/Checkbox';
-import { useTeamFeedPage } from '~/hooks/team/useTeamFeedPage';
+import { useTeamFeedPage } from '~/hooks/thread/useTeamFeedPage';
 import theme from '~/styles/theme';
 import { AirplaneIcon, ArrowExpandMoreIcon, ImageIcon } from '~/assets/svg';
 import ImageUploadDrawer from '~/components/feed/ImageUploadDrawer/ImageUploadDrawer';
