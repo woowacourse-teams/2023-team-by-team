@@ -94,6 +94,7 @@ export const useTeamFeedPage = () => {
             showToast('success', '공지가 등록되었습니다.');
             deleteAllImages();
             resetChatBox();
+            if (isImageDrawerOpen) handleImageDrawerToggle();
           },
           onError: () => {
             showToast('error', '공지 등록에 실패했습니다.');
@@ -110,6 +111,8 @@ export const useTeamFeedPage = () => {
         onSuccess: () => {
           resetChatBox();
           deleteAllImages();
+          if (isImageDrawerOpen) handleImageDrawerToggle();
+
           setTimeout(() => {
             scrollToBottom();
           }, 100);
