@@ -1,5 +1,6 @@
 package team.teamby.teambyteam.icalendar.application;
 
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import team.teamby.teambyteam.common.ServiceTest;
 import team.teamby.teambyteam.common.fixtures.PublishedIcalendarFixtures;
 import team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures;
 import team.teamby.teambyteam.icalendar.application.dto.IcalendarUrlResponse;
+import team.teamby.teambyteam.icalendar.application.event.CreateIcalendarEvent;
 import team.teamby.teambyteam.icalendar.domain.PublishedIcalendar;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
@@ -34,7 +36,7 @@ class IcalendarServiceTest extends ServiceTest {
     }
 
     @Test
-    @DisplayName("url이 아직 생성되지 않은 경우 예외를 던지고, 이벤트를 publish한다.")
+    @DisplayName("url이 아직 생성되지 않은 경우 빈 Optional을 반환하고, 이벤트를 publish한다.")
     void failWhenNotFound() {
         // given
         final TeamPlace CONTROL_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.CONTROLS_TEAM_PLACE());
@@ -43,6 +45,9 @@ class IcalendarServiceTest extends ServiceTest {
         final Optional<IcalendarUrlResponse> publishedIcalUrl = icalendarService.getPublishedIcalUrl(CONTROL_TEAM_PLACE.getId());
 
         // then
-        assertThat(publishedIcalUrl).isEmpty();
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(publishedIcalUrl).isEmpty();
+            softly.assertThat(applicationEvents.stream(CreateIcalendarEvent.class).count()).isEqualTo(1);
+        });
     }
 }
