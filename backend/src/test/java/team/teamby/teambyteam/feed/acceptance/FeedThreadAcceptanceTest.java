@@ -36,7 +36,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.TimeZone;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.BDDMockito.any;
@@ -298,15 +297,16 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
         @DisplayName("이미지가 만료되는 경우에 조회한다.")
         void readIfImageExpired() {
             // given
-            final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
-            formatter.withZone(TimeZone.getDefault().toZoneId());
-            final String expiredDateFormat = LocalDateTime.now().plusDays(FeedThreadImageFixtures.IMAGE_EXPIRATION_DATE).format(formatter);
-            given(clock.instant())
-                    .willReturn(Instant.parse(expiredDateFormat));
             given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class)))
                     .willReturn("https://s3://seongha-seeik");
 
             POST_FEED_THREAD_ONLY_IMAGE_REQUEST(authToken, participatedTeamPlace, List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2));
+
+            final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+            final String expiredDateFormat = LocalDateTime.now().plusDays(FeedThreadImageFixtures.IMAGE_EXPIRATION_DATE).format(formatter);
+            given(clock.instant())
+                    .willReturn(Instant.parse(expiredDateFormat));
+
             final Long teamPlaceId = participatedMemberTeamPlace.getId();
             final int size = 5;
 

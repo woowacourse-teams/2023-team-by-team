@@ -40,7 +40,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TimeZone;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -252,14 +251,13 @@ class FeedThreadServiceTest extends ServiceTest {
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(member, teamPlace);
 
+            final Feed feed1 = testFixtureBuilder.buildFeed(FeedThreadFixtures.CONTENT_AND_IMAGE(teamPlace.getId(), member.getId()));
+            testFixtureBuilder.buildFeedThreadFeedThreadImage((FeedThread) feed1, FeedThreadImageFixtures.A_FEED_THREAD_IMAGE);
+
             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
-            formatter.withZone(TimeZone.getDefault().toZoneId());
             final String expiredDateFormat = LocalDateTime.now().plusDays(FeedThreadImageFixtures.IMAGE_EXPIRATION_DATE).format(formatter);
             given(clock.instant())
                     .willReturn(Instant.parse(expiredDateFormat));
-
-            final Feed feed1 = testFixtureBuilder.buildFeed(FeedThreadFixtures.CONTENT_AND_IMAGE(teamPlace.getId(), member.getId()));
-            testFixtureBuilder.buildFeedThreadFeedThreadImage((FeedThread) feed1, FeedThreadImageFixtures.A_FEED_THREAD_IMAGE);
 
             final int size = 10;
 
@@ -285,14 +283,13 @@ class FeedThreadServiceTest extends ServiceTest {
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(member, teamPlace);
 
+            final Feed feed1 = testFixtureBuilder.buildFeed(FeedThreadFixtures.CONTENT_AND_IMAGE(teamPlace.getId(), member.getId()));
+            testFixtureBuilder.buildFeedThreadFeedThreadImage((FeedThread) feed1, FeedThreadImageFixtures.A_FEED_THREAD_IMAGE);
+
             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
-            formatter.withZone(TimeZone.getDefault().toZoneId());
             final String nowDateFormat = LocalDateTime.now().format(formatter);
             given(clock.instant())
                     .willReturn(Instant.parse(nowDateFormat));
-
-            final Feed feed1 = testFixtureBuilder.buildFeed(FeedThreadFixtures.CONTENT_AND_IMAGE(teamPlace.getId(), member.getId()));
-            testFixtureBuilder.buildFeedThreadFeedThreadImage((FeedThread) feed1, FeedThreadImageFixtures.A_FEED_THREAD_IMAGE);
 
             final int size = 10;
 
