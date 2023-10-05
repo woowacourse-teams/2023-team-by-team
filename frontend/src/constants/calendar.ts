@@ -23,4 +23,8 @@ export const MODAL_OPEN_TYPE = {
   VIEW: 'view',
   EDIT: 'edit',
   DAILY: 'daily',
+  EXPORT: 'export',
 } as const;
+
+export const ICALENDAR_USER_GUIDE_URL =
+  'https://teambyteam.notion.site/a99a38a030d74be88e761a1dcb1559a1';
