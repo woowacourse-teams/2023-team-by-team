@@ -6,7 +6,6 @@ import Checkbox from '~/components/common/Checkbox/Checkbox';
 import { useTeamFeedPage } from '~/hooks/team/useTeamFeedPage';
 import theme from '~/styles/theme';
 import { AirplaneIcon, ArrowExpandMoreIcon, ImageIcon } from '~/assets/svg';
-import useImageUploader from '~/hooks/thread/useImageUpload';
 import ImageUploadDrawer from '~/components/feed/ImageUploadDrawer/ImageUploadDrawer';
 import ThumbnailList from '~/components/feed/ThumbnailList/ThumbnailList';
 import type { ThreadSize } from '~/types/size';
@@ -18,7 +17,6 @@ interface TeamFeedPageProps {
 
 const TeamFeedPage = (props: TeamFeedPageProps) => {
   const { threadSize = 'md' } = props;
-  const { previewImages, updateImages, deleteImageByUuid } = useImageUploader();
   const {
     ref,
     noticeThread,
@@ -26,6 +24,7 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
     isImageDrawerOpen,
     isShowScrollBottomButton,
     chatContent,
+    previewImages,
 
     handlers: {
       handleIsNoticeChange,
@@ -34,6 +33,8 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
       handleEnterKeydown,
       handleScrollBottomButtonClick,
       handleSubmit,
+      updateImages,
+      deleteImageByUuid,
     },
   } = useTeamFeedPage();
 
