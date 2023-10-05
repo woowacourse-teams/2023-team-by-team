@@ -8,7 +8,8 @@ import team.teamby.teambyteam.icalendar.application.dto.IcalendarUrlResponse;
 import team.teamby.teambyteam.icalendar.application.event.CreateIcalendarEvent;
 import team.teamby.teambyteam.icalendar.domain.PublishedIcalendar;
 import team.teamby.teambyteam.icalendar.domain.PublishedIcalendarRepository;
-import team.teamby.teambyteam.icalendar.exception.IcalendarNotFoundException;
+
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -19,13 +20,18 @@ public class IcalendarService {
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional(readOnly = true)
-    public IcalendarUrlResponse getPublishedIcalUrl(final Long teamPlaceId) {
-        final PublishedIcalendar publishedIcalendar = publishedIcalendarRepository.findByTeamPlaceId(teamPlaceId)
-                .orElseThrow(() -> {
-                    applicationEventPublisher.publishEvent(new CreateIcalendarEvent(teamPlaceId));
-                    return new IcalendarNotFoundException(teamPlaceId);
-                });
+    public Optional<IcalendarUrlResponse> getPublishedIcalUrl(final Long teamPlaceId) {
+        final Optional<IcalendarUrlResponse> icalendarUrlResponse = publishedIcalendarRepository
+                .findByTeamPlaceId(teamPlaceId)
+                .flatMap(this::toIcalendarUrlResponse);
 
-        return new IcalendarUrlResponse(publishedIcalendar.getPublishUrlValue());
+        if (icalendarUrlResponse.isEmpty()) {
+            applicationEventPublisher.publishEvent(new CreateIcalendarEvent(teamPlaceId));
+        }
+        return icalendarUrlResponse;
+    }
+
+    private Optional<IcalendarUrlResponse> toIcalendarUrlResponse(final PublishedIcalendar publishedIcalendar) {
+        return Optional.of(new IcalendarUrlResponse(publishedIcalendar.getPublishUrlValue()));
     }
 }

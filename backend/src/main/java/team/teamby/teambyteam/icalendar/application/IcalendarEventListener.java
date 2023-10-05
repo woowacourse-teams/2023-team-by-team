@@ -1,6 +1,7 @@
 package team.teamby.teambyteam.icalendar.application;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
@@ -13,6 +14,7 @@ import team.teamby.teambyteam.icalendar.application.event.CreateIcalendarEvent;
 import team.teamby.teambyteam.schedule.application.event.ScheduleEvent;
 import team.teamby.teambyteam.teamplace.application.event.TeamPlaceCreatedEvent;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class IcalendarEventListener {
@@ -31,6 +33,8 @@ public class IcalendarEventListener {
     public void createIcalendar(final CreateIcalendarEvent createIcalendarEvent) {
         final Long teamPlaceId = createIcalendarEvent.teamPlaceId();
 
+        log.info("Icalendar 생성 시작 - 팀플레이스 아이디 : {}", teamPlaceId);
+        System.out.println("----- ical create start ------");
         icalendarPublishService.createAndPublishIcalendar(teamPlaceId);
     }
 

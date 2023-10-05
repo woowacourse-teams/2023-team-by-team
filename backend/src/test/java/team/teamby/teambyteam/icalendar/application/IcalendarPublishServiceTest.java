@@ -44,7 +44,7 @@ class IcalendarPublishServiceTest extends ServiceTest {
             // given
             BDDMockito.given(fileCloudUploader.upload(any(byte[].class), any(String.class)))
                     .willAnswer(invocation -> {
-                        Thread.sleep(1000L);
+                        Thread.sleep(500L);
                         return "https://test.com/test.ice";
                     });
 
@@ -69,7 +69,7 @@ class IcalendarPublishServiceTest extends ServiceTest {
             // given
             BDDMockito.given(fileCloudUploader.upload(any(byte[].class), any(String.class)))
                     .willAnswer(invocation -> {
-                        Thread.sleep(1000L);
+                        Thread.sleep(500L);
                         return "https://test.com/changed-test.ice";
                     });
 
@@ -98,7 +98,7 @@ class IcalendarPublishServiceTest extends ServiceTest {
             // given
             BDDMockito.given(fileCloudUploader.upload(any(byte[].class), any(String.class)))
                     .willAnswer(invocation -> {
-                        Thread.sleep(1000L);
+                        Thread.sleep(500L);
                         return "https://test.com/test.ice";
                     });
 
@@ -124,7 +124,7 @@ class IcalendarPublishServiceTest extends ServiceTest {
             // given
             BDDMockito.given(fileCloudUploader.upload(any(byte[].class), any(String.class)))
                     .willAnswer(invocation -> {
-                        Thread.sleep(1000L);
+                        Thread.sleep(500L);
                         return "https://test.com/test.ice";
                     });
 
