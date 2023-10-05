@@ -24,16 +24,21 @@ const _QueryClientProvider = ({ children }: { children: ReactNode }) => {
   const { showToast } = useToast();
   const queryClient = new QueryClient({
     queryCache: new QueryCache({
-      onError: (error, query) => {
-        if (error instanceof Error) {
-          const customErrorMessage = query.meta?.errorMessage;
+      onError: (errorResponse, query) => {
+        if (!(errorResponse instanceof Response)) {
+          return;
+        }
 
-          if (typeof customErrorMessage === 'string') {
-            showToast('error', customErrorMessage);
-            return;
-          }
+        const { status } = errorResponse;
+        const customErrorMessage = query.meta?.errorMessage;
 
-          showToast('error', error.message);
+        if (typeof customErrorMessage === 'string') {
+          showToast('error', customErrorMessage);
+          return;
+        }
+
+        if (status >= 500) {
+          showToast('error', '네트워크 통신 중 에러가 발생했습니다.');
         }
       },
     }),
