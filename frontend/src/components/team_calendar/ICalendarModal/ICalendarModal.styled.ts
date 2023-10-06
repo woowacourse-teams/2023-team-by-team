@@ -111,7 +111,7 @@ export const UrlWrapper = styled.div`
 `;
 
 export const UserGuideLink = styled.a`
-  width: 220px;
+  align-self: flex-start;
 `;
 
 export const closeButton = css`
