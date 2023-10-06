@@ -17,9 +17,11 @@ export const Container = styled.div<{ isOpen: boolean }>`
 `;
 
 export const ContentWrapper = styled.div`
-  overflow-x: auto;
+  overflow-x: hidden;
   overflow-y: hidden;
   flex-grow: 1;
+
+  padding: 20px;
 `;
 
 export const CloseButtonWrapper = styled.div`
