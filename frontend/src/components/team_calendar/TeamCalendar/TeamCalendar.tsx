@@ -163,7 +163,7 @@ const TeamCalendar = (props: TeamCalendarProps) => {
     }
 
     if (modalOpenType === MODAL_OPEN_TYPE.EXPORT) {
-      return <ICalendarModal />;
+      return <ICalendarModal calendarSize={calendarSize} />;
     }
 
     return null;

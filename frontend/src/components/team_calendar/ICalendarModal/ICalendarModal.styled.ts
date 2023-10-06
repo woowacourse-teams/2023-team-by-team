@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import type { ICalendarModalProps } from '~/components/team_calendar/ICalendarModal/ICalendarModal';
 
 export const Backdrop = styled.div`
   position: fixed;
@@ -8,13 +9,26 @@ export const Backdrop = styled.div`
   height: 100%;
 `;
 
-export const Container = styled.div`
+export const Container = styled.div<ICalendarModalProps>`
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
+  ${({ calendarSize }) => {
+    if (calendarSize === 'md') {
+      return css`
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      `;
+    }
+
+    if (calendarSize === 'sm') {
+      return css`
+        top: 25%;
+        left: 14.4%;
+      `;
+    }
+  }}
 
   width: 400px;
   min-height: 200px;

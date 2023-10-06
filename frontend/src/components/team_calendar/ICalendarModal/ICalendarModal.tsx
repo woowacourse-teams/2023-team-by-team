@@ -9,9 +9,15 @@ import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useToast } from '~/hooks/useToast';
 import { ClipboardIcon, CloseIcon, QuestionIcon } from '~/assets/svg';
 import { ICALENDAR_USER_GUIDE_URL } from '~/constants/calendar';
+import type { CalendarSize } from '~/types/size';
 import * as S from './ICalendarModal.styled';
 
-const ICalendarModal = () => {
+export interface ICalendarModalProps {
+  calendarSize?: CalendarSize;
+}
+
+const ICalendarModal = (props: ICalendarModalProps) => {
+  const { calendarSize = 'md' } = props;
   const { closeModal } = useModal();
   const { showToast } = useToast();
   const { teamPlaceId } = useTeamPlace();
@@ -36,7 +42,7 @@ const ICalendarModal = () => {
   return (
     <Modal>
       <S.Backdrop onClick={closeModal} />
-      <S.Container>
+      <S.Container calendarSize={calendarSize}>
         <S.Header>
           <Text as="span" size="xl" weight="semiBold">
             일정 내보내기
