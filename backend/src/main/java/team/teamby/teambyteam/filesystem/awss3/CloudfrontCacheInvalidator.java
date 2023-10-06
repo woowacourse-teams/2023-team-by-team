@@ -34,14 +34,14 @@ public class CloudfrontCacheInvalidator {
         logResult(response);
     }
 
-    private CreateInvalidationRequest createInvalidationRequest(InvalidationBatch invalidationBatch) {
+    private CreateInvalidationRequest createInvalidationRequest(final InvalidationBatch invalidationBatch) {
         return CreateInvalidationRequest.builder()
                 .distributionId(distributionId)
                 .invalidationBatch(invalidationBatch)
                 .build();
     }
 
-    private InvalidationBatch createInvalidationBatch(String[] paths) {
+    private InvalidationBatch createInvalidationBatch(final String[] paths) {
         final List<String> items = List.of(paths);
         return InvalidationBatch.builder()
                 .paths(
@@ -54,7 +54,7 @@ public class CloudfrontCacheInvalidator {
                 .build();
     }
 
-    private void logResult(CreateInvalidationResponse response) {
+    private void logResult(final CreateInvalidationResponse response) {
         final Invalidation invalidation = response.invalidation();
         final String status = invalidation.status();
         if (status.equals(COMPLETED)) {
