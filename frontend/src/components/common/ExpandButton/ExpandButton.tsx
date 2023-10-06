@@ -5,17 +5,18 @@ import { ArrowExpandMoreIcon, ArrowExpandLessIcon } from '~/assets/svg';
 
 interface ExpandButtonProps {
   isExpanded: boolean;
+  theme: 'white' | 'blurple';
   onClick?: () => void;
 }
 
 const ExpandButton = (props: ExpandButtonProps) => {
-  const { isExpanded, onClick } = props;
+  const { isExpanded, theme, onClick } = props;
 
   return (
     <Button
       type="button"
       variant="plain"
-      css={S.expandButton}
+      css={S.expandButton(theme)}
       onClick={onClick}
     >
       <S.Container>
