@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.cloudfront.CloudFrontClient;
 import software.amazon.awssdk.services.s3.S3Client;
 import team.teamby.teambyteam.filesystem.FileCloudUploader;
+import team.teamby.teambyteam.filesystem.awss3.CloudfrontCacheInvalidator;
 import team.teamby.teambyteam.filesystem.awss3.S3Uploader;
 
 @Configuration
@@ -24,5 +26,11 @@ public class S3Configuration {
     @Bean
     public FileCloudUploader fileCloudUploader() {
         return new S3Uploader(s3Client());
+    }
+
+    @Bean
+    public CloudfrontCacheInvalidator cloudfrontCacheInvalidator() {
+        return new CloudfrontCacheInvalidator(CloudFrontClient.builder()
+                .build());
     }
 }

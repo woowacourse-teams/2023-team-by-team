@@ -44,6 +44,7 @@ aws:
     ical-directory: /i/c
   cloud-front:
     domain: abcd
+    asset-distribution-id: asdf
 
 
 oauth:
