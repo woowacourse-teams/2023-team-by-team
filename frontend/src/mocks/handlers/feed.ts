@@ -78,6 +78,7 @@ export const feedHandlers = [
         ) {
           imageValue =
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYZjvO1QuvfgCfQxBwwzmJcHIT5pTXIBGOLeyBDIbZknn6Dhkd40WrU0ZCdjt-IoXLzI0&usqp=CAU';
+          break;
         }
       }
 
@@ -142,6 +143,7 @@ export const feedHandlers = [
         ) {
           imageValue =
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYZjvO1QuvfgCfQxBwwzmJcHIT5pTXIBGOLeyBDIbZknn6Dhkd40WrU0ZCdjt-IoXLzI0&usqp=CAU';
+          break;
         }
       }
 
