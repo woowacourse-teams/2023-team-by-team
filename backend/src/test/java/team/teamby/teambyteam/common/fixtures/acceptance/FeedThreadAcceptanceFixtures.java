@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.List;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
 public class FeedThreadAcceptanceFixtures {
 
@@ -18,23 +17,23 @@ public class FeedThreadAcceptanceFixtures {
 
     public static ExtractableResponse<Response> POST_FEED_THREAD_ONLY_IMAGE_REQUEST(
             final String authToken,
-            final TeamPlace teamPlace,
+            final Long teamPlaceId,
             final List<File> files
     ) {
-        return POST_FEED_THREAD_IMAGE_AND_CONTENT_REQUEST(authToken, teamPlace, files, EMPTY_CONTENT);
+        return POST_FEED_THREAD_IMAGE_AND_CONTENT_REQUEST(authToken, teamPlaceId, files, EMPTY_CONTENT);
     }
 
     public static ExtractableResponse<Response> POST_FEED_THREAD_ONLY_CONTENT_REQUEST(
             final String authToken,
-            final TeamPlace teamPlace,
+            final Long teamPlaceId,
             final String content
     ) {
-        return POST_FEED_THREAD_IMAGE_AND_CONTENT_REQUEST(authToken, teamPlace, Collections.emptyList(), content);
+        return POST_FEED_THREAD_IMAGE_AND_CONTENT_REQUEST(authToken, teamPlaceId, Collections.emptyList(), content);
     }
 
     public static ExtractableResponse<Response> POST_FEED_THREAD_IMAGE_AND_CONTENT_REQUEST(
             final String authToken,
-            final TeamPlace teamPlace,
+            final Long teamPlaceId,
             final List<File> files,
             final String content
     ) {
@@ -47,7 +46,7 @@ public class FeedThreadAcceptanceFixtures {
             request = request.multiPart("images", file);
         }
 
-        return request.post("/api/team-place/{teamPlaceId}/feed/threads", teamPlace.getId())
+        return request.post("/api/team-place/{teamPlaceId}/feed/threads", teamPlaceId)
                 .then().log().all()
                 .extract();
     }
