@@ -175,10 +175,6 @@ public class FeedThreadService {
                 .toList();
     }
 
-    private boolean isExpired(final LocalDateTime createdAt) {
-        return createdAt.plusDays(IMAGE_EXPIRATION_DATE).isBefore(LocalDateTime.now(clock));
-    }
-
     private Map<Long, MemberTeamPlace> getTeamPlaceMembers(final Long teamPlaceId) {
         return memberTeamPlaceRepository.findAllByTeamPlaceId(teamPlaceId).stream()
                 .collect(Collectors.toMap(
@@ -206,5 +202,9 @@ public class FeedThreadService {
                                 feedThreadImage.getImageName().getValue(),
                                 feedThreadImage.getImageUrl().getValue()))
                 .toList();
+    }
+
+    private boolean isExpired(final LocalDateTime createdAt) {
+        return createdAt.plusDays(IMAGE_EXPIRATION_DATE).isBefore(LocalDateTime.now(clock));
     }
 }
