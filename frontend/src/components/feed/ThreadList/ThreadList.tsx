@@ -8,14 +8,16 @@ import { useTeamPlace } from '~/hooks/useTeamPlace';
 import type { ThreadSize } from '~/types/size';
 import { THREAD_TYPE } from '~/constants/feed';
 import * as S from './ThreadList.styled';
+import type { ThreadImage } from '~/types/feed';
 
 interface ThreadListProps {
   containerRef?: RefObject<HTMLDivElement>;
   size?: ThreadSize;
+  onClickImage: (images: ThreadImage[], selectedImage: number) => void;
 }
 
 const ThreadList = (props: ThreadListProps) => {
-  const { containerRef, size = 'md' } = props;
+  const { containerRef, size = 'md', onClickImage } = props;
 
   const { teamPlaceId } = useTeamPlace();
 
@@ -41,6 +43,8 @@ const ThreadList = (props: ThreadListProps) => {
       containerRef.current.scrollTop = scrollTop;
       setScrollHeight(containerRef.current.scrollHeight);
     }
+
+    /* eslint-disable-next-line */
   }, [threadPages?.pages.length]);
 
   return (
@@ -74,6 +78,7 @@ const ThreadList = (props: ThreadListProps) => {
                   profileImageUrl={profileImageUrl}
                   content={content}
                   isContinue={isContinue}
+                  onClickImage={onClickImage}
                   {...rest}
                 />
               ) : // <Notification

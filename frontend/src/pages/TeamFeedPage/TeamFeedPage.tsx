@@ -3,14 +3,18 @@ import ThreadList from '~/components/feed/ThreadList/ThreadList';
 import Text from '~/components/common/Text/Text';
 import NoticeThread from '~/components/feed/NoticeThread/NoticeThread';
 import Checkbox from '~/components/common/Checkbox/Checkbox';
+import ThreadImageModal from '~/components/feed/ThreadImageModal/ThreadImageModal';
 import { useTeamFeedPage } from '~/hooks/team/useTeamFeedPage';
 import theme from '~/styles/theme';
 import { AirplaneIcon, ArrowExpandMoreIcon, ImageIcon } from '~/assets/svg';
-import useImageUploader from '~/hooks/thread/useImageUpload';
+import useImageUpload from '~/hooks/thread/useImageUpload';
 import ImageUploadDrawer from '~/components/feed/ImageUploadDrawer/ImageUploadDrawer';
 import ThumbnailList from '~/components/feed/ThumbnailList/ThumbnailList';
 import type { ThreadSize } from '~/types/size';
 import * as S from './TeamFeedPage.styled';
+import { useModal } from '~/hooks/useModal';
+import { useState } from 'react';
+import type { ThreadImage } from '~/types/feed';
 
 interface TeamFeedPageProps {
   threadSize?: ThreadSize;
@@ -18,7 +22,7 @@ interface TeamFeedPageProps {
 
 const TeamFeedPage = (props: TeamFeedPageProps) => {
   const { threadSize = 'md' } = props;
-  const { previewImages, updateImages, deleteImageByUuid } = useImageUploader();
+  const { previewImages, updateImages, deleteImageByUuid } = useImageUpload();
   const {
     ref,
     noticeThread,
@@ -36,6 +40,19 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
       handleSubmit,
     },
   } = useTeamFeedPage();
+  const { isModalOpen, openModal } = useModal();
+  const [modalImageInfo, setModalImageInfo] = useState<{
+    images: ThreadImage[];
+    selectedImage: number;
+  }>({
+    images: [],
+    selectedImage: 0,
+  });
+
+  const handleClickImage = (images: ThreadImage[], selectedImage: number) => {
+    setModalImageInfo({ images, selectedImage });
+    openModal();
+  };
 
   return (
     <S.Container threadSize={threadSize}>
@@ -46,10 +63,16 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
               authorName={noticeThread.authorName}
               createdAt={noticeThread.createdAt}
               content={noticeThread.content}
+              images={noticeThread.images}
+              onClickImage={handleClickImage}
             />
           )}
           <S.ThreadListWrapper>
-            <ThreadList containerRef={ref} size={threadSize} />
+            <ThreadList
+              containerRef={ref}
+              size={threadSize}
+              onClickImage={handleClickImage}
+            />
           </S.ThreadListWrapper>
           <S.MenuButtonWrapper>
             {isShowScrollBottomButton && (
@@ -111,6 +134,12 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
           </S.ButtonContainer>
         </S.ThreadInputForm>
       </S.Inner>
+      {isModalOpen && (
+        <ThreadImageModal
+          images={modalImageInfo.images}
+          initialPage={modalImageInfo.selectedImage}
+        />
+      )}
     </S.Container>
   );
 };
