@@ -94,7 +94,7 @@ export const UrlWrapper = styled.div`
 `;
 
 export const UserGuideLink = styled.a`
-  width: 200px;
+  width: 220px;
 `;
 
 export const closeButton = css`
