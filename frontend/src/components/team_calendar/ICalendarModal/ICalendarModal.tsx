@@ -50,12 +50,15 @@ const ICalendarModal = (props: ICalendarModalProps) => {
           <Spacing size={8} direction="horizontal" />
           <S.TooltipWrapper
             onMouseEnter={() => setIsTooltipOpen(true)}
+            onFocus={() => setIsTooltipOpen(true)}
             onMouseLeave={() => setIsTooltipOpen(false)}
+            onBlur={() => setIsTooltipOpen(false)}
+            tabIndex={0}
           >
             <QuestionIcon />
             {isTooltipOpen && (
               <>
-                <S.Tooltip>
+                <S.Tooltip role="tooltip">
                   <Text>
                     팀바팀 캘린더에 등록된 일정을 <br />
                     구글 캘린더, 애플의 iCal 등에서 사용 가능한{' '}

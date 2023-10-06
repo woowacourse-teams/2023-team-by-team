@@ -56,6 +56,8 @@ export const Header = styled.div`
 export const TooltipWrapper = styled.div`
   display: flex;
   align-items: center;
+
+  cursor: help;
 `;
 
 export const Tooltip = styled.div`
