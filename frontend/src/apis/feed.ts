@@ -23,9 +23,9 @@ export const fetchNoticeThread = (teamPlaceId: number) => {
 };
 
 export const sendThread = (teamPlaceId: number, body: FormData) => {
-  return http.postFormData(`/api/team-place/${teamPlaceId}/feed/threads`, body);
+  return http.post(`/api/team-place/${teamPlaceId}/feed/threads`, body);
 };
 
 export const sendNoticeThread = (teamPlaceId: number, body: FormData) => {
-  return http.postFormData(`/api/team-place/${teamPlaceId}/feed/notice`, body);
+  return http.post(`/api/team-place/${teamPlaceId}/feed/notice`, body);
 };

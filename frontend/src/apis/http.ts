@@ -4,6 +4,17 @@ export const { REACT_APP_BASE_URL: baseUrl } = process.env;
 
 const BASE_URL = baseUrl === undefined ? '' : baseUrl;
 
+const createPostHeaders = (body: unknown) => ({
+  headers: {
+    'Content-Type':
+      body instanceof FormData ? 'multipart/form-data' : 'application/json',
+    Authorization: `Bearer ${localStorage.getItem(
+      LOCAL_STORAGE_KEY.ACCESS_TOKEN,
+    )}`,
+  },
+  body: body instanceof FormData ? body : JSON.stringify(body),
+});
+
 export const http = {
   get: async <T>(url: RequestInfo | URL): Promise<T> => {
     const response = await fetch(BASE_URL + url, {
@@ -34,49 +45,8 @@ export const http = {
   post: async (url: RequestInfo | URL, body: unknown) => {
     const response = await fetch(BASE_URL + url, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem(
-          LOCAL_STORAGE_KEY.ACCESS_TOKEN,
-        )}`,
-      },
-      body: JSON.stringify(body),
+      ...createPostHeaders(body),
     });
-
-    if (
-      response.status === 401 ||
-      response.status === 404 ||
-      response.status === 500
-    ) {
-      throw response;
-    }
-
-    if (!response.ok) {
-      throw new Error('네트워크 통신 중 에러가 발생했습니다.');
-    }
-
-    return response;
-  },
-
-  postFormData: async (url: RequestInfo | URL, body: FormData) => {
-    const response = await fetch(BASE_URL + url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        Authorization: `Bearer ${localStorage.getItem(
-          LOCAL_STORAGE_KEY.ACCESS_TOKEN,
-        )}`,
-      },
-      body,
-    });
-
-    if (
-      response.status === 401 ||
-      response.status === 404 ||
-      response.status === 500
-    ) {
-      throw response;
-    }
 
     if (!response.ok) {
       throw new Error('네트워크 통신 중 에러가 발생했습니다.');
