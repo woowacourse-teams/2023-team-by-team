@@ -2,8 +2,6 @@ package team.teamby.teambyteam.icalendar.application;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -20,11 +18,15 @@ import team.teamby.teambyteam.teamplace.application.event.TeamPlaceCreatedEvent;
 public class IcalendarEventListener {
 
     private final IcalendarPublishService icalendarPublishService;
-    private final ApplicationEventPublisher applicationEventPublisher;
 
-    @EventListener
+    @Async
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void createIcalendar(final TeamPlaceCreatedEvent teamPlaceCreatedEvent) {
-        applicationEventPublisher.publishEvent(new CreateIcalendarEvent(teamPlaceCreatedEvent.teamPlaceId()));
+        final Long teamPlaceId = teamPlaceCreatedEvent.teamPlaceId();
+
+        icalendarPublishService.createAndPublishIcalendar(teamPlaceId);
+        log.info("ics파일 생성 - teamPlaceId : {}", teamPlaceId);
     }
 
     @Async

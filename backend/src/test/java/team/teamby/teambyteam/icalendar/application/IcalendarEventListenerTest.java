@@ -53,13 +53,14 @@ class IcalendarEventListenerTest extends ServiceTest {
     @DisplayName("팀플레이스 생성 이벤트 발생시 Ical생성에 성공한다")
     void successCallCreatingIcalendarWhenTeamPlaceCreated() {
         // given
-        final TeamPlaceCreatedEvent teamPlaceCreatedEvent = new TeamPlaceCreatedEvent(1L);
+        final long teamPlaceId = 1L;
+        final TeamPlaceCreatedEvent teamPlaceCreatedEvent = new TeamPlaceCreatedEvent(teamPlaceId);
 
         // when
         icalendarEventListener.createIcalendar(teamPlaceCreatedEvent);
 
         // then
-        assertThat(applicationEvents.stream(CreateIcalendarEvent.class).count()).isEqualTo(1);
+        verify(icalendarPublishService, times(1)).createAndPublishIcalendar(teamPlaceId);
     }
 
     @Test
