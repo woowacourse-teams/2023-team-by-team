@@ -8,7 +8,6 @@ export { ReactComponent as LogoIcon } from './logo.svg';
 export { ReactComponent as PlusIcon } from './plus.svg';
 export { ReactComponent as CheckIcon } from './check.svg';
 export { ReactComponent as ClockIcon } from './clock.svg';
-export { ReactComponent as GroupIcon } from './group.svg';
 export { ReactComponent as ArrowExpandMoreIcon } from './arrow-expand-more.svg';
 export { ReactComponent as ArrowExpandLessIcon } from './arrow-expand-less.svg';
 export { ReactComponent as MegaphoneIcon } from './megaphone.svg';

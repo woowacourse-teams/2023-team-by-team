@@ -1,9 +1,9 @@
-import type { ScheduleWithoutId, YYYYMMDDHHMM } from '~/types/schedule';
-import * as S from './MyDailySchedule.styled';
-import type { TeamPlaceColor } from '~/types/team';
 import Text from '~/components/common/Text/Text';
-import { ClockIcon, GroupIcon, TeamIcon, TeamSmallIcon } from '~/assets/svg';
+import type { ScheduleWithoutId, YYYYMMDDHHMM } from '~/types/schedule';
+import type { TeamPlaceColor } from '~/types/team';
+import { ClockIcon, TeamSmallIcon } from '~/assets/svg';
 import { formatTime } from '~/utils/formatTime';
+import * as S from './MyDailySchedule.styled';
 
 export interface MyDailyScheduleProps extends ScheduleWithoutId {
   teamPlaceColor: TeamPlaceColor;
