@@ -27,9 +27,9 @@ const ICalendarModal = () => {
 
     try {
       navigator.clipboard.writeText(url);
-      showToast('success', '내보내기 링크가 복사되었습니다.');
+      showToast('success', '일정 파일(.ics) 경로가 복사되었습니다.');
     } catch (error) {
-      showToast('error', '내보내기 링크 복사에 실패했습니다.');
+      showToast('error', '일정 파일(.ics) 경로 복사에 실패했습니다.');
     }
   };
 
@@ -76,7 +76,7 @@ const ICalendarModal = () => {
         <Spacing size={16} />
 
         <Text as="span" weight="semiBold">
-          내보낸 파일(.ics) 경로
+          일정 파일(.ics) 경로
         </Text>
         <S.UrlContainer>
           <S.UrlWrapper>
@@ -104,7 +104,7 @@ const ICalendarModal = () => {
           rel="noreferrer"
         >
           <Text as="span" size="lg" weight="semiBold" css={S.shortCutText}>
-            📘 내보낸 파일(.ics) 사용법
+            📘 일정 파일(.ics) 사용법
           </Text>
         </S.UserGuideLink>
       </S.Container>
