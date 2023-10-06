@@ -57,7 +57,7 @@ public class CloudfrontCacheInvalidator {
     private void logResult(final CreateInvalidationResponse response) {
         final Invalidation invalidation = response.invalidation();
         final String status = invalidation.status();
-        if (status.equals(COMPLETED)) {
+        if (COMPLETED.equals(status)) {
             log.info(CREATE_INVALIDATION_RESULT_LOG_FORMAT, invalidation.id(), status);
             return;
         }
