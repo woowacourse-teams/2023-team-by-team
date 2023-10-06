@@ -48,7 +48,7 @@ const MyCalendar = (props: MyCalendarProps) => {
           <ArrowLeftIcon />
         </Button>
         <time>
-          <Text size="xl">
+          <Text size="lg" weight="semiBold">
             {year}년 {month + 1}월
           </Text>
         </time>

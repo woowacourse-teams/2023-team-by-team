@@ -14,7 +14,7 @@ export const InnerContainer = styled.div`
   display: flex;
   flex-direction: column;
 
-  gap: 18px;
+  gap: 10px;
 `;
 
 export const highLight = css`

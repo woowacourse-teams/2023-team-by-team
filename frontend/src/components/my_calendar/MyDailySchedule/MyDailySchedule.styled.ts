@@ -11,7 +11,7 @@ export const Container = styled.div<
 
   width: 260px;
   height: 60px;
-  padding: 8px 12px 6px;
+  padding: 6px 12px;
 
   border-left: 6px solid
     ${({ theme, teamPlaceColor }) => theme.teamColor[teamPlaceColor]};
@@ -21,13 +21,15 @@ export const InfoContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  margin-top: 4px;
 `;
 
 export const Info = styled.div`
   display: flex;
   align-items: center;
 
-  gap: 4px;
+  gap: 3px;
 `;
 
 export const titleText = (teamPlaceColor: TeamPlaceColor) => css`
