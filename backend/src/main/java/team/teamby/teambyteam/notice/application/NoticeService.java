@@ -91,7 +91,7 @@ public class NoticeService {
     }
 
     private boolean isEmptyRequest(final String content, final List<MultipartFile> images) {
-        return ((content.equals("") || Objects.isNull(content)) && images.size() == 0);
+        return (("".equals(content) || Objects.isNull(content)) && images.size() == 0);
     }
 
     private void validateImages(final List<MultipartFile> images) {
