@@ -63,6 +63,6 @@ public class S3Uploader implements FileCloudUploader {
                 .build();
 
         s3Client.putObject(putObjectRequest, requestBody);
-        return cloudFrontBaseDomain + "/" + uploadPath;
+        return cloudFrontBaseDomain + directoryPath;
     }
 }
