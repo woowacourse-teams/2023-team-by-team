@@ -1,45 +1,59 @@
 package team.teamby.teambyteam.notice.acceptance;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
-import org.junit.platform.commons.util.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import team.teamby.teambyteam.common.AcceptanceTest;
-import team.teamby.teambyteam.common.fixtures.NoticeFixtures;
-import team.teamby.teambyteam.member.domain.Member;
-import team.teamby.teambyteam.member.domain.MemberTeamPlace;
-import team.teamby.teambyteam.notice.application.dto.NoticeRegisterRequest;
-import team.teamby.teambyteam.notice.application.dto.NoticeResponse;
-import team.teamby.teambyteam.notice.domain.Notice;
-import team.teamby.teambyteam.teamplace.domain.TeamPlace;
-
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static team.teamby.teambyteam.common.fixtures.FileFIxtures.OVER_SIZE_PNG_FILE;
+import static team.teamby.teambyteam.common.fixtures.FileFIxtures.UNDER_SIZE_PNG_FILE1;
+import static team.teamby.teambyteam.common.fixtures.FileFIxtures.UNDER_SIZE_PNG_FILE2;
+import static team.teamby.teambyteam.common.fixtures.FileFIxtures.UNDER_SIZE_PNG_FILE3;
+import static team.teamby.teambyteam.common.fixtures.FileFIxtures.UNDER_SIZE_PNG_FILE4;
+import static team.teamby.teambyteam.common.fixtures.FileFIxtures.UNDER_SIZE_WRONG_EXTENSION_FILE;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ROY;
+import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.FIRST_CONTENT;
 import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.NOTICE_1ST;
 import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.NOTICE_2ND;
 import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.NOTICE_3RD;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.JAPANESE_TEAM_PLACE;
 import static team.teamby.teambyteam.common.fixtures.acceptance.NoticeAcceptanceFixtures.GET_NOTICE_REQUEST;
-import static team.teamby.teambyteam.common.fixtures.acceptance.NoticeAcceptanceFixtures.POST_NOTICE_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.acceptance.NoticeAcceptanceFixtures.POST_NOTICE_IMAGE_AND_CONTENT_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.acceptance.NoticeAcceptanceFixtures.POST_NOTICE_ONLY_CONTENT_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.acceptance.NoticeAcceptanceFixtures.POST_NOTICE_ONLY_IMAGE_REQUEST;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
+import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.commons.util.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.multipart.MultipartFile;
+import team.teamby.teambyteam.common.AcceptanceTest;
+import team.teamby.teambyteam.common.fixtures.NoticeFixtures;
+import team.teamby.teambyteam.filesystem.FileCloudUploader;
+import team.teamby.teambyteam.member.domain.Member;
+import team.teamby.teambyteam.member.domain.MemberTeamPlace;
+import team.teamby.teambyteam.notice.application.dto.NoticeResponse;
+import team.teamby.teambyteam.notice.domain.Notice;
+import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
 public class NoticeAcceptanceTest extends AcceptanceTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @MockBean
+    private FileCloudUploader fileCloudUploader;
 
     @Nested
     @DisplayName("공지 등록 시")
@@ -56,38 +70,116 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
             participatedTeamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             participatedMemberTeamPlace = testFixtureBuilder.buildMemberTeamPlace(authedMember, participatedTeamPlace);
             authToken = jwtTokenProvider.generateAccessToken(authedMember.getEmail().getValue());
+            given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class)))
+                    .willReturn("https://s3://seongha-seeik");
         }
 
         @Test
-        @DisplayName("공지 등록에 성공한다")
-        void success() {
-            // given
-            final NoticeRegisterRequest request = NoticeFixtures.FIRST_NOTICE_REGISTER_REQUEST;
-
+        @DisplayName("이미지와 내용이 있을 때 공지 등록에 성공한다.")
+        void successWhenImageAndContentExist() {
             // when
-            final ExtractableResponse<Response> response = POST_NOTICE_REQUEST(authToken, participatedTeamPlace.getId(), request);
+            final ExtractableResponse<Response> response = POST_NOTICE_IMAGE_AND_CONTENT_REQUEST(authToken,
+                    participatedTeamPlace.getId(),
+                    List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2), "content");
 
-            // then
+            //then
             assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
-                softly.assertThat(response.header(HttpHeaders.LOCATION)).contains("/api/team-place/" + participatedTeamPlace.getId() + "/feed/threads/notice/");
+                softly.assertThat(response.header(HttpHeaders.LOCATION)).contains(
+                        "/api/team-place/" + participatedMemberTeamPlace.getTeamPlace().getId() + "/feed/threads");
             });
         }
 
-        @ParameterizedTest
-        @ValueSource(strings = {"", " ", "  "})
-        @DisplayName("공지 내용 요청 값으로 빈 내용이 들어오면 공지 등록에 실패한다.")
-        void failWithBlankContent(final String content) {
-            // given
-            final NoticeRegisterRequest request = new NoticeRegisterRequest(content);
-
+        @Test
+        @DisplayName("이미지만 있을 때 공지 등록에 성공한다.")
+        void successWhenOnlyImageExist() {
             // when
-            final ExtractableResponse<Response> response = POST_NOTICE_REQUEST(authToken, participatedTeamPlace.getId(), request);
+            final ExtractableResponse<Response> response = POST_NOTICE_ONLY_IMAGE_REQUEST(authToken,
+                    participatedTeamPlace.getId(),
+                    List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2));
 
-            // then
+            //then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+                softly.assertThat(response.header(HttpHeaders.LOCATION)).contains(
+                        "/api/team-place/" + participatedMemberTeamPlace.getTeamPlace().getId() + "/feed/threads");
+            });
+        }
+
+        @Test
+        @DisplayName("내용만 있을 때 공지 등록에 성공한다.")
+        void successWhenOnlyContentExist() {
+            // when
+            final ExtractableResponse<Response> response = POST_NOTICE_ONLY_CONTENT_REQUEST(authToken,
+                    participatedTeamPlace.getId(),
+                    "content");
+
+            //then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+                softly.assertThat(response.header(HttpHeaders.LOCATION)).contains(
+                        "/api/team-place/" + participatedMemberTeamPlace.getTeamPlace().getId() + "/feed/threads");
+            });
+        }
+
+        @Test
+        @DisplayName("공지 내용으로 빈 내용과 빈 이미지의의 요청이 오면 등록이 실패한다.")
+        void failWithEmptyContentAndImages() {
+            // when
+            final ExtractableResponse<Response> response = POST_NOTICE_IMAGE_AND_CONTENT_REQUEST(authToken,
+                    participatedTeamPlace.getId(),
+                    Collections.emptyList(), "");
+
+            //then
             assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-                softly.assertThat(response.body().asString()).contains("공지 내용은 빈 값일 수 없습니다.");
+                softly.assertThat(response.body().asString()).contains("내용과 이미지가 모두 존재하지 않습니다.");
+            });
+        }
+
+        @Test
+        @DisplayName("이미지 개수가 4개보다 많은 요청이 오면 등록이 실패한다.")
+        void failWhenImageOverCount() {
+            // when
+            final ExtractableResponse<Response> response = POST_NOTICE_ONLY_IMAGE_REQUEST(authToken,
+                    participatedTeamPlace.getId(),
+                    List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2, UNDER_SIZE_PNG_FILE3, UNDER_SIZE_PNG_FILE4)
+            );
+
+            //then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+                softly.assertThat(response.body().asString()).contains("허용된 이미지의 개수를 초과했습니다.");
+            });
+        }
+
+        @Test
+        @DisplayName("이미지 크기가 허용된 크기보다 큰 요청이 오면 등록이 실패한다.")
+        void failWhenImageOverSize() {
+            // when
+            final ExtractableResponse<Response> response = POST_NOTICE_ONLY_IMAGE_REQUEST(authToken,
+                    participatedTeamPlace.getId(),
+                    List.of(OVER_SIZE_PNG_FILE));
+
+            //then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+                softly.assertThat(response.body().asString()).contains("Maximum upload size exceeded");
+            });
+        }
+
+        @Test
+        @DisplayName("이미지 확장자가 허용되지 않은 확장자의 요청이 오면 등록이 실패한다.")
+        void failWhenNotAllowedImageExtension() {
+            // when
+            final ExtractableResponse<Response> response = POST_NOTICE_ONLY_IMAGE_REQUEST(authToken,
+                    participatedTeamPlace.getId(),
+                    List.of(UNDER_SIZE_WRONG_EXTENSION_FILE));
+
+            //then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+                softly.assertThat(response.body().asString()).contains("허용되지 않은 확장자입니다.");
             });
         }
 
@@ -96,10 +188,9 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
         void failWithForbiddenTeamPlace() {
             // given
             final TeamPlace UN_PARTICIPATED_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(testFixtureBuilder.buildTeamPlace(JAPANESE_TEAM_PLACE()));
-            final NoticeRegisterRequest request = NoticeFixtures.FIRST_NOTICE_REGISTER_REQUEST;
 
             // when
-            final ExtractableResponse<Response> response = POST_NOTICE_REQUEST(authToken, UN_PARTICIPATED_TEAM_PLACE.getId(), request);
+            final ExtractableResponse<Response> response = POST_NOTICE_ONLY_CONTENT_REQUEST(authToken, UN_PARTICIPATED_TEAM_PLACE.getId(), NoticeFixtures.FIRST_CONTENT);
 
             // then
             assertSoftly(softly -> {
@@ -113,10 +204,9 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
         void failWithNonExistTeamPlace() {
             // given
             Long nonExistTeamPlaceId = -1L;
-            final NoticeRegisterRequest request = NoticeFixtures.FIRST_NOTICE_REGISTER_REQUEST;
 
             // when
-            final ExtractableResponse<Response> response = POST_NOTICE_REQUEST(authToken, nonExistTeamPlaceId, request);
+            final ExtractableResponse<Response> response = POST_NOTICE_ONLY_CONTENT_REQUEST(authToken, nonExistTeamPlaceId, FIRST_CONTENT);
 
             // then
             assertSoftly(softly -> {
@@ -129,11 +219,10 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
         @DisplayName("인증되지 않은 사용자로 요청 시 등록이 실패한다.")
         void failUnAuthorizedMember() {
             // given
-            final NoticeRegisterRequest request = NoticeFixtures.FIRST_NOTICE_REGISTER_REQUEST;
             final String unauthorizedToken = jwtTokenProvider.generateAccessToken(ROY().getEmail().getValue());
 
             // when
-            final ExtractableResponse<Response> response = POST_NOTICE_REQUEST(unauthorizedToken, participatedTeamPlace.getId(), request);
+            final ExtractableResponse<Response> response = POST_NOTICE_ONLY_CONTENT_REQUEST(unauthorizedToken, participatedTeamPlace.getId(), FIRST_CONTENT);
 
             // then
             assertSoftly(softly -> {

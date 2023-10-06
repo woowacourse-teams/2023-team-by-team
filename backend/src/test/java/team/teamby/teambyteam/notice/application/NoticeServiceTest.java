@@ -1,12 +1,32 @@
 package team.teamby.teambyteam.notice.application;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ROY;
+import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ROY_MEMBER_EMAIL_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.MemberFixtures.SEONGHA;
+import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.CONTENT_AND_IMAGE_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.NOTICE_1ST;
+import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.NOTICE_2ND;
+import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.NOTICE_3RD;
+import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.THIRD_CONTENT;
+import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
+import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.JAPANESE_TEAM_PLACE;
+
+import java.util.List;
+import java.util.Optional;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.web.multipart.MultipartFile;
 import team.teamby.teambyteam.common.ServiceTest;
+import team.teamby.teambyteam.filesystem.FileCloudUploader;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
@@ -18,22 +38,6 @@ import team.teamby.teambyteam.notice.domain.NoticeRepository;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException.NotFoundException;
 
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ROY;
-import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ROY_MEMBER_EMAIL_REQUEST;
-import static team.teamby.teambyteam.common.fixtures.MemberFixtures.SEONGHA;
-import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.FIRST_NOTICE_REGISTER_REQUEST;
-import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.NOTICE_1ST;
-import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.NOTICE_2ND;
-import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.NOTICE_3RD;
-import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.THIRD_CONTENT;
-import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
-import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.JAPANESE_TEAM_PLACE;
-
 class NoticeServiceTest extends ServiceTest {
 
     @Autowired
@@ -41,6 +45,9 @@ class NoticeServiceTest extends ServiceTest {
 
     @Autowired
     private NoticeRepository noticeRepository;
+
+    @MockBean
+    private FileCloudUploader fileCloudUploader;
 
     @Nested
     @DisplayName("공지 등록 시")
@@ -56,7 +63,9 @@ class NoticeServiceTest extends ServiceTest {
             teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             member = testFixtureBuilder.buildMember(ROY());
             memberEmailDto = ROY_MEMBER_EMAIL_REQUEST;
-            request = FIRST_NOTICE_REGISTER_REQUEST;
+            request = CONTENT_AND_IMAGE_REQUEST;
+            given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class)))
+                    .willReturn("https://s3://seongha-seeik");
         }
 
         @Test
