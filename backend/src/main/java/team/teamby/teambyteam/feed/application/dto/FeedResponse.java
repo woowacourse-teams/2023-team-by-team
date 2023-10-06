@@ -19,10 +19,10 @@ public record FeedResponse(
         Boolean isMe
 ) {
     private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm";
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
 
     public static FeedResponse from(final Feed feed, final String authorName, final String profileImageUrl) {
-        final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
-        final String createdAt = feed.getCreatedAt().format(dateTimeFormatter);
+        final String createdAt = feed.getCreatedAt().format(DATE_TIME_FORMATTER);
 
         return new FeedResponse(
                 feed.getId(),
@@ -38,8 +38,7 @@ public record FeedResponse(
     }
 
     public static FeedResponse from(final Feed feed, final MemberTeamPlace threadAuthorInfo, final List<FeedImageResponse> images, final String loginMemberEmail) {
-        final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
-        final String createdAt = feed.getCreatedAt().format(dateTimeFormatter);
+        final String createdAt = feed.getCreatedAt().format(DATE_TIME_FORMATTER);
 
         return new FeedResponse(
                 feed.getId(),
