@@ -49,11 +49,11 @@ const ICalendarModal = (props: ICalendarModalProps) => {
           </Text>
           <Spacing size={8} direction="horizontal" />
           <S.TooltipWrapper
-            onMouseEnter={() => setIsTooltipOpen(true)}
-            onFocus={() => setIsTooltipOpen(true)}
-            onMouseLeave={() => setIsTooltipOpen(false)}
-            onBlur={() => setIsTooltipOpen(false)}
             tabIndex={0}
+            onFocus={() => setIsTooltipOpen(true)}
+            onBlur={() => setIsTooltipOpen(false)}
+            onMouseEnter={() => setIsTooltipOpen(true)}
+            onMouseLeave={() => setIsTooltipOpen(false)}
           >
             <QuestionIcon />
             {isTooltipOpen && (
