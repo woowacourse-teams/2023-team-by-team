@@ -17,7 +17,7 @@ const SideBar = () => {
     <S.Aside>
       <S.InnerContainer>
         <div>
-          <Text size="xxl" css={S.highLight}>
+          <Text size="xl" css={S.highLight}>
             내 일정
           </Text>
         </div>
@@ -25,7 +25,7 @@ const SideBar = () => {
       </S.InnerContainer>
       <S.InnerContainer>
         <div>
-          <Text size="xxl" css={S.highLight}>
+          <Text size="xl" css={S.highLight}>
             {String(month + 1).padStart(2, '0')}월{' '}
             {String(date).padStart(2, '0')}일 일정
           </Text>

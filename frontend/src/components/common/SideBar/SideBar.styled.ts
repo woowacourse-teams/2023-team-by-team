@@ -6,15 +6,21 @@ export const Aside = styled.aside`
 
   width: 300px;
   height: 100%;
-  padding: 20px 22px;
-  row-gap: 18px;
+  padding: 24px 22px;
+  row-gap: 28px;
 `;
 
 export const InnerContainer = styled.div`
   display: flex;
   flex-direction: column;
 
-  gap: 18px;
+  &:first-child {
+    row-gap: 10px;
+  }
+
+  &:last-child {
+    row-gap: 20px;
+  }
 `;
 
 export const highLight = css`
