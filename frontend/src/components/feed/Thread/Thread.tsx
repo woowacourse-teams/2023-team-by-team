@@ -7,6 +7,7 @@ import type { ThreadImage } from '~/types/feed';
 import { useRef } from 'react';
 import { useThreadHeight } from '~/hooks/thread/useThreadHeight';
 import ExpandButton from '~/components/common/ExpandButton/ExpandButton';
+import ThumbnailList from '../ThumbnailList/ThumbnailList';
 
 interface ThreadProps {
   threadSize?: ThreadSize;
@@ -17,6 +18,7 @@ interface ThreadProps {
   content: string;
   images: ThreadImage[];
   isContinue: boolean;
+  onClickImage: (images: ThreadImage[], selectedImage: number) => void;
 }
 
 const Thread = (props: ThreadProps) => {
@@ -29,6 +31,7 @@ const Thread = (props: ThreadProps) => {
     content,
     images,
     isContinue,
+    onClickImage,
   } = props;
   const createdTime = formatWriteTime(createdAt).split(' ').join('\n');
 
@@ -52,18 +55,29 @@ const Thread = (props: ThreadProps) => {
       )}
       <S.BodyContainer isMe={isMe}>
         <S.ContentContainer isMe={isMe} ref={threadRef} height={resultHeight}>
-          <S.ContentWrapper
-            ref={contentRef}
-            isExpanded={isExpanded}
-            isMe={isMe}
-          >
-            <Text size="xl" css={S.contentField(threadSize, isMe)}>
-              {content}
-            </Text>
-            {shouldShowExpandButton && (
-              <ExpandButton isExpanded={isExpanded} onClick={toggleExpanded} />
-            )}
+          <S.ContentWrapper>
+            <div ref={contentRef}>
+              <Text size="xl" css={S.contentField(threadSize, isMe)}>
+                {content}
+              </Text>
+            </div>
           </S.ContentWrapper>
+          {images.length > 0 && (
+            <S.ThumbnailListWrapper>
+              <ThumbnailList
+                mode="view"
+                images={images}
+                onClick={onClickImage}
+              />
+            </S.ThumbnailListWrapper>
+          )}
+          {shouldShowExpandButton && (
+            <ExpandButton
+              isExpanded={isExpanded}
+              theme={isMe ? 'blurple' : 'white'}
+              onClick={toggleExpanded}
+            />
+          )}
         </S.ContentContainer>
         <time>
           <Text css={S.threadInfoText}>{createdTime}</Text>

@@ -20,41 +20,32 @@ export const BodyContainer = styled.div<{ isMe: boolean }>`
 
 export const ContentContainer = styled.div<{ isMe: boolean; height: number }>`
   display: flex;
+  flex-direction: column;
 
   max-width: 80%;
   max-height: ${({ height }) => height}px;
-`;
-
-export const ContentWrapper = styled.div<{
-  isMe: boolean;
-  isExpanded: boolean;
-}>`
-  position: relative;
-  overflow: hidden;
-
-  ${({ isExpanded }) => {
-    if (isExpanded)
-      return css`
-        padding: 16px 28px 80px;
-      `;
-
-    return css`
-      padding: 16px 28px;
-    `;
-  }}
 
   ${({ isMe, theme }) => {
     if (isMe)
       return css`
-        background: ${theme.color.PRIMARY900};
+        background-color: ${theme.color.PRIMARY900};
         border-radius: 12px 12px 0 12px;
       `;
 
     return css`
-      background: ${theme.color.GRAY150};
+      background-color: ${theme.color.GRAY150};
       border-radius: 0 12px 12px 12px;
     `;
   }}
+
+  transition: 0.3s;
+`;
+
+export const ContentWrapper = styled.div`
+  position: relative;
+  overflow: hidden;
+
+  padding: 16px 28px;
 `;
 
 export const ThreadHeader = styled.div`
@@ -78,6 +69,10 @@ export const ProfileImg = styled.img`
   border-radius: 50%;
 
   object-fit: cover;
+`;
+
+export const ThumbnailListWrapper = styled.div`
+  margin: 20px;
 `;
 
 export const threadInfoText = css`
