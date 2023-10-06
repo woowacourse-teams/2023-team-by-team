@@ -1,0 +1,23 @@
+== Icalendar 배포 API
+
+=== 1. 배포 URL 조회
+
+==== Request
+include::{snippets}/icalendar/published-url/success/http-request.adoc[]
+
+==== Request Header
+include::{snippets}/icalendar/published-url/success/request-headers.adoc[]
+
+=== Request Parameter
+include::{snippets}/icalendar/published-url/success/path-parameters.adoc[]
+
+==== Response
+include::{snippets}/icalendar/published-url/success/http-response.adoc[]
+
+==== Response Fields
+include::{snippets}/icalendar/published-url/success/response-fields.adoc[]
+
+=== 1-1. 아직 배포가 되지 않았을때
+
+==== Response
+include::{snippets}/icalendar/published-url/not-published/http-response.adoc[]

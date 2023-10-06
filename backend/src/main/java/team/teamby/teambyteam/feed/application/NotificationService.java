@@ -7,9 +7,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
 import team.teamby.teambyteam.feed.domain.FeedRepository;
-import team.teamby.teambyteam.feed.domain.notification.schedulenotification.ScheduleNotification;
 import team.teamby.teambyteam.feed.domain.notification.sharedlinknotification.SharedLinkNotification;
-import team.teamby.teambyteam.schedule.application.event.ScheduleEvent;
 import team.teamby.teambyteam.sharedlink.application.event.SharedLinkEvent;
 
 @Slf4j
@@ -20,15 +18,6 @@ import team.teamby.teambyteam.sharedlink.application.event.SharedLinkEvent;
 public class NotificationService {
 
     private final FeedRepository feedRepository;
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    @TransactionalEventListener
-    public void createScheduleNotification(final ScheduleEvent scheduleEvent) {
-        final ScheduleNotification scheduleNotification = ScheduleNotification.from(scheduleEvent);
-        final ScheduleNotification savedNotification = feedRepository.save(scheduleNotification);
-
-        log.info("피드에 일정알림 생성 - 일정 아이디 : {}, 알림 아이디 : {}", savedNotification.getAuthorId(), savedNotification.getId());
-    }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener

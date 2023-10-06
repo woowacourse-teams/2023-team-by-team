@@ -47,4 +47,6 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
             LocalDateTime firstDateTime,
             LocalDateTime lastDateTime
     );
+
+    List<Schedule> findAllByTeamPlaceId(Long teamPlaceId);
 }

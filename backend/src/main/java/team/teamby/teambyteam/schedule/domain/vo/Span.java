@@ -37,4 +37,16 @@ public class Span {
     public Span change(final LocalDateTime startDateTime, final LocalDateTime endDateTime) {
         return new Span(startDateTime, endDateTime);
     }
+
+    public boolean isAllDay() {
+        return isStartOfTheDate() && isEndOfTheDate();
+    }
+
+    private boolean isStartOfTheDate() {
+        return startDateTime.getHour() == 0 && startDateTime.getMinute() == 0;
+    }
+
+    private boolean isEndOfTheDate() {
+        return endDateTime.getHour() == 23 && endDateTime.getMinute() == 59;
+    }
 }
