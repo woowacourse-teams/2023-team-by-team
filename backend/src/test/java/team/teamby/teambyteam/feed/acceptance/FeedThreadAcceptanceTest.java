@@ -32,7 +32,7 @@ import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -302,10 +302,8 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
 
             POST_FEED_THREAD_ONLY_IMAGE_REQUEST(authToken, participatedTeamPlace, List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2));
 
-            final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
-            final String expiredDateFormat = LocalDateTime.now().plusDays(FeedThreadImageFixtures.IMAGE_EXPIRATION_DATE).format(formatter);
-            given(clock.instant())
-                    .willReturn(Instant.parse(expiredDateFormat));
+            final Instant expiredDate = LocalDateTime.now().plusDays(FeedThreadImageFixtures.IMAGE_EXPIRATION_DATE).plusNanos(1).toInstant(ZoneOffset.systemDefault().getRules().getOffset(LocalDateTime.now()));
+            given(clock.instant()).willReturn(expiredDate);
 
             final Long teamPlaceId = participatedMemberTeamPlace.getId();
             final int size = 5;

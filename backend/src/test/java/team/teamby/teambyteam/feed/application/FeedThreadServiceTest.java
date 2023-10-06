@@ -37,7 +37,7 @@ import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -254,10 +254,8 @@ class FeedThreadServiceTest extends ServiceTest {
             final Feed feed1 = testFixtureBuilder.buildFeed(FeedThreadFixtures.CONTENT_AND_IMAGE(teamPlace.getId(), member.getId()));
             testFixtureBuilder.buildFeedThreadFeedThreadImage((FeedThread) feed1, FeedThreadImageFixtures.A_FEED_THREAD_IMAGE);
 
-            final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
-            final String expiredDateFormat = LocalDateTime.now().plusDays(FeedThreadImageFixtures.IMAGE_EXPIRATION_DATE).format(formatter);
-            given(clock.instant())
-                    .willReturn(Instant.parse(expiredDateFormat));
+            final Instant expiredDate = LocalDateTime.now().plusDays(FeedThreadImageFixtures.IMAGE_EXPIRATION_DATE).plusNanos(1).toInstant(ZoneOffset.systemDefault().getRules().getOffset(LocalDateTime.now()));
+            given(clock.instant()).willReturn(expiredDate);
 
             final int size = 10;
 
@@ -286,10 +284,8 @@ class FeedThreadServiceTest extends ServiceTest {
             final Feed feed1 = testFixtureBuilder.buildFeed(FeedThreadFixtures.CONTENT_AND_IMAGE(teamPlace.getId(), member.getId()));
             testFixtureBuilder.buildFeedThreadFeedThreadImage((FeedThread) feed1, FeedThreadImageFixtures.A_FEED_THREAD_IMAGE);
 
-            final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
-            final String nowDateFormat = LocalDateTime.now().format(formatter);
-            given(clock.instant())
-                    .willReturn(Instant.parse(nowDateFormat));
+            final Instant expiredDate = LocalDateTime.now().plusNanos(1).toInstant(ZoneOffset.systemDefault().getRules().getOffset(LocalDateTime.now()));
+            given(clock.instant()).willReturn(expiredDate);
 
             final int size = 10;
 
