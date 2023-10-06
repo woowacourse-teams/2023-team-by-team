@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import team.teamby.teambyteam.feed.domain.Feed;
 import team.teamby.teambyteam.feed.domain.FeedThread;
 import team.teamby.teambyteam.feed.domain.image.FeedThreadImage;
+import team.teamby.teambyteam.icalendar.domain.PublishedIcalendar;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.notice.domain.Notice;
@@ -99,5 +100,9 @@ public class TestFixtureBuilder {
     public FeedThreadImage buildFeedThreadFeedThreadImage(final FeedThread feedThread, final FeedThreadImage feedThreadImage) {
         feedThreadImage.confirmFeedThread(feedThread);
         return bs.feedThreadImageRepository().save(feedThreadImage);
+    }
+
+    public PublishedIcalendar buildPublishedIcalendar(final PublishedIcalendar publishedIcalendar) {
+        return bs.publishedIcalendarRepository().save(publishedIcalendar);
     }
 }

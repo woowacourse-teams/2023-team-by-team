@@ -25,27 +25,11 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     image: {
-      id: 1004,
-      isExpired: false,
-      name: 'rabbit.png',
+      uuid: '5095f36c-076b-4e7f-a782-299412cb06e1',
       url: 'https://images.unsplash.com/photo-1599169713100-120531cef331?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1887&q=80',
     },
-    onDelete: (imageId: number) => {
-      alert(`onDelete(${imageId})`);
-    },
-  },
-};
-
-export const ExpiredThumbnail: Story = {
-  args: {
-    image: {
-      id: 1029,
-      isExpired: true,
-      name: '만료된 이미지',
-      url: '',
-    },
-    onDelete: (imageId: number) => {
-      alert(`onDelete(${imageId})`);
+    onDelete: (imageId) => {
+      alert(`onDelete('${imageId}')`);
     },
   },
 };

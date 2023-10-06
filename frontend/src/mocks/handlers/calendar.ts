@@ -75,6 +75,7 @@ export const calendarHandlers = [
       );
 
       if (index === -1) return res(ctx.status(403));
+      if (title.length > 250) return res(ctx.status(500));
 
       schedules.push(newSchedule);
       mySchedules.push({ ...newSchedule, teamPlaceId: 1 });
@@ -104,6 +105,7 @@ export const calendarHandlers = [
       );
 
       if (index === -1) return res(ctx.status(404));
+      if (title.length > 250) return res(ctx.status(500));
 
       schedules[index] = {
         id: scheduleId,

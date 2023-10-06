@@ -5,7 +5,6 @@ import team.teamby.teambyteam.schedule.domain.vo.Span;
 import team.teamby.teambyteam.schedule.domain.vo.Title;
 
 @Getter
-@Deprecated
 public abstract class ScheduleEvent {
 
     private final Long scheduleId;
@@ -22,5 +21,5 @@ public abstract class ScheduleEvent {
 
     public abstract EventType getEventType();
 
-    public abstract ScheduleUpdateEventDto getScheduleUpdateEventDto();
+    public abstract ScheduleUpdateEventDto getUpdatedScheduleInfo();
 }

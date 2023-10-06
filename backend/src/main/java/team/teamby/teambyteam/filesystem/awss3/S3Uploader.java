@@ -1,15 +1,20 @@
 package team.teamby.teambyteam.filesystem.awss3;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.MultipartUpload;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import team.teamby.teambyteam.filesystem.FileCloudUploader;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
+@Slf4j
 @RequiredArgsConstructor
 public class S3Uploader implements FileCloudUploader {
 
@@ -28,16 +33,36 @@ public class S3Uploader implements FileCloudUploader {
     public String upload(final MultipartFile multipartFile, final String directoryPath) {
         try {
             final RequestBody requestBody = RequestBody.fromInputStream(multipartFile.getInputStream(), multipartFile.getSize());
-            final String uploadPath = assetRootDirectory + directoryPath;
-            final PutObjectRequest putObjectRequest = PutObjectRequest.builder()
-                    .key(uploadPath)
-                    .bucket(bucket)
-                    .build();
-
-            s3Client.putObject(putObjectRequest, requestBody);
-            return cloudFrontBaseDomain + uploadPath;
+            final String uploadedUrl = uploadFile(directoryPath, requestBody);
+            log.info("file uploaded : {} , published : {}", assetRootDirectory + directoryPath, uploadedUrl);
+            return uploadedUrl;
         } catch (IOException e) {
+            log.error("MultiPartFile - S3업로드 예외", e);
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public String upload(final byte[] content, final String directoryPath) {
+        try (InputStream inputStream = new ByteArrayInputStream(content)) {
+            final RequestBody requestBody = RequestBody.fromInputStream(inputStream, content.length);
+            final String uploadedUrl = uploadFile(directoryPath, requestBody);
+            log.info("file uploaded : {} , published : {}", assetRootDirectory + directoryPath, uploadedUrl);
+            return uploadedUrl;
+        } catch (IOException e) {
+            log.error("byte array s3업로드 예외", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String uploadFile(final String directoryPath, final RequestBody requestBody) {
+        final String uploadPath = assetRootDirectory + directoryPath;
+        final PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                .key(uploadPath)
+                .bucket(bucket)
+                .build();
+
+        s3Client.putObject(putObjectRequest, requestBody);
+        return cloudFrontBaseDomain + directoryPath;
     }
 }

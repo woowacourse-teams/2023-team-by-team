@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import team.teamby.teambyteam.feed.domain.FeedRepository;
 import team.teamby.teambyteam.feed.domain.image.FeedThreadImageRepository;
+import team.teamby.teambyteam.icalendar.domain.PublishedIcalendarRepository;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.notice.domain.NoticeRepository;
@@ -46,6 +47,9 @@ public class BuilderSupporter {
     @Autowired
     private FeedThreadImageRepository feedThreadImageRepository;
 
+    @Autowired
+    private PublishedIcalendarRepository publishedIcalendarRepository;
+
     public ScheduleRepository scheduleRepository() {
         return scheduleRepository;
     }
@@ -84,5 +88,9 @@ public class BuilderSupporter {
 
     public FeedThreadImageRepository feedThreadImageRepository() {
         return feedThreadImageRepository;
+    }
+
+    public PublishedIcalendarRepository publishedIcalendarRepository() {
+        return publishedIcalendarRepository;
     }
 }

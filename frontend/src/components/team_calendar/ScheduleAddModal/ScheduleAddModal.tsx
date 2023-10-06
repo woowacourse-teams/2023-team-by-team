@@ -64,6 +64,7 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
               placeholder="일정 제목을 입력해주세요."
               css={S.title}
               name="title"
+              maxLength={250}
               value={schedule['title']}
               ref={titleInputRef}
               required
