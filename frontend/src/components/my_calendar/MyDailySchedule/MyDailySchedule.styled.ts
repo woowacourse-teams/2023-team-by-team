@@ -30,6 +30,10 @@ export const Info = styled.div`
   align-items: center;
 
   gap: 3px;
+
+  &:last-child {
+    width: 120px;
+  }
 `;
 
 export const titleText = (teamPlaceColor: TeamPlaceColor) => css`
