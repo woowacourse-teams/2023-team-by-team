@@ -25,7 +25,7 @@ public class S3Configuration {
 
     @Bean
     public FileCloudUploader fileCloudUploader() {
-        return new S3Uploader(s3Client());
+        return new S3Uploader(s3Client(), cloudfrontCacheInvalidator());
     }
 
     @Bean
