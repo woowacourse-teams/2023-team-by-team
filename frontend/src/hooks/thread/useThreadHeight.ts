@@ -41,7 +41,7 @@ export const useThreadHeight = (
     resizeObserver.observe(contentRef.current);
 
     return () => resizeObserver.disconnect();
-  });
+  }, [contentRef, threadRef]);
 
   const toggleExpanded = () => {
     setExpanded((prev) => !prev);
