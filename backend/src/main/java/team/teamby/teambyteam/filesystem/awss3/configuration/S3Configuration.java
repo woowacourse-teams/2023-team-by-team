@@ -14,12 +14,15 @@ import team.teamby.teambyteam.filesystem.awss3.S3Uploader;
 public class S3Configuration {
 
     @Value("${aws.s3.region}")
-    private String region;
+    private String s3Region;
+
+    @Value("${aws.cloud-front.region}")
+    private String cloudFrontRegion;
 
     @Bean
     public S3Client s3Client() {
         return S3Client.builder()
-                .region(Region.of(region))
+                .region(Region.of(s3Region))
                 .build();
     }
 
@@ -30,7 +33,10 @@ public class S3Configuration {
 
     @Bean
     public CloudfrontCacheInvalidator cloudfrontCacheInvalidator() {
-        return new CloudfrontCacheInvalidator(CloudFrontClient.builder()
-                .build());
+        return new CloudfrontCacheInvalidator(
+                CloudFrontClient.builder()
+                        .region(Region.of(cloudFrontRegion))
+                        .build()
+        );
     }
 }

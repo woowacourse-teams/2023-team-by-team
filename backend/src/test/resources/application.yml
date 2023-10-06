@@ -43,6 +43,7 @@ aws:
     image-directory: /a/b
     ical-directory: /i/c
   cloud-front:
+    region: aws-global
     domain: abcd
     asset-distribution-id: asdf
 
