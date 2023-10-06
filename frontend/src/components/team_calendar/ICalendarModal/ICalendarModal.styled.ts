@@ -131,6 +131,6 @@ export const copyButton = css`
   border-radius: 0 8px 8px 0;
 `;
 
-export const shortCutText = css`
+export const shortcutText = css`
   color: ${({ theme }) => theme.color.GRAY800};
 `;

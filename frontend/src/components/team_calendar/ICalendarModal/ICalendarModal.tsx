@@ -112,7 +112,7 @@ const ICalendarModal = (props: ICalendarModalProps) => {
           target="_blank"
           rel="noreferrer"
         >
-          <Text as="span" size="lg" weight="semiBold" css={S.shortCutText}>
+          <Text as="span" size="lg" weight="semiBold" css={S.shortcutText}>
             📘 일정 파일(.ics) 사용법
           </Text>
         </S.UserGuideLink>
