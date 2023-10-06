@@ -35,6 +35,10 @@ jobs:
         java-version: '17'
         distribution: 'corretto'
         
+    - name: set up TimeZone
+      run: |
+        sudo timedatectl set-timezone Asia/Seoul
+        
     - name: Give permission for Gradle
       run: chmod +x gradlew
       
