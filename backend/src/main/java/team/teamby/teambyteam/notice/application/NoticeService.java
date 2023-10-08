@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import team.teamby.teambyteam.filesystem.FileCloudUploader;
+import team.teamby.teambyteam.filesystem.util.FileUtil;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.IdOnly;
 import team.teamby.teambyteam.member.domain.MemberRepository;
@@ -105,21 +106,9 @@ public class NoticeService {
         if (image.getSize() > LIMIT_IMAGE_SIZE) {
             throw new NoticeException.ImageSizeException(LIMIT_IMAGE_SIZE, image.getSize());
         }
-        if (AllowedImageExtension.isNotContain(getFileExtension(image))) {
+        if (AllowedImageExtension.isNotContain(FileUtil.getFileExtension(image))) {
             throw new NoticeException.NotAllowedImageExtensionException(image.getOriginalFilename());
         }
-    }
-
-    private String getFileExtension(MultipartFile file) {
-        final String originalFilename = file.getOriginalFilename();
-        if (originalFilename != null) {
-            int dotIndex = originalFilename.lastIndexOf(".");
-            if (dotIndex >= 0 && dotIndex < originalFilename.length() - 1) {
-                return originalFilename.substring(dotIndex + 1);
-            }
-        }
-
-        throw new NoticeException.NotFoundImageExtensionException(originalFilename);
     }
 
     private void saveImages(final List<MultipartFile> images, final Notice savedNotice) {
