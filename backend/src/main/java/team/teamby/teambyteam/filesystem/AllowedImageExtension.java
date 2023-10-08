@@ -1,4 +1,4 @@
-package team.teamby.teambyteam.notice.domain;
+package team.teamby.teambyteam.filesystem;
 
 import java.util.Arrays;
 
