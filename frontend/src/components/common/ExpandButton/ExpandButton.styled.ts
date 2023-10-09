@@ -10,8 +10,12 @@ export const Container = styled.div`
   height: 100%;
 `;
 
-export const expandButton = (buttonTheme: 'white' | 'blurple') => css`
+export const expandButton = (
+  buttonTheme: 'white' | 'blurple',
+  size: 'md' | 'sm',
+) => css`
   width: 100%;
+  height: ${size === 'md' ? '50px' : '40px'};
   padding: 10px;
 
   background-color: ${({ theme }) =>
@@ -19,4 +23,8 @@ export const expandButton = (buttonTheme: 'white' | 'blurple') => css`
 
   color: ${({ theme }) =>
     buttonTheme === 'white' ? theme.color.BLACK : theme.color.WHITE};
+
+  & svg {
+    width: ${size === 'md' ? '32px' : '26px'};
+  }
 `;

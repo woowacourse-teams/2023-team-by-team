@@ -75,6 +75,7 @@ const Thread = (props: ThreadProps) => {
             <ExpandButton
               isExpanded={isExpanded}
               theme={isMe ? 'blurple' : 'white'}
+              size={threadSize}
               onClick={toggleExpanded}
             />
           )}

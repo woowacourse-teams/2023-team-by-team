@@ -47,6 +47,14 @@ export const WhiteExpanded: Story = {
   },
 };
 
+export const WhiteSmall: Story = {
+  args: {
+    isExpanded: false,
+    theme: 'white',
+    size: 'sm',
+  },
+};
+
 export const BlurpleNotExpanded: Story = {
   args: {
     isExpanded: false,
@@ -58,5 +66,13 @@ export const BlurpleExpanded: Story = {
   args: {
     isExpanded: true,
     theme: 'blurple',
+  },
+};
+
+export const BlurpleSmall: Story = {
+  args: {
+    isExpanded: false,
+    theme: 'blurple',
+    size: 'sm',
   },
 };

@@ -6,31 +6,32 @@ import { ArrowExpandMoreIcon, ArrowExpandLessIcon } from '~/assets/svg';
 interface ExpandButtonProps {
   isExpanded: boolean;
   theme: 'white' | 'blurple';
+  size?: 'sm' | 'md';
   onClick?: () => void;
 }
 
 const ExpandButton = (props: ExpandButtonProps) => {
-  const { isExpanded, theme, onClick } = props;
+  const { isExpanded, theme, size = 'md', onClick } = props;
 
   return (
     <Button
       type="button"
       variant="plain"
-      css={S.expandButton(theme)}
+      css={S.expandButton(theme, size)}
       onClick={onClick}
     >
       <S.Container>
         {isExpanded ? (
           <>
-            <Text weight="bold" size="lg">
+            <Text weight="semiBold" size={size === 'md' ? 'lg' : 'md'}>
               접기
             </Text>
             <ArrowExpandLessIcon />
           </>
         ) : (
           <>
-            <Text weight="bold" size="lg">
-              전체보기
+            <Text weight="semiBold" size={size === 'md' ? 'lg' : 'md'}>
+              더 보기
             </Text>
             <ArrowExpandMoreIcon />
           </>
