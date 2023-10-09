@@ -71,8 +71,9 @@ export const ProfileImg = styled.img`
   object-fit: cover;
 `;
 
-export const ThumbnailListWrapper = styled.div`
+export const ThumbnailListWrapper = styled.div<{ marginBottom: boolean }>`
   margin: 20px;
+  margin-bottom: ${({ marginBottom }) => (marginBottom ? '20px' : '0')};
 `;
 
 export const threadInfoText = css`
