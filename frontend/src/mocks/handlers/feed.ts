@@ -57,30 +57,16 @@ export const feedHandlers = [
 
       // formData를 추출
       const formData = new TextDecoder('utf-8').decode(bufferData);
-      const parts = formData.split('\r\n');
 
-      let contentValue = '';
-      let imageValue = '';
+      const imageCount = formData
+        .split('\r\n')
+        .filter((line) =>
+          line.startsWith('Content-Disposition: form-data; name="images"'),
+        ).length;
 
-      for (let i = 0; i < parts.length; i++) {
-        if (
-          parts[i].startsWith('Content-Disposition: form-data; name="content"')
-        ) {
-          for (let j = i + 2; j < parts.length; j++) {
-            if (parts[j].startsWith('------')) break;
-
-            contentValue += parts[j] + '\n';
-            i = j;
-          }
-        }
-        if (
-          parts[i].startsWith('Content-Disposition: form-data; name="images"')
-        ) {
-          imageValue =
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYZjvO1QuvfgCfQxBwwzmJcHIT5pTXIBGOLeyBDIbZknn6Dhkd40WrU0ZCdjt-IoXLzI0&usqp=CAU';
-          break;
-        }
-      }
+      const contentValue = formData
+        .split('Content-Disposition: form-data; name="content"\r\n\r\n')[1]
+        .split('\r\n------WebKitFormBoundary')[0];
 
       const newThread = {
         id: Date.now(),
@@ -91,14 +77,12 @@ export const feedHandlers = [
         profileImageUrl: 'https://avatars.githubusercontent.com/u/49154600?v=4',
         createdAt: '2023-08-01 12:00' as YYYYMMDDHHMM,
         content: contentValue,
-        images: [
-          {
-            id: threads.length,
-            isExpired: false,
-            name: '목데이터',
-            url: imageValue,
-          },
-        ],
+        images: Array.from({ length: imageCount }).map((_, index) => ({
+          id: index,
+          isExpired: false,
+          name: '목데이터',
+          url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYZjvO1QuvfgCfQxBwwzmJcHIT5pTXIBGOLeyBDIbZknn6Dhkd40WrU0ZCdjt-IoXLzI0&usqp=CAU',
+        })),
       };
 
       threads.unshift(newThread);
@@ -122,30 +106,15 @@ export const feedHandlers = [
 
       // formData를 추출
       const formData = new TextDecoder('utf-8').decode(bufferData);
-      const parts = formData.split('\r\n');
+      const imageCount = formData
+        .split('\r\n')
+        .filter((line) =>
+          line.startsWith('Content-Disposition: form-data; name="images"'),
+        ).length;
 
-      let contentValue = '';
-      let imageValue = '';
-
-      for (let i = 0; i < parts.length; i++) {
-        if (
-          parts[i].startsWith('Content-Disposition: form-data; name="content"')
-        ) {
-          for (let j = i + 2; j < parts.length; j++) {
-            if (parts[j].startsWith('------')) break;
-
-            contentValue += parts[j] + '\n';
-            i = j;
-          }
-        }
-        if (
-          parts[i].startsWith('Content-Disposition: form-data; name="images"')
-        ) {
-          imageValue =
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYZjvO1QuvfgCfQxBwwzmJcHIT5pTXIBGOLeyBDIbZknn6Dhkd40WrU0ZCdjt-IoXLzI0&usqp=CAU';
-          break;
-        }
-      }
+      const contentValue = formData
+        .split('Content-Disposition: form-data; name="content"\r\n\r\n')[1]
+        .split('\r\n------WebKitFormBoundary')[0];
 
       const newNoticeThread = {
         id: Date.now(),
@@ -156,14 +125,12 @@ export const feedHandlers = [
         profileImageUrl: 'https://avatars.githubusercontent.com/u/49154600?v=4',
         createdAt: '2023-08-01 12:00' as YYYYMMDDHHMM,
         content: contentValue,
-        images: [
-          {
-            id: threads.length,
-            isExpired: false,
-            name: '목데이터',
-            url: imageValue,
-          },
-        ],
+        images: Array.from({ length: imageCount }).map((_, index) => ({
+          id: index,
+          isExpired: false,
+          name: '목데이터',
+          url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYZjvO1QuvfgCfQxBwwzmJcHIT5pTXIBGOLeyBDIbZknn6Dhkd40WrU0ZCdjt-IoXLzI0&usqp=CAU',
+        })),
       };
 
       noticeThread.id = newNoticeThread.id;
