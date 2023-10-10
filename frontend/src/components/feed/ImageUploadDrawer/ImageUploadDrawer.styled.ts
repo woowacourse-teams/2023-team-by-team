@@ -21,7 +21,7 @@ export const ContentWrapper = styled.div`
   overflow-y: hidden;
   flex-grow: 1;
 
-  padding: 20px;
+  padding: 20px 20px 0 20px;
 `;
 
 export const CloseButtonWrapper = styled.div`
