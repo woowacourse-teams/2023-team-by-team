@@ -17,6 +17,7 @@ import team.teamby.teambyteam.feed.exception.FeedException;
 import team.teamby.teambyteam.icalendar.exception.IcalendarNotFoundException;
 import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
+import team.teamby.teambyteam.notice.exception.NoticeException;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
 import team.teamby.teambyteam.sharedlink.exception.SharedLinkException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
@@ -135,6 +136,11 @@ public class GlobalExceptionHandler {
             FeedException.NotAllowedImageExtensionException.class,
             FeedException.ImageOverCountException.class,
             FeedException.WritingRequestEmptyException.class,
+            NoticeException.ImageSizeException.class,
+            NoticeException.NotFoundImageExtensionException.class,
+            NoticeException.NotAllowedImageExtensionException.class,
+            NoticeException.ImageOverCountException.class,
+            NoticeException.WritingRequestEmptyException.class,
             MaxUploadSizeExceededException.class
     })
     public ResponseEntity<ErrorResponse> handleCustomBadRequestException(final RuntimeException exception) {

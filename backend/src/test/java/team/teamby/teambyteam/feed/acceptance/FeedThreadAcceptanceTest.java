@@ -3,12 +3,12 @@ package team.teamby.teambyteam.feed.acceptance;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.given;
-import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.OVER_SIZE_PNG_FILE;
-import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.UNDER_SIZE_PNG_FILE1;
-import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.UNDER_SIZE_PNG_FILE2;
-import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.UNDER_SIZE_PNG_FILE3;
-import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.UNDER_SIZE_PNG_FILE4;
-import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.UNDER_SIZE_WRONG_EXTENSION_FILE;
+import static team.teamby.teambyteam.common.fixtures.FileFixtures.OVER_SIZE_PNG_FILE;
+import static team.teamby.teambyteam.common.fixtures.FileFixtures.UNDER_SIZE_PNG_FILE1;
+import static team.teamby.teambyteam.common.fixtures.FileFixtures.UNDER_SIZE_PNG_FILE2;
+import static team.teamby.teambyteam.common.fixtures.FileFixtures.UNDER_SIZE_PNG_FILE3;
+import static team.teamby.teambyteam.common.fixtures.FileFixtures.UNDER_SIZE_PNG_FILE4;
+import static team.teamby.teambyteam.common.fixtures.FileFixtures.UNDER_SIZE_WRONG_EXTENSION_FILE;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ROY;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
@@ -78,7 +78,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
         void successWhenImageAndContentExist() {
             // when
             final ExtractableResponse<Response> response = POST_FEED_THREAD_IMAGE_AND_CONTENT_REQUEST(authToken,
-                    participatedTeamPlace,
+                    participatedTeamPlace.getId(),
                     List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2), "content");
 
             //then
@@ -94,7 +94,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
         void successWhenOnlyImageExist() {
             // when
             final ExtractableResponse<Response> response = POST_FEED_THREAD_ONLY_IMAGE_REQUEST(authToken,
-                    participatedTeamPlace,
+                    participatedTeamPlace.getId(),
                     List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2));
 
             //then
@@ -110,7 +110,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
         void successWhenOnlyContentExist() {
             // when
             final ExtractableResponse<Response> response = POST_FEED_THREAD_ONLY_CONTENT_REQUEST(authToken,
-                    participatedTeamPlace,
+                    participatedTeamPlace.getId(),
                     "content");
 
             //then
@@ -126,7 +126,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
         void failWithEmptyContentAndImages() {
             // when
             final ExtractableResponse<Response> response = POST_FEED_THREAD_IMAGE_AND_CONTENT_REQUEST(authToken,
-                    participatedTeamPlace,
+                    participatedTeamPlace.getId(),
                     Collections.emptyList(), "");
 
             //then
@@ -141,7 +141,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
         void failWhenImageOverCount() {
             // when
             final ExtractableResponse<Response> response = POST_FEED_THREAD_ONLY_IMAGE_REQUEST(authToken,
-                    participatedTeamPlace,
+                    participatedTeamPlace.getId(),
                     List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2, UNDER_SIZE_PNG_FILE3, UNDER_SIZE_PNG_FILE4)
             );
 
@@ -157,7 +157,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
         void failWhenImageOverSize() {
             // when
             final ExtractableResponse<Response> response = POST_FEED_THREAD_ONLY_IMAGE_REQUEST(authToken,
-                    participatedTeamPlace,
+                    participatedTeamPlace.getId(),
                     List.of(OVER_SIZE_PNG_FILE));
 
             //then
@@ -172,7 +172,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
         void failWhenNotAllowedImageExtension() {
             // when
             final ExtractableResponse<Response> response = POST_FEED_THREAD_ONLY_IMAGE_REQUEST(authToken,
-                    participatedTeamPlace,
+                    participatedTeamPlace.getId(),
                     List.of(UNDER_SIZE_WRONG_EXTENSION_FILE));
 
             //then
@@ -190,7 +190,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
 
             // when
             final ExtractableResponse<Response> response = POST_FEED_THREAD_IMAGE_AND_CONTENT_REQUEST(authToken,
-                    UN_PARTICIPATED_TEAM_PLACE, List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2), "content");
+                    UN_PARTICIPATED_TEAM_PLACE.getId(), List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2), "content");
 
             //then
             assertSoftly(softly -> {
@@ -207,7 +207,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
 
             // when
             final ExtractableResponse<Response> response = POST_FEED_THREAD_IMAGE_AND_CONTENT_REQUEST(unauthorizedToken,
-                    participatedTeamPlace, List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2), "content");
+                    participatedTeamPlace.getId(), List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2), "content");
 
             //then
             assertSoftly(softly -> {
@@ -297,7 +297,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             final Long teamPlaceId = participatedMemberTeamPlace.getId();
             final int size = 5;
 
-            POST_FEED_THREAD_IMAGE_AND_CONTENT_REQUEST(otherMemberToken, participatedTeamPlace,
+            POST_FEED_THREAD_IMAGE_AND_CONTENT_REQUEST(otherMemberToken, participatedTeamPlace.getId(),
                     List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2), "content");
 
             DELETE_LEAVE_TEAM_PLACE(otherMemberToken, teamPlaceId);

@@ -15,6 +15,7 @@ public record FeedThreadWritingRequest(
         if (Objects.isNull(images)) {
             return Collections.emptyList();
         }
+
         return images;
     }
 }

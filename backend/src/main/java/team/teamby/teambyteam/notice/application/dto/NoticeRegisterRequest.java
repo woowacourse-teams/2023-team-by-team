@@ -1,9 +1,21 @@
 package team.teamby.teambyteam.notice.application.dto;
 
-import jakarta.validation.constraints.NotBlank;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import org.springframework.web.multipart.MultipartFile;
 
 public record NoticeRegisterRequest(
-        @NotBlank(message = "공지 내용은 빈 값일 수 없습니다.")
-        String content
+        String content,
+        List<MultipartFile> images
 ) {
+
+    @Override
+    public List<MultipartFile> images() {
+        if (Objects.isNull(images)) {
+            return Collections.emptyList();
+        }
+
+        return images;
+    }
 }
