@@ -57,26 +57,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static org.mockito.BDDMockito.any;
-import static org.mockito.BDDMockito.given;
-import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.OVER_SIZE_PNG_FILE;
-import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.UNDER_SIZE_PNG_FILE1;
-import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.UNDER_SIZE_PNG_FILE2;
-import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.UNDER_SIZE_PNG_FILE3;
-import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.UNDER_SIZE_PNG_FILE4;
-import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.UNDER_SIZE_WRONG_EXTENSION_FILE;
-import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
-import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ROY;
-import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
-import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.JAPANESE_TEAM_PLACE;
-import static team.teamby.teambyteam.common.fixtures.acceptance.FeedThreadAcceptanceFixtures.GET_FEED_THREAD_FIRST;
-import static team.teamby.teambyteam.common.fixtures.acceptance.FeedThreadAcceptanceFixtures.GET_FEED_THREAD_REPEAT;
-import static team.teamby.teambyteam.common.fixtures.acceptance.FeedThreadAcceptanceFixtures.POST_FEED_THREAD_IMAGE_AND_CONTENT_REQUEST;
-import static team.teamby.teambyteam.common.fixtures.acceptance.FeedThreadAcceptanceFixtures.POST_FEED_THREAD_ONLY_CONTENT_REQUEST;
-import static team.teamby.teambyteam.common.fixtures.acceptance.FeedThreadAcceptanceFixtures.POST_FEED_THREAD_ONLY_IMAGE_REQUEST;
-import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptanceFixture.DELETE_LEAVE_TEAM_PLACE;
-
 public class FeedThreadAcceptanceTest extends AcceptanceTest {
 
     @MockBean
@@ -290,9 +270,9 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class)))
                     .willReturn("https://s3://seongha-seeik");
 
-            POST_FEED_THREAD_ONLY_IMAGE_REQUEST(authToken, participatedTeamPlace, List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2));
-            POST_FEED_THREAD_IMAGE_AND_CONTENT_REQUEST(authToken, participatedTeamPlace, List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2), FeedThreadFixtures.CONTENT_AND_IMAGE);
-            POST_FEED_THREAD_ONLY_CONTENT_REQUEST(authToken, participatedTeamPlace, FeedThreadFixtures.CONTENT_ONLY_AND_IMAGE_EMPTY);
+            POST_FEED_THREAD_ONLY_IMAGE_REQUEST(authToken, participatedTeamPlace.getId(), List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2));
+            POST_FEED_THREAD_IMAGE_AND_CONTENT_REQUEST(authToken, participatedTeamPlace.getId(), List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2), FeedThreadFixtures.CONTENT_AND_IMAGE);
+            POST_FEED_THREAD_ONLY_CONTENT_REQUEST(authToken, participatedTeamPlace.getId(), FeedThreadFixtures.CONTENT_ONLY_AND_IMAGE_EMPTY);
             final Long teamPlaceId = participatedMemberTeamPlace.getId();
             final int size = 5;
 
@@ -320,7 +300,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class)))
                     .willReturn("https://s3://seongha-seeik");
 
-            POST_FEED_THREAD_ONLY_IMAGE_REQUEST(authToken, participatedTeamPlace, List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2));
+            POST_FEED_THREAD_ONLY_IMAGE_REQUEST(authToken, participatedTeamPlace.getId(), List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2));
 
             final Instant expiredDate = LocalDateTime.now().plusDays(FeedThreadImageFixtures.IMAGE_EXPIRATION_DATE).plusNanos(1).toInstant(ZoneOffset.systemDefault().getRules().getOffset(LocalDateTime.now()));
             given(clock.instant()).willReturn(expiredDate);
