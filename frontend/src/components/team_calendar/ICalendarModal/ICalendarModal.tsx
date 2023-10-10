@@ -61,7 +61,7 @@ const ICalendarModal = (props: ICalendarModalProps) => {
                 <S.Tooltip role="tooltip">
                   <Text>
                     팀바팀 캘린더에 등록된 일정을 <br />
-                    구글 캘린더, 애플의 iCal 등에서 사용 가능한{' '}
+                    구글 캘린더, iOS 캘린더 앱 등에서 사용 가능한{' '}
                     <Text as="span" weight="semiBold">
                       .ics
                     </Text>{' '}
