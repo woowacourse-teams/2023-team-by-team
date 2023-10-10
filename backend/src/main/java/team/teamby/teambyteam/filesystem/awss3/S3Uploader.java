@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.MultipartUpload;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import team.teamby.teambyteam.filesystem.FileCloudUploader;
 
@@ -28,6 +27,7 @@ public class S3Uploader implements FileCloudUploader {
     private String cloudFrontBaseDomain;
 
     private final S3Client s3Client;
+    private final CloudfrontCacheInvalidator cloudfrontCacheInvalidator;
 
     @Override
     public String upload(final MultipartFile multipartFile, final String directoryPath) {
@@ -63,6 +63,9 @@ public class S3Uploader implements FileCloudUploader {
                 .build();
 
         s3Client.putObject(putObjectRequest, requestBody);
+
+        cloudfrontCacheInvalidator.createInvalidation(directoryPath);
+
         return cloudFrontBaseDomain + directoryPath;
     }
 }

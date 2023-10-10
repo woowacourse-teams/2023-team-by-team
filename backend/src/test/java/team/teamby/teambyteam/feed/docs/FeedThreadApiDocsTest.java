@@ -39,6 +39,7 @@ import org.springframework.web.multipart.MultipartFile;
 import team.teamby.teambyteam.auth.exception.AuthenticationException;
 import team.teamby.teambyteam.common.ApiDocsTest;
 import team.teamby.teambyteam.common.fixtures.FeedThreadFixtures;
+import team.teamby.teambyteam.common.fixtures.FileFixtures;
 import team.teamby.teambyteam.feed.application.FeedThreadService;
 import team.teamby.teambyteam.feed.application.dto.FeedResponse;
 import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
@@ -80,7 +81,7 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
 
             // when & then
             mockMvc.perform(multipart("/api/team-place/{teamPlaceId}/feed/threads", teamPlaceId)
-                            .file("images", FeedThreadFixtures.UNDER_SIZE_PNG_MOCK_MULTIPART_FILE1.getBytes())
+                            .file("images", FileFixtures.UNDER_SIZE_PNG_MOCK_MULTIPART_FILE1.getBytes())
                             .part(new MockPart("content", "TEST".getBytes()))
                             .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
                             .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
@@ -146,7 +147,7 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
 
             // when & then
             mockMvc.perform(multipart("/api/team-place/{teamPlaceId}/feed/threads", teamPlaceId)
-                            .file("images", FeedThreadFixtures.UNDER_SIZE_PNG_MOCK_MULTIPART_FILE1.getBytes())
+                            .file("images", FileFixtures.UNDER_SIZE_PNG_MOCK_MULTIPART_FILE1.getBytes())
                             .part(new MockPart("content", "TEST".getBytes()))
                             .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
                             .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
@@ -175,7 +176,7 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
 
             // when & then
             mockMvc.perform(multipart("/api/team-place/{teamPlaceId}/feed/threads", teamPlaceId)
-                            .file("images", FeedThreadFixtures.UNDER_SIZE_PNG_MOCK_MULTIPART_FILE1.getBytes())
+                            .file("images", FileFixtures.UNDER_SIZE_PNG_MOCK_MULTIPART_FILE1.getBytes())
                             .part(new MockPart("content", "TEST".getBytes()))
                             .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
                             .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))

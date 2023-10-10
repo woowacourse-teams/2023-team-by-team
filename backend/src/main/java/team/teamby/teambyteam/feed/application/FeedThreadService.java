@@ -13,7 +13,6 @@ import team.teamby.teambyteam.feed.application.dto.FeedImageResponse;
 import team.teamby.teambyteam.feed.application.dto.FeedResponse;
 import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
 import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
-import team.teamby.teambyteam.feed.domain.AllowedImageExtension;
 import team.teamby.teambyteam.feed.domain.Feed;
 import team.teamby.teambyteam.feed.domain.FeedRepository;
 import team.teamby.teambyteam.feed.domain.FeedThread;
@@ -25,7 +24,9 @@ import team.teamby.teambyteam.feed.domain.image.vo.ImageUrl;
 import team.teamby.teambyteam.feed.domain.vo.Content;
 import team.teamby.teambyteam.feed.exception.FeedException;
 import team.teamby.teambyteam.feed.exception.FeedException.WritingRequestEmptyException;
+import team.teamby.teambyteam.filesystem.AllowedImageExtension;
 import team.teamby.teambyteam.filesystem.FileCloudUploader;
+import team.teamby.teambyteam.filesystem.util.FileUtil;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.IdOnly;
 import team.teamby.teambyteam.member.domain.MemberRepository;
@@ -99,7 +100,7 @@ public class FeedThreadService {
     }
 
     private boolean isEmptyRequest(final String content, final List<MultipartFile> images) {
-        return ((content.equals("") || Objects.isNull(content)) && images.size() == 0);
+        return (("".equals(content) || Objects.isNull(content)) && images.size() == 0);
     }
 
     private void validateImages(final List<MultipartFile> images) {
@@ -113,21 +114,9 @@ public class FeedThreadService {
         if (image.getSize() > LIMIT_IMAGE_SIZE) {
             throw new FeedException.ImageSizeException(LIMIT_IMAGE_SIZE, image.getSize());
         }
-        if (AllowedImageExtension.isNotContain(getFileExtension(image))) {
+        if (AllowedImageExtension.isNotContain(FileUtil.getFileExtension(image))) {
             throw new FeedException.NotAllowedImageExtensionException(image.getOriginalFilename());
         }
-    }
-
-    private String getFileExtension(MultipartFile file) {
-        final String originalFilename = file.getOriginalFilename();
-        if (originalFilename != null) {
-            int dotIndex = originalFilename.lastIndexOf(".");
-            if (dotIndex >= 0 && dotIndex < originalFilename.length() - 1) {
-                return originalFilename.substring(dotIndex + 1);
-            }
-        }
-
-        throw new FeedException.NotFoundImageExtensionException(originalFilename);
     }
 
     private void saveImages(final List<MultipartFile> images, final FeedThread savedFeedThread) {
