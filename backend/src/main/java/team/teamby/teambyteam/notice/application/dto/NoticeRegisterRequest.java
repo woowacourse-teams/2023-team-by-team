@@ -15,6 +15,7 @@ public record NoticeRegisterRequest(
         if (Objects.isNull(images)) {
             return Collections.emptyList();
         }
+
         return images;
     }
 }
