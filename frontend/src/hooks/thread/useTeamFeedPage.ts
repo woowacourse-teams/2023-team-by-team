@@ -7,13 +7,20 @@ import { useEffect, useRef, useState } from 'react';
 import { useFetchNoticeThread } from '~/hooks/queries/useFetchNoticeThread';
 import { useSendNoticeThread } from '~/hooks/queries/useSendNoticeThread';
 import { useSendThread } from '~/hooks/queries/useSendThread';
+import useImageUpload from '~/hooks/thread/useImageUpload';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useToast } from '~/hooks/useToast';
 
 export const useTeamFeedPage = () => {
   const { teamPlaceId } = useTeamPlace();
   const { showToast } = useToast();
-
+  const {
+    previewImages,
+    imageFiles,
+    updateImages,
+    deleteImageByUuid,
+    deleteAllImages,
+  } = useImageUpload();
   const { noticeThread } = useFetchNoticeThread(teamPlaceId);
   const { mutateSendThread } = useSendThread(teamPlaceId);
   const { mutateSendNoticeThread } = useSendNoticeThread(teamPlaceId);
@@ -75,17 +82,19 @@ export const useTeamFeedPage = () => {
   };
 
   const sendNewThread = async () => {
-    if (chatContent.trim() === '') {
+    if (chatContent.trim() === '' && imageFiles.length === 0) {
       return;
     }
 
     if (isNotice) {
       mutateSendNoticeThread(
-        { content: chatContent },
+        { content: chatContent, images: imageFiles },
         {
           onSuccess: () => {
             showToast('success', '공지가 등록되었습니다.');
+            deleteAllImages();
             resetChatBox();
+            if (isImageDrawerOpen) handleImageDrawerToggle();
           },
           onError: () => {
             showToast('error', '공지 등록에 실패했습니다.');
@@ -97,10 +106,13 @@ export const useTeamFeedPage = () => {
     }
 
     mutateSendThread(
-      { content: chatContent },
+      { content: chatContent, images: imageFiles },
       {
         onSuccess: () => {
           resetChatBox();
+          deleteAllImages();
+          if (isImageDrawerOpen) handleImageDrawerToggle();
+
           setTimeout(() => {
             scrollToBottom();
           }, 100);
@@ -158,6 +170,7 @@ export const useTeamFeedPage = () => {
     isImageDrawerOpen,
     isShowScrollBottomButton,
     chatContent,
+    previewImages,
 
     handlers: {
       handleIsNoticeChange,
@@ -166,6 +179,8 @@ export const useTeamFeedPage = () => {
       handleEnterKeydown,
       handleScrollBottomButtonClick,
       handleSubmit,
+      updateImages,
+      deleteImageByUuid,
     },
   };
 };

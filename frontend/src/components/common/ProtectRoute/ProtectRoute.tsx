@@ -11,17 +11,6 @@ const ProtectRoute = () => {
   const queryClient = useQueryClient();
   const { mutateSendTokenReissue } = useSendTokenReissue();
 
-  useEffect(() => {
-    const accessToken = localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
-
-    if (!accessToken) {
-      localStorage.removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
-      localStorage.removeItem(LOCAL_STORAGE_KEY.REFRESH_TOKEN);
-      alert('로그인이 필요합니다.');
-      navigate(PATH_NAME.LANDING);
-    }
-  }, []);
-
   const resetAccessToken = () => {
     localStorage.removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
     localStorage.removeItem(LOCAL_STORAGE_KEY.REFRESH_TOKEN);
@@ -29,20 +18,26 @@ const ProtectRoute = () => {
     window.location.href = PATH_NAME.LANDING;
   };
 
-  const onError = async (error: unknown) => {
-    const response = error as Response;
-    if (response.status === 401) {
-      const data = await response.json();
+  const onError = async (errorResponse: unknown) => {
+    if (!(errorResponse instanceof Response)) {
+      return;
+    }
+
+    const { status } = errorResponse;
+
+    if (status === 401) {
+      const data = await errorResponse.json();
 
       if (data.error === 'EXPIRED_ACCESS_TOKEN') {
         mutateSendTokenReissue();
         return;
       }
+
       resetAccessToken();
       throw new Error('유효한 사용자 정보가 아닙니다.');
     }
 
-    if (response.status === 403) {
+    if (status === 403) {
       localStorage.removeItem(LOCAL_STORAGE_KEY.TEAM_PLACE_ID);
       navigate(PATH_NAME.TEAM_SELECT);
     }
@@ -57,6 +52,17 @@ const ProtectRoute = () => {
       onError,
     },
   });
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
+
+    if (!accessToken) {
+      localStorage.removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
+      localStorage.removeItem(LOCAL_STORAGE_KEY.REFRESH_TOKEN);
+      alert('로그인이 필요합니다.');
+      navigate(PATH_NAME.LANDING);
+    }
+  }, []);
 
   return (
     <TeamPlaceProvider>

@@ -29,4 +29,8 @@ public class TeamPlace extends BaseEntity {
     public TeamPlace(final Name name) {
         this.name = name;
     }
+
+    public String getNameValue() {
+        return name.getValue();
+    }
 }

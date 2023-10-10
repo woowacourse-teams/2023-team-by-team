@@ -9,7 +9,7 @@ export const CalendarHeader = styled.div`
   justify-content: center;
   align-items: center;
 
-  padding: 10px;
+  padding: 0 10px 10px 10px;
   gap: 6px;
 `;
 

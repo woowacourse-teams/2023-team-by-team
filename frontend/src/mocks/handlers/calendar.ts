@@ -143,4 +143,21 @@ export const calendarHandlers = [
       return res(ctx.status(204));
     },
   ),
+
+  //팀플레이스 iCalendar URL 조회
+  rest.get(`/api/team-place/:teamPlaceId/icalendar-url`, (req, res, ctx) => {
+    const teamPlaceId = Number(req.params.teamPlaceId);
+    const index = teamPlaces.findIndex(
+      (teamPlace) => teamPlace.id === teamPlaceId,
+    );
+
+    if (index === -1) return res(ctx.status(403));
+
+    return res(
+      ctx.status(200),
+      ctx.json({
+        url: 'https://assets.teamby.team/icalendar/path/ical.ics',
+      }),
+    );
+  }),
 ];

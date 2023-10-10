@@ -29,9 +29,9 @@ public class ScheduleNotificationContentGenerator {
         final LocalDateTime previousStartDateTime = scheduleEvent.getSpan().getStartDateTime();
         final LocalDateTime previousEndDateTime = scheduleEvent.getSpan().getEndDateTime();
 
-        final String updatedTitle = scheduleEvent.getScheduleUpdateEventDto().getUpdatedTitle().getValue();
-        final LocalDateTime updatedStartDateTime = scheduleEvent.getScheduleUpdateEventDto().getUpdatedSpan().getStartDateTime();
-        final LocalDateTime updatedEndDateTime = scheduleEvent.getScheduleUpdateEventDto().getUpdatedSpan().getEndDateTime();
+        final String updatedTitle = scheduleEvent.getUpdatedScheduleInfo().getUpdatedTitle().getValue();
+        final LocalDateTime updatedStartDateTime = scheduleEvent.getUpdatedScheduleInfo().getUpdatedSpan().getStartDateTime();
+        final LocalDateTime updatedEndDateTime = scheduleEvent.getUpdatedScheduleInfo().getUpdatedSpan().getEndDateTime();
 
         final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(NOTIFICATION_LOCAL_DATE_TIME_FORMAT);
 

@@ -1,9 +1,9 @@
-import type { ScheduleWithoutId, YYYYMMDDHHMM } from '~/types/schedule';
-import * as S from './MyDailySchedule.styled';
-import type { TeamPlaceColor } from '~/types/team';
 import Text from '~/components/common/Text/Text';
-import { ClockIcon, GroupIcon } from '~/assets/svg';
+import type { ScheduleWithoutId, YYYYMMDDHHMM } from '~/types/schedule';
+import type { TeamPlaceColor } from '~/types/team';
+import { ClockIcon, TeamSmallIcon } from '~/assets/svg';
 import { formatTime } from '~/utils/formatTime';
+import * as S from './MyDailySchedule.styled';
 
 export interface MyDailyScheduleProps extends ScheduleWithoutId {
   teamPlaceColor: TeamPlaceColor;
@@ -26,20 +26,20 @@ const MyDailySchedule = (props: MyDailyScheduleProps) => {
   return (
     <S.Container teamPlaceColor={teamPlaceColor}>
       <div title={title}>
-        <Text size="xl" weight="bold" css={S.titleText(teamPlaceColor)}>
+        <Text size="lg" weight="bold" css={S.titleText(teamPlaceColor)}>
           {title}
         </Text>
       </div>
       <S.InfoContainer>
         <S.Info>
           <ClockIcon />
-          <Text size="xs" weight="bold">
+          <Text size="xs" weight="semiBold">
             {time}
           </Text>
         </S.Info>
         <S.Info title={teamName}>
-          <GroupIcon />
-          <Text size="xs" weight="bold" css={S.teamName}>
+          <TeamSmallIcon />
+          <Text size="xs" weight="semiBold" css={S.teamName}>
             {teamName}
           </Text>
         </S.Info>

@@ -4,6 +4,7 @@ import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -13,14 +14,15 @@ import lombok.NoArgsConstructor;
 import team.teamby.teambyteam.feed.domain.FeedThread;
 import team.teamby.teambyteam.feed.domain.image.vo.ImageName;
 import team.teamby.teambyteam.feed.domain.image.vo.ImageUrl;
+import team.teamby.teambyteam.global.domain.BaseEntity;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class FeedThreadImage {
+public class FeedThreadImage extends BaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

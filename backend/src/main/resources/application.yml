@@ -39,10 +39,13 @@ aws:
   s3:
     region: abcd
     bucket: abcd
-    asset-root-directory: /asset/root/directory
+    asset-root-directory: asset/root/directory
     image-directory: /a/b
+    ical-directory: /i/c
   cloud-front:
+    region: aws-global
     domain: abcd
+    asset-distribution-id: asdf
 
 
 oauth:

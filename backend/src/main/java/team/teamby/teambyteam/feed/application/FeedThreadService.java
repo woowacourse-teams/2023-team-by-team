@@ -1,10 +1,5 @@
 package team.teamby.teambyteam.feed.application;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,10 +9,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import team.teamby.teambyteam.feed.application.dto.FeedImageResponse;
 import team.teamby.teambyteam.feed.application.dto.FeedResponse;
 import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
 import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
-import team.teamby.teambyteam.feed.domain.AllowedImageExtension;
 import team.teamby.teambyteam.feed.domain.Feed;
 import team.teamby.teambyteam.feed.domain.FeedRepository;
 import team.teamby.teambyteam.feed.domain.FeedThread;
@@ -29,7 +24,9 @@ import team.teamby.teambyteam.feed.domain.image.vo.ImageUrl;
 import team.teamby.teambyteam.feed.domain.vo.Content;
 import team.teamby.teambyteam.feed.exception.FeedException;
 import team.teamby.teambyteam.feed.exception.FeedException.WritingRequestEmptyException;
+import team.teamby.teambyteam.filesystem.AllowedImageExtension;
 import team.teamby.teambyteam.filesystem.FileCloudUploader;
+import team.teamby.teambyteam.filesystem.util.FileUtil;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.IdOnly;
 import team.teamby.teambyteam.member.domain.MemberRepository;
@@ -37,6 +34,14 @@ import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.exception.MemberException;
+
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -51,9 +56,12 @@ public class FeedThreadService {
     public static final String AUTHOR_NAME_SCHEDULE = "schedule";
     private static final int LIMIT_IMAGE_SIZE = 5242880;
     private static final int LIMIT_IMAGE_COUNT = 4;
+    private static final int IMAGE_EXPIRATION_DATE = 90;
 
     @Value("${aws.s3.image-directory}")
     private String imageDirectory;
+
+    private final Clock clock;
 
     private final FeedRepository feedRepository;
     private final MemberRepository memberRepository;
@@ -92,7 +100,7 @@ public class FeedThreadService {
     }
 
     private boolean isEmptyRequest(final String content, final List<MultipartFile> images) {
-        return ((content.equals("") || Objects.isNull(content)) && images.size() == 0);
+        return (("".equals(content) || Objects.isNull(content)) && images.size() == 0);
     }
 
     private void validateImages(final List<MultipartFile> images) {
@@ -106,21 +114,9 @@ public class FeedThreadService {
         if (image.getSize() > LIMIT_IMAGE_SIZE) {
             throw new FeedException.ImageSizeException(LIMIT_IMAGE_SIZE, image.getSize());
         }
-        if (AllowedImageExtension.isNotContain(getFileExtension(image))) {
+        if (AllowedImageExtension.isNotContain(FileUtil.getFileExtension(image))) {
             throw new FeedException.NotAllowedImageExtensionException(image.getOriginalFilename());
         }
-    }
-
-    private String getFileExtension(MultipartFile file) {
-        final String originalFilename = file.getOriginalFilename();
-        if (originalFilename != null) {
-            int dotIndex = originalFilename.lastIndexOf(".");
-            if (dotIndex >= 0 && dotIndex < originalFilename.length() - 1) {
-                return originalFilename.substring(dotIndex + 1);
-            }
-        }
-
-        throw new FeedException.NotFoundImageExtensionException(originalFilename);
     }
 
     private void saveImages(final List<MultipartFile> images, final FeedThread savedFeedThread) {
@@ -164,8 +160,7 @@ public class FeedThreadService {
                 .map(feed -> mapToResponse(
                         feed,
                         teamPlaceMembers.getOrDefault(feed.getAuthorId(), MemberTeamPlace.UNKNOWN_MEMBER_TEAM_PLACE),
-                        loginMemberEmail)
-                )
+                        loginMemberEmail))
                 .toList();
     }
 
@@ -179,11 +174,26 @@ public class FeedThreadService {
 
     private FeedResponse mapToResponse(final Feed feed, final MemberTeamPlace author, final String loginMemberEmail) {
         if (FeedType.THREAD == feed.getType()) {
-            return FeedResponse.from(feed, author, loginMemberEmail);
+            return FeedResponse.from(feed, author, mapToFeedImageResponse((FeedThread) feed), loginMemberEmail);
         }
         if (FeedType.NOTIFICATION == feed.getType()) {
             return FeedResponse.from(feed, AUTHOR_NAME_SCHEDULE, BLANK_PROFILE_IMAGE_URL);
         }
         throw new IllegalArgumentException("지원하지 않는 타입입니다.");
+    }
+
+    private List<FeedImageResponse> mapToFeedImageResponse(final FeedThread feedThread) {
+        final List<FeedThreadImage> images = feedThreadImageRepository.findAllByFeedThread(feedThread);
+        return images.stream().map(feedThreadImage ->
+                        new FeedImageResponse(
+                                feedThreadImage.getId(),
+                                isExpired(feedThreadImage.getCreatedAt()),
+                                feedThreadImage.getImageName().getValue(),
+                                feedThreadImage.getImageUrl().getValue()))
+                .toList();
+    }
+
+    private boolean isExpired(final LocalDateTime createdAt) {
+        return createdAt.plusDays(IMAGE_EXPIRATION_DATE).isBefore(LocalDateTime.now(clock));
     }
 }
