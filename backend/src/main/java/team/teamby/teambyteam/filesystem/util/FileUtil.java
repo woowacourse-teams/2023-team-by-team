@@ -7,7 +7,7 @@ public class FileUtil {
 
     private FileUtil() {}
 
-    public static String getFileExtension(MultipartFile file) {
+    public static String getFileExtension(final MultipartFile file) {
         final String originalFilename = file.getOriginalFilename();
         if (originalFilename != null) {
             int dotIndex = originalFilename.lastIndexOf(".");
