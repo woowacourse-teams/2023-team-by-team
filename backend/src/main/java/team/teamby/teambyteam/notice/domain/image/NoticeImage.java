@@ -44,4 +44,12 @@ public class NoticeImage extends BaseEntity {
         this.notice = notice;
         notice.getImages().add(this);
     }
+
+    public String getImageUrlValue() {
+        return imageUrl.getValue();
+    }
+
+    public String getImageNameValue() {
+        return imageName.getValue();
+    }
 }

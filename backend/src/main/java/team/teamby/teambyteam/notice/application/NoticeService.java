@@ -1,5 +1,7 @@
 package team.teamby.teambyteam.notice.application;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -20,6 +22,7 @@ import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.exception.MemberException;
+import team.teamby.teambyteam.notice.application.dto.NoticeImageResponse;
 import team.teamby.teambyteam.notice.application.dto.NoticeRegisterRequest;
 import team.teamby.teambyteam.notice.application.dto.NoticeResponse;
 import team.teamby.teambyteam.notice.domain.Notice;
@@ -42,9 +45,12 @@ public class NoticeService {
 
     private static final int LIMIT_IMAGE_SIZE = 5242880;
     private static final int LIMIT_IMAGE_COUNT = 4;
+    private static final int IMAGE_EXPIRATION_DATE = 90;
 
     @Value("${aws.s3.image-directory}")
     private String imageDirectory;
+
+    private final Clock clock;
 
     private final NoticeRepository noticeRepository;
     private final TeamPlaceRepository teamPlaceRepository;
@@ -134,6 +140,21 @@ public class NoticeService {
         final MemberTeamPlace memberTeamPlace = memberTeamPlaceRepository
                 .findByTeamPlaceIdAndMemberId(notice.getTeamPlaceId(), notice.getAuthorId())
                 .orElse(MemberTeamPlace.UNKNOWN_MEMBER_TEAM_PLACE);
-        return NoticeResponse.of(notice, memberTeamPlace);
+        return NoticeResponse.of(notice, memberTeamPlace, mapNoticeImageResponse(notice.getImages()));
+    }
+
+    private List<NoticeImageResponse> mapNoticeImageResponse(final List<NoticeImage> images) {
+        return images.stream()
+                .map(image ->
+                        new NoticeImageResponse(
+                                image.getId(),
+                                isExpired(image.getCreatedAt()),
+                                image.getImageNameValue(),
+                                image.getImageUrlValue())
+                ).toList();
+    }
+
+    private boolean isExpired(final LocalDateTime createdAt) {
+        return createdAt.plusDays(IMAGE_EXPIRATION_DATE).isBefore(LocalDateTime.now(clock));
     }
 }
