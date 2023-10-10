@@ -7,6 +7,8 @@ export const Container = styled.div<{ isMe: boolean }>`
 
   width: 100%;
   gap: 10px;
+
+  z-index: 0;
 `;
 
 export const BodyContainer = styled.div<{ isMe: boolean }>`
@@ -71,9 +73,23 @@ export const ProfileImg = styled.img`
   object-fit: cover;
 `;
 
-export const ThumbnailListWrapper = styled.div<{ marginBottom: boolean }>`
-  margin: 20px;
-  margin-bottom: ${({ marginBottom }) => (marginBottom ? '20px' : '0')};
+export const ThumbnailListWrapper = styled.div<{
+  wrapperTheme: 'blurple' | 'white';
+  marginBottom: boolean;
+}>`
+  width: 100%;
+  height: 136px;
+  padding: 40px 20px 0 20px;
+  margin-top: -20px;
+  margin-bottom: ${({ marginBottom }) => (marginBottom ? '40px' : '20px')};
+
+  background: ${({ theme, wrapperTheme }) =>
+    wrapperTheme === 'blurple'
+      ? theme.gradient.BLURPLE('116px')
+      : theme.gradient.WHITE('116px')};
+
+  z-index: 1;
+  box-sizing: border-box;
 `;
 
 export const threadInfoText = css`

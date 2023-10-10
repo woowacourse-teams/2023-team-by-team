@@ -15,7 +15,7 @@ const meta = {
         <div
           style={{
             position: 'relative',
-            padding: '20px',
+            padding: '40px',
             backgroundColor: '#404040',
           }}
         >
