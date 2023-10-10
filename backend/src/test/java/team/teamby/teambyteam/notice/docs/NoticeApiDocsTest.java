@@ -27,6 +27,7 @@ import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ROY;
 import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.CONTENT_AND_IMAGE_REQUEST;
 import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.NOTICE_2ND;
 
+import java.util.Collections;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -224,7 +225,7 @@ public class NoticeApiDocsTest extends ApiDocsTest {
                     roy.getId(),
                     roy.getName().getValue(),
                     roy.getProfileImageUrl().getValue(),
-                    "2023-01-01 00:00"));
+                    "2023-01-01 00:00", Collections.emptyList()));
 
             given(noticeService.findMostRecentNotice(teamPlaceId))
                     .willReturn(response);
@@ -250,7 +251,8 @@ public class NoticeApiDocsTest extends ApiDocsTest {
                                             fieldWithPath("authorId").type(JsonFieldType.NUMBER).description("공지를 등록한 멤버 Id"),
                                             fieldWithPath("authorName").type(JsonFieldType.STRING).description("공지를 등록한 멤버 이름"),
                                             fieldWithPath("profileImageUrl").type(JsonFieldType.STRING).description("공지를 등록한 멤버 이미지"),
-                                            fieldWithPath("createdAt").type(JsonFieldType.STRING).description("공지를 등록한 날짜")
+                                            fieldWithPath("createdAt").type(JsonFieldType.STRING).description("공지를 등록한 날짜"),
+                                            fieldWithPath("images").type(JsonFieldType.ARRAY).description("공지 이미지 리스트")
                                     )
                             )
                     );
@@ -301,7 +303,7 @@ public class NoticeApiDocsTest extends ApiDocsTest {
                     null,
                     "(알수없음)",
                     "unknown@teamby.team",
-                    "2022-01-01 00:00"));
+                    "2022-01-01 00:00", Collections.emptyList()));
 
             given(noticeService.findMostRecentNotice(teamPlaceId))
                     .willReturn(response);
@@ -327,7 +329,8 @@ public class NoticeApiDocsTest extends ApiDocsTest {
                                             fieldWithPath("authorId").type(JsonFieldType.NULL).description("탈퇴하여 확인할 수 없는 멤버Id"),
                                             fieldWithPath("authorName").type(JsonFieldType.STRING).description("탈퇴하여 확인할 수 없는 멤버 이름"),
                                             fieldWithPath("profileImageUrl").type(JsonFieldType.STRING).description("탈퇴하여 확인할 수 없는 멤버 프로필"),
-                                            fieldWithPath("createdAt").type(JsonFieldType.STRING).description("공지를 등록한 날짜")
+                                            fieldWithPath("createdAt").type(JsonFieldType.STRING).description("공지를 등록한 날짜"),
+                                            fieldWithPath("images").type(JsonFieldType.ARRAY).description("공지 이미지 리스트")
                                     )
                             )
                     );

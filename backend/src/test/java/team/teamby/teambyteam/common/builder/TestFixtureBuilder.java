@@ -1,5 +1,6 @@
 package team.teamby.teambyteam.common.builder;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import team.teamby.teambyteam.feed.domain.Feed;
@@ -9,13 +10,12 @@ import team.teamby.teambyteam.icalendar.domain.PublishedIcalendar;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.notice.domain.Notice;
+import team.teamby.teambyteam.notice.domain.image.NoticeImage;
 import team.teamby.teambyteam.schedule.domain.Schedule;
 import team.teamby.teambyteam.sharedlink.domain.SharedLink;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceInviteCode;
 import team.teamby.teambyteam.token.domain.Token;
-
-import java.util.List;
 
 @Component
 public class TestFixtureBuilder {
@@ -77,12 +77,23 @@ public class TestFixtureBuilder {
         return bs.feedRepository().saveAll(feeds);
     }
 
+    public FeedThreadImage buildFeedThreadFeedThreadImage(final FeedThread feedThread, final FeedThreadImage feedThreadImage) {
+        feedThreadImage.confirmFeedThread(feedThread);
+        return bs.feedThreadImageRepository().save(feedThreadImage);
+    }
+
+
     public Notice buildNotice(final Notice notice) {
         return bs.noticeRepository().save(notice);
     }
 
     public List<Notice> buildNotices(final List<Notice> notices) {
         return bs.noticeRepository().saveAll(notices);
+    }
+
+    public NoticeImage buildNoticeNoticeImage(final Notice notice, final NoticeImage noticeImage) {
+        noticeImage.confirmNotice(notice);
+        return bs.noticeImageRepository().save(noticeImage);
     }
 
     public TeamPlaceInviteCode buildTeamPlaceInviteCode(final TeamPlaceInviteCode teamPlaceInviteCode) {
@@ -95,11 +106,6 @@ public class TestFixtureBuilder {
 
     public SharedLink buildSharedLink(final SharedLink sharedLink) {
         return bs.sharedLinkRepository().save(sharedLink);
-    }
-
-    public FeedThreadImage buildFeedThreadFeedThreadImage(final FeedThread feedThread, final FeedThreadImage feedThreadImage) {
-        feedThreadImage.confirmFeedThread(feedThread);
-        return bs.feedThreadImageRepository().save(feedThreadImage);
     }
 
     public PublishedIcalendar buildPublishedIcalendar(final PublishedIcalendar publishedIcalendar) {
