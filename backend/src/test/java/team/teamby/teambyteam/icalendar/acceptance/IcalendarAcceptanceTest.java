@@ -50,8 +50,8 @@ public class IcalendarAcceptanceTest extends AcceptanceTest {
                 countDownLatch = new CountDownLatch(1);
             }
 
-            @After("@annotation(org.springframework.scheduling.annotation.Async)")
-            public void afterAsync() {
+            @After("execution(* team.teamby.teambyteam.icalendar.application.IcalendarEventListener.createIcalendar(*))")
+            public void afterIcalendarCreation() {
                 countDownLatch.countDown();
             }
 

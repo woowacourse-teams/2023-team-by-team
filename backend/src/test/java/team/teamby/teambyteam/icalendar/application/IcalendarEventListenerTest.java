@@ -1,16 +1,13 @@
 package team.teamby.teambyteam.icalendar.application;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.task.SyncTaskExecutor;
-import org.springframework.test.context.transaction.TestTransaction;
 import team.teamby.teambyteam.common.ServiceTest;
 import team.teamby.teambyteam.common.fixtures.ScheduleFixtures;
 import team.teamby.teambyteam.icalendar.application.event.CreateIcalendarEvent;
@@ -22,7 +19,6 @@ import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
 import java.util.concurrent.Executor;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
@@ -42,11 +38,6 @@ class IcalendarEventListenerTest extends ServiceTest {
         public Executor executor() {
             return new SyncTaskExecutor();
         }
-    }
-
-    @BeforeEach
-    void setup() {
-        Mockito.reset(icalendarPublishService);
     }
 
     @Test
@@ -69,9 +60,6 @@ class IcalendarEventListenerTest extends ServiceTest {
         // given
         final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
 
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
-
         final CreateIcalendarEvent createIcalendarEvent = new CreateIcalendarEvent(ENGLISH_TEAM_PLACE.getId());
 
         // when
@@ -87,9 +75,6 @@ class IcalendarEventListenerTest extends ServiceTest {
         // given
         final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
         final Schedule schedule = testFixtureBuilder.buildSchedule(ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(ENGLISH_TEAM_PLACE.getId()));
-
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
 
         final ScheduleEvent scheduleEvent = new ScheduleCreateEvent(schedule.getId(), ENGLISH_TEAM_PLACE.getId(), schedule.getTitle(), schedule.getSpan());
 
