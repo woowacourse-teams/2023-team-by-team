@@ -4,16 +4,27 @@ export const { REACT_APP_BASE_URL: baseUrl } = process.env;
 
 const BASE_URL = baseUrl === undefined ? '' : baseUrl;
 
-const createPostHeaders = (body: unknown) => ({
-  headers: {
-    'Content-Type':
-      body instanceof FormData ? 'multipart/form-data' : 'application/json',
-    Authorization: `Bearer ${localStorage.getItem(
-      LOCAL_STORAGE_KEY.ACCESS_TOKEN,
-    )}`,
-  },
-  body: body instanceof FormData ? body : JSON.stringify(body),
-});
+const createPostHeaders = (body: unknown) => {
+  if (body instanceof FormData)
+    return {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem(
+          LOCAL_STORAGE_KEY.ACCESS_TOKEN,
+        )}`,
+      },
+      body: body,
+    };
+
+  return {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem(
+        LOCAL_STORAGE_KEY.ACCESS_TOKEN,
+      )}`,
+    },
+    body: JSON.stringify(body),
+  };
+};
 
 export const http = {
   get: async <T>(url: RequestInfo | URL): Promise<T> => {
@@ -38,7 +49,7 @@ export const http = {
     const response = await fetch(BASE_URL + url, {
       method: 'POST',
       ...createPostHeaders(body),
-    });
+    } as unknown as RequestInit);
 
     if (!response.ok) {
       throw response;
