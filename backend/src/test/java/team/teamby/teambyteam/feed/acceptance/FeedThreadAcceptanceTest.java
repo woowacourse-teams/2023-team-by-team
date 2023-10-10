@@ -22,20 +22,20 @@ import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptance
 
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
 import team.teamby.teambyteam.common.AcceptanceTest;
+import team.teamby.teambyteam.common.fixtures.FeedThreadFixtures;
+import team.teamby.teambyteam.common.fixtures.FeedThreadImageFixtures;
 import team.teamby.teambyteam.common.fixtures.MemberFixtures;
+import team.teamby.teambyteam.feed.application.dto.FeedResponse;
 import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
 import team.teamby.teambyteam.feed.domain.Feed;
 import team.teamby.teambyteam.feed.domain.FeedThread;
@@ -49,10 +49,21 @@ import team.teamby.teambyteam.schedule.domain.vo.Span;
 import team.teamby.teambyteam.schedule.domain.vo.Title;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
+import java.time.Clock;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class FeedThreadAcceptanceTest extends AcceptanceTest {
 
     @MockBean
     private FileCloudUploader fileCloudUploader;
+
+    @SpyBean
+    private Clock clock;
 
     @Nested
     @DisplayName("피드에 스레드 등록 시")
@@ -256,29 +267,59 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
         @DisplayName("스레드 조회를 처음한다.")
         void firstReadSuccess() {
             // given
-            List<Feed> insertFeeds = new ArrayList<>();
-            insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
-            insertFeeds.add(ScheduleNotification.from(new ScheduleCreateEvent(1L, 1L, new Title("테스트 알림"),
-                    new Span(LocalDateTime.now(), LocalDateTime.now()))));
-            insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
-            insertFeeds.add(ScheduleNotification.from(new ScheduleCreateEvent(2L, 1L, new Title("테스트 알림"),
-                    new Span(LocalDateTime.now(), LocalDateTime.now()))));
-            insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
-            insertFeeds.add(ScheduleNotification.from(new ScheduleCreateEvent(3L, 1L, new Title("테스트 알림"),
-                    new Span(LocalDateTime.now(), LocalDateTime.now()))));
+            given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class)))
+                    .willReturn("https://s3://seongha-seeik");
 
-            testFixtureBuilder.buildFeeds(insertFeeds);
+            POST_FEED_THREAD_ONLY_IMAGE_REQUEST(authToken, participatedTeamPlace.getId(), List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2));
+            POST_FEED_THREAD_IMAGE_AND_CONTENT_REQUEST(authToken, participatedTeamPlace.getId(), List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2), FeedThreadFixtures.CONTENT_AND_IMAGE);
+            POST_FEED_THREAD_ONLY_CONTENT_REQUEST(authToken, participatedTeamPlace.getId(), FeedThreadFixtures.CONTENT_ONLY_AND_IMAGE_EMPTY);
             final Long teamPlaceId = participatedMemberTeamPlace.getId();
             final int size = 5;
 
             // when
             final ExtractableResponse<Response> response = GET_FEED_THREAD_FIRST(authToken, teamPlaceId, size);
-            FeedsResponse feedsResponse = response.as(FeedsResponse.class);
+            final FeedsResponse feedsResponse = response.as(FeedsResponse.class);
+            final FeedResponse feedResponse3 = feedsResponse.threads().get(0);
+            final FeedResponse feedResponse2 = feedsResponse.threads().get(1);
+            final FeedResponse feedResponse1 = feedsResponse.threads().get(2);
 
             //then
             assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-                softly.assertThat(feedsResponse.threads().size()).isEqualTo(size);
+                softly.assertThat(feedsResponse.threads().size()).isEqualTo(3);
+                softly.assertThat(feedResponse1.images().size()).isEqualTo(2);
+                softly.assertThat(feedResponse2.images().size()).isEqualTo(2);
+                softly.assertThat(feedResponse3.images().size()).isEqualTo(0);
+            });
+        }
+
+        @Test
+        @DisplayName("이미지가 만료되는 경우에 조회한다.")
+        void readIfImageExpired() {
+            // given
+            given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class)))
+                    .willReturn("https://s3://seongha-seeik");
+
+            POST_FEED_THREAD_ONLY_IMAGE_REQUEST(authToken, participatedTeamPlace.getId(), List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2));
+
+            final Instant expiredDate = LocalDateTime.now().plusDays(FeedThreadImageFixtures.IMAGE_EXPIRATION_DATE).plusNanos(1).toInstant(ZoneOffset.systemDefault().getRules().getOffset(LocalDateTime.now()));
+            given(clock.instant()).willReturn(expiredDate);
+
+            final Long teamPlaceId = participatedMemberTeamPlace.getId();
+            final int size = 5;
+
+            // when
+            final ExtractableResponse<Response> response = GET_FEED_THREAD_FIRST(authToken, teamPlaceId, size);
+            final FeedsResponse feedsResponse = response.as(FeedsResponse.class);
+            final FeedResponse feedResponse = feedsResponse.threads().get(0);
+
+            //then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+                softly.assertThat(feedsResponse.threads().size()).isEqualTo(1);
+                softly.assertThat(feedResponse.images().size()).isEqualTo(2);
+                softly.assertThat(feedResponse.images().get(0).isExpired()).isTrue();
+                softly.assertThat(feedResponse.images().get(1).isExpired()).isTrue();
             });
         }
 

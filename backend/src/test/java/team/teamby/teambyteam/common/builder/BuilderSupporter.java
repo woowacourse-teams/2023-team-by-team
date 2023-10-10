@@ -3,6 +3,7 @@ package team.teamby.teambyteam.common.builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import team.teamby.teambyteam.feed.domain.FeedRepository;
+import team.teamby.teambyteam.feed.domain.image.FeedThreadImageRepository;
 import team.teamby.teambyteam.icalendar.domain.PublishedIcalendarRepository;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
@@ -44,6 +45,9 @@ public class BuilderSupporter {
     private SharedLinkRepository sharedLinkRepository;
 
     @Autowired
+    private FeedThreadImageRepository feedThreadImageRepository;
+
+    @Autowired
     private PublishedIcalendarRepository publishedIcalendarRepository;
 
     public ScheduleRepository scheduleRepository() {
@@ -80,6 +84,10 @@ public class BuilderSupporter {
 
     public SharedLinkRepository sharedLinkRepository() {
         return sharedLinkRepository;
+    }
+
+    public FeedThreadImageRepository feedThreadImageRepository() {
+        return feedThreadImageRepository;
     }
 
     public PublishedIcalendarRepository publishedIcalendarRepository() {
