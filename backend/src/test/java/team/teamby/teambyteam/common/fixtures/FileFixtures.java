@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import org.springframework.mock.web.MockMultipartFile;
 
-public class FileFIxtures {
+public class FileFixtures {
 
     /**
      * FILE

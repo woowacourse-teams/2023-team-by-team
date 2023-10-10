@@ -40,7 +40,7 @@ import org.springframework.mock.web.MockPart;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.web.multipart.MultipartFile;
 import team.teamby.teambyteam.common.ApiDocsTest;
-import team.teamby.teambyteam.common.fixtures.FileFIxtures;
+import team.teamby.teambyteam.common.fixtures.FileFixtures;
 import team.teamby.teambyteam.filesystem.FileCloudUploader;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.exception.MemberException;
@@ -86,7 +86,7 @@ public class NoticeApiDocsTest extends ApiDocsTest {
 
             // when & then
             mockMvc.perform(multipart(POST_REQUEST_URL, teamPlaceId)
-                            .file("images", FileFIxtures.UNDER_SIZE_PNG_MOCK_MULTIPART_FILE1.getBytes())
+                            .file("images", FileFixtures.UNDER_SIZE_PNG_MOCK_MULTIPART_FILE1.getBytes())
                             .part(new MockPart("content", "TEST".getBytes()))
                             .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
                             .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
@@ -125,7 +125,7 @@ public class NoticeApiDocsTest extends ApiDocsTest {
 
             // when & then
             mockMvc.perform(multipart(POST_REQUEST_URL, teamPlaceId)
-                            .file("images", FileFIxtures.UNDER_SIZE_PNG_MOCK_MULTIPART_FILE1.getBytes())
+                            .file("images", FileFixtures.UNDER_SIZE_PNG_MOCK_MULTIPART_FILE1.getBytes())
                             .part(new MockPart("content", "TEST".getBytes()))
                             .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
                             .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
@@ -154,7 +154,7 @@ public class NoticeApiDocsTest extends ApiDocsTest {
 
             // when & then
             mockMvc.perform(multipart(POST_REQUEST_URL, nonExistTeamPlaceId)
-                            .file("images", FileFIxtures.UNDER_SIZE_PNG_MOCK_MULTIPART_FILE1.getBytes())
+                            .file("images", FileFixtures.UNDER_SIZE_PNG_MOCK_MULTIPART_FILE1.getBytes())
                             .part(new MockPart("content", "TEST".getBytes()))
                             .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
                             .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
@@ -184,7 +184,7 @@ public class NoticeApiDocsTest extends ApiDocsTest {
 
             // when & then
             mockMvc.perform(multipart(POST_REQUEST_URL, teamPlaceId)
-                            .file("images", FileFIxtures.UNDER_SIZE_PNG_MOCK_MULTIPART_FILE1.getBytes())
+                            .file("images", FileFixtures.UNDER_SIZE_PNG_MOCK_MULTIPART_FILE1.getBytes())
                             .part(new MockPart("content", "TEST".getBytes()))
                             .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
                             .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))

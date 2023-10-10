@@ -1,11 +1,11 @@
 package team.teamby.teambyteam.common.fixtures;
 
-import static team.teamby.teambyteam.common.fixtures.FileFIxtures.OVER_SIZE_PNG_MOCK_MULTIPART_FILE;
-import static team.teamby.teambyteam.common.fixtures.FileFIxtures.UNDER_SIZE_PNG_MOCK_MULTIPART_FILE1;
-import static team.teamby.teambyteam.common.fixtures.FileFIxtures.UNDER_SIZE_PNG_MOCK_MULTIPART_FILE2;
-import static team.teamby.teambyteam.common.fixtures.FileFIxtures.UNDER_SIZE_PNG_MOCK_MULTIPART_FILE3;
-import static team.teamby.teambyteam.common.fixtures.FileFIxtures.UNDER_SIZE_PNG_MOCK_MULTIPART_FILE4;
-import static team.teamby.teambyteam.common.fixtures.FileFIxtures.UNDER_SIZE_WRONG_EXTENSION_MOCK_MULTIPART_FILE;
+import static team.teamby.teambyteam.common.fixtures.FileFixtures.OVER_SIZE_PNG_MOCK_MULTIPART_FILE;
+import static team.teamby.teambyteam.common.fixtures.FileFixtures.UNDER_SIZE_PNG_MOCK_MULTIPART_FILE1;
+import static team.teamby.teambyteam.common.fixtures.FileFixtures.UNDER_SIZE_PNG_MOCK_MULTIPART_FILE2;
+import static team.teamby.teambyteam.common.fixtures.FileFixtures.UNDER_SIZE_PNG_MOCK_MULTIPART_FILE3;
+import static team.teamby.teambyteam.common.fixtures.FileFixtures.UNDER_SIZE_PNG_MOCK_MULTIPART_FILE4;
+import static team.teamby.teambyteam.common.fixtures.FileFixtures.UNDER_SIZE_WRONG_EXTENSION_MOCK_MULTIPART_FILE;
 
 import java.util.List;
 import team.teamby.teambyteam.notice.application.dto.NoticeRegisterRequest;
