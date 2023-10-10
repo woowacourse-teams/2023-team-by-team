@@ -31,4 +31,6 @@ export { ReactComponent as CheckBlackIcon } from './check-black.svg';
 export { ReactComponent as AirplaneIcon } from './airplane.svg';
 export { ReactComponent as ImageIcon } from './image.svg';
 export { ReactComponent as WarningIcon } from './warning.svg';
+export { ReactComponent as QuestionIcon } from './question.svg';
+export { ReactComponent as ExportIcon } from './export.svg';
 export { ReactComponent as TeamSmallIcon } from './team-small.svg';

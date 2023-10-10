@@ -26,7 +26,10 @@ export const Wrapper = styled.div<Pick<ToastProps, 'status' | 'isActive'>>`
     }
   }}
 
+  white-space: pre-line;
+  line-height: 1.5;
+
   animation: ${({ theme, isActive }) =>
-    isActive ? theme.animation.fadeInUp : theme.animation.fadeOut}
+      isActive ? theme.animation.fadeInUp : theme.animation.fadeOut}
     0.4s ease-in-out both;
 `;
