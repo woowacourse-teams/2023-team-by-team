@@ -50,5 +50,4 @@ public class FileFixtures {
             throw new RuntimeException(e);
         }
     }
-
 }
