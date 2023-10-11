@@ -24,7 +24,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ROY;
-import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.CONTENT_AND_IMAGE_REQUEST;
 import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.NOTICE_2ND;
 
 import java.util.Collections;
@@ -79,7 +78,6 @@ public class NoticeApiDocsTest extends ApiDocsTest {
         void successRegisterNotice() throws Exception {
             //given
             final Long teamPlaceId = 1L;
-            final NoticeRegisterRequest request = CONTENT_AND_IMAGE_REQUEST;
             final Long registeredId = 1L;
 
             given(noticeService.register(any(NoticeRegisterRequest.class), any(Long.class), any()))
@@ -92,7 +90,8 @@ public class NoticeApiDocsTest extends ApiDocsTest {
                             .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
                             .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
                     .andExpect(status().isCreated())
-                    .andExpect(header().string(HttpHeaders.LOCATION, "/api/team-place/" + teamPlaceId + "/feed/threads/notice/" + registeredId))
+                    .andExpect(header().string(HttpHeaders.LOCATION,
+                            "/api/team-place/" + teamPlaceId + "/feed/threads/notice/" + registeredId))
                     .andDo(print())
                     .andDo(document("notice/register/success",
                                     preprocessRequest(prettyPrint()),
@@ -119,10 +118,8 @@ public class NoticeApiDocsTest extends ApiDocsTest {
         void failWithForbiddenTeamPlace() throws Exception {
             // given
             final Long teamPlaceId = 1L;
-            final NoticeRegisterRequest request = CONTENT_AND_IMAGE_REQUEST;
             given(teamPlaceParticipationInterceptor.preHandle(any(), any(), any()))
                     .willThrow(new TeamPlaceException.TeamPlaceAccessForbidden(teamPlaceId, "email@email.com"));
-
 
             // when & then
             mockMvc.perform(multipart(POST_REQUEST_URL, teamPlaceId)
@@ -149,8 +146,7 @@ public class NoticeApiDocsTest extends ApiDocsTest {
         void failWithNonExistTeamPlace() throws Exception {
             // given
             final Long nonExistTeamPlaceId = -1L;
-            final NoticeRegisterRequest request = CONTENT_AND_IMAGE_REQUEST;
-            given(noticeService.register(eq(request), eq(nonExistTeamPlaceId), any()))
+            given(noticeService.register(any(NoticeRegisterRequest.class), eq(nonExistTeamPlaceId), any()))
                     .willThrow(new TeamPlaceException.TeamPlaceAccessForbidden(nonExistTeamPlaceId, "email@email.com"));
 
             // when & then
@@ -179,7 +175,6 @@ public class NoticeApiDocsTest extends ApiDocsTest {
         void failWithUnauthorizedMember() throws Exception {
             // given
             final Long teamPlaceId = 1L;
-            final NoticeRegisterRequest request = CONTENT_AND_IMAGE_REQUEST;
             given(memberInterceptor.preHandle(any(), any(), any()))
                     .willThrow(new MemberException.MemberNotFoundException("email@email.com"));
 
@@ -250,7 +245,8 @@ public class NoticeApiDocsTest extends ApiDocsTest {
                                             fieldWithPath("content").type(JsonFieldType.STRING).description("조회한 공지 내용"),
                                             fieldWithPath("authorId").type(JsonFieldType.NUMBER).description("공지를 등록한 멤버 Id"),
                                             fieldWithPath("authorName").type(JsonFieldType.STRING).description("공지를 등록한 멤버 이름"),
-                                            fieldWithPath("profileImageUrl").type(JsonFieldType.STRING).description("공지를 등록한 멤버 이미지"),
+                                            fieldWithPath("profileImageUrl").type(JsonFieldType.STRING)
+                                                    .description("공지를 등록한 멤버 이미지"),
                                             fieldWithPath("createdAt").type(JsonFieldType.STRING).description("공지를 등록한 날짜"),
                                             fieldWithPath("images").type(JsonFieldType.ARRAY).description("공지 이미지 리스트")
                                     )
@@ -326,9 +322,12 @@ public class NoticeApiDocsTest extends ApiDocsTest {
                                     responseFields(
                                             fieldWithPath("id").type(JsonFieldType.NUMBER).description("조회한 공지 Id"),
                                             fieldWithPath("content").type(JsonFieldType.STRING).description("조회한 공지 내용"),
-                                            fieldWithPath("authorId").type(JsonFieldType.NULL).description("탈퇴하여 확인할 수 없는 멤버Id"),
-                                            fieldWithPath("authorName").type(JsonFieldType.STRING).description("탈퇴하여 확인할 수 없는 멤버 이름"),
-                                            fieldWithPath("profileImageUrl").type(JsonFieldType.STRING).description("탈퇴하여 확인할 수 없는 멤버 프로필"),
+                                            fieldWithPath("authorId").type(JsonFieldType.NULL)
+                                                    .description("탈퇴하여 확인할 수 없는 멤버Id"),
+                                            fieldWithPath("authorName").type(JsonFieldType.STRING)
+                                                    .description("탈퇴하여 확인할 수 없는 멤버 이름"),
+                                            fieldWithPath("profileImageUrl").type(JsonFieldType.STRING)
+                                                    .description("탈퇴하여 확인할 수 없는 멤버 프로필"),
                                             fieldWithPath("createdAt").type(JsonFieldType.STRING).description("공지를 등록한 날짜"),
                                             fieldWithPath("images").type(JsonFieldType.ARRAY).description("공지 이미지 리스트")
                                     )

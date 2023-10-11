@@ -4,10 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static team.teamby.teambyteam.common.fixtures.FileFixtures.UNDER_SIZE_PNG_MOCK_MULTIPART_FILE1;
+import static team.teamby.teambyteam.common.fixtures.FileFixtures.UNDER_SIZE_PNG_MOCK_MULTIPART_FILE2;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ROY;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ROY_MEMBER_EMAIL_REQUEST;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.SEONGHA;
-import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.CONTENT_AND_IMAGE_REQUEST;
 import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.NOTICE_1ST;
 import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.NOTICE_2ND;
 import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.NOTICE_3RD;
@@ -32,6 +33,7 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.web.multipart.MultipartFile;
 import team.teamby.teambyteam.common.ServiceTest;
 import team.teamby.teambyteam.common.fixtures.FeedThreadImageFixtures;
+import team.teamby.teambyteam.common.fixtures.NoticeFixtures;
 import team.teamby.teambyteam.common.fixtures.NoticeImageFixtures;
 import team.teamby.teambyteam.filesystem.FileCloudUploader;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
@@ -73,7 +75,10 @@ class NoticeServiceTest extends ServiceTest {
             teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             member = testFixtureBuilder.buildMember(ROY());
             memberEmailDto = ROY_MEMBER_EMAIL_REQUEST;
-            request = CONTENT_AND_IMAGE_REQUEST;
+            request = new NoticeRegisterRequest(
+                    NoticeFixtures.FIRST_CONTENT,
+                    List.of(UNDER_SIZE_PNG_MOCK_MULTIPART_FILE1, UNDER_SIZE_PNG_MOCK_MULTIPART_FILE2)
+            );
             given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class)))
                     .willReturn("https://s3://seongha-seeik");
         }
