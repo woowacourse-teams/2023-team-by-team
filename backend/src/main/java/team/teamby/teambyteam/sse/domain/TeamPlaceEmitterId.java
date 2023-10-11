@@ -3,6 +3,7 @@ package team.teamby.teambyteam.sse.domain;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @EqualsAndHashCode
 public class TeamPlaceEmitterId {
@@ -21,6 +22,10 @@ public class TeamPlaceEmitterId {
 
     public static TeamPlaceEmitterId of(final Long teamPlaceId, final Long memberId) {
         return new TeamPlaceEmitterId(teamPlaceId, memberId, LocalDateTime.now());
+    }
+
+    public boolean isTeamPlaceId(final Long teamPlaceId) {
+        return Objects.equals(this.memberId, teamPlaceId);
     }
 
     @Override

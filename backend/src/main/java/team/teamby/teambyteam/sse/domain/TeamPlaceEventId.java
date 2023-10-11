@@ -14,6 +14,12 @@ public class TeamPlaceEventId {
     private final String eventName;
     private final LocalDateTime timeStamp;
 
+    private TeamPlaceEventId() {
+        this.teamPlaceId = null;
+        this.eventName = null;
+        this.timeStamp = null;
+    }
+
     private TeamPlaceEventId(final Long teamPlaceId, final String eventName, final LocalDateTime timeStamp) {
         this.teamPlaceId = teamPlaceId;
         this.eventName = eventName;

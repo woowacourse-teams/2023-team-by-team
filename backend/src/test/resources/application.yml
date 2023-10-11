@@ -35,6 +35,9 @@ jwt:
     secret: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
     expiration: 86400000 # 1일
 
+sse:
+  cache-schedule-period: 1000
+
 aws:
   s3:
     region: abcd

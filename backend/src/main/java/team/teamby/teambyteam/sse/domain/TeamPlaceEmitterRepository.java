@@ -24,6 +24,13 @@ public class TeamPlaceEmitterRepository {
         return sseEmitter;
     }
 
+    public Map<TeamPlaceEmitterId, SseEmitter> findByTeamPlaceId(final Long teamPlaceId) {
+        return emitters.entrySet()
+                .stream()
+                .filter(entity -> entity.getKey().isTeamPlaceId(teamPlaceId))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
     public void deleteById(final TeamPlaceEmitterId id) {
         emitters.remove(id);
     }
@@ -35,7 +42,11 @@ public class TeamPlaceEmitterRepository {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    @Scheduled(fixedDelay = 1000 * 60)
+    public void addEventCache(final TeamPlaceEventId teamPlaceEventId, final Object event) {
+        eventCache.put(teamPlaceEventId, event);
+    }
+
+    @Scheduled(fixedDelayString = "${sse.cache-schedule-period}")
     private void cacheRefreshSchedule() {
         final LocalDateTime now = LocalDateTime.now();
         eventCache.keySet().forEach(key -> {
