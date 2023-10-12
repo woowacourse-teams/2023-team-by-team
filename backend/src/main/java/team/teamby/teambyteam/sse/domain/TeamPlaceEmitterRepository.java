@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class TeamPlaceEmitterRepository {
 
     private final Map<TeamPlaceEmitterId, SseEmitter> emitters = new ConcurrentHashMap<>();
-    private final Map<TeamPlaceEventId, Object> eventCache = new ConcurrentHashMap<>();
+    private final EventCache eventCache = new EventCache();
 
     public SseEmitter save(final TeamPlaceEmitterId emitterId, final SseEmitter sseEmitter) {
         emitters.put(emitterId, sseEmitter);
@@ -36,10 +36,7 @@ public class TeamPlaceEmitterRepository {
     }
 
     public Map<TeamPlaceEventId, Object> findAllEventCacheWithId(final Long teamPlaceId) {
-        return eventCache.entrySet()
-                .stream()
-                .filter(entry -> entry.getKey().isPublishedTo(teamPlaceId))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        return eventCache.findAllByTeamPlaceId(teamPlaceId);
     }
 
     public void addEventCache(final TeamPlaceEventId teamPlaceEventId, final Object event) {
@@ -48,12 +45,32 @@ public class TeamPlaceEmitterRepository {
 
     @Scheduled(fixedDelayString = "${sse.cache-schedule-period}")
     private void cacheRefreshSchedule() {
-        final LocalDateTime now = LocalDateTime.now();
-        eventCache.keySet().forEach(key -> {
-                    if (key.getTimeStamp().isBefore(now.minusMinutes(1))) {
-                        eventCache.remove(key);
+        eventCache.clearCacheFor(1);
+    }
+
+    private static class EventCache {
+
+        private final Map<TeamPlaceEventId, Object> cache = new ConcurrentHashMap<>();
+
+        public Map<TeamPlaceEventId, Object> findAllByTeamPlaceId(final Long teamPlaceId) {
+            return cache.entrySet()
+                    .stream()
+                    .filter(entry -> entry.getKey().isPublishedTo(teamPlaceId))
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        }
+
+        public void put(final TeamPlaceEventId teamPlaceEventId, final Object event) {
+            cache.put(teamPlaceEventId, event);
+        }
+
+        public void clearCacheFor(final int minutes) {
+            final LocalDateTime now = LocalDateTime.now();
+            cache.keySet().forEach(key -> {
+                        if (key.getTimeStamp().isBefore(now.minusMinutes(minutes))) {
+                            cache.remove(key);
+                        }
                     }
-                }
-        );
+            );
+        }
     }
 }
