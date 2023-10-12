@@ -68,6 +68,7 @@ public class SseSubscribeService {
                     .data(data));
         } catch (IOException e) {
             teamplaceEmitterRepository.deleteById(emitterId);
+            log.error("fail to send sse", e);
             throw new RuntimeException(e);
         }
     }
