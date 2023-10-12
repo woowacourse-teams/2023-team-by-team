@@ -29,6 +29,7 @@ import {
   PlusIcon,
 } from '~/assets/svg';
 import * as S from './TeamCalendar.styled';
+import { parseDate } from '~/utils/parseDate';
 
 interface TeamCalendarProps {
   calendarSize?: CalendarSize;
@@ -43,7 +44,7 @@ const TeamCalendar = (props: TeamCalendarProps) => {
     month,
     calendar,
     currentDate,
-
+    today,
     handlers: { handlePrevButtonClick, handleNextButtonClick },
   } = useCalendar();
   const { isModalOpen, openModal } = useModal();
@@ -279,11 +280,23 @@ const TeamCalendar = (props: TeamCalendarProps) => {
                   </S.ScheduleBarContainer>
                   <S.DateView calendarSize={calendarSize}>
                     {week.map((day, colIndex) => {
+                      const {
+                        year: renderYear,
+                        month: renderMonth,
+                        date: renderDate,
+                      } = parseDate(day);
+
+                      const isToday =
+                        today.year === renderYear &&
+                        today.month === renderMonth &&
+                        today.date === renderDate;
+
                       return (
                         <DateCell
                           key={day.toISOString()}
                           rawDate={day}
                           currentMonth={month}
+                          isToday={isToday}
                           onClick={() => {
                             handleDateCellClick(day);
                           }}

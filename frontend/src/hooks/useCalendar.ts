@@ -7,6 +7,7 @@ const useCalendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const { year, month, date } = parseDate(currentDate);
   const { day: startDayOfMonth } = parseDate(new Date(year, month, 1));
+  const today = parseDate(new Date());
 
   const handlePrevButtonClick = () => {
     setCurrentDate(() => new Date(year, month - 1, date));
@@ -33,7 +34,7 @@ const useCalendar = () => {
     month,
     calendar,
     currentDate,
-
+    today,
     handlers: {
       handlePrevButtonClick,
       handleNextButtonClick,
