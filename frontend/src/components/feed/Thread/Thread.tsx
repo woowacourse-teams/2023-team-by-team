@@ -6,14 +6,14 @@ import type { ThreadSize } from '~/types/size';
 import type { ThreadImage } from '~/types/feed';
 import { useRef } from 'react';
 import { useThreadHeight } from '~/hooks/thread/useThreadHeight';
-import ExpandButton from '~/components/common/ExpandButton/ExpandButton';
+import ThreadExpandButton from '~/components/feed/ThreadExpandButton/ThreadExpandButton';
 import ThumbnailList from '../ThumbnailList/ThumbnailList';
 
 interface ThreadProps {
   threadSize?: ThreadSize;
   authorName: string;
   profileImageUrl: string;
-  isMe: boolean;
+  isMe?: boolean;
   createdAt: YYYYMMDDHHMM;
   content: string;
   images: ThreadImage[];
@@ -26,7 +26,7 @@ const Thread = (props: ThreadProps) => {
     threadSize = 'md',
     authorName,
     profileImageUrl,
-    isMe,
+    isMe = false,
     createdAt,
     content,
     images,
@@ -64,7 +64,7 @@ const Thread = (props: ThreadProps) => {
           </S.ContentWrapper>
           {images.length > 0 && (
             <S.ThumbnailListWrapper
-              wrapperTheme={isMe ? 'blurple' : 'white'}
+              isMe={isMe}
               marginBottom={!shouldShowExpandButton}
             >
               <ThumbnailList
@@ -75,9 +75,9 @@ const Thread = (props: ThreadProps) => {
             </S.ThumbnailListWrapper>
           )}
           {shouldShowExpandButton && (
-            <ExpandButton
+            <ThreadExpandButton
               isExpanded={isExpanded}
-              theme={isMe ? 'blurple' : 'white'}
+              isMe={isMe}
               size={threadSize}
               onClick={toggleExpanded}
             />

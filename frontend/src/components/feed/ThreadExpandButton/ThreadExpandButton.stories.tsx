@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import ExpandButton from './ExpandButton';
+import ThreadExpandButton from './ThreadExpandButton';
 
 /**
- * `ExpandButton` 은 스레드 및 공지 스레드에서의 펼치기/접기 기능을 사용하기 위한 버튼입니다.
+ * `ThreadExpandButton` 은 스레드 및 공지 스레드에서의 펼치기/접기 기능을 사용하기 위한 버튼입니다.
  *  **더 이상 이 컴포넌트는 `position: absolute`를 지니지 않도록 변경되었음에 유의하세요.**
  */
 const meta = {
-  title: 'Feed/ExpandButton',
-  component: ExpandButton,
+  title: 'Feed/ThreadExpandButton',
+  component: ThreadExpandButton,
   tags: ['autodocs'],
   decorators: [
     (Story) => {
@@ -24,7 +24,7 @@ const meta = {
       );
     },
   ],
-} satisfies Meta<typeof ExpandButton>;
+} satisfies Meta<typeof ThreadExpandButton>;
 
 export default meta;
 
@@ -33,46 +33,46 @@ type Story = StoryObj<typeof meta>;
 /**
  * 검은 배경은 단지 컴포넌트의 랜더링 결과 잘 보이게 하기 위함이며, 실제로는 컴포넌트에 포함되지 않습니다.
  */
-export const WhiteNotExpanded: Story = {
+export const NotExpanded: Story = {
   args: {
     isExpanded: false,
-    theme: 'white',
+    isMe: false,
   },
 };
 
-export const WhiteExpanded: Story = {
+export const Expanded: Story = {
   args: {
     isExpanded: true,
-    theme: 'white',
+    isMe: false,
   },
 };
 
-export const WhiteSmall: Story = {
+export const Small: Story = {
   args: {
     isExpanded: false,
-    theme: 'white',
+    isMe: false,
     size: 'sm',
   },
 };
 
-export const BlurpleNotExpanded: Story = {
+export const NotExpandedAndSentByMe: Story = {
   args: {
     isExpanded: false,
-    theme: 'blurple',
+    isMe: true,
   },
 };
 
-export const BlurpleExpanded: Story = {
+export const ExpandedAndSentByMe: Story = {
   args: {
     isExpanded: true,
-    theme: 'blurple',
+    isMe: true,
   },
 };
 
-export const BlurpleSmall: Story = {
+export const SmallAndSentByMe: Story = {
   args: {
     isExpanded: false,
-    theme: 'blurple',
+    isMe: true,
     size: 'sm',
   },
 };

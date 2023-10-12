@@ -74,7 +74,7 @@ export const ProfileImg = styled.img`
 `;
 
 export const ThumbnailListWrapper = styled.div<{
-  wrapperTheme: 'blurple' | 'white';
+  isMe: boolean;
   marginBottom: boolean;
 }>`
   width: 100%;
@@ -83,10 +83,8 @@ export const ThumbnailListWrapper = styled.div<{
   margin-top: -20px;
   margin-bottom: ${({ marginBottom }) => (marginBottom ? '40px' : '20px')};
 
-  background: ${({ theme, wrapperTheme }) =>
-    wrapperTheme === 'blurple'
-      ? theme.gradient.BLURPLE('116px')
-      : theme.gradient.WHITE('116px')};
+  background: ${({ theme, isMe }) =>
+    isMe ? theme.gradient.BLURPLE('116px') : theme.gradient.WHITE('116px')};
 
   z-index: 1;
   box-sizing: border-box;
