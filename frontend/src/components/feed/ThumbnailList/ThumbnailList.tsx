@@ -18,6 +18,7 @@ interface DeletableThumbnails {
 interface ViewableThumbnails {
   mode: 'view';
   images: ThreadImage[];
+  size?: 'md' | 'sm';
   onClick: (images: ThreadImage[], selectedImage: number) => void;
 }
 
@@ -38,6 +39,7 @@ const ThumbnailList = (props: ThumbnailListProps) => {
             <ViewableThumbnail
               key={image.id}
               image={image}
+              size={props.size}
               onClick={() => props.onClick(images, index + 1)}
             />
           ))}

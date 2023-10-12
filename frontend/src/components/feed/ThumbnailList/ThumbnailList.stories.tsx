@@ -142,3 +142,14 @@ export const ViewableList: Story = {
     },
   },
 };
+
+export const ViewableListSmall: Story = {
+  args: {
+    mode: 'view',
+    size: 'sm',
+    images: viewModeImages,
+    onClick: (images: ThreadImage[], selectedImage: number) => {
+      alert(`onClick(${JSON.stringify(images)}, ${selectedImage});`);
+    },
+  },
+};

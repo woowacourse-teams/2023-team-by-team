@@ -54,6 +54,7 @@ const NoticeThread = (props: NoticeThreadProps) => {
             {images.length > 0 && noticeSize === 'lg' && (
               <ThumbnailList
                 mode="view"
+                size="sm"
                 images={images}
                 onClick={onClickImage}
               />
