@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -53,7 +54,7 @@ public class SseSubscribeService {
 
         sendToClient(emitterId, emitter, emitterId.toString(), CONNECT, String.format(SSE_CONNECTED_MESSAGE_FORMAT, memberId));
 
-        if (!lastEventId.isEmpty()) {
+        if (!Objects.isNull(lastEventId) && !lastEventId.isBlank()) {
             sendCachedEvents(emitterId, emitter, teamPlaceId, lastEventId);
         }
 
