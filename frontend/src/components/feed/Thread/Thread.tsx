@@ -57,9 +57,7 @@ const Thread = (props: ThreadProps) => {
         <S.ContentContainer isMe={isMe} ref={threadRef} height={resultHeight}>
           <S.ContentWrapper>
             <div ref={contentRef}>
-              <Text size="xl" css={S.contentField(threadSize, isMe)}>
-                {content}
-              </Text>
+              <Text css={S.contentField(threadSize, isMe)}>{content}</Text>
             </div>
           </S.ContentWrapper>
           {images.length > 0 && (
