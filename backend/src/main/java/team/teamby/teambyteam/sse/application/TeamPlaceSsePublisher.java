@@ -34,7 +34,7 @@ public class TeamPlaceSsePublisher {
 
         final Map<TeamPlaceEmitterId, SseEmitter> emitters = teamPlaceEmitterRepository.findByTeamPlaceId(targetTeamPlaceId);
         emitters.forEach((id, emitter) -> sendEvent(id, emitter, eventId, eventName, eventData));
-        teamPlaceEmitterRepository.addEventCache(eventId, eventData);
+        teamPlaceEmitterRepository.addEventCache(eventId, teamPlaceSseEvent.getEvent());
     }
 
     private String extractEventDataAsJson(final TeamPlaceSseEvent teamPlaceSseEvent) {
@@ -42,6 +42,7 @@ public class TeamPlaceSsePublisher {
         try {
             eventData = objectMapper.writeValueAsString(teamPlaceSseEvent.getEvent());
         } catch (JsonProcessingException e) {
+            log.error("SSE data json parsing Exception - " + teamPlaceSseEvent.getEvent().toString(),  e);
             throw new RuntimeException(e);
         }
         return eventData;

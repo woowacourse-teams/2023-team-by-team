@@ -82,6 +82,7 @@ public class SseSubscribeService {
                     try {
                         sendToClient(emitterId, emitter, entry.getKey().toString(), NEW_THREAD, objectMapper.writeValueAsString(entry.getValue()));
                     } catch (JsonProcessingException e) {
+                        log.error("SSE data json parsing Exception - " + entry.getValue().toString(),  e);
                         throw new RuntimeException(e);
                     }
                 });
