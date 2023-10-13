@@ -13,6 +13,10 @@ interface MySchedulesResponse {
   schedules: ScheduleWithTeamPlaceId[];
 }
 
+interface ICalendarResponse {
+  url: string;
+}
+
 export const fetchSchedules = (
   teamPlaceId: number,
   year: number,
@@ -39,6 +43,12 @@ export const fetchMySchedules = (year: number, month: number, day?: number) => {
 export const fetchScheduleById = (teamPlaceId: number, scheduleId: number) => {
   return http.get<Schedule>(
     `/api/team-place/${teamPlaceId}/calendar/schedules/${scheduleId}`,
+  );
+};
+
+export const fetchICalendarUrl = (teamPlaceId: number) => {
+  return http.get<ICalendarResponse>(
+    `/api/team-place/${teamPlaceId}/icalendar-url`,
   );
 };
 

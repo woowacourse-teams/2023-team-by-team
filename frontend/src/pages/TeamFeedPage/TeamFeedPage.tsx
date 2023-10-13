@@ -3,11 +3,17 @@ import ThreadList from '~/components/feed/ThreadList/ThreadList';
 import Text from '~/components/common/Text/Text';
 import NoticeThread from '~/components/feed/NoticeThread/NoticeThread';
 import Checkbox from '~/components/common/Checkbox/Checkbox';
-import { useTeamFeedPage } from '~/hooks/team/useTeamFeedPage';
+import ThreadImageModal from '~/components/feed/ThreadImageModal/ThreadImageModal';
+import { useTeamFeedPage } from '~/hooks/thread/useTeamFeedPage';
 import theme from '~/styles/theme';
 import { AirplaneIcon, ArrowExpandMoreIcon, ImageIcon } from '~/assets/svg';
+import ImageUploadDrawer from '~/components/feed/ImageUploadDrawer/ImageUploadDrawer';
+import ThumbnailList from '~/components/feed/ThumbnailList/ThumbnailList';
 import type { ThreadSize } from '~/types/size';
 import * as S from './TeamFeedPage.styled';
+import { useModal } from '~/hooks/useModal';
+import { useState } from 'react';
+import type { ThreadImage } from '~/types/feed';
 
 interface TeamFeedPageProps {
   threadSize?: ThreadSize;
@@ -19,17 +25,35 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
     ref,
     noticeThread,
     isNotice,
+    isImageDrawerOpen,
     isShowScrollBottomButton,
     chatContent,
+    previewImages,
 
     handlers: {
       handleIsNoticeChange,
       handleChatContentChange,
+      handleImageDrawerToggle,
       handleEnterKeydown,
       handleScrollBottomButtonClick,
       handleSubmit,
+      updateImages,
+      deleteImageByUuid,
     },
   } = useTeamFeedPage();
+  const { isModalOpen, openModal } = useModal();
+  const [modalImageInfo, setModalImageInfo] = useState<{
+    images: ThreadImage[];
+    selectedImage: number;
+  }>({
+    images: [],
+    selectedImage: 0,
+  });
+
+  const handleClickImage = (images: ThreadImage[], selectedImage: number) => {
+    setModalImageInfo({ images, selectedImage });
+    openModal();
+  };
 
   return (
     <S.Container threadSize={threadSize}>
@@ -40,10 +64,16 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
               authorName={noticeThread.authorName}
               createdAt={noticeThread.createdAt}
               content={noticeThread.content}
+              images={noticeThread.images}
+              onClickImage={handleClickImage}
             />
           )}
           <S.ThreadListWrapper>
-            <ThreadList containerRef={ref} size={threadSize} />
+            <ThreadList
+              containerRef={ref}
+              size={threadSize}
+              onClickImage={handleClickImage}
+            />
           </S.ThreadListWrapper>
           <S.MenuButtonWrapper>
             {isShowScrollBottomButton && (
@@ -59,7 +89,18 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
             )}
           </S.MenuButtonWrapper>
         </S.ThreadContainer>
-        <form onSubmit={handleSubmit}>
+        <ImageUploadDrawer
+          isOpen={isImageDrawerOpen}
+          onClose={handleImageDrawerToggle}
+        >
+          <ThumbnailList
+            mode="delete"
+            images={previewImages}
+            onChange={updateImages}
+            onDelete={deleteImageByUuid}
+          />
+        </ImageUploadDrawer>
+        <S.ThreadInputForm onSubmit={handleSubmit}>
           <S.Textarea
             value={chatContent}
             onChange={handleChatContentChange}
@@ -73,9 +114,7 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
               type="button"
               variant="plain"
               aria-label="이미지 업로드하기"
-              onClick={() => {
-                alert('이미지 업로드 기능을 준비중이에요! :)');
-              }}
+              onClick={handleImageDrawerToggle}
             >
               <ImageIcon />
             </Button>
@@ -94,8 +133,14 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
               </Button>
             </div>
           </S.ButtonContainer>
-        </form>
+        </S.ThreadInputForm>
       </S.Inner>
+      {isModalOpen && (
+        <ThreadImageModal
+          images={modalImageInfo.images}
+          initialPage={modalImageInfo.selectedImage}
+        />
+      )}
     </S.Container>
   );
 };

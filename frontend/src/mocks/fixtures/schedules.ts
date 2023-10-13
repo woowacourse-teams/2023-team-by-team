@@ -67,6 +67,12 @@ export const schedules: Schedule[] = [
     startDateTime: '2023-07-31 05:00',
     endDateTime: '2023-08-02 05:00',
   },
+  {
+    id: 11,
+    title: 'longlonglonglonglonglonglonglonglonglonglonglonglonglongSchedule',
+    startDateTime: '2023-09-30 05:00',
+    endDateTime: '2023-10-02 05:00',
+  },
 ];
 
 export const mySchedules: ScheduleWithTeamPlaceId[] = [

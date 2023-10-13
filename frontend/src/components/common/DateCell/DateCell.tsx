@@ -40,7 +40,11 @@ const DateCell = (props: DateCellProps) => {
         onClick={onDayClick}
         isToday={isToday}
       >
-        <Text css={S.dateText(isCurrentMonth, isToday, size)}>{date}</Text>
+        <Text
+          css={S.dateText(isCurrentMonth, isToday, isSaturday, isSunday, size)}
+        >
+          {date}
+        </Text>
       </S.DateBadge>
     </S.Wrapper>
   );

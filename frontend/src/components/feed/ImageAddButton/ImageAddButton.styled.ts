@@ -1,7 +1,7 @@
-import { css } from 'styled-components';
+import { styled } from 'styled-components';
 
-export const imageAddButton = css`
-  display: flex;
+export const FakeButton = styled.div`
+  display: inline-flex;
   justify-content: center;
   align-items: center;
 
@@ -13,6 +13,8 @@ export const imageAddButton = css`
 
   transition: 0.2s;
 
+  cursor: pointer;
+
   &:hover {
     background-color: #e8eaff;
   }
@@ -20,4 +22,8 @@ export const imageAddButton = css`
   & svg {
     color: #9792ff;
   }
+`;
+
+export const FileUploadInput = styled.input`
+  display: none;
 `;

@@ -42,6 +42,11 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
     implementation platform('software.amazon.awssdk:bom:2.20.56')
     implementation 'software.amazon.awssdk:s3'
+    implementation 'software.amazon.awssdk:cloudfront'
+
+    implementation('org.mnode.ical4j:ical4j:4.0.0-beta9') {
+        exclude group: 'org.codehaus.groovy', module: 'groovy'
+    }
 
     asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 

@@ -1,6 +1,5 @@
 package team.teamby.teambyteam.common.fixtures;
 
-import team.teamby.teambyteam.notice.application.dto.NoticeRegisterRequest;
 import team.teamby.teambyteam.notice.domain.Notice;
 import team.teamby.teambyteam.notice.domain.vo.Content;
 
@@ -12,12 +11,6 @@ public class NoticeFixtures {
     public static final String FIRST_CONTENT = "1stNotice";
     public static final String SECOND_CONTENT = "2ndNotice";
     public static final String THIRD_CONTENT = "3rdNotice";
-
-    /**
-     * REQUEST
-     */
-    public static final NoticeRegisterRequest FIRST_NOTICE_REGISTER_REQUEST = new NoticeRegisterRequest(FIRST_CONTENT);
-    public static final NoticeRegisterRequest SECOND_NOTICE_REGISTER_REQUEST = new NoticeRegisterRequest(SECOND_CONTENT);
 
     /**
      * ENTITY

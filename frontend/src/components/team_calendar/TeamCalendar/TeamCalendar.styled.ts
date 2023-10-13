@@ -20,8 +20,13 @@ export const CalendarHeader = styled.div`
 export const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
+`;
 
-  margin-left: 30px;
+export const FeatureButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+
+  column-gap: 8px;
 `;
 
 export const DaysOfWeek = styled.div<{ calendarSize: CalendarSize }>`
@@ -86,4 +91,16 @@ export const scheduleAddButton = (calendarSize: CalendarSize) => css`
 
 export const arrowButton = (calendarSize: CalendarSize) => css`
   ${calendarSize === 'sm' && 'padding: 4px 8px'}
+`;
+
+export const exportButton = (calendarSize: CalendarSize) => css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: ${calendarSize === 'md' ? 30 : 24}px;
+  height: ${calendarSize === 'md' ? 30 : 24}px;
+  padding: 4px;
+
+  background-color: ${({ theme }) => theme.color.GRAY500};
 `;

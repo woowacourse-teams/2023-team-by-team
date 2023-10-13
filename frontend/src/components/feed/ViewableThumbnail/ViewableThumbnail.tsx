@@ -5,15 +5,16 @@ import { thumbnailFallbackImage } from '~/assets/png';
 
 interface ViewableThumbnailProps {
   image: ThreadImage;
+  size?: 'md' | 'sm';
   onClick: () => void;
 }
 
 const ViewableThumbnail = (props: ViewableThumbnailProps) => {
-  const { image, onClick } = props;
+  const { image, size = 'md', onClick } = props;
   const { isExpired, name, url } = image;
 
   return (
-    <S.Container>
+    <S.Container size={size}>
       <Button
         variant="plain"
         type="button"

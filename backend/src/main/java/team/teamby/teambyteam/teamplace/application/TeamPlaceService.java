@@ -2,6 +2,7 @@ package team.teamby.teambyteam.teamplace.application;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
@@ -22,6 +23,7 @@ import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateResponse;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceInviteCodeResponse;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceMemberResponse;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceMembersResponse;
+import team.teamby.teambyteam.teamplace.application.event.TeamPlaceCreatedEvent;
 import team.teamby.teambyteam.teamplace.domain.RandomInviteCodeGenerator;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceInviteCode;
@@ -40,6 +42,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeamPlaceService {
 
+    private final ApplicationEventPublisher applicationEventPublisher;
     private final MemberRepository memberRepository;
     private final TeamPlaceRepository teamPlaceRepository;
     private final MemberTeamPlaceRepository memberTeamPlaceRepository;
@@ -57,6 +60,7 @@ public class TeamPlaceService {
         memberTeamPlaceRepository.save(participatedMemberTeamPlace);
 
         log.info("팀플레이스 생성 - 팀플레이스 아이디 : {}, 생성한 사용자 이메일 : {}", createdTeamPlace.getId(), memberEmailDto.email());
+        applicationEventPublisher.publishEvent(new TeamPlaceCreatedEvent(createdTeamPlace.getId()));
         return new TeamPlaceCreateResponse(createdTeamPlace.getId());
     }
 

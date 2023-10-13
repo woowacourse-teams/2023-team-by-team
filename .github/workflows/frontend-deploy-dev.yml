@@ -49,6 +49,8 @@ jobs:
   deploy:
     needs: build-and-upload
     runs-on: self-hosted
+    env:
+      CLOUD_FRONT_DISTRIBUTION_ID: ${{ secrets.CLOUD_FRONT_DEV_DISTRIBUTION_ID}}
     steps:
       - name: Remove previous version app
         working-directory: frontend/dev/
@@ -67,5 +69,5 @@ jobs:
           mv /home/ubuntu/team-by-team/frontend/www/dist/* /home/ubuntu/team-by-team/frontend/backup/
           mv ./dist/* /home/ubuntu/team-by-team/frontend/www/dist/
           aws s3 sync /home/ubuntu/team-by-team/frontend/www/dist/ s3://2023-team-project/2023-team-by-team/dev/front --delete
-          aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUD_FRONT_DEV_DISTRIBUTION_ID  }} --paths "/*"
+          aws cloudfront create-invalidation --distribution-id "$CLOUD_FRONT_DISTRIBUTION_ID" --paths "/*"
 

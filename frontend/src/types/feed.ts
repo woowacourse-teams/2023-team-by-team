@@ -24,11 +24,23 @@ export type NoticeThread =
   | Omit<Thread, 'type' | 'isMe'>
   | Record<string, never>;
 
-export type ThreadContent = Pick<Thread, 'content'>;
+export type ThreadContent = Pick<Thread, 'content'> & {
+  images: File[];
+};
 
 export interface ThreadImage {
   id: number;
   isExpired: boolean;
   name: string;
   url: string;
+}
+
+export interface PreviewImage {
+  uuid: string;
+  url: string;
+}
+
+export interface FileWithUuid {
+  uuid: string;
+  file: File;
 }

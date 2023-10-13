@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import Text from '~/components/common/Text/Text';
 import Button from '~/components/common/Button/Button';
+import ThumbnailList from '../ThumbnailList/ThumbnailList';
 import type { YYYYMMDDHHMM } from '~/types/schedule';
 import { formatWriteTime } from '~/utils/formatWriteTime';
 import type { NoticeSize } from '~/types/size';
+import type { ThreadImage } from '~/types/feed';
 import {
   ArrowExpandLessIcon,
   ArrowExpandMoreIcon,
@@ -15,10 +17,12 @@ interface NoticeThreadProps {
   authorName: string;
   createdAt: YYYYMMDDHHMM;
   content: string;
+  images: ThreadImage[];
+  onClickImage: (images: ThreadImage[], selectedImage: number) => void;
 }
 
 const NoticeThread = (props: NoticeThreadProps) => {
-  const { authorName, createdAt, content } = props;
+  const { authorName, createdAt, content, images, onClickImage } = props;
 
   const [noticeSize, setNoticeSize] = useState<NoticeSize>('sm');
 
@@ -47,6 +51,14 @@ const NoticeThread = (props: NoticeThreadProps) => {
             <Text size="lg" weight="semiBold" css={S.contentField(noticeSize)}>
               {content}
             </Text>
+            {images.length > 0 && noticeSize === 'lg' && (
+              <ThumbnailList
+                mode="view"
+                size="sm"
+                images={images}
+                onClick={onClickImage}
+              />
+            )}
             {noticeSize !== 'sm' && (
               <S.AuthorInfo>
                 <Text size="sm" weight="semiBold" css={S.authorInfoText}>

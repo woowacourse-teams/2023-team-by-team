@@ -49,4 +49,10 @@ public class FeedException extends RuntimeException {
             );
         }
     }
+
+    public static class WritingRequestEmptyException extends FeedException {
+        public WritingRequestEmptyException() {
+            super("내용과 이미지가 모두 존재하지 않습니다.");
+        }
+    }
 }

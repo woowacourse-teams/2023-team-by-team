@@ -98,7 +98,7 @@ export const modalLocation = (
   calendarWidth: number,
   calendarLeft: number,
   calendarSize: CalendarSize,
-) =>  {
+) => {
   if (calendarSize === 'md')
     return css`
       position: absolute;
@@ -119,3 +119,11 @@ export const modalLocation = (
       left: 12%;
     `;
 };
+
+export const scheduleTitleText = css`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  width: 100%;
+`;

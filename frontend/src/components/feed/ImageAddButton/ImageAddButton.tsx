@@ -1,24 +1,26 @@
 import { PlusIcon } from '~/assets/svg';
 import * as S from './ImageAddButton.styled';
-import Button from '~/components/common/Button/Button';
+import type { ChangeEvent } from 'react';
 
 interface ImageAddButtonProps {
-  onClick: () => void;
+  onChangeImage: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const ImageAddButton = (props: ImageAddButtonProps) => {
-  const { onClick } = props;
+  const { onChangeImage } = props;
 
   return (
-    <Button
-      variant="plain"
-      type="button"
-      css={S.imageAddButton}
-      onClick={onClick}
-      aria-label="이미지 추가"
-    >
-      <PlusIcon />
-    </Button>
+    <label>
+      <S.FakeButton role="button" aria-label="이미지 추가">
+        <PlusIcon />
+      </S.FakeButton>
+      <S.FileUploadInput
+        type="file"
+        accept="image/*"
+        onChange={onChangeImage}
+        multiple
+      />
+    </label>
   );
 };
 

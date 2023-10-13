@@ -5,12 +5,15 @@ export const Container = styled.div<{
   threadSize: ThreadSize;
 }>`
   overflow: hidden;
+  position: relative;
 
   width: 100%;
   height: 100%;
   padding: 20px 30px 30px;
 
   background-color: ${({ theme }) => theme.color.GRAY100};
+
+  z-index: 0;
 `;
 
 export const Inner = styled.div`
@@ -101,6 +104,10 @@ export const MenuButtonWrapper = styled.div`
 
     border-radius: 20px;
   }
+`;
+
+export const ThreadInputForm = styled.form`
+  z-index: 1;
 `;
 
 export const scrollBottomButton = css`

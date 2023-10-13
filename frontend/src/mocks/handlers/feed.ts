@@ -52,10 +52,21 @@ export const feedHandlers = [
   rest.post(
     '/api/team-place/:teamPlaceId/feed/threads',
     async (req, res, ctx) => {
-      const { content } = await req.json();
       const teamPlaceId = Number(req.params.teamPlaceId);
+      const bufferData = await req.arrayBuffer();
 
-      if (typeof content !== 'string') return res(ctx.status(400));
+      // formData를 추출
+      const formData = new TextDecoder('utf-8').decode(bufferData);
+
+      const imageCount = formData
+        .split('\r\n')
+        .filter((line) =>
+          line.startsWith('Content-Disposition: form-data; name="images"'),
+        ).length;
+
+      const contentValue = formData
+        .split('Content-Disposition: form-data; name="content"\r\n\r\n')[1]
+        .split('\r\n------WebKitFormBoundary')[0];
 
       const newThread = {
         id: Date.now(),
@@ -65,8 +76,13 @@ export const feedHandlers = [
         isMe: true,
         profileImageUrl: 'https://avatars.githubusercontent.com/u/49154600?v=4',
         createdAt: '2023-08-01 12:00' as YYYYMMDDHHMM,
-        content,
-        images: [],
+        content: contentValue,
+        images: Array.from({ length: imageCount }).map((_, index) => ({
+          id: index,
+          isExpired: false,
+          name: '목데이터',
+          url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYZjvO1QuvfgCfQxBwwzmJcHIT5pTXIBGOLeyBDIbZknn6Dhkd40WrU0ZCdjt-IoXLzI0&usqp=CAU',
+        })),
       };
 
       threads.unshift(newThread);
@@ -85,18 +101,36 @@ export const feedHandlers = [
   rest.post(
     '/api/team-place/:teamPlaceId/feed/notice',
     async (req, res, ctx) => {
-      const { content } = await req.json();
       const teamPlaceId = Number(req.params.teamPlaceId);
+      const bufferData = await req.arrayBuffer();
 
-      if (typeof content !== 'string') return res(ctx.status(400));
+      // formData를 추출
+      const formData = new TextDecoder('utf-8').decode(bufferData);
+      const imageCount = formData
+        .split('\r\n')
+        .filter((line) =>
+          line.startsWith('Content-Disposition: form-data; name="images"'),
+        ).length;
+
+      const contentValue = formData
+        .split('Content-Disposition: form-data; name="content"\r\n\r\n')[1]
+        .split('\r\n------WebKitFormBoundary')[0];
 
       const newNoticeThread = {
         id: Date.now(),
+        type: 'thread',
         authorId: 1,
         authorName: '유스',
+        isMe: true,
         profileImageUrl: 'https://avatars.githubusercontent.com/u/49154600?v=4',
         createdAt: '2023-08-01 12:00' as YYYYMMDDHHMM,
-        content,
+        content: contentValue,
+        images: Array.from({ length: imageCount }).map((_, index) => ({
+          id: index,
+          isExpired: false,
+          name: '목데이터',
+          url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYZjvO1QuvfgCfQxBwwzmJcHIT5pTXIBGOLeyBDIbZknn6Dhkd40WrU0ZCdjt-IoXLzI0&usqp=CAU',
+        })),
       };
 
       noticeThread.id = newNoticeThread.id;
@@ -105,6 +139,7 @@ export const feedHandlers = [
       noticeThread.profileImageUrl = newNoticeThread.profileImageUrl;
       noticeThread.createdAt = newNoticeThread.createdAt;
       noticeThread.content = newNoticeThread.content;
+      noticeThread.images = newNoticeThread.images;
 
       return res(
         ctx.status(201),

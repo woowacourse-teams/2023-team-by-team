@@ -1,24 +1,24 @@
 package team.teamby.teambyteam.feed.application;
 
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import team.teamby.teambyteam.filesystem.FileCloudUploader;
-import team.teamby.teambyteam.feed.application.dto.ImageUrlResponse;
-import team.teamby.teambyteam.feed.application.dto.ImageUrlsResponse;
-import team.teamby.teambyteam.feed.application.dto.UploadImageRequest;
-import team.teamby.teambyteam.feed.domain.AllowedImageExtension;
-import team.teamby.teambyteam.feed.exception.FeedException;
-import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import team.teamby.teambyteam.feed.application.dto.ImageUrlResponse;
+import team.teamby.teambyteam.feed.application.dto.ImageUrlsResponse;
+import team.teamby.teambyteam.feed.application.dto.UploadImageRequest;
+import team.teamby.teambyteam.feed.exception.FeedException;
+import team.teamby.teambyteam.filesystem.AllowedImageExtension;
+import team.teamby.teambyteam.filesystem.FileCloudUploader;
+import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 
+@Deprecated
 @RequiredArgsConstructor
 @Service
 @Transactional
@@ -43,7 +43,7 @@ public class ImageUploadService {
         for (final MultipartFile image : uploadImageRequest.images()) {
             validateImage(image);
             final String customKey = imageDirectory + "/" + UUID.randomUUID() + hashedEmail;
-            final String uploadedFileUrl = fileCloudUploader.upload(image, customKey);
+            final String uploadedFileUrl = fileCloudUploader.upload(image, customKey, image.getOriginalFilename());
             responses.add(new ImageUrlResponse(image.getOriginalFilename(), uploadedFileUrl));
         }
 

@@ -60,9 +60,25 @@ export const DateBadge = styled.div<{
 export const dateText = (
   isCurrentMonth: boolean,
   isToday: boolean,
+  isSaturday: boolean,
+  isSunday: boolean,
   size: DateCellSize,
 ) => css`
-  color: ${({ theme }) => (isToday ? theme.color.WHITE : theme.color.BLACK)};
+  color: ${({ theme }) => {
+    if (isToday) {
+      return theme.color.WHITE;
+    }
+
+    if (isSunday) {
+      return theme.color.RED;
+    }
+
+    if (isSaturday) {
+      return theme.color.PURPLE;
+    }
+
+    return theme.color.BLACK;
+  }};
   font-size: ${size === 'sm' ? 14 : 12}px;
 
   opacity: ${isCurrentMonth ? 1 : 0.3};

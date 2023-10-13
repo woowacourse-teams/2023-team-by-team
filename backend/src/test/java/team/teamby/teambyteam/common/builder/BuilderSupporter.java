@@ -3,9 +3,12 @@ package team.teamby.teambyteam.common.builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import team.teamby.teambyteam.feed.domain.FeedRepository;
+import team.teamby.teambyteam.feed.domain.image.FeedThreadImageRepository;
+import team.teamby.teambyteam.icalendar.domain.PublishedIcalendarRepository;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.notice.domain.NoticeRepository;
+import team.teamby.teambyteam.notice.domain.image.NoticeImageRepository;
 import team.teamby.teambyteam.schedule.domain.ScheduleRepository;
 import team.teamby.teambyteam.sharedlink.domain.SharedLinkRepository;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceInviteCodeRepository;
@@ -31,7 +34,13 @@ public class BuilderSupporter {
     private FeedRepository feedRepository;
 
     @Autowired
+    private FeedThreadImageRepository feedThreadImageRepository;
+
+    @Autowired
     private NoticeRepository noticeRepository;
+
+    @Autowired
+    private NoticeImageRepository noticeImageRepository;
 
     @Autowired
     private TeamPlaceInviteCodeRepository teamPlaceInviteCodeRepository;
@@ -41,6 +50,9 @@ public class BuilderSupporter {
 
     @Autowired
     private SharedLinkRepository sharedLinkRepository;
+
+    @Autowired
+    private PublishedIcalendarRepository publishedIcalendarRepository;
 
     public ScheduleRepository scheduleRepository() {
         return scheduleRepository;
@@ -62,8 +74,16 @@ public class BuilderSupporter {
         return feedRepository;
     }
 
+    public FeedThreadImageRepository feedThreadImageRepository() {
+        return feedThreadImageRepository;
+    }
+
     public NoticeRepository noticeRepository() {
         return noticeRepository;
+    }
+
+    public NoticeImageRepository noticeImageRepository() {
+        return noticeImageRepository;
     }
 
     public TeamPlaceInviteCodeRepository teamPlaceInviteCodeRepository() {
@@ -76,5 +96,9 @@ public class BuilderSupporter {
 
     public SharedLinkRepository sharedLinkRepository() {
         return sharedLinkRepository;
+    }
+
+    public PublishedIcalendarRepository publishedIcalendarRepository() {
+        return publishedIcalendarRepository;
     }
 }

@@ -1,27 +1,26 @@
 import * as S from './DeletableThumbnail.styled';
 import Button from '~/components/common/Button/Button';
-import type { ThreadImage } from '~/types/feed';
 import { CloseBoldIcon } from '~/assets/svg';
-import { thumbnailFallbackImage } from '~/assets/png';
+import type { PreviewImage } from '~/types/feed';
 
 interface DeletableThumbnailProps {
-  image: ThreadImage;
-  onDelete: (imageId: number) => void;
+  image: PreviewImage;
+  onDelete: (imageUuid: string) => void;
 }
 
 const DeletableThumbnail = (props: DeletableThumbnailProps) => {
   const { image, onDelete } = props;
-  const { id, isExpired, name, url } = image;
+  const { uuid, url } = image;
 
   return (
     <S.Container>
-      <S.Image src={isExpired ? thumbnailFallbackImage : url} alt={name} />
+      <S.Image src={url} alt="미리보기 이미지" />
       <Button
         variant="plain"
         type="button"
         css={S.deleteButton}
-        onClick={() => onDelete(id)}
-        aria-label={`${name} 이미지 삭제하기`}
+        onClick={() => onDelete(uuid)}
+        aria-label={`${url} 이미지 삭제하기`}
       >
         <CloseBoldIcon />
       </Button>
