@@ -22,8 +22,8 @@ export const Image = styled.img`
 
 export const deleteButton = css`
   position: absolute;
-  top: 6px;
-  right: 6px;
+  top: -4px;
+  right: -4px;
 
   width: 24px;
   height: 24px;

@@ -1,14 +1,23 @@
-import { styled } from 'styled-components';
+import { styled, css } from 'styled-components';
 
-export const Container = styled.ul`
+export const Container = styled.ul<{ mode: 'delete' | 'view' }>`
   display: flex;
-  overflow-x: auto;
-  overflow-y: hidden;
   flex-direction: row;
   flex-shrink: 0;
   column-gap: 12px;
 
   width: 100%;
   height: 116px;
-  padding-bottom: 20px;
+
+  ${({ mode }) =>
+    mode === 'view'
+      ? css`
+          overflow-x: auto;
+          overflow-y: hidden;
+
+          padding-bottom: 20px;
+        `
+      : css`
+          overflow-x: visible;
+        `}
 `;
