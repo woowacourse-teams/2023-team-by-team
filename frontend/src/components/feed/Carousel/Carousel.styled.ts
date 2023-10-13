@@ -23,22 +23,6 @@ export const Slides = styled.div<{ currentPage: number }>`
   transform: ${({ currentPage }) => `translateX(-${currentPage - 1}00%)`};
 `;
 
-export const Slide = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex: 1 0 100%;
-
-  width: 100%;
-  height: 100%;
-  padding: 0 100px;
-
-  & > img {
-    max-width: 100%;
-    max-height: 100%;
-  }
-`;
-
 const buttonWrapper = css`
   display: flex;
   align-items: center;
@@ -78,8 +62,4 @@ export const arrowButton = css`
   & svg > path {
     stroke: ${({ theme }) => theme.color.WHITE};
   }
-`;
-
-export const expiredText = css`
-  color: ${({ theme }) => theme.color.WHITE};
 `;
