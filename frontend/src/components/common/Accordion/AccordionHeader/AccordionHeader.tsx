@@ -7,10 +7,11 @@ import { ArrowExpandMoreIcon } from '~/assets/svg';
 interface AccordionHeaderProps {
   id: number;
   padding?: CSSProperties['padding'];
+  disabled?: boolean;
 }
 
 const AccordionHeader = (props: PropsWithChildren<AccordionHeaderProps>) => {
-  const { id, padding = '16px 18px 12px', children } = props;
+  const { id, padding = '16px 18px 12px', disabled = false, children } = props;
   const { openedAccordion, handleOpenAccordionChange } = useAccordion();
 
   return (
@@ -23,7 +24,7 @@ const AccordionHeader = (props: PropsWithChildren<AccordionHeaderProps>) => {
         onClick={() => handleOpenAccordionChange(id)}
       >
         {children}
-        <ArrowExpandMoreIcon />
+        {!disabled && <ArrowExpandMoreIcon />}
       </Button>
     </S.Container>
   );
