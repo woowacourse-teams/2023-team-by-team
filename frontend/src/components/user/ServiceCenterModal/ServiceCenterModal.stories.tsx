@@ -22,12 +22,14 @@ const SampleModal = () => {
   return (
     <>
       <Button onClick={openModal}>모달 열기</Button>
-      <ServiceCenterModal />
+      <ServiceCenterModal
+        onAccountDeleteButtonClick={() => alert('고객문의')}
+      />
     </>
   );
 };
 
 export const Default: Story = {
   render: () => <SampleModal />,
-  args: {},
+  args: { onAccountDeleteButtonClick: () => alert('고객문의') },
 };

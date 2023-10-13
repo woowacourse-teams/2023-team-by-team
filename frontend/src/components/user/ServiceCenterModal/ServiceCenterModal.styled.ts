@@ -72,6 +72,11 @@ export const ContentContainer = styled.div`
   display: flex;
   column-gap: 10px;
 `;
+
+export const UrlWrapper = styled.a`
+  width: 100%;
+`;
+
 export const closeButton = css`
   width: 32px;
   height: 38px;

@@ -7,8 +7,12 @@ import { CloseIcon } from '~/assets/svg';
 import Accordion from '~/components/common/Accordion/Accordion';
 import { ICALENDAR_USER_GUIDE_URL } from '~/constants/calendar';
 
-const ServiceCenterModal = () => {
+interface ServiceCenterModalProps {
+  onAccountDeleteButtonClick: () => void;
+}
+const ServiceCenterModal = (props: ServiceCenterModalProps) => {
   const { closeModal } = useModal();
+  const { onAccountDeleteButtonClick } = props;
 
   return (
     <Modal>
@@ -41,19 +45,19 @@ const ServiceCenterModal = () => {
           <Accordion>
             <Accordion.Item>
               <Accordion.Header id={0} padding={'20px 18px'} disabled={true}>
-                <a
+                <S.UrlWrapper
                   href={'https://forms.gle/Tk8DZ5Xzsc5615Ar7'}
                   target="_blank"
                   rel="noreferrer"
                 >
                   <Text weight="semiBold">피드백 남기기</Text>
-                </a>
+                </S.UrlWrapper>
               </Accordion.Header>
             </Accordion.Item>
             <Accordion.Item>
               <Accordion.Item>
                 <Accordion.Header id={1} padding={'20px 18px'} disabled={true}>
-                  <a
+                  <S.UrlWrapper
                     href={
                       'https://teambyteam.notion.site/f84827ca26334913a1c724dfb9436887'
                     }
@@ -61,7 +65,7 @@ const ServiceCenterModal = () => {
                     rel="noreferrer"
                   >
                     <Text weight="semiBold">팀바팀 사용방법</Text>
-                  </a>
+                  </S.UrlWrapper>
                 </Accordion.Header>
               </Accordion.Item>
               <Accordion.Item></Accordion.Item>
@@ -123,6 +127,7 @@ const ServiceCenterModal = () => {
                         type="button"
                         variant="plain"
                         css={S.dangerousButton}
+                        onClick={onAccountDeleteButtonClick}
                         aria-label="회원탈퇴하기"
                       >
                         <Text size="sm" css={S.dangerousText}>
