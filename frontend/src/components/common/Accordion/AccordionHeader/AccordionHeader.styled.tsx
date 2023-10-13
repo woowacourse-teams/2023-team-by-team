@@ -40,3 +40,9 @@ export const accordionButton = (padding: CSSProperties['padding']) => css`
   border: 0;
   border-radius: 0;
 `;
+
+export const DisabledWrapper = styled.div<{
+  padding: CSSProperties['padding'];
+}>`
+  ${({ padding }) => accordionButton(padding)}
+`;

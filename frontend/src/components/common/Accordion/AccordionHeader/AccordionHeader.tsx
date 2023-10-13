@@ -16,16 +16,19 @@ const AccordionHeader = (props: PropsWithChildren<AccordionHeaderProps>) => {
 
   return (
     <S.Container isOpen={id === openedAccordion}>
-      <Button
-        type="button"
-        variant="plain"
-        aria-expanded={id === openedAccordion}
-        css={S.accordionButton(padding)}
-        onClick={() => handleOpenAccordionChange(id)}
-      >
-        {children}
-        {!disabled && <ArrowExpandMoreIcon />}
-      </Button>
+      {disabled ? (
+        <S.DisabledWrapper padding={padding}>{children}</S.DisabledWrapper>
+      ) : (
+        <Button
+          type="button"
+          variant="plain"
+          aria-expanded={id === openedAccordion}
+          css={S.accordionButton(padding)}
+          onClick={() => handleOpenAccordionChange(id)}
+        >
+          {children} <ArrowExpandMoreIcon />
+        </Button>
+      )}
     </S.Container>
   );
 };
