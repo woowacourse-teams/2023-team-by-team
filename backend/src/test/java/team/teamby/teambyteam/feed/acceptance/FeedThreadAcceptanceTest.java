@@ -22,6 +22,13 @@ import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptance
 
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -49,14 +56,6 @@ import team.teamby.teambyteam.schedule.domain.vo.Span;
 import team.teamby.teambyteam.schedule.domain.vo.Title;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
-import java.time.Clock;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 public class FeedThreadAcceptanceTest extends AcceptanceTest {
 
     @MockBean
@@ -80,7 +79,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             participatedTeamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             participatedMemberTeamPlace = testFixtureBuilder.buildMemberTeamPlace(authedMember, participatedTeamPlace);
             authToken = jwtTokenProvider.generateAccessToken(authedMember.getEmail().getValue());
-            given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class)))
+            given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class), any(String.class)))
                     .willReturn("https://s3://seongha-seeik");
         }
 
@@ -243,6 +242,8 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             participatedTeamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             participatedMemberTeamPlace = testFixtureBuilder.buildMemberTeamPlace(authedMember, participatedTeamPlace);
             authToken = jwtTokenProvider.generateAccessToken(authedMember.getEmail().getValue());
+            given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class), any(String.class)))
+                    .willReturn("https://s3://seongha-seeik");
         }
 
         @Test
@@ -267,9 +268,6 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
         @DisplayName("스레드 조회를 처음한다.")
         void firstReadSuccess() {
             // given
-            given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class)))
-                    .willReturn("https://s3://seongha-seeik");
-
             POST_FEED_THREAD_ONLY_IMAGE_REQUEST(authToken, participatedTeamPlace.getId(), List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2));
             POST_FEED_THREAD_IMAGE_AND_CONTENT_REQUEST(authToken, participatedTeamPlace.getId(), List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2), FeedThreadFixtures.CONTENT_AND_IMAGE);
             POST_FEED_THREAD_ONLY_CONTENT_REQUEST(authToken, participatedTeamPlace.getId(), FeedThreadFixtures.CONTENT_ONLY_AND_IMAGE_EMPTY);
@@ -297,9 +295,6 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
         @DisplayName("이미지가 만료되는 경우에 조회한다.")
         void readIfImageExpired() {
             // given
-            given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class)))
-                    .willReturn("https://s3://seongha-seeik");
-
             POST_FEED_THREAD_ONLY_IMAGE_REQUEST(authToken, participatedTeamPlace.getId(), List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2));
 
             final Instant expiredDate = LocalDateTime.now().plusDays(FeedThreadImageFixtures.IMAGE_EXPIRATION_DATE).plusNanos(1).toInstant(ZoneOffset.systemDefault().getRules().getOffset(LocalDateTime.now()));
@@ -327,9 +322,6 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
         @DisplayName("탈퇴한 소속되지 않은 사용자의 스레드는 (알수없음) 작성자로 생성된다.")
         void successWithUnknownMember() {
             // given
-            given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class)))
-                    .willReturn("https://s3://seongha-seeik");
-
             final Member otherMember = testFixtureBuilder.buildMember(MemberFixtures.SEONGHA());
             final MemberTeamPlace otherMemberTeamPlace = otherMember.participate(participatedTeamPlace);
             testFixtureBuilder.buildMemberTeamPlace(otherMemberTeamPlace);

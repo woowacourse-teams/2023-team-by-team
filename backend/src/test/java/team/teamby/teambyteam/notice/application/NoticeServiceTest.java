@@ -79,7 +79,7 @@ class NoticeServiceTest extends ServiceTest {
                     NoticeFixtures.FIRST_CONTENT,
                     List.of(UNDER_SIZE_PNG_MOCK_MULTIPART_FILE1, UNDER_SIZE_PNG_MOCK_MULTIPART_FILE2)
             );
-            given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class)))
+            given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class), any(String.class)))
                     .willReturn("https://s3://seongha-seeik");
         }
 

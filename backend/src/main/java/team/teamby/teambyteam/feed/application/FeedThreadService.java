@@ -1,5 +1,12 @@
 package team.teamby.teambyteam.feed.application;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,14 +41,6 @@ import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.exception.MemberException;
-
-import java.time.Clock;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -121,9 +120,10 @@ public class FeedThreadService {
 
     private void saveImages(final List<MultipartFile> images, final FeedThread savedFeedThread) {
         images.forEach(image -> {
-            final String generatedImageUrl = fileCloudUploader.upload(image, imageDirectory + "/" + UUID.randomUUID());
+            final String originalFilename = image.getOriginalFilename();
+            final String generatedImageUrl = fileCloudUploader.upload(image, imageDirectory + "/" + UUID.randomUUID(), originalFilename);
             final ImageUrl imageUrl = new ImageUrl(generatedImageUrl);
-            final ImageName imageName = new ImageName(image.getOriginalFilename());
+            final ImageName imageName = new ImageName(originalFilename);
             final FeedThreadImage feedThreadImage = new FeedThreadImage(imageUrl, imageName);
             feedThreadImage.confirmFeedThread(savedFeedThread);
             feedThreadImageRepository.save(feedThreadImage);
