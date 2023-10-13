@@ -10,9 +10,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter.SseEventBuilder;
+import team.teamby.teambyteam.sse.TestEvent;
 import team.teamby.teambyteam.sse.domain.TeamPlaceEmitterId;
 import team.teamby.teambyteam.sse.domain.TeamPlaceEmitterRepository;
-import team.teamby.teambyteam.sse.domain.TeamPlaceSseEvent;
 
 import java.io.IOException;
 import java.util.Set;
@@ -69,36 +69,5 @@ class TeamPlaceSsePublisherTest {
 
         // remove cache
         teamPlaceEmitterRepository.deleteById(emitterId);
-    }
-
-    private static class TestEvent implements TeamPlaceSseEvent {
-
-        private final Long id;
-        private final String name;
-        private final TestData data;
-
-        public TestEvent(final Long id, final String name, final String data) {
-            this.id = id;
-            this.name = name;
-            this.data = new TestData(id, data);
-        }
-
-        @Override
-        public Long getTeamPlaceId() {
-            return id;
-        }
-
-        @Override
-        public String getEventName() {
-            return name;
-        }
-
-        @Override
-        public Object getEvent() {
-            return data;
-        }
-
-        private record TestData(long id, String data) {
-        }
     }
 }

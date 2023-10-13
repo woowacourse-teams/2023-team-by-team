@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 @Slf4j
 @Service
@@ -30,7 +31,6 @@ public class SseSubscribeService {
     public static final String DEFAULT_EVENT_ID = "";
     private static final String SSE_CONNECTED_MESSAGE_FORMAT = "EventStream Connected. [memberId=%d]";
     private static final String CONNECT = "connect";
-    private static final String NEW_THREAD = "new_thread";
     private static final Long DEFAULT_TIMEOUT = 1L * 1000 * 60; // TODO: 시간 적절히 조절하기
     private static final Comparator<Map.Entry<TeamPlaceEventId, Object>> EVENT_ID_TIME_COMPARATOR = (entity1, entity2) -> {
         final LocalDateTime timeStamp1 = entity1.getKey().getTimeStamp();
@@ -55,13 +55,19 @@ public class SseSubscribeService {
         sendToClient(emitterId, emitter, emitterId.toString(), CONNECT, String.format(SSE_CONNECTED_MESSAGE_FORMAT, memberId));
 
         if (!Objects.isNull(lastEventId) && !lastEventId.isBlank()) {
-            sendCachedEvents(emitterId, emitter, teamPlaceId, lastEventId);
+            sendCachedEvents(emitterId, emitter, teamPlaceId, TeamPlaceEventId.from(lastEventId));
         }
 
         return emitter;
     }
 
-    private void sendToClient(final TeamPlaceEmitterId emitterId, final SseEmitter emitter, final String eventId, final String eventName, final Object data) {
+    private void sendToClient(
+            final TeamPlaceEmitterId emitterId,
+            final SseEmitter emitter,
+            final String eventId,
+            final String eventName,
+            final Object data
+    ) {
         try {
             emitter.send(SseEmitter.event()
                     .id(eventId)
@@ -74,18 +80,32 @@ public class SseSubscribeService {
         }
     }
 
-    private void sendCachedEvents(final TeamPlaceEmitterId emitterId, final SseEmitter emitter, final Long teamPlaceId, final String lastEventId) {
+    private void sendCachedEvents(
+            final TeamPlaceEmitterId emitterId,
+            final SseEmitter emitter,
+            final Long teamPlaceId,
+            final TeamPlaceEventId lastEventId
+    ) {
         final Map<TeamPlaceEventId, Object> events = teamplaceEmitterRepository.findAllEventCacheWithId(teamPlaceId);
         events.entrySet().stream()
-                .filter(entry -> lastEventId.compareTo(entry.getKey().toString()) < 0)
+                .filter(entry -> entry.getKey().isPublishedAfter(lastEventId))
                 .sorted(EVENT_ID_TIME_COMPARATOR)
-                .forEach(entry -> {
-                    try {
-                        sendToClient(emitterId, emitter, entry.getKey().toString(), NEW_THREAD, objectMapper.writeValueAsString(entry.getValue()));
-                    } catch (JsonProcessingException e) {
-                        log.error("SSE data json parsing Exception - " + entry.getValue().toString(),  e);
-                        throw new RuntimeException(e);
-                    }
-                });
+                .forEach(cacheSendConsumer(emitterId, emitter));
+    }
+
+    private Consumer<Map.Entry<TeamPlaceEventId, Object>> cacheSendConsumer(
+            final TeamPlaceEmitterId emitterId,
+            final SseEmitter emitter
+    ) {
+        return entry -> {
+            try {
+                final String eventName = entry.getKey().getEventName();
+                final String eventDataString = objectMapper.writeValueAsString(entry.getValue());
+                sendToClient(emitterId, emitter, entry.getKey().toString(), eventName, eventDataString);
+            } catch (JsonProcessingException e) {
+                log.error("SSE data json parsing Exception - " + entry.getValue().toString(), e);
+                throw new RuntimeException(e);
+            }
+        };
     }
 }
