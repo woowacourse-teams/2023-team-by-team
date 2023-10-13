@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import styled, { css } from 'styled-components';
 
 export const Container = styled.div<{ isOpen: boolean }>`
@@ -25,7 +26,7 @@ export const Container = styled.div<{ isOpen: boolean }>`
   }
 `;
 
-export const accordionButton = css`
+export const accordionButton = (padding: CSSProperties['padding']) => css`
   display: flex;
   position: relative;
   justify-content: space-between;
@@ -33,7 +34,7 @@ export const accordionButton = css`
   overflow-anchor: none;
 
   width: 100%;
-  padding: 16px 18px 12px;
+  padding: ${padding};
   text-align: left;
 
   border: 0;
