@@ -1,9 +1,9 @@
 package team.teamby.teambyteam.notice.application.dto;
 
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.notice.domain.Notice;
-
-import java.time.format.DateTimeFormatter;
 
 public record NoticeResponse(
         Long id,
@@ -11,11 +11,13 @@ public record NoticeResponse(
         Long authorId,
         String authorName,
         String profileImageUrl,
-        String createdAt
+        String createdAt,
+        List<NoticeImageResponse> images
 ) {
     private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm";
 
-    public static NoticeResponse of(final Notice notice, final MemberTeamPlace memberTeamPlace) {
+    public static NoticeResponse of(final Notice notice, final MemberTeamPlace memberTeamPlace,
+                                    final List<NoticeImageResponse> images) {
         final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
         final String noticeCreatedAt = dateTimeFormatter.format(notice.getCreatedAt());
 
@@ -25,7 +27,8 @@ public record NoticeResponse(
                 memberTeamPlace.findMemberId(),
                 memberTeamPlace.getDisplayMemberName().getValue(),
                 memberTeamPlace.findMemberProfileImageUrl(),
-                noticeCreatedAt
+                noticeCreatedAt,
+                images
         );
     }
 }

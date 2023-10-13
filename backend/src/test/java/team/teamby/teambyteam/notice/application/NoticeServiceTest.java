@@ -4,10 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static team.teamby.teambyteam.common.fixtures.FileFixtures.UNDER_SIZE_PNG_MOCK_MULTIPART_FILE1;
+import static team.teamby.teambyteam.common.fixtures.FileFixtures.UNDER_SIZE_PNG_MOCK_MULTIPART_FILE2;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ROY;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ROY_MEMBER_EMAIL_REQUEST;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.SEONGHA;
-import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.CONTENT_AND_IMAGE_REQUEST;
 import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.NOTICE_1ST;
 import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.NOTICE_2ND;
 import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.NOTICE_3RD;
@@ -15,6 +16,10 @@ import static team.teamby.teambyteam.common.fixtures.NoticeFixtures.THIRD_CONTEN
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.JAPANESE_TEAM_PLACE;
 
+import java.time.Clock;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 import org.assertj.core.api.SoftAssertions;
@@ -24,8 +29,12 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.web.multipart.MultipartFile;
 import team.teamby.teambyteam.common.ServiceTest;
+import team.teamby.teambyteam.common.fixtures.FeedThreadImageFixtures;
+import team.teamby.teambyteam.common.fixtures.NoticeFixtures;
+import team.teamby.teambyteam.common.fixtures.NoticeImageFixtures;
 import team.teamby.teambyteam.filesystem.FileCloudUploader;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.Member;
@@ -49,6 +58,9 @@ class NoticeServiceTest extends ServiceTest {
     @MockBean
     private FileCloudUploader fileCloudUploader;
 
+    @SpyBean
+    private Clock clock;
+
     @Nested
     @DisplayName("공지 등록 시")
     class RegisterNotice {
@@ -63,7 +75,10 @@ class NoticeServiceTest extends ServiceTest {
             teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             member = testFixtureBuilder.buildMember(ROY());
             memberEmailDto = ROY_MEMBER_EMAIL_REQUEST;
-            request = CONTENT_AND_IMAGE_REQUEST;
+            request = new NoticeRegisterRequest(
+                    NoticeFixtures.FIRST_CONTENT,
+                    List.of(UNDER_SIZE_PNG_MOCK_MULTIPART_FILE1, UNDER_SIZE_PNG_MOCK_MULTIPART_FILE2)
+            );
             given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class)))
                     .willReturn("https://s3://seongha-seeik");
         }
@@ -128,6 +143,11 @@ class NoticeServiceTest extends ServiceTest {
         @Test
         @DisplayName("공지 조회 시 가장 최근에 등록된 공지가 조회된다.")
         void successFindNotice() {
+            // given
+            testFixtureBuilder.buildNoticeNoticeImage(notices.get(0), NoticeImageFixtures.A_NOTICE_IMAGE);
+            testFixtureBuilder.buildNoticeNoticeImage(notices.get(1), NoticeImageFixtures.B_NOTICE_IMAGE);
+            testFixtureBuilder.buildNoticeNoticeImage(notices.get(2), NoticeImageFixtures.B_NOTICE_IMAGE);
+
             // when
             final Optional<NoticeResponse> noticeResponse = noticeService.findMostRecentNotice(teamPlace.getId());
 
@@ -137,6 +157,32 @@ class NoticeServiceTest extends ServiceTest {
                 softly.assertThat(noticeResponse.get().content()).isEqualTo("3rdNotice");
                 softly.assertThat(noticeResponse.get().authorId()).isEqualTo(member.getId());
                 softly.assertThat(noticeResponse.get().authorName()).isEqualTo(memberTeamPlace.getDisplayMemberName().getValue());
+                softly.assertThat(noticeResponse.get().images()).hasSize(1);
+            });
+        }
+
+        @Test
+        @DisplayName("90일이 지난 공지를 조회하면 만료된 공지 이미지로 조회된다.")
+        void imageExpireAfter90Days() {
+            // given
+            testFixtureBuilder.buildNoticeNoticeImage(notices.get(0), NoticeImageFixtures.A_NOTICE_IMAGE);
+            testFixtureBuilder.buildNoticeNoticeImage(notices.get(1), NoticeImageFixtures.B_NOTICE_IMAGE);
+            testFixtureBuilder.buildNoticeNoticeImage(notices.get(2), NoticeImageFixtures.B_NOTICE_IMAGE);
+
+            final Instant expiredDate = LocalDateTime.now().plusDays(FeedThreadImageFixtures.IMAGE_EXPIRATION_DATE).plusNanos(1).toInstant(
+                    ZoneOffset.systemDefault().getRules().getOffset(LocalDateTime.now()));
+            given(clock.instant()).willReturn(expiredDate);
+
+            // when
+            final Optional<NoticeResponse> noticeResponse = noticeService.findMostRecentNotice(teamPlace.getId());
+
+            // then
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(noticeResponse).isPresent();
+                softly.assertThat(noticeResponse.get().content()).isEqualTo("3rdNotice");
+                softly.assertThat(noticeResponse.get().authorId()).isEqualTo(member.getId());
+                softly.assertThat(noticeResponse.get().authorName()).isEqualTo(memberTeamPlace.getDisplayMemberName().getValue());
+                softly.assertThat(noticeResponse.get().images().get(0).isExpired()).isTrue();
             });
         }
 
@@ -170,6 +216,10 @@ class NoticeServiceTest extends ServiceTest {
         @DisplayName("공지작성자가 탈퇴한 경우 알수없는 사용자의 정보로 공지를 조회한다.")
         void successWithUnknownMemberLeaveFromService() {
             // given
+            testFixtureBuilder.buildNoticeNoticeImage(notices.get(0), NoticeImageFixtures.A_NOTICE_IMAGE);
+            testFixtureBuilder.buildNoticeNoticeImage(notices.get(1), NoticeImageFixtures.B_NOTICE_IMAGE);
+            testFixtureBuilder.buildNoticeNoticeImage(notices.get(2), NoticeImageFixtures.B_NOTICE_IMAGE);
+
             testFixtureBuilder.deleteMember(member);
 
             // when
@@ -181,6 +231,7 @@ class NoticeServiceTest extends ServiceTest {
                 softly.assertThat(response.get().authorId()).isNull();
                 softly.assertThat(response.get().authorName()).isEqualTo(Member.UNKNOWN_MEMBER_NAME);
                 softly.assertThat(response.get().content()).isEqualTo(THIRD_CONTENT);
+                softly.assertThat(response.get().images()).hasSize(1);
             });
         }
 
