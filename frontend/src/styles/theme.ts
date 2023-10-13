@@ -54,6 +54,10 @@ const teamColor = {
 
 const gradient = {
   SMOOTH_BLACK: 'linear-gradient(45deg, #121212, #303030)',
+  WHITE: (pixels: `${number}px`) =>
+    `linear-gradient(to top, #eaeaea 0%, #eaeaea ${pixels}, transparent 100%)`,
+  BLURPLE: (pixels: `${number}px`) =>
+    `linear-gradient(to top, #5054ff 0%, #5054ff ${pixels}, transparent 100%)`,
 };
 
 const zIndex = {

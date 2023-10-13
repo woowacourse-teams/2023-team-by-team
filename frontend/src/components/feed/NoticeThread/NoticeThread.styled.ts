@@ -35,6 +35,7 @@ export const Container = styled.div<{ noticeSize: NoticeSize }>`
 export const BackgroundContainer = styled.div<{ noticeSize: NoticeSize }>`
   display: flex;
   justify-content: space-between;
+  overflow: hidden;
 
   height: 100%;
 
@@ -95,6 +96,7 @@ export const MegaphoneWrapper = styled.div`
 export const AuthorInfo = styled.div`
   display: flex;
   flex-wrap: wrap;
+  flex-shrink: 0;
   align-items: center;
   overflow: hidden;
   column-gap: 8px;

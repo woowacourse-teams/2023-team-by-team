@@ -13,13 +13,15 @@ export const Container = styled.div<{ isOpen: boolean }>`
   background: linear-gradient(30deg, #bfc3ff, #eaebff);
 
   transition: 0.35s;
-  transform: translateY(${({ isOpen }) => (isOpen ? '-162px' : '0')});
+  transform: translateY(${({ isOpen }) => (isOpen ? '-168px' : '0')});
 `;
 
 export const ContentWrapper = styled.div`
   overflow-x: auto;
   overflow-y: hidden;
   flex-grow: 1;
+
+  padding: 20px 20px 0 20px;
 `;
 
 export const CloseButtonWrapper = styled.div`

@@ -1,12 +1,12 @@
 import { styled, css } from 'styled-components';
 
-export const Container = styled.li`
+export const Container = styled.li<{ size?: 'md' | 'sm' }>`
   flex-shrink: 0;
 
-  width: 96px;
-  height: 96px;
+  width: ${({ size = 'md' }) => (size === 'md' ? '96px' : '76px')};
+  height: ${({ size = 'md' }) => (size === 'md' ? '96px' : '76px')};
 
-  border-radius: 12px;
+  border-radius: ${({ size = 'md' }) => (size === 'md' ? '12px' : '10px')};
 `;
 
 export const Image = styled.img`
