@@ -43,7 +43,7 @@ public class ImageUploadService {
         for (final MultipartFile image : uploadImageRequest.images()) {
             validateImage(image);
             final String customKey = imageDirectory + "/" + UUID.randomUUID() + hashedEmail;
-            final String uploadedFileUrl = fileCloudUploader.upload(image, customKey);
+            final String uploadedFileUrl = fileCloudUploader.upload(image, customKey, image.getOriginalFilename());
             responses.add(new ImageUrlResponse(image.getOriginalFilename(), uploadedFileUrl));
         }
 

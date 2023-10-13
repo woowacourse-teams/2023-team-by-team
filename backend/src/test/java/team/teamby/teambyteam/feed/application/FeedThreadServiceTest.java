@@ -1,5 +1,30 @@
 package team.teamby.teambyteam.feed.application;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.CONTENT_AND_IMAGE_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.CONTENT_ONLY_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.EMPTY_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.IMAGE_ONLY_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.NOT_ALLOWED_IMAGE_EXTENSION_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.OVER_IMAGE_COUNT_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.OVER_IMAGE_SIZE_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
+import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP_EMAIL;
+import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ROY;
+import static team.teamby.teambyteam.common.fixtures.MemberTeamPlaceFixtures.PHILIP_ENGLISH_TEAM_PLACE;
+import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
+import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.JAPANESE_TEAM_PLACE;
+
+import java.time.Clock;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -34,32 +59,6 @@ import team.teamby.teambyteam.schedule.domain.vo.Span;
 import team.teamby.teambyteam.schedule.domain.vo.Title;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
-import java.time.Clock;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Stream;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.CONTENT_AND_IMAGE_REQUEST;
-import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.CONTENT_ONLY_REQUEST;
-import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.EMPTY_REQUEST;
-import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.IMAGE_ONLY_REQUEST;
-import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.NOT_ALLOWED_IMAGE_EXTENSION_REQUEST;
-import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.OVER_IMAGE_COUNT_REQUEST;
-import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.OVER_IMAGE_SIZE_REQUEST;
-import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
-import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP_EMAIL;
-import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ROY;
-import static team.teamby.teambyteam.common.fixtures.MemberTeamPlaceFixtures.PHILIP_ENGLISH_TEAM_PLACE;
-import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
-import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.JAPANESE_TEAM_PLACE;
-
 class FeedThreadServiceTest extends ServiceTest {
 
     @Autowired
@@ -77,7 +76,7 @@ class FeedThreadServiceTest extends ServiceTest {
 
         @BeforeEach
         void setup() {
-            given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class)))
+            given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class), any(String.class)))
                     .willReturn("https://s3://seongha-seeik");
         }
 

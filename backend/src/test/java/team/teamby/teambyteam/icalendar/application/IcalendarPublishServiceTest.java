@@ -1,5 +1,12 @@
 package team.teamby.teambyteam.icalendar.application;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static team.teamby.teambyteam.common.fixtures.PublishedIcalendarFixtures.TEST_ICALENDAR;
+import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
+
+import java.util.Optional;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -14,14 +21,6 @@ import team.teamby.teambyteam.filesystem.FileCloudUploader;
 import team.teamby.teambyteam.icalendar.domain.PublishedIcalendar;
 import team.teamby.teambyteam.icalendar.domain.PublishedIcalendarRepository;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
-
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static team.teamby.teambyteam.common.fixtures.PublishedIcalendarFixtures.TEST_ICALENDAR;
-import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
 
 class IcalendarPublishServiceTest extends ServiceTest {
 
@@ -42,7 +41,7 @@ class IcalendarPublishServiceTest extends ServiceTest {
         @DisplayName("Ical생성에 성공한다")
         void successCreatingIcalendar() {
             // given
-            BDDMockito.given(fileCloudUploader.upload(any(byte[].class), any(String.class)))
+            BDDMockito.given(fileCloudUploader.upload(any(byte[].class), any(String.class), any(String.class)))
                     .willAnswer(invocation -> {
                         Thread.sleep(500L);
                         return "https://test.com/test.ics";
@@ -67,7 +66,7 @@ class IcalendarPublishServiceTest extends ServiceTest {
         @DisplayName("이미 생성이되어있으면 새롭게 생성하지 않는다.")
         void doesNotGenerateNewFileIfAlreadyExist() {
             // given
-            BDDMockito.given(fileCloudUploader.upload(any(byte[].class), any(String.class)))
+            BDDMockito.given(fileCloudUploader.upload(any(byte[].class), any(String.class), any(String.class)))
                     .willAnswer(invocation -> {
                         Thread.sleep(500L);
                         return "https://test.com/changed-test.ics";
@@ -96,7 +95,7 @@ class IcalendarPublishServiceTest extends ServiceTest {
         @DisplayName("이미 ical배포중인 팀플레이스에서 uploadFile이 잘 실행이 된다.")
         void successWithAlreadyPublishedIcs() {
             // given
-            BDDMockito.given(fileCloudUploader.upload(any(byte[].class), any(String.class)))
+            BDDMockito.given(fileCloudUploader.upload(any(byte[].class), any(String.class), any(String.class)))
                     .willAnswer(invocation -> {
                         Thread.sleep(500L);
                         return "https://test.com/test.ics";
@@ -112,7 +111,7 @@ class IcalendarPublishServiceTest extends ServiceTest {
             // then
             ArgumentCaptor<String> fileNameCaptor = ArgumentCaptor.forClass(String.class);
             ArgumentCaptor<byte[]> icalBytesCaptor = ArgumentCaptor.forClass(byte[].class);
-            verify(fileCloudUploader).upload(icalBytesCaptor.capture(), fileNameCaptor.capture());
+            verify(fileCloudUploader).upload(icalBytesCaptor.capture(), fileNameCaptor.capture(), fileNameCaptor.capture());
 
             final String actualUploadedFileName = fileNameCaptor.getValue();
             assertThat(actualUploadedFileName).endsWith(publishedIcalendar.getIcalendarFileNameValue());
@@ -122,7 +121,7 @@ class IcalendarPublishServiceTest extends ServiceTest {
         @DisplayName("ical이 배포중이지 않은 팀플레이스에서 일정변동시 생성과 초기화를 진행한다.")
         void successWithNewIcs() {
             // given
-            BDDMockito.given(fileCloudUploader.upload(any(byte[].class), any(String.class)))
+            BDDMockito.given(fileCloudUploader.upload(any(byte[].class), any(String.class), any(String.class)))
                     .willAnswer(invocation -> {
                         Thread.sleep(500L);
                         return "https://test.com/test.ics";
@@ -137,9 +136,9 @@ class IcalendarPublishServiceTest extends ServiceTest {
             // then
             ArgumentCaptor<String> fileNameCaptor = ArgumentCaptor.forClass(String.class);
             ArgumentCaptor<byte[]> icalBytesCaptor = ArgumentCaptor.forClass(byte[].class);
-            verify(fileCloudUploader).upload(icalBytesCaptor.capture(), fileNameCaptor.capture());
+            verify(fileCloudUploader).upload(icalBytesCaptor.capture(), fileNameCaptor.capture(), fileNameCaptor.capture());
 
-            final String actualUploadedFileName = fileNameCaptor.getValue();
+            final String actualUploadedFileName = fileNameCaptor.getAllValues().get(0);
             final String expectedFileNamePatter = "^.+[/]" + ENGLISH_TEAM_PLACE.getId() + ".+[.]ics$";
             assertThat(actualUploadedFileName).matches(expectedFileNamePatter);
         }

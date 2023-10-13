@@ -65,7 +65,7 @@ public class NoticeApiDocsTest extends ApiDocsTest {
 
     @BeforeEach
     void setUp() {
-        given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class)))
+        given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class), any(String.class)))
                 .willReturn("https://s3://seongha-seeik");
     }
 

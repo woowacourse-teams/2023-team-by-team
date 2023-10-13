@@ -119,9 +119,10 @@ public class NoticeService {
 
     private void saveImages(final List<MultipartFile> images, final Notice savedNotice) {
         images.forEach(image -> {
-            final String generatedImageUrl = fileCloudUploader.upload(image, imageDirectory + "/" + UUID.randomUUID());
+            final String originalFilename = image.getOriginalFilename();
+            final String generatedImageUrl = fileCloudUploader.upload(image, imageDirectory + "/" + UUID.randomUUID(), originalFilename);
             final ImageUrl imageUrl = new ImageUrl(generatedImageUrl);
-            final ImageName imageName = new ImageName(image.getOriginalFilename());
+            final ImageName imageName = new ImageName(originalFilename);
             final NoticeImage noticeImage = new NoticeImage(imageUrl, imageName);
             noticeImage.confirmNotice(savedNotice);
             noticeImageRepository.save(noticeImage);

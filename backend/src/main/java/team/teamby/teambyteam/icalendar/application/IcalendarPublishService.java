@@ -1,5 +1,6 @@
 package team.teamby.teambyteam.icalendar.application;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,8 +16,6 @@ import team.teamby.teambyteam.schedule.domain.Schedule;
 import team.teamby.teambyteam.schedule.domain.ScheduleRepository;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceRepository;
-
-import java.util.List;
 
 @Slf4j
 @Service
@@ -55,7 +54,7 @@ public class IcalendarPublishService {
     private String uploadIcalendarFile(final TeamPlace teamPlace, final IcalendarFileName icalendarFileName) {
         final List<Schedule> schedules = scheduleRepository.findAllByTeamPlaceId(teamPlace.getId());
         final String icalString = icalendarParser.parse(teamPlace, schedules);
-        return fileCloudUploader.upload(icalString.getBytes(), icalDirectory + "/" + icalendarFileName.getValue());
+        return fileCloudUploader.upload(icalString.getBytes(), icalDirectory + "/" + icalendarFileName.getValue(), icalendarFileName.getValue());
     }
 
     public void updateIcalendar(Long teamPlaceId) {

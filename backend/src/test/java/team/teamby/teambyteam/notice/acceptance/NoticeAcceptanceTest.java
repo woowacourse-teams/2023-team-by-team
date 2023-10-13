@@ -71,7 +71,7 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
             participatedTeamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             participatedMemberTeamPlace = testFixtureBuilder.buildMemberTeamPlace(authedMember, participatedTeamPlace);
             authToken = jwtTokenProvider.generateAccessToken(authedMember.getEmail().getValue());
-            given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class)))
+            given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class), any(String.class)))
                     .willReturn("https://s3://seongha-seeik");
         }
 
@@ -253,6 +253,8 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
             participatedTeamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             participatedMemberTeamPlace = testFixtureBuilder.buildMemberTeamPlace(authedMember, participatedTeamPlace);
             authToken = jwtTokenProvider.generateAccessToken(authedMember.getEmail().getValue());
+            given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class), any(String.class)))
+                    .willReturn("https://s3://seongha-seeik");
         }
 
         @Test
@@ -261,8 +263,6 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
             // given
             final Long recentNoticeId = 3L;
             final String recentNoticeContent = THIRD_CONTENT;
-            given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class)))
-                    .willReturn("https://s3://seongha-seeik");
             POST_NOTICE_ONLY_CONTENT_REQUEST(authToken, participatedTeamPlace.getId(), FIRST_CONTENT);
             POST_NOTICE_ONLY_IMAGE_REQUEST(authToken, participatedTeamPlace.getId(),
                     List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2));
@@ -292,9 +292,6 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
             // given
             final Long recentNoticeId = 1L;
             final String recentNoticeContent = THIRD_CONTENT;
-            given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class)))
-                    .willReturn("https://s3://seongha-seeik");
-
             POST_NOTICE_IMAGE_AND_CONTENT_REQUEST(authToken, participatedTeamPlace.getId(),
                     List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2), recentNoticeContent);
 
@@ -327,13 +324,8 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
         @DisplayName("팀 내 다른 사용자가 등록한 공지를 조회한다.")
         void successFindingNoticeWrittenByOtherMember() {
             //given
-            final Long recentNoticeId = 3L;
+            final Long recentNoticeId = 1L;
             final String recentNoticeContent = THIRD_CONTENT;
-            given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class)))
-                    .willReturn("https://s3://seongha-seeik");
-            POST_NOTICE_ONLY_CONTENT_REQUEST(authToken, participatedTeamPlace.getId(), FIRST_CONTENT);
-            POST_NOTICE_ONLY_IMAGE_REQUEST(authToken, participatedTeamPlace.getId(),
-                    List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2));
             POST_NOTICE_IMAGE_AND_CONTENT_REQUEST(authToken, participatedTeamPlace.getId(),
                     List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2), recentNoticeContent);
 
@@ -385,13 +377,8 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
         @DisplayName("팀플레이스를 탈퇴한 사용자가 작성한 공지를 조회한다.")
         void getRecentNoticeWhichWrittenByLeavedTeamPlaceMember() {
             // given
-            final Long recentNoticeId = 3L;
+            final Long recentNoticeId = 1L;
             final String recentNoticeContent = THIRD_CONTENT;
-            given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class)))
-                    .willReturn("https://s3://seongha-seeik");
-            POST_NOTICE_ONLY_CONTENT_REQUEST(authToken, participatedTeamPlace.getId(), FIRST_CONTENT);
-            POST_NOTICE_ONLY_IMAGE_REQUEST(authToken, participatedTeamPlace.getId(),
-                    List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2));
             POST_NOTICE_IMAGE_AND_CONTENT_REQUEST(authToken, participatedTeamPlace.getId(),
                     List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2), recentNoticeContent);
 
@@ -422,13 +409,8 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
         @DisplayName("탈퇴한 사용자가 작성한 공지를 조회한다.")
         void getRecentNoticeWhichWrittenByLeavedServiceMember() {
             // given
-            final Long recentNoticeId = 3L;
+            final Long recentNoticeId = 1L;
             final String recentNoticeContent = THIRD_CONTENT;
-            given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class)))
-                    .willReturn("https://s3://seongha-seeik");
-            POST_NOTICE_ONLY_CONTENT_REQUEST(authToken, participatedTeamPlace.getId(), FIRST_CONTENT);
-            POST_NOTICE_ONLY_IMAGE_REQUEST(authToken, participatedTeamPlace.getId(),
-                    List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2));
             POST_NOTICE_IMAGE_AND_CONTENT_REQUEST(authToken, participatedTeamPlace.getId(),
                     List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2), recentNoticeContent);
 
