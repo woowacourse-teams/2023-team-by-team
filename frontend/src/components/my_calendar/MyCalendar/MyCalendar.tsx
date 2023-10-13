@@ -23,13 +23,9 @@ const MyCalendar = (props: MyCalendarProps) => {
     year,
     month,
     calendar,
+    today,
     handlers: { handlePrevButtonClick, handleNextButtonClick },
   } = useCalendar();
-  const {
-    year: currentYear,
-    month: currentMonth,
-    date: currentDate,
-  } = parseDate(new Date());
 
   const schedules = useFetchMySchedules(year, month);
   const scheduleCircles = generateScheduleCirclesMatrix(year, month, schedules);
@@ -85,9 +81,9 @@ const MyCalendar = (props: MyCalendarProps) => {
                     } = parseDate(day);
 
                     const isToday =
-                      currentYear === renderYear &&
-                      currentMonth === renderMonth &&
-                      currentDate === renderDate;
+                      today.year === renderYear &&
+                      today.month === renderMonth &&
+                      today.date === renderDate;
 
                     return (
                       <div key={day.toISOString()}>
