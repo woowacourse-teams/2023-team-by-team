@@ -26,7 +26,6 @@ public class TeamPlaceSsePublisher {
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void publishEvent(final TeamPlaceSseEvent teamPlaceSseEvent) {
-
         final Long targetTeamPlaceId = teamPlaceSseEvent.getTeamPlaceId();
         final String eventName = teamPlaceSseEvent.getEventName();
         final String eventData = extractEventDataAsJson(teamPlaceSseEvent);

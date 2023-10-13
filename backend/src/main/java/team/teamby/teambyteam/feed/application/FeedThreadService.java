@@ -1,15 +1,9 @@
 package team.teamby.teambyteam.feed.application;
 
-import java.time.Clock;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -20,6 +14,7 @@ import team.teamby.teambyteam.feed.application.dto.FeedImageResponse;
 import team.teamby.teambyteam.feed.application.dto.FeedResponse;
 import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
 import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
+import team.teamby.teambyteam.feed.application.event.FeedWriteEvent;
 import team.teamby.teambyteam.feed.domain.Feed;
 import team.teamby.teambyteam.feed.domain.FeedRepository;
 import team.teamby.teambyteam.feed.domain.FeedThread;
@@ -35,12 +30,21 @@ import team.teamby.teambyteam.filesystem.AllowedImageExtension;
 import team.teamby.teambyteam.filesystem.FileCloudUploader;
 import team.teamby.teambyteam.filesystem.util.FileUtil;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
-import team.teamby.teambyteam.member.domain.IdOnly;
+import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.exception.MemberException;
+import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
+
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -69,6 +73,8 @@ public class FeedThreadService {
 
     private final FileCloudUploader fileCloudUploader;
 
+    private final ApplicationEventPublisher applicationEventPublisher;
+
     public Long write(
             final FeedThreadWritingRequest feedThreadWritingRequest,
             final MemberEmailDto memberEmailDto,
@@ -80,14 +86,19 @@ public class FeedThreadService {
         validateImages(images);
 
         final Content contentVo = new Content(content);
-        final IdOnly memberId = memberRepository.findIdByEmail(new Email(memberEmailDto.email()))
+        final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
                 .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
-        final FeedThread feedThread = new FeedThread(teamPlaceId, contentVo, memberId.id());
+        final FeedThread feedThread = new FeedThread(teamPlaceId, contentVo, member.getId());
         final FeedThread savedFeedThread = feedRepository.save(feedThread);
 
         saveImages(images, savedFeedThread);
         Long threadId = savedFeedThread.getId();
         log.info("스레드 생성 - 생성자 이메일 : {}, 스레드 아이디 : {}", memberEmailDto.email(), threadId);
+
+        final String memberDisplayName = memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(teamPlaceId, member.getId())
+                .orElseThrow(() -> new MemberTeamPlaceException.NotFoundParticipatedTeamPlaceException(memberEmailDto.email(), teamPlaceId))
+                .getDisplayMemberNameValue();
+        applicationEventPublisher.publishEvent(new FeedWriteEvent(teamPlaceId, FeedResponse.from(savedFeedThread, memberDisplayName, member.getProfileImageUrl().getValue())));
 
         return threadId;
     }
