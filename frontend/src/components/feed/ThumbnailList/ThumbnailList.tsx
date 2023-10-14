@@ -26,7 +26,7 @@ const ThumbnailList = (props: ThumbnailListProps) => {
   const { mode, images } = props;
 
   return (
-    <S.Container role="list" mode={mode}>
+    <S.Container role="list" $mode={mode}>
       {mode === 'delete'
         ? images.map((image) => (
             <DeletableThumbnail

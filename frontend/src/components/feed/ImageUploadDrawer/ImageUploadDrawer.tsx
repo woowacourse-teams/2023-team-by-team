@@ -14,7 +14,7 @@ const ImageUploadDrawer = (
   const { isOpen, onClose, children } = props;
 
   return (
-    <S.Container isOpen={isOpen}>
+    <S.Container $isOpen={isOpen}>
       <S.ContentWrapper>{children}</S.ContentWrapper>
       <S.CloseButtonWrapper>
         <Button

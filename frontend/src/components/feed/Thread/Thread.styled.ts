@@ -1,7 +1,7 @@
 import { css, styled } from 'styled-components';
 import type { ThreadSize } from '~/types/size';
 
-export const Container = styled.div<{ isMe: boolean }>`
+export const Container = styled.div<{ $isMe: boolean }>`
   display: flex;
   flex-direction: column;
 
@@ -11,24 +11,24 @@ export const Container = styled.div<{ isMe: boolean }>`
   z-index: 0;
 `;
 
-export const BodyContainer = styled.div<{ isMe: boolean }>`
+export const BodyContainer = styled.div<{ $isMe: boolean }>`
   display: flex;
   align-items: flex-end;
 
   gap: 10px;
 
-  ${({ isMe }) => isMe && 'flex-direction: row-reverse'};
+  ${({ $isMe }) => $isMe && 'flex-direction: row-reverse'};
 `;
 
-export const ContentContainer = styled.div<{ isMe: boolean; height: number }>`
+export const ContentContainer = styled.div<{ $isMe: boolean; $height: number }>`
   display: flex;
   flex-direction: column;
 
   max-width: 80%;
-  max-height: ${({ height }) => height}px;
+  max-height: ${({ $height }) => $height}px;
 
-  ${({ isMe, theme }) => {
-    if (isMe)
+  ${({ $isMe, theme }) => {
+    if ($isMe)
       return css`
         background-color: ${theme.color.PRIMARY900};
         border-radius: 12px 12px 0 12px;

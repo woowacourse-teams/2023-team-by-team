@@ -27,9 +27,9 @@ const Carousel = (props: CarouselProps) => {
   const { width, height, images, currentPage, onChangePage } = props;
 
   return (
-    <S.Container width={width} height={height}>
+    <S.Container $width={width} $height={height}>
       <S.SlidesView>
-        <S.Slides currentPage={currentPage}>
+        <S.Slides $currentPage={currentPage}>
           {images.map(({ id, isExpired, url, name }) => (
             <S.Slide key={id}>
               {isExpired ? (

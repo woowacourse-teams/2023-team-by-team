@@ -14,7 +14,7 @@ const ViewableThumbnail = (props: ViewableThumbnailProps) => {
   const { isExpired, name, url } = image;
 
   return (
-    <S.Container size={size}>
+    <S.Container $size={size}>
       <Button
         variant="plain"
         type="button"
