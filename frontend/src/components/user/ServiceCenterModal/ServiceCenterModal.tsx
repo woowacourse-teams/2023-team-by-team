@@ -5,7 +5,12 @@ import * as S from './ServiceCenterModal.styled';
 import { useModal } from '~/hooks/useModal';
 import { CloseIcon } from '~/assets/svg';
 import Accordion from '~/components/common/Accordion/Accordion';
-import { ICALENDAR_USER_GUIDE_URL } from '~/constants/calendar';
+import {
+  ICALENDAR_USER_GUIDE_URL,
+  TEAM_BY_TEAM_HOW_TO_USE_URL,
+  TEAM_BY_TEAM_REPOSITORY,
+  USER_FEEDBACK_URL,
+} from '~/constants/url';
 
 interface ServiceCenterModalProps {
   onAccountDeleteButtonClick: () => void;
@@ -46,7 +51,7 @@ const ServiceCenterModal = (props: ServiceCenterModalProps) => {
             <Accordion.Item>
               <Accordion.Header id={0} padding={'20px 18px'} disabled={true}>
                 <S.UrlWrapper
-                  href={'https://forms.gle/Tk8DZ5Xzsc5615Ar7'}
+                  href={USER_FEEDBACK_URL}
                   target="_blank"
                   rel="noreferrer"
                 >
@@ -58,9 +63,7 @@ const ServiceCenterModal = (props: ServiceCenterModalProps) => {
               <Accordion.Item>
                 <Accordion.Header id={1} padding={'20px 18px'} disabled={true}>
                   <S.UrlWrapper
-                    href={
-                      'https://teambyteam.notion.site/f84827ca26334913a1c724dfb9436887'
-                    }
+                    href={TEAM_BY_TEAM_HOW_TO_USE_URL}
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -81,9 +84,7 @@ const ServiceCenterModal = (props: ServiceCenterModalProps) => {
                   </Text>
 
                   <a
-                    href={
-                      'https://github.com/woowacourse-teams/2023-team-by-team'
-                    }
+                    href={TEAM_BY_TEAM_REPOSITORY}
                     target="_blank"
                     rel="noreferrer"
                   >

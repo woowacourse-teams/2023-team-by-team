@@ -8,9 +8,9 @@ import { useFetchICalendarUrl } from '~/hooks/queries/useFetchICalendarUrl';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useToast } from '~/hooks/useToast';
 import { ClipboardIcon, CloseIcon, QuestionIcon } from '~/assets/svg';
-import { ICALENDAR_USER_GUIDE_URL } from '~/constants/calendar';
 import type { CalendarSize } from '~/types/size';
 import * as S from './ICalendarModal.styled';
+import { ICALENDAR_USER_GUIDE_URL } from '~/constants/url';
 
 export interface ICalendarModalProps {
   calendarSize?: CalendarSize;
