@@ -1,7 +1,9 @@
 import { styled } from 'styled-components';
 import type { ToastProps } from '~/components/common/Toast/Toast';
 
-export const Wrapper = styled.div<Pick<ToastProps, 'status' | 'isActive'>>`
+export const Wrapper = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['status', 'isActive'].includes(prop),
+})<Pick<ToastProps, 'status' | 'isActive'>>`
   display: flex;
   align-items: center;
   justify-content: center;

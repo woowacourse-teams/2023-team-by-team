@@ -1,7 +1,9 @@
 import { styled } from 'styled-components';
 import type { MenuListProps } from '~/components/common/Menu/MenuList/MenuList';
 
-export const Wrapper = styled.ul<MenuListProps>`
+export const Wrapper = styled.ul.withConfig({
+  shouldForwardProp: (prop) => !['width', 'onSelect'].includes(prop),
+})<MenuListProps>`
   position: absolute;
   z-index: ${({ theme }) => theme.zIndex.MENU};
 

@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import type { SkeletonProps } from '~/components/common/Skeleton/Skeleton';
 
-export const Wrapper = styled.div<SkeletonProps>`
+export const Wrapper = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['variant', 'css'].includes(prop),
+})<SkeletonProps>`
   position: relative;
   overflow: hidden;
 
