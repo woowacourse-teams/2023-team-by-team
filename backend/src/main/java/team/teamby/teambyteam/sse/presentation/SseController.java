@@ -18,8 +18,10 @@ import team.teamby.teambyteam.sse.application.SseSubscribeService;
 @RequiredArgsConstructor
 public class SseController {
 
-    private final SseSubscribeService sseSubscribeService;
+    private static final String NGINX_X_ACCEL_BUFFERING_HEADER = "X-Accel-Buffering";
+    private static final String NO = "no";
 
+    private final SseSubscribeService sseSubscribeService;
 
     @GetMapping(value = "/team-place/{teamPlaceId}/subscribe", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public ResponseEntity<SseEmitter> connect(
@@ -28,6 +30,9 @@ public class SseController {
             @RequestHeader(value = "Last-Event-ID", required = false, defaultValue = SseSubscribeService.DEFAULT_EVENT_ID) final String lastEventId
     ) {
         final SseEmitter emitter = sseSubscribeService.subscribe(teamPlaceId, memberEmailDto, lastEventId);
-        return ResponseEntity.ok(emitter);
+        return ResponseEntity
+                .ok()
+                .header(NGINX_X_ACCEL_BUFFERING_HEADER, NO)
+                .body(emitter);
     }
 }
