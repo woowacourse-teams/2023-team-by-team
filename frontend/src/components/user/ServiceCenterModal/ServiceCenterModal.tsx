@@ -43,9 +43,11 @@ const ServiceCenterModal = (props: ServiceCenterModalProps) => {
           </Text>
           <S.ExplainBox>
             원하시는 내용 없다면 아래 메일로 문의주세요
-            <ul>
-              <li> teambyteam.official@gmail.com</li>
-            </ul>
+            <a href="mailto:teambyteam.official@gmail.com?subject=팀바팀 문의합니다.&body=이메일(팀바팀 계정):%0D%0A문의분류(계정, 서비스, 버그, 기능추가, 기타):%0D%0A문의내용:%0D%0A">
+              <Text weight="semiBold" size="sm" css={S.mailText}>
+                teambyteam.official@gmail.com
+              </Text>
+            </a>
           </S.ExplainBox>
           <Accordion>
             <Accordion.Item>

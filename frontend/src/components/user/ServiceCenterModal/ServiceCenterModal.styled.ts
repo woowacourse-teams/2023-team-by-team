@@ -56,10 +56,6 @@ export const ExplainBox = styled.div`
 
   border-radius: 4px;
   background-color: ${({ theme }) => theme.color.GRAY100};
-
-  & ul > li::marker {
-    color: ${({ theme }) => theme.color.GRAY700};
-  }
 `;
 
 export const AccountBodyContainer = styled.div`
@@ -99,4 +95,8 @@ export const dangerousText = css`
 
 export const explainText = css`
   white-space: pre;
+`;
+
+export const mailText = css`
+  text-decoration-line: underline;
 `;
