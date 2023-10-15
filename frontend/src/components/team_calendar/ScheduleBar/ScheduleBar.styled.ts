@@ -15,8 +15,12 @@ interface InnerProps {
 export const Wrapper = styled.div.withConfig({
   shouldForwardProp: (prop) =>
     ![
+      'id',
+      'scheduleId',
+      'schedule',
       'calendarSize',
       'level',
+      'row',
       'column',
       'duration',
       'roundedStart',
@@ -58,6 +62,10 @@ export const Wrapper = styled.div.withConfig({
 export const Inner = styled.div.withConfig({
   shouldForwardProp: (prop) =>
     ![
+      'id',
+      'scheduleId',
+      'schedule',
+      'row',
       'column',
       'duration',
       'level',
