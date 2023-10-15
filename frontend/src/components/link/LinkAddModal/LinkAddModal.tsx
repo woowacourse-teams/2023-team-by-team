@@ -32,7 +32,7 @@ const LinkAddModal = (props: LinkAddModalProps) => {
   return (
     <Modal>
       <S.Backdrop onClick={handleClose} />
-      <S.Container linkSize={linkSize}>
+      <S.Container $linkSize={linkSize}>
         <S.IconWrapper>
           <Button
             variant="plain"

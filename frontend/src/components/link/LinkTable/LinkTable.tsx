@@ -50,7 +50,7 @@ const LinkTable = (props: LinkTableProps) => {
   return (
     <>
       <S.Container>
-        <S.MenuHeader linkSize={linkSize}>
+        <S.MenuHeader $linkSize={linkSize}>
           <Text as="h2" css={S.linkTableTitle(linkSize)}>
             팀 링크
           </Text>
@@ -62,7 +62,7 @@ const LinkTable = (props: LinkTableProps) => {
             <PlusIcon />
           </Button>
         </S.MenuHeader>
-        <S.TableContainer linkSize={linkSize}>
+        <S.TableContainer $linkSize={linkSize}>
           <S.TableHeader>
             {linkTableHeaderValues.map((value) => (
               <th key={value}>{value}</th>

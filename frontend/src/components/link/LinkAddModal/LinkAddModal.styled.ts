@@ -9,17 +9,17 @@ export const Backdrop = styled.div`
   height: 100%;
 `;
 
-export const Container = styled.div<{ linkSize: LinkSize }>`
+export const Container = styled.div<{ $linkSize: LinkSize }>`
   position: fixed;
-  ${({ linkSize }) => {
-    if (linkSize === 'md')
+  ${({ $linkSize }) => {
+    if ($linkSize === 'md')
       return css`
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
       `;
 
-    if (linkSize === 'sm')
+    if ($linkSize === 'sm')
       return css`
         top: 100%;
         left: 14%;

@@ -10,24 +10,24 @@ export const Container = styled.div`
   height: 100%;
 `;
 
-export const MenuHeader = styled.header<{ linkSize: LinkSize }>`
+export const MenuHeader = styled.header<{ $linkSize: LinkSize }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
 
   width: 100%;
-  height: ${({ linkSize }) => (linkSize === 'md' ? 70 : 30)}px;
+  height: ${({ $linkSize }) => ($linkSize === 'md' ? 70 : 30)}px;
   padding: 8px;
 `;
 
-export const TableContainer = styled.div<{ linkSize: LinkSize }>`
+export const TableContainer = styled.div<{ $linkSize: LinkSize }>`
   display: flex;
   flex-direction: column;
   align-items: center;
 
   width: 100%;
-  height: calc(100% - ${({ linkSize }) => (linkSize === 'md' ? 70 : 30)}px);
-  padding: ${({ linkSize }) => (linkSize === 'md' ? 30 : 10)}px;
+  height: calc(100% - ${({ $linkSize }) => ($linkSize === 'md' ? 70 : 30)}px);
+  padding: ${({ $linkSize }) => ($linkSize === 'md' ? 30 : 10)}px;
 
   background-color: ${({ theme }) => theme.color.WHITE};
 
