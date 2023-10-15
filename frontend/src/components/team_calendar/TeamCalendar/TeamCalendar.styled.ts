@@ -29,11 +29,11 @@ export const FeatureButtonContainer = styled.div`
   column-gap: 8px;
 `;
 
-export const DaysOfWeek = styled.div<{ calendarSize: CalendarSize }>`
+export const DaysOfWeek = styled.div<{ $calendarSize: CalendarSize }>`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
 
-  height: ${({ calendarSize }) => (calendarSize === 'md' ? 24 : 20)}px;
+  height: ${({ $calendarSize }) => ($calendarSize === 'md' ? 24 : 20)}px;
 
   border-bottom: 2px solid ${({ theme }) => theme.color.GRAY200};
 `;
@@ -54,10 +54,11 @@ export const DayOfWeek = styled.div`
   }
 `;
 
-export const DateView = styled.div<{ calendarSize: CalendarSize }>`
+export const DateView = styled.div<{ $calendarSize: CalendarSize }>`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  grid-auto-rows: ${({ calendarSize }) => (calendarSize === 'md' ? 110 : 80)}px;
+  grid-auto-rows: ${({ $calendarSize }) =>
+    $calendarSize === 'md' ? 110 : 80}px;
 
   background-color: ${({ theme }) => theme.color.WHITE};
 
