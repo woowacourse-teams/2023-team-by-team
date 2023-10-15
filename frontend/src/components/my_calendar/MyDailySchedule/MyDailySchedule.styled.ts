@@ -2,9 +2,9 @@ import { css, styled } from 'styled-components';
 import type { MyDailyScheduleProps } from './MyDailySchedule';
 import type { TeamPlaceColor } from '~/types/team';
 
-export const Container = styled.div<
-  Pick<MyDailyScheduleProps, 'teamPlaceColor'>
->`
+export const Container = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['teamPlaceColor'].includes(prop),
+})<Pick<MyDailyScheduleProps, 'teamPlaceColor'>>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
