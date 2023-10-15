@@ -57,7 +57,7 @@ const ScheduleModal = (props: ScheduleModalProps) => {
     <Modal>
       <S.Backdrop onClick={closeModal} />
       <S.Container
-        css={S.modalLocation(
+        $css={S.modalLocation(
           row,
           column,
           level,

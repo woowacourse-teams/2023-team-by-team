@@ -1,14 +1,14 @@
 import { css, styled } from 'styled-components';
 import type { CalendarSize } from '~/types/size';
 
-export const Container = styled.div<{ calendarSize: CalendarSize }>`
+export const Container = styled.div<{ $calendarSize: CalendarSize }>`
   display: flex;
   flex-direction: column;
 
   width: 100%;
   height: 100%;
 
-  padding: 0 ${({ calendarSize }) => (calendarSize === 'md' ? 10 : 0)}px;
+  padding: 0 ${({ $calendarSize }) => ($calendarSize === 'md' ? 10 : 0)}px;
 `;
 
 export const CalendarHeader = styled.div`

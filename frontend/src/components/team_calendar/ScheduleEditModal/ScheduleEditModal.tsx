@@ -44,7 +44,7 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
   return (
     <Modal>
       <S.Backdrop onClick={closeModal} />
-      <S.Container calendarSize={calendarSize}>
+      <S.Container $calendarSize={calendarSize}>
         <S.Header>
           <Button
             variant="plain"

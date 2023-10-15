@@ -174,7 +174,7 @@ const TeamCalendar = (props: TeamCalendarProps) => {
 
   return (
     <>
-      <S.Container calendarSize={calendarSize}>
+      <S.Container $calendarSize={calendarSize}>
         <S.CalendarHeader>
           <div />
           <S.ButtonContainer>

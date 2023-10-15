@@ -9,17 +9,17 @@ export const Backdrop = styled.div`
   height: 100%;
 `;
 
-export const Container = styled.div<{ calendarSize: CalendarSize }>`
+export const Container = styled.div<{ $calendarSize: CalendarSize }>`
   position: fixed;
-  ${({ calendarSize }) => {
-    if (calendarSize === 'md')
+  ${({ $calendarSize }) => {
+    if ($calendarSize === 'md')
       return css`
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
       `;
 
-    if (calendarSize === 'sm')
+    if ($calendarSize === 'sm')
       return css`
         top: 20%;
         left: 13.5%;

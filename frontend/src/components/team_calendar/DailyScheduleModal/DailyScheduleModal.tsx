@@ -48,7 +48,13 @@ const DailyScheduleModal = (props: DailyScheduleModalProps) => {
     <Modal>
       <S.Backdrop onClick={closeModal} />
       <S.Container
-        css={S.modalLocation(row, column, calendarWidth, calendarLeft, calendarSize)}
+        $css={S.modalLocation(
+          row,
+          column,
+          calendarWidth,
+          calendarLeft,
+          calendarSize,
+        )}
       >
         <S.Header>
           <Text>
@@ -72,7 +78,7 @@ const DailyScheduleModal = (props: DailyScheduleModalProps) => {
               return (
                 <S.ScheduleBox
                   key={index}
-                  teamPlaceColor={teamPlaceColor}
+                  $teamPlaceColor={teamPlaceColor}
                   title={title}
                   onClick={() => {
                     onScheduleModalOpen({
