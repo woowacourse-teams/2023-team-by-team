@@ -74,17 +74,17 @@ export const ProfileImg = styled.img`
 `;
 
 export const ThumbnailListWrapper = styled.div<{
-  isMe: boolean;
-  marginBottom: boolean;
+  $isMe: boolean;
+  $marginBottom: boolean;
 }>`
   width: 100%;
   height: 136px;
   padding: 40px 20px 0 20px;
   margin-top: -20px;
-  margin-bottom: ${({ marginBottom }) => (marginBottom ? '40px' : '20px')};
+  margin-bottom: ${({ $marginBottom }) => ($marginBottom ? '40px' : '20px')};
 
-  background: ${({ theme, isMe }) =>
-    isMe ? theme.gradient.BLURPLE('116px') : theme.gradient.WHITE('116px')};
+  background: ${({ theme, $isMe }) =>
+    $isMe ? theme.gradient.BLURPLE('116px') : theme.gradient.WHITE('116px')};
 
   z-index: 1;
   box-sizing: border-box;

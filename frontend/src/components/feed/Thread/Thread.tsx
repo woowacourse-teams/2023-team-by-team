@@ -62,8 +62,8 @@ const Thread = (props: ThreadProps) => {
           </S.ContentWrapper>
           {images.length > 0 && (
             <S.ThumbnailListWrapper
-              isMe={isMe}
-              marginBottom={!shouldShowExpandButton}
+              $isMe={isMe}
+              $marginBottom={!shouldShowExpandButton}
             >
               <ThumbnailList
                 mode="view"
