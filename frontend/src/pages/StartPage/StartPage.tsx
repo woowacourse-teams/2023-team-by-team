@@ -41,7 +41,7 @@ const StartPage = () => {
     <S.Container>
       <LandingHeader href={PATH_NAME.TEAM_SELECT} />
       <S.MainContainer>
-        <S.InnerContainer ref={ref} clickedButton={clickedButton}>
+        <S.InnerContainer ref={ref} $clickedButton={clickedButton}>
           <S.ButtonContainer>
             <Text weight="semiBold" css={S.explainText}>
               우리 팀만의 공간이 필요하신가요?

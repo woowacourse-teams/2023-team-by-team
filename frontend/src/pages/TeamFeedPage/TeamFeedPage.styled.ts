@@ -1,9 +1,6 @@
 import { css, styled } from 'styled-components';
-import type { ThreadSize } from '~/types/size';
 
-export const Container = styled.div<{
-  threadSize: ThreadSize;
-}>`
+export const Container = styled.div`
   overflow: hidden;
   position: relative;
 

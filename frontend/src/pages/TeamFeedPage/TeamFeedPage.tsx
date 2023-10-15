@@ -56,7 +56,7 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
   };
 
   return (
-    <S.Container threadSize={threadSize}>
+    <S.Container>
       <S.Inner>
         <S.ThreadContainer ref={ref}>
           {noticeThread && noticeThread.id && (

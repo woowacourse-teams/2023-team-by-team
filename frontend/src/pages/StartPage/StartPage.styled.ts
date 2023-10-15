@@ -19,7 +19,9 @@ export const MainContainer = styled.main`
   padding-right: 120px;
 `;
 
-export const InnerContainer = styled.div<{ clickedButton: string | undefined }>`
+export const InnerContainer = styled.div<{
+  $clickedButton: string | undefined;
+}>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -27,8 +29,8 @@ export const InnerContainer = styled.div<{ clickedButton: string | undefined }>`
   width: 340px;
   height: 460px;
 
-  animation: ${({ theme, clickedButton }) =>
-      clickedButton && theme.animation.slideRight}
+  animation: ${({ theme, $clickedButton }) =>
+      $clickedButton && theme.animation.slideRight}
     0.6s ease-in-out forwards;
 `;
 
