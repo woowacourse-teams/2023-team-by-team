@@ -60,7 +60,7 @@ export const RealCheckbox = styled.input`
 `;
 
 export const CustomCheckbox = styled.span.withConfig({
-  shouldForwardProp: (prop) => !['color', 'css', 'size'].includes(prop),
+  shouldForwardProp: (prop) => !['size'].includes(prop),
 })<CustomCheckboxProps>`
   display: inline-block;
 
@@ -102,7 +102,7 @@ export const CustomCheckbox = styled.span.withConfig({
 `;
 
 export const CheckIconWrapper = styled.div.withConfig({
-  shouldForwardProp: (prop) => !['color', 'css', 'size'].includes(prop),
+  shouldForwardProp: (prop) => !['size'].includes(prop),
 })<CheckIconWrapperProps>`
   display: flex;
   justify-content: center;
