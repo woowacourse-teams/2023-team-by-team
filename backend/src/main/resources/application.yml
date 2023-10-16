@@ -18,6 +18,7 @@ spring:
     password:
 
   jpa:
+    open-in-view: false
     hibernate:
       ddl-auto: create-drop # for test
     properties:
@@ -34,6 +35,9 @@ jwt:
   refresh:
     secret: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
     expiration: 86400000 # 1일
+
+sse:
+  cache-schedule-period: 60 * 1000
 
 aws:
   s3:

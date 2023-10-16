@@ -95,6 +95,7 @@ class FeedThreadServiceTest extends ServiceTest {
             // given
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             final Member author = testFixtureBuilder.buildMember(PHILIP());
+            testFixtureBuilder.buildMemberTeamPlace(author, teamPlace);
 
             // when
             final Long feedId = feedThreadService.write(request, new MemberEmailDto(author.getEmail().getValue()),
