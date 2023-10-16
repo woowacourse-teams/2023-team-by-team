@@ -33,6 +33,7 @@ public class SseEmitters {
                                 .name(event.getEventName())
                                 .data(extractEventDataAsJson(event))
                         );
+                        log.info("send event to {}, event : {}", emitterId.toString(), event.getEventName());
                     } catch (IOException e) {
                         teamPlaceEmitterRepository.deleteById(emitterId);
                         log.error("fail to send sse", e);
