@@ -13,15 +13,15 @@ export const useSSE = (teamPlaceId: number, ref: RefObject<HTMLDivElement>) => {
       return;
     }
 
-    const scrollToBottom = () => {
-      if (!ref.current) {
-        return;
-      }
+    // const scrollToBottom = () => {
+    //   if (!ref.current) {
+    //     return;
+    //   }
 
-      const { scrollHeight } = ref.current;
+    //   const { scrollHeight } = ref.current;
 
-      ref.current.scrollTop = scrollHeight;
-    };
+    //   ref.current.scrollTop = scrollHeight;
+    // };
 
     const eventSource = new EventSourcePolyfill(
       baseUrl + `/api/team-place/${teamPlaceId}/subscribe`,
@@ -36,10 +36,6 @@ export const useSSE = (teamPlaceId: number, ref: RefObject<HTMLDivElement>) => {
 
     eventSource.addEventListener('new_thread', () => {
       queryClient.invalidateQueries(['threadData', teamPlaceId]);
-
-      setTimeout(() => {
-        scrollToBottom();
-      }, 200);
     });
 
     eventSource.onerror = () => {
