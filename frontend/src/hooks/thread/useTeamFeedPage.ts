@@ -143,6 +143,10 @@ export const useTeamFeedPage = () => {
     }
 
     ro.observe(threadRef.current);
+
+    return () => {
+      ro.disconnect();
+    };
   }, []);
 
   useEffect(() => {
