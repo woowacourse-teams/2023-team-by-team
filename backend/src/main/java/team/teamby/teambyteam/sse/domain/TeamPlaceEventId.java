@@ -1,13 +1,16 @@
 package team.teamby.teambyteam.sse.domain;
 
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
 @EqualsAndHashCode
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class TeamPlaceEventId {
 
     private static final String DELIMITER = "_";
@@ -20,12 +23,6 @@ public class TeamPlaceEventId {
         this.teamPlaceId = null;
         this.eventName = null;
         this.timeStamp = null;
-    }
-
-    private TeamPlaceEventId(final Long teamPlaceId, final String eventName, final LocalDateTime timeStamp) {
-        this.teamPlaceId = teamPlaceId;
-        this.eventName = eventName;
-        this.timeStamp = timeStamp;
     }
 
     public static TeamPlaceEventId of(final Long teamPlaceId, final String eventName) {
