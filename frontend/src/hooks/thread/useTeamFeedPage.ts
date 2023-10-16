@@ -81,7 +81,7 @@ export const useTeamFeedPage = () => {
     sendNewThread();
   };
 
-  const sendNewThread = async () => {
+  const sendNewThread = () => {
     if (chatContent.trim() === '' && imageFiles.length === 0) {
       return;
     }
@@ -115,7 +115,7 @@ export const useTeamFeedPage = () => {
 
           setTimeout(() => {
             scrollToBottom();
-          }, 100);
+          }, 200);
         },
         onError: () => {
           showToast('error', '스레드 등록에 실패했습니다.');
