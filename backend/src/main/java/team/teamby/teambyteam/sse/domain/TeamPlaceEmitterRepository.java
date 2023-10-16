@@ -24,11 +24,12 @@ public class TeamPlaceEmitterRepository {
         return sseEmitter;
     }
 
-    public Map<TeamPlaceEmitterId, SseEmitter> findByTeamPlaceId(final Long teamPlaceId) {
-        return emitters.entrySet()
+    public SseEmitters findByTeamPlaceId(final Long teamPlaceId) {
+        final Map<TeamPlaceEmitterId, SseEmitter> emitters = this.emitters.entrySet()
                 .stream()
                 .filter(entity -> entity.getKey().isTeamPlaceId(teamPlaceId))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        return new SseEmitters(emitters, this);
     }
 
     public void deleteById(final TeamPlaceEmitterId id) {
