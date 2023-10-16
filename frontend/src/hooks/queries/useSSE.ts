@@ -22,11 +22,9 @@ export const useSSE = (teamPlaceId: number) => {
       },
     );
 
-    eventSource.onmessage = (event: MessageEvent) => {
-      const parsedData = JSON.parse(event.data);
-
-      showToast('success', parsedData);
-    };
+    eventSource.addEventListener('new_thread', (e: MessageEvent) => {
+      showToast('success', JSON.parse(e.data));
+    });
 
     eventSource.onerror = () => {
       showToast('error', '서버와 연결이 끊어졌습니다. 다시 시도해주세요.');
