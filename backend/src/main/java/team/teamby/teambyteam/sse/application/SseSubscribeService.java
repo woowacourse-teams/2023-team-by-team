@@ -52,7 +52,8 @@ public class SseSubscribeService {
         final TeamPlaceEmitterId emitterId = TeamPlaceEmitterId.of(teamPlaceId, memberId);
         final SseEmitter emitter = teamplaceEmitterRepository.save(emitterId, new SseEmitter(DEFAULT_TIMEOUT));
 
-        sendToClient(emitterId, emitter, emitterId.toString(), CONNECT, String.format(SSE_CONNECTED_MESSAGE_FORMAT, memberId));
+        final TeamPlaceEventId dummyEventId = TeamPlaceEventId.of(teamPlaceId, CONNECT);
+        sendToClient(emitterId, emitter, dummyEventId, CONNECT, String.format(SSE_CONNECTED_MESSAGE_FORMAT, memberId));
 
         if (!Objects.isNull(lastEventId) && !lastEventId.isBlank()) {
             sendCachedEvents(emitterId, emitter, teamPlaceId, TeamPlaceEventId.from(lastEventId));
@@ -64,13 +65,13 @@ public class SseSubscribeService {
     private void sendToClient(
             final TeamPlaceEmitterId emitterId,
             final SseEmitter emitter,
-            final String eventId,
+            final TeamPlaceEventId eventId,
             final String eventName,
             final Object data
     ) {
         try {
             emitter.send(SseEmitter.event()
-                    .id(eventId)
+                    .id(eventId.toString())
                     .name(eventName)
                     .data(data));
         } catch (IOException e) {
@@ -101,7 +102,7 @@ public class SseSubscribeService {
             try {
                 final String eventName = entry.getKey().getEventName();
                 final String eventDataString = objectMapper.writeValueAsString(entry.getValue());
-                sendToClient(emitterId, emitter, entry.getKey().toString(), eventName, eventDataString);
+                sendToClient(emitterId, emitter, entry.getKey(), eventName, eventDataString);
             } catch (JsonProcessingException e) {
                 log.error("SSE data json parsing Exception - " + entry.getValue().toString(), e);
                 throw new RuntimeException(e);

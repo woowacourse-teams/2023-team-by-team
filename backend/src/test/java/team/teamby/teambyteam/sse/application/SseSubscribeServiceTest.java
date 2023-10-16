@@ -68,7 +68,7 @@ class SseSubscribeServiceTest extends ServiceTest {
         final String[] eventOutputs = publishedSse.split("\n");
 
         SoftAssertions.assertSoftly(softly -> {
-            softly.assertThat(eventOutputs[0]).startsWith("id:" + teamPlaceId + "_" + member.getId() + "_");
+            softly.assertThat(eventOutputs[0]).startsWith("id:" + teamPlaceId + "_connect_");
             softly.assertThat(eventOutputs[1]).isEqualTo("event:connect");
             softly.assertThat(eventOutputs[2]).isEqualTo("data:EventStream Connected. [memberId=%d]", teamPlaceId);
         });
@@ -120,7 +120,7 @@ class SseSubscribeServiceTest extends ServiceTest {
 
         SoftAssertions.assertSoftly(softly -> {
             softly.assertThat(allEvents).hasSize(2);
-            softly.assertThat(dummyResult[0]).startsWith("id:" + teamPlaceId + "_" + member.getId() + "_");
+            softly.assertThat(dummyResult[0]).startsWith("id:" + teamPlaceId + "_connect_");
             softly.assertThat(dummyResult[1]).isEqualTo("event:connect");
             softly.assertThat(dummyResult[2]).isEqualTo("data:EventStream Connected. [memberId=%d]", teamPlaceId);
             softly.assertThat(cachedResult[0]).startsWith("id:" + teamPlaceId + "_" + eventName + "_");
