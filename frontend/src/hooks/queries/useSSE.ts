@@ -9,6 +9,10 @@ export const useSSE = (teamPlaceId: number) => {
   const { showToast } = useToast();
 
   useEffect(() => {
+    if (!teamPlaceId) {
+      return;
+    }
+
     const eventSource = new EventSourcePolyfill(
       baseUrl + `/api/team-place/${teamPlaceId}/subscribe`,
       {
