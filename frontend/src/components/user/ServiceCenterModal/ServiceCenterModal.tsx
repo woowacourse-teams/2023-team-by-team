@@ -73,7 +73,6 @@ const ServiceCenterModal = (props: ServiceCenterModalProps) => {
                   </S.UrlWrapper>
                 </Accordion.Header>
               </Accordion.Item>
-              <Accordion.Item></Accordion.Item>
               <Accordion.Header id={2} padding={'10px 18px'}>
                 <Text weight="semiBold">팀바팀 소개</Text>
               </Accordion.Header>

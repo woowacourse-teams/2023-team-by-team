@@ -26,7 +26,8 @@ const AccordionHeader = (props: PropsWithChildren<AccordionHeaderProps>) => {
           css={S.accordionButton(padding)}
           onClick={() => handleOpenedAccordionChange(id)}
         >
-          {children} <ArrowExpandMoreIcon />
+          {children}
+          <ArrowExpandMoreIcon />
         </Button>
       )}
     </S.Container>
