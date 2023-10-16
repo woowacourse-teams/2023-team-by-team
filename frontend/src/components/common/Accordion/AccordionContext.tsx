@@ -3,7 +3,7 @@ import type { PropsWithChildren } from 'react';
 
 interface AccordionContextProps {
   openedAccordion: number | undefined;
-  handleOpenAccordionChange: (id: number) => void;
+  handleOpenedAccordionChange: (id: number) => void;
 }
 
 export const AccordionContext = createContext<AccordionContextProps>(
@@ -12,16 +12,16 @@ export const AccordionContext = createContext<AccordionContextProps>(
 
 export const AccordionProvider = (props: PropsWithChildren) => {
   const { children } = props;
-  const [openedAccordion, setOpenAccordion] = useState<number>();
+  const [openedAccordion, setOpenedAccordion] = useState<number>();
 
-  const handleOpenAccordionChange = (id: number) => {
-    if (openedAccordion === id) setOpenAccordion(() => undefined);
-    else setOpenAccordion(() => id);
+  const handleOpenedAccordionChange = (id: number) => {
+    if (openedAccordion === id) setOpenedAccordion(() => undefined);
+    else setOpenedAccordion(() => id);
   };
 
   const value = {
     openedAccordion,
-    handleOpenAccordionChange,
+    handleOpenedAccordionChange,
   };
 
   return (

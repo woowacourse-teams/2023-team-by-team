@@ -12,7 +12,7 @@ interface AccordionHeaderProps {
 
 const AccordionHeader = (props: PropsWithChildren<AccordionHeaderProps>) => {
   const { id, padding = '16px 18px 12px', disabled = false, children } = props;
-  const { openedAccordion, handleOpenAccordionChange } = useAccordion();
+  const { openedAccordion, handleOpenedAccordionChange } = useAccordion();
 
   return (
     <S.Container isOpen={id === openedAccordion}>
@@ -24,7 +24,7 @@ const AccordionHeader = (props: PropsWithChildren<AccordionHeaderProps>) => {
           variant="plain"
           aria-expanded={id === openedAccordion}
           css={S.accordionButton(padding)}
-          onClick={() => handleOpenAccordionChange(id)}
+          onClick={() => handleOpenedAccordionChange(id)}
         >
           {children} <ArrowExpandMoreIcon />
         </Button>
