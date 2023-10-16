@@ -23,6 +23,16 @@ export const useSSE = (teamPlaceId: number) => {
       },
     );
 
+    console.log(`eventSource ${eventSource}`);
+
+    eventSource.addEventListener('connect', (e: MessageEvent) => {
+      console.log('SSE connected', e);
+    });
+
+    eventSource.onmessage = (e: MessageEvent) => {
+      console.log('onmessage', e);
+    };
+
     eventSource.addEventListener('new_thread', (e: MessageEvent) => {
       console.log(JSON.parse(e.data));
     });
