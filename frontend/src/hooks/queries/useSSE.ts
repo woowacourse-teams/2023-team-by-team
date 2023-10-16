@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { baseUrl } from '~/apis/http';
 import { EventSourcePolyfill } from 'event-source-polyfill';
+import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
 
 export const useSSE = (teamPlaceId: number) => {
   const queryClient = useQueryClient();
@@ -15,7 +16,9 @@ export const useSSE = (teamPlaceId: number) => {
       baseUrl + `/api/team-place/${teamPlaceId}/subscribe`,
       {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${localStorage.getItem(
+            LOCAL_STORAGE_KEY.ACCESS_TOKEN,
+          )}`,
         },
       },
     );
