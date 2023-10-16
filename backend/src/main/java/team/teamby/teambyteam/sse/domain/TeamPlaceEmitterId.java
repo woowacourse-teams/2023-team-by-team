@@ -25,7 +25,7 @@ public class TeamPlaceEmitterId {
     }
 
     public boolean isTeamPlaceId(final Long teamPlaceId) {
-        return Objects.equals(this.memberId, teamPlaceId);
+        return Objects.equals(this.teamPlaceId, teamPlaceId);
     }
 
     @Override
