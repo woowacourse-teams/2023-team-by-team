@@ -42,7 +42,7 @@ const ServiceCenterModal = (props: ServiceCenterModalProps) => {
             무엇을 도와드릴까요?
           </Text>
           <S.ExplainBox>
-            원하시는 내용이 없다면 아래 메일로 문의주세요
+            원하시는 내용이 없다면 아래 메일로 문의해주세요
             <a href="mailto:teambyteam.official@gmail.com?subject=팀바팀 문의합니다.&body=이메일(팀바팀 계정):%0D%0A문의분류(계정, 서비스, 버그, 기능추가, 기타):%0D%0A문의내용:%0D%0A">
               <Text weight="semiBold" size="sm" css={S.mailText}>
                 teambyteam.official@gmail.com
