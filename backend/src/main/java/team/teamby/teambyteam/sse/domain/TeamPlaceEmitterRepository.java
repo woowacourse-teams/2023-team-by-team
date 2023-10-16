@@ -1,5 +1,6 @@
 package team.teamby.teambyteam.sse.domain;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -9,6 +10,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Component
 public class TeamPlaceEmitterRepository {
 
@@ -22,6 +24,10 @@ public class TeamPlaceEmitterRepository {
 
         sseEmitter.onCompletion(() -> emitters.remove(emitterId));
         sseEmitter.onTimeout(() -> emitters.remove(emitterId));
+        sseEmitter.onError((e) -> {
+            log.error("emitter error for {}, error message : {}", emitterId, e.getMessage());
+            emitters.remove(emitterId);
+        });
 
         return sseEmitter;
     }
