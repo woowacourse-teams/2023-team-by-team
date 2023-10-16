@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 @Component
 public class TeamPlaceEmitterRepository {
 
+    private static final int CACHE_REMOVE_MINUTE = 1;
+
     private final Map<TeamPlaceEmitterId, SseEmitter> emitters = new ConcurrentHashMap<>();
     private final EventCache eventCache = new EventCache();
 
@@ -46,7 +48,7 @@ public class TeamPlaceEmitterRepository {
 
     @Scheduled(fixedDelayString = "${sse.cache-schedule-period}")
     private void cacheRefreshSchedule() {
-        eventCache.clearCacheFor(1);
+        eventCache.clearCacheFor(CACHE_REMOVE_MINUTE);
     }
 
     private static class EventCache {
