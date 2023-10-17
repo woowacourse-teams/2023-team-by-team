@@ -14,10 +14,16 @@ interface ThreadListProps {
   containerRef?: RefObject<HTMLDivElement>;
   size?: ThreadSize;
   onClickImage: (images: ThreadImage[], selectedImage: number) => void;
+  isShowScrollBottomButton?: boolean;
 }
 
 const ThreadList = (props: ThreadListProps) => {
-  const { containerRef, size = 'md', onClickImage } = props;
+  const {
+    containerRef,
+    size = 'md',
+    onClickImage,
+    isShowScrollBottomButton = false,
+  } = props;
 
   const { teamPlaceId } = useTeamPlace();
 
@@ -57,8 +63,13 @@ const ThreadList = (props: ThreadListProps) => {
         return;
       }
 
+      if (isShowScrollBottomButton) {
+        return;
+      }
+
       threadEndRef.current.scrollIntoView();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [threadPages]);
 
   return (
