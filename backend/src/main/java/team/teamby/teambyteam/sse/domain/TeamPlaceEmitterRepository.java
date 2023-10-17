@@ -35,6 +35,7 @@ public class TeamPlaceEmitterRepository {
             emitters.remove(emitterId);
         });
 
+        log.info("save SseEmitter {}", emitterId.toString());
         return new SseEmitters(Map.of(emitterId, sseEmitter), this);
     }
 
@@ -43,6 +44,8 @@ public class TeamPlaceEmitterRepository {
                 .stream()
                 .filter(entity -> entity.getKey().isTeamPlaceId(teamPlaceId))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        log.info("Sse Emitter found {}, teamPlaceId : {}", emitters.size(), teamPlaceId);
         return new SseEmitters(emitters, this);
     }
 
