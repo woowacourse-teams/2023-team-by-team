@@ -31,6 +31,7 @@ export const useTeamFeedPage = () => {
   const [isImageDrawerOpen, setIsImageDrawerOpen] = useState(false);
   const [chatContent, setChatContent] = useState('');
   const ref = useRef<HTMLDivElement>(null);
+  const threadRef = useRef<HTMLDivElement>(null);
 
   const handleIsNoticeChange = () => {
     setIsNotice((prev) => !prev);
@@ -112,10 +113,6 @@ export const useTeamFeedPage = () => {
           resetChatBox();
           deleteAllImages();
           if (isImageDrawerOpen) handleImageDrawerToggle();
-
-          setTimeout(() => {
-            scrollToBottom();
-          }, 200);
         },
         onError: () => {
           showToast('error', '스레드 등록에 실패했습니다.');
@@ -129,15 +126,28 @@ export const useTeamFeedPage = () => {
     setIsNotice(() => false);
   };
 
-  const scrollToBottom = () => {
-    if (!ref.current) {
+  useEffect(() => {
+    const ro = new ResizeObserver(() => {
+      if (ref.current === null) {
+        return;
+      }
+
+      ref.current.scrollTop = ref.current.scrollHeight;
+    });
+
+    if (
+      threadRef.current === null ||
+      threadRef.current instanceof Element === false
+    ) {
       return;
     }
 
-    const { scrollHeight } = ref.current;
+    ro.observe(threadRef.current);
 
-    ref.current.scrollTop = scrollHeight;
-  };
+    return () => {
+      ro.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     if (ref.current === null) {
@@ -165,6 +175,7 @@ export const useTeamFeedPage = () => {
 
   return {
     ref,
+    threadRef,
     noticeThread,
     isNotice,
     isImageDrawerOpen,

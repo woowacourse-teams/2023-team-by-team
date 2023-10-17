@@ -27,6 +27,7 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
   const { teamPlaceId } = useTeamPlace();
   const {
     ref,
+    threadRef,
     noticeThread,
     isNotice,
     isImageDrawerOpen,
@@ -75,7 +76,7 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
               onClickImage={handleClickImage}
             />
           )}
-          <S.ThreadListWrapper>
+          <S.ThreadListWrapper ref={threadRef}>
             <ThreadList
               containerRef={ref}
               size={threadSize}

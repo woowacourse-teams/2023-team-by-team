@@ -13,16 +13,6 @@ export const useSSE = (teamPlaceId: number, ref: RefObject<HTMLDivElement>) => {
       return;
     }
 
-    // const scrollToBottom = () => {
-    //   if (!ref.current) {
-    //     return;
-    //   }
-
-    //   const { scrollHeight } = ref.current;
-
-    //   ref.current.scrollTop = scrollHeight;
-    // };
-
     const eventSource = new EventSourcePolyfill(
       baseUrl + `/api/team-place/${teamPlaceId}/subscribe`,
       {
