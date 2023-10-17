@@ -31,7 +31,6 @@ export const useTeamFeedPage = () => {
   const [isImageDrawerOpen, setIsImageDrawerOpen] = useState(false);
   const [chatContent, setChatContent] = useState('');
   const ref = useRef<HTMLDivElement>(null);
-  const threadRef = useRef<HTMLDivElement>(null);
 
   const handleIsNoticeChange = () => {
     setIsNotice((prev) => !prev);
@@ -127,29 +126,6 @@ export const useTeamFeedPage = () => {
   };
 
   useEffect(() => {
-    const ro = new ResizeObserver(() => {
-      if (ref.current === null) {
-        return;
-      }
-
-      ref.current.scrollTop = ref.current.scrollHeight;
-    });
-
-    if (
-      threadRef.current === null ||
-      threadRef.current instanceof Element === false
-    ) {
-      return;
-    }
-
-    ro.observe(threadRef.current);
-
-    return () => {
-      ro.disconnect();
-    };
-  }, []);
-
-  useEffect(() => {
     if (ref.current === null) {
       return;
     }
@@ -175,7 +151,6 @@ export const useTeamFeedPage = () => {
 
   return {
     ref,
-    threadRef,
     noticeThread,
     isNotice,
     isImageDrawerOpen,

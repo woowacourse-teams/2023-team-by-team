@@ -24,6 +24,8 @@ const ThreadList = (props: ThreadListProps) => {
   const { threadPages, hasNextPage, fetchNextPage } =
     useFetchThreads(teamPlaceId);
 
+  const threadEndRef = useRef<HTMLDivElement>(null);
+  const threadPagesRef = useRef<number>(0);
   const observeRef = useRef<HTMLDivElement>(null);
   const [scrollHeight, setScrollHeight] = useState(0);
 
@@ -46,6 +48,18 @@ const ThreadList = (props: ThreadListProps) => {
 
     /* eslint-disable-next-line */
   }, [threadPages?.pages.length]);
+
+  useEffect(() => {
+    if (threadPages?.pages.length !== threadPagesRef.current) {
+      threadPagesRef.current = threadPages?.pages.length ?? 0;
+    } else {
+      if (!threadEndRef.current) {
+        return;
+      }
+
+      threadEndRef.current.scrollIntoView();
+    }
+  }, [threadPages]);
 
   return (
     <>
@@ -90,6 +104,7 @@ const ThreadList = (props: ThreadListProps) => {
               null;
             }),
         )}
+      <div ref={threadEndRef} />
       {threadPages && threadPages.pages[0].threads.length === 0 && (
         <EmptyFeedPlaceholder />
       )}
