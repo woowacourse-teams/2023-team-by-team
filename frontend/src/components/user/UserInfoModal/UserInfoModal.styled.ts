@@ -68,20 +68,7 @@ export const ProfileImage = styled.img`
   object-fit: cover;
 `;
 
-export const DangerousSvgWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  svg {
-    width: 20px;
-    height: 20px;
-
-    color: ${({ theme }) => theme.color.RED};
-  }
-`;
-
-export const dangerousButton = css`
+export const serviceCenterButton = css`
   display: flex;
   position: relative;
   align-self: flex-end;
@@ -89,21 +76,6 @@ export const dangerousButton = css`
   padding: 0px;
 
   cursor: pointer;
-
-  & svg {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  &:hover p {
-    opacity: 1;
-  }
-
-  &:hover svg {
-    opacity: 0;
-  }
 `;
 
 export const hoverText = css`
