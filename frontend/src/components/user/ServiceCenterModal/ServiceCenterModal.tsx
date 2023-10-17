@@ -42,7 +42,7 @@ const ServiceCenterModal = (props: ServiceCenterModalProps) => {
             무엇을 도와드릴까요?
           </Text>
           <S.ExplainBox>
-            원하시는 내용이 없다면 아래 메일로 문의해주세요
+            원하시는 내용이 없다면 아래 메일로 문의해 주세요.
             <a href="mailto:teambyteam.official@gmail.com?subject=팀바팀 문의합니다.&body=이메일(팀바팀 계정):%0D%0A문의분류(계정, 서비스, 버그, 기능추가, 기타):%0D%0A문의내용:%0D%0A">
               <Text weight="semiBold" size="sm" css={S.mailText}>
                 teambyteam.official@gmail.com
@@ -107,7 +107,7 @@ const ServiceCenterModal = (props: ServiceCenterModalProps) => {
                       Q. 외부 캘린더(구글 캘린더, iOS 캘린더 앱)에서도 팀 일정을
                       보고 싶어요.
                     </Text>
-                    <Text size="sm">아래 설명서를 참고해주세요.</Text>
+                    <Text size="sm">아래 설명서를 참고해 주세요.</Text>
                     <a
                       href={ICALENDAR_USER_GUIDE_URL}
                       target="_blank"
