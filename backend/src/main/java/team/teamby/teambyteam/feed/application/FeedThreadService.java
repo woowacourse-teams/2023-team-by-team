@@ -14,7 +14,7 @@ import team.teamby.teambyteam.feed.application.dto.FeedImageResponse;
 import team.teamby.teambyteam.feed.application.dto.FeedResponse;
 import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
 import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
-import team.teamby.teambyteam.feed.application.event.FeedWriteEvent;
+import team.teamby.teambyteam.feed.application.event.FeedEvent;
 import team.teamby.teambyteam.feed.domain.Feed;
 import team.teamby.teambyteam.feed.domain.FeedRepository;
 import team.teamby.teambyteam.feed.domain.FeedThread;
@@ -36,7 +36,6 @@ import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.exception.MemberException;
-import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -45,6 +44,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static team.teamby.teambyteam.feed.application.event.FeedEvent.Status.WRITE;
 
 @Slf4j
 @Service
@@ -95,10 +96,7 @@ public class FeedThreadService {
         Long threadId = savedFeedThread.getId();
         log.info("스레드 생성 - 생성자 이메일 : {}, 스레드 아이디 : {}", memberEmailDto.email(), threadId);
 
-        final String memberDisplayName = memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(teamPlaceId, member.getId())
-                .orElseThrow(() -> new MemberTeamPlaceException.NotFoundParticipatedTeamPlaceException(memberEmailDto.email(), teamPlaceId))
-                .getDisplayMemberNameValue();
-        applicationEventPublisher.publishEvent(new FeedWriteEvent(teamPlaceId, FeedResponse.from(savedFeedThread, memberDisplayName, member.getProfileImageUrl().getValue())));
+        applicationEventPublisher.publishEvent(FeedEvent.of(teamPlaceId, savedFeedThread.getId(), WRITE));
 
         return threadId;
     }
