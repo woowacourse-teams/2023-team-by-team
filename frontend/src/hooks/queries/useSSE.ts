@@ -38,10 +38,6 @@ export const useSSE = (teamPlaceId: number, ref: RefObject<HTMLDivElement>) => {
       queryClient.invalidateQueries(['threadData', teamPlaceId]);
     });
 
-    eventSource.onerror = () => {
-      eventSource.close();
-    };
-
     return () => {
       eventSource.close();
     };
