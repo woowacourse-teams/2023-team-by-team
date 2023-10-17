@@ -80,6 +80,7 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
               containerRef={ref}
               size={threadSize}
               onClickImage={handleClickImage}
+              isShowScrollBottomButton={isShowScrollBottomButton}
             />
           </S.ThreadListWrapper>
           <S.MenuButtonWrapper>
