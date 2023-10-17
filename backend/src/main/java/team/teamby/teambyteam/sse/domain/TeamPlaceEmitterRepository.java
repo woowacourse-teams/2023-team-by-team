@@ -19,17 +19,24 @@ public class TeamPlaceEmitterRepository {
     private final Map<TeamPlaceEmitterId, SseEmitter> emitters = new ConcurrentHashMap<>();
     private final EventCache eventCache = new EventCache();
 
-    public SseEmitter save(final TeamPlaceEmitterId emitterId, final SseEmitter sseEmitter) {
+    public SseEmitters save(final TeamPlaceEmitterId emitterId, final SseEmitter sseEmitter) {
         emitters.put(emitterId, sseEmitter);
 
-        sseEmitter.onCompletion(() -> emitters.remove(emitterId));
-        sseEmitter.onTimeout(() -> emitters.remove(emitterId));
+        sseEmitter.onCompletion(() -> {
+            log.info("emitter complete for {}", emitterId);
+            emitters.remove(emitterId);
+        });
+        sseEmitter.onTimeout(() -> {
+            log.info("emitter timeout for {}", emitterId);
+            emitters.remove(emitterId);
+        });
         sseEmitter.onError((e) -> {
             log.error("emitter error for {}, error message : {}", emitterId, e.getMessage());
             emitters.remove(emitterId);
         });
 
-        return sseEmitter;
+        log.info("save SseEmitter {}", emitterId.toString());
+        return new SseEmitters(Map.of(emitterId, sseEmitter), this);
     }
 
     public SseEmitters findByTeamPlaceId(final Long teamPlaceId) {
@@ -37,6 +44,8 @@ public class TeamPlaceEmitterRepository {
                 .stream()
                 .filter(entity -> entity.getKey().isTeamPlaceId(teamPlaceId))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        log.info("Sse Emitter found {}, teamPlaceId : {}", emitters.size(), teamPlaceId);
         return new SseEmitters(emitters, this);
     }
 

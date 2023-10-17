@@ -41,7 +41,7 @@ class TeamPlaceSsePublisherTest {
         final TeamPlaceEmitterId emitterId = TeamPlaceEmitterId.of(teamPlaceId, 1L);
 
         final SseEmitter sseEmitter = Mockito.mock(SseEmitter.class);
-        final SseEmitter savedEmitter = teamPlaceEmitterRepository.save(emitterId, sseEmitter);
+        final SseEmitter savedEmitter = teamPlaceEmitterRepository.save(emitterId, sseEmitter).getSingleEmitter();
 
         // when
         teamPlaceSsePublisher.publishEvent(testEvent);

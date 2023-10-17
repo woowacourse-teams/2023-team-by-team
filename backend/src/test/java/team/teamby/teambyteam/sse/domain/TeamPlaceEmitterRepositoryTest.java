@@ -32,7 +32,7 @@ class TeamPlaceEmitterRepositoryTest {
         final SseEmitter sseEmitter = new SseEmitter(1000L * 60);
 
         //when
-        final SseEmitter save = teamPlaceEmitterRepository.save(teamPlaceEmitterId, sseEmitter);
+        final SseEmitter save = teamPlaceEmitterRepository.save(teamPlaceEmitterId, sseEmitter).getSingleEmitter();
 
         //then
         assertThat(save).isEqualTo(sseEmitter);
