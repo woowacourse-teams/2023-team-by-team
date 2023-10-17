@@ -1,0 +1,46 @@
+name: frontend deploy dev
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches: ["develop"]
+    paths:
+      - "frontend/**"
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Setup Repository
+        uses: actions/checkout@v3
+
+      - name: Setup node with cache
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: "npm"
+          cache-dependency-path: "**/package-lock.json"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Storybook
+        run: |
+          npm run build-storybook
+          mv ./storybook-static ./build
+
+      - name: Upload frontend build file to github page
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
