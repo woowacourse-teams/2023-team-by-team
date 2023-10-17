@@ -1,4 +1,4 @@
-name: frontend deploy dev
+name: frontend deploy storybook
 
 on:
   pull_request:
@@ -8,14 +8,9 @@ on:
     paths:
       - "frontend/**"
 
-permissions:
-  contents: read
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     permissions:
       contents: write
     concurrency:
