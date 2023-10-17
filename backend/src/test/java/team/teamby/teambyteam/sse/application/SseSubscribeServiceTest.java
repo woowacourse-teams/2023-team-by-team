@@ -16,6 +16,8 @@ import team.teamby.teambyteam.common.fixtures.MemberFixtures;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.sse.TestEvent;
+import team.teamby.teambyteam.sse.domain.SseEmitters;
+import team.teamby.teambyteam.sse.domain.TeamPlaceEmitterId;
 import team.teamby.teambyteam.sse.domain.TeamPlaceEmitterRepository;
 import team.teamby.teambyteam.sse.domain.TeamPlaceEventId;
 
@@ -41,8 +43,9 @@ class SseSubscribeServiceTest extends ServiceTest {
     @BeforeEach
     void setup() {
         final SseEmitter sseEmitter = Mockito.mock(SseEmitter.class);
+        final TeamPlaceEmitterId teamPlaceEventId = Mockito.mock(TeamPlaceEmitterId.class);
         BDDMockito.given(teamPlaceEmitterRepository.save(any(), any()))
-                .willReturn(sseEmitter);
+                .willReturn(new SseEmitters(Map.of(teamPlaceEventId, sseEmitter), teamPlaceEmitterRepository));
     }
 
     @Test
@@ -70,7 +73,7 @@ class SseSubscribeServiceTest extends ServiceTest {
         SoftAssertions.assertSoftly(softly -> {
             softly.assertThat(eventOutputs[0]).startsWith("id:" + teamPlaceId + "_connect_");
             softly.assertThat(eventOutputs[1]).isEqualTo("event:connect");
-            softly.assertThat(eventOutputs[2]).isEqualTo("data:EventStream Connected. [memberId=%d]", teamPlaceId);
+            softly.assertThat(eventOutputs[2]).isEqualTo("data:{\"teamPlaceId\":%d,\"memberId\":%d}", teamPlaceId, member.getId());
         });
     }
 
@@ -113,7 +116,6 @@ class SseSubscribeServiceTest extends ServiceTest {
         final String[] dummyResult = dummySse.split("\n");
         final String[] cachedResult = cachedSse.split("\n");
 
-
         Arrays.stream(dummyResult).forEach(System.out::println);
         System.out.println();
         Arrays.stream(cachedResult).forEach(System.out::println);
@@ -122,7 +124,7 @@ class SseSubscribeServiceTest extends ServiceTest {
             softly.assertThat(allEvents).hasSize(2);
             softly.assertThat(dummyResult[0]).startsWith("id:" + teamPlaceId + "_connect_");
             softly.assertThat(dummyResult[1]).isEqualTo("event:connect");
-            softly.assertThat(dummyResult[2]).isEqualTo("data:EventStream Connected. [memberId=%d]", teamPlaceId);
+            softly.assertThat(dummyResult[2]).isEqualTo("data:{\"teamPlaceId\":%d,\"memberId\":%d}", teamPlaceId, member.getId());
             softly.assertThat(cachedResult[0]).startsWith("id:" + teamPlaceId + "_" + eventName + "_");
             softly.assertThat(cachedResult[1]).isEqualTo("event:test");
             softly.assertThat(cachedResult[2]).isEqualTo("data:{\"id\":1,\"data\":\"message\"}");
