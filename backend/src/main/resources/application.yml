@@ -37,7 +37,8 @@ jwt:
     expiration: 86400000 # 1일
 
 sse:
-  cache-schedule-period: 60 * 1000
+  connection-time: 60000  # 60 * 1000
+  cache-schedule-period: 60000 # 60 * 1000
 
 aws:
   s3:
