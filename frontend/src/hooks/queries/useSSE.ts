@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { baseUrl } from '~/apis/http';
 import { EventSourcePolyfill } from 'event-source-polyfill';
@@ -6,7 +6,6 @@ import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
 
 export const useSSE = (teamPlaceId: number) => {
   const queryClient = useQueryClient();
-  const [eventSource, setEventSource] = useState<EventSourcePolyfill | null>();
 
   const connect = () => {
     return new EventSourcePolyfill(
@@ -21,14 +20,12 @@ export const useSSE = (teamPlaceId: number) => {
     );
   };
 
+  const eventSource = connect();
+
   useEffect(() => {
     if (!teamPlaceId) {
       return;
     }
-
-    setEventSource(() => connect());
-
-    if (!eventSource) return;
 
     eventSource.addEventListener('new_thread', () => {
       queryClient.invalidateQueries(['threadData', teamPlaceId]);
