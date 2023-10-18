@@ -1,0 +1,38 @@
+"use strict";(self.webpackChunkfrontend=self.webpackChunkfrontend||[]).push([[7600],{"./src/components/common/Button/Button.stories.tsx":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{__webpack_require__.r(__webpack_exports__),__webpack_require__.d(__webpack_exports__,{CustomPlainButton:()=>CustomPlainButton,Normal:()=>Normal,Plain:()=>Plain,Primary:()=>Primary,PrimaryDisabled:()=>PrimaryDisabled,PrimaryLarge:()=>PrimaryLarge,PrimaryLongMessage:()=>PrimaryLongMessage,PrimarySmall:()=>PrimarySmall,__namedExportsOrder:()=>__namedExportsOrder,default:()=>__WEBPACK_DEFAULT_EXPORT__});var _Button__WEBPACK_IMPORTED_MODULE_0__=__webpack_require__("./src/components/common/Button/Button.tsx"),react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__=__webpack_require__("./node_modules/react/jsx-runtime.js");const __WEBPACK_DEFAULT_EXPORT__={title:"common/Button",component:_Button__WEBPACK_IMPORTED_MODULE_0__.Z,tags:["autodocs"],parameters:{docs:{description:{component:"`Button` 컴포넌트는 공용 버튼 컴포넌트입니다."}}}},Primary={args:{children:"확인",size:"md",variant:"primary",onClick:()=>alert("버튼이 클릭되었습니다!")}},PrimaryLongMessage={args:{children:"네, 절차를 이해했으며 진행하기를 원합니다.",size:"md",variant:"primary"}},PrimaryLarge={args:{children:"확인",size:"lg",variant:"primary"}},PrimarySmall={args:{children:"확인",size:"sm",variant:"primary"}},PrimaryDisabled={args:{children:"확인",size:"md",variant:"primary",disabled:!0}},Normal={args:{children:"취소",size:"md",variant:"normal"}},Plain={args:{children:"아무 디자인이 없는 버튼",size:"md",variant:"plain"}},CustomPlainButton={args:{children:(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("img",{src:"https://www.svgrepo.com/show/525636/arrow-right.svg",width:"80px"}),size:"md",variant:"plain",css:{width:"100px",height:"100px"}}};Primary.parameters={...Primary.parameters,docs:{...Primary.parameters?.docs,source:{originalSource:"{\n  args: {\n    children: '확인',\n    size: 'md',\n    variant: 'primary',\n    onClick: () => alert('버튼이 클릭되었습니다!')\n  }\n}",...Primary.parameters?.docs?.source}}},PrimaryLongMessage.parameters={...PrimaryLongMessage.parameters,docs:{...PrimaryLongMessage.parameters?.docs,source:{originalSource:"{\n  args: {\n    children: '네, 절차를 이해했으며 진행하기를 원합니다.',\n    size: 'md',\n    variant: 'primary'\n  }\n}",...PrimaryLongMessage.parameters?.docs?.source}}},PrimaryLarge.parameters={...PrimaryLarge.parameters,docs:{...PrimaryLarge.parameters?.docs,source:{originalSource:"{\n  args: {\n    children: '확인',\n    size: 'lg',\n    variant: 'primary'\n  }\n}",...PrimaryLarge.parameters?.docs?.source}}},PrimarySmall.parameters={...PrimarySmall.parameters,docs:{...PrimarySmall.parameters?.docs,source:{originalSource:"{\n  args: {\n    children: '확인',\n    size: 'sm',\n    variant: 'primary'\n  }\n}",...PrimarySmall.parameters?.docs?.source}}},PrimaryDisabled.parameters={...PrimaryDisabled.parameters,docs:{...PrimaryDisabled.parameters?.docs,source:{originalSource:"{\n  args: {\n    children: '확인',\n    size: 'md',\n    variant: 'primary',\n    disabled: true\n  }\n}",...PrimaryDisabled.parameters?.docs?.source}}},Normal.parameters={...Normal.parameters,docs:{...Normal.parameters?.docs,source:{originalSource:"{\n  args: {\n    children: '취소',\n    size: 'md',\n    variant: 'normal'\n  }\n}",...Normal.parameters?.docs?.source}}},Plain.parameters={...Plain.parameters,docs:{...Plain.parameters?.docs,source:{originalSource:"{\n  args: {\n    children: '아무 디자인이 없는 버튼',\n    size: 'md',\n    variant: 'plain'\n  }\n}",...Plain.parameters?.docs?.source},description:{story:"`variant` 속성이 `plain` 인 경우, 버튼 색상이 투명하고, 버튼의 레이블 색상이 `#191f28` 인 것 외에 다른 속성이 적용되지 않습니다.\n버튼에 따로 스타일을 적용해야 하는 경우에 사용하기 좋은 옵션입니다.",...Plain.parameters?.docs?.description}}},CustomPlainButton.parameters={...CustomPlainButton.parameters,docs:{...CustomPlainButton.parameters?.docs,source:{originalSource:"{\n  args: {\n    children: <img src=\"https://www.svgrepo.com/show/525636/arrow-right.svg\" width=\"80px\" />,\n    size: 'md',\n    variant: 'plain',\n    css: {\n      width: '100px',\n      height: '100px'\n    }\n  }\n}",...CustomPlainButton.parameters?.docs?.source}}};const __namedExportsOrder=["Primary","PrimaryLongMessage","PrimaryLarge","PrimarySmall","PrimaryDisabled","Normal","Plain","CustomPlainButton"];try{Plain.displayName="Plain",Plain.__docgenInfo={description:"`variant` 속성이 `plain` 인 경우, 버튼 색상이 투명하고, 버튼의 레이블 색상이 `#191f28` 인 것 외에 다른 속성이 적용되지 않습니다.\n버튼에 따로 스타일을 적용해야 하는 경우에 사용하기 좋은 옵션입니다.",displayName:"Plain",props:{}},"undefined"!=typeof STORYBOOK_REACT_CLASSES&&(STORYBOOK_REACT_CLASSES["src/components/common/Button/Button.stories.tsx#Plain"]={docgenInfo:Plain.__docgenInfo,name:"Plain",path:"src/components/common/Button/Button.stories.tsx#Plain"})}catch(__react_docgen_typescript_loader_error){}},"./src/components/common/Button/Button.tsx":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{__webpack_require__.d(__webpack_exports__,{Z:()=>Button_Button});var styled_components_browser_esm=__webpack_require__("./node_modules/styled-components/dist/styled-components.browser.esm.js");const paddingSize={sm:"6px",md:"12px",lg:"18px"},variants={primary:styled_components_browser_esm.iv`
+    background-color: ${({theme})=>theme.color.PRIMARY};
+    color: ${({theme})=>theme.color.WHITE};
+  `,normal:styled_components_browser_esm.iv`
+    background-color: ${({theme})=>theme.color.WHITE};
+    color: ${({theme})=>theme.color.GRAY900};
+    border: 1px solid ${({theme})=>theme.color.GRAY300};
+  `,plain:styled_components_browser_esm.iv`
+    background-color: transparent;
+    color: ${({theme})=>theme.color.GRAY900};
+  `},ButtonWrapper=styled_components_browser_esm.zo.button`
+  font-size: 16px;
+  line-height: 16px;
+  text-align: center;
+
+  ${({size="md"})=>styled_components_browser_esm.iv`
+      padding: ${paddingSize[size]};
+    `};
+
+  ${({variant="primary"})=>variants[variant]};
+
+  ${({variant="primary"})=>{if("plain"!==variant)return styled_components_browser_esm.iv`
+        &:disabled {
+          opacity: 0.6;
+        }
+
+        &:not([disabled]):hover {
+          opacity: 0.8;
+        }
+
+        border-radius: 4px;
+
+        transition: 0.2s;
+      `}};
+
+  ${props=>props.css}
+`;var jsx_runtime=__webpack_require__("./node_modules/react/jsx-runtime.js");const Button=props=>{const{children,size,type="submit",variant,...rest}=props;return(0,jsx_runtime.jsx)(ButtonWrapper,{type,size,variant,...rest,children})};Button.displayName="Button";const Button_Button=Button;try{Button.displayName="Button",Button.__docgenInfo={description:"",displayName:"Button",props:{size:{defaultValue:null,description:"",name:"size",required:!1,type:{name:"enum",value:[{value:'"sm"'},{value:'"md"'},{value:'"lg"'}]}},type:{defaultValue:null,description:"",name:"type",required:!1,type:{name:"enum",value:[{value:'"button"'},{value:'"reset"'},{value:'"submit"'}]}},variant:{defaultValue:null,description:"",name:"variant",required:!1,type:{name:"enum",value:[{value:'"normal"'},{value:'"primary"'},{value:'"plain"'}]}},css:{defaultValue:null,description:"",name:"css",required:!1,type:{name:"CSSProp"}}}},"undefined"!=typeof STORYBOOK_REACT_CLASSES&&(STORYBOOK_REACT_CLASSES["src/components/common/Button/Button.tsx#Button"]={docgenInfo:Button.__docgenInfo,name:"Button",path:"src/components/common/Button/Button.tsx#Button"})}catch(__react_docgen_typescript_loader_error){}}}]);
+//# sourceMappingURL=components-common-Button-Button-stories.6d8e4cd7.iframe.bundle.js.map
