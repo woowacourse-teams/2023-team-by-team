@@ -55,7 +55,7 @@ const ProtectRoute = () => {
   });
 
   useEffect(() => {
-    if (accessToken) {
+    if (!accessToken) {
       resetToken();
       alert('로그인이 필요합니다.');
       navigate(PATH_NAME.LANDING);
