@@ -3,6 +3,8 @@ name: frontend deploy storybook
 on:
   push:
     branches: ["develop"]
+    paths:
+      - "frontend/**"
 
 jobs:
   build-and-deploy:
