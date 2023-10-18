@@ -31,6 +31,7 @@ public class SseEmitters {
     public void sendEvent(final TeamPlaceEventId eventId, final Object event) {
         emitters.forEach(
                 (emitterId, emitter) -> {
+                    log.info("SSE 메시지 보내기 시도 : {}", emitterId.toString());
                     try {
                         emitter.send(SseEmitter.event()
                                 .id(eventId.toString())
@@ -38,10 +39,9 @@ public class SseEmitters {
                                 .data(extractEventDataAsJson(event))
                         );
                         log.info("send event to {}, event : {}", emitterId.toString(), eventId.getEventName());
-                    } catch (IOException e) {
-                        teamPlaceEmitterRepository.deleteById(emitterId);
-                        log.error("fail to send sse message : {}, error : {}", e.getMessage(), e.getClass());
-                        throw new RuntimeException(e);
+                    } catch (IOException exception) {
+                        log.error("fail to send sse message : {}, error : {}", exception.getMessage(), exception.getClass());
+                        emitter.completeWithError(exception);
                     }
                 }
         );
