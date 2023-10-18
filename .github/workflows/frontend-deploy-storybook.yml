@@ -1,12 +1,8 @@
 name: frontend deploy storybook
 
 on:
-  pull_request:
-    types:
-      - closed
+  push:
     branches: ["develop"]
-    paths:
-      - "frontend/**"
 
 jobs:
   build-and-deploy:
@@ -37,10 +33,9 @@ jobs:
       - name: Build Storybook
         run: |
           npm run build-storybook
-          mv ./storybook-static ./build
 
       - name: Upload frontend build file to github page
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
+          publish_dir: ./storybook-static
