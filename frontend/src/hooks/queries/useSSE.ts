@@ -42,12 +42,6 @@ export const useSSE = (teamPlaceId: number) => {
         queryClient.invalidateQueries(['threadData', teamPlaceId]);
       });
 
-      eventSource.onerror = () => {
-        if (eventSource.readyState === EventSourcePolyfill.CLOSED) {
-          setTimeout(() => connect(), 0);
-        }
-      };
-
       return () => {
         eventSource.close();
       };
