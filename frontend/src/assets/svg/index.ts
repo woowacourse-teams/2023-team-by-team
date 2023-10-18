@@ -25,7 +25,6 @@ export { ReactComponent as TeamIcon } from './team.svg';
 export { ReactComponent as TeamAddIcon } from './team-add.svg';
 export { ReactComponent as ChainIcon } from './chain.svg';
 export { ReactComponent as ClipboardIcon } from './clipboard.svg';
-export { ReactComponent as BellIcon } from './bell.svg';
 export { ReactComponent as ArrowLeft2Icon } from './arrow-left2.svg';
 export { ReactComponent as CheckBlackIcon } from './check-black.svg';
 export { ReactComponent as AirplaneIcon } from './airplane.svg';
