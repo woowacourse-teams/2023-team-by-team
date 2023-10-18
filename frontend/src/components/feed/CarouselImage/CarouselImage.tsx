@@ -27,7 +27,7 @@ const CarouselImage = (props: CarouselImageProps) => {
           onError={() =>
             setErrorMessage(
               () =>
-                '이미지를 표시하는 데 실패했습니다. 올바르지 않은 형식의 이미지거나, 이미지가 손상되었을 수 있습니다.',
+                '이미지를 표시하는 데 실패했습니다.\n올바르지 않은 형식의 이미지거나, 이미지가 손상되었을 수 있습니다.',
             )
           }
         />
