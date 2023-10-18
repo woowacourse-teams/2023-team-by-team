@@ -1,6 +1,6 @@
 import Button from '~/components/common/Button/Button';
 import Skeleton from '~/components/common/Skeleton/Skeleton';
-import { BellIcon, LogoIcon, TeamIcon } from '~/assets/svg';
+import { LogoIcon, TeamIcon } from '~/assets/svg';
 import * as S from './HeaderFallback.styled';
 
 const HeaderFallback = () => {
@@ -19,10 +19,6 @@ const HeaderFallback = () => {
       </S.InnerContainer>
 
       <S.ButtonContainer>
-        <Button type="button" variant="plain" disabled>
-          <BellIcon />
-        </Button>
-
         <Button type="button" variant="plain" disabled>
           <TeamIcon />
         </Button>
