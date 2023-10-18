@@ -2,6 +2,7 @@ package team.teamby.teambyteam.sse.application;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -27,7 +28,6 @@ import java.util.Objects;
 public class SseSubscribeService {
 
     public static final String DEFAULT_EVENT_ID = "";
-    private static final Long DEFAULT_TIMEOUT = 1L * 1000 * 60; // TODO: 시간 적절히 조절하기
     private static final Comparator<Map.Entry<TeamPlaceEventId, Object>> EVENT_ID_TIME_COMPARATOR = (entity1, entity2) -> {
         final LocalDateTime timeStamp1 = entity1.getKey().getTimeStamp();
         final LocalDateTime timeStamp2 = entity2.getKey().getTimeStamp();
@@ -38,6 +38,9 @@ public class SseSubscribeService {
     private final MemberRepository memberRepository;
     private final TeamPlaceEmitterRepository teamplaceEmitterRepository;
 
+    @Value("${sse.connection-time}")
+    private Long connectionTimeOut;
+
     public SseEmitter subscribe(final Long teamPlaceId, final MemberEmailDto memberEmailDto, final String lastEventId) {
 
         final Long memberId = memberRepository.findIdByEmail(new Email(memberEmailDto.email()))
@@ -45,7 +48,7 @@ public class SseSubscribeService {
                 .id();
 
         final TeamPlaceEmitterId emitterId = TeamPlaceEmitterId.of(teamPlaceId, memberId);
-        final SseEmitters emitter = teamplaceEmitterRepository.save(emitterId, new SseEmitter(DEFAULT_TIMEOUT));
+        final SseEmitters emitter = teamplaceEmitterRepository.save(emitterId, new SseEmitter(connectionTimeOut));
 
         final TeamPlaceConnectedEvent dummyEvent = TeamPlaceConnectedEvent.of(teamPlaceId, memberId);
         final TeamPlaceEventId dummyEventId = TeamPlaceEventId.of(teamPlaceId, dummyEvent.getEventName());

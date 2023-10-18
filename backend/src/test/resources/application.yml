@@ -37,6 +37,7 @@ jwt:
     expiration: 86400000 # 1일
 
 sse:
+  connection-time: 60000  # 60 * 1000
   cache-schedule-period: 1000
 
 aws:

@@ -1,6 +1,7 @@
 package team.teamby.teambyteam.sse.application;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
@@ -15,6 +16,7 @@ public class TeamPlaceSsePublisher {
 
     private final TeamPlaceEmitterRepository teamPlaceEmitterRepository;
 
+    @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void publishEvent(final TeamPlaceSseEvent teamPlaceSseEvent) {
         final Long targetTeamPlaceId = teamPlaceSseEvent.getTeamPlaceId();

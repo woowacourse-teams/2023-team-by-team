@@ -7,6 +7,10 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
+import org.springframework.core.task.SyncTaskExecutor;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter.SseEventBuilder;
@@ -16,6 +20,7 @@ import team.teamby.teambyteam.sse.domain.TeamPlaceEmitterRepository;
 
 import java.io.IOException;
 import java.util.Set;
+import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
 
 import static org.mockito.Mockito.verify;
@@ -28,6 +33,15 @@ class TeamPlaceSsePublisherTest {
 
     @Autowired
     private TeamPlaceEmitterRepository teamPlaceEmitterRepository;
+
+    @TestConfiguration
+    static class TestConfig {
+        @Bean
+        @Primary
+        public Executor executor() {
+            return new SyncTaskExecutor();
+        }
+    }
 
     @Test
     @DisplayName("발행된 이벤트로 SSE를 전송한다")

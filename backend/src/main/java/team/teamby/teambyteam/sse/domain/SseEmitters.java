@@ -40,7 +40,7 @@ public class SseEmitters {
                         log.info("send event to {}, event : {}", emitterId.toString(), eventId.getEventName());
                     } catch (IOException e) {
                         teamPlaceEmitterRepository.deleteById(emitterId);
-                        log.error("fail to send sse", e);
+                        log.error("fail to send sse message : {}, error : {}", e.getMessage(), e.getClass());
                         throw new RuntimeException(e);
                     }
                 }
