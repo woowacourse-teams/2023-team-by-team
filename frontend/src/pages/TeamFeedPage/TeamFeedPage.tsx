@@ -31,6 +31,7 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
     isNotice,
     isImageDrawerOpen,
     isShowScrollBottomButton,
+    isSendingImage,
     chatContent,
     previewImages,
 
@@ -100,12 +101,14 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
         <ImageUploadDrawer
           isOpen={isImageDrawerOpen}
           onClose={handleImageDrawerToggle}
+          isDisabled={isSendingImage}
         >
           <ThumbnailList
             mode="delete"
             images={previewImages}
             onChange={updateImages}
             onDelete={deleteImageByUuid}
+            isDisabled={isSendingImage}
           />
         </ImageUploadDrawer>
         <S.ThreadInputForm onSubmit={handleSubmit}>
@@ -123,6 +126,7 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
               variant="plain"
               aria-label="이미지 업로드하기"
               onClick={handleImageDrawerToggle}
+              disabled={isSendingImage}
             >
               <ImageIcon />
             </Button>
@@ -136,8 +140,15 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
               <Text as="span" weight="semiBold" size="lg" css={S.noticeText}>
                 공지로 등록
               </Text>
-              <Button variant="plain" aria-label="채팅 전송하기">
-                <AirplaneIcon />
+              <Button
+                variant="plain"
+                aria-label="채팅 전송하기"
+                disabled={isSendingImage}
+              >
+                <AirplaneIcon
+                  fill={isSendingImage ? 'white' : '#8e92ff'}
+                  stroke="#8e92ff"
+                />
               </Button>
             </div>
           </S.ButtonContainer>

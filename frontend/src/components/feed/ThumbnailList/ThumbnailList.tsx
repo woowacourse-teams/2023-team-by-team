@@ -13,6 +13,7 @@ interface DeletableThumbnails {
   images: PreviewImage[];
   onDelete: (imageUuid: string) => void;
   onChange: ChangeEventHandler<HTMLInputElement>;
+  isDisabled: boolean;
 }
 
 interface ViewableThumbnails {
@@ -33,6 +34,7 @@ const ThumbnailList = (props: ThumbnailListProps) => {
               key={image.uuid}
               image={image}
               onDelete={props.onDelete}
+              isDisabled={props.isDisabled}
             />
           ))
         : images.map((image, index) => (
@@ -43,9 +45,9 @@ const ThumbnailList = (props: ThumbnailListProps) => {
               onClick={() => props.onClick(images, index + 1)}
             />
           ))}
-      {mode === 'delete' && images.length < MAX_UPLOAD_IMAGE_COUNT && (
-        <ImageAddButton onChangeImage={props.onChange} />
-      )}
+      {mode === 'delete' &&
+        images.length < MAX_UPLOAD_IMAGE_COUNT &&
+        !props.isDisabled && <ImageAddButton onChangeImage={props.onChange} />}
     </S.Container>
   );
 };
