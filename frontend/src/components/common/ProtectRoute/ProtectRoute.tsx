@@ -5,15 +5,16 @@ import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
 import { PATH_NAME } from '~/constants/routes';
 import { TeamPlaceProvider } from '~/contexts/TeamPlaceContext';
 import { useSendTokenReissue } from '~/hooks/queries/useSendTokenReissue';
+import { useToken } from '~/hooks/useToken';
 
 const ProtectRoute = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { accessToken, resetToken } = useToken();
   const { mutateSendTokenReissue } = useSendTokenReissue();
 
   const resetAccessToken = () => {
-    localStorage.removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
-    localStorage.removeItem(LOCAL_STORAGE_KEY.REFRESH_TOKEN);
+    resetToken();
 
     window.location.href = PATH_NAME.LANDING;
   };
@@ -54,11 +55,8 @@ const ProtectRoute = () => {
   });
 
   useEffect(() => {
-    const accessToken = localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
-
-    if (!accessToken) {
-      localStorage.removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
-      localStorage.removeItem(LOCAL_STORAGE_KEY.REFRESH_TOKEN);
+    if (accessToken) {
+      resetToken();
       alert('로그인이 필요합니다.');
       navigate(PATH_NAME.LANDING);
     }
