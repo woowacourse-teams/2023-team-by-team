@@ -36,9 +36,7 @@ export const useSSE = (teamPlaceId: number) => {
 
     eventSource.onerror = () => {
       if (eventSource.readyState === EventSource.CLOSED) {
-        window.setTimeout(function () {
-          setEventSource(() => connect());
-        }, 0);
+        window.setTimeout(() => setEventSource(() => connect()), 0);
       }
     };
 
