@@ -9,7 +9,6 @@ export const useSendTeamLink = (teamPlaceId: number) => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['teamLinks', teamPlaceId]);
-        queryClient.invalidateQueries(['threadData', teamPlaceId]);
       },
     },
   );
