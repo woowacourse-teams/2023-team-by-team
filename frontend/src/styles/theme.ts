@@ -1,14 +1,14 @@
 import { keyframes } from 'styled-components';
 
 const color = {
-  LOGO: '#3145FF',
-  PRIMARY: '#516FFF',
-  PRIMARY200: '#B7BAFF',
-  PRIMARY900: '#5054FF',
+  LOGO: '#3145ff',
+  PRIMARY: '#516Fff',
+  PRIMARY200: '#b7baff',
+  PRIMARY900: '#5054ff',
   WHITE: '#fff',
   BLACK: '#000',
-  RED: '#FF5B5B',
-  PURPLE: '#6E61ff',
+  RED: '#ff5b5b',
+  PURPLE: '#6e61ff',
 
   NAVY: '#303650',
 
@@ -19,6 +19,7 @@ const color = {
   GRAY350: '#c9c9c9',
   GRAY400: '#b0b8c1',
   GRAY500: '#8b95a1',
+  GRAY550: '#848484',
   GRAY600: '#6b7684',
   GRAY700: '#4e5968',
   GRAY800: '#333d4b',
@@ -39,21 +40,21 @@ const color = {
 } as const;
 
 const teamColor = {
-  0: '#4886FF',
-  1: '#FF66F9',
-  2: '#FF6666',
-  3: '#8E1DFF',
+  0: '#4886ff',
+  1: '#ff66F9',
+  2: '#ff6666',
+  3: '#8e1dff',
   4: '#707070',
-  5: '#003E86',
-  6: '#B900B2',
-  7: '#9D1C1C',
-  8: '#46008C',
-  9: '#4C4C4C',
+  5: '#003e86',
+  6: '#b900b2',
+  7: '#9d1c1c',
+  8: '#46008c',
+  9: '#4c4c4c',
   100: '#fff',
 } as const;
 
 const gradient = {
-  SMOOTH_BLACK: 'linear-gradient(45deg, #121212, #303030)',
+  SMOOTH_BLACK: 'linear-gradient(45deg, #797979aa, #a0a0a0aa)',
   WHITE: (pixels: `${number}px`) =>
     `linear-gradient(to top, #eaeaea 0%, #eaeaea ${pixels}, transparent 100%)`,
   BLURPLE: (pixels: `${number}px`) =>

@@ -1,7 +1,9 @@
 import * as S from './DeletableThumbnail.styled';
 import Button from '~/components/common/Button/Button';
 import { CloseBoldIcon } from '~/assets/svg';
+import type { SyntheticEvent } from 'react';
 import type { PreviewImage } from '~/types/feed';
+import { thumbnailFallbackImage } from '~/assets/png';
 
 interface DeletableThumbnailProps {
   image: PreviewImage;
@@ -12,9 +14,14 @@ const DeletableThumbnail = (props: DeletableThumbnailProps) => {
   const { image, onDelete } = props;
   const { uuid, url } = image;
 
+  const handleImageError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = thumbnailFallbackImage;
+    e.currentTarget.alt = '손상된 이미지';
+  };
+
   return (
     <S.Container>
-      <S.Image src={url} alt="미리보기 이미지" />
+      <S.Image src={url} alt="미리보기 이미지" onError={handleImageError} />
       <Button
         variant="plain"
         type="button"

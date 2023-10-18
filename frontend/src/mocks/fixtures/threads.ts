@@ -18,7 +18,7 @@ const images = [
     id: 1092,
     isExpired: false,
     name: 'icon.png',
-    url: 'https://img.icons8.com/?size=256&id=VUoFEYkLOaMn&format=png&color=1A6DFF,C822FF',
+    url: 'https://wrong-link.com/must-show-fallback.png',
   },
   {
     id: 3493,
