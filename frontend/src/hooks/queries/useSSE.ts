@@ -3,8 +3,6 @@ import { useQueryClient } from '@tanstack/react-query';
 import { baseUrl } from '~/apis/http';
 import { EventSourcePolyfill } from 'event-source-polyfill';
 import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
-import { S } from 'msw/lib/glossary-de6278a9';
-
 export const useSSE = (teamPlaceId: number) => {
   const [accessToken, setAccessToken] = useState(
     localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN),
