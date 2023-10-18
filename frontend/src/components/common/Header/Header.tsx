@@ -15,10 +15,8 @@ import UserInfoModal from '~/components/user/UserInfoModal/UserInfoModal';
 import TeamColorEditModal from '~/components/team/TeamColorEditModal/TeamColorEditModal';
 import AccountDeleteModal from '~/components/user/AccountDeleteModal/AccountDeleteModal';
 import ServiceCenterModal from '~/components/user/ServiceCenterModal/ServiceCenterModal';
-// import NotificationListModal from '~/components/feed/NotificationListModal/NotificationListModal';
 
 export type HeaderModalType =
-  | 'notification'
   | 'team'
   | 'user'
   | 'teamColor'
@@ -66,11 +64,6 @@ const Header = () => {
     /*eslint-disable-next-line*/
     [changeTeamPlace, teamPlaces],
   );
-
-  // const handleNotificationButtonClick = () => {
-  //   setModalOpenType(() => 'notification');
-  //   openModal();
-  // };
 
   const handleTeamButtonClick = () => {
     setModalOpenType(() => 'team');
@@ -138,16 +131,6 @@ const Header = () => {
         </S.InnerContainer>
 
         <S.ButtonContainer>
-          {/* <Button
-            type="button"
-            variant="plain"
-            onClick={handleNotificationButtonClick}
-            css={S.notificationButton}
-            aria-label="알림 목록 보기"
-          >
-            <BellIcon />
-          </Button> */}
-
           <Button
             type="button"
             variant="plain"
@@ -172,7 +155,6 @@ const Header = () => {
         </S.ButtonContainer>
       </S.Header>
 
-      {/* {modalOpenType === 'notification' && <NotificationListModal />} */}
       {modalOpenType === 'team' && <TeamPlaceInfoModal />}
       {modalOpenType === 'user' && (
         <UserInfoModal
