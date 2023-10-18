@@ -5,7 +5,7 @@ import { baseUrl } from '~/apis/http';
 import { EventSourcePolyfill } from 'event-source-polyfill';
 import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
 
-export const useSSE = (teamPlaceId: number, ref: RefObject<HTMLDivElement>) => {
+export const useSSE = (teamPlaceId: number) => {
   const [accessToken, setAccessToken] = useState(
     localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN),
   );
@@ -42,5 +42,5 @@ export const useSSE = (teamPlaceId: number, ref: RefObject<HTMLDivElement>) => {
     return () => {
       eventSource.close();
     };
-  }, [queryClient, teamPlaceId, ref, accessToken]);
+  }, [queryClient, teamPlaceId, accessToken]);
 };

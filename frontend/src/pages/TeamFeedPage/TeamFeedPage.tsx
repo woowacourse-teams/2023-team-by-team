@@ -46,7 +46,7 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
     },
   } = useTeamFeedPage();
 
-  useSSE(teamPlaceId, ref);
+  useSSE(teamPlaceId);
 
   const { isModalOpen, openModal } = useModal();
   const [modalImageInfo, setModalImageInfo] = useState<{
