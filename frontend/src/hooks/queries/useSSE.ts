@@ -1,27 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { baseUrl } from '~/apis/http';
 import { EventSourcePolyfill } from 'event-source-polyfill';
-import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
+import { useToken } from '~/hooks/useToken';
 
 export const useSSE = (teamPlaceId: number) => {
-  const [accessToken, setAccessToken] = useState(
-    localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN),
-  );
   const queryClient = useQueryClient();
-
-  useEffect(() => {
-    const handleChangeAccessToken = () => {
-      console.log('token updated');
-      setAccessToken(() =>
-        localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN),
-      );
-    };
-
-    window.addEventListener('storage', handleChangeAccessToken);
-
-    return () => window.removeEventListener('storage', handleChangeAccessToken);
-  }, []);
+  const { token } = useToken();
 
   useEffect(() => {
     const connect = () => {
@@ -29,13 +14,13 @@ export const useSSE = (teamPlaceId: number) => {
         return;
       }
 
-      console.log('token:' + accessToken);
+      console.log('token : ' + token);
 
       const eventSource = new EventSourcePolyfill(
         baseUrl + `/api/team-place/${teamPlaceId}/subscribe`,
         {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${token}`,
           },
         },
       );
@@ -50,5 +35,5 @@ export const useSSE = (teamPlaceId: number) => {
     };
 
     connect();
-  }, [queryClient, teamPlaceId, accessToken]);
+  }, [queryClient, teamPlaceId, token]);
 };

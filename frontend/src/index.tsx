@@ -15,6 +15,7 @@ import { worker } from '~/mocks/browser';
 import { ToastProvider } from '~/components/common/Toast/ToastContext';
 import ToastList from '~/components/common/Toast/ToastList';
 import { useToast } from '~/hooks/useToast';
+import { TokenProvider } from '~/contexts/TokenContext';
 
 if (process.env.WORKER === 'on') {
   worker.start();
@@ -63,13 +64,15 @@ root.render(
   <StrictMode>
     <ThemeProvider theme={theme}>
       <ToastProvider>
-        <_QueryClientProvider>
-          <GlobalStyle />
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-          <ToastList />
-        </_QueryClientProvider>
+        <TokenProvider>
+          <_QueryClientProvider>
+            <GlobalStyle />
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+            <ToastList />
+          </_QueryClientProvider>
+        </TokenProvider>
       </ToastProvider>
     </ThemeProvider>
   </StrictMode>,

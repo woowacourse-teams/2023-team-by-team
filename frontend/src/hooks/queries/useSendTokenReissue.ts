@@ -2,9 +2,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { sendTokenReissue } from '~/apis/auth';
 import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
 import { PATH_NAME } from '~/constants/routes';
+import { useToken } from '~/hooks/useToken';
 
 export const useSendTokenReissue = () => {
   const queryClient = useQueryClient();
+  const { updateToken } = useToken();
   const { mutate } = useMutation(sendTokenReissue, {
     onSuccess: (data) => {
       const accessToken = data.headers.get('Authorization');
@@ -12,6 +14,7 @@ export const useSendTokenReissue = () => {
 
       localStorage.setItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN, accessToken ?? '');
       localStorage.setItem(LOCAL_STORAGE_KEY.REFRESH_TOKEN, refreshToken ?? '');
+      updateToken(accessToken ?? '');
 
       queryClient.invalidateQueries();
     },
