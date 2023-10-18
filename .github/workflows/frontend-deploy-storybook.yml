@@ -8,15 +8,15 @@ on:
 
 jobs:
   build-and-deploy:
+    defaults:
+      run:
+        working-directory: frontend
     runs-on: ubuntu-latest
     permissions:
       contents: write
     concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
+      group: ${{ github.workflow }}
       cancel-in-progress: true
-    defaults:
-      run:
-        working-directory: frontend
 
     steps:
       - name: Setup Repository
@@ -40,4 +40,5 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./storybook-static
+          publish_dir: ./frontend/storybook-static
+          destination_dir: storybook
