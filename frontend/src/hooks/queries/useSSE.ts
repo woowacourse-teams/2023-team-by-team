@@ -34,10 +34,11 @@ export const useSSE = (teamPlaceId: number) => {
       queryClient.invalidateQueries(['threadData', teamPlaceId]);
     });
 
-    eventSource.onerror = () => {
-      if (eventSource.readyState === EventSource.CLOSED) {
-        window.setTimeout(() => setEventSource(() => connect()), 0);
-      }
+    eventSource.onerror = (event) => {
+      console.log(event);
+      // if (eventSource.readyState === ) {
+      //   setEventSource(() => connect());
+      // }
     };
 
     return () => {
