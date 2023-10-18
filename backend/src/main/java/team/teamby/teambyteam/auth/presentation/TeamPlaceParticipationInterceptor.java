@@ -8,8 +8,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.HandlerMapping;
 import team.teamby.teambyteam.auth.jwt.JwtTokenExtractor;
 import team.teamby.teambyteam.auth.jwt.JwtTokenProvider;
-import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberRepository;
+import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
@@ -22,12 +22,14 @@ import java.util.Objects;
 public final class TeamPlaceParticipationInterceptor implements HandlerInterceptor {
 
     private static final String PATH_VARIABLE_KEY = "teamPlaceId";
+
     private final JwtTokenExtractor jwtTokenExtractor;
     private final JwtTokenProvider jwtTokenProvider;
     private final MemberRepository memberRepository;
+    private final MemberTeamPlaceRepository memberTeamPlaceRepository;
 
     @Override
-    public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler) throws Exception {
+    public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler) {
         final String token = jwtTokenExtractor.extractAccessToken(request);
         final String email = jwtTokenProvider.extractEmailFromAccessToken(token);
         final Map<String, String> pathVariables = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
@@ -43,8 +45,11 @@ public final class TeamPlaceParticipationInterceptor implements HandlerIntercept
     }
 
     private boolean hasNotMemberInTeamPlace(final Long teamPlaceId, final String email) {
-        final Member member = memberRepository.findByEmail(new Email(email))
-                .orElseThrow(() -> new MemberException.MemberNotFoundException(email));
-        return !member.isMemberOf(teamPlaceId);
+        final Long memberId = memberRepository.findIdByEmail(new Email(email))
+                .orElseThrow(() -> new MemberException.MemberNotFoundException(email))
+                .id();
+
+        return memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(teamPlaceId, memberId)
+                .isEmpty();
     }
 }

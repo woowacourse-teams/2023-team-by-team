@@ -1,4 +1,4 @@
-import { StrictMode } from 'react';
+import { StrictMode, useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
@@ -22,27 +22,35 @@ if (process.env.WORKER === 'on') {
 
 const _QueryClientProvider = ({ children }: { children: ReactNode }) => {
   const { showToast } = useToast();
-  const queryClient = new QueryClient({
-    queryCache: new QueryCache({
-      onError: (errorResponse, query) => {
-        if (!(errorResponse instanceof Response)) {
-          return;
-        }
+  const [queryClient] = useState(() => {
+    return new QueryClient({
+      queryCache: new QueryCache({
+        onError: (errorResponse, query) => {
+          if (!(errorResponse instanceof Response)) {
+            return;
+          }
 
-        const { status } = errorResponse;
-        const customErrorMessage = query.meta?.errorMessage;
+          const { status } = errorResponse;
+          const customErrorMessage = query.meta?.errorMessage;
 
-        if (typeof customErrorMessage === 'string') {
-          showToast('error', customErrorMessage);
-          return;
-        }
+          if (typeof customErrorMessage === 'string') {
+            showToast('error', customErrorMessage);
+            return;
+          }
 
-        if (status >= 500) {
-          showToast('error', '네트워크 통신 중 에러가 발생했습니다.');
-        }
-      },
-    }),
+          if (status >= 500) {
+            showToast('error', '네트워크 통신 중 에러가 발생했습니다.');
+          }
+        },
+      }),
+    });
   });
+
+  useEffect(() => {
+    return () => {
+      queryClient.clear();
+    };
+  }, [queryClient]);
 
   return (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>

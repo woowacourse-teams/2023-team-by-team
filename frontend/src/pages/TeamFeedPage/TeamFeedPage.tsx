@@ -14,6 +14,8 @@ import * as S from './TeamFeedPage.styled';
 import { useModal } from '~/hooks/useModal';
 import { useState } from 'react';
 import type { ThreadImage } from '~/types/feed';
+import { useTeamPlace } from '~/hooks/useTeamPlace';
+import { useSSE } from '~/hooks/queries/useSSE';
 
 interface TeamFeedPageProps {
   threadSize?: ThreadSize;
@@ -21,6 +23,8 @@ interface TeamFeedPageProps {
 
 const TeamFeedPage = (props: TeamFeedPageProps) => {
   const { threadSize = 'md' } = props;
+
+  const { teamPlaceId } = useTeamPlace();
   const {
     ref,
     noticeThread,
@@ -41,6 +45,9 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
       deleteImageByUuid,
     },
   } = useTeamFeedPage();
+
+  useSSE(teamPlaceId, ref);
+
   const { isModalOpen, openModal } = useModal();
   const [modalImageInfo, setModalImageInfo] = useState<{
     images: ThreadImage[];
@@ -73,6 +80,7 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
               containerRef={ref}
               size={threadSize}
               onClickImage={handleClickImage}
+              isShowScrollBottomButton={isShowScrollBottomButton}
             />
           </S.ThreadListWrapper>
           <S.MenuButtonWrapper>

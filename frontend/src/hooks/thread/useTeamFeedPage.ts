@@ -81,7 +81,7 @@ export const useTeamFeedPage = () => {
     sendNewThread();
   };
 
-  const sendNewThread = async () => {
+  const sendNewThread = () => {
     if (chatContent.trim() === '' && imageFiles.length === 0) {
       return;
     }
@@ -112,10 +112,6 @@ export const useTeamFeedPage = () => {
           resetChatBox();
           deleteAllImages();
           if (isImageDrawerOpen) handleImageDrawerToggle();
-
-          setTimeout(() => {
-            scrollToBottom();
-          }, 100);
         },
         onError: () => {
           showToast('error', '스레드 등록에 실패했습니다.');
@@ -127,16 +123,6 @@ export const useTeamFeedPage = () => {
   const resetChatBox = () => {
     setChatContent(() => '');
     setIsNotice(() => false);
-  };
-
-  const scrollToBottom = () => {
-    if (!ref.current) {
-      return;
-    }
-
-    const { scrollHeight } = ref.current;
-
-    ref.current.scrollTop = scrollHeight;
   };
 
   useEffect(() => {
