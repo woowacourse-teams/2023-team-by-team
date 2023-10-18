@@ -10,9 +10,8 @@ export const useSSE = (teamPlaceId: number) => {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    console.log(accessToken);
-
     const handleChangeAccessToken = () => {
+      console.log('accessToken check:: ' + accessToken);
       setAccessToken(localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN));
     };
 
@@ -25,6 +24,7 @@ export const useSSE = (teamPlaceId: number) => {
     if (!teamPlaceId) {
       return;
     }
+    console.log('eventSource check:: ' + accessToken);
 
     const eventSource = new EventSourcePolyfill(
       baseUrl + `/api/team-place/${teamPlaceId}/subscribe`,
