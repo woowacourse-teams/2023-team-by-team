@@ -33,7 +33,6 @@ public class TeamPlaceEmitterRepository {
         sseEmitter.onError((e) -> {
             log.error("emitter error for {}, error message : {}", emitterId, e.getMessage());
             emitters.remove(emitterId);
-            sseEmitter.completeWithError(e);
         });
 
         log.info("save SseEmitter {}", emitterId.toString());
