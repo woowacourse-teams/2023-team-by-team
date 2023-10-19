@@ -21,7 +21,7 @@ export const Container = styled.div<{ linkSize: LinkSize }>`
 
     if (linkSize === 'sm')
       return css`
-        top: 100%;
+        top: 96%;
         left: 14%;
         transform: translateY(-300px);
       `;
