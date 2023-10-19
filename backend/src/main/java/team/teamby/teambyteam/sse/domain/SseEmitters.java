@@ -38,9 +38,9 @@ public class SseEmitters {
                                 .name(eventId.getEventName())
                                 .data(extractEventDataAsJson(event))
                         );
-                        log.info("send event to {}, event : {}", emitterId.toString(), eventId.getEventName());
-                    } catch (IOException exception) {
-                        log.error("fail to send sse message : {}, error : {}", exception.getMessage(), exception.getClass());
+                        log.info("SSE 메시지 보내기 성공 : {}, event : {}", emitterId.toString(), eventId.getEventName());
+                    } catch (IOException | RuntimeException exception) {
+                        log.error("SSE 메시지 보내기 실패 : {}, error : {}", exception.getMessage(), exception.getClass());
                         emitter.complete();
                     }
                 }
