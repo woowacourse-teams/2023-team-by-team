@@ -25,6 +25,7 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
+
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -45,6 +46,7 @@ import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
 import team.teamby.teambyteam.feed.domain.Feed;
 import team.teamby.teambyteam.feed.domain.FeedThread;
 import team.teamby.teambyteam.feed.domain.FeedType;
+import team.teamby.teambyteam.feed.domain.cache.RecentFeedCache;
 import team.teamby.teambyteam.feed.domain.notification.schedulenotification.ScheduleNotification;
 import team.teamby.teambyteam.feed.domain.vo.Content;
 import team.teamby.teambyteam.feed.exception.FeedException;
@@ -67,8 +69,18 @@ class FeedThreadServiceTest extends ServiceTest {
     @MockBean
     private FileCloudUploader fileCloudUploader;
 
+    @MockBean
+    private RecentFeedCache recentFeedCache;
+
     @SpyBean
     private Clock clock;
+
+    @BeforeEach
+    void invalidateCaching() {
+        given(recentFeedCache.isCached(any(Long.class), any(int.class)))
+                .willReturn(false);
+
+    }
 
     @Nested
     @DisplayName("피드에 스레드 작성시")
