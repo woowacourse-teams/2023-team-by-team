@@ -18,7 +18,7 @@ export const TokenProvider = ({ children }: PropsWithChildren) => {
     () => localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN) ?? '',
   );
   const [refreshToken, setRefreshToken] = useState(
-    () => localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN) ?? '',
+    () => localStorage.getItem(LOCAL_STORAGE_KEY.REFRESH_TOKEN) ?? '',
   );
 
   const updateToken = (accessToken: string, refreshToken: string) => {
