@@ -46,13 +46,13 @@ const LinkAddModal = (props: LinkAddModalProps) => {
         </S.IconWrapper>
         <form onSubmit={handleTeamLinkSubmit}>
           <S.InputContainer>
-            <Text size="xxl" weight="semiBold">
+            <Text size="xl" weight="semiBold">
               링크 이름
             </Text>
             <Input
-              width="96%"
-              height="36px"
-              placeholder="링크 이름을 입력해주세요."
+              width="100%"
+              height="38px"
+              placeholder="링크 이름을 입력해 주세요."
               css={S.title}
               value={linkName}
               onChange={handleLinkNameChange}
@@ -60,13 +60,13 @@ const LinkAddModal = (props: LinkAddModalProps) => {
             />
           </S.InputContainer>
           <S.InputContainer>
-            <Text size="xxl" weight="semiBold">
+            <Text size="xl" weight="semiBold">
               링크
             </Text>
             <Input
-              width="96%"
-              height="36px"
-              placeholder="공유할 링크를 입력해주세요."
+              width="100%"
+              height="38px"
+              placeholder="공유할 링크를 입력해 주세요."
               css={S.title}
               value={link}
               ref={linkRef}
