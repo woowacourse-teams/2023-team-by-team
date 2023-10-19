@@ -169,7 +169,11 @@ public class FeedThreadService {
 
         final List<FeedCache> caches = feedCache.getCache(teamPlaceId, size);
         return caches.stream()
-                .map(cache -> FeedResponse.from(cache, teamPlaceMembers.get(cache.authorId()), memberId))
+                .map(cache -> FeedResponse.from(
+                        cache,
+                        teamPlaceMembers.getOrDefault(cache.authorId(), MemberTeamPlace.UNKNOWN_MEMBER_TEAM_PLACE),
+                        memberId)
+                )
                 .toList();
     }
 
