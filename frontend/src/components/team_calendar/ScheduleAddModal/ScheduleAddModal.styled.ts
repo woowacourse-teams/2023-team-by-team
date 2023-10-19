@@ -29,7 +29,7 @@ export const Container = styled.div<{ calendarSize: CalendarSize }>`
   flex-direction: column;
 
   width: 496px;
-  min-height: 400px;
+  min-height: 380px;
   padding: 20px 30px;
 
   border-radius: 10px;
@@ -43,7 +43,7 @@ export const Container = styled.div<{ calendarSize: CalendarSize }>`
     display: flex;
     flex-direction: column;
 
-    row-gap: 24px;
+    row-gap: 20px;
   }
 `;
 
@@ -52,7 +52,6 @@ export const Header = styled.div`
   justify-content: flex-end;
 
   width: 100%;
-  height: 38px;
   margin-bottom: 22px;
 
   border-bottom: ${({ theme }) => `1px solid ${theme.color.GRAY300}`};
@@ -60,7 +59,7 @@ export const Header = styled.div`
 
 export const TitleWrapper = styled.div`
   width: 100%;
-  height: 51px;
+  height: 44px;
 `;
 
 export const InnerContainer = styled.div`
@@ -122,13 +121,14 @@ export const title = css`
   border-radius: 10px;
   background-color: ${({ theme }) => theme.color.GRAY200};
 
-  font-size: 24px;
+  font-size: 20px;
 `;
 
 export const closeButton = css`
   width: 22px;
   height: 38px;
   padding: 8px 0;
+  margin-bottom: 4px;
 `;
 
 export const timetableButton = css`
