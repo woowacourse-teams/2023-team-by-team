@@ -50,7 +50,7 @@ class SseSubscribeServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("SSE 연결에 성공 후 더미이벤트를 발행시킨다.")
-    void successWithInitialDummyMessage() throws IOException {
+    void successWithInitialDummyMessage() throws IOException, InterruptedException {
         // given
         final Member member = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
         final MemberEmailDto email = new MemberEmailDto(member.getEmailValue());
@@ -58,6 +58,8 @@ class SseSubscribeServiceTest extends ServiceTest {
 
         // when
         final SseEmitter sseEmitter = sseSubscribeService.subscribe(teamPlaceId, email, null);
+
+        Thread.sleep(1000);
 
         // then
         // verify if the SSE is sent
@@ -99,6 +101,7 @@ class SseSubscribeServiceTest extends ServiceTest {
 
         final SseEmitter sseEmitter = sseSubscribeService.subscribe(teamPlaceId, email, lastEventId.toString());
 
+        Thread.sleep(1000);
         // then
         // verify if the SSE is sent
         ArgumentCaptor<SseEmitter.SseEventBuilder> argumentCaptor = ArgumentCaptor.forClass(SseEmitter.SseEventBuilder.class);
