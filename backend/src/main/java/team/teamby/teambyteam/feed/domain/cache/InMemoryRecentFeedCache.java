@@ -4,7 +4,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,8 +17,6 @@ public class InMemoryRecentFeedCache implements RecentFeedCache {
 
     public static final long CACHE_REMOVE_POLICY_DAY = 3L;
     private final int MAX_CACHE_FEED_SIZE = 20;
-    private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm";
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
 
     private final Map<Long, Deque<FeedCache>> feedCaches = new ConcurrentHashMap<>();
 
@@ -54,7 +51,7 @@ public class InMemoryRecentFeedCache implements RecentFeedCache {
         final LocalDateTime cacheRemoveDateTime = LocalDateTime.now().minusDays(CACHE_REMOVE_POLICY_DAY);
         feedCaches.forEach((key, value) -> {
             final FeedCache latest = value.getFirst();
-            final LocalDateTime latestDateTime = LocalDateTime.parse(latest.createdAt(), DATE_TIME_FORMATTER);
+            final LocalDateTime latestDateTime = latest.createdAt();
             if (latestDateTime.isBefore(cacheRemoveDateTime)) {
                 feedCaches.remove(key);
             }

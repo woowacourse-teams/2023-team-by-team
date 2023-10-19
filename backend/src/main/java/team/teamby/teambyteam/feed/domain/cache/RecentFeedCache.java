@@ -1,5 +1,9 @@
 package team.teamby.teambyteam.feed.domain.cache;
 
+import team.teamby.teambyteam.feed.domain.FeedThread;
+import team.teamby.teambyteam.feed.domain.image.FeedThreadImage;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface RecentFeedCache {
@@ -14,11 +18,22 @@ public interface RecentFeedCache {
             Long id,
             String type,
             Long authorId,
-            String profileImageUrl,
-            String createdAt,
+            LocalDateTime createdAt,
             String content,
             List<FeedImageCache> images
     ) {
+        public static FeedCache from(final FeedThread feedThread) {
+            return new FeedCache(
+                    feedThread.getId(),
+                    feedThread.getType().name(),
+                    feedThread.getAuthorId(),
+                    feedThread.getCreatedAt(),
+                    feedThread.getContent().getValue(),
+                    feedThread.getImages().stream()
+                            .map(FeedImageCache::from)
+                            .toList()
+            );
+        }
     }
 
     record FeedImageCache(
@@ -27,5 +42,13 @@ public interface RecentFeedCache {
             String name,
             String url
     ) {
+        public static FeedImageCache from(final FeedThreadImage feedThreadImage) {
+            return new FeedImageCache(
+                    feedThreadImage.getId(),
+                    false,
+                    feedThreadImage.getImageName().getValue(),
+                    feedThreadImage.getImageUrl().getValue()
+            );
+        }
     }
 }

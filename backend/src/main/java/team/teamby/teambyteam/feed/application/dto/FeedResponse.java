@@ -66,8 +66,8 @@ public record FeedResponse(
                 cache.type(),
                 cache.authorId(),
                 authorInfo.getDisplayMemberNameValue(),
-                cache.profileImageUrl(),
-                cache.createdAt(),
+                authorInfo.findMemberProfileImageUrl(),
+                cache.createdAt().format(DATE_TIME_FORMATTER),
                 cache.content(),
                 cache.images()
                         .stream()
