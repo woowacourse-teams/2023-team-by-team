@@ -36,7 +36,7 @@ public class TeamPlaceEmitterRepository {
         });
 
         log.info("save SseEmitter {}", emitterId.toString());
-        return new SseEmitters(Map.of(emitterId, sseEmitter), this);
+        return new SseEmitters(Map.of(emitterId, sseEmitter));
     }
 
     public SseEmitters findByTeamPlaceId(final Long teamPlaceId) {
@@ -46,7 +46,7 @@ public class TeamPlaceEmitterRepository {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         log.info("Sse Emitter found {}, teamPlaceId : {}", filteredEmitters.size(), teamPlaceId);
-        return new SseEmitters(filteredEmitters, this);
+        return new SseEmitters(filteredEmitters);
     }
 
     public void deleteById(final TeamPlaceEmitterId id) {
