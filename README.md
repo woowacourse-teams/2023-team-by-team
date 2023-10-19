@@ -6,7 +6,7 @@
 [![](https://img.shields.io/badge/-teamby.team-important?style=flat&logo=airplayvideo&logoColor=white&labelColor=black&color=%233145FF)](https://teamby.team/)
 [![](https://img.shields.io/badge/-Tech%20Blog-important?style=flat&logo=angellist&logoColor=balck&labelColor=black&color=white)
 ](https://team-by-team.github.io/)
-[![](https://img.shields.io/badge/release-v1.0.0-critical?style=flat&logo=github&logoColor=balck&labelColor=black&color=white)
+[![](https://img.shields.io/badge/release-v1.6.0-critical?style=flat&logo=github&logoColor=balck&labelColor=black&color=white)
 ](https://github.com/woowacourse-teams/2023-team-by-team/releases)
 
 # 팀바팀
@@ -108,64 +108,46 @@
 팀플을 더욱 효율적으로, 즐겁게, 그리고 편안하게 관리할 수 있는 `팀바팀`이 여기 있으니까요!  
 팀바팀은 팀플이 많은 대학생들을 위한 플랫폼입니다.
 
+여러분의 귀중한 시간, 학점을 걱정없이 만족시킬 팀바팀의 매력적인 기능들을 살펴볼까요?
+
+## 🖥️ Service
+
+<table>
+<tr >
+<td align="center">
+모아보기 페이지
+</td>
+</tr>
+<tr>
+<td align="center">
+      <img src='https://github.com/woowacourse-teams/2023-team-by-team/assets/79538610/8f0149f0-822b-400f-a827-af58ca57e489'>
+    </td>
+</tr>
+</table>
+
+|                                                        팀 캘린더                                                        |                                                         팀 피드                                                         |
+| :---------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------: |
+| <img src='https://github.com/woowacourse-teams/2023-team-by-team/assets/79538610/4b578b01-4412-49ee-921b-cdb126c252fe'> | <img src='https://github.com/woowacourse-teams/2023-team-by-team/assets/79538610/40e8927a-8d13-4fb9-a8f4-9f9745753d23'> |
+|                                                     <b>팀 링크</b>                                                      |                                                <b>팀 생성 및 팀 참가</b>                                                |
+| <img src='https://github.com/woowacourse-teams/2023-team-by-team/assets/79538610/2ae57d8a-daeb-40b1-97b9-be497ba3bb68'> | <img src='https://github.com/woowacourse-teams/2023-team-by-team/assets/79538610/36222b93-3b06-4f41-a20f-c3a8df0bdfa7'> |
+
+<p align="center">
+    <a href='https://sites.google.com/woowahan.com/woowacourse-demo-5th/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/%ED%8C%80%EB%B0%94%ED%8C%80'>팀바팀을 더 자세히 알고 싶다면, 여기로!</a>
+</p>
+<br/>
+
 ## 🛠️ Skills
 
-### Backend
-
-<img width="500px" src='https://github.com/woowacourse-teams/2023-team-by-team/assets/79538610/e35234c7-b72f-4db1-83fc-3eed72e492e2'  alt="백엔드 스킬"/>
-
-### Frontend
-
-<img width="500px" src='https://github.com/woowacourse-teams/2023-team-by-team/assets/79538610/5e1a5320-f085-496e-ab71-a9a6b3b7e6e9'  alt="프론트엔드 스킬"/>
+<img width="500px" src='https://github.com/woowacourse-teams/2023-team-by-team/assets/79538610/cade7c34-977d-413c-bd37-e5796060c0bf'  alt="Skills"/>
 
 ## ⚙️ Infra
 
-<img width="600px" src='https://github.com/woowacourse-teams/2023-team-by-team/assets/79538610/960c5be5-e5b6-4a87-b04d-2621df98d26e'  alt="Infra"/>
+<img width="600px" src='https://github.com/woowacourse-teams/2023-team-by-team/assets/79538610/05794e0c-651a-4fc2-a535-fe8312493d9f'  alt="Infra"/>
 
 ## 🪄 CI/CD
 
-<img width="600px" src='https://github.com/woowacourse-teams/2023-team-by-team/assets/79538610/7cef30eb-522b-462e-866a-d3b660371aa9'  alt="CI/CD"/>
+<img width="600px" src='https://github.com/woowacourse-teams/2023-team-by-team/assets/79538610/79f30380-86d9-4cf1-b801-c19b3c866a88'  alt="CI/CD"/>
 
 ## 🏆 Ground Rules
 
-### 수평적인 관계, 허물없는 대화 💬
-
-- 우리는 반말로 대화해요
-
-### 당신의 지각은 우리의 회식 💸
-
-- 지각시 벌금 청구^^
-
-### 모두의 의견이 의미 있다면, 결정은 악어에게 맡기자 🐊
-
-- 의견 충돌이 생기면 30분 토론 후 악어 게임으로 의견을 결정해요!
-
-### 모두가 팀장. 회의는 돌아가면서 진행 🧑‍🏫
-
-### 우리 같이 알자 😂
-
-- 일정이나 명세를 바꾸기 전에 무조건 전체 공지 해야 해요.
-
-### 먼저 가보겠습니다! 👋🏻
-
-- 불필요한 야근을 강요하지 않아요.
-
-### 감정부채를 쌓아두지 말자 💗
-
-- 피드백은 속에 담아두지 않고 바로 말해요.
-
-### 침묵은 금이 아니다 🪙
-
-- 모든 의견에 최소한의 반응은 해야 해요.
-
-### 2주를 한 호흡으로 열심히 달리기 🏃🏻‍♂️
-
-- 스프린트 기반으로 일정과 공통 목표를 조율해요.
-
-### 모르는게 죄는 아니잖아 😭
-
-- 바보같은 질문이라도 괜찮아요. 걱정말고 물어봐요.
-
-### 혼자 merge? 그게 머지? 🤔
-
-- merge는 해당 분야의 모든 팀원이 approve 해야 가능해요.
+<img width="600px" src='https://github.com/woowacourse-teams/2023-team-by-team/assets/79538610/f917b168-a3f2-4aff-9eb8-61bb55b189ce'  alt="CI/CD"/>
