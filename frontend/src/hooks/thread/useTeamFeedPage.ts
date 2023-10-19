@@ -31,10 +31,11 @@ export const useTeamFeedPage = () => {
     useState(false);
   const [isImageDrawerOpen, setIsImageDrawerOpen] = useState(false);
   const [chatContent, setChatContent] = useState('');
+  const ref = useRef<HTMLDivElement>(null);
+
   const isSendingImage =
     (isSendNoticeThreadLoading || isSendThreadLoading) &&
     imageFiles.length !== 0;
-  const ref = useRef<HTMLDivElement>(null);
 
   const handleIsNoticeChange = () => {
     setIsNotice((prev) => !prev);
