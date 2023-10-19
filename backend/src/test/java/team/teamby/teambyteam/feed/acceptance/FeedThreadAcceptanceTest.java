@@ -1,5 +1,43 @@
 package team.teamby.teambyteam.feed.acceptance;
 
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.multipart.MultipartFile;
+import team.teamby.teambyteam.common.AcceptanceTest;
+import team.teamby.teambyteam.common.fixtures.FeedThreadFixtures;
+import team.teamby.teambyteam.common.fixtures.FeedThreadImageFixtures;
+import team.teamby.teambyteam.common.fixtures.MemberFixtures;
+import team.teamby.teambyteam.feed.application.dto.FeedResponse;
+import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
+import team.teamby.teambyteam.feed.domain.Feed;
+import team.teamby.teambyteam.feed.domain.FeedThread;
+import team.teamby.teambyteam.feed.domain.cache.RecentFeedCache;
+import team.teamby.teambyteam.feed.domain.notification.schedulenotification.ScheduleNotification;
+import team.teamby.teambyteam.feed.domain.vo.Content;
+import team.teamby.teambyteam.filesystem.FileCloudUploader;
+import team.teamby.teambyteam.member.domain.Member;
+import team.teamby.teambyteam.member.domain.MemberTeamPlace;
+import team.teamby.teambyteam.schedule.application.event.ScheduleCreateEvent;
+import team.teamby.teambyteam.schedule.domain.vo.Span;
+import team.teamby.teambyteam.schedule.domain.vo.Title;
+import team.teamby.teambyteam.teamplace.domain.TeamPlace;
+
+import java.time.Clock;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.given;
@@ -20,49 +58,22 @@ import static team.teamby.teambyteam.common.fixtures.acceptance.FeedThreadAccept
 import static team.teamby.teambyteam.common.fixtures.acceptance.FeedThreadAcceptanceFixtures.POST_FEED_THREAD_ONLY_IMAGE_REQUEST;
 import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptanceFixture.DELETE_LEAVE_TEAM_PLACE;
 
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
-import java.time.Clock;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.multipart.MultipartFile;
-import team.teamby.teambyteam.common.AcceptanceTest;
-import team.teamby.teambyteam.common.fixtures.FeedThreadFixtures;
-import team.teamby.teambyteam.common.fixtures.FeedThreadImageFixtures;
-import team.teamby.teambyteam.common.fixtures.MemberFixtures;
-import team.teamby.teambyteam.feed.application.dto.FeedResponse;
-import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
-import team.teamby.teambyteam.feed.domain.Feed;
-import team.teamby.teambyteam.feed.domain.FeedThread;
-import team.teamby.teambyteam.feed.domain.notification.schedulenotification.ScheduleNotification;
-import team.teamby.teambyteam.feed.domain.vo.Content;
-import team.teamby.teambyteam.filesystem.FileCloudUploader;
-import team.teamby.teambyteam.member.domain.Member;
-import team.teamby.teambyteam.member.domain.MemberTeamPlace;
-import team.teamby.teambyteam.schedule.application.event.ScheduleCreateEvent;
-import team.teamby.teambyteam.schedule.domain.vo.Span;
-import team.teamby.teambyteam.schedule.domain.vo.Title;
-import team.teamby.teambyteam.teamplace.domain.TeamPlace;
-
 public class FeedThreadAcceptanceTest extends AcceptanceTest {
 
     @MockBean
     private FileCloudUploader fileCloudUploader;
 
+    @MockBean
+    private RecentFeedCache recentFeedCache;
+
     @SpyBean
     private Clock clock;
+
+    @BeforeEach
+    void setup() {
+        given(recentFeedCache.isCached(any(Long.class), any(int.class)))
+                .willReturn(false);
+    }
 
     @Nested
     @DisplayName("피드에 스레드 등록 시")
@@ -272,7 +283,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             POST_FEED_THREAD_IMAGE_AND_CONTENT_REQUEST(authToken, participatedTeamPlace.getId(), List.of(UNDER_SIZE_PNG_FILE1, UNDER_SIZE_PNG_FILE2), FeedThreadFixtures.CONTENT_AND_IMAGE);
             POST_FEED_THREAD_ONLY_CONTENT_REQUEST(authToken, participatedTeamPlace.getId(), FeedThreadFixtures.CONTENT_ONLY_AND_IMAGE_EMPTY);
             final Long teamPlaceId = participatedMemberTeamPlace.getId();
-            final int size = 5;
+            final int size = 3;
 
             // when
             final ExtractableResponse<Response> response = GET_FEED_THREAD_FIRST(authToken, teamPlaceId, size);
