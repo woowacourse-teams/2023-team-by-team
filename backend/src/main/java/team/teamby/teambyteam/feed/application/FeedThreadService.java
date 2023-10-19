@@ -100,7 +100,8 @@ public class FeedThreadService {
         Long threadId = savedFeedThread.getId();
         log.info("스레드 생성 - 생성자 이메일 : {}, 스레드 아이디 : {}", memberEmailDto.email(), threadId);
 
-        feedCache.addCache(teamPlaceId, FeedCache.from(savedFeedThread));
+        // TODO : 캐시 고치고 추가
+//        feedCache.addCache(teamPlaceId, FeedCache.from(savedFeedThread));
 
         applicationEventPublisher.publishEvent(FeedEvent.of(teamPlaceId, savedFeedThread.getId(), WRITE));
 
@@ -148,7 +149,8 @@ public class FeedThreadService {
     @Transactional(readOnly = true)
     public FeedsResponse firstRead(final Long teamPlaceId, final MemberEmailDto memberEmailDto, final Integer size) {
 
-        final List<FeedResponse> feedResponses = getRecentFeedResponses(teamPlaceId, memberEmailDto, size);
+//        final List<FeedResponse> feedResponses = getRecentFeedResponses(teamPlaceId, memberEmailDto, size);
+        final List<FeedResponse> feedResponses = getFeedResponsesFromDatasource(teamPlaceId, memberEmailDto, size);
 
         return FeedsResponse.of(feedResponses);
     }

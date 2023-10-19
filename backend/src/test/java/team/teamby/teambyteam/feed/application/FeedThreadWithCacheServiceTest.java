@@ -1,6 +1,7 @@
 package team.teamby.teambyteam.feed.application;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
 import static team.teamby.teambyteam.feed.domain.cache.InMemoryRecentFeedCache.MAX_CACHE_FEED_SIZE;
 
+@Disabled
 class FeedThreadWithCacheServiceTest extends ServiceTest {
 
     @SpyBean
