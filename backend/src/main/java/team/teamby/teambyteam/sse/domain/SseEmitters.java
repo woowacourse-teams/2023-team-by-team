@@ -13,15 +13,10 @@ public class SseEmitters {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    private final TeamPlaceEmitterRepository teamPlaceEmitterRepository;
     private final Map<TeamPlaceEmitterId, SseEmitter> emitters;
 
-    public SseEmitters(
-            final Map<TeamPlaceEmitterId, SseEmitter> emitters,
-            final TeamPlaceEmitterRepository teamPlaceEmitterRepository
-    ) {
+    public SseEmitters(final Map<TeamPlaceEmitterId, SseEmitter> emitters) {
         this.emitters = emitters;
-        this.teamPlaceEmitterRepository = teamPlaceEmitterRepository;
     }
 
     public void sendEvent(final TeamPlaceEventId eventId, final TeamPlaceSseEvent event) {

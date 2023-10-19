@@ -45,7 +45,7 @@ class SseSubscribeServiceTest extends ServiceTest {
         final SseEmitter sseEmitter = Mockito.mock(SseEmitter.class);
         final TeamPlaceEmitterId teamPlaceEventId = Mockito.mock(TeamPlaceEmitterId.class);
         BDDMockito.given(teamPlaceEmitterRepository.save(any(), any()))
-                .willReturn(new SseEmitters(Map.of(teamPlaceEventId, sseEmitter), teamPlaceEmitterRepository));
+                .willReturn(new SseEmitters(Map.of(teamPlaceEventId, sseEmitter)));
     }
 
     @Test
