@@ -22,8 +22,9 @@ export const useTeamFeedPage = () => {
     deleteAllImages,
   } = useImageUpload();
   const { noticeThread } = useFetchNoticeThread(teamPlaceId);
-  const { mutateSendThread } = useSendThread(teamPlaceId);
-  const { mutateSendNoticeThread } = useSendNoticeThread(teamPlaceId);
+  const { mutateSendThread, isSendThreadLoading } = useSendThread(teamPlaceId);
+  const { mutateSendNoticeThread, isSendNoticeThreadLoading } =
+    useSendNoticeThread(teamPlaceId);
 
   const [isNotice, setIsNotice] = useState(false);
   const [isShowScrollBottomButton, setIsShowScrollBottomButton] =
@@ -31,6 +32,10 @@ export const useTeamFeedPage = () => {
   const [isImageDrawerOpen, setIsImageDrawerOpen] = useState(false);
   const [chatContent, setChatContent] = useState('');
   const ref = useRef<HTMLDivElement>(null);
+
+  const isSendingImage =
+    (isSendNoticeThreadLoading || isSendThreadLoading) &&
+    imageFiles.length !== 0;
 
   const handleIsNoticeChange = () => {
     setIsNotice((prev) => !prev);
@@ -155,6 +160,7 @@ export const useTeamFeedPage = () => {
     isNotice,
     isImageDrawerOpen,
     isShowScrollBottomButton,
+    isSendingImage,
     chatContent,
     previewImages,
 

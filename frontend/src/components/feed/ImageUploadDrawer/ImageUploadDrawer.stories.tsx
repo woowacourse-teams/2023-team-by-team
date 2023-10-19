@@ -55,6 +55,7 @@ export const Default: Story = {
     onClose: () => {
       alert('onClose();');
     },
+    isUploading: false,
   },
 };
 
@@ -69,5 +70,6 @@ export const Opened: Story = {
     onClose: () => {
       alert('onClose();');
     },
+    isUploading: false,
   },
 };

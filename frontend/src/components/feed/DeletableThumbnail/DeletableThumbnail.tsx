@@ -8,10 +8,11 @@ import { thumbnailFallbackImage } from '~/assets/png';
 interface DeletableThumbnailProps {
   image: PreviewImage;
   onDelete: (imageUuid: string) => void;
+  isUploading: boolean;
 }
 
 const DeletableThumbnail = (props: DeletableThumbnailProps) => {
-  const { image, onDelete } = props;
+  const { image, onDelete, isUploading } = props;
   const { uuid, url } = image;
 
   const handleImageError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
@@ -22,15 +23,17 @@ const DeletableThumbnail = (props: DeletableThumbnailProps) => {
   return (
     <S.Container>
       <S.Image src={url} alt="미리보기 이미지" onError={handleImageError} />
-      <Button
-        variant="plain"
-        type="button"
-        css={S.deleteButton}
-        onClick={() => onDelete(uuid)}
-        aria-label={`${url} 이미지 삭제하기`}
-      >
-        <CloseBoldIcon />
-      </Button>
+      {!isUploading && (
+        <Button
+          variant="plain"
+          type="button"
+          css={S.deleteButton}
+          onClick={() => onDelete(uuid)}
+          aria-label={`${url} 이미지 삭제하기`}
+        >
+          <CloseBoldIcon />
+        </Button>
+      )}
     </S.Container>
   );
 };

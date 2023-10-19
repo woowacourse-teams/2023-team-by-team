@@ -87,6 +87,17 @@ export const feedHandlers = [
 
       threads.unshift(newThread);
 
+      if (imageCount !== 0) {
+        return res(
+          ctx.delay(2000),
+          ctx.status(201),
+          ctx.set(
+            'Location',
+            `/api/team-place/${teamPlaceId}/feed/threads/${newThread.id}`,
+          ),
+        );
+      }
+
       return res(
         ctx.status(201),
         ctx.set(
@@ -140,6 +151,17 @@ export const feedHandlers = [
       noticeThread.createdAt = newNoticeThread.createdAt;
       noticeThread.content = newNoticeThread.content;
       noticeThread.images = newNoticeThread.images;
+
+      if (imageCount !== 0) {
+        return res(
+          ctx.delay(2000),
+          ctx.status(201),
+          ctx.set(
+            'Location',
+            `/api/team-place/${teamPlaceId}/feed/threads/notice/${newNoticeThread.id}`,
+          ),
+        );
+      }
 
       return res(
         ctx.status(201),
