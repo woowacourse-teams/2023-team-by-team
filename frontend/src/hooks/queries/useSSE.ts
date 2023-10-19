@@ -6,21 +6,18 @@ import { useToken } from '~/hooks/useToken';
 
 export const useSSE = (teamPlaceId: number) => {
   const queryClient = useQueryClient();
-  const { token } = useToken();
+  const { accessToken } = useToken();
 
   useEffect(() => {
     const connect = () => {
       if (!teamPlaceId) {
         return;
       }
-
-      console.log('token : ' + token);
-
       const eventSource = new EventSourcePolyfill(
         baseUrl + `/api/team-place/${teamPlaceId}/subscribe`,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         },
       );
@@ -35,5 +32,5 @@ export const useSSE = (teamPlaceId: number) => {
     };
 
     connect();
-  }, [queryClient, teamPlaceId, token]);
+  }, [queryClient, teamPlaceId, accessToken]);
 };

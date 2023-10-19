@@ -7,6 +7,7 @@ import { ACCOUNT_DELETE_CONFIRM_TEXT } from '~/constants/user';
 import { useDeleteUserAccount } from '~/hooks/queries/useDeleteUserAccount';
 import { useFetchUserInfo } from '~/hooks/queries/useFetchUserInfo';
 import { useToast } from '~/hooks/useToast';
+import { useToken } from '~/hooks/useToken';
 
 export const useAccountDeleteModal = () => {
   const { userInfo } = useFetchUserInfo();
@@ -14,6 +15,7 @@ export const useAccountDeleteModal = () => {
   const [inputValue, setInputValue] = useState('');
   const navigate = useNavigate();
   const { showToast } = useToast();
+  const { resetToken } = useToken();
 
   const handleInputValueChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(() => e.target.value);
@@ -22,7 +24,6 @@ export const useAccountDeleteModal = () => {
   const handleDeleteAccountSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
-    console.log('in');
     if (inputValue !== ACCOUNT_DELETE_CONFIRM_TEXT) {
       alert('탈퇴를 위해 정확한 문구를 입력하세요');
       setInputValue(() => '');
@@ -32,8 +33,7 @@ export const useAccountDeleteModal = () => {
       onSuccess: () => {
         alert('정상적으로 회원탈퇴 되었습니다.');
 
-        localStorage.removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
-        localStorage.removeItem(LOCAL_STORAGE_KEY.REFRESH_TOKEN);
+        resetToken();
         localStorage.removeItem(LOCAL_STORAGE_KEY.TEAM_PLACE_ID);
 
         navigate(PATH_NAME.LANDING);

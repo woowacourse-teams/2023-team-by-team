@@ -9,11 +9,13 @@ import { useToast } from '~/hooks/useToast';
 import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
 import { PATH_NAME } from '~/constants/routes';
 import { MAX_USER_NAME_LENGTH } from '~/constants/user';
+import { useToken } from '~/hooks/useToken';
 
 export const useUserInfoModal = () => {
   const navigate = useNavigate();
   const { showToast } = useToast();
   const { closeModal } = useModal();
+  const { resetToken } = useToken();
 
   const { mutateModifyUserInfo } = useModifyUserInfo();
   const { userInfo } = useFetchUserInfo();
@@ -42,7 +44,7 @@ export const useUserInfoModal = () => {
 
     alert('로그아웃 되었습니다.');
 
-    localStorage.removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
+    resetToken();
     localStorage.removeItem(LOCAL_STORAGE_KEY.TEAM_PLACE_ID);
 
     navigate(PATH_NAME.LANDING);

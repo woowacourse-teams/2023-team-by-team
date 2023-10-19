@@ -9,9 +9,11 @@ import Text from '~/components/common/Text/Text';
 import { googleLogo } from '~/assets/png';
 import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
 import LandingHeader from '~/components/common/LandingHeader/LandingHeader';
+import { useToken } from '~/hooks/useToken';
 
 const LandingPage = () => {
   const navigate = useNavigate();
+  const { accessToken, resetToken } = useToken();
 
   const handleGoogleLogin = async () => {
     const { googleLoginUrl } = await fetchGoogleLogin();
@@ -20,7 +22,6 @@ const LandingPage = () => {
   };
 
   useEffect(() => {
-    const accessToken = localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
     const teamPlaceId = localStorage.getItem(LOCAL_STORAGE_KEY.TEAM_PLACE_ID);
 
     if (accessToken && teamPlaceId) {
@@ -29,7 +30,7 @@ const LandingPage = () => {
     }
 
     if (accessToken) {
-      localStorage.removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
+      resetToken();
       return;
     }
   }, [navigate]);
