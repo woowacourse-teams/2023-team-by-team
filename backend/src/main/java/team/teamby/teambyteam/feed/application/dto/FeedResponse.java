@@ -1,11 +1,14 @@
 package team.teamby.teambyteam.feed.application.dto;
 
 import team.teamby.teambyteam.feed.domain.Feed;
+import team.teamby.teambyteam.feed.domain.cache.RecentFeedCache;
+import team.teamby.teambyteam.member.domain.IdOnly;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public record FeedResponse(
         Long id,
@@ -50,6 +53,27 @@ public record FeedResponse(
                 feed.getContent().getValue(),
                 images,
                 threadAuthorInfo.isEmailEqual(loginMemberEmail)
+        );
+    }
+
+    public static FeedResponse from(
+            final RecentFeedCache.FeedCache cache,
+            final MemberTeamPlace authorInfo,
+            final IdOnly memberId
+    ) {
+        return new FeedResponse(
+                cache.id(),
+                cache.type(),
+                cache.authorId(),
+                authorInfo.getDisplayMemberNameValue(),
+                authorInfo.findMemberProfileImageUrl(),
+                cache.createdAt().format(DATE_TIME_FORMATTER),
+                cache.content(),
+                cache.images()
+                        .stream()
+                        .map(FeedImageResponse::from)
+                        .toList(),
+                Objects.equals(cache.authorId(), memberId.id())
         );
     }
 }

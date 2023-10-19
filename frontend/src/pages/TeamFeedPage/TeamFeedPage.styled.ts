@@ -14,6 +14,7 @@ export const Container = styled.div<{
   background-color: ${({ theme }) => theme.color.GRAY100};
 
   z-index: 0;
+  container-type: inline-size;
 `;
 
 export const Inner = styled.div`
@@ -119,4 +120,8 @@ export const noticeText = css`
   margin-right: 10px;
 
   color: ${({ theme }) => theme.color.GRAY800};
+
+  @container (width < 360px) {
+    display: none;
+  }
 `;

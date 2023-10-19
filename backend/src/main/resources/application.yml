@@ -16,6 +16,8 @@ spring:
     url: jdbc:h2:~/team-by-team-test;MODE=MySQL
     username: sa
     password:
+    hikari:
+      maximum-pool-size: 5
 
   jpa:
     open-in-view: false

@@ -19,6 +19,8 @@ import team.teamby.teambyteam.feed.domain.Feed;
 import team.teamby.teambyteam.feed.domain.FeedRepository;
 import team.teamby.teambyteam.feed.domain.FeedThread;
 import team.teamby.teambyteam.feed.domain.FeedType;
+import team.teamby.teambyteam.feed.domain.cache.RecentFeedCache;
+import team.teamby.teambyteam.feed.domain.cache.RecentFeedCache.FeedCache;
 import team.teamby.teambyteam.feed.domain.image.FeedThreadImage;
 import team.teamby.teambyteam.feed.domain.image.FeedThreadImageRepository;
 import team.teamby.teambyteam.feed.domain.image.vo.ImageName;
@@ -30,6 +32,7 @@ import team.teamby.teambyteam.filesystem.AllowedImageExtension;
 import team.teamby.teambyteam.filesystem.FileCloudUploader;
 import team.teamby.teambyteam.filesystem.util.FileUtil;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
+import team.teamby.teambyteam.member.domain.IdOnly;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
@@ -71,6 +74,7 @@ public class FeedThreadService {
     private final MemberRepository memberRepository;
     private final MemberTeamPlaceRepository memberTeamPlaceRepository;
     private final FeedThreadImageRepository feedThreadImageRepository;
+    private final RecentFeedCache feedCache;
 
     private final FileCloudUploader fileCloudUploader;
 
@@ -95,6 +99,9 @@ public class FeedThreadService {
         saveImages(images, savedFeedThread);
         Long threadId = savedFeedThread.getId();
         log.info("스레드 생성 - 생성자 이메일 : {}, 스레드 아이디 : {}", memberEmailDto.email(), threadId);
+
+        // TODO : 캐시 고치고 추가
+//        feedCache.addCache(teamPlaceId, FeedCache.from(savedFeedThread));
 
         applicationEventPublisher.publishEvent(FeedEvent.of(teamPlaceId, savedFeedThread.getId(), WRITE));
 
@@ -141,11 +148,39 @@ public class FeedThreadService {
 
     @Transactional(readOnly = true)
     public FeedsResponse firstRead(final Long teamPlaceId, final MemberEmailDto memberEmailDto, final Integer size) {
-        final Pageable pageSize = getPageableInitSize(size);
-        final List<Feed> list = feedRepository.findByTeamPlaceId(teamPlaceId, pageSize);
-        final List<FeedResponse> feedResponses = mapFeedResponses(list, memberEmailDto.email(), teamPlaceId);
+
+//        final List<FeedResponse> feedResponses = getRecentFeedResponses(teamPlaceId, memberEmailDto, size);
+        final List<FeedResponse> feedResponses = getFeedResponsesFromDatasource(teamPlaceId, memberEmailDto, size);
 
         return FeedsResponse.of(feedResponses);
+    }
+
+    private List<FeedResponse> getRecentFeedResponses(final Long teamPlaceId, final MemberEmailDto memberEmailDto, final Integer size) {
+        if (feedCache.isCached(teamPlaceId, size)) {
+            return getFeedResponsesFromCache(teamPlaceId, memberEmailDto, size);
+        }
+        return getFeedResponsesFromDatasource(teamPlaceId, memberEmailDto, size);
+    }
+
+    private List<FeedResponse> getFeedResponsesFromCache(Long teamPlaceId, MemberEmailDto memberEmailDto, Integer size) {
+        final Map<Long, MemberTeamPlace> teamPlaceMembers = getTeamPlaceMembers(teamPlaceId);
+        final IdOnly memberId = memberRepository.findIdByEmail(new Email(memberEmailDto.email()))
+                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
+
+        final List<FeedCache> caches = feedCache.getCache(teamPlaceId, size);
+        return caches.stream()
+                .map(cache -> FeedResponse.from(
+                        cache,
+                        teamPlaceMembers.getOrDefault(cache.authorId(), MemberTeamPlace.UNKNOWN_MEMBER_TEAM_PLACE),
+                        memberId)
+                )
+                .toList();
+    }
+
+    private List<FeedResponse> getFeedResponsesFromDatasource(Long teamPlaceId, MemberEmailDto memberEmailDto, Integer size) {
+        final Pageable pageSize = getPageableInitSize(size);
+        final List<Feed> list = feedRepository.findByTeamPlaceId(teamPlaceId, pageSize);
+        return mapFeedResponses(list, memberEmailDto.email(), teamPlaceId);
     }
 
     @Transactional(readOnly = true)
