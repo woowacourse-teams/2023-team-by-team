@@ -101,14 +101,14 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
         <ImageUploadDrawer
           isOpen={isImageDrawerOpen}
           onClose={handleImageDrawerToggle}
-          isDisabled={isSendingImage}
+          isUploading={isSendingImage}
         >
           <ThumbnailList
             mode="delete"
             images={previewImages}
             onChange={updateImages}
             onDelete={deleteImageByUuid}
-            isDisabled={isSendingImage}
+            isUploading={isSendingImage}
           />
         </ImageUploadDrawer>
         <S.ThreadInputForm onSubmit={handleSubmit}>

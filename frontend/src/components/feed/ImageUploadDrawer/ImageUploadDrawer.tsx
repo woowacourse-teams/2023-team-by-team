@@ -6,18 +6,18 @@ import { CloseBoldIcon } from '~/assets/svg';
 interface ImageUploadDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  isDisabled: boolean;
+  isUploading: boolean;
 }
 
 const ImageUploadDrawer = (
   props: PropsWithChildren<ImageUploadDrawerProps>,
 ) => {
-  const { isOpen, onClose, children, isDisabled } = props;
+  const { isOpen, onClose, children, isUploading } = props;
 
   return (
     <S.Container isOpen={isOpen}>
       <S.ContentWrapper>{children}</S.ContentWrapper>
-      {!isDisabled && (
+      {!isUploading && (
         <S.CloseButtonWrapper>
           <Button
             variant="plain"

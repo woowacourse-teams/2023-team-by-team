@@ -8,11 +8,11 @@ import { thumbnailFallbackImage } from '~/assets/png';
 interface DeletableThumbnailProps {
   image: PreviewImage;
   onDelete: (imageUuid: string) => void;
-  isDisabled: boolean;
+  isUploading: boolean;
 }
 
 const DeletableThumbnail = (props: DeletableThumbnailProps) => {
-  const { image, onDelete, isDisabled } = props;
+  const { image, onDelete, isUploading } = props;
   const { uuid, url } = image;
 
   const handleImageError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
@@ -22,8 +22,8 @@ const DeletableThumbnail = (props: DeletableThumbnailProps) => {
 
   return (
     <S.Container>
-      <S.Image src={url} alt="미리보기 이미지" />
-      {!isDisabled && (
+      <S.Image src={url} alt="미리보기 이미지" onError={handleImageError} />
+      {!isUploading && (
         <Button
           variant="plain"
           type="button"

@@ -98,7 +98,7 @@ export const DeletableList: Story = {
     onChange: () => {
       alert(`onChange()`);
     },
-    isDisabled: false,
+    isUploading: false,
   },
 };
 
@@ -115,7 +115,7 @@ export const NotMaxDeletableList: Story = {
     onChange: () => {
       alert(`onChange()`);
     },
-    isDisabled: false,
+    isUploading: false,
   },
 };
 
@@ -129,7 +129,7 @@ export const EmptyDeletableList: Story = {
     onChange: () => {
       alert(`onChange()`);
     },
-    isDisabled: false,
+    isUploading: false,
   },
 };
 

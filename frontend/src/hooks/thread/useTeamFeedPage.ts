@@ -31,7 +31,9 @@ export const useTeamFeedPage = () => {
     useState(false);
   const [isImageDrawerOpen, setIsImageDrawerOpen] = useState(false);
   const [chatContent, setChatContent] = useState('');
-  const [isSendingImage, setIsSendingImage] = useState(false);
+  const isSendingImage =
+    (isSendNoticeThreadLoading || isSendThreadLoading) &&
+    imageFiles.length !== 0;
   const ref = useRef<HTMLDivElement>(null);
 
   const handleIsNoticeChange = () => {
@@ -151,13 +153,6 @@ export const useTeamFeedPage = () => {
     };
   }, []);
 
-  useEffect(() => {
-    setIsSendingImage(
-      () =>
-        (isSendNoticeThreadLoading || isSendThreadLoading) &&
-        imageFiles.length !== 0,
-    );
-  }, [isSendNoticeThreadLoading, isSendThreadLoading]);
   return {
     ref,
     noticeThread,
