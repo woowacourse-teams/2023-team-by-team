@@ -61,7 +61,7 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
             <Input
               width="100%"
               height="100%"
-              placeholder="일정 제목을 입력해주세요."
+              placeholder="일정 제목을 입력해 주세요."
               css={S.title}
               name="title"
               maxLength={250}
@@ -73,7 +73,7 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
           </S.TitleWrapper>
 
           <S.TimeSelectContainer>
-            <Text size="xxl" weight="bold">
+            <Text size="xl" weight="semiBold">
               일정 시작
             </Text>
             <S.InputWrapper>
@@ -97,7 +97,7 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
             </S.InputWrapper>
           </S.TimeSelectContainer>
           <S.TimeSelectContainer>
-            <Text size="xxl" weight="bold">
+            <Text size="xl" weight="semiBold">
               일정 마감
             </Text>
             <S.InputWrapper>
@@ -121,7 +121,7 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
             </S.InputWrapper>
           </S.TimeSelectContainer>
           <S.CheckboxContainer>
-            <Text size="xl" weight="bold">
+            <Text size="lg" weight="semiBold">
               종일
             </Text>
             <Checkbox isChecked={isAllDay} onChange={handleIsAllDayChange} />
