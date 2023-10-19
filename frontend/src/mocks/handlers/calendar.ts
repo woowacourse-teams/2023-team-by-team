@@ -156,8 +156,9 @@ export const calendarHandlers = [
     return res(
       ctx.status(200),
       ctx.json({
-        url: 'https://assets.teamby.team/icalendar/path/ical.ics',
+        url: 'https://assets.teamby.team/dev/ical/1-5',
       }),
+      ctx.delay(1000),
     );
   }),
 ];
