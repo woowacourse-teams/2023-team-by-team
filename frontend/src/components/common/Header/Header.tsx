@@ -14,14 +14,14 @@ import { useFetchUserInfo } from '~/hooks/queries/useFetchUserInfo';
 import UserInfoModal from '~/components/user/UserInfoModal/UserInfoModal';
 import TeamColorEditModal from '~/components/team/TeamColorEditModal/TeamColorEditModal';
 import AccountDeleteModal from '~/components/user/AccountDeleteModal/AccountDeleteModal';
-// import NotificationListModal from '~/components/feed/NotificationListModal/NotificationListModal';
+import ServiceCenterModal from '~/components/user/ServiceCenterModal/ServiceCenterModal';
 
 export type HeaderModalType =
-  | 'notification'
   | 'team'
   | 'user'
   | 'teamColor'
-  | 'accountDelete';
+  | 'accountDelete'
+  | 'serviceCenter';
 
 const Header = () => {
   const {
@@ -65,11 +65,6 @@ const Header = () => {
     [changeTeamPlace, teamPlaces],
   );
 
-  // const handleNotificationButtonClick = () => {
-  //   setModalOpenType(() => 'notification');
-  //   openModal();
-  // };
-
   const handleTeamButtonClick = () => {
     setModalOpenType(() => 'team');
     openModal();
@@ -87,6 +82,11 @@ const Header = () => {
 
   const handleAccountDeleteButtonClick = () => {
     setModalOpenType(() => 'accountDelete');
+    openModal();
+  };
+
+  const handleServiceCenterButtonClick = () => {
+    setModalOpenType(() => 'serviceCenter');
     openModal();
   };
 
@@ -131,16 +131,6 @@ const Header = () => {
         </S.InnerContainer>
 
         <S.ButtonContainer>
-          {/* <Button
-            type="button"
-            variant="plain"
-            onClick={handleNotificationButtonClick}
-            css={S.notificationButton}
-            aria-label="알림 목록 보기"
-          >
-            <BellIcon />
-          </Button> */}
-
           <Button
             type="button"
             variant="plain"
@@ -165,10 +155,14 @@ const Header = () => {
         </S.ButtonContainer>
       </S.Header>
 
-      {/* {modalOpenType === 'notification' && <NotificationListModal />} */}
       {modalOpenType === 'team' && <TeamPlaceInfoModal />}
       {modalOpenType === 'user' && (
         <UserInfoModal
+          onServiceCenterButtonClick={handleServiceCenterButtonClick}
+        />
+      )}
+      {modalOpenType === 'serviceCenter' && (
+        <ServiceCenterModal
           onAccountDeleteButtonClick={handleAccountDeleteButtonClick}
         />
       )}

@@ -23,24 +23,24 @@ export const DotIndicator = styled.div`
 `;
 
 export const Dot = styled.button<{ selected: boolean }>`
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
 
   border-radius: 50%;
   background-color: ${({ theme, selected }) =>
-    selected ? theme.color.WHITE : theme.color.GRAY600};
+    selected ? theme.color.WHITE : theme.color.GRAY550};
 
   transition: 0.2s;
 `;
 
 export const currentPageText = css`
   color: ${({ theme }) => theme.color.WHITE};
-  font-size: 40px;
-  line-height: 40px;
+  font-size: 34px;
+  line-height: 34px;
 `;
 
 export const pageCountText = css`
-  color: ${({ theme }) => theme.color.GRAY600};
-  font-size: 28px;
-  line-height: 34px;
+  color: ${({ theme }) => theme.color.GRAY550};
+  font-size: 24px;
+  line-height: 30px;
 `;

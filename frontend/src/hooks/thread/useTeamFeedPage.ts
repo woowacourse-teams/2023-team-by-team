@@ -22,8 +22,9 @@ export const useTeamFeedPage = () => {
     deleteAllImages,
   } = useImageUpload();
   const { noticeThread } = useFetchNoticeThread(teamPlaceId);
-  const { mutateSendThread } = useSendThread(teamPlaceId);
-  const { mutateSendNoticeThread } = useSendNoticeThread(teamPlaceId);
+  const { mutateSendThread, isSendThreadLoading } = useSendThread(teamPlaceId);
+  const { mutateSendNoticeThread, isSendNoticeThreadLoading } =
+    useSendNoticeThread(teamPlaceId);
 
   const [isNotice, setIsNotice] = useState(false);
   const [isShowScrollBottomButton, setIsShowScrollBottomButton] =
@@ -31,6 +32,10 @@ export const useTeamFeedPage = () => {
   const [isImageDrawerOpen, setIsImageDrawerOpen] = useState(false);
   const [chatContent, setChatContent] = useState('');
   const ref = useRef<HTMLDivElement>(null);
+
+  const isSendingImage =
+    (isSendNoticeThreadLoading || isSendThreadLoading) &&
+    imageFiles.length !== 0;
 
   const handleIsNoticeChange = () => {
     setIsNotice((prev) => !prev);
@@ -81,7 +86,7 @@ export const useTeamFeedPage = () => {
     sendNewThread();
   };
 
-  const sendNewThread = async () => {
+  const sendNewThread = () => {
     if (chatContent.trim() === '' && imageFiles.length === 0) {
       return;
     }
@@ -112,10 +117,6 @@ export const useTeamFeedPage = () => {
           resetChatBox();
           deleteAllImages();
           if (isImageDrawerOpen) handleImageDrawerToggle();
-
-          setTimeout(() => {
-            scrollToBottom();
-          }, 100);
         },
         onError: () => {
           showToast('error', '스레드 등록에 실패했습니다.');
@@ -127,16 +128,6 @@ export const useTeamFeedPage = () => {
   const resetChatBox = () => {
     setChatContent(() => '');
     setIsNotice(() => false);
-  };
-
-  const scrollToBottom = () => {
-    if (!ref.current) {
-      return;
-    }
-
-    const { scrollHeight } = ref.current;
-
-    ref.current.scrollTop = scrollHeight;
   };
 
   useEffect(() => {
@@ -169,6 +160,7 @@ export const useTeamFeedPage = () => {
     isNotice,
     isImageDrawerOpen,
     isShowScrollBottomButton,
+    isSendingImage,
     chatContent,
     previewImages,
 

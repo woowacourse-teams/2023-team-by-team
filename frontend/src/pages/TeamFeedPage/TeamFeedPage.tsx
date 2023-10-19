@@ -14,6 +14,8 @@ import * as S from './TeamFeedPage.styled';
 import { useModal } from '~/hooks/useModal';
 import { useState } from 'react';
 import type { ThreadImage } from '~/types/feed';
+import { useTeamPlace } from '~/hooks/useTeamPlace';
+import { useSSE } from '~/hooks/queries/useSSE';
 
 interface TeamFeedPageProps {
   threadSize?: ThreadSize;
@@ -21,12 +23,15 @@ interface TeamFeedPageProps {
 
 const TeamFeedPage = (props: TeamFeedPageProps) => {
   const { threadSize = 'md' } = props;
+
+  const { teamPlaceId } = useTeamPlace();
   const {
     ref,
     noticeThread,
     isNotice,
     isImageDrawerOpen,
     isShowScrollBottomButton,
+    isSendingImage,
     chatContent,
     previewImages,
 
@@ -41,6 +46,9 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
       deleteImageByUuid,
     },
   } = useTeamFeedPage();
+
+  useSSE(teamPlaceId);
+
   const { isModalOpen, openModal } = useModal();
   const [modalImageInfo, setModalImageInfo] = useState<{
     images: ThreadImage[];
@@ -73,6 +81,7 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
               containerRef={ref}
               size={threadSize}
               onClickImage={handleClickImage}
+              isShowScrollBottomButton={isShowScrollBottomButton}
             />
           </S.ThreadListWrapper>
           <S.MenuButtonWrapper>
@@ -92,12 +101,14 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
         <ImageUploadDrawer
           isOpen={isImageDrawerOpen}
           onClose={handleImageDrawerToggle}
+          isUploading={isSendingImage}
         >
           <ThumbnailList
             mode="delete"
             images={previewImages}
             onChange={updateImages}
             onDelete={deleteImageByUuid}
+            isUploading={isSendingImage}
           />
         </ImageUploadDrawer>
         <S.ThreadInputForm onSubmit={handleSubmit}>
@@ -105,9 +116,14 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
             value={chatContent}
             onChange={handleChatContentChange}
             onKeyDown={handleEnterKeydown}
-            placeholder="여기에 채팅을 입력하세요. &#13;&#10; &#13;&#10;Shift + Enter로 새 행을 추가합니다."
+            placeholder={
+              isSendingImage
+                ? ''
+                : '여기에 채팅을 입력하세요. \n\nShift + Enter로 새 행을 추가합니다.'
+            }
             maxLength={10000}
             autoFocus
+            readOnly={isSendingImage}
           />
           <S.ButtonContainer>
             <Button
@@ -115,6 +131,7 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
               variant="plain"
               aria-label="이미지 업로드하기"
               onClick={handleImageDrawerToggle}
+              disabled={isSendingImage}
             >
               <ImageIcon />
             </Button>
@@ -128,8 +145,15 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
               <Text as="span" weight="semiBold" size="lg" css={S.noticeText}>
                 공지로 등록
               </Text>
-              <Button variant="plain" aria-label="채팅 전송하기">
-                <AirplaneIcon />
+              <Button
+                variant="plain"
+                aria-label="채팅 전송하기"
+                disabled={isSendingImage}
+              >
+                <AirplaneIcon
+                  fill={isSendingImage ? 'white' : '#8e92ff'}
+                  stroke="#8e92ff"
+                />
               </Button>
             </div>
           </S.ButtonContainer>

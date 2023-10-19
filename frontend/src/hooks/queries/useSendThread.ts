@@ -4,7 +4,7 @@ import type { ThreadContent } from '~/types/feed';
 
 export const useSendThread = (teamPlaceId: number) => {
   const queryClient = useQueryClient();
-  const { mutate } = useMutation(
+  const { mutate, isLoading } = useMutation(
     (threadContent: ThreadContent) => {
       const { content, images } = threadContent;
       const formData = new FormData();
@@ -21,5 +21,5 @@ export const useSendThread = (teamPlaceId: number) => {
     },
   );
 
-  return { mutateSendThread: mutate };
+  return { mutateSendThread: mutate, isSendThreadLoading: isLoading };
 };
