@@ -31,7 +31,7 @@ export const Container = styled.div<{ linkSize: LinkSize }>`
   flex-direction: column;
 
   width: 496px;
-  height: 286px;
+  min-height: 320px;
   padding: 20px 30px;
 
   border-radius: 10px;
@@ -44,23 +44,25 @@ export const Container = styled.div<{ linkSize: LinkSize }>`
   & > form {
     display: flex;
     flex-direction: column;
-    row-gap: 16px;
+    row-gap: 20px;
   }
 `;
 
 export const IconWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
-  align-items: center;
 
   width: 100%;
-  height: 30px;
+  height: 38px;
+  margin-bottom: 22px;
+
+  border-bottom: ${({ theme }) => `1px solid ${theme.color.GRAY300}`};
 `;
 
 export const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 `;
 
 export const ControlButtonWrapper = styled.div`
@@ -82,11 +84,11 @@ export const closeButton = css`
 `;
 
 export const title = css`
-  padding: 10px 20px;
+  padding: 10px 16px;
 
   border: none;
   border-radius: 10px;
   background-color: ${({ theme }) => theme.color.GRAY200};
 
-  font-size: 20px;
+  font-size: 17px;
 `;
