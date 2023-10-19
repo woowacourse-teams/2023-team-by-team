@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class InMemoryRecentFeedCache implements RecentFeedCache {
 
     public static final long CACHE_REMOVE_POLICY_DAY = 3L;
-    private final int MAX_CACHE_FEED_SIZE = 20;
+    public static final int MAX_CACHE_FEED_SIZE = 20;
 
     private final Map<Long, Deque<FeedCache>> feedCaches = new ConcurrentHashMap<>();
 
