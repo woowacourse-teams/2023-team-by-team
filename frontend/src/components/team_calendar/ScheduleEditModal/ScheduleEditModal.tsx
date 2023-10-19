@@ -71,7 +71,7 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
           </S.TitleWrapper>
 
           <S.TimeSelectContainer>
-            <Text size="xxl" weight="bold">
+            <Text size="xl" weight="semiBold">
               일정 시작
             </Text>
             <S.InputWrapper>
@@ -94,7 +94,7 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
             </S.InputWrapper>
           </S.TimeSelectContainer>
           <S.TimeSelectContainer>
-            <Text size="xxl" weight="bold">
+            <Text size="xl" weight="semiBold">
               일정 마감
             </Text>
             <S.InputWrapper>
@@ -118,7 +118,7 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
             </S.InputWrapper>
           </S.TimeSelectContainer>
           <S.CheckboxContainer>
-            <Text size="xl" weight="bold">
+            <Text size="lg" weight="semiBold">
               종일
             </Text>
             <Checkbox isChecked={isAllDay} onChange={handleIsAllDayChange} />

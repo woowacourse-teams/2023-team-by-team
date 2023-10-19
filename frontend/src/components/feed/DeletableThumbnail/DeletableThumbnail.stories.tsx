@@ -15,6 +15,9 @@ const meta = {
     onDelete: {
       description: '썸네일에 해당하는 이미지를 삭제해야 할 때 실행될 함수',
     },
+    isUploading: {
+      description: '현재 이미지가 전송중인지 아닌지 상태를 나타내는 값',
+    },
   },
 } satisfies Meta<typeof DeletableThumbnail>;
 
@@ -31,5 +34,6 @@ export const Default: Story = {
     onDelete: (imageId) => {
       alert(`onDelete('${imageId}')`);
     },
+    isUploading: false,
   },
 };

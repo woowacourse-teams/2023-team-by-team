@@ -6,27 +6,30 @@ import { CloseBoldIcon } from '~/assets/svg';
 interface ImageUploadDrawerProps {
   isOpen: boolean;
   onClose: () => void;
+  isUploading: boolean;
 }
 
 const ImageUploadDrawer = (
   props: PropsWithChildren<ImageUploadDrawerProps>,
 ) => {
-  const { isOpen, onClose, children } = props;
+  const { isOpen, onClose, children, isUploading } = props;
 
   return (
     <S.Container $isOpen={isOpen}>
       <S.ContentWrapper>{children}</S.ContentWrapper>
-      <S.CloseButtonWrapper>
-        <Button
-          variant="plain"
-          type="button"
-          css={S.closeButton}
-          onClick={onClose}
-          aria-label="이미지 업로드 메뉴 닫기"
-        >
-          <CloseBoldIcon />
-        </Button>
-      </S.CloseButtonWrapper>
+      {!isUploading && (
+        <S.CloseButtonWrapper>
+          <Button
+            variant="plain"
+            type="button"
+            css={S.closeButton}
+            onClick={onClose}
+            aria-label="이미지 업로드 메뉴 닫기"
+          >
+            <CloseBoldIcon />
+          </Button>
+        </S.CloseButtonWrapper>
+      )}
     </S.Container>
   );
 };

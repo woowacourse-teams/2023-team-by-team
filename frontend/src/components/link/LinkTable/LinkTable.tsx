@@ -51,7 +51,7 @@ const LinkTable = (props: LinkTableProps) => {
     <>
       <S.Container>
         <S.MenuHeader $linkSize={linkSize}>
-          <Text as="h2" css={S.linkTableTitle(linkSize)}>
+          <Text weight="semiBold" css={S.linkTableTitle(linkSize)}>
             팀 링크
           </Text>
           <Button

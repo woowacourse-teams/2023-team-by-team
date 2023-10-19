@@ -40,13 +40,13 @@ public class TeamPlaceEmitterRepository {
     }
 
     public SseEmitters findByTeamPlaceId(final Long teamPlaceId) {
-        final Map<TeamPlaceEmitterId, SseEmitter> emitters = this.emitters.entrySet()
+        final Map<TeamPlaceEmitterId, SseEmitter> filteredEmitters = this.emitters.entrySet()
                 .stream()
                 .filter(entity -> entity.getKey().isTeamPlaceId(teamPlaceId))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-        log.info("Sse Emitter found {}, teamPlaceId : {}", emitters.size(), teamPlaceId);
-        return new SseEmitters(emitters, this);
+        log.info("Sse Emitter found {}, teamPlaceId : {}", filteredEmitters.size(), teamPlaceId);
+        return new SseEmitters(filteredEmitters, this);
     }
 
     public void deleteById(final TeamPlaceEmitterId id) {

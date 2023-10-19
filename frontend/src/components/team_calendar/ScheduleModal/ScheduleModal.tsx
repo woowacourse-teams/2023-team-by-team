@@ -100,7 +100,7 @@ const ScheduleModal = (props: ScheduleModalProps) => {
             </Button>
           </S.MenuContainer>
         </S.Header>
-        <Text as="h4" css={S.scheduleTitleText}>
+        <Text size="xxl" weight="bold" css={S.scheduleTitleText}>
           {title}
         </Text>
         <S.PeriodWrapper>

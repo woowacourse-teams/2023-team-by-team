@@ -1,35 +1,36 @@
 import { useEffect } from 'react';
-import type { RefObject } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { baseUrl } from '~/apis/http';
 import { EventSourcePolyfill } from 'event-source-polyfill';
-import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
+import { useToken } from '~/hooks/useToken';
 
-export const useSSE = (teamPlaceId: number, ref: RefObject<HTMLDivElement>) => {
+export const useSSE = (teamPlaceId: number) => {
   const queryClient = useQueryClient();
+  const { accessToken } = useToken();
 
   useEffect(() => {
-    if (!teamPlaceId) {
-      return;
-    }
-
-    const eventSource = new EventSourcePolyfill(
-      baseUrl + `/api/team-place/${teamPlaceId}/subscribe`,
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem(
-            LOCAL_STORAGE_KEY.ACCESS_TOKEN,
-          )}`,
+    const connect = () => {
+      if (!teamPlaceId) {
+        return;
+      }
+      const eventSource = new EventSourcePolyfill(
+        baseUrl + `/api/team-place/${teamPlaceId}/subscribe`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
         },
-      },
-    );
+      );
 
-    eventSource.addEventListener('new_thread', () => {
-      queryClient.invalidateQueries(['threadData', teamPlaceId]);
-    });
+      eventSource.addEventListener('new_thread', () => {
+        queryClient.invalidateQueries(['threadData', teamPlaceId]);
+      });
 
-    return () => {
-      eventSource.close();
+      return () => {
+        eventSource.close();
+      };
     };
-  }, [queryClient, teamPlaceId, ref]);
+
+    connect();
+  }, [queryClient, teamPlaceId, accessToken]);
 };

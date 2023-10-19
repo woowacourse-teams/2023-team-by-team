@@ -85,6 +85,10 @@ export const TableHeader = styled.table`
   height: 60px;
 
   ${tableProperties}
+
+  & > th {
+    font-weight: 600;
+  }
 `;
 
 export const TableBody = styled.div`
@@ -102,7 +106,7 @@ export const Table = styled.table`
   ${tableProperties}
 
   & td > a {
-    font-weight: 800;
+    font-weight: 700;
     text-decoration: underline;
   }
 
@@ -113,7 +117,7 @@ export const Table = styled.table`
 `;
 
 export const linkTableTitle = (linkSize: LinkSize) => css`
-  font-size: ${linkSize === 'md' ? 28 : 18}px;
+  font-size: ${linkSize === 'md' ? 24 : 18}px;
 `;
 
 export const linkAddButton = (linkSize: LinkSize) => css`

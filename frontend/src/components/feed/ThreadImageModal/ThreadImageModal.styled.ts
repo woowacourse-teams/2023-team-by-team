@@ -11,7 +11,7 @@ export const Container = styled.div`
   height: 100%;
 
   background: ${({ theme }) => theme.gradient.SMOOTH_BLACK};
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(10px);
 `;
 
 export const HeaderWrapper = styled.div`
@@ -38,7 +38,7 @@ export const PageIndicatorWrapper = styled.div`
 export const title = css`
   overflow: hidden;
 
-  font-size: 32px;
+  font-size: 26px;
   color: ${({ theme }) => theme.color.WHITE};
   line-height: 40px;
   white-space: nowrap;
@@ -46,14 +46,14 @@ export const title = css`
 `;
 
 export const closeButton = css`
-  width: 60px;
-  height: 60px;
+  width: 48px;
+  height: 48px;
   padding: 5px;
 
   color: ${({ theme }) => theme.color.WHITE};
 
   & svg {
-    width: 50px;
-    height: 50px;
+    width: 38px;
+    height: 38px;
   }
 `;

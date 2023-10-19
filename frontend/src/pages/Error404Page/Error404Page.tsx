@@ -3,15 +3,14 @@ import { useState, useEffect } from 'react';
 import { PATH_NAME } from '~/constants/routes';
 import LandingHeader from '~/components/common/LandingHeader/LandingHeader';
 import Error404 from '~/components/common/Error404/Error404';
-import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
+import { useToken } from '~/hooks/useToken';
 
 const Error404Page = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const { accessToken } = useToken();
 
   useEffect(() => {
-    const isLoggedIn = Boolean(
-      localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN),
-    );
+    const isLoggedIn = Boolean(accessToken);
 
     setIsLoggedIn(() => isLoggedIn);
   }, []);
