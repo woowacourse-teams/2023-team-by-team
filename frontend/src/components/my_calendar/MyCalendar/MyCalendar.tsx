@@ -1,17 +1,19 @@
 import { Fragment } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import Button from '~/components/common/Button/Button';
 import Text from '~/components/common/Text/Text';
-import useCalendar from '~/hooks/useCalendar';
-import * as S from './MyCalendar.styled';
 import DateCell from '~/components/common/DateCell/DateCell';
-import { ArrowLeftIcon, ArrowRightIcon } from '~/assets/svg';
-import { DAYS_OF_WEEK } from '~/constants/calendar';
+import TeamBadge from '~/components/team/TeamBadge/TeamBadge';
+import useCalendar from '~/hooks/useCalendar';
 import { useFetchMySchedules } from '~/hooks/queries/useFetchMySchedules';
+import { useTeamPlace } from '~/hooks/useTeamPlace';
+import { DAYS_OF_WEEK } from '~/constants/calendar';
 import { parseDate } from '~/utils/parseDate';
 import { generateScheduleCirclesMatrix } from '~/utils/generateScheduleCirclesMatrix';
-import TeamBadge from '~/components/team/TeamBadge/TeamBadge';
 import { getInfoByTeamPlaceId } from '~/utils/getInfoByTeamPlaceId';
-import { useTeamPlace } from '~/hooks/useTeamPlace';
+import { ArrowLeftIcon, ArrowRightIcon } from '~/assets/svg';
+import { fetchMySchedules } from '~/apis/schedule';
+import * as S from './MyCalendar.styled';
 
 interface MyCalendarProps {
   onDailyClick: (date: Date) => void;
@@ -30,6 +32,17 @@ const MyCalendar = (props: MyCalendarProps) => {
   const schedules = useFetchMySchedules(year, month);
   const scheduleCircles = generateScheduleCirclesMatrix(year, month, schedules);
   const { teamPlaces } = useTeamPlace();
+  const queryClient = useQueryClient();
+
+  const prefetchMySchedules = (year: number, month: number) => {
+    const adjustedYear =
+      month === -1 ? year - 1 : month === 12 ? year + 1 : year;
+    const adjustedMonth = month === -1 ? 11 : month === 12 ? 0 : month;
+
+    queryClient.prefetchQuery(['mySchedules', year, month], () =>
+      fetchMySchedules(adjustedYear, adjustedMonth + 1),
+    );
+  };
 
   return (
     <S.Container>
@@ -37,6 +50,7 @@ const MyCalendar = (props: MyCalendarProps) => {
         <Button
           variant="plain"
           size="sm"
+          onMouseEnter={() => prefetchMySchedules(year, month - 1)}
           onClick={handlePrevButtonClick}
           css={S.monthButton}
           aria-label="이전 달로 이동하기"
@@ -51,6 +65,7 @@ const MyCalendar = (props: MyCalendarProps) => {
         <Button
           variant="plain"
           size="sm"
+          onMouseEnter={() => prefetchMySchedules(year, month + 1)}
           onClick={handleNextButtonClick}
           css={S.monthButton}
           aria-label="다음 달로 이동하기"
