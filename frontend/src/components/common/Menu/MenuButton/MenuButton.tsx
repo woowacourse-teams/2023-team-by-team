@@ -9,12 +9,14 @@ type MenuButtonProps = ButtonProps & {
   value?: string;
 };
 
+const OPEN_TRIGGER_KEYS = ['ArrowUp', 'ArrowDown'];
+
 const MenuButton = (props: PropsWithChildren<MenuButtonProps>) => {
   const { children, value = '', ...rest } = props;
   const { isMenuOpen, handleMenuOpen, handleSelectedValueChange } = useMenu();
 
   const handleKeyDown: KeyboardEventHandler<HTMLButtonElement> = (e) => {
-    if (!['ArrowUp', 'ArrowDown'].includes(e.key)) {
+    if (!OPEN_TRIGGER_KEYS.includes(e.key)) {
       return;
     }
 
