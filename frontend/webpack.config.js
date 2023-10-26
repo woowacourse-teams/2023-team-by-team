@@ -32,9 +32,6 @@ module.exports = {
       {
         test: /\.[jt]sx?$/,
         loader: 'esbuild-loader',
-        options: {
-          target: 'es2015',
-        },
       },
       {
         test: /\.css$/i,
