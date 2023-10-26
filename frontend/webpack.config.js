@@ -29,7 +29,13 @@ module.exports = {
   },
   module: {
     rules: [
-      { test: /\.tsx?$/, use: 'ts-loader', exclude: /node_modules/ },
+      {
+        test: /\.[jt]sx?$/,
+        loader: 'esbuild-loader',
+        options: {
+          target: 'es2015',
+        },
+      },
       {
         test: /\.css$/i,
         use: [
