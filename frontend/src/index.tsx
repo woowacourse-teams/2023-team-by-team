@@ -8,6 +8,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import App from '~/App';
 import GlobalStyle from '~/styles/GlobalStyle';
 import { theme } from './styles/theme';
@@ -71,6 +72,7 @@ root.render(
               <App />
             </BrowserRouter>
             <ToastList />
+            <ReactQueryDevtools initialIsOpen={false} />
           </_QueryClientProvider>
         </TokenProvider>
       </ToastProvider>
