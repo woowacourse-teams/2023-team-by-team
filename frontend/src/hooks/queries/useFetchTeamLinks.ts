@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchTeamLinks } from '~/apis/link';
+import { STALE_TIME } from '~/constants/query';
 
 export const useFetchTeamLinks = (teamPlaceId: number) => {
   const { data } = useQuery(
@@ -7,6 +8,7 @@ export const useFetchTeamLinks = (teamPlaceId: number) => {
     () => fetchTeamLinks(teamPlaceId),
     {
       enabled: teamPlaceId > 0,
+      staleTime: STALE_TIME.TEAM_LINKS,
     },
   );
 
