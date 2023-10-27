@@ -39,10 +39,11 @@ const Carousel = (props: CarouselProps) => {
         <Button
           variant="plain"
           type="button"
-          css={S.arrowButton}
+          css={S.arrowButton(images.length === 1)}
           onClick={() =>
             onChangePage(getPreviousPageIndex(images.length, currentPage))
           }
+          disabled={images.length === 1}
           aria-label="이전 이미지 보기"
         >
           <ArrowLeftIcon />
@@ -52,10 +53,11 @@ const Carousel = (props: CarouselProps) => {
         <Button
           variant="plain"
           type="button"
-          css={S.arrowButton}
+          css={S.arrowButton(images.length === 1)}
           onClick={() =>
             onChangePage(getNextPageIndex(images.length, currentPage))
           }
+          disabled={images.length === 1}
           aria-label="다음 이미지 보기"
         >
           <ArrowRightIcon />

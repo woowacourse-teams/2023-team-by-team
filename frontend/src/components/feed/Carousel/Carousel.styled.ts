@@ -50,9 +50,11 @@ export const closeButton = css`
   height: 40px;
 `;
 
-export const arrowButton = css`
+export const arrowButton = (disabled: boolean) => css`
   width: 90px;
   padding: 0;
+
+  cursor: ${disabled ? 'not-allowed' : 'pointer'};
 
   & svg {
     width: 60px;
@@ -60,6 +62,7 @@ export const arrowButton = css`
   }
 
   & svg > path {
+    opacity: ${disabled ? 0.3 : 1};
     stroke: ${({ theme }) => theme.color.WHITE};
   }
 `;
