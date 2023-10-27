@@ -4,8 +4,8 @@ import Modal from '~/components/common/Modal/Modal';
 import Button from '~/components/common/Button/Button';
 import Text from '~/components/common/Text/Text';
 import * as S from './ThreadImageModal.styled';
-import { useState } from 'react';
 import { useModal } from '~/hooks/useModal';
+import { useCarouselPageNo } from '~/hooks/thread/useCarouselPageNo';
 import { CloseIcon } from '~/assets/svg';
 import type { ThreadImage } from '~/types/feed';
 
@@ -17,7 +17,10 @@ interface ThreadImageModalProps {
 const ThreadImageModal = (props: ThreadImageModalProps) => {
   const { images, initialPage } = props;
   const { closeModal } = useModal();
-  const [currentPage, setCurrentPage] = useState(initialPage);
+  const { currentPage, setCurrentPage } = useCarouselPageNo({
+    initialPage,
+    pageCount: images.length,
+  });
 
   return (
     <Modal>
