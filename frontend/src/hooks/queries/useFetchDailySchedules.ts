@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchSchedules } from '~/apis/schedule';
+import { STALE_TIME } from '~/constants/query';
 
 export const useFetchDailySchedules = (
   teamPlaceId: number,
@@ -12,6 +13,7 @@ export const useFetchDailySchedules = (
     () => fetchSchedules(teamPlaceId, year, month + 1, day),
     {
       enabled: teamPlaceId > 0,
+      staleTime: STALE_TIME.DAILY_SCHEDULES,
     },
   );
 
