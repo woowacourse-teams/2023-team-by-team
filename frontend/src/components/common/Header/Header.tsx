@@ -159,6 +159,7 @@ const Header = () => {
           <Button
             type="button"
             variant="plain"
+            onFocus={prefetchTeamPlaceInfo}
             onMouseEnter={prefetchTeamPlaceInfo}
             onClick={handleTeamButtonClick}
             css={S.teamPlaceInfoButton}
