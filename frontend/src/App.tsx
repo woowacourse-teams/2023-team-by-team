@@ -15,8 +15,13 @@ import TeamOverviewPage from '~/pages/TeamOverviewPage/TeamOverviewPage';
 import PolicyPage from '~/pages/PolicyPage/PolicyPage';
 import Error404Page from '~/pages/Error404Page/Error404Page';
 import './App.css';
+import { useCheckMobileWeb } from '~/hooks/useCheckMobileWeb';
 
 const App = () => {
+  const isMobile = useCheckMobileWeb();
+
+  console.log(isMobile);
+
   return (
     <Routes>
       <Route path={PATH_NAME.LANDING} element={<LandingPage />} />
