@@ -16,11 +16,20 @@ import PolicyPage from '~/pages/PolicyPage/PolicyPage';
 import Error404Page from '~/pages/Error404Page/Error404Page';
 import './App.css';
 import { useCheckMobileWeb } from '~/hooks/useCheckMobileWeb';
+import M_LandingPage from '~/mobilePages/M_LandingPage/M_LandingPage';
 
 const App = () => {
   const isMobile = useCheckMobileWeb();
 
   console.log(isMobile);
+
+  if (isMobile) {
+    return (
+      <Routes>
+        <Route path={PATH_NAME.LANDING} element={<M_LandingPage />} />
+      </Routes>
+    );
+  }
 
   return (
     <Routes>
