@@ -5,7 +5,7 @@ import Button from '~/components/common/Button/Button';
 import { CloseIcon } from '~/assets/svg';
 import Input from '~/components/common/Input/Input';
 import Text from '~/components/common/Text/Text';
-import useScheduleEditModal from '~/hooks/schedule/useScheduleEditModal';
+import { useScheduleEditModal } from '~/hooks/schedule/useScheduleEditModal';
 import type { Schedule } from '~/types/schedule';
 import TeamBadge from '~/components/team/TeamBadge/TeamBadge';
 import TimeTableMenu from '~/components/team_calendar/TimeTableMenu/TimeTableMenu';

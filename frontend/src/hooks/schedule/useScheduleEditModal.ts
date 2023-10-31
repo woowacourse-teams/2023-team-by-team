@@ -7,7 +7,7 @@ import type { Schedule } from '~/types/schedule';
 import { useToast } from '~/hooks/useToast';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 
-const useScheduleEditModal = (
+export const useScheduleEditModal = (
   scheduleId: Schedule['id'],
   initialSchedule?: Schedule,
 ) => {
@@ -147,5 +147,3 @@ const useScheduleEditModal = (
     },
   };
 };
-
-export default useScheduleEditModal;
