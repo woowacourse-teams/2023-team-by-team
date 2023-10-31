@@ -14,7 +14,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class SseEmitters {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private static final ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
+    private static final int NUMBER_OF_THREAD = 100;
+    private static final ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(NUMBER_OF_THREAD);
 
     private final Map<TeamPlaceEmitterId, SseEmitter> emitters;
 
