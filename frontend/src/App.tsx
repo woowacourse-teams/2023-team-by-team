@@ -17,35 +17,42 @@ import Error404Page from '~/pages/Error404Page/Error404Page';
 import './App.css';
 import { useCheckMobileWeb } from '~/hooks/useCheckMobileWeb';
 import M_LandingPage from '~/mobilePages/M_LandingPage/M_LandingPage';
+import M_TeamSelectPage from '~/mobilePages/M_TeamSelectPage/M_TeamSelectPage';
+import M_PageTemplate from '~/mobilePages/M_PageTemplate/M_PageTemplate';
 
 const App = () => {
   const isMobile = useCheckMobileWeb();
 
-  console.log(isMobile);
-
-  if (isMobile) {
-    return (
-      <Routes>
-        <Route path={PATH_NAME.LANDING} element={<M_LandingPage />} />
-      </Routes>
-    );
-  }
-
   return (
     <Routes>
-      <Route path={PATH_NAME.LANDING} element={<LandingPage />} />
+      {isMobile ? (
+        <Route path={PATH_NAME.LANDING} element={<M_LandingPage />} />
+      ) : (
+        <Route path={PATH_NAME.LANDING} element={<LandingPage />} />
+      )}
       <Route path={PATH_NAME.LOGIN} element={<LoginPage />} />
       <Route path={PATH_NAME.POLICY} element={<PolicyPage />} />
       <Route element={<ProtectRoute />}>
         <Route path={PATH_NAME.START} element={<StartPage />} />
         <Route path={PATH_NAME.CREATE} element={<CreatePage />} />
         <Route path={PATH_NAME.JOIN} element={<JoinPage />} />
-        <Route element={<PageTemplate />}>
-          <Route path={PATH_NAME.TEAM_SELECT} element={<TeamSelectPage />} />
-          <Route
-            path={PATH_NAME.TEAM_OVERVIEW}
-            element={<TeamOverviewPage />}
-          />
+
+        <Route element={isMobile ? <M_PageTemplate /> : <PageTemplate />}>
+          {isMobile ? (
+            <Route
+              path={PATH_NAME.TEAM_SELECT}
+              element={<M_TeamSelectPage />}
+            />
+          ) : (
+            <Route path={PATH_NAME.TEAM_SELECT} element={<TeamSelectPage />} />
+          )}
+          {!isMobile && (
+            <Route
+              path={PATH_NAME.TEAM_OVERVIEW}
+              element={<TeamOverviewPage />}
+            />
+          )}
+
           <Route
             path={PATH_NAME.TEAM_CALENDAR}
             element={<TeamCalendarPage />}
