@@ -10,33 +10,37 @@ import {
 import * as S from './NavigationBar.styled';
 import Text from '~/components/common/Text/Text';
 import Button from '~/components/common/Button/Button';
+import { useCheckMobileWeb } from '~/hooks/useCheckMobileWeb';
 
 const NavigationBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-
+  const isMobile = useCheckMobileWeb();
   const handleTeamAddButtonClick = () => {
     navigate(PATH_NAME.START, { state: { from: location } });
   };
 
   return (
-    <S.Nav>
-      <S.MenuContainer>
-        <S.MenuLink to={PATH_NAME.TEAM_OVERVIEW}>
-          <HomeIcon />
-          <Text as="span">모아보기</Text>
-        </S.MenuLink>
+    <S.Nav $isMobile={isMobile}>
+      <S.MenuContainer $isMobile={isMobile}>
+        {!isMobile && (
+          <S.MenuLink to={PATH_NAME.TEAM_OVERVIEW}>
+            <HomeIcon />
+            <Text as="span">모아보기</Text>
+          </S.MenuLink>
+        )}
+
         <S.MenuLink to={PATH_NAME.TEAM_CALENDAR}>
           <CalendarIcon />
-          <Text as="span">캘린더</Text>
+          {!isMobile && <Text as="span">캘린더</Text>}
         </S.MenuLink>
         <S.MenuLink to={PATH_NAME.TEAM_FEED}>
           <FeedIcon />
-          <Text as="span">피드</Text>
+          {!isMobile && <Text as="span">피드</Text>}
         </S.MenuLink>
         <S.MenuLink to={PATH_NAME.TEAM_LINK}>
           <ChainIcon />
-          <Text as="span">링크</Text>
+          {!isMobile && <Text as="span">링크</Text>}
         </S.MenuLink>
         <Button
           type="button"
@@ -45,9 +49,11 @@ const NavigationBar = () => {
           onClick={handleTeamAddButtonClick}
         >
           <TeamAddIcon />
-          <Text as="span" css={S.teamAddText}>
-            팀 참가/개설
-          </Text>
+          {!isMobile && (
+            <Text as="span" css={S.teamAddText}>
+              팀 참가/개설
+            </Text>
+          )}
         </Button>
       </S.MenuContainer>
     </S.Nav>

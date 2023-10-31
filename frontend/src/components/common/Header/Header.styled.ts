@@ -10,6 +10,14 @@ export const Header = styled.header`
   padding: 0 14px;
 
   border-bottom: 2px solid ${({ theme }) => theme.color.GRAY200};
+
+  @media (max-width: 750px) {
+    & {
+      height: 110px;
+      flex-wrap: wrap;
+      flex-direction: row-reverse;
+    }
+  }
 `;
 
 export const InnerContainer = styled.div`
