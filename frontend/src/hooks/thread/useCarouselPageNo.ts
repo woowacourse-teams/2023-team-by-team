@@ -14,8 +14,6 @@ const useCarouselPageNo = (props: UseCarouselPageNoProps) => {
     const handleKeyDown = (e: globalThis.KeyboardEvent) => {
       const { key, keyCode } = e;
 
-      console.log('key press', key);
-
       if (key >= '1' && key <= '9' && Number(key) <= pageCount) {
         setCurrentPage(() => Number(key));
         return;
