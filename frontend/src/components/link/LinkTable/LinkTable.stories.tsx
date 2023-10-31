@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import TeamLinkTable from './LinkTable';
-import { styled } from 'styled-components';
 
 /**
  * `LinkTable` 는 팀 링크 목록을 표시할 메뉴 컴포넌트입니다.

@@ -19,7 +19,9 @@ const fontSize: Record<TextSize, string> = {
   xxl: '22px',
 };
 
-export const TextWrapper = styled.p<TextProps>`
+export const TextWrapper = styled.p.withConfig({
+  shouldForwardProp: (prop) => !['size', 'weight', 'css'].includes(prop),
+})<TextProps>`
   h1&,
   h2&,
   h3&,

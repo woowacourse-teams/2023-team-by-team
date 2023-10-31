@@ -36,9 +36,9 @@ const DateCell = (props: DateCellProps) => {
       onClick={onClick}
     >
       <S.DateBadge
-        isCurrentMonth={isCurrentMonth}
+        $isCurrentMonth={isCurrentMonth}
         onClick={onDayClick}
-        isToday={isToday}
+        $isToday={isToday}
       >
         <Text
           css={S.dateText(isCurrentMonth, isToday, isSaturday, isSunday, size)}

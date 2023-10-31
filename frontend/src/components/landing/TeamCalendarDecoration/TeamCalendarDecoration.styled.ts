@@ -55,31 +55,31 @@ export const SampleCalendarBarContainer = styled.div`
 `;
 
 export const SampleCalendarBar = styled.div<{
-  row: number;
-  column: number;
-  length: number;
-  level: number;
-  roundedStart: boolean;
-  roundedEnd: boolean;
-  color: string;
+  $row: number;
+  $column: number;
+  $length: number;
+  $level: number;
+  $roundedStart: boolean;
+  $roundedEnd: boolean;
+  $color: string;
 }>`
   position: absolute;
-  top: ${({ row, level }) =>
-    `calc(${(row * 100) / 6}% + ${(level + 1) * 28 - 4}px)`};
-  left: ${({ column }) => `${(column * 100) / 7}%`};
+  top: ${({ $row, $level }) =>
+    `calc(${($row * 100) / 6}% + ${($level + 1) * 28 - 4}px)`};
+  left: ${({ $column }) => `${($column * 100) / 7}%`};
 
-  width: ${({ length, roundedStart, roundedEnd }) =>
-    `calc(${(length * 100) / 7}% - ${
-      10 * ((roundedStart ? 1 : 0) + (roundedEnd ? 1 : 0))
+  width: ${({ $length, $roundedStart, $roundedEnd }) =>
+    `calc(${($length * 100) / 7}% - ${
+      10 * (($roundedStart ? 1 : 0) + ($roundedEnd ? 1 : 0))
     }px)`};
   height: 24px;
-  margin-left: ${({ roundedStart }) => (roundedStart ? '10px' : '0')};
+  margin-left: ${({ $roundedStart }) => ($roundedStart ? '10px' : '0')};
 
-  border-radius: ${({ roundedStart, roundedEnd }) =>
-    `${roundedStart ? '8px' : '0'} ${roundedEnd ? '8px 8px' : '0 0'} ${
-      roundedStart ? '8px' : '0'
+  border-radius: ${({ $roundedStart, $roundedEnd }) =>
+    `${$roundedStart ? '8px' : '0'} ${$roundedEnd ? '8px 8px' : '0 0'} ${
+      $roundedStart ? '8px' : '0'
     }`};
-  background-color: ${({ color }) => color};
+  background-color: ${({ $color }) => $color};
 `;
 
 export const CalendarCell = styled.div`
@@ -124,7 +124,7 @@ const backAndForth = keyframes`
   }
 `;
 
-export const MousePointer = styled.img<{ animation: boolean }>`
+export const MousePointer = styled.img<{ $animation: boolean }>`
   position: absolute;
   top: 70%;
   left: 70%;
@@ -133,8 +133,8 @@ export const MousePointer = styled.img<{ animation: boolean }>`
 
   opacity: 0;
 
-  ${({ animation = true }) =>
-    animation &&
+  ${({ $animation = true }) =>
+    $animation &&
     css`
       animation: ${backAndForth} 7s infinite;
     `};

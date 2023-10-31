@@ -1,6 +1,6 @@
 import { styled, css } from 'styled-components';
 
-export const Container = styled.div<{ isOpen: boolean }>`
+export const Container = styled.div<{ $isOpen: boolean }>`
   display: flex;
   position: absolute;
   bottom: 46px;
@@ -13,7 +13,7 @@ export const Container = styled.div<{ isOpen: boolean }>`
   background: linear-gradient(30deg, #bfc3ff, #eaebff);
 
   transition: 0.35s;
-  transform: translateY(${({ isOpen }) => (isOpen ? '-163px' : '0')});
+  transform: translateY(${({ $isOpen }) => ($isOpen ? '-168px' : '0')});
 `;
 
 export const ContentWrapper = styled.div`

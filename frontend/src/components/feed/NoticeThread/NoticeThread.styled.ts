@@ -2,7 +2,7 @@ import { styled, css } from 'styled-components';
 import { noticeThreadBackground } from '~/assets/png';
 import type { NoticeSize } from '~/types/size';
 
-export const Container = styled.div<{ noticeSize: NoticeSize }>`
+export const Container = styled.div<{ $noticeSize: NoticeSize }>`
   position: sticky;
   top: 0;
   left: 0;
@@ -16,23 +16,23 @@ export const Container = styled.div<{ noticeSize: NoticeSize }>`
 
   transition: 0.3s;
 
-  ${({ noticeSize }) => {
-    if (noticeSize === 'sm')
+  ${({ $noticeSize }) => {
+    if ($noticeSize === 'sm')
       return css`
         height: 80px;
       `;
-    if (noticeSize === 'md')
+    if ($noticeSize === 'md')
       return css`
         height: 140px;
       `;
-    if (noticeSize === 'lg')
+    if ($noticeSize === 'lg')
       return css`
         height: 610px;
       `;
   }}
 `;
 
-export const BackgroundContainer = styled.div<{ noticeSize: NoticeSize }>`
+export const BackgroundContainer = styled.div<{ $noticeSize: NoticeSize }>`
   display: flex;
   justify-content: space-between;
   overflow: hidden;
@@ -45,16 +45,16 @@ export const BackgroundContainer = styled.div<{ noticeSize: NoticeSize }>`
 
   transition: 0.3s;
 
-  ${({ noticeSize }) => {
-    if (noticeSize === 'sm')
+  ${({ $noticeSize }) => {
+    if ($noticeSize === 'sm')
       return css`
         padding: 18px 20px 18px 28px;
       `;
-    if (noticeSize === 'md')
+    if ($noticeSize === 'md')
       return css`
         padding: 18px 20px 18px 28px;
       `;
-    if (noticeSize === 'lg')
+    if ($noticeSize === 'lg')
       return css`
         flex-direction: column;
 
@@ -63,7 +63,7 @@ export const BackgroundContainer = styled.div<{ noticeSize: NoticeSize }>`
   }}
 `;
 
-export const InnerContainer = styled.div<{ noticeSize: NoticeSize }>`
+export const InnerContainer = styled.div<{ $noticeSize: NoticeSize }>`
   display: flex;
   align-items: center;
   position: relative;
@@ -104,7 +104,7 @@ export const AuthorInfo = styled.div`
   height: 16px;
 `;
 
-export const ContentContainer = styled.div<{ noticeSize: NoticeSize }>`
+export const ContentContainer = styled.div<{ $noticeSize: NoticeSize }>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -114,8 +114,8 @@ export const ContentContainer = styled.div<{ noticeSize: NoticeSize }>`
   width: 100%;
   gap: 4px;
 
-  ${({ noticeSize }) => {
-    if (noticeSize === 'lg')
+  ${({ $noticeSize }) => {
+    if ($noticeSize === 'lg')
       return css`
         height: 400px;
       `;

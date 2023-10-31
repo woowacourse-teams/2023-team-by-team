@@ -14,7 +14,7 @@ const Accordion = (props: PropsWithChildren<AccordionProps>) => {
 
   return (
     <AccordionProvider>
-      <S.Container width={width}>{children}</S.Container>
+      <S.Container $width={width}>{children}</S.Container>
     </AccordionProvider>
   );
 };

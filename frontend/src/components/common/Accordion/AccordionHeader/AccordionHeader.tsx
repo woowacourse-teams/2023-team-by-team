@@ -15,9 +15,9 @@ const AccordionHeader = (props: PropsWithChildren<AccordionHeaderProps>) => {
   const { openedAccordion, handleOpenedAccordionChange } = useAccordion();
 
   return (
-    <S.Container isOpen={id === openedAccordion}>
+    <S.Container $isOpen={id === openedAccordion}>
       {disabled ? (
-        <S.DisabledWrapper padding={padding}>{children}</S.DisabledWrapper>
+        <S.DisabledWrapper $padding={padding}>{children}</S.DisabledWrapper>
       ) : (
         <Button
           type="button"

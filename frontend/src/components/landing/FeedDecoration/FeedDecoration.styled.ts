@@ -19,7 +19,7 @@ export const SampleBadge = styled.div`
   background-color: ${({ theme }) => theme.color.BLUE600};
 `;
 
-export const SampleThread = styled.div<{ css: CSSProp }>`
+export const SampleThread = styled.div<{ $css: CSSProp }>`
   display: flex;
   flex-direction: column;
   row-gap: 12px;
@@ -29,7 +29,7 @@ export const SampleThread = styled.div<{ css: CSSProp }>`
 
   border-radius: 20px;
 
-  ${({ css }) => css};
+  ${({ $css }) => $css};
 `;
 
 export const CircleButtonsContainer = styled.div`
@@ -67,19 +67,19 @@ const fillToRight = (width: string) => keyframes`
 `;
 
 export const WritingLine = styled.div<{
-  width: string;
-  delay: string;
-  color: 'dark' | 'light';
+  $width: string;
+  $delay: string;
+  $color: 'dark' | 'light';
 }>`
   width: 0;
   height: 20px;
   border-radius: 10px;
 
-  background-color: ${({ color, theme }) =>
-    color === 'dark' ? theme.color.BLUE500 : theme.color.BLUE600};
+  background-color: ${({ $color, theme }) =>
+    $color === 'dark' ? theme.color.BLUE500 : theme.color.BLUE600};
 
-  animation: ${({ width }) => fillToRight(width)} 2.5s forwards;
-  animation-delay: ${({ delay }) => delay};
+  animation: ${({ $width }) => fillToRight($width)} 2.5s forwards;
+  animation-delay: ${({ $delay }) => $delay};
 `;
 
 export const sampleThread1 = css`

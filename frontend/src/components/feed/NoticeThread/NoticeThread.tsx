@@ -37,17 +37,17 @@ const NoticeThread = (props: NoticeThreadProps) => {
   };
 
   return (
-    <S.Container noticeSize={noticeSize}>
-      <S.BackgroundContainer noticeSize={noticeSize}>
+    <S.Container $noticeSize={noticeSize}>
+      <S.BackgroundContainer $noticeSize={noticeSize}>
         <S.InnerContainer
-          noticeSize={noticeSize}
+          $noticeSize={noticeSize}
           aria-label={`${authorName}의 공지`}
         >
           <S.MegaphoneWrapper>
             <MegaphoneIcon />
           </S.MegaphoneWrapper>
 
-          <S.ContentContainer noticeSize={noticeSize}>
+          <S.ContentContainer $noticeSize={noticeSize}>
             <Text size="lg" weight="semiBold" css={S.contentField(noticeSize)}>
               {content}
             </Text>

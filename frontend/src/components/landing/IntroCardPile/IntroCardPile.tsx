@@ -20,9 +20,9 @@ const IntroCardPile = (props: IntroCardPileProps) => {
 
   return (
     <S.Container>
-      <S.Card css={S.card1(animation)} />
-      <S.Card css={S.card2(animation)} />
-      <S.Card css={S.card3(animation)}>
+      <S.Card $css={S.card1(animation)} />
+      <S.Card $css={S.card2(animation)} />
+      <S.Card $css={S.card3(animation)}>
         {decorationNo === 0 ? (
           <TeamCalendarDecoration animation={animation} />
         ) : decorationNo === 1 ? (
@@ -32,7 +32,7 @@ const IntroCardPile = (props: IntroCardPileProps) => {
         )}
         <S.Blind
           ref={blindRef}
-          animation={animation}
+          $animation={animation}
           onAnimationIteration={handleAnimationIteration}
         />
       </S.Card>

@@ -42,7 +42,7 @@ const JoinPage = () => {
     <S.Container>
       <LandingHeader href={PATH_NAME.TEAM_SELECT} />
       <S.MainContainer>
-        <S.InnerContainer ref={ref} isLinkClicked={isClicked}>
+        <S.InnerContainer ref={ref} $isLinkClicked={isClicked}>
           <Text weight="semiBold" css={S.titleText}>
             팀 참가하기
           </Text>

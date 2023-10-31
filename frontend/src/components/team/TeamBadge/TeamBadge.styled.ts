@@ -1,7 +1,9 @@
 import { css, styled } from 'styled-components';
 import type { TeamBadgeProps } from '~/components/team/TeamBadge/TeamBadge';
 
-export const Wrapper = styled.div<TeamBadgeProps>`
+export const Wrapper = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['teamPlaceColor', 'size'].includes(prop),
+})<TeamBadgeProps>`
   ${({ size }) => {
     if (size === 'sm')
       return css`

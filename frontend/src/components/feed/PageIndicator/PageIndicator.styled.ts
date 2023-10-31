@@ -22,13 +22,13 @@ export const DotIndicator = styled.div`
   column-gap: 4px;
 `;
 
-export const Dot = styled.button<{ selected: boolean }>`
+export const Dot = styled.button<{ $selected: boolean }>`
   width: 14px;
   height: 14px;
 
   border-radius: 50%;
-  background-color: ${({ theme, selected }) =>
-    selected ? theme.color.WHITE : theme.color.GRAY550};
+  background-color: ${({ theme, $selected }) =>
+    $selected ? theme.color.WHITE : theme.color.GRAY550};
 
   transition: 0.2s;
 `;

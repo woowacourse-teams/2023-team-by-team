@@ -59,7 +59,7 @@ export const BadgeContainer = styled.div`
   row-gap: 14px;
 `;
 
-export const BadgeWrapper = styled.div<{ isClicked: boolean }>`
+export const BadgeWrapper = styled.div<{ $isClicked: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -68,8 +68,8 @@ export const BadgeWrapper = styled.div<{ isClicked: boolean }>`
   height: 28px;
 
   border-radius: 50%;
-  ${({ isClicked }) => {
-    if (isClicked)
+  ${({ $isClicked }) => {
+    if ($isClicked)
       return css`
         border: 2px solid ${({ theme }) => theme.color.GRAY350};
       `;

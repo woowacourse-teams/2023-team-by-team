@@ -1,7 +1,7 @@
 import { styled, css, type CSSProp } from 'styled-components';
 import type { CalendarSize } from '~/types/size';
 
-export const Container = styled.div<{ css: CSSProp }>`
+export const Container = styled.div<{ $css: CSSProp }>`
   display: flex;
   flex-direction: column;
   z-index: ${({ theme }) => theme.zIndex.MODAL};
@@ -19,7 +19,7 @@ export const Container = styled.div<{ css: CSSProp }>`
     0 15px 25px #1b1d1f33,
     0 5px 10px #1b1d1f1f;
 
-  ${({ css }) => css};
+  ${({ $css }) => $css};
 `;
 
 export const Backdrop = styled.div`

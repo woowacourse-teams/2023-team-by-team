@@ -20,7 +20,7 @@ const ViewableThumbnail = (props: ViewableThumbnailProps) => {
   };
 
   return (
-    <S.Container size={size}>
+    <S.Container $size={size}>
       <Button
         variant="plain"
         type="button"

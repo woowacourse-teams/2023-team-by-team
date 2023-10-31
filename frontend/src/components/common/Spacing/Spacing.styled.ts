@@ -1,7 +1,9 @@
 import styled, { css } from 'styled-components';
 import type { SpacingProps } from '~/components/common/Spacing/Spacing';
 
-export const SpacingRoot = styled.div<SpacingProps>`
+export const SpacingRoot = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['size', 'direction'].includes(prop),
+})<SpacingProps>`
   ${({ direction, size }) => {
     if (direction === 'vertical') {
       return css`

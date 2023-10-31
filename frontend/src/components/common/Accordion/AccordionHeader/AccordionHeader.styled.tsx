@@ -1,11 +1,11 @@
 import type { CSSProperties } from 'react';
 import styled, { css } from 'styled-components';
 
-export const Container = styled.div<{ isOpen: boolean }>`
+export const Container = styled.div<{ $isOpen: boolean }>`
   cursor: pointer;
 
-  ${({ isOpen = false }) => {
-    if (isOpen)
+  ${({ $isOpen = false }) => {
+    if ($isOpen)
       return css`
         outline: 3px ridge rgba(0, 46, 210, 0.381);
         border-radius: 2px;
@@ -13,8 +13,8 @@ export const Container = styled.div<{ isOpen: boolean }>`
   }}
   svg {
     transition: transform 0.2s ease-in-out;
-    ${({ isOpen = false }) => {
-      if (isOpen)
+    ${({ $isOpen = false }) => {
+      if ($isOpen)
         return css`
           transform: rotate(-180deg);
         `;
@@ -26,7 +26,7 @@ export const Container = styled.div<{ isOpen: boolean }>`
   }
 `;
 
-export const accordionButton = (padding: CSSProperties['padding']) => css`
+export const accordionButton = ($padding: CSSProperties['padding']) => css`
   display: flex;
   position: relative;
   justify-content: space-between;
@@ -34,7 +34,7 @@ export const accordionButton = (padding: CSSProperties['padding']) => css`
   overflow-anchor: none;
 
   width: 100%;
-  padding: ${padding};
+  padding: ${$padding};
   text-align: left;
 
   border: 0;
@@ -42,7 +42,7 @@ export const accordionButton = (padding: CSSProperties['padding']) => css`
 `;
 
 export const DisabledWrapper = styled.div<{
-  padding: CSSProperties['padding'];
+  $padding: CSSProperties['padding'];
 }>`
-  ${({ padding }) => accordionButton(padding)}
+  ${({ $padding }) => accordionButton($padding)}
 `;

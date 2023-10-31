@@ -72,7 +72,7 @@ const TeamColorEditModal = () => {
           <S.BadgeContainer>
             {arrayOf(10).map((color) => (
               <S.BadgeWrapper
-                isClicked={teamColor === color}
+                $isClicked={teamColor === color}
                 key={color}
                 onClick={(e: MouseEvent<HTMLDivElement>) => {
                   e.stopPropagation();

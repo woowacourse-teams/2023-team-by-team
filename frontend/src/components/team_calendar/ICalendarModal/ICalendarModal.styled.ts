@@ -10,7 +10,9 @@ export const Backdrop = styled.div`
   height: 100%;
 `;
 
-export const Container = styled.div<ICalendarModalProps>`
+export const Container = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['calendarSize'].includes(prop),
+})<ICalendarModalProps>`
   position: fixed;
   display: flex;
   flex-direction: column;

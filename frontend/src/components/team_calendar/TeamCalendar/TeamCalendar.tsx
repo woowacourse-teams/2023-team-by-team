@@ -174,7 +174,7 @@ const TeamCalendar = (props: TeamCalendarProps) => {
 
   return (
     <>
-      <S.Container calendarSize={calendarSize}>
+      <S.Container $calendarSize={calendarSize}>
         <S.CalendarHeader>
           <div />
           <S.ButtonContainer>
@@ -218,7 +218,7 @@ const TeamCalendar = (props: TeamCalendarProps) => {
           </S.FeatureButtonContainer>
         </S.CalendarHeader>
         <div ref={calendarRef}>
-          <S.DaysOfWeek calendarSize={calendarSize}>
+          <S.DaysOfWeek $calendarSize={calendarSize}>
             {DAYS_OF_WEEK.map((day) => {
               return <S.DayOfWeek key={day}>{day}</S.DayOfWeek>;
             })}
@@ -278,7 +278,7 @@ const TeamCalendar = (props: TeamCalendarProps) => {
                       return null;
                     })}
                   </S.ScheduleBarContainer>
-                  <S.DateView calendarSize={calendarSize}>
+                  <S.DateView $calendarSize={calendarSize}>
                     {week.map((day, colIndex) => {
                       const {
                         year: renderYear,

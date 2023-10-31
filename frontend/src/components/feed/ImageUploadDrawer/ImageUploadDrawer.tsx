@@ -15,7 +15,7 @@ const ImageUploadDrawer = (
   const { isOpen, onClose, children, isUploading } = props;
 
   return (
-    <S.Container isOpen={isOpen}>
+    <S.Container $isOpen={isOpen}>
       <S.ContentWrapper>{children}</S.ContentWrapper>
       {!isUploading && (
         <S.CloseButtonWrapper>

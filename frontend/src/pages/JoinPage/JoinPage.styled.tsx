@@ -19,7 +19,7 @@ export const MainContainer = styled.main`
   padding-right: 120px;
 `;
 
-export const InnerContainer = styled.div<{ isLinkClicked: boolean }>`
+export const InnerContainer = styled.div<{ $isLinkClicked: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -27,8 +27,8 @@ export const InnerContainer = styled.div<{ isLinkClicked: boolean }>`
   width: 340px;
   height: 380px;
 
-  animation: ${({ theme, isLinkClicked }) =>
-      isLinkClicked ? theme.animation.slideRight : theme.animation.slideLeft}
+  animation: ${({ theme, $isLinkClicked }) =>
+      $isLinkClicked ? theme.animation.slideRight : theme.animation.slideLeft}
     0.6s ease-in-out forwards;
 `;
 

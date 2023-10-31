@@ -7,7 +7,10 @@ interface WrapperProps {
   size: DateCellSize;
 }
 
-export const Wrapper = styled.div<WrapperProps>`
+export const Wrapper = styled.div.withConfig({
+  shouldForwardProp: (prop) =>
+    !['isSunday', 'isSaturday', 'size'].includes(prop),
+})<WrapperProps>`
   display: flex;
   flex-direction: column;
 
@@ -36,8 +39,8 @@ export const Wrapper = styled.div<WrapperProps>`
 `;
 
 export const DateBadge = styled.div<{
-  isToday: boolean;
-  isCurrentMonth: boolean;
+  $isToday: boolean;
+  $isCurrentMonth: boolean;
 }>`
   display: flex;
   justify-content: center;
@@ -51,9 +54,9 @@ export const DateBadge = styled.div<{
   &:hover {
     background-color: ${({ theme }) => theme.color.GRAY300};
   }
-  background-color: ${({ isToday, theme, isCurrentMonth }) => {
-    if (isToday && isCurrentMonth) return theme.color.BLACK;
-    if (isToday) return theme.color.GRAY400;
+  background-color: ${({ $isToday, theme, $isCurrentMonth }) => {
+    if ($isToday && $isCurrentMonth) return theme.color.BLACK;
+    if ($isToday) return theme.color.GRAY400;
   }};
 `;
 

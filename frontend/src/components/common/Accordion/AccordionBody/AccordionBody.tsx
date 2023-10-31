@@ -37,7 +37,7 @@ const AccordionBody = (props: PropsWithChildren<AccordionBodyProps>) => {
   };
 
   return (
-    <S.Container isOpen={id === openedAccordion} height={getResultHeight()}>
+    <S.Container $isOpen={id === openedAccordion} $height={getResultHeight()}>
       <div ref={ref}>{children}</div>
     </S.Container>
   );
