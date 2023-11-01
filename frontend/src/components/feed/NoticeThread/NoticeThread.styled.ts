@@ -2,14 +2,17 @@ import { styled, css } from 'styled-components';
 import { noticeThreadBackground } from '~/assets/png';
 import type { NoticeSize } from '~/types/size';
 
-export const Container = styled.div<{ $noticeSize: NoticeSize }>`
+export const Container = styled.div<{
+  $noticeSize: NoticeSize;
+  $isMobile: boolean;
+}>`
   position: sticky;
   top: 0;
   left: 0;
   right: 0;
   z-index: ${({ theme }) => theme.zIndex.NOTICE};
 
-  padding-top: 10px;
+  padding-top: ${({ $isMobile }) => ($isMobile ? 0 : '10px')};
 
   background-color: ${({ theme }) => theme.color.GRAY100};
   border-bottom: 2px solid ${({ theme }) => theme.color.PRIMARY200};
@@ -32,14 +35,17 @@ export const Container = styled.div<{ $noticeSize: NoticeSize }>`
   }}
 `;
 
-export const BackgroundContainer = styled.div<{ $noticeSize: NoticeSize }>`
+export const BackgroundContainer = styled.div<{
+  $noticeSize: NoticeSize;
+  $isMobile: boolean;
+}>`
   display: flex;
   justify-content: space-between;
   overflow: hidden;
 
   height: 100%;
 
-  border-radius: 20px 20px 0 0;
+  border-radius: ${({ $isMobile }) => ($isMobile ? 0 : '20px 20px 0 0')};
   background-image: url(${noticeThreadBackground});
   background-size: 100%;
 
