@@ -1,7 +1,7 @@
 import { css, styled } from 'styled-components';
 import type { HeaderModalType } from '~/components/common/Header/Header';
 
-export const Header = styled.header`
+export const Header = styled.header<{ $isMobile: boolean }>`
   display: flex;
   justify-content: space-between;
 
@@ -11,13 +11,13 @@ export const Header = styled.header`
 
   border-bottom: 2px solid ${({ theme }) => theme.color.GRAY200};
 
-  @media (max-width: 750px) {
-    & {
+  ${({ $isMobile }) =>
+    $isMobile &&
+    css`
       height: 110px;
       flex-wrap: wrap;
       flex-direction: row-reverse;
-    }
-  }
+    `}
 `;
 
 export const InnerContainer = styled.div`

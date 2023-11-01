@@ -103,7 +103,7 @@ const Header = () => {
 
   return (
     <>
-      <S.Header tabIndex={0}>
+      <S.Header tabIndex={0} $isMobile={isMobile}>
         <S.InnerContainer>
           {!isMobile && (
             <Link
