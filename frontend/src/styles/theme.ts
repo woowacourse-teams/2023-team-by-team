@@ -6,6 +6,7 @@ const color = {
   PRIMARY200: '#b7baff',
   PRIMARY900: '#5054ff',
   WHITE: '#fff',
+  WHITE_BLUR: 'rgba(255, 255, 255, 0.68)',
   BLACK: '#000',
   RED: '#ff5b5b',
   PURPLE: '#6e61ff',

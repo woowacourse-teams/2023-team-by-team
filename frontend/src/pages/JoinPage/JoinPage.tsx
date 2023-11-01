@@ -9,10 +9,12 @@ import { useTeamJoin } from '~/hooks/team/useTeamJoin';
 import IntroCardPile from '~/components/landing/IntroCardPile/IntroCardPile';
 import LandingHeader from '~/components/common/LandingHeader/LandingHeader';
 import BackButton from '~/components/common/BackButton/BackButton';
+import { useCheckMobileWeb } from '~/hooks/useCheckMobileWeb';
 
 const JoinPage = () => {
   const ref = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const isMobile = useCheckMobileWeb();
   const navigate = useNavigate();
 
   const {
@@ -41,9 +43,9 @@ const JoinPage = () => {
   return (
     <S.Container>
       <LandingHeader href={PATH_NAME.TEAM_SELECT} />
-      <S.MainContainer>
+      <S.MainContainer $isMobile={isMobile}>
         <S.InnerContainer ref={ref} $isLinkClicked={isClicked}>
-          <Text weight="semiBold" css={S.titleText}>
+          <Text weight="semiBold" css={S.titleText(isMobile)}>
             팀 참가하기
           </Text>
           <S.InviteCodeForm onSubmit={handleTeamNameSubmit}>
@@ -65,7 +67,7 @@ const JoinPage = () => {
                   {warningText}
                 </Text>
               </S.InputContainer>
-              <div>
+              <S.HelpTextContainer $isMobile={isMobile}>
                 <Text as="span" weight="semiBold" css={S.explainText}>
                   초대코드가 없으신가요?
                 </Text>
@@ -78,7 +80,7 @@ const JoinPage = () => {
                 >
                   직접 팀을 만들어보세요!
                 </Button>
-              </div>
+              </S.HelpTextContainer>
             </S.BodyContainer>
             <S.ConfirmButtonsContainer>
               <BackButton label="이전 단계로" />

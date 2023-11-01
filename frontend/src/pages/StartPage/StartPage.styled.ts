@@ -59,7 +59,7 @@ export const explainText = ($isMobile: boolean) => css`
     width: fit-content;
 
     border-radius: 6px;
-    background-color: ${({ theme }) => theme.color.WHITE};
+    background-color: ${({ theme }) => theme.color.WHITE_BLUR};
   `}
 `;
 
