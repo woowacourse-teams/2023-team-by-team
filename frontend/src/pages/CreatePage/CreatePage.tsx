@@ -8,9 +8,11 @@ import IntroCardPile from '~/components/landing/IntroCardPile/IntroCardPile';
 import LandingHeader from '~/components/common/LandingHeader/LandingHeader';
 import BackButton from '~/components/common/BackButton/BackButton';
 import { PATH_NAME } from '~/constants/routes';
+import { useCheckMobileWeb } from '~/hooks/useCheckMobileWeb';
 
 const CreatePage = () => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const isMobile = useCheckMobileWeb();
   const {
     teamName,
 
@@ -20,9 +22,9 @@ const CreatePage = () => {
   return (
     <S.Container>
       <LandingHeader href={PATH_NAME.TEAM_SELECT} />
-      <S.MainContainer>
+      <S.MainContainer $isMobile={isMobile}>
         <S.InnerContainer>
-          <Text weight="semiBold" css={S.titleText}>
+          <Text weight="semiBold" css={S.titleText(isMobile)}>
             팀 개설하기
           </Text>
           <S.TeamNameForm onSubmit={handleTeamNameSubmit}>
@@ -39,7 +41,7 @@ const CreatePage = () => {
                   required
                 />
               </S.InputWrapper>
-              <Text weight="semiBold" css={S.explainText}>
+              <Text weight="semiBold" css={S.explainText(isMobile)}>
                 간단한 입력으로 쉽게 팀을 만들어 보세요!
               </Text>
             </S.BodyContainer>
