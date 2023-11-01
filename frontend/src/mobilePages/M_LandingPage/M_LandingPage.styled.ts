@@ -82,7 +82,7 @@ export const mainPrefix = css`
   font-weight: 900;
 
   color: ${({ theme }) => theme.color.BLUE700};
-  background-color: ${({ theme }) => theme.color.WHITE};
+  background-color: ${({ theme }) => theme.color.WHITE_BLUR};
   border-radius: 4px;
 `;
 
@@ -94,7 +94,7 @@ export const mainTitle = css`
   font-weight: 900;
 
   color: ${({ theme }) => theme.color.PURPLE};
-  background-color: ${({ theme }) => theme.color.WHITE};
+  background-color: ${({ theme }) => theme.color.WHITE_BLUR};
   border-radius: 4px;
 `;
 
@@ -105,7 +105,7 @@ export const mainLore = css`
   font-weight: 600;
 
   color: ${({ theme }) => theme.color.BLACK};
-  background-color: ${({ theme }) => theme.color.WHITE};
+  background-color: ${({ theme }) => theme.color.WHITE_BLUR};
   border-radius: 4px;
 `;
 
