@@ -7,6 +7,7 @@ import Input from '~/components/common/Input/Input';
 import { useRef } from 'react';
 import { useTeamLinkAddModal } from '~/hooks/link/useTeamLinkAddModal';
 import type { LinkSize } from '~/types/size';
+import { useCheckMobileWeb } from '~/hooks/useCheckMobileWeb';
 
 interface LinkAddModalProps {
   linkSize?: LinkSize;
@@ -14,7 +15,7 @@ interface LinkAddModalProps {
 
 const LinkAddModal = (props: LinkAddModalProps) => {
   const { linkSize = 'md' } = props;
-
+  const isMobile = useCheckMobileWeb();
   const linkRef = useRef<HTMLInputElement>(null);
 
   const {
@@ -32,7 +33,7 @@ const LinkAddModal = (props: LinkAddModalProps) => {
   return (
     <Modal>
       <S.Backdrop onClick={handleClose} />
-      <S.Container $linkSize={linkSize}>
+      <S.Container $linkSize={linkSize} $isMobile={isMobile}>
         <S.IconWrapper>
           <Button
             variant="plain"

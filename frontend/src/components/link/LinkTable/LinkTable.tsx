@@ -12,6 +12,7 @@ import { useToast } from '~/hooks/useToast';
 import { linkTableHeaderValues } from '~/constants/link';
 import type { LinkSize } from '~/types/size';
 import { generateHttpsUrl } from '~/utils/generateHttpsUrl';
+import { useCheckMobileWeb } from '~/hooks/useCheckMobileWeb';
 
 interface LinkTableProps {
   linkSize?: LinkSize;
@@ -19,7 +20,7 @@ interface LinkTableProps {
 
 const LinkTable = (props: LinkTableProps) => {
   const { linkSize = 'md' } = props;
-
+  const isMobile = useCheckMobileWeb();
   const { openModal, isModalOpen } = useModal();
   const { teamPlaceId } = useTeamPlace();
   const teamLinks = useFetchTeamLinks(teamPlaceId);
@@ -62,7 +63,7 @@ const LinkTable = (props: LinkTableProps) => {
             <PlusIcon />
           </Button>
         </S.MenuHeader>
-        <S.TableContainer $linkSize={linkSize}>
+        <S.TableContainer $linkSize={linkSize} $isMobile={isMobile}>
           <S.TableHeader>
             {linkTableHeaderValues.map((value) => (
               <th key={value}>{value}</th>
