@@ -8,12 +8,14 @@ import { START_TYPE } from '~/constants/team';
 import IntroCardPile from '~/components/landing/IntroCardPile/IntroCardPile';
 import LandingHeader from '~/components/common/LandingHeader/LandingHeader';
 import BackButton from '~/components/common/BackButton/BackButton';
+import { useCheckMobileWeb } from '~/hooks/useCheckMobileWeb';
 
 type StartType = (typeof START_TYPE)[keyof typeof START_TYPE];
 
 const StartPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const isMobile = useCheckMobileWeb();
   const previousPath = location.state?.from?.pathname;
   const isShowBackButton = previousPath?.includes(PATH_NAME.TEAM_SELECT);
 
@@ -40,10 +42,10 @@ const StartPage = () => {
   return (
     <S.Container>
       <LandingHeader href={PATH_NAME.TEAM_SELECT} />
-      <S.MainContainer>
+      <S.MainContainer $isMobile={isMobile}>
         <S.InnerContainer ref={ref} $clickedButton={clickedButton}>
           <S.ButtonContainer>
-            <Text weight="semiBold" css={S.explainText}>
+            <Text weight="semiBold" css={S.explainText(isMobile)}>
               우리 팀만의 공간이 필요하신가요?
             </Text>
             <Button
@@ -56,7 +58,7 @@ const StartPage = () => {
             </Button>
           </S.ButtonContainer>
           <S.ButtonContainer>
-            <Text weight="semiBold" css={S.explainText}>
+            <Text weight="semiBold" css={S.explainText(isMobile)}>
               초대코드가 있으신가요?
             </Text>
             <Button

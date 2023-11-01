@@ -8,15 +8,25 @@ export const Container = styled.div`
   height: 100vh;
 `;
 
-export const MainContainer = styled.main`
+export const MainContainer = styled.main<{ $isMobile: boolean }>`
   display: flex;
-  justify-content: flex-end;
   align-items: center;
   overflow-x: hidden;
 
   width: 100%;
   height: 100%;
-  padding-right: 120px;
+
+  ${({ $isMobile }) => {
+    if ($isMobile)
+      return css`
+        justify-content: center;
+      `;
+
+    return css`
+      justify-content: flex-end;
+      padding-right: 120px;
+    `;
+  }}
 `;
 
 export const InnerContainer = styled.div<{
@@ -40,8 +50,17 @@ export const ButtonContainer = styled.div`
   gap: 10px;
 `;
 
-export const explainText = css`
+export const explainText = ($isMobile: boolean) => css`
   color: ${({ theme }) => theme.color.GRAY600};
+
+  ${$isMobile &&
+  css`
+    padding: 4px 10px;
+    width: fit-content;
+
+    border-radius: 6px;
+    background-color: ${({ theme }) => theme.color.WHITE};
+  `}
 `;
 
 export const startTeamButton = (variant?: 'normal') => css`
