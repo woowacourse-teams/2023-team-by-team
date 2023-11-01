@@ -12,6 +12,7 @@ import TimeTableMenu from '~/components/team_calendar/TimeTableMenu/TimeTableMen
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useRef, useEffect } from 'react';
 import type { CalendarSize } from '~/types/size';
+import { useCheckMobileWeb } from '~/hooks/useCheckMobileWeb';
 
 interface ScheduleAddModalProps {
   calendarSize?: CalendarSize;
@@ -22,6 +23,7 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
   const { clickedDate, calendarSize = 'md' } = props;
   const { closeModal } = useModal();
   const { teamPlaceColor, displayName } = useTeamPlace();
+  const isMobile = useCheckMobileWeb();
   const {
     schedule,
     isAllDay,
@@ -44,7 +46,7 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
   return (
     <Modal>
       <S.Backdrop onClick={closeModal} />
-      <S.Container $calendarSize={calendarSize}>
+      <S.Container $calendarSize={calendarSize} $isMobile={isMobile}>
         <S.Header>
           <Button
             variant="plain"
@@ -72,11 +74,11 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
             />
           </S.TitleWrapper>
 
-          <S.TimeSelectContainer>
+          <S.TimeSelectContainer $isMobile={isMobile}>
             <Text size="xl" weight="semiBold">
               일정 시작
             </Text>
-            <S.InputWrapper>
+            <S.InputWrapper $isMobile={isMobile}>
               <Input
                 width={isAllDay ? '100%' : '50%'}
                 height="40px"
@@ -96,11 +98,11 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
               )}
             </S.InputWrapper>
           </S.TimeSelectContainer>
-          <S.TimeSelectContainer>
+          <S.TimeSelectContainer $isMobile={isMobile}>
             <Text size="xl" weight="semiBold">
               일정 마감
             </Text>
-            <S.InputWrapper>
+            <S.InputWrapper $isMobile={isMobile}>
               <Input
                 width={isAllDay ? '100%' : '50%'}
                 height="40px"
@@ -139,7 +141,7 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
           <S.InnerContainer>
             <S.TeamNameContainer title={displayName}>
               <TeamBadge teamPlaceColor={teamPlaceColor} size="lg" />
-              <Text css={S.teamPlaceName}>{displayName}</Text>
+              {!isMobile && <Text css={S.teamPlaceName}>{displayName}</Text>}
             </S.TeamNameContainer>
             <S.ControlButtonWrapper>
               <Button variant="primary" css={S.submitButton}>
