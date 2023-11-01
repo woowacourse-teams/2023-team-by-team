@@ -32,7 +32,7 @@ export const useModifyUserInfo = () => {
           );
         }
       },
-      onSuccess: () => {
+      onSettled: () => {
         queryClient.invalidateQueries(QUERY_KEY);
       },
     },
