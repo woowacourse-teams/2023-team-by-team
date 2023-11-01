@@ -18,15 +18,17 @@ const Error404 = (props: Error404Props) => {
     <S.Container>
       <S.ErrorImage src={error404Image} alt="해당 페이지를 찾을 수 없어요" />
       <S.ErrorDetails>
-        <S.ErrorTextImage src={error404TextImage} alt="404" />
         {isMobile && location.includes('overview') ? (
           <Text size="xxl" weight="bold" css={S.errorText}>
             모바일에서는 이용할 수 없는 페이지에요!
           </Text>
         ) : (
-          <Text size="xxl" weight="bold" css={S.errorText}>
-            해당 페이지를 찾을 수 없어요!
-          </Text>
+          <>
+            <S.ErrorTextImage src={error404TextImage} alt="404" />
+            <Text size="xxl" weight="bold" css={S.errorText}>
+              해당 페이지를 찾을 수 없어요!
+            </Text>
+          </>
         )}
         <BackButton
           href={
