@@ -11,8 +11,9 @@ import { ClipboardIcon, CloseIcon, QuestionIcon } from '~/assets/svg';
 import type { CalendarSize } from '~/types/size';
 import * as S from './ICalendarModal.styled';
 import { ICALENDAR_USER_GUIDE_URL } from '~/constants/url';
+import { useCheckMobileWeb } from '~/hooks/useCheckMobileWeb';
 
-export interface ICalendarModalProps {
+interface ICalendarModalProps {
   calendarSize?: CalendarSize;
 }
 
@@ -21,6 +22,7 @@ const ICalendarModal = (props: ICalendarModalProps) => {
   const { closeModal } = useModal();
   const { showToast } = useToast();
   const { teamPlaceId } = useTeamPlace();
+  const isMobile = useCheckMobileWeb();
 
   const { url } = useFetchICalendarUrl(teamPlaceId);
 
@@ -42,7 +44,7 @@ const ICalendarModal = (props: ICalendarModalProps) => {
   return (
     <Modal>
       <S.Backdrop onClick={closeModal} />
-      <S.Container calendarSize={calendarSize}>
+      <S.Container $calendarSize={calendarSize} $isMobile={isMobile}>
         <S.Header>
           <Text as="span" size="xl" weight="semiBold">
             일정 내보내기
@@ -82,7 +84,7 @@ const ICalendarModal = (props: ICalendarModalProps) => {
           </Button>
         </S.Header>
 
-        <Spacing size={16} />
+        {!isMobile && <Spacing size={16} />}
 
         <Text as="span" weight="semiBold">
           일정 파일(.ics) 경로

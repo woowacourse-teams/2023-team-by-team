@@ -104,7 +104,16 @@ export const modalLocation = (
   calendarWidth: number,
   calendarLeft: number,
   calendarSize: CalendarSize,
+  isMobile: boolean,
 ) => {
+  if (isMobile)
+    return css`
+      top: 50%;
+      left: 50%;
+
+      transform: translate(-50%, -50%);
+    `;
+
   if (calendarSize === 'md')
     return css`
       position: absolute;
