@@ -23,7 +23,7 @@ export const Header = styled.header<{ $isMobile: boolean }>`
 export const InnerContainer = styled.div`
   display: flex;
   column-gap: 20px;
-
+  width: 100%;
   & > div {
     display: flex;
     align-items: center;
