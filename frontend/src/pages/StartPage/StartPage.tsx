@@ -45,7 +45,7 @@ const StartPage = () => {
       <S.MainContainer $isMobile={isMobile}>
         <S.InnerContainer ref={ref} $clickedButton={clickedButton}>
           <S.ButtonContainer>
-            <Text weight="semiBold" css={S.explainText(isMobile)}>
+            <Text weight="semiBold" css={S.explainText}>
               우리 팀만의 공간이 필요하신가요?
             </Text>
             <Button
@@ -58,7 +58,7 @@ const StartPage = () => {
             </Button>
           </S.ButtonContainer>
           <S.ButtonContainer>
-            <Text weight="semiBold" css={S.explainText(isMobile)}>
+            <Text weight="semiBold" css={S.explainText}>
               초대코드가 있으신가요?
             </Text>
             <Button
@@ -73,7 +73,7 @@ const StartPage = () => {
           {isShowBackButton && <BackButton label="이전 페이지로 이동" />}
         </S.InnerContainer>
       </S.MainContainer>
-      <IntroCardPile animation={false} />
+      {!isMobile && <IntroCardPile animation={false} />}
     </S.Container>
   );
 };

@@ -5,5 +5,6 @@ export const getIsMobile = () => {
   if (isIos || isAndroid) {
     return true;
   }
+
   return false;
 };

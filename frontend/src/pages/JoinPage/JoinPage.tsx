@@ -45,7 +45,7 @@ const JoinPage = () => {
       <LandingHeader href={PATH_NAME.TEAM_SELECT} />
       <S.MainContainer $isMobile={isMobile}>
         <S.InnerContainer ref={ref} $isLinkClicked={isClicked}>
-          <Text weight="semiBold" css={S.titleText(isMobile)}>
+          <Text weight="semiBold" css={S.titleText}>
             팀 참가하기
           </Text>
           <S.InviteCodeForm onSubmit={handleTeamNameSubmit}>
@@ -67,7 +67,7 @@ const JoinPage = () => {
                   {warningText}
                 </Text>
               </S.InputContainer>
-              <S.HelpTextContainer $isMobile={isMobile}>
+              <div>
                 <Text as="span" weight="semiBold" css={S.explainText}>
                   초대코드가 없으신가요?
                 </Text>
@@ -80,7 +80,7 @@ const JoinPage = () => {
                 >
                   직접 팀을 만들어보세요!
                 </Button>
-              </S.HelpTextContainer>
+              </div>
             </S.BodyContainer>
             <S.ConfirmButtonsContainer>
               <BackButton label="이전 단계로" />
@@ -95,7 +95,7 @@ const JoinPage = () => {
           </S.InviteCodeForm>
         </S.InnerContainer>
       </S.MainContainer>
-      <IntroCardPile animation={false} />
+      {!isMobile && <IntroCardPile animation={false} />}
     </S.Container>
   );
 };

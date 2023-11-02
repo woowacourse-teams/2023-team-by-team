@@ -24,7 +24,7 @@ const CreatePage = () => {
       <LandingHeader href={PATH_NAME.TEAM_SELECT} />
       <S.MainContainer $isMobile={isMobile}>
         <S.InnerContainer>
-          <Text weight="semiBold" css={S.titleText(isMobile)}>
+          <Text weight="semiBold" css={S.titleText}>
             팀 개설하기
           </Text>
           <S.TeamNameForm onSubmit={handleTeamNameSubmit}>
@@ -41,7 +41,7 @@ const CreatePage = () => {
                   required
                 />
               </S.InputWrapper>
-              <Text weight="semiBold" css={S.explainText(isMobile)}>
+              <Text weight="semiBold" css={S.explainText}>
                 간단한 입력으로 쉽게 팀을 만들어 보세요!
               </Text>
             </S.BodyContainer>
@@ -53,7 +53,7 @@ const CreatePage = () => {
             </S.ConfirmButtonsContainer>
           </S.TeamNameForm>
         </S.InnerContainer>
-        <IntroCardPile animation={false} />
+        {!isMobile && <IntroCardPile animation={false} />}
       </S.MainContainer>
     </S.Container>
   );

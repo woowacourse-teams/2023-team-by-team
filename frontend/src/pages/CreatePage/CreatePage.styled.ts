@@ -70,22 +70,13 @@ export const ConfirmButtonsContainer = styled.div`
   justify-content: space-between;
 `;
 
-export const explainText = ($isMobile: boolean) => css`
+export const explainText = css`
   display: flex;
   justify-content: center;
   color: ${({ theme }) => theme.color.GRAY600};
-
-  ${$isMobile &&
-  css`
-    width: fit-content;
-    padding: 6px 10px;
-
-    border-radius: 8px;
-    background-color: ${({ theme }) => theme.color.WHITE_BLUR};
-  `}
 `;
 
-export const titleText = ($isMobile: boolean) => css`
+export const titleText = css`
   display: flex;
   justify-content: center;
 
@@ -95,13 +86,6 @@ export const titleText = ($isMobile: boolean) => css`
   color: ${({ theme }) => theme.color.PRIMARY};
 
   border-bottom: 1px solid ${({ theme }) => theme.color.PRIMARY};
-
-  ${$isMobile &&
-  css`
-    padding: 6px 10px;
-    border-radius: 8px 8px 0 0;
-    background-color: ${({ theme }) => theme.color.WHITE_BLUR};
-  `}
 `;
 
 export const inputTitle = css`

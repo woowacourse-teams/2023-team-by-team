@@ -50,17 +50,8 @@ export const ButtonContainer = styled.div`
   gap: 10px;
 `;
 
-export const explainText = ($isMobile: boolean) => css`
+export const explainText = css`
   color: ${({ theme }) => theme.color.GRAY600};
-
-  ${$isMobile &&
-  css`
-    padding: 4px 10px;
-    width: fit-content;
-
-    border-radius: 6px;
-    background-color: ${({ theme }) => theme.color.WHITE_BLUR};
-  `}
 `;
 
 export const startTeamButton = (variant?: 'normal') => css`

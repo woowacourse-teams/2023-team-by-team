@@ -77,18 +77,6 @@ export const ConfirmButtonsContainer = styled.div`
   justify-content: space-between;
 `;
 
-export const HelpTextContainer = styled.div<{ $isMobile: boolean }>`
-  ${({ $isMobile }) =>
-    $isMobile &&
-    css`
-      padding: 4px 10px;
-      width: fit-content;
-
-      border-radius: 6px;
-      background-color: ${({ theme }) => theme.color.WHITE_BLUR};
-    `}
-`;
-
 export const createPageButton = css`
   padding: 0;
 
@@ -109,7 +97,7 @@ export const explainText = css`
   color: ${({ theme }) => theme.color.GRAY600};
 `;
 
-export const titleText = ($isMobile: boolean) => css`
+export const titleText = css`
   display: flex;
   justify-content: center;
 
@@ -119,13 +107,6 @@ export const titleText = ($isMobile: boolean) => css`
 
   font-size: 32px;
   color: ${({ theme }) => theme.color.PRIMARY};
-
-  ${$isMobile &&
-  css`
-    padding: 6px 10px;
-    border-radius: 8px 8px 0 0;
-    background-color: ${({ theme }) => theme.color.WHITE_BLUR};
-  `}
 `;
 
 export const inputTitle = css`
