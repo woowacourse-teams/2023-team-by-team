@@ -1,11 +1,7 @@
 package team.teamby.teambyteam.icalendar.acceptance;
 
-import static org.mockito.ArgumentMatchers.any;
-import static team.teamby.teambyteam.common.fixtures.acceptance.IcalendarAcceptanceFixtures.GET_ICALENDAR_PUBLISHED_URL;
-
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import java.util.concurrent.CountDownLatch;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.assertj.core.api.SoftAssertions;
@@ -27,6 +23,11 @@ import team.teamby.teambyteam.filesystem.FileCloudUploader;
 import team.teamby.teambyteam.icalendar.domain.PublishedIcalendar;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
+
+import java.util.concurrent.CountDownLatch;
+
+import static org.mockito.ArgumentMatchers.any;
+import static team.teamby.teambyteam.common.fixtures.acceptance.IcalendarAcceptanceFixtures.GET_ICALENDAR_PUBLISHED_URL;
 
 public class IcalendarAcceptanceTest extends AcceptanceTest {
 
@@ -56,6 +57,7 @@ public class IcalendarAcceptanceTest extends AcceptanceTest {
 
             public void await() throws InterruptedException {
                 countDownLatch.await();
+                Thread.sleep(10);
             }
         }
     }
