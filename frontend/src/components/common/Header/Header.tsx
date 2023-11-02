@@ -16,6 +16,7 @@ import TeamColorEditModal from '~/components/team/TeamColorEditModal/TeamColorEd
 import AccountDeleteModal from '~/components/user/AccountDeleteModal/AccountDeleteModal';
 import ServiceCenterModal from '~/components/user/ServiceCenterModal/ServiceCenterModal';
 import { getIsMobile } from '~/utils/getIsMobile';
+import Text from '~/components/common/Text/Text';
 
 export type HeaderModalType =
   | 'team'
@@ -143,7 +144,12 @@ const Header = () => {
             css={S.teamPlaceInfoButton}
             aria-label="팀 정보 보기"
           >
-            <TeamIcon />
+            <TeamIcon height={isMobile ? '32' : '22'} />
+            {!isMobile && (
+              <Text as="span" css={S.explainText}>
+                팀 정보
+              </Text>
+            )}
           </Button>
 
           <S.Divider />

@@ -93,6 +93,7 @@ export const notificationButton = css`
 
 export const teamPlaceInfoButton = css`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 
@@ -105,6 +106,10 @@ export const teamPlaceInfoButton = css`
   &:hover {
     background-color: ${({ theme }) => theme.color.GRAY200};
   }
+`;
+
+export const SvgWrapper = styled.div`
+  height: 20px;
 `;
 
 export const userInfoButton = css`
@@ -145,4 +150,8 @@ export const teamColorButton = (
   &:hover svg {
     opacity: 1;
   }
+`;
+
+export const explainText = css`
+  font-size: 10px;
 `;

@@ -36,7 +36,7 @@ const NavigationBar = () => {
         </S.MenuLink>
         <S.MenuLink to={PATH_NAME.TEAM_FEED}>
           <FeedIcon />
-          {!isMobile && <Text as="span">피드</Text>}
+          {!isMobile && <Text as="span">채팅</Text>}
         </S.MenuLink>
         <S.MenuLink to={PATH_NAME.TEAM_LINK}>
           <ChainIcon />
