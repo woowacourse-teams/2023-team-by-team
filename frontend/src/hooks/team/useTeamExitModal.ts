@@ -7,7 +7,7 @@ import { useModal } from '~/hooks/useModal';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useToast } from '~/hooks/useToast';
 
-const useTeamExitModal = (onClose: () => void) => {
+export const useTeamExitModal = (onClose: () => void) => {
   const navigate = useNavigate();
   const { teamPlaces, teamPlaceId, displayName, resetTeamPlace } =
     useTeamPlace();
@@ -72,5 +72,3 @@ const useTeamExitModal = (onClose: () => void) => {
     },
   };
 };
-
-export default useTeamExitModal;

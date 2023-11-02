@@ -5,7 +5,7 @@ import Modal from '~/components/common/Modal/Modal';
 import Text from '../../common/Text/Text';
 import Button from '../../common/Button/Button';
 import Input from '../../common/Input/Input';
-import useScheduleAddModal from '~/hooks/schedule/useScheduleAddModal';
+import { useScheduleAddModal } from '~/hooks/schedule/useScheduleAddModal';
 import Checkbox from '~/components/common/Checkbox/Checkbox';
 import TeamBadge from '~/components/team/TeamBadge/TeamBadge';
 import TimeTableMenu from '~/components/team_calendar/TimeTableMenu/TimeTableMenu';

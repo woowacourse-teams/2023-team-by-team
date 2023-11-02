@@ -3,7 +3,7 @@ import { CALENDAR } from '~/constants/calendar';
 import { arrayOf } from '~/utils/arrayOf';
 import { parseDate } from '~/utils/parseDate';
 
-const useCalendar = () => {
+export const useCalendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const { year, month, date } = parseDate(currentDate);
   const { day: startDayOfMonth } = parseDate(new Date(year, month, 1));
@@ -41,5 +41,3 @@ const useCalendar = () => {
     },
   };
 };
-
-export default useCalendar;

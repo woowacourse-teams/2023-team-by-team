@@ -9,7 +9,7 @@ import ScheduleEditModal from '~/components/team_calendar/ScheduleEditModal/Sche
 import ScheduleMoreCell from '~/components/team_calendar/ScheduleMoreCell/ScheduleMoreCell';
 import DailyScheduleModal from '~/components/team_calendar/DailyScheduleModal/DailyScheduleModal';
 import ICalendarModal from '~/components/team_calendar/ICalendarModal/ICalendarModal';
-import useCalendar from '~/hooks/useCalendar';
+import { useCalendar } from '~/hooks/useCalendar';
 import { useScheduleModal } from '~/hooks/schedule/useScheduleModal';
 import { useFetchSchedules } from '~/hooks/queries/useFetchSchedules';
 import { useModal } from '~/hooks/useModal';

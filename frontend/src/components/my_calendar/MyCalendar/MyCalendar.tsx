@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import Button from '~/components/common/Button/Button';
 import Text from '~/components/common/Text/Text';
-import useCalendar from '~/hooks/useCalendar';
+import { useCalendar } from '~/hooks/useCalendar';
 import * as S from './MyCalendar.styled';
 import DateCell from '~/components/common/DateCell/DateCell';
 import { ArrowLeftIcon, ArrowRightIcon } from '~/assets/svg';
