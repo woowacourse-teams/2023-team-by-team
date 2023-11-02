@@ -33,7 +33,6 @@ import team.teamby.teambyteam.filesystem.FileCloudUploader;
 import team.teamby.teambyteam.filesystem.util.FileUtil;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.IdOnly;
-import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
@@ -47,8 +46,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import static team.teamby.teambyteam.feed.application.event.FeedEvent.Status.WRITE;
 
 @Slf4j
 @Service
@@ -86,24 +83,30 @@ public class FeedThreadService {
             final Long teamPlaceId
     ) {
         final String content = feedThreadWritingRequest.content();
-        List<MultipartFile> images = feedThreadWritingRequest.images();
+        final List<MultipartFile> images = feedThreadWritingRequest.images();
         validateEmptyRequest(content, images);
         validateImages(images);
 
         final Content contentVo = new Content(content);
-        final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
-        final FeedThread feedThread = new FeedThread(teamPlaceId, contentVo, member.getId());
+        final Long memberId = memberRepository.findIdByEmail(new Email(memberEmailDto.email()))
+                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()))
+                .id();
+
+        final FeedThread feedThread = new FeedThread(teamPlaceId, contentVo, memberId);
         final FeedThread savedFeedThread = feedRepository.save(feedThread);
 
         saveImages(images, savedFeedThread);
-        Long threadId = savedFeedThread.getId();
+        final Long threadId = savedFeedThread.getId();
         log.info("스레드 생성 - 생성자 이메일 : {}, 스레드 아이디 : {}", memberEmailDto.email(), threadId);
 
         // TODO : 캐시 고치고 추가
 //        feedCache.addCache(teamPlaceId, FeedCache.from(savedFeedThread));
 
-        applicationEventPublisher.publishEvent(FeedEvent.of(teamPlaceId, savedFeedThread.getId(), WRITE));
+        final MemberTeamPlace threadAuthorInfo = memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(teamPlaceId, memberId)
+                .orElseThrow(() -> new IllegalArgumentException(String.format("멤버-팀플레이스 조회 실패 memberId : %d, teamPlaceId %d", memberId, teamPlaceId)));
+        applicationEventPublisher.publishEvent(new FeedEvent(teamPlaceId,
+                FeedResponse.from(savedFeedThread, threadAuthorInfo, mapToFeedImageResponse(savedFeedThread), memberEmailDto.email())
+        ));
 
         return threadId;
     }
