@@ -7,7 +7,7 @@ export const Container = styled.div<{
   $isMobile: boolean;
 }>`
   position: sticky;
-  top: 0;
+  top: ${({ $isMobile }) => ($isMobile ? '-4px' : 0)};
   left: 0;
   right: 0;
   z-index: ${({ theme }) => theme.zIndex.NOTICE};
