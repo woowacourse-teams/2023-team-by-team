@@ -12,7 +12,7 @@ import TimeTableMenu from '~/components/team_calendar/TimeTableMenu/TimeTableMen
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useRef, useEffect } from 'react';
 import type { CalendarSize } from '~/types/size';
-import { useCheckMobileWeb } from '~/hooks/useCheckMobileWeb';
+import { getIsMobile } from '~/utils/getIsMobile';
 
 interface ScheduleAddModalProps {
   calendarSize?: CalendarSize;
@@ -23,7 +23,7 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
   const { clickedDate, calendarSize = 'md' } = props;
   const { closeModal } = useModal();
   const { teamPlaceColor, displayName } = useTeamPlace();
-  const isMobile = useCheckMobileWeb();
+  const isMobile = getIsMobile();
   const {
     schedule,
     isAllDay,

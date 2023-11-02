@@ -3,7 +3,7 @@ import { error404Image, error404TextImage } from '~/assets/webp';
 import Text from '~/components/common/Text/Text';
 import BackButton from '~/components/common/BackButton/BackButton';
 import { PATH_NAME } from '~/constants/routes';
-import { useCheckMobileWeb } from '~/hooks/useCheckMobileWeb';
+import { getIsMobile } from '~/utils/getIsMobile';
 
 interface Error404Props {
   isLoggedIn: boolean;
@@ -11,7 +11,7 @@ interface Error404Props {
 
 const Error404 = (props: Error404Props) => {
   const { isLoggedIn } = props;
-  const isMobile = useCheckMobileWeb();
+  const isMobile = getIsMobile();
   const location = window.location.href;
 
   return (

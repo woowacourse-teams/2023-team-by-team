@@ -8,11 +8,11 @@ import IntroCardPile from '~/components/landing/IntroCardPile/IntroCardPile';
 import LandingHeader from '~/components/common/LandingHeader/LandingHeader';
 import BackButton from '~/components/common/BackButton/BackButton';
 import { PATH_NAME } from '~/constants/routes';
-import { useCheckMobileWeb } from '~/hooks/useCheckMobileWeb';
+import { getIsMobile } from '~/utils/getIsMobile';
 
 const CreatePage = () => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const isMobile = useCheckMobileWeb();
+  const isMobile = getIsMobile();
   const {
     teamName,
 

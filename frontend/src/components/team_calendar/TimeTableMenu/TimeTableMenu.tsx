@@ -1,7 +1,7 @@
 import Menu from '~/components/common/Menu/Menu';
 import { TIME_TABLE } from '~/constants/calendar';
 import * as S from './TimeTableMenu.styled';
-import { useCheckMobileWeb } from '~/hooks/useCheckMobileWeb';
+import { getIsMobile } from '~/utils/getIsMobile';
 
 interface TimeTableMenuProps {
   displayValue: string;
@@ -10,7 +10,7 @@ interface TimeTableMenuProps {
 
 const TimeTableMenu = (props: TimeTableMenuProps) => {
   const { displayValue, onSelect } = props;
-  const isMobile = useCheckMobileWeb();
+  const isMobile = getIsMobile();
   const handleSelect = (value: string) => {
     onSelect(value);
   };

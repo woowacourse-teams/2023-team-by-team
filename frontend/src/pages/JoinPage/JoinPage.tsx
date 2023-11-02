@@ -9,12 +9,12 @@ import { useTeamJoin } from '~/hooks/team/useTeamJoin';
 import IntroCardPile from '~/components/landing/IntroCardPile/IntroCardPile';
 import LandingHeader from '~/components/common/LandingHeader/LandingHeader';
 import BackButton from '~/components/common/BackButton/BackButton';
-import { useCheckMobileWeb } from '~/hooks/useCheckMobileWeb';
+import { getIsMobile } from '~/utils/getIsMobile';
 
 const JoinPage = () => {
   const ref = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const isMobile = useCheckMobileWeb();
+  const isMobile = getIsMobile();
   const navigate = useNavigate();
 
   const {

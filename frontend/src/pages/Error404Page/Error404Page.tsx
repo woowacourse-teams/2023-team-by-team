@@ -4,12 +4,12 @@ import { PATH_NAME } from '~/constants/routes';
 import LandingHeader from '~/components/common/LandingHeader/LandingHeader';
 import Error404 from '~/components/common/Error404/Error404';
 import { useToken } from '~/hooks/useToken';
-import { useCheckMobileWeb } from '~/hooks/useCheckMobileWeb';
+import { getIsMobile } from '~/utils/getIsMobile';
 
 const Error404Page = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const { accessToken } = useToken();
-  const isMobile = useCheckMobileWeb();
+  const isMobile = getIsMobile();
 
   useEffect(() => {
     const isLoggedIn = Boolean(accessToken);

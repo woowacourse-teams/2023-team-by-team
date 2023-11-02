@@ -11,7 +11,7 @@ import { ClipboardIcon, CloseIcon, QuestionIcon } from '~/assets/svg';
 import type { CalendarSize } from '~/types/size';
 import * as S from './ICalendarModal.styled';
 import { ICALENDAR_USER_GUIDE_URL } from '~/constants/url';
-import { useCheckMobileWeb } from '~/hooks/useCheckMobileWeb';
+import { getIsMobile } from '~/utils/getIsMobile';
 
 interface ICalendarModalProps {
   calendarSize?: CalendarSize;
@@ -22,7 +22,7 @@ const ICalendarModal = (props: ICalendarModalProps) => {
   const { closeModal } = useModal();
   const { showToast } = useToast();
   const { teamPlaceId } = useTeamPlace();
-  const isMobile = useCheckMobileWeb();
+  const isMobile = getIsMobile();
 
   const { url } = useFetchICalendarUrl(teamPlaceId);
 

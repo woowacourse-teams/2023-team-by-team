@@ -12,7 +12,7 @@ import {
   MegaphoneIcon,
 } from '~/assets/svg';
 import * as S from './NoticeThread.styled';
-import { useCheckMobileWeb } from '~/hooks/useCheckMobileWeb';
+import { getIsMobile } from '~/utils/getIsMobile';
 
 interface NoticeThreadProps {
   authorName: string;
@@ -24,7 +24,7 @@ interface NoticeThreadProps {
 
 const NoticeThread = (props: NoticeThreadProps) => {
   const { authorName, createdAt, content, images, onClickImage } = props;
-  const isMobile = useCheckMobileWeb();
+  const isMobile = getIsMobile();
   const [noticeSize, setNoticeSize] = useState<NoticeSize>('sm');
 
   const handleExpandMoreClick = () => {

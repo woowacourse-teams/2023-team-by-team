@@ -8,14 +8,14 @@ import { START_TYPE } from '~/constants/team';
 import IntroCardPile from '~/components/landing/IntroCardPile/IntroCardPile';
 import LandingHeader from '~/components/common/LandingHeader/LandingHeader';
 import BackButton from '~/components/common/BackButton/BackButton';
-import { useCheckMobileWeb } from '~/hooks/useCheckMobileWeb';
+import { getIsMobile } from '~/utils/getIsMobile';
 
 type StartType = (typeof START_TYPE)[keyof typeof START_TYPE];
 
 const StartPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const isMobile = useCheckMobileWeb();
+  const isMobile = getIsMobile();
   const previousPath = location.state?.from?.pathname;
   const isShowBackButton = previousPath?.includes(PATH_NAME.TEAM_SELECT);
 

@@ -16,7 +16,7 @@ import { useState } from 'react';
 import type { ThreadImage } from '~/types/feed';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useSSE } from '~/hooks/queries/useSSE';
-import { useCheckMobileWeb } from '~/hooks/useCheckMobileWeb';
+import { getIsMobile } from '~/utils/getIsMobile';
 
 interface TeamFeedPageProps {
   threadSize?: ThreadSize;
@@ -24,7 +24,7 @@ interface TeamFeedPageProps {
 
 const TeamFeedPage = (props: TeamFeedPageProps) => {
   const { threadSize = 'md' } = props;
-  const isMobile = useCheckMobileWeb();
+  const isMobile = getIsMobile();
   const { teamPlaceId } = useTeamPlace();
   const {
     ref,

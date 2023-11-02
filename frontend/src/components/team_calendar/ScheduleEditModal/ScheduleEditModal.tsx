@@ -12,7 +12,7 @@ import TimeTableMenu from '~/components/team_calendar/TimeTableMenu/TimeTableMen
 import Checkbox from '~/components/common/Checkbox/Checkbox';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import type { CalendarSize } from '~/types/size';
-import { useCheckMobileWeb } from '~/hooks/useCheckMobileWeb';
+import { getIsMobile } from '~/utils/getIsMobile';
 
 interface ScheduleEditModalProps {
   calendarSize?: CalendarSize;
@@ -22,7 +22,7 @@ interface ScheduleEditModalProps {
 
 const ScheduleEditModal = (props: ScheduleEditModalProps) => {
   const { scheduleId, initialSchedule, calendarSize = 'md' } = props;
-  const isMobile = useCheckMobileWeb();
+  const isMobile = getIsMobile();
   const { closeModal } = useModal();
   const { teamPlaceColor, displayName } = useTeamPlace();
 

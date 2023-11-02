@@ -2,7 +2,7 @@ import type { PropsWithChildren } from 'react';
 import * as S from './ImageUploadDrawer.styled';
 import Button from '~/components/common/Button/Button';
 import { CloseBoldIcon } from '~/assets/svg';
-import { useCheckMobileWeb } from '~/hooks/useCheckMobileWeb';
+import { getIsMobile } from '~/utils/getIsMobile';
 
 interface ImageUploadDrawerProps {
   isOpen: boolean;
@@ -14,7 +14,7 @@ const ImageUploadDrawer = (
   props: PropsWithChildren<ImageUploadDrawerProps>,
 ) => {
   const { isOpen, onClose, children, isUploading } = props;
-  const isMobile = useCheckMobileWeb();
+  const isMobile = getIsMobile();
 
   return (
     <S.Container $isOpen={isOpen} $isMobile={isMobile}>

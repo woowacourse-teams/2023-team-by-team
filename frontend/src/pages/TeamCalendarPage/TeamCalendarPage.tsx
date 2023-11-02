@@ -1,9 +1,9 @@
 import TeamCalendar from '~/components/team_calendar/TeamCalendar/TeamCalendar';
 import * as S from './TeamCalendarPage.styled';
-import { useCheckMobileWeb } from '~/hooks/useCheckMobileWeb';
+import { getIsMobile } from '~/utils/getIsMobile';
 
 const TeamCalendarPage = () => {
-  const isMobile = useCheckMobileWeb();
+  const isMobile = getIsMobile();
 
   return (
     <S.Container>

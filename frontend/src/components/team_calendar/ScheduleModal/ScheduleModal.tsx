@@ -12,7 +12,7 @@ import TeamBadge from '~/components/team/TeamBadge/TeamBadge';
 import { useToast } from '~/hooks/useToast';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import type { CalendarSize } from '~/types/size';
-import { useCheckMobileWeb } from '~/hooks/useCheckMobileWeb';
+import { getIsMobile } from '~/utils/getIsMobile';
 
 interface ScheduleModalProps {
   calendarWidth: number;
@@ -35,7 +35,7 @@ const ScheduleModal = (props: ScheduleModalProps) => {
   const { closeModal } = useModal();
   const { showToast } = useToast();
   const { teamPlaceColor, teamPlaceId, displayName } = useTeamPlace();
-  const isMobile = useCheckMobileWeb();
+  const isMobile = getIsMobile();
 
   const { scheduleById } = useFetchScheduleById(teamPlaceId, scheduleId);
   const { mutateDeleteSchedule } = useDeleteSchedule(teamPlaceId, scheduleId);

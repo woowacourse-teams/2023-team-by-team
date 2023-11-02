@@ -15,13 +15,13 @@ import TeamOverviewPage from '~/pages/TeamOverviewPage/TeamOverviewPage';
 import PolicyPage from '~/pages/PolicyPage/PolicyPage';
 import Error404Page from '~/pages/Error404Page/Error404Page';
 import './App.css';
-import { useCheckMobileWeb } from '~/hooks/useCheckMobileWeb';
+import { getIsMobile } from '~/utils/getIsMobile';
 import M_LandingPage from '~/mobilePages/M_LandingPage/M_LandingPage';
 import M_TeamSelectPage from '~/mobilePages/M_TeamSelectPage/M_TeamSelectPage';
 import M_PageTemplate from '~/mobilePages/M_PageTemplate/M_PageTemplate';
 
 const App = () => {
-  const isMobile = useCheckMobileWeb();
+  const isMobile = getIsMobile();
 
   return (
     <Routes>

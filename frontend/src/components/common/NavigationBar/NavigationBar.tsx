@@ -10,12 +10,12 @@ import {
 import * as S from './NavigationBar.styled';
 import Text from '~/components/common/Text/Text';
 import Button from '~/components/common/Button/Button';
-import { useCheckMobileWeb } from '~/hooks/useCheckMobileWeb';
+import { getIsMobile } from '~/utils/getIsMobile';
 
 const NavigationBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const isMobile = useCheckMobileWeb();
+  const isMobile = getIsMobile();
   const handleTeamAddButtonClick = () => {
     navigate(PATH_NAME.START, { state: { from: location } });
   };

@@ -15,7 +15,7 @@ import UserInfoModal from '~/components/user/UserInfoModal/UserInfoModal';
 import TeamColorEditModal from '~/components/team/TeamColorEditModal/TeamColorEditModal';
 import AccountDeleteModal from '~/components/user/AccountDeleteModal/AccountDeleteModal';
 import ServiceCenterModal from '~/components/user/ServiceCenterModal/ServiceCenterModal';
-import { useCheckMobileWeb } from '~/hooks/useCheckMobileWeb';
+import { getIsMobile } from '~/utils/getIsMobile';
 
 export type HeaderModalType =
   | 'team'
@@ -34,7 +34,7 @@ const Header = () => {
   } = useTeamPlace();
   const navigate = useNavigate();
   const { openModal, isModalOpen } = useModal();
-  const isMobile = useCheckMobileWeb();
+  const isMobile = getIsMobile();
   const { userInfo } = useFetchUserInfo();
 
   const [teamName, setTeamName] = useState(displayName ?? '');

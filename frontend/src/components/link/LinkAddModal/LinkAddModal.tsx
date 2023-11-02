@@ -7,7 +7,7 @@ import Input from '~/components/common/Input/Input';
 import { useRef } from 'react';
 import { useTeamLinkAddModal } from '~/hooks/link/useTeamLinkAddModal';
 import type { LinkSize } from '~/types/size';
-import { useCheckMobileWeb } from '~/hooks/useCheckMobileWeb';
+import { getIsMobile } from '~/utils/getIsMobile';
 
 interface LinkAddModalProps {
   linkSize?: LinkSize;
@@ -15,7 +15,7 @@ interface LinkAddModalProps {
 
 const LinkAddModal = (props: LinkAddModalProps) => {
   const { linkSize = 'md' } = props;
-  const isMobile = useCheckMobileWeb();
+  const isMobile = getIsMobile();
   const linkRef = useRef<HTMLInputElement>(null);
 
   const {
