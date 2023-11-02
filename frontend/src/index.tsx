@@ -10,14 +10,13 @@ import {
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import App from '~/App';
+import { ToastProvider } from '~/components/common/Toast/ToastContext';
+import ToastList from '~/components/common/Toast/ToastList';
+import { TokenProvider } from '~/contexts/TokenContext';
+import { useToast } from '~/hooks/useToast';
 import GlobalStyle from '~/styles/GlobalStyle';
 import { theme } from './styles/theme';
 import { worker } from '~/mocks/browser';
-import { ToastProvider } from '~/components/common/Toast/ToastContext';
-import ToastList from '~/components/common/Toast/ToastList';
-import { useToast } from '~/hooks/useToast';
-import { TokenProvider } from '~/contexts/TokenContext';
-import { TeamPlaceProvider } from '~/contexts/TeamPlaceContext';
 
 if (process.env.WORKER === 'on') {
   worker.start();
@@ -70,9 +69,7 @@ root.render(
           <_QueryClientProvider>
             <GlobalStyle />
             <BrowserRouter>
-              <TeamPlaceProvider>
-                <App />
-              </TeamPlaceProvider>
+              <App />
             </BrowserRouter>
             <ToastList />
             <ReactQueryDevtools initialIsOpen={false} />
