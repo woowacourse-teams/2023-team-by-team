@@ -17,6 +17,7 @@ import { ToastProvider } from '~/components/common/Toast/ToastContext';
 import ToastList from '~/components/common/Toast/ToastList';
 import { useToast } from '~/hooks/useToast';
 import { TokenProvider } from '~/contexts/TokenContext';
+import { TeamPlaceProvider } from '~/contexts/TeamPlaceContext';
 
 if (process.env.WORKER === 'on') {
   worker.start();
@@ -69,7 +70,9 @@ root.render(
           <_QueryClientProvider>
             <GlobalStyle />
             <BrowserRouter>
-              <App />
+              <TeamPlaceProvider>
+                <App />
+              </TeamPlaceProvider>
             </BrowserRouter>
             <ToastList />
             <ReactQueryDevtools initialIsOpen={false} />

@@ -3,8 +3,9 @@ import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
 import { PATH_NAME } from '~/constants/routes';
-import { TeamPlaceProvider } from '~/contexts/TeamPlaceContext';
+import { useSSE } from '~/hooks/queries/useSSE';
 import { useSendTokenReissue } from '~/hooks/queries/useSendTokenReissue';
+import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useToken } from '~/hooks/useToken';
 
 const ProtectRoute = () => {
@@ -12,6 +13,9 @@ const ProtectRoute = () => {
   const queryClient = useQueryClient();
   const { accessToken, resetToken } = useToken();
   const { mutateSendTokenReissue } = useSendTokenReissue();
+  const { teamPlaceId } = useTeamPlace();
+
+  useSSE(teamPlaceId);
 
   const resetAccessToken = () => {
     resetToken();
@@ -60,13 +64,10 @@ const ProtectRoute = () => {
       alert('로그인이 필요합니다.');
       navigate(PATH_NAME.LANDING);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return (
-    <TeamPlaceProvider>
-      <Outlet />
-    </TeamPlaceProvider>
-  );
+  return <Outlet />;
 };
 
 export default ProtectRoute;
