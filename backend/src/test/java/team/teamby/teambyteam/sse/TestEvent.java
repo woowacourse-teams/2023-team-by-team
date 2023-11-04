@@ -1,5 +1,6 @@
 package team.teamby.teambyteam.sse;
 
+import team.teamby.teambyteam.sse.domain.TeamPlaceEmitterId;
 import team.teamby.teambyteam.sse.domain.TeamPlaceSseEvent;
 
 public class TestEvent implements TeamPlaceSseEvent {
@@ -24,7 +25,7 @@ public class TestEvent implements TeamPlaceSseEvent {
     }
 
     @Override
-    public Object getEvent() {
+    public Object getEvent(final TeamPlaceEmitterId emitterId) {
         return data;
     }
 

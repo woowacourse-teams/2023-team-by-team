@@ -6,5 +6,5 @@ public interface TeamPlaceSseEvent {
 
     String getEventName();
 
-    Object getEvent();
+    Object getEvent(TeamPlaceEmitterId emitterId);
 }

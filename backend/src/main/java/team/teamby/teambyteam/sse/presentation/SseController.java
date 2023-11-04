@@ -21,8 +21,10 @@ public class SseController {
     private static final String NGINX_X_ACCEL_BUFFERING_HEADER = "X-Accel-Buffering";
     private static final String NO = "no";
     private static final String KEEP_ALIVE = "Keep-Alive";
-    private static final String TIMEOUT = "timout=";
+    private static final String TIMEOUT = "timeout=";
     private static final int TIMEOUT_VALUE = 5*60;
+    private static final String CONNECTION = "Connection";
+    private static final String CONNECTION_KEEP_ALIVE = "keep-alive";
 
     private final SseSubscribeService sseSubscribeService;
 
@@ -37,6 +39,7 @@ public class SseController {
                 .ok()
                 .header(NGINX_X_ACCEL_BUFFERING_HEADER, NO)
                 .header(KEEP_ALIVE, TIMEOUT + TIMEOUT_VALUE)
+                .header(CONNECTION, CONNECTION_KEEP_ALIVE)
                 .body(emitter);
     }
 }

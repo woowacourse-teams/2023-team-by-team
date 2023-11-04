@@ -24,12 +24,8 @@ public class SseEmitters {
     }
 
     public void sendEvent(final TeamPlaceEventId eventId, final TeamPlaceSseEvent event) {
-        sendEvent(eventId, event.getEvent());
-    }
-
-    public void sendEvent(final TeamPlaceEventId eventId, final Object event) {
         emitters.forEach(
-                (emitterId, emitter) -> threadPoolExecutor.execute(() -> sendToEmitter(eventId, event, emitterId, emitter))
+                (emitterId, emitter) -> threadPoolExecutor.execute(() -> sendToEmitter(eventId, event.getEvent(emitterId), emitterId, emitter))
         );
     }
 

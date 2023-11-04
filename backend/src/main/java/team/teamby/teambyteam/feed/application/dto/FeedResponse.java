@@ -40,7 +40,12 @@ public record FeedResponse(
         );
     }
 
-    public static FeedResponse from(final Feed feed, final MemberTeamPlace threadAuthorInfo, final List<FeedImageResponse> images, final String loginMemberEmail) {
+    public static FeedResponse from(
+            final Feed feed,
+            final MemberTeamPlace threadAuthorInfo,
+            final List<FeedImageResponse> images,
+            final String loginMemberEmail
+    ) {
         final String createdAt = feed.getCreatedAt().format(DATE_TIME_FORMATTER);
 
         return new FeedResponse(
