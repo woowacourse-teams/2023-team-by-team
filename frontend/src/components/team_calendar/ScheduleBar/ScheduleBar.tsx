@@ -1,5 +1,6 @@
 import Text from '~/components/common/Text/Text';
 import * as S from './ScheduleBar.styled';
+import type { MouseEvent } from 'react';
 import type { GeneratedScheduleBar } from '~/types/schedule';
 import { DoubleArrowRightIcon } from '~/assets/svg';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
@@ -8,7 +9,7 @@ import type { CalendarSize } from '~/types/size';
 export interface ScheduleBarProps extends GeneratedScheduleBar {
   calendarSize?: CalendarSize;
   onClick?: () => void;
-  onDragStart?: () => void;
+  onDragStart?: (e: MouseEvent) => void;
 }
 
 const ScheduleBar = (props: ScheduleBarProps) => {
