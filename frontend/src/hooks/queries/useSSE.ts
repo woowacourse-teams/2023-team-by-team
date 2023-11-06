@@ -13,6 +13,7 @@ export const useSSE = (teamPlaceId: number) => {
       if (!teamPlaceId) {
         return;
       }
+
       const eventSource = new EventSourcePolyfill(
         baseUrl + `/api/team-place/${teamPlaceId}/subscribe`,
         {
