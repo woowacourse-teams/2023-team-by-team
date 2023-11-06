@@ -16,6 +16,7 @@ import { useModal } from '~/hooks/useModal';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useCalendarResizePosition } from '~/hooks/useCalendarResizePosition';
 import { usePrefetchSchedules } from '~/hooks/queries/usePrefetchSchedules';
+import { useScheduleDragStatus } from './useScheduleBarDragStatus';
 import { DAYS_OF_WEEK, MODAL_OPEN_TYPE } from '~/constants/calendar';
 import { generateScheduleBars } from '~/utils/generateScheduleBars';
 import { arrayOf } from '~/utils/arrayOf';
@@ -39,7 +40,8 @@ interface TeamCalendarProps {
 const TeamCalendar = (props: TeamCalendarProps) => {
   const { calendarSize = 'md' } = props;
 
-  const [isDragging, setIsDragging] = useState<boolean>(false);
+  const { dragStatus, handleDragStart, handleMouseUp } =
+    useScheduleDragStatus();
 
   const { teamPlaceId } = useTeamPlace();
   const {
@@ -232,8 +234,15 @@ const TeamCalendar = (props: TeamCalendarProps) => {
                 <Fragment key={rowIndex}>
                   <S.ScheduleBarContainer>
                     {scheduleBars.map((scheduleBar) => {
-                      const { id, scheduleId, row, column, level, duration } =
-                        scheduleBar;
+                      const {
+                        id,
+                        scheduleId,
+                        row,
+                        column,
+                        level,
+                        duration,
+                        schedule,
+                      } = scheduleBar;
 
                       if (row === rowIndex && level > 2)
                         return arrayOf(duration).map((_, index) => {
@@ -274,7 +283,9 @@ const TeamCalendar = (props: TeamCalendarProps) => {
                                 level,
                               });
                             }}
-                            onDragStart={() => setIsDragging(() => true)}
+                            onDragStart={(e) =>
+                              handleDragStart(e, level, schedule)
+                            }
                             {...scheduleBar}
                           />
                         );
@@ -320,8 +331,11 @@ const TeamCalendar = (props: TeamCalendarProps) => {
               );
             })}
             <CalendarDragScreen
-              visible={isDragging}
-              onMouseUp={() => setIsDragging(() => false)}
+              visible={dragStatus.isDragging}
+              year={year}
+              month={month}
+              onMouseUp={handleMouseUp}
+              {...dragStatus}
             />
           </S.CalendarGrid>
         </div>
