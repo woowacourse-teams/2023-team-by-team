@@ -1,17 +1,64 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { generateScheduleBars } from '~/utils/generateScheduleBars';
+import type { Schedule, Point } from '~/types/schedule';
 
 interface UseCalendarDragScreenProps {
+  visible: boolean;
   onMouseUp: () => void;
+  year: number;
+  month: number;
+  level: number;
+  schedule: Schedule;
+  initMouseX: number;
+  initMouseY: number;
 }
 
 export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
-  const { onMouseUp } = props;
+  const {
+    visible,
+    onMouseUp,
+    year,
+    month,
+    level,
+    schedule,
+    initMouseX,
+    initMouseY,
+  } = props;
+  const [relativePoint, setRelativePoint] = useState<Point>({
+    x: initMouseX,
+    y: initMouseY,
+  });
+
+  const scheduleBars = generateScheduleBars(year, month, [schedule]).map(
+    (scheduleBar) => ({ ...scheduleBar, level }),
+  );
 
   useEffect(() => {
+    const onMouseMove = (e: globalThis.MouseEvent) => {
+      if (!visible) {
+        return;
+      }
+
+      const { clientX, clientY } = e;
+
+      setRelativePoint(() => ({
+        x: clientX - initMouseX,
+        y: clientY - initMouseY,
+      }));
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
 
     return () => {
+      document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
     };
-  }, [onMouseUp]);
+  }, [visible, onMouseUp, initMouseX, initMouseY]);
+
+  return {
+    movingScheduleBars: scheduleBars,
+    relativeX: relativePoint.x,
+    relativeY: relativePoint.y,
+  };
 };
