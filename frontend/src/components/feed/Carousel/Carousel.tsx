@@ -25,6 +25,7 @@ interface CarouselProps {
 
 const Carousel = (props: CarouselProps) => {
   const { width, height, images, currentPage, onChangePage } = props;
+  const hasSingleImage = images.length === 1;
 
   return (
     <S.Container width={width} height={height}>
@@ -39,11 +40,11 @@ const Carousel = (props: CarouselProps) => {
         <Button
           variant="plain"
           type="button"
-          css={S.arrowButton(images.length === 1)}
+          css={S.arrowButton(hasSingleImage)}
           onClick={() =>
             onChangePage(getPreviousPageIndex(images.length, currentPage))
           }
-          disabled={images.length === 1}
+          disabled={hasSingleImage}
           aria-label="이전 이미지 보기"
         >
           <ArrowLeftIcon />
@@ -53,11 +54,11 @@ const Carousel = (props: CarouselProps) => {
         <Button
           variant="plain"
           type="button"
-          css={S.arrowButton(images.length === 1)}
+          css={S.arrowButton(hasSingleImage)}
           onClick={() =>
             onChangePage(getNextPageIndex(images.length, currentPage))
           }
-          disabled={images.length === 1}
+          disabled={hasSingleImage}
           aria-label="다음 이미지 보기"
         >
           <ArrowRightIcon />
