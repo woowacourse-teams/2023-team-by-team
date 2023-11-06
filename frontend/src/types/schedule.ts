@@ -47,3 +47,8 @@ export interface GeneratedScheduleBar {
   roundedStart: boolean;
   roundedEnd: boolean;
 }
+
+export interface Point {
+  x: number;
+  y: number;
+}
