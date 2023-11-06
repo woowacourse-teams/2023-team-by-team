@@ -38,21 +38,16 @@ const App = () => {
         <Route path={PATH_NAME.JOIN} element={<JoinPage />} />
 
         <Route element={isMobile ? <M_PageTemplate /> : <PageTemplate />}>
-          {isMobile ? (
-            <Route
-              path={PATH_NAME.TEAM_SELECT}
-              element={<M_TeamSelectPage />}
-            />
-          ) : (
-            <Route path={PATH_NAME.TEAM_SELECT} element={<TeamSelectPage />} />
-          )}
+          <Route
+            path={PATH_NAME.TEAM_SELECT}
+            element={isMobile ? <M_TeamSelectPage /> : <TeamSelectPage />}
+          />
           {!isMobile && (
             <Route
               path={PATH_NAME.TEAM_OVERVIEW}
               element={<TeamOverviewPage />}
             />
           )}
-
           <Route
             path={PATH_NAME.TEAM_CALENDAR}
             element={<TeamCalendarPage />}
