@@ -7,7 +7,7 @@ import type { ChangeEventHandler, FormEventHandler } from 'react';
 import { useToast } from '~/hooks/useToast';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 
-const useScheduleAddModal = (clickedDate: Date) => {
+export const useScheduleAddModal = (clickedDate: Date) => {
   const { year, month, date } = parseDate(clickedDate);
   const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(
     date,
@@ -145,5 +145,3 @@ const useScheduleAddModal = (clickedDate: Date) => {
     },
   };
 };
-
-export default useScheduleAddModal;

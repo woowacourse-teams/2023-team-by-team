@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import { EditIcon, LogoIcon, TeamIcon } from '~/assets/svg';
 import * as S from './Header.styled';
 import TeamBadge from '~/components/team/TeamBadge/TeamBadge';
@@ -17,6 +18,8 @@ import AccountDeleteModal from '~/components/user/AccountDeleteModal/AccountDele
 import ServiceCenterModal from '~/components/user/ServiceCenterModal/ServiceCenterModal';
 import { getIsMobile } from '~/utils/getIsMobile';
 import Text from '~/components/common/Text/Text';
+import { fetchTeamPlaceInviteCode, fetchTeamPlaceMembers } from '~/apis/team';
+import { STALE_TIME } from '~/constants/query';
 
 export type HeaderModalType =
   | 'team'
@@ -35,11 +38,36 @@ const Header = () => {
   } = useTeamPlace();
   const navigate = useNavigate();
   const { openModal, isModalOpen } = useModal();
+
   const isMobile = getIsMobile();
+
+  const queryClient = useQueryClient();
+
   const { userInfo } = useFetchUserInfo();
 
   const [teamName, setTeamName] = useState(displayName ?? '');
   const [modalOpenType, setModalOpenType] = useState<HeaderModalType>();
+
+  const prefetchTeamPlaceInfo = async () => {
+    if (!teamPlaceId) {
+      return;
+    }
+
+    await queryClient.prefetchQuery(
+      ['teamPlaceMembers', teamPlaceId],
+      () => fetchTeamPlaceMembers(teamPlaceId),
+      {
+        staleTime: STALE_TIME.TEAM_PLACE_MEMBERS,
+      },
+    );
+    await queryClient.prefetchQuery(
+      ['teamPlaceInviteCode', teamPlaceId],
+      () => fetchTeamPlaceInviteCode(teamPlaceId),
+      {
+        staleTime: STALE_TIME.TEAM_PLACE_INVITE_CODE,
+      },
+    );
+  };
 
   const handleTeamNameChange = useCallback(
     (value: string) => {
@@ -140,6 +168,8 @@ const Header = () => {
           <Button
             type="button"
             variant="plain"
+            onFocus={prefetchTeamPlaceInfo}
+            onMouseEnter={prefetchTeamPlaceInfo}
             onClick={handleTeamButtonClick}
             css={S.teamPlaceInfoButton}
             aria-label="팀 정보 보기"

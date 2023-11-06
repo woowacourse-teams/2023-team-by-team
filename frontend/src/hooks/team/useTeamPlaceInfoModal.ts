@@ -4,7 +4,7 @@ import { MAX_USER_NAME_LENGTH } from '~/constants/user';
 import { useFetchTeamPlaceInviteCode } from '~/hooks/queries/useFetchTeamPlaceInviteCode';
 import { useFetchTeamPlaceMembers } from '~/hooks/queries/useFetchTeamPlaceMembers';
 import { useModifyMyTeamPlaceUserInfo } from '~/hooks/queries/useModifyMyTeamPlaceUserInfo';
-import useClickOutside from '~/hooks/useClickOutside';
+import { useClickOutside } from '~/hooks/useClickOutside';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useToast } from '~/hooks/useToast';
 import type { UserInfo } from '~/types/team';

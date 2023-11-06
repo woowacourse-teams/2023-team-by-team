@@ -15,7 +15,6 @@ import { useModal } from '~/hooks/useModal';
 import { useState } from 'react';
 import type { ThreadImage } from '~/types/feed';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
-import { useSSE } from '~/hooks/queries/useSSE';
 import { getIsMobile } from '~/utils/getIsMobile';
 
 interface TeamFeedPageProps {
@@ -25,7 +24,7 @@ interface TeamFeedPageProps {
 const TeamFeedPage = (props: TeamFeedPageProps) => {
   const { threadSize = 'md' } = props;
   const isMobile = getIsMobile();
-  const { teamPlaceId } = useTeamPlace();
+
   const {
     ref,
     noticeThread,
@@ -47,8 +46,6 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
       deleteImageByUuid,
     },
   } = useTeamFeedPage();
-
-  useSSE(teamPlaceId);
 
   const { isModalOpen, openModal } = useModal();
   const [modalImageInfo, setModalImageInfo] = useState<{

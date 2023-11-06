@@ -14,7 +14,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class SseEmitters {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private static final ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
+    private static final int NUMBER_OF_THREAD = 100;
+    private static final ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(NUMBER_OF_THREAD);
 
     private final Map<TeamPlaceEmitterId, SseEmitter> emitters;
 
@@ -23,12 +24,8 @@ public class SseEmitters {
     }
 
     public void sendEvent(final TeamPlaceEventId eventId, final TeamPlaceSseEvent event) {
-        sendEvent(eventId, event.getEvent());
-    }
-
-    public void sendEvent(final TeamPlaceEventId eventId, final Object event) {
         emitters.forEach(
-                (emitterId, emitter) -> threadPoolExecutor.execute(() -> sendToEmitter(eventId, event, emitterId, emitter))
+                (emitterId, emitter) -> threadPoolExecutor.execute(() -> sendToEmitter(eventId, event.getEvent(emitterId), emitterId, emitter))
         );
     }
 

@@ -3,7 +3,7 @@ import type { ChangeEventHandler, FormEventHandler } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFetchUserInfo } from '~/hooks/queries/useFetchUserInfo';
 import { useModifyUserInfo } from '~/hooks/queries/useModifyUserInfo';
-import useClickOutside from '~/hooks/useClickOutside';
+import { useClickOutside } from '~/hooks/useClickOutside';
 import { useModal } from '~/hooks/useModal';
 import { useToast } from '~/hooks/useToast';
 import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';

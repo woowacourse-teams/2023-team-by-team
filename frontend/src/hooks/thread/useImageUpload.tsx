@@ -18,7 +18,7 @@ import { generateUuid } from '~/utils/generateUuid';
  * @returns {deleteImageByUuid} deleteImageByUuid - `uuid`를 이용해 특정 이미지를 삭제할 시 호출하는 함수입니다.
  * @returns {deleteAllImages} deleteAllImages - 모든 이미지를 삭제할 때 호출하는 함수입니다.
  */
-const useImageUpload = () => {
+export const useImageUpload = () => {
   const [filesWithUuid, setFilesWithUuid] = useState<FileWithUuid[]>([]);
   const [previewImages, setPreviewImages] = useState<PreviewImage[]>([]);
   const { showToast } = useToast();
@@ -130,5 +130,3 @@ const useImageUpload = () => {
     deleteAllImages,
   };
 };
-
-export default useImageUpload;

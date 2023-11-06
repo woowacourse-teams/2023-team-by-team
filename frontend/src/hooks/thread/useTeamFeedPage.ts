@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useFetchNoticeThread } from '~/hooks/queries/useFetchNoticeThread';
 import { useSendNoticeThread } from '~/hooks/queries/useSendNoticeThread';
 import { useSendThread } from '~/hooks/queries/useSendThread';
-import useImageUpload from '~/hooks/thread/useImageUpload';
+import { useImageUpload } from '~/hooks/thread/useImageUpload';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useToast } from '~/hooks/useToast';
 

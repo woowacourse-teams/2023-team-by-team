@@ -54,23 +54,7 @@ public class SseSubscribeService {
         final TeamPlaceEventId dummyEventId = TeamPlaceEventId.of(teamPlaceId, dummyEvent.getEventName());
         emitter.sendEvent(dummyEventId, dummyEvent);
 
-        if (!Objects.isNull(lastEventId) && !lastEventId.isBlank()) {
-            sendCachedEvents(emitter, teamPlaceId, TeamPlaceEventId.from(lastEventId));
-        }
-
         log.info("SSE 연결 생성 {}", emitterId);
         return emitter.getSingleEmitter();
-    }
-
-    private void sendCachedEvents(
-            final SseEmitters emitter,
-            final Long teamPlaceId,
-            final TeamPlaceEventId lastEventId
-    ) {
-        final Map<TeamPlaceEventId, Object> events = teamplaceEmitterRepository.findAllEventCacheWithId(teamPlaceId);
-        events.entrySet().stream()
-                .filter(entry -> entry.getKey().isPublishedAfter(lastEventId))
-                .sorted(EVENT_ID_TIME_COMPARATOR)
-                .forEach(entry -> emitter.sendEvent(entry.getKey(), entry.getValue()));
     }
 }
