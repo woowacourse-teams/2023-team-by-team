@@ -28,9 +28,9 @@ const Carousel = (props: CarouselProps) => {
   const hasSingleImage = images.length === 1;
 
   return (
-    <S.Container width={width} height={height}>
+    <S.Container $width={width} $height={height}>
       <S.SlidesView>
-        <S.Slides currentPage={currentPage}>
+        <S.Slides $currentPage={currentPage}>
           {images.map((image) => (
             <CarouselImage key={image.id} image={image} />
           ))}
