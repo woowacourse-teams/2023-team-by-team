@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { KEY_CODE } from '~/constants/feed';
 
 interface UseCarouselPageNoProps {
   initialPage: number;
@@ -12,27 +11,18 @@ const useCarouselPageNo = (props: UseCarouselPageNoProps) => {
 
   useEffect(() => {
     const handleKeyDown = (e: globalThis.KeyboardEvent) => {
-      const { key, keyCode } = e;
+      const { key } = e;
 
       if (key >= '1' && key <= '9' && Number(key) <= pageCount) {
         setCurrentPage(() => Number(key));
         return;
       }
 
-      if (
-        keyCode >= KEY_CODE.DIGIT1 &&
-        keyCode <= KEY_CODE.DIGIT9 &&
-        keyCode - 48 <= pageCount
-      ) {
-        setCurrentPage(() => KEY_CODE.DIGIT1 - 48);
-        return;
-      }
-
-      if (key === 'ArrowLeft' || keyCode === KEY_CODE.ARROW_LEFT) {
+      if (key === 'ArrowLeft') {
         setCurrentPage((prev) => ((prev + pageCount - 2) % pageCount) + 1);
       }
 
-      if (key === 'ArrowRight' || keyCode === KEY_CODE.ARROW_RIGHT) {
+      if (key === 'ArrowRight') {
         setCurrentPage((prev) => (prev % pageCount) + 1);
       }
     };

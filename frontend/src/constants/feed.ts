@@ -23,10 +23,3 @@ export const VALID_IMAGE_TYPES = [
 ];
 
 export const MAX_IMAGE_CAPACITY = 5_242_880;
-
-export const KEY_CODE = {
-  DIGIT1: 49,
-  DIGIT9: 57,
-  ARROW_LEFT: 37,
-  ARROW_RIGHT: 39,
-};
