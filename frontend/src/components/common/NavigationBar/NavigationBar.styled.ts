@@ -7,7 +7,7 @@ export const Nav = styled.nav<{ $isMobile: boolean }>`
   ${({ $isMobile }) => {
     if ($isMobile)
       return css`
-        width: 100$;
+        width: 100%;
         height: 60px;
         padding: 10px;
       `;

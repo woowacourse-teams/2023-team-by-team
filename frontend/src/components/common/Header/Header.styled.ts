@@ -108,10 +108,6 @@ export const teamPlaceInfoButton = css`
   }
 `;
 
-export const SvgWrapper = styled.div`
-  height: 20px;
-`;
-
 export const userInfoButton = css`
   display: flex;
   align-items: center;
