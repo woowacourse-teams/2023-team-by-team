@@ -25,7 +25,7 @@ public class TeamPlaceConnectedEvent implements TeamPlaceSseEvent {
     }
 
     @Override
-    public Object getEvent() {
+    public Object getEvent(final TeamPlaceEmitterId emitterId) {
         return event;
     }
 

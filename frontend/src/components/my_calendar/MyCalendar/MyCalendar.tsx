@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import Button from '~/components/common/Button/Button';
 import Text from '~/components/common/Text/Text';
-import useCalendar from '~/hooks/useCalendar';
+import { useCalendar } from '~/hooks/useCalendar';
 import * as S from './MyCalendar.styled';
 import DateCell from '~/components/common/DateCell/DateCell';
 import { ArrowLeftIcon, ArrowRightIcon } from '~/assets/svg';
@@ -12,6 +12,7 @@ import { generateScheduleCirclesMatrix } from '~/utils/generateScheduleCirclesMa
 import TeamBadge from '~/components/team/TeamBadge/TeamBadge';
 import { getInfoByTeamPlaceId } from '~/utils/getInfoByTeamPlaceId';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
+import { usePrefetchMySchedules } from '~/hooks/queries/usePrefetchMySchedules';
 
 interface MyCalendarProps {
   onDailyClick: (date: Date) => void;
@@ -19,6 +20,7 @@ interface MyCalendarProps {
 
 const MyCalendar = (props: MyCalendarProps) => {
   const { onDailyClick } = props;
+
   const {
     year,
     month,
@@ -26,10 +28,18 @@ const MyCalendar = (props: MyCalendarProps) => {
     today,
     handlers: { handlePrevButtonClick, handleNextButtonClick },
   } = useCalendar();
-
   const schedules = useFetchMySchedules(year, month);
-  const scheduleCircles = generateScheduleCirclesMatrix(year, month, schedules);
   const { teamPlaces } = useTeamPlace();
+  usePrefetchMySchedules(
+    month === 11 ? year + 1 : year,
+    month === 11 ? 0 : month + 1,
+  );
+  usePrefetchMySchedules(
+    month === 0 ? year - 1 : year,
+    month === 0 ? 11 : month - 1,
+  );
+
+  const scheduleCircles = generateScheduleCirclesMatrix(year, month, schedules);
 
   return (
     <S.Container>

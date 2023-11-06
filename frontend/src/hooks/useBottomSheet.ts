@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { useModal } from '~/hooks/useModal';
 import theme from '~/styles/theme';
 
-const useBottomSheet = () => {
+export const useBottomSheet = () => {
   const [isClosing, setIsClosing] = useState(false);
   const timerId = useRef<ReturnType<typeof setTimeout>>();
   const { closeModal } = useModal();
@@ -25,5 +25,3 @@ const useBottomSheet = () => {
     isClosing,
   };
 };
-
-export default useBottomSheet;

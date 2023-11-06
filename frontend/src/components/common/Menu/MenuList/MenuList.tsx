@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react';
 import type { MouseEventHandler, PropsWithChildren } from 'react';
 import { useMenu } from '~/hooks/useMenu';
-import useClickOutside from '~/hooks/useClickOutside';
+import { useClickOutside } from '~/hooks/useClickOutside';
 import { useListKeyboardNavigation } from '~/hooks/useListKeyboardNavigation';
 import * as S from './MenuList.styled';
 
