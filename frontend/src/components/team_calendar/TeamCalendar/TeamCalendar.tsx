@@ -332,6 +332,7 @@ const TeamCalendar = (props: TeamCalendarProps) => {
             })}
             <CalendarDragScreen
               visible={dragStatus.isDragging}
+              calendarSize={calendarSize}
               year={year}
               month={month}
               onMouseUp={handleMouseUp}

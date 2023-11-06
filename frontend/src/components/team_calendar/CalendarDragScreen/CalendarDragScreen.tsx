@@ -1,10 +1,12 @@
 import * as S from './CalendarDragScreen.styled';
 import MovingScheduleBars from '~/components/team_calendar/MovingScheduleBars/MovingScheduleBars';
 import type { Schedule } from '~/types/schedule';
+import type { CalendarSize } from '~/types/size';
 import { useCalendarDragScreen } from './useCalendarDragScreen';
 
 interface CalendarDragScreenProps {
   visible: boolean;
+  calendarSize: CalendarSize;
   year: number;
   month: number;
   level: number;
@@ -17,6 +19,7 @@ interface CalendarDragScreenProps {
 const CalendarDragScreen = (props: CalendarDragScreenProps) => {
   const {
     visible,
+    calendarSize,
     year,
     month,
     level,
@@ -27,6 +30,7 @@ const CalendarDragScreen = (props: CalendarDragScreenProps) => {
   } = props;
   const { movingScheduleBars, relativeX, relativeY } = useCalendarDragScreen({
     visible,
+    calendarSize,
     onMouseUp,
     year,
     month,

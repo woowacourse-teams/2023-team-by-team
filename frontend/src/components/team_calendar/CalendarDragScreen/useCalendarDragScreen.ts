@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { generateScheduleBars } from '~/utils/generateScheduleBars';
 import type { Schedule, Point } from '~/types/schedule';
+import type { CalendarSize } from '~/types/size';
 
 interface UseCalendarDragScreenProps {
   visible: boolean;
+  calendarSize: CalendarSize;
   onMouseUp: () => void;
   year: number;
   month: number;
@@ -16,6 +18,7 @@ interface UseCalendarDragScreenProps {
 export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
   const {
     visible,
+    calendarSize,
     onMouseUp,
     year,
     month,
@@ -30,7 +33,7 @@ export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
   });
 
   const scheduleBars = generateScheduleBars(year, month, [schedule]).map(
-    (scheduleBar) => ({ ...scheduleBar, level }),
+    (scheduleBar) => ({ ...scheduleBar, level, calendarSize }),
   );
 
   useEffect(() => {
