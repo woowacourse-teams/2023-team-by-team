@@ -30,6 +30,7 @@ import {
 } from '~/assets/svg';
 import * as S from './TeamCalendar.styled';
 import { parseDate } from '~/utils/parseDate';
+import CalendarDragScreen from '../CalendarDragScreen/CalendarDragScreen';
 
 interface TeamCalendarProps {
   calendarSize?: CalendarSize;
@@ -37,6 +38,8 @@ interface TeamCalendarProps {
 
 const TeamCalendar = (props: TeamCalendarProps) => {
   const { calendarSize = 'md' } = props;
+
+  const [isDragging, setIsDragging] = useState<boolean>(false);
 
   const { teamPlaceId } = useTeamPlace();
   const {
@@ -223,7 +226,7 @@ const TeamCalendar = (props: TeamCalendarProps) => {
               return <S.DayOfWeek key={day}>{day}</S.DayOfWeek>;
             })}
           </S.DaysOfWeek>
-          <div>
+          <S.CalendarGrid>
             {calendar.map((week, rowIndex) => {
               return (
                 <Fragment key={rowIndex}>
@@ -271,6 +274,7 @@ const TeamCalendar = (props: TeamCalendarProps) => {
                                 level,
                               });
                             }}
+                            onDragStart={() => setIsDragging(() => true)}
                             {...scheduleBar}
                           />
                         );
@@ -315,7 +319,11 @@ const TeamCalendar = (props: TeamCalendarProps) => {
                 </Fragment>
               );
             })}
-          </div>
+            <CalendarDragScreen
+              visible={isDragging}
+              onMouseUp={() => setIsDragging(() => false)}
+            />
+          </S.CalendarGrid>
         </div>
       </S.Container>
       {modal}

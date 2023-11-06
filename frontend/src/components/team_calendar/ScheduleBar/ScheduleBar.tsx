@@ -8,18 +8,28 @@ import type { CalendarSize } from '~/types/size';
 export interface ScheduleBarProps extends GeneratedScheduleBar {
   calendarSize?: CalendarSize;
   onClick?: () => void;
+  onDragStart?: () => void;
 }
 
 const ScheduleBar = (props: ScheduleBarProps) => {
-  const { title, onClick, roundedEnd, calendarSize = 'md', ...rest } = props;
+  const {
+    title,
+    onClick,
+    roundedEnd,
+    onDragStart,
+    calendarSize = 'md',
+    ...rest
+  } = props;
   const { teamPlaceColor } = useTeamPlace();
 
   return (
     <S.Wrapper
       title={title}
       onClick={onClick}
+      onDragStart={onDragStart}
       roundedEnd={roundedEnd}
       calendarSize={calendarSize}
+      draggable={true}
       {...rest}
     >
       <S.Inner

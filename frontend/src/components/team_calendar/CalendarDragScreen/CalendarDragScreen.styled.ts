@@ -9,4 +9,6 @@ export const Container = styled.div`
   height: 100%;
 
   background-color: #ffffffaa;
+
+  cursor: all-scroll;
 `;
