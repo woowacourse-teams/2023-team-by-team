@@ -8,15 +8,25 @@ export const Container = styled.div`
   height: 100vh;
 `;
 
-export const MainContainer = styled.main`
+export const MainContainer = styled.main<{ $isMobile: boolean }>`
   display: flex;
-  justify-content: flex-end;
   align-items: center;
   overflow-x: hidden;
 
   width: 100%;
   height: 100%;
-  padding-right: 120px;
+
+  ${({ $isMobile }) => {
+    if ($isMobile)
+      return css`
+        justify-content: center;
+      `;
+
+    return css`
+      justify-content: flex-end;
+      padding-right: 120px;
+    `;
+  }}
 `;
 
 export const InnerContainer = styled.div<{ $isLinkClicked: boolean }>`
@@ -104,7 +114,7 @@ export const inputTitle = css`
 
   border: none;
   border-radius: 14px;
-  background-color: transparent;
+  background-color: ${({ theme }) => theme.color.WHITE};
 
   font-size: 24px;
 `;

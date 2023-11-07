@@ -2,21 +2,41 @@ import { styled } from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import { css } from 'styled-components';
 
-export const Nav = styled.nav`
+export const Nav = styled.nav<{ $isMobile: boolean }>`
   display: flex;
+  ${({ $isMobile }) => {
+    if ($isMobile)
+      return css`
+        width: 100%;
+        height: 60px;
+        padding: 10px;
+      `;
 
-  width: 70px;
-  height: 100%;
-  padding: 14px 0 18px 0;
+    return css`
+      width: 70px;
+      height: 100%;
+      padding: 14px 0 18px 0;
+    `;
+  }}
 `;
 
-export const MenuContainer = styled.div`
+export const MenuContainer = styled.div<{ $isMobile: boolean }>`
   display: flex;
-  flex-direction: column;
   align-items: center;
 
   width: 100%;
-  gap: 30px;
+  ${({ $isMobile }) => {
+    if ($isMobile)
+      return css`
+        justify-content: space-between;
+      `;
+
+    return css`
+      flex-direction: column;
+
+      gap: 30px;
+    `;
+  }}
 `;
 
 export const MenuLink = styled(NavLink)`

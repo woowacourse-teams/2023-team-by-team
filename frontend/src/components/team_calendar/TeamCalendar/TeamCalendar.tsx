@@ -30,6 +30,7 @@ import {
 } from '~/assets/svg';
 import * as S from './TeamCalendar.styled';
 import { parseDate } from '~/utils/parseDate';
+import Spacing from '~/components/common/Spacing/Spacing';
 
 interface TeamCalendarProps {
   calendarSize?: CalendarSize;
@@ -176,7 +177,7 @@ const TeamCalendar = (props: TeamCalendarProps) => {
     <>
       <S.Container $calendarSize={calendarSize}>
         <S.CalendarHeader>
-          <div />
+          <Spacing direction="horizontal" size={56} />
           <S.ButtonContainer>
             <Button
               variant="plain"

@@ -9,6 +9,7 @@ import { useFetchDailySchedules } from '~/hooks/queries/useFetchDailySchedules';
 import type { Position, SchedulePosition } from '~/types/schedule';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import type { CalendarSize } from '~/types/size';
+import { getIsMobile } from '~/utils/getIsMobile';
 
 export interface DailyScheduleModalProps {
   calendarSize?: CalendarSize;
@@ -40,6 +41,7 @@ const DailyScheduleModal = (props: DailyScheduleModalProps) => {
   const { row, column } = position;
   const { closeModal } = useModal();
   const { teamPlaceColor, teamPlaceId } = useTeamPlace();
+  const isMobile = getIsMobile();
 
   const { year, month, date } = parseDate(rawDate);
   const schedules = useFetchDailySchedules(teamPlaceId, year, month, date);
@@ -54,6 +56,7 @@ const DailyScheduleModal = (props: DailyScheduleModalProps) => {
           calendarWidth,
           calendarLeft,
           calendarSize,
+          isMobile,
         )}
       >
         <S.Header>

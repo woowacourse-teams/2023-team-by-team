@@ -8,12 +8,14 @@ import { START_TYPE } from '~/constants/team';
 import IntroCardPile from '~/components/landing/IntroCardPile/IntroCardPile';
 import LandingHeader from '~/components/common/LandingHeader/LandingHeader';
 import BackButton from '~/components/common/BackButton/BackButton';
+import { getIsMobile } from '~/utils/getIsMobile';
 
 type StartType = (typeof START_TYPE)[keyof typeof START_TYPE];
 
 const StartPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const isMobile = getIsMobile();
   const previousPath = location.state?.from?.pathname;
   const isShowBackButton = previousPath?.includes(PATH_NAME.TEAM_SELECT);
 
@@ -40,7 +42,7 @@ const StartPage = () => {
   return (
     <S.Container>
       <LandingHeader href={PATH_NAME.TEAM_SELECT} />
-      <S.MainContainer>
+      <S.MainContainer $isMobile={isMobile}>
         <S.InnerContainer ref={ref} $clickedButton={clickedButton}>
           <S.ButtonContainer>
             <Text weight="semiBold" css={S.explainText}>
@@ -71,7 +73,7 @@ const StartPage = () => {
           {isShowBackButton && <BackButton label="이전 페이지로 이동" />}
         </S.InnerContainer>
       </S.MainContainer>
-      <IntroCardPile animation={false} />
+      {!isMobile && <IntroCardPile animation={false} />}
     </S.Container>
   );
 };

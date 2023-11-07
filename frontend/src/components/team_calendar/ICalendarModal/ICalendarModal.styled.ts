@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import type { ICalendarModalProps } from '~/components/team_calendar/ICalendarModal/ICalendarModal';
+import type { CalendarSize } from '~/types/size';
 
 export const Backdrop = styled.div`
   position: fixed;
@@ -10,14 +10,15 @@ export const Backdrop = styled.div`
   height: 100%;
 `;
 
-export const Container = styled.div.withConfig({
-  shouldForwardProp: (prop) => !['calendarSize'].includes(prop),
-})<ICalendarModalProps>`
+export const Container = styled.div<{
+  $calendarSize: CalendarSize;
+  $isMobile: boolean;
+}>`
   position: fixed;
   display: flex;
   flex-direction: column;
-  ${({ calendarSize }) => {
-    if (calendarSize === 'md') {
+  ${({ $calendarSize, $isMobile }) => {
+    if ($calendarSize === 'md' || $isMobile) {
       return css`
         top: 50%;
         left: 50%;
@@ -25,7 +26,7 @@ export const Container = styled.div.withConfig({
       `;
     }
 
-    if (calendarSize === 'sm') {
+    if ($calendarSize === 'sm') {
       return css`
         top: 25%;
         left: 14.4%;
@@ -33,10 +34,21 @@ export const Container = styled.div.withConfig({
     }
   }}
 
-  width: 400px;
-  min-height: 200px;
-  padding: 20px;
+  ${({ $isMobile }) => {
+    if ($isMobile)
+      return css`
+        width: 300px;
+        min-height: 180px;
+        padding: 10px 20px;
+      `;
 
+    return css`
+      width: 400px;
+      min-height: 200px;
+      padding: 20px;
+    `;
+  }}
+ 
   border-radius: 8px;
   box-shadow:
     0 0 1px #1b1d1f33,

@@ -4,15 +4,15 @@ import { DEFAULT_MAX_THREAD_HEIGHT } from '~/constants/feed';
 
 /**
  * 《useThreadHeight》
- * 스레드가 확장되어 있는지의 여부를 관리할 수 있고, 이를 바탕으로 스레드가 가져야 하는 높이를 알려줍니다.
+ * 채팅이 확장되어 있는지의 여부를 관리할 수 있고, 이를 바탕으로 채팅이 가져야 하는 높이를 알려줍니다.
  *
- * @param threadRef - 스레드 컴포넌트의 ref
+ * @param threadRef - 채팅 컴포넌트의 ref
  * @param contentRef - 본문의 ref
  *
  * @returns shouldShowExpandButton - 확장/축소 버튼을 표시해야하는지의 여부
- * @returns isExpanded - 현재 스레드가 확장 상태인지의 여부
+ * @returns isExpanded - 현재 채팅이 확장 상태인지의 여부
  * @returns toggleExpandButton - 확장/축소 토글을 위한 함수
- * @returns resultHeight - 스레드가 가져야 하는 높이
+ * @returns resultHeight - 채팅이 가져야 하는 높이
  */
 export const useThreadHeight = (
   threadRef: RefObject<HTMLDivElement>,

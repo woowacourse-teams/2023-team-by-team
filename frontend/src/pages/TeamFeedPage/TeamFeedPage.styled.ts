@@ -1,12 +1,12 @@
 import { css, styled } from 'styled-components';
 
-export const Container = styled.div`
+export const Container = styled.div<{ $isMobile: boolean }>`
   overflow: hidden;
   position: relative;
 
   width: 100%;
   height: 100%;
-  padding: 20px 30px 30px;
+  padding: ${({ $isMobile }) => ($isMobile ? 0 : '20px 30px 30px')};
 
   background-color: ${({ theme }) => theme.color.GRAY100};
 
@@ -64,14 +64,14 @@ export const Textarea = styled.textarea`
   }
 `;
 
-export const ButtonContainer = styled.div`
+export const ButtonContainer = styled.div<{ $isMobile: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
 
   padding: 0 20px;
 
-  border-radius: 0 0 20px 20px;
+  border-radius: ${({ $isMobile }) => ($isMobile ? 0 : '0 0 20px 20px')};
   background-color: ${({ theme }) => theme.color.WHITE};
 
   & > div {

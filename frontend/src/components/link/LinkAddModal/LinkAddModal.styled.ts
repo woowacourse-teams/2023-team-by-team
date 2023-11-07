@@ -9,8 +9,13 @@ export const Backdrop = styled.div`
   height: 100%;
 `;
 
-export const Container = styled.div<{ $linkSize: LinkSize }>`
+export const Container = styled.div<{
+  $linkSize: LinkSize;
+  $isMobile: boolean;
+}>`
   position: fixed;
+  display: flex;
+  flex-direction: column;
   ${({ $linkSize }) => {
     if ($linkSize === 'md')
       return css`
@@ -27,12 +32,20 @@ export const Container = styled.div<{ $linkSize: LinkSize }>`
       `;
   }}
 
-  display: flex;
-  flex-direction: column;
+  ${({ $isMobile }) => {
+    if ($isMobile)
+      return css`
+        width: 300px;
+        padding: 10px 26px 20px;
+      `;
 
-  width: 496px;
-  min-height: 320px;
-  padding: 20px 30px;
+    return css`
+      width: 496px;
+      min-height: 320px;
+      padding: 20px 30px;
+    `;
+  }}
+  
 
   border-radius: 10px;
   box-shadow:
