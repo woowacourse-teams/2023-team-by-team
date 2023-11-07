@@ -1,4 +1,5 @@
 import * as S from './CalendarDragScreen.styled';
+import { useRef } from 'react';
 import MovingScheduleBars from '~/components/team_calendar/MovingScheduleBars/MovingScheduleBars';
 import type { Schedule } from '~/types/schedule';
 import type { CalendarSize } from '~/types/size';
@@ -11,37 +12,26 @@ interface CalendarDragScreenProps {
   month: number;
   level: number;
   schedule: Schedule;
-  initMouseX: number;
-  initMouseY: number;
   onMouseUp: () => void;
 }
 
 const CalendarDragScreen = (props: CalendarDragScreenProps) => {
-  const {
-    visible,
-    calendarSize,
-    year,
-    month,
-    level,
-    schedule,
-    initMouseX,
-    initMouseY,
-    onMouseUp,
-  } = props;
+  const { visible, calendarSize, year, month, level, schedule, onMouseUp } =
+    props;
+  const calendarRef = useRef<HTMLDivElement>(null);
   const { movingScheduleBars, relativeX, relativeY } = useCalendarDragScreen({
     visible,
+    calendarRef,
     calendarSize,
     onMouseUp,
     year,
     month,
     level,
     schedule,
-    initMouseX,
-    initMouseY,
   });
 
   return visible ? (
-    <S.Container>
+    <S.Container ref={calendarRef}>
       <MovingScheduleBars
         scheduleBars={movingScheduleBars}
         relativeX={relativeX}

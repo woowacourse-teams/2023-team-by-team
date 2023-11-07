@@ -6,8 +6,6 @@ interface DragStatus {
   isDragging: boolean;
   level: number;
   schedule: Schedule;
-  initMouseX: number;
-  initMouseY: number;
 }
 
 export const useScheduleDragStatus = () => {
@@ -15,21 +13,13 @@ export const useScheduleDragStatus = () => {
     isDragging: false,
     level: 0,
     schedule: {} as Schedule,
-    initMouseX: 0,
-    initMouseY: 0,
   });
 
-  const handleDragStart = (
-    e: MouseEvent,
-    level: number,
-    schedule: Schedule,
-  ) => {
+  const handleDragStart = (level: number, schedule: Schedule) => {
     setDragStatus(() => ({
       isDragging: true,
       schedule,
       level,
-      initMouseX: e.clientX,
-      initMouseY: e.clientY,
     }));
   };
 
@@ -42,8 +32,6 @@ export const useScheduleDragStatus = () => {
       isDragging: false,
       level: 0,
       schedule: {} as Schedule,
-      initMouseX: 0,
-      initMouseY: 0,
     }));
   };
 
