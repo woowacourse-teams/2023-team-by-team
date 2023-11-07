@@ -89,7 +89,7 @@ const Header = () => {
 
       if (location.pathname === PATH_NAME.TEAM_SELECT) {
         isMobile
-          ? navigate(PATH_NAME.TEAM_SELECT)
+          ? navigate(PATH_NAME.TEAM_CALENDAR)
           : navigate(PATH_NAME.TEAM_OVERVIEW);
       }
     },
