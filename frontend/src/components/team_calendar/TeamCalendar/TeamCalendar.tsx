@@ -283,7 +283,9 @@ const TeamCalendar = (props: TeamCalendarProps) => {
                                 level,
                               });
                             }}
-                            onDragStart={() => handleDragStart(level, schedule)}
+                            onDragStart={(e) =>
+                              handleDragStart(e, level, schedule)
+                            }
                             {...scheduleBar}
                           />
                         );

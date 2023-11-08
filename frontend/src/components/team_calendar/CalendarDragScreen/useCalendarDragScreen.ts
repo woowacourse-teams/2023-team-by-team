@@ -9,6 +9,8 @@ interface UseCalendarDragScreenProps {
   calendarRef: RefObject<HTMLDivElement>;
   calendarSize: CalendarSize;
   onMouseUp: () => void;
+  initX: number;
+  initY: number;
   year: number;
   month: number;
   level: number;
@@ -16,8 +18,6 @@ interface UseCalendarDragScreenProps {
 }
 
 interface CalendarPointInfos {
-  initX: number;
-  initY: number;
   relativeX: number;
   relativeY: number;
   calendarWidth: number;
@@ -29,6 +29,8 @@ export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
     visible,
     calendarRef,
     calendarSize,
+    initX,
+    initY,
     onMouseUp,
     year,
     month,
@@ -37,14 +39,12 @@ export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
   } = props;
   const [calendarPointInfos, setCalendarPointInfos] =
     useState<CalendarPointInfos>({
-      initX: 0,
-      initY: 0,
       relativeX: 0,
       relativeY: 0,
       calendarWidth: 0,
       calendarHeight: 0,
     });
-  const { initX, initY, relativeX, relativeY, calendarWidth, calendarHeight } =
+  const { relativeX, relativeY, calendarWidth, calendarHeight } =
     calendarPointInfos;
 
   const scheduleBars = visible
@@ -68,22 +68,14 @@ export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
       return;
     }
 
-    const onMouseDown = (e: globalThis.MouseEvent) => {
-      const { clientX, clientY } = e;
-
-      setCalendarPointInfos((prev) => ({
-        ...prev,
-        initX: clientX,
-        initY: clientY,
-      }));
-    };
-
     const onMouseMove = (e: globalThis.MouseEvent) => {
       if (!visible) {
         return;
       }
 
       const { clientX, clientY } = e;
+
+      console.log({ x: clientX - initX, y: clientY - initY });
 
       setCalendarPointInfos((prev) => ({
         ...prev,
@@ -102,13 +94,11 @@ export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
       }));
     });
 
-    document.addEventListener('mousedown', onMouseDown);
     calendarElement.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
     resizeObserver.observe(calendarElement);
 
     return () => {
-      document.removeEventListener('mousedown', onMouseDown);
       calendarElement.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
       resizeObserver.disconnect();

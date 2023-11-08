@@ -7,6 +7,8 @@ import { useCalendarDragScreen } from './useCalendarDragScreen';
 
 interface CalendarDragScreenProps {
   visible: boolean;
+  initX: number;
+  initY: number;
   calendarSize: CalendarSize;
   year: number;
   month: number;
@@ -16,11 +18,22 @@ interface CalendarDragScreenProps {
 }
 
 const CalendarDragScreen = (props: CalendarDragScreenProps) => {
-  const { visible, calendarSize, year, month, level, schedule, onMouseUp } =
-    props;
+  const {
+    visible,
+    initX,
+    initY,
+    calendarSize,
+    year,
+    month,
+    level,
+    schedule,
+    onMouseUp,
+  } = props;
   const calendarRef = useRef<HTMLDivElement>(null);
   const { movingScheduleBars, relativeX, relativeY } = useCalendarDragScreen({
     visible,
+    initX,
+    initY,
     calendarRef,
     calendarSize,
     onMouseUp,
