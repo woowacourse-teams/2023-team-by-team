@@ -18,24 +18,28 @@ const ScheduleBar = (props: ScheduleBarProps) => {
     onClick,
     roundedEnd,
     onDragStart,
+    mode = 'normal',
     calendarSize = 'md',
     ...rest
   } = props;
   const { teamPlaceColor } = useTeamPlace();
+  const isInteractable = mode === 'normal';
 
   return (
     <S.Wrapper
-      title={title}
+      title={isInteractable ? title : undefined}
       onClick={onClick}
       onDragStart={onDragStart}
       roundedEnd={roundedEnd}
       calendarSize={calendarSize}
-      draggable={true}
+      draggable={isInteractable}
+      mode={mode}
       {...rest}
     >
       <S.Inner
         teamPlaceColor={teamPlaceColor}
         roundedEnd={roundedEnd}
+        mode={mode}
         {...rest}
       >
         <Text as="span" css={S.scheduleBarTitle(calendarSize)}>

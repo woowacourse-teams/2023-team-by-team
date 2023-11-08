@@ -9,6 +9,7 @@ interface InnerProps {
   level: number;
   roundedStart: boolean;
   roundedEnd: boolean;
+  mode?: 'normal' | 'no-interaction' | 'indicator';
   teamPlaceColor: TeamPlaceColor;
 }
 
@@ -25,6 +26,7 @@ export const Wrapper = styled.div.withConfig({
       'duration',
       'roundedStart',
       'roundedEnd',
+      'mode',
     ].includes(prop),
 })<
   Pick<
@@ -35,6 +37,7 @@ export const Wrapper = styled.div.withConfig({
     | 'duration'
     | 'roundedStart'
     | 'roundedEnd'
+    | 'mode'
   >
 >`
   position: absolute;
@@ -52,9 +55,7 @@ export const Wrapper = styled.div.withConfig({
   }}
 
   left: ${({ column }) => (column * 100) / 7}%;
-
   width: ${({ duration }) => (duration * 100) / 7}%;
-
   padding: ${({ roundedStart, roundedEnd }) =>
     `0 ${roundedEnd ? '4px' : 0} 0 ${roundedStart ? '4px' : 0}`};
 `;
@@ -72,6 +73,7 @@ export const Inner = styled.div.withConfig({
       'roundedStart',
       'roundedEnd',
       'teamPlaceColor',
+      'mode',
     ].includes(prop),
 })<InnerProps>`
   display: flex;
@@ -90,11 +92,15 @@ export const Inner = styled.div.withConfig({
 
   filter: brightness(${({ level }) => 1 + level * 0.4});
 
-  cursor: pointer;
+  ${({ mode = 'normal' }) =>
+    mode === 'normal' &&
+    css`
+      cursor: pointer;
 
-  &:hover {
-    opacity: 0.8;
-  }
+      &:hover {
+        opacity: 0.8;
+      }
+    `};
 `;
 
 export const scheduleBarTitle = (calendarSize: CalendarSize) => css`
