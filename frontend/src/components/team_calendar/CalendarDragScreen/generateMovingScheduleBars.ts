@@ -1,4 +1,19 @@
+import { generateScheduleBars } from '~/utils/generateScheduleBars';
 import type { Schedule } from '~/types/schedule';
+import type { CalendarSize } from '~/types/size';
+
+interface GenerateMovingScheduleBarsParams {
+  schedule: Schedule;
+  year: number;
+  month: number;
+  relativeX: number;
+  relativeY: number;
+  calendarWidth: number;
+  calendarHeight: number;
+  level: number;
+  calendarSize: CalendarSize;
+}
+
 const getCalendarGridDifference = (
   relativeX: number,
   relativeY: number,
@@ -32,4 +47,37 @@ const changeDateTimeByDays = (
   const changedDateTime: Schedule['startDateTime'] = `${year}-${month}-${day} ${minute}:${second}`;
 
   return changedDateTime;
+};
+
+export const generateMovingScheduleBars = (
+  params: GenerateMovingScheduleBarsParams,
+) => {
+  const {
+    schedule,
+    year,
+    month,
+    relativeX,
+    relativeY,
+    calendarWidth,
+    calendarHeight,
+    level,
+    calendarSize,
+  } = params;
+
+  const { columnDifference } = getCalendarGridDifference(
+    relativeX,
+    relativeY,
+    calendarWidth,
+    calendarHeight,
+  );
+  const { startDateTime, endDateTime } = schedule;
+  const generatedMovingScheduleBars = generateScheduleBars(year, month, [
+    {
+      ...schedule,
+      startDateTime: changeDateTimeByDays(startDateTime, columnDifference),
+      endDateTime: changeDateTimeByDays(endDateTime, columnDifference),
+    },
+  ]).map((scheduleBar) => ({ ...scheduleBar, level, calendarSize }));
+
+  return generatedMovingScheduleBars;
 };
