@@ -42,9 +42,11 @@ const ScheduleBar = (props: ScheduleBarProps) => {
         mode={mode}
         {...rest}
       >
-        <Text as="span" css={S.scheduleBarTitle(calendarSize)}>
-          {title}
-        </Text>
+        {mode !== 'indicator' && (
+          <Text as="span" css={S.scheduleBarTitle(calendarSize)}>
+            {title}
+          </Text>
+        )}
         {!roundedEnd && <DoubleArrowRightIcon />}
       </S.Inner>
     </S.Wrapper>

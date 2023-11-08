@@ -9,7 +9,7 @@ interface InnerProps {
   level: number;
   roundedStart: boolean;
   roundedEnd: boolean;
-  mode?: 'normal' | 'no-interaction' | 'indicator';
+  mode: 'normal' | 'no-interaction' | 'indicator';
   teamPlaceColor: TeamPlaceColor;
 }
 
@@ -83,16 +83,31 @@ export const Inner = styled.div.withConfig({
   height: 100%;
   padding-left: 6px;
 
-  background-color: ${({ theme, teamPlaceColor = 0 }) =>
-    theme.teamColor[teamPlaceColor]};
+  background-color: ${({ theme, teamPlaceColor = 0, mode }) =>
+    mode === 'indicator' ? 'transparent' : theme.teamColor[teamPlaceColor]};
   border-radius: ${({ roundedStart, roundedEnd }) =>
     `${roundedStart ? '4px' : '0'} ${roundedEnd ? '4px 4px' : '0 0'} ${
       roundedStart ? '4px' : '0'
     }`};
 
-  filter: brightness(${({ level }) => 1 + level * 0.4});
+  ${({ mode, theme }) =>
+    mode === 'indicator' &&
+    css`
+      margin-top: -2px;
 
-  ${({ mode = 'normal' }) =>
+      border: 2px solid ${theme.color.GRAY400};
+
+      box-shadow: 0 0 24px ${theme.color.GRAY600};
+      box-sizing: content-box;
+    `};
+
+  ${({ mode, level }) =>
+    mode !== 'indicator' &&
+    css`
+      filter: brightness(${1 + level * 0.4});
+    `};
+
+  ${({ mode }) =>
     mode === 'normal' &&
     css`
       cursor: pointer;
