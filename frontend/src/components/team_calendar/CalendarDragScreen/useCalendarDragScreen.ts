@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { generateScheduleBars } from '~/utils/generateScheduleBars';
+import { generateMovingScheduleBars } from './generateMovingScheduleBars';
 import type { RefObject } from 'react';
 import type { Schedule } from '~/types/schedule';
 import type { CalendarSize } from '~/types/size';
@@ -20,8 +20,8 @@ interface CalendarPointInfos {
   initY: number;
   relativeX: number;
   relativeY: number;
-  absoluteX: number;
-  absoluteY: number;
+  calendarWidth: number;
+  calendarHeight: number;
 }
 
 export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
@@ -41,16 +41,33 @@ export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
       initY: 0,
       relativeX: 0,
       relativeY: 0,
-      absoluteX: 0,
-      absoluteY: 0,
+      calendarWidth: 0,
+      calendarHeight: 0,
     });
-  const { relativeX, relativeY, absoluteX, absoluteY } = calendarPointInfos;
+  const { initX, initY, relativeX, relativeY, calendarWidth, calendarHeight } =
+    calendarPointInfos;
 
-  const scheduleBars = generateScheduleBars(year, month, [schedule]).map(
-    (scheduleBar) => ({ ...scheduleBar, level, calendarSize }),
-  );
+  const scheduleBars = visible
+    ? generateMovingScheduleBars({
+        schedule,
+        year,
+        month,
+        relativeX,
+        relativeY,
+        calendarWidth,
+        calendarHeight,
+        level,
+        calendarSize,
+      })
+    : [];
 
   useEffect(() => {
+    const calendarElement = calendarRef.current;
+
+    if (!calendarElement) {
+      return;
+    }
+
     const onMouseDown = (e: globalThis.MouseEvent) => {
       const { clientX, clientY } = e;
 
@@ -66,46 +83,41 @@ export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
         return;
       }
 
-      const calendarElement = calendarRef.current;
-
-      if (!calendarElement) {
-        return;
-      }
-
       const { clientX, clientY } = e;
-      const { top, left } = calendarElement.getBoundingClientRect();
 
       setCalendarPointInfos((prev) => ({
         ...prev,
-        relativeX: clientX - prev.initX,
-        relativeY: clientY - prev.initY,
-        absoluteX: clientX - left,
-        absoluteY: clientY - top,
+        relativeX: clientX - initX,
+        relativeY: clientY - initY,
       }));
     };
 
+    const resizeObserver = new ResizeObserver(() => {
+      const { clientWidth, clientHeight } = calendarElement;
+
+      setCalendarPointInfos((prev) => ({
+        ...prev,
+        calendarWidth: clientWidth,
+        calendarHeight: clientHeight,
+      }));
+    });
+
     document.addEventListener('mousedown', onMouseDown);
-    document.addEventListener('mousemove', onMouseMove);
+    calendarElement.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
+    resizeObserver.observe(calendarElement);
 
     return () => {
       document.removeEventListener('mousedown', onMouseDown);
-      document.removeEventListener('mousemove', onMouseMove);
+      calendarElement.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
+      resizeObserver.disconnect();
     };
-  }, [
-    visible,
-    onMouseUp,
-    calendarRef,
-    relativeX,
-    relativeY,
-    absoluteX,
-    absoluteY,
-  ]);
+  }, [visible, onMouseUp, calendarRef, relativeX, relativeY, initX, initY]);
 
   return {
     movingScheduleBars: scheduleBars,
-    relativeX,
+    relativeX: relativeX % (calendarWidth / 7),
     relativeY,
   };
 };
