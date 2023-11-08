@@ -77,7 +77,12 @@ export const generateMovingScheduleBars = (
       startDateTime: changeDateTimeByDays(startDateTime, columnDifference),
       endDateTime: changeDateTimeByDays(endDateTime, columnDifference),
     },
-  ]).map((scheduleBar) => ({ ...scheduleBar, level, calendarSize }));
+  ]).map((scheduleBar) => ({
+    ...scheduleBar,
+    level,
+    calendarSize,
+    mode: 'no-interaction',
+  }));
 
   return generatedMovingScheduleBars;
 };
