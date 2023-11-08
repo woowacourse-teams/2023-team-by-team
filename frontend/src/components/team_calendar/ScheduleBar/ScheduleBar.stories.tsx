@@ -143,3 +143,27 @@ export const NoInteraction: Story = {
     mode: 'no-interaction',
   },
 };
+
+/**
+ * `mode` 값이 `indicator`일 경우, 해당 캘린더 바는 **상호작용이 불가능하고 캘린더 바의 윤곽만 드러내는** 시각적 요소가 됩니다. 캘린더 바가 놓일 위치를 시각적으로 표시하는 데에 사용합니다.
+ */
+export const Indicator: Story = {
+  args: {
+    id: '1',
+    scheduleId: 1,
+    schedule: {
+      id: 1,
+      title: 'This should not shown',
+      startDateTime: '2023-07-07 05:00',
+      endDateTime: '2023-07-09 10:00',
+    },
+    title: 'This should not shown',
+    row: 1,
+    column: 2,
+    duration: 3,
+    level: 0,
+    roundedStart: true,
+    roundedEnd: true,
+    mode: 'indicator',
+  },
+};
