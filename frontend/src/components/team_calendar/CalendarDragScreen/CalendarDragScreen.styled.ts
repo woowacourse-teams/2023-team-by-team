@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 
-export const Container = styled.div`
+export const Container = styled.div<{ $visible: boolean }>`
+  ${({ $visible }) => !$visible && 'display: none'};
   position: absolute;
   overflow: hidden;
   left: 0;

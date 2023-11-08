@@ -30,8 +30,8 @@ const CalendarDragScreen = (props: CalendarDragScreenProps) => {
     schedule,
   });
 
-  return visible ? (
-    <S.Container ref={calendarRef}>
+  return (
+    <S.Container $visible={visible} ref={calendarRef}>
       <MovingScheduleBars
         scheduleBars={movingScheduleBars}
         relativeX={relativeX}
@@ -39,7 +39,7 @@ const CalendarDragScreen = (props: CalendarDragScreenProps) => {
       />
       {/* <ScheduleBarIndicator schedule={schedule} /> */}
     </S.Container>
-  ) : null;
+  );
 };
 
 export default CalendarDragScreen;
