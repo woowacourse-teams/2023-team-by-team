@@ -20,15 +20,8 @@ const getCalendarGridDifference = (
   calendarWidth: number,
   calendarHeight: number,
 ) => {
-  const rowDifference =
-    relativeY > 0
-      ? Math.floor((relativeY * 6) / calendarHeight)
-      : Math.ceil((relativeY * 6) / calendarHeight);
-  const columnDifference =
-    relativeX > 0
-      ? Math.floor((relativeX * 7) / calendarWidth)
-      : Math.ceil((relativeX * 7) / calendarWidth);
-
+  const rowDifference = Math.round((relativeY * 6) / calendarHeight);
+  const columnDifference = Math.round((relativeX * 7) / calendarWidth);
   const calculatedDifference = rowDifference * 7 + columnDifference;
 
   return calculatedDifference;

@@ -47,19 +47,16 @@ export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
   const { relativeX, relativeY, calendarWidth, calendarHeight } =
     calendarPointInfos;
 
-  const scheduleBars = visible
-    ? generateScheduleBarsByMousePoint({
-        schedule,
-        year,
-        month,
-        relativeX,
-        relativeY,
-        calendarWidth,
-        calendarHeight,
-        level,
-        calendarSize,
-      })
-    : [];
+  const getProcessedRelativePoint = () => {
+    const processedRelativeX =
+      ((relativeX + calendarWidth * (15 / 14)) % (calendarWidth / 7)) -
+      calendarWidth / 14;
+    const processedRelativeY =
+      ((relativeY + calendarHeight * (13 / 12)) % (calendarHeight / 6)) -
+      calendarHeight / 12;
+
+    return { x: processedRelativeX, y: processedRelativeY };
+  };
 
   useEffect(() => {
     const calendarElement = calendarRef.current;
@@ -74,10 +71,7 @@ export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
       }
 
       const { clientX, clientY } = e;
-
-      console.log({ x: clientX - initX, y: clientY - initY });
-
-      setCalendarPointInfos((prev) => ({
+      +setCalendarPointInfos((prev) => ({
         ...prev,
         relativeX: clientX - initX,
         relativeY: clientY - initY,
@@ -105,9 +99,25 @@ export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
     };
   }, [visible, onMouseUp, calendarRef, relativeX, relativeY, initX, initY]);
 
+  const scheduleBars = visible
+    ? generateScheduleBarsByMousePoint({
+        schedule,
+        year,
+        month,
+        relativeX,
+        relativeY,
+        calendarWidth,
+        calendarHeight,
+        level,
+        calendarSize,
+      })
+    : [];
+
+  const processedRelativePoint = getProcessedRelativePoint();
+
   return {
     scheduleBars,
-    relativeX: relativeX % (calendarWidth / 7),
-    relativeY: relativeY % (calendarHeight / 6),
+    relativeX: processedRelativePoint.x,
+    relativeY: processedRelativePoint.y,
   };
 };
