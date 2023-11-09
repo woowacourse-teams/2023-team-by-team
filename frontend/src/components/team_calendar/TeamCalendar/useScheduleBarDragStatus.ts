@@ -30,6 +30,7 @@ export const useScheduleDragStatus = () => {
     e: MouseEvent,
     level: number,
     schedule: Schedule,
+    shouldUpdate: boolean,
   ) => {
     const { clientX, clientY } = e;
 
@@ -46,8 +47,18 @@ export const useScheduleDragStatus = () => {
     title: string,
     startDateTime: Schedule['startDateTime'],
     endDateTime: Schedule['endDateTime'],
+    shouldUpdate: boolean,
   ) => {
     if (!dragStatus.isDragging) {
+      return;
+    }
+
+    setDragStatus((prev) => ({
+      ...prev,
+      isDragging: false,
+    }));
+
+    if (!shouldUpdate) {
       return;
     }
 
@@ -68,11 +79,6 @@ export const useScheduleDragStatus = () => {
         },
       },
     );
-
-    setDragStatus((prev) => ({
-      ...prev,
-      isDragging: false,
-    }));
   };
 
   return { dragStatus, handleDragStart, handleMouseUp };

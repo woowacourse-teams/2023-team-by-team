@@ -12,6 +12,7 @@ interface UseCalendarDragScreenProps {
     title: string,
     startDateTime: Schedule['startDateTime'],
     endDateTime: Schedule['endDateTime'],
+    shouldUpdate: boolean,
   ) => void;
   initX: number;
   initY: number;
@@ -117,7 +118,9 @@ export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
       }
 
       const { title, startDateTime, endDateTime } = scheduleBars[0].schedule;
-      onMouseUp(title, startDateTime, endDateTime);
+      const shouldUpdate = schedule.startDateTime !== startDateTime;
+
+      onMouseUp(title, startDateTime, endDateTime, shouldUpdate);
     };
 
     const resizeObserver = new ResizeObserver(() => {
@@ -148,6 +151,7 @@ export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
     initX,
     initY,
     scheduleBars,
+    schedule.startDateTime,
   ]);
 
   const processedRelativePoint = getProcessedRelativePoint();
