@@ -2,7 +2,7 @@ import { generateScheduleBars } from '~/utils/generateScheduleBars';
 import type { Schedule } from '~/types/schedule';
 import type { CalendarSize } from '~/types/size';
 
-interface GenerateMovingScheduleBarsParams {
+interface GenerateScheduleBarsByMousePointProps {
   schedule: Schedule;
   year: number;
   month: number;
@@ -29,7 +29,9 @@ const getCalendarGridDifference = (
       ? Math.floor((relativeX * 7) / calendarWidth)
       : Math.ceil((relativeX * 7) / calendarWidth);
 
-  return { rowDifference, columnDifference };
+  const calculatedDifference = rowDifference * 7 + columnDifference;
+
+  return calculatedDifference;
 };
 
 const changeDateTimeByDays = (
@@ -49,8 +51,8 @@ const changeDateTimeByDays = (
   return changedDateTime;
 };
 
-export const generateMovingScheduleBars = (
-  params: GenerateMovingScheduleBarsParams,
+export const generateScheduleBarsByMousePoint = (
+  params: GenerateScheduleBarsByMousePointProps,
 ) => {
   const {
     schedule,
@@ -64,25 +66,24 @@ export const generateMovingScheduleBars = (
     calendarSize,
   } = params;
 
-  const { columnDifference } = getCalendarGridDifference(
+  const difference = getCalendarGridDifference(
     relativeX,
     relativeY,
     calendarWidth,
     calendarHeight,
   );
   const { startDateTime, endDateTime } = schedule;
-  const generatedMovingScheduleBars = generateScheduleBars(year, month, [
+  const generatedScheduleBars = generateScheduleBars(year, month, [
     {
       ...schedule,
-      startDateTime: changeDateTimeByDays(startDateTime, columnDifference),
-      endDateTime: changeDateTimeByDays(endDateTime, columnDifference),
+      startDateTime: changeDateTimeByDays(startDateTime, difference),
+      endDateTime: changeDateTimeByDays(endDateTime, difference),
     },
   ]).map((scheduleBar) => ({
     ...scheduleBar,
     level,
     calendarSize,
-    mode: 'no-interaction',
   }));
 
-  return generatedMovingScheduleBars;
+  return generatedScheduleBars;
 };

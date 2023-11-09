@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { generateMovingScheduleBars } from './generateMovingScheduleBars';
+import { generateScheduleBarsByMousePoint } from './generateScheduleBarsByMousePoint';
 import type { RefObject } from 'react';
 import type { Schedule } from '~/types/schedule';
 import type { CalendarSize } from '~/types/size';
@@ -48,7 +48,7 @@ export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
     calendarPointInfos;
 
   const scheduleBars = visible
-    ? generateMovingScheduleBars({
+    ? generateScheduleBarsByMousePoint({
         schedule,
         year,
         month,
@@ -106,8 +106,8 @@ export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
   }, [visible, onMouseUp, calendarRef, relativeX, relativeY, initX, initY]);
 
   return {
-    movingScheduleBars: scheduleBars,
+    scheduleBars,
     relativeX: relativeX % (calendarWidth / 7),
-    relativeY,
+    relativeY: relativeY % (calendarHeight / 6),
   };
 };

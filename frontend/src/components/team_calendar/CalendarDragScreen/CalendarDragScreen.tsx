@@ -30,29 +30,25 @@ const CalendarDragScreen = (props: CalendarDragScreenProps) => {
     onMouseUp,
   } = props;
   const calendarRef = useRef<HTMLDivElement>(null);
-  const { movingScheduleBars, scheduleBarsIndicator, relativeX, relativeY } =
-    useCalendarDragScreen({
-      visible,
-      initX,
-      initY,
-      calendarRef,
-      calendarSize,
-      onMouseUp,
-      year,
-      month,
-      level,
-      schedule,
-    });
+  const { scheduleBars, relativeX, relativeY } = useCalendarDragScreen({
+    visible,
+    initX,
+    initY,
+    calendarRef,
+    calendarSize,
+    onMouseUp,
+    year,
+    month,
+    level,
+    schedule,
+  });
 
   return (
     <S.Container $visible={visible} ref={calendarRef}>
-      <FakeScheduleBarsScreen
-        mode="indicator"
-        scheduleBars={scheduleBarsIndicator}
-      />
+      <FakeScheduleBarsScreen mode="indicator" scheduleBars={scheduleBars} />
       <FakeScheduleBarsScreen
         mode="schedule"
-        scheduleBars={movingScheduleBars}
+        scheduleBars={scheduleBars}
         relativeX={relativeX}
         relativeY={relativeY}
       />
