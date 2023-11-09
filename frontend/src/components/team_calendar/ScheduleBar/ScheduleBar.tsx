@@ -23,16 +23,17 @@ const ScheduleBar = (props: ScheduleBarProps) => {
     ...rest
   } = props;
   const { teamPlaceColor } = useTeamPlace();
-  const isInteractable = mode === 'normal';
+  const isInteractive = mode === 'normal';
+  const isIndicator = mode === 'indicator';
 
   return (
     <S.Wrapper
-      title={isInteractable ? title : undefined}
+      title={isInteractive ? title : undefined}
       onClick={onClick}
       onDragStart={onDragStart}
       roundedEnd={roundedEnd}
       calendarSize={calendarSize}
-      draggable={isInteractable}
+      draggable={isInteractive}
       mode={mode}
       {...rest}
     >
@@ -42,12 +43,12 @@ const ScheduleBar = (props: ScheduleBarProps) => {
         mode={mode}
         {...rest}
       >
-        {mode !== 'indicator' && (
+        {!isIndicator && (
           <Text as="span" css={S.scheduleBarTitle(calendarSize)}>
             {title}
           </Text>
         )}
-        {!roundedEnd && <DoubleArrowRightIcon />}
+        {!roundedEnd && !isIndicator && <DoubleArrowRightIcon />}
       </S.Inner>
     </S.Wrapper>
   );
