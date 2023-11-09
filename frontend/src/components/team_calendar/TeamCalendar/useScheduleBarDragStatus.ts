@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import { useTeamPlace } from '~/hooks/useTeamPlace';
+import { useToast } from '~/hooks/useToast';
+import { useModifySchedule } from '~/hooks/queries/useModifySchedule';
 import type { MouseEvent } from 'react';
 import type { Schedule } from '~/types/schedule';
 
@@ -18,6 +21,10 @@ export const useScheduleDragStatus = () => {
     initX: 0,
     initY: 0,
   });
+  const { showToast } = useToast();
+  const { teamPlaceId } = useTeamPlace();
+  const scheduleId = dragStatus.schedule.id;
+  const { mutateModifySchedule } = useModifySchedule(teamPlaceId, scheduleId);
 
   const handleDragStart = (
     e: MouseEvent,
@@ -35,17 +42,36 @@ export const useScheduleDragStatus = () => {
     }));
   };
 
-  const handleMouseUp = () => {
+  const handleMouseUp = (
+    title: string,
+    startDateTime: Schedule['startDateTime'],
+    endDateTime: Schedule['endDateTime'],
+  ) => {
     if (!dragStatus.isDragging) {
       return;
     }
 
-    setDragStatus(() => ({
+    mutateModifySchedule(
+      {
+        title,
+        startDateTime,
+        endDateTime,
+      },
+      {
+        onSuccess: () => {
+          showToast('success', '일정이 수정되었습니다.');
+        },
+        onError: (error) => {
+          const response = error as Response;
+          if (response.status === 500)
+            showToast('error', '일정 제목이 최대 글자(250자)를 초과했습니다.');
+        },
+      },
+    );
+
+    setDragStatus((prev) => ({
+      ...prev,
       isDragging: false,
-      level: 0,
-      schedule: {} as Schedule,
-      initX: 0,
-      initY: 0,
     }));
   };
 

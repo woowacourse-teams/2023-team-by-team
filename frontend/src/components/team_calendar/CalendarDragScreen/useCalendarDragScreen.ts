@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { generateScheduleBarsByMousePoint } from './generateScheduleBarsByMousePoint';
 import type { RefObject } from 'react';
 import type { Schedule } from '~/types/schedule';
@@ -8,7 +8,11 @@ interface UseCalendarDragScreenProps {
   visible: boolean;
   calendarRef: RefObject<HTMLDivElement>;
   calendarSize: CalendarSize;
-  onMouseUp: () => void;
+  onMouseUp: (
+    title: string,
+    startDateTime: Schedule['startDateTime'],
+    endDateTime: Schedule['endDateTime'],
+  ) => void;
   initX: number;
   initY: number;
   year: number;
@@ -47,6 +51,35 @@ export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
   const { relativeX, relativeY, calendarWidth, calendarHeight } =
     calendarPointInfos;
 
+  const scheduleBars = useMemo(
+    () =>
+      visible
+        ? generateScheduleBarsByMousePoint({
+            schedule,
+            year,
+            month,
+            relativeX,
+            relativeY,
+            calendarWidth,
+            calendarHeight,
+            level,
+            calendarSize,
+          })
+        : [],
+    [
+      calendarHeight,
+      calendarSize,
+      calendarWidth,
+      level,
+      month,
+      relativeX,
+      relativeY,
+      schedule,
+      visible,
+      year,
+    ],
+  );
+
   const getProcessedRelativePoint = () => {
     const processedRelativeX =
       ((relativeX + calendarWidth * (15 / 14)) % (calendarWidth / 7)) -
@@ -65,17 +98,26 @@ export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
       return;
     }
 
-    const onMouseMove = (e: globalThis.MouseEvent) => {
+    const handleMouseMove = (e: globalThis.MouseEvent) => {
       if (!visible) {
         return;
       }
 
       const { clientX, clientY } = e;
-      +setCalendarPointInfos((prev) => ({
+      setCalendarPointInfos((prev) => ({
         ...prev,
         relativeX: clientX - initX,
         relativeY: clientY - initY,
       }));
+    };
+
+    const handleMouseUp = () => {
+      if (!visible) {
+        return;
+      }
+
+      const { title, startDateTime, endDateTime } = scheduleBars[0].schedule;
+      onMouseUp(title, startDateTime, endDateTime);
     };
 
     const resizeObserver = new ResizeObserver(() => {
@@ -88,30 +130,25 @@ export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
       }));
     });
 
-    calendarElement.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
+    calendarElement.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
     resizeObserver.observe(calendarElement);
 
     return () => {
-      calendarElement.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
+      calendarElement.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
       resizeObserver.disconnect();
     };
-  }, [visible, onMouseUp, calendarRef, relativeX, relativeY, initX, initY]);
-
-  const scheduleBars = visible
-    ? generateScheduleBarsByMousePoint({
-        schedule,
-        year,
-        month,
-        relativeX,
-        relativeY,
-        calendarWidth,
-        calendarHeight,
-        level,
-        calendarSize,
-      })
-    : [];
+  }, [
+    visible,
+    onMouseUp,
+    calendarRef,
+    relativeX,
+    relativeY,
+    initX,
+    initY,
+    scheduleBars,
+  ]);
 
   const processedRelativePoint = getProcessedRelativePoint();
 
