@@ -48,8 +48,3 @@ export interface GeneratedScheduleBar {
   roundedEnd: boolean;
   mode?: 'normal' | 'no-interaction' | 'indicator';
 }
-
-export interface Point {
-  x: number;
-  y: number;
-}
