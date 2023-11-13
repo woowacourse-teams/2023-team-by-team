@@ -52,7 +52,7 @@ export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
   const { relativeX, relativeY, calendarWidth, calendarHeight } =
     calendarPointInfos;
 
-  const scheduleBars = useMemo(
+  const scheduleBarsInfo = useMemo(
     () =>
       visible
         ? generateScheduleBarsByMousePoint({
@@ -66,7 +66,7 @@ export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
             level,
             calendarSize,
           })
-        : [],
+        : null,
     [
       calendarHeight,
       calendarSize,
@@ -113,11 +113,12 @@ export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
     };
 
     const handleMouseUp = () => {
-      if (!visible) {
+      if (!visible || !scheduleBarsInfo) {
         return;
       }
 
-      const { title, startDateTime, endDateTime } = scheduleBars[0].schedule;
+      const { title } = schedule;
+      const { startDateTime, endDateTime } = scheduleBarsInfo;
       const shouldUpdate = schedule.startDateTime !== startDateTime;
 
       onMouseUp(title, startDateTime, endDateTime, shouldUpdate);
@@ -150,14 +151,14 @@ export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
     relativeY,
     initX,
     initY,
-    scheduleBars,
-    schedule.startDateTime,
+    scheduleBarsInfo,
+    schedule,
   ]);
 
   const processedRelativePoint = getProcessedRelativePoint();
 
   return {
-    scheduleBars,
+    scheduleBars: scheduleBarsInfo ? scheduleBarsInfo.scheduleBars : [],
     relativeX: processedRelativePoint.x,
     relativeY: processedRelativePoint.y,
   };

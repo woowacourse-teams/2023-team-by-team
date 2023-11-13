@@ -36,12 +36,15 @@ export const generateScheduleBarsByMousePoint = (
     calendarWidth,
     calendarHeight,
   );
+
   const { startDateTime, endDateTime } = schedule;
+  const changedStartDateTime = changeDateTimeByDays(startDateTime, difference);
+  const changedEndDateTime = changeDateTimeByDays(endDateTime, difference);
   const generatedScheduleBars = generateScheduleBars(year, month, [
     {
       ...schedule,
-      startDateTime: changeDateTimeByDays(startDateTime, difference),
-      endDateTime: changeDateTimeByDays(endDateTime, difference),
+      startDateTime: changedStartDateTime,
+      endDateTime: changedEndDateTime,
     },
   ]).map((scheduleBar) => ({
     ...scheduleBar,
@@ -49,7 +52,11 @@ export const generateScheduleBarsByMousePoint = (
     calendarSize,
   }));
 
-  return generatedScheduleBars;
+  return {
+    scheduleBars: generatedScheduleBars,
+    startDateTime: changedStartDateTime,
+    endDateTime: changedEndDateTime,
+  };
 };
 
 const getCalendarDateDifferenceByMousePoint = (
