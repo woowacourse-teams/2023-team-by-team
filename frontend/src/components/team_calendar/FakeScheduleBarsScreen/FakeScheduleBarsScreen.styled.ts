@@ -1,15 +1,19 @@
 import { styled } from 'styled-components';
 
-export const Container = styled.div<{ $relativeX: number; $relativeY: number }>`
+export const Container = styled.div.attrs<{
+  $relativeX: number;
+  $relativeY: number;
+}>(({ $relativeX, $relativeY }) => ({
+  style: {
+    transform: `translate(${$relativeX}px, ${$relativeY}px)`,
+  },
+}))`
   display: flex;
   flex-direction: column;
   position: absolute;
 
   width: 100%;
   height: 100%;
-
-  transform: ${({ $relativeX, $relativeY }) =>
-    `translate(${$relativeX}px, ${$relativeY}px)`};
 `;
 
 export const CalendarRow = styled.div`
