@@ -1,4 +1,5 @@
 import type { MODAL_OPEN_TYPE } from '~/constants/calendar';
+import type { CalendarSize } from '~/types/size';
 
 export interface Schedule {
   id: number;
@@ -46,5 +47,6 @@ export interface GeneratedScheduleBar {
   level: number;
   roundedStart: boolean;
   roundedEnd: boolean;
+  calendarSize?: CalendarSize;
   mode?: 'normal' | 'no-interaction' | 'indicator';
 }
