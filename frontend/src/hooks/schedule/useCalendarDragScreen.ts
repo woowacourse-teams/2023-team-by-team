@@ -104,6 +104,12 @@ export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
     const shouldUpdate = schedule.startDateTime !== startDateTime;
 
     onMouseUp(title, startDateTime, endDateTime, shouldUpdate);
+
+    setCalendarPointInfos((prev) => ({
+      ...prev,
+      relativeX: 0,
+      relativeY: 0,
+    }));
   }, [onMouseUp, schedule, scheduleBarsInfo, visible]);
 
   useEffect(() => {
