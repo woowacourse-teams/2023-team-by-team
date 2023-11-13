@@ -12,6 +12,7 @@ import {
   MegaphoneIcon,
 } from '~/assets/svg';
 import * as S from './NoticeThread.styled';
+import { getIsMobile } from '~/utils/getIsMobile';
 
 interface NoticeThreadProps {
   authorName: string;
@@ -23,7 +24,7 @@ interface NoticeThreadProps {
 
 const NoticeThread = (props: NoticeThreadProps) => {
   const { authorName, createdAt, content, images, onClickImage } = props;
-
+  const isMobile = getIsMobile();
   const [noticeSize, setNoticeSize] = useState<NoticeSize>('sm');
 
   const handleExpandMoreClick = () => {
@@ -37,8 +38,8 @@ const NoticeThread = (props: NoticeThreadProps) => {
   };
 
   return (
-    <S.Container $noticeSize={noticeSize}>
-      <S.BackgroundContainer $noticeSize={noticeSize}>
+    <S.Container $noticeSize={noticeSize} $isMobile={isMobile}>
+      <S.BackgroundContainer $noticeSize={noticeSize} $isMobile={isMobile}>
         <S.InnerContainer
           $noticeSize={noticeSize}
           aria-label={`${authorName}의 공지`}

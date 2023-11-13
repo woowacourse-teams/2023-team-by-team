@@ -20,14 +20,18 @@ export const MenuHeader = styled.header<{ $linkSize: LinkSize }>`
   padding: 8px;
 `;
 
-export const TableContainer = styled.div<{ $linkSize: LinkSize }>`
+export const TableContainer = styled.div<{
+  $linkSize: LinkSize;
+  $isMobile: boolean;
+}>`
   display: flex;
   flex-direction: column;
   align-items: center;
 
   width: 100%;
   height: calc(100% - ${({ $linkSize }) => ($linkSize === 'md' ? 70 : 30)}px);
-  padding: ${({ $linkSize }) => ($linkSize === 'md' ? 30 : 10)}px;
+  padding: ${({ $linkSize, $isMobile }) =>
+    $linkSize === 'md' && !$isMobile ? 30 : 10}px;
 
   background-color: ${({ theme }) => theme.color.WHITE};
 

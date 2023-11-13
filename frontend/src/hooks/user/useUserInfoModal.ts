@@ -76,6 +76,8 @@ export const useUserInfoModal = () => {
       return;
     }
 
+    setIsUserInfoEditing(() => false);
+
     mutateModifyUserInfo(
       { name },
       {
@@ -84,6 +86,7 @@ export const useUserInfoModal = () => {
           showToast('success', '닉네임이 변경되었습니다.');
         },
         onError: () => {
+          setIsUserInfoEditing(() => true);
           showToast('error', '닉네임 변경에 실패했습니다.');
         },
       },

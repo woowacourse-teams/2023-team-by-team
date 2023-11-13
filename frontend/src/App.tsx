@@ -15,23 +15,39 @@ import TeamOverviewPage from '~/pages/TeamOverviewPage/TeamOverviewPage';
 import PolicyPage from '~/pages/PolicyPage/PolicyPage';
 import Error404Page from '~/pages/Error404Page/Error404Page';
 import './App.css';
+import { getIsMobile } from '~/utils/getIsMobile';
+import M_LandingPage from '~/mobilePages/M_LandingPage/M_LandingPage';
+import M_TeamSelectPage from '~/mobilePages/M_TeamSelectPage/M_TeamSelectPage';
+import M_PageTemplate from '~/mobilePages/M_PageTemplate/M_PageTemplate';
 
 const App = () => {
+  const isMobile = getIsMobile();
+
   return (
     <Routes>
-      <Route path={PATH_NAME.LANDING} element={<LandingPage />} />
+      {isMobile ? (
+        <Route path={PATH_NAME.LANDING} element={<M_LandingPage />} />
+      ) : (
+        <Route path={PATH_NAME.LANDING} element={<LandingPage />} />
+      )}
       <Route path={PATH_NAME.LOGIN} element={<LoginPage />} />
       <Route path={PATH_NAME.POLICY} element={<PolicyPage />} />
       <Route element={<ProtectRoute />}>
         <Route path={PATH_NAME.START} element={<StartPage />} />
         <Route path={PATH_NAME.CREATE} element={<CreatePage />} />
         <Route path={PATH_NAME.JOIN} element={<JoinPage />} />
-        <Route element={<PageTemplate />}>
-          <Route path={PATH_NAME.TEAM_SELECT} element={<TeamSelectPage />} />
+
+        <Route element={isMobile ? <M_PageTemplate /> : <PageTemplate />}>
           <Route
-            path={PATH_NAME.TEAM_OVERVIEW}
-            element={<TeamOverviewPage />}
+            path={PATH_NAME.TEAM_SELECT}
+            element={isMobile ? <M_TeamSelectPage /> : <TeamSelectPage />}
           />
+          {!isMobile && (
+            <Route
+              path={PATH_NAME.TEAM_OVERVIEW}
+              element={<TeamOverviewPage />}
+            />
+          )}
           <Route
             path={PATH_NAME.TEAM_CALENDAR}
             element={<TeamCalendarPage />}

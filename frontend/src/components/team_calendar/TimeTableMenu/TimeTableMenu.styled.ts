@@ -1,7 +1,7 @@
 import { css } from 'styled-components';
 
-export const timeTableButton = css`
-  width: 150px;
+export const timeTableButton = ($isMobile: boolean) => css`
+  width: ${$isMobile ? '100px' : '150px'};
   height: 40px;
 
   border: 1px solid ${({ theme }) => theme.color.GRAY200};

@@ -9,7 +9,7 @@ const threads = [...threadData];
 const noticeThread = { ...noticeData };
 
 export const feedHandlers = [
-  //팀피드 스레드 조회
+  //팀채팅 채팅 조회
   rest.get(
     '/api/team-place/:teamPlaceId/feed/threads',
     async (req, res, ctx) => {
@@ -33,7 +33,7 @@ export const feedHandlers = [
     },
   ),
 
-  //팀피드 공지 스레드 조회
+  //팀피드 공지 조회
   rest.get(
     '/api/team-place/:teamPlaceId/feed/notice/recent',
     async (req, res, ctx) => {
@@ -48,7 +48,7 @@ export const feedHandlers = [
     },
   ),
 
-  //팀피드 스레드 생성
+  //팀피드 채팅 생성
   rest.post(
     '/api/team-place/:teamPlaceId/feed/threads',
     async (req, res, ctx) => {
@@ -108,7 +108,7 @@ export const feedHandlers = [
     },
   ),
 
-  //팀피드 공지 스레드 생성
+  //팀피드 공지 채팅 생성
   rest.post(
     '/api/team-place/:teamPlaceId/feed/notice',
     async (req, res, ctx) => {

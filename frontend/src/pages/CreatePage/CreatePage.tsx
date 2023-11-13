@@ -8,9 +8,11 @@ import IntroCardPile from '~/components/landing/IntroCardPile/IntroCardPile';
 import LandingHeader from '~/components/common/LandingHeader/LandingHeader';
 import BackButton from '~/components/common/BackButton/BackButton';
 import { PATH_NAME } from '~/constants/routes';
+import { getIsMobile } from '~/utils/getIsMobile';
 
 const CreatePage = () => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const isMobile = getIsMobile();
   const {
     teamName,
 
@@ -20,7 +22,7 @@ const CreatePage = () => {
   return (
     <S.Container>
       <LandingHeader href={PATH_NAME.TEAM_SELECT} />
-      <S.MainContainer>
+      <S.MainContainer $isMobile={isMobile}>
         <S.InnerContainer>
           <Text weight="semiBold" css={S.titleText}>
             팀 개설하기
@@ -51,7 +53,7 @@ const CreatePage = () => {
             </S.ConfirmButtonsContainer>
           </S.TeamNameForm>
         </S.InnerContainer>
-        <IntroCardPile animation={false} />
+        {!isMobile && <IntroCardPile animation={false} />}
       </S.MainContainer>
     </S.Container>
   );
