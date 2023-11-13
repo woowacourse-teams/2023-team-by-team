@@ -3,7 +3,7 @@ import { useRef } from 'react';
 import FakeScheduleBarsScreen from '~/components/team_calendar/FakeScheduleBarsScreen/FakeScheduleBarsScreen';
 import type { Schedule } from '~/types/schedule';
 import type { CalendarSize } from '~/types/size';
-import { useCalendarDragScreen } from './useCalendarDragScreen';
+import { useCalendarDragScreen } from '~/hooks/schedule/useCalendarDragScreen';
 
 interface CalendarDragScreenProps {
   visible: boolean;

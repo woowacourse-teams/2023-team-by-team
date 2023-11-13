@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { generateScheduleBarsByMousePoint } from './generateScheduleBarsByMousePoint';
+import { generateScheduleBarsByMousePoint } from '~/utils/generateScheduleBarsByMousePoint';
 import type { RefObject } from 'react';
 import type { Schedule } from '~/types/schedule';
 import type { CalendarSize } from '~/types/size';
