@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { generateScheduleBarsByMousePoint } from '~/utils/generateScheduleBarsByMousePoint';
 import type { RefObject } from 'react';
 import type { Schedule } from '~/types/schedule';
@@ -52,34 +52,19 @@ export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
   const { relativeX, relativeY, calendarWidth, calendarHeight } =
     calendarPointInfos;
 
-  const scheduleBarsInfo = useMemo(
-    () =>
-      visible
-        ? generateScheduleBarsByMousePoint({
-            schedule,
-            year,
-            month,
-            relativeX,
-            relativeY,
-            calendarWidth,
-            calendarHeight,
-            level,
-            calendarSize,
-          })
-        : null,
-    [
-      calendarHeight,
-      calendarSize,
-      calendarWidth,
-      level,
-      month,
-      relativeX,
-      relativeY,
-      schedule,
-      visible,
-      year,
-    ],
-  );
+  const scheduleBarsInfo = visible
+    ? generateScheduleBarsByMousePoint({
+        schedule,
+        year,
+        month,
+        relativeX,
+        relativeY,
+        calendarWidth,
+        calendarHeight,
+        level,
+        calendarSize,
+      })
+    : null;
 
   const getProcessedRelativePoint = () => {
     const processedRelativeX =
@@ -92,37 +77,41 @@ export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
     return { x: processedRelativeX, y: processedRelativeY };
   };
 
+  const handleMouseMove = useCallback(
+    (e: globalThis.MouseEvent) => {
+      if (!visible) {
+        return;
+      }
+
+      const { clientX, clientY } = e;
+
+      setCalendarPointInfos((prev) => ({
+        ...prev,
+        relativeX: clientX - initX,
+        relativeY: clientY - initY,
+      }));
+    },
+    [initX, initY, visible],
+  );
+
+  const handleMouseUp = useCallback(() => {
+    if (!visible || !scheduleBarsInfo) {
+      return;
+    }
+
+    const { title } = schedule;
+    const { startDateTime, endDateTime } = scheduleBarsInfo;
+    const shouldUpdate = schedule.startDateTime !== startDateTime;
+
+    onMouseUp(title, startDateTime, endDateTime, shouldUpdate);
+  }, [onMouseUp, schedule, scheduleBarsInfo, visible]);
+
   useEffect(() => {
     const calendarElement = calendarRef.current;
 
     if (!calendarElement) {
       return;
     }
-
-    const handleMouseMove = (e: globalThis.MouseEvent) => {
-      if (!visible) {
-        return;
-      }
-
-      const { clientX, clientY } = e;
-      setCalendarPointInfos((prev) => ({
-        ...prev,
-        relativeX: clientX - initX,
-        relativeY: clientY - initY,
-      }));
-    };
-
-    const handleMouseUp = () => {
-      if (!visible || !scheduleBarsInfo) {
-        return;
-      }
-
-      const { title } = schedule;
-      const { startDateTime, endDateTime } = scheduleBarsInfo;
-      const shouldUpdate = schedule.startDateTime !== startDateTime;
-
-      onMouseUp(title, startDateTime, endDateTime, shouldUpdate);
-    };
 
     const resizeObserver = new ResizeObserver(() => {
       const { clientWidth, clientHeight } = calendarElement;
@@ -143,17 +132,7 @@ export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
       document.removeEventListener('mouseup', handleMouseUp);
       resizeObserver.disconnect();
     };
-  }, [
-    visible,
-    onMouseUp,
-    calendarRef,
-    relativeX,
-    relativeY,
-    initX,
-    initY,
-    scheduleBarsInfo,
-    schedule,
-  ]);
+  }, [calendarRef, handleMouseMove, handleMouseUp]);
 
   const processedRelativePoint = getProcessedRelativePoint();
 
