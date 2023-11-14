@@ -14,7 +14,12 @@ interface CalendarDragScreenProps {
   month: number;
   level: number;
   schedule: Schedule;
-  onMouseUp: () => void;
+  onMouseUp: (
+    title: string,
+    startDateTime: Schedule['startDateTime'],
+    endDateTime: Schedule['endDateTime'],
+    shouldUpdate: boolean,
+  ) => void;
 }
 
 const CalendarDragScreen = (props: CalendarDragScreenProps) => {

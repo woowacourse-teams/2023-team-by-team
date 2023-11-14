@@ -30,7 +30,6 @@ export const useScheduleDragStatus = () => {
     e: MouseEvent,
     level: number,
     schedule: Schedule,
-    shouldUpdate: boolean,
   ) => {
     const { clientX, clientY } = e;
 
