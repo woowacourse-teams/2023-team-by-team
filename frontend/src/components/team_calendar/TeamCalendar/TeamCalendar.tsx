@@ -16,7 +16,7 @@ import { useModal } from '~/hooks/useModal';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useCalendarResizePosition } from '~/hooks/useCalendarResizePosition';
 import { usePrefetchSchedules } from '~/hooks/queries/usePrefetchSchedules';
-import { useScheduleDragStatus } from './useScheduleBarDragStatus';
+import { useScheduleDragStatus } from '~/hooks/schedule/useScheduleBarDragStatus';
 import { DAYS_OF_WEEK, MODAL_OPEN_TYPE } from '~/constants/calendar';
 import { generateScheduleBars } from '~/utils/generateScheduleBars';
 import { arrayOf } from '~/utils/arrayOf';
