@@ -241,3 +241,56 @@ describe('Test #1 - 좌표 대응 테스트', () => {
     }).toEqual(expectedResult);
   });
 });
+
+describe('Test #2 - 캘린더 크기 대응 테스트', () => {
+  test('캘린더의 크기가 평소와 달라진 경우, 상대 좌표도 다르게 계산하여 반영하여야 한다.', () => {
+    const schedule: Schedule = {
+      id: 1,
+      title: '내 일정',
+      startDateTime: '2023-11-14 00:00',
+      endDateTime: '2023-11-16 23:59',
+    };
+
+    const params = {
+      ...defaultParams,
+      schedule,
+      calendarWidth: 732,
+      calendarHeight: 481,
+      relativeX: 156.8571,
+      relativeY: -160.3334,
+    };
+
+    const expectedResult: ResultValue = {
+      startDateTime: '2023-11-01 00:00',
+      endDateTime: '2023-11-03 23:59',
+      scheduleBars: [
+        {
+          scheduleId: 1,
+          title: '내 일정',
+          row: 0,
+          column: 3,
+          duration: 3,
+          level: 0,
+          roundedStart: true,
+          roundedEnd: true,
+          schedule: {
+            id: 1,
+            title: '내 일정',
+            startDateTime: '2023-11-01 00:00',
+            endDateTime: '2023-11-03 23:59',
+          },
+          calendarSize: 'md',
+        },
+      ],
+    };
+
+    const { startDateTime, endDateTime, scheduleBars } =
+      generateScheduleBarsByMousePoint(params);
+
+    expect({
+      startDateTime,
+      endDateTime,
+      scheduleBars: removeIdFromScheduleBars(scheduleBars),
+    }).toEqual(expectedResult);
+  });
+});
