@@ -11,7 +11,7 @@ import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
-import team.teamby.teambyteam.filesystem.FileCloudUploader;
+import team.teamby.teambyteam.filesystem.FileStorageManager;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -21,7 +21,7 @@ import java.nio.file.Paths;
 
 @Slf4j
 @RequiredArgsConstructor
-public class S3Uploader implements FileCloudUploader {
+public class S3StorageManager implements FileStorageManager {
 
     @Value("${aws.s3.bucket}")
     private String bucket;

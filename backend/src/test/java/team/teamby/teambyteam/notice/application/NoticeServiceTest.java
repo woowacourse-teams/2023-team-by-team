@@ -35,7 +35,7 @@ import team.teamby.teambyteam.common.ServiceTest;
 import team.teamby.teambyteam.common.fixtures.FeedThreadImageFixtures;
 import team.teamby.teambyteam.common.fixtures.NoticeFixtures;
 import team.teamby.teambyteam.common.fixtures.NoticeImageFixtures;
-import team.teamby.teambyteam.filesystem.FileCloudUploader;
+import team.teamby.teambyteam.filesystem.FileStorageManager;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
@@ -56,7 +56,7 @@ class NoticeServiceTest extends ServiceTest {
     private NoticeRepository noticeRepository;
 
     @MockBean
-    private FileCloudUploader fileCloudUploader;
+    private FileStorageManager fileStorageManager;
 
     @SpyBean
     private Clock clock;
@@ -79,7 +79,7 @@ class NoticeServiceTest extends ServiceTest {
                     NoticeFixtures.FIRST_CONTENT,
                     List.of(UNDER_SIZE_PNG_MOCK_MULTIPART_FILE1, UNDER_SIZE_PNG_MOCK_MULTIPART_FILE2)
             );
-            given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class), any(String.class)))
+            given(fileStorageManager.upload(any(MultipartFile.class), any(String.class), any(String.class)))
                     .willReturn("https://s3://seongha-seeik");
         }
 

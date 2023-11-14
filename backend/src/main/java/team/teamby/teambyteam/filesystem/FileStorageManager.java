@@ -2,7 +2,7 @@ package team.teamby.teambyteam.filesystem;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public interface FileCloudUploader {
+public interface FileStorageManager {
 
     /**
      * MultipartFile 요청으로 전달된 파일을 그대로 저장

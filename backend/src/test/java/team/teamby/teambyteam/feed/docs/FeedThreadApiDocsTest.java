@@ -47,7 +47,7 @@ import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
 import team.teamby.teambyteam.feed.domain.FeedType;
 import team.teamby.teambyteam.feed.exception.FeedException;
 import team.teamby.teambyteam.feed.presentation.FeedThreadController;
-import team.teamby.teambyteam.filesystem.FileCloudUploader;
+import team.teamby.teambyteam.filesystem.FileStorageManager;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
@@ -58,11 +58,11 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
     private FeedThreadService feedThreadService;
 
     @MockBean
-    private FileCloudUploader fileCloudUploader;
+    private FileStorageManager fileStorageManager;
 
     @BeforeEach
     void setUp() {
-        given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class), any(String.class)))
+        given(fileStorageManager.upload(any(MultipartFile.class), any(String.class), any(String.class)))
                 .willReturn("https://s3://seongha-seeik");
     }
 

@@ -41,7 +41,7 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.web.multipart.MultipartFile;
 import team.teamby.teambyteam.common.ApiDocsTest;
 import team.teamby.teambyteam.common.fixtures.FileFixtures;
-import team.teamby.teambyteam.filesystem.FileCloudUploader;
+import team.teamby.teambyteam.filesystem.FileStorageManager;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.notice.application.NoticeService;
@@ -61,11 +61,11 @@ public class NoticeApiDocsTest extends ApiDocsTest {
     private NoticeService noticeService;
 
     @MockBean
-    private FileCloudUploader fileCloudUploader;
+    private FileStorageManager fileStorageManager;
 
     @BeforeEach
     void setUp() {
-        given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class), any(String.class)))
+        given(fileStorageManager.upload(any(MultipartFile.class), any(String.class), any(String.class)))
                 .willReturn("https://s3://seongha-seeik");
     }
 

@@ -19,7 +19,7 @@ import team.teamby.teambyteam.common.AcceptanceTest;
 import team.teamby.teambyteam.common.fixtures.MemberFixtures;
 import team.teamby.teambyteam.common.fixtures.PublishedIcalendarFixtures;
 import team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures;
-import team.teamby.teambyteam.filesystem.FileCloudUploader;
+import team.teamby.teambyteam.filesystem.FileStorageManager;
 import team.teamby.teambyteam.icalendar.domain.PublishedIcalendar;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
@@ -32,7 +32,7 @@ import static team.teamby.teambyteam.common.fixtures.acceptance.IcalendarAccepta
 public class IcalendarAcceptanceTest extends AcceptanceTest {
 
     @MockBean
-    private FileCloudUploader fileCloudUploader;
+    private FileStorageManager fileStorageManager;
 
     @Autowired
     private TestConfig.AsyncAspect asyncAspect;
@@ -99,7 +99,7 @@ public class IcalendarAcceptanceTest extends AcceptanceTest {
         void failWhenNotPublished() throws InterruptedException {
             // given
             final String generatedUrl = "https://assets.test.teamby.team/asset/path/icalendar.ics";
-            BDDMockito.given(fileCloudUploader.upload(any(byte[].class), any(String.class), any(String.class)))
+            BDDMockito.given(fileStorageManager.upload(any(byte[].class), any(String.class), any(String.class)))
                     .willAnswer(invocation -> generatedUrl);
 
             // when

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import team.teamby.teambyteam.filesystem.AllowedImageExtension;
-import team.teamby.teambyteam.filesystem.FileCloudUploader;
+import team.teamby.teambyteam.filesystem.FileStorageManager;
 import team.teamby.teambyteam.filesystem.util.FileUtil;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.IdOnly;
@@ -57,7 +57,7 @@ public class NoticeService {
     private final MemberRepository memberRepository;
     private final MemberTeamPlaceRepository memberTeamPlaceRepository;
     private final NoticeImageRepository noticeImageRepository;
-    private final FileCloudUploader fileCloudUploader;
+    private final FileStorageManager fileStorageManager;
 
     public Long register(final NoticeRegisterRequest noticeRegisterRequest,
                          final Long teamPlaceId,
@@ -120,7 +120,7 @@ public class NoticeService {
     private void saveImages(final List<MultipartFile> images, final Notice savedNotice) {
         images.forEach(image -> {
             final String originalFilename = image.getOriginalFilename();
-            final String generatedImageUrl = fileCloudUploader.upload(image, imageDirectory + "/" + UUID.randomUUID(), originalFilename);
+            final String generatedImageUrl = fileStorageManager.upload(image, imageDirectory + "/" + UUID.randomUUID(), originalFilename);
             final ImageUrl imageUrl = new ImageUrl(generatedImageUrl);
             final ImageName imageName = new ImageName(originalFilename);
             final NoticeImage noticeImage = new NoticeImage(imageUrl, imageName);
