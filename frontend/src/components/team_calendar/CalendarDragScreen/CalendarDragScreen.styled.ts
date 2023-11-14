@@ -10,7 +10,7 @@ export const Container = styled.div<{ $visible: boolean }>`
   width: 100%;
   height: 100%;
 
-  background-color: #ffffffaa;
+  background-color: ${({ theme }) => theme.color.WHITE_BLUR};
 
   cursor: all-scroll;
 `;
