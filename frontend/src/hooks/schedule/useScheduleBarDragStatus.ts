@@ -13,11 +13,18 @@ interface DragStatus {
   initY: number;
 }
 
+const emptySchedule = {
+  id: 0,
+  title: '',
+  startDateTime: '2000-01-01 00:00',
+  endDateTime: '2000-01-01 00:10',
+} as const;
+
 export const useScheduleDragStatus = () => {
   const [dragStatus, setDragStatus] = useState<DragStatus>({
     isDragging: false,
     level: 0,
-    schedule: {} as Schedule,
+    schedule: emptySchedule,
     initX: 0,
     initY: 0,
   });
