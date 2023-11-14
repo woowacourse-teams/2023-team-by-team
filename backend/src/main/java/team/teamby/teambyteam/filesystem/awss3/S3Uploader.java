@@ -36,12 +36,12 @@ public class S3Uploader implements FileCloudUploader {
     private final CloudfrontCacheInvalidator cloudfrontCacheInvalidator;
 
     @Override
-    public String upload(final MultipartFile multipartFile, final String directoryPath, final String originalFileName) {
+    public String upload(final MultipartFile multipartFile, final String nameAndPathToSave, final String originalFileName) {
         try {
             final RequestBody requestBody = RequestBody.fromInputStream(multipartFile.getInputStream(), multipartFile.getSize());
             final MediaType mediaType = MediaType.parseMediaType(Files.probeContentType(Paths.get(originalFileName)));
-            final String uploadedUrl = uploadFile(directoryPath, requestBody, mediaType);
-            log.info("file uploaded : {} , published : {}", assetRootDirectory + directoryPath, uploadedUrl);
+            final String uploadedUrl = uploadFile(nameAndPathToSave, requestBody, mediaType);
+            log.info("file uploaded : {} , published : {}", assetRootDirectory + nameAndPathToSave, uploadedUrl);
             return uploadedUrl;
         } catch (IOException e) {
             log.error("MultiPartFile - S3업로드 예외", e);
@@ -50,12 +50,12 @@ public class S3Uploader implements FileCloudUploader {
     }
 
     @Override
-    public String upload(final byte[] content, final String directoryPath, final String originalFileName) {
+    public String upload(final byte[] content, final String nameAndPathToSave, final String originalFileName) {
         try (InputStream inputStream = new ByteArrayInputStream(content)) {
             final RequestBody requestBody = RequestBody.fromInputStream(inputStream, content.length);
             final MediaType mediaType = MediaType.parseMediaType(Files.probeContentType(Paths.get(originalFileName)));
-            final String uploadedUrl = uploadFile(directoryPath, requestBody, mediaType);
-            log.info("file uploaded : {} , published : {}", assetRootDirectory + directoryPath, uploadedUrl);
+            final String uploadedUrl = uploadFile(nameAndPathToSave, requestBody, mediaType);
+            log.info("file uploaded : {} , published : {}", assetRootDirectory + nameAndPathToSave, uploadedUrl);
             return uploadedUrl;
         } catch (IOException e) {
             log.error("byte array s3업로드 예외", e);
