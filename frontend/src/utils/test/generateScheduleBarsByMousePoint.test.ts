@@ -294,3 +294,56 @@ describe('Test #2 - 캘린더 크기 대응 테스트', () => {
     }).toEqual(expectedResult);
   });
 });
+
+describe('Test #3 - 부가 기능 테스트', () => {
+  test('캘린더 바의 사이즈, 레벨을 별도로 지정한 후 해당 설정으로 반영된 스케줄 바가 반환되어야 한다.', () => {
+    const schedule: Schedule = {
+      id: 1,
+      title: '내 일정',
+      startDateTime: '2023-11-14 00:00',
+      endDateTime: '2023-11-16 23:59',
+    };
+
+    const params = {
+      ...defaultParams,
+      schedule,
+      relativeX: 23,
+      relativeY: 81,
+      calendarSize: 'sm' as const,
+      level: 2,
+    };
+
+    const expectedResult: ResultValue = {
+      startDateTime: '2023-11-21 00:00',
+      endDateTime: '2023-11-23 23:59',
+      scheduleBars: [
+        {
+          scheduleId: 1,
+          title: '내 일정',
+          row: 3,
+          column: 2,
+          duration: 3,
+          level: 2,
+          roundedStart: true,
+          roundedEnd: true,
+          schedule: {
+            id: 1,
+            title: '내 일정',
+            startDateTime: '2023-11-21 00:00',
+            endDateTime: '2023-11-23 23:59',
+          },
+          calendarSize: 'sm',
+        },
+      ],
+    };
+
+    const { startDateTime, endDateTime, scheduleBars } =
+      generateScheduleBarsByMousePoint(params);
+
+    expect({
+      startDateTime,
+      endDateTime,
+      scheduleBars: removeIdFromScheduleBars(scheduleBars),
+    }).toEqual(expectedResult);
+  });
+});
