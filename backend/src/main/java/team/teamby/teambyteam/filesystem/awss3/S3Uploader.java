@@ -10,8 +10,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.awscore.exception.AwsServiceException;
+import software.amazon.awssdk.core.exception.SdkClientException;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
+import software.amazon.awssdk.services.s3.model.DeleteObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import team.teamby.teambyteam.filesystem.FileCloudUploader;
 
@@ -72,5 +76,22 @@ public class S3Uploader implements FileCloudUploader {
         cloudfrontCacheInvalidator.createInvalidation(directoryPath);
 
         return cloudFrontBaseDomain + directoryPath;
+    }
+
+    @Override
+    public boolean delete(final String filename) {
+        try {
+            final DeleteObjectRequest deleteRequest = DeleteObjectRequest.builder()
+                    .bucket(bucket)
+                    .key(filename)
+                    .build();
+            s3Client.deleteObject(deleteRequest);
+            return true;
+        } catch (final SdkClientException exception) {
+            log.error("s3삭제 에러 - sdk client side 예외 발생", exception);
+        } catch (AwsServiceException exception) {
+            log.error("s3삭제 에러 - s3 서비스 예외 발생", exception);
+        }
+        return false;
     }
 }
