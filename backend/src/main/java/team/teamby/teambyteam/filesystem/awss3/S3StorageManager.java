@@ -40,9 +40,7 @@ public class S3StorageManager implements FileStorageManager {
         try {
             final RequestBody requestBody = RequestBody.fromInputStream(multipartFile.getInputStream(), multipartFile.getSize());
             final MediaType mediaType = MediaType.parseMediaType(Files.probeContentType(Paths.get(originalFileName)));
-            final String uploadedUrl = uploadFile(nameAndPathToSave, requestBody, mediaType);
-            log.info("file uploaded : {} , published : {}", assetRootDirectory + nameAndPathToSave, uploadedUrl);
-            return uploadedUrl;
+            return uploadFile(nameAndPathToSave, requestBody, mediaType);
         } catch (IOException e) {
             log.error("MultiPartFile - S3업로드 예외", e);
             throw new RuntimeException(e);
@@ -54,9 +52,7 @@ public class S3StorageManager implements FileStorageManager {
         try (InputStream inputStream = new ByteArrayInputStream(content)) {
             final RequestBody requestBody = RequestBody.fromInputStream(inputStream, content.length);
             final MediaType mediaType = MediaType.parseMediaType(Files.probeContentType(Paths.get(originalFileName)));
-            final String uploadedUrl = uploadFile(nameAndPathToSave, requestBody, mediaType);
-            log.info("file uploaded : {} , published : {}", assetRootDirectory + nameAndPathToSave, uploadedUrl);
-            return uploadedUrl;
+            return uploadFile(nameAndPathToSave, requestBody, mediaType);
         } catch (IOException e) {
             log.error("byte array s3업로드 예외", e);
             throw new RuntimeException(e);
@@ -75,7 +71,9 @@ public class S3StorageManager implements FileStorageManager {
 
         cloudfrontCacheInvalidator.createInvalidation(directoryPath);
 
-        return cloudFrontBaseDomain + directoryPath;
+        final String uploadedUrl = cloudFrontBaseDomain + directoryPath;
+        log.info("file uploaded : {} , published : {}", uploadedUrl, uploadedUrl);
+        return uploadedUrl;
     }
 
     @Override
