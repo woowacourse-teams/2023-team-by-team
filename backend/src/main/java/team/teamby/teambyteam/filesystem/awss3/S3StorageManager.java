@@ -79,11 +79,11 @@ public class S3StorageManager implements FileStorageManager {
     }
 
     @Override
-    public boolean delete(final String filename) {
+    public boolean delete(final String fileNameAdnPath) {
         try {
             final DeleteObjectRequest deleteRequest = DeleteObjectRequest.builder()
                     .bucket(bucket)
-                    .key(filename)
+                    .key(assetRootDirectory + fileNameAdnPath)
                     .build();
             s3Client.deleteObject(deleteRequest);
             return true;
