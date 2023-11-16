@@ -1,6 +1,7 @@
 package team.teamby.teambyteam.filesystem;
 
 import org.springframework.web.multipart.MultipartFile;
+import team.teamby.teambyteam.filesystem.exception.FileControlException;
 
 public interface FileStorageManager {
 
@@ -12,7 +13,7 @@ public interface FileStorageManager {
      * @param originalFileName  원본 파일의 이름
      * @return 저장된 파일로 접근할 수 있는 URL
      */
-    String upload(final MultipartFile multipartFile, final String nameAndPathToSave, final String originalFileName);
+    String upload(final MultipartFile multipartFile, final String nameAndPathToSave, final String originalFileName) throws FileControlException;
 
     /**
      * byte array 데이터를 파일로 저장
@@ -22,12 +23,12 @@ public interface FileStorageManager {
      * @param originalFileName  원본 파일의 이름
      * @return 저장된 파일로 접근할 수 있는 URL
      */
-    String upload(final byte[] content, final String nameAndPathToSave, final String originalFileName);
+    String upload(final byte[] content, final String nameAndPathToSave, final String originalFileName) throws FileControlException;
 
     /**
      * 파일 삭제 요청
      *
      * @param filename 디렉토리와 확장자를 포함한 파일 이름
      */
-    void delete(final String filename) throws RuntimeException;
+    void delete(final String filename) throws FileControlException;
 }

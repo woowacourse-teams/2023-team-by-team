@@ -12,6 +12,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import team.teamby.teambyteam.filesystem.FileStorageManager;
+import team.teamby.teambyteam.filesystem.exception.FileControlException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -43,7 +44,7 @@ public class S3StorageManager implements FileStorageManager {
             return uploadFile(nameAndPathToSave, requestBody, mediaType);
         } catch (IOException e) {
             log.error("MultiPartFile - S3업로드 예외", e);
-            throw new RuntimeException(e);
+            throw new FileControlException("MultiPartFile - S3업로드 예외", e);
         }
     }
 
@@ -55,7 +56,7 @@ public class S3StorageManager implements FileStorageManager {
             return uploadFile(nameAndPathToSave, requestBody, mediaType);
         } catch (IOException e) {
             log.error("byte array s3업로드 예외", e);
-            throw new RuntimeException(e);
+            throw new FileControlException("byte array s3업로드 예외", e);
         }
     }
 
@@ -77,7 +78,7 @@ public class S3StorageManager implements FileStorageManager {
     }
 
     @Override
-    public void delete(final String fileNameAdnPath) throws RuntimeException {
+    public void delete(final String fileNameAdnPath) {
         try {
             final DeleteObjectRequest deleteRequest = DeleteObjectRequest.builder()
                     .bucket(bucket)
@@ -86,10 +87,10 @@ public class S3StorageManager implements FileStorageManager {
             s3Client.deleteObject(deleteRequest);
         } catch (final SdkClientException exception) {
             log.error("s3삭제 에러 - sdk client side 예외 발생", exception);
-            throw new RuntimeException(exception);
+            throw new FileControlException("s3삭제 에러 - sdk client side 예외 발생", exception);
         } catch (AwsServiceException exception) {
             log.error("s3삭제 에러 - s3 서비스 예외 발생", exception);
-            throw new RuntimeException(exception);
+            throw new FileControlException("s3삭제 에러 - s3 서비스 예외 발생", exception);
         }
     }
 }
