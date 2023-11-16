@@ -77,19 +77,19 @@ public class S3StorageManager implements FileStorageManager {
     }
 
     @Override
-    public boolean delete(final String fileNameAdnPath) {
+    public void delete(final String fileNameAdnPath) throws RuntimeException {
         try {
             final DeleteObjectRequest deleteRequest = DeleteObjectRequest.builder()
                     .bucket(bucket)
                     .key(assetRootDirectory + fileNameAdnPath)
                     .build();
             s3Client.deleteObject(deleteRequest);
-            return true;
         } catch (final SdkClientException exception) {
             log.error("s3삭제 에러 - sdk client side 예외 발생", exception);
+            throw new RuntimeException(exception);
         } catch (AwsServiceException exception) {
             log.error("s3삭제 에러 - s3 서비스 예외 발생", exception);
+            throw new RuntimeException(exception);
         }
-        return false;
     }
 }

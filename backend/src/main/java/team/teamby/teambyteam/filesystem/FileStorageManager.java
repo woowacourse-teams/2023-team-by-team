@@ -28,7 +28,6 @@ public interface FileStorageManager {
      * 파일 삭제 요청
      *
      * @param filename 디렉토리와 확장자를 포함한 파일 이름
-     * @return true : 삭제 성공시, false : 삭제 실패시
      */
-    boolean delete(final String filename);
+    void delete(final String filename) throws RuntimeException;
 }
