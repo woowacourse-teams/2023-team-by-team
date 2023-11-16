@@ -78,11 +78,12 @@ public class S3StorageManager implements FileStorageManager {
     }
 
     @Override
-    public void delete(final String fileNameAdnPath) {
+    public void delete(final String accessUrl) {
         try {
+            final String assetActualPath = accessUrl.replaceFirst(cloudFrontBaseDomain, assetRootDirectory);
             final DeleteObjectRequest deleteRequest = DeleteObjectRequest.builder()
                     .bucket(bucket)
-                    .key(assetRootDirectory + fileNameAdnPath)
+                    .key(assetActualPath)
                     .build();
             s3Client.deleteObject(deleteRequest);
         } catch (final SdkClientException exception) {

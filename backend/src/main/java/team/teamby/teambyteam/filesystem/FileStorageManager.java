@@ -28,7 +28,7 @@ public interface FileStorageManager {
     /**
      * 파일 삭제 요청
      *
-     * @param filename 디렉토리와 확장자를 포함한 파일 이름
+     * @param accessUrl 리소스 접근 URL
      */
-    void delete(final String filename) throws FileControlException;
+    void delete(final String accessUrl) throws FileControlException;
 }
