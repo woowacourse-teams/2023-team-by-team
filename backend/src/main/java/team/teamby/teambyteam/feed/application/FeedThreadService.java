@@ -29,7 +29,7 @@ import team.teamby.teambyteam.feed.domain.vo.Content;
 import team.teamby.teambyteam.feed.exception.FeedException;
 import team.teamby.teambyteam.feed.exception.FeedException.WritingRequestEmptyException;
 import team.teamby.teambyteam.filesystem.AllowedImageExtension;
-import team.teamby.teambyteam.filesystem.FileCloudUploader;
+import team.teamby.teambyteam.filesystem.FileStorageManager;
 import team.teamby.teambyteam.filesystem.util.FileUtil;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.IdOnly;
@@ -73,7 +73,7 @@ public class FeedThreadService {
     private final FeedThreadImageRepository feedThreadImageRepository;
     private final RecentFeedCache feedCache;
 
-    private final FileCloudUploader fileCloudUploader;
+    private final FileStorageManager fileStorageManager;
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
@@ -134,7 +134,7 @@ public class FeedThreadService {
     private void saveImages(final List<MultipartFile> images, final FeedThread savedFeedThread) {
         images.forEach(image -> {
             final String originalFilename = image.getOriginalFilename();
-            final String generatedImageUrl = fileCloudUploader.upload(image, imageDirectory + "/" + UUID.randomUUID(), originalFilename);
+            final String generatedImageUrl = fileStorageManager.upload(image, imageDirectory + "/" + UUID.randomUUID(), originalFilename);
             final ImageUrl imageUrl = new ImageUrl(generatedImageUrl);
             final ImageName imageName = new ImageName(originalFilename);
             final FeedThreadImage feedThreadImage = new FeedThreadImage(imageUrl, imageName);

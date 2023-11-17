@@ -50,7 +50,7 @@ import team.teamby.teambyteam.feed.domain.cache.RecentFeedCache;
 import team.teamby.teambyteam.feed.domain.notification.schedulenotification.ScheduleNotification;
 import team.teamby.teambyteam.feed.domain.vo.Content;
 import team.teamby.teambyteam.feed.exception.FeedException;
-import team.teamby.teambyteam.filesystem.FileCloudUploader;
+import team.teamby.teambyteam.filesystem.FileStorageManager;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
@@ -67,7 +67,7 @@ class FeedThreadServiceTest extends ServiceTest {
     private FeedThreadService feedThreadService;
 
     @MockBean
-    private FileCloudUploader fileCloudUploader;
+    private FileStorageManager fileStorageManager;
 
     @MockBean
     private RecentFeedCache recentFeedCache;
@@ -88,7 +88,7 @@ class FeedThreadServiceTest extends ServiceTest {
 
         @BeforeEach
         void setup() {
-            given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class), any(String.class)))
+            given(fileStorageManager.upload(any(MultipartFile.class), any(String.class), any(String.class)))
                     .willReturn("https://s3://seongha-seeik");
         }
 

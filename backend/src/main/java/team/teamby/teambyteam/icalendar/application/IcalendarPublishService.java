@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.teamby.teambyteam.filesystem.FileCloudUploader;
+import team.teamby.teambyteam.filesystem.FileStorageManager;
 import team.teamby.teambyteam.icalendar.domain.IcalendarParser;
 import team.teamby.teambyteam.icalendar.domain.PublishedIcalendar;
 import team.teamby.teambyteam.icalendar.domain.PublishedIcalendarRepository;
@@ -29,7 +29,7 @@ public class IcalendarPublishService {
     private final TeamPlaceRepository teamPlaceRepository;
     private final ScheduleRepository scheduleRepository;
     private final IcalendarParser icalendarParser;
-    private final FileCloudUploader fileCloudUploader;
+    private final FileStorageManager fileStorageManager;
 
     @Value("${aws.s3.ical-directory}")
     private String icalDirectory;
@@ -54,7 +54,7 @@ public class IcalendarPublishService {
     private String uploadIcalendarFile(final TeamPlace teamPlace, final IcalendarFileName icalendarFileName) {
         final List<Schedule> schedules = scheduleRepository.findAllByTeamPlaceId(teamPlace.getId());
         final String icalString = icalendarParser.parse(teamPlace, schedules);
-        return fileCloudUploader.upload(icalString.getBytes(), icalDirectory + "/" + icalendarFileName.getValue(), icalendarFileName.getValue());
+        return fileStorageManager.upload(icalString.getBytes(), icalDirectory + "/" + icalendarFileName.getValue(), icalendarFileName.getValue());
     }
 
     public void updateIcalendar(Long teamPlaceId) {
