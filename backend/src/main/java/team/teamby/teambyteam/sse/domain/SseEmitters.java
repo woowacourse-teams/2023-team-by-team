@@ -25,7 +25,12 @@ public class SseEmitters {
         );
     }
 
-    private void sendToEmitter(TeamPlaceEventId eventId, Object event, TeamPlaceEmitterId emitterId, SseEmitter emitter) {
+    private void sendToEmitter(
+            final TeamPlaceEventId eventId,
+            final Object event,
+            final TeamPlaceEmitterId emitterId,
+            final SseEmitter emitter
+    ) {
         log.info("SSE 메시지 보내기 시도 : {}", emitterId.toString());
         try {
             emitter.send(SseEmitter.event()
