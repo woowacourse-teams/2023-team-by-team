@@ -12,8 +12,6 @@ import java.util.stream.Collectors;
 @Component
 public class TeamPlaceEmitterRepository {
 
-    private static final int CACHE_REMOVE_MINUTE = 1;
-
     private final Map<TeamPlaceEmitterId, SseEmitter> emitters = new ConcurrentHashMap<>();
 
     public SseEmitters save(final TeamPlaceEmitterId emitterId, final SseEmitter sseEmitter) {

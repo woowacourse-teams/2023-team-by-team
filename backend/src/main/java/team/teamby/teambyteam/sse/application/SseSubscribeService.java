@@ -16,11 +16,6 @@ import team.teamby.teambyteam.sse.domain.TeamPlaceEmitterId;
 import team.teamby.teambyteam.sse.domain.TeamPlaceEmitterRepository;
 import team.teamby.teambyteam.sse.domain.TeamPlaceEventId;
 
-import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.Map;
-import java.util.Objects;
-
 @Slf4j
 @Service
 @Transactional
@@ -28,13 +23,6 @@ import java.util.Objects;
 public class SseSubscribeService {
 
     public static final String DEFAULT_EVENT_ID = "";
-    private static final Comparator<Map.Entry<TeamPlaceEventId, Object>> EVENT_ID_TIME_COMPARATOR = (entity1, entity2) -> {
-        final LocalDateTime timeStamp1 = entity1.getKey().getTimeStamp();
-        final LocalDateTime timeStamp2 = entity2.getKey().getTimeStamp();
-
-        return timeStamp1.compareTo(timeStamp2);
-    };
-
     private final MemberRepository memberRepository;
     private final TeamPlaceEmitterRepository teamplaceEmitterRepository;
 
