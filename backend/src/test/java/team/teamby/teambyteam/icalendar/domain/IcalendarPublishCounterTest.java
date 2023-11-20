@@ -63,7 +63,7 @@ class IcalendarPublishCounterTest {
         final Long teamPlace3Id = 3L;
 
         icalendarPublishCounter.addCountFor(teamPlace3Id);
-        for (int i=0; i<10; i++) {
+        for (int i = 0; i < 10; i++) {
             icalendarPublishCounter.addCountFor(teamPlace1Id);
             icalendarPublishCounter.addCountFor(teamPlace2Id);
         }
@@ -77,11 +77,32 @@ class IcalendarPublishCounterTest {
     }
 
     @Test
+    @DisplayName("지정된 팀의 배포 카운트 초기화 테스트")
+    void clearSpecificTeamPlaceCounterTest() {
+        // given
+        final Long teamPlaceId = 1L;
+        for (int i = 0; i < 10; i++) {
+            icalendarPublishCounter.addCountFor(teamPlaceId);
+        }
+
+        // when
+        final boolean beforeClear = icalendarPublishCounter.isReachedToMaxCount(teamPlaceId);
+        icalendarPublishCounter.clearFor(teamPlaceId);
+        final boolean afterClear = icalendarPublishCounter.isReachedToMaxCount(teamPlaceId);
+
+        // then
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(beforeClear).isTrue();
+            softly.assertThat(afterClear).isFalse();
+        });
+    }
+
+    @Test
     @DisplayName("배포 카운트 초기화 test")
     void clearTest() {
         // given
         final Long teamPlace1Id = 1L;
-        for (int i=0; i<10; i++) {
+        for (int i = 0; i < 10; i++) {
             icalendarPublishCounter.addCountFor(teamPlace1Id);
         }
 

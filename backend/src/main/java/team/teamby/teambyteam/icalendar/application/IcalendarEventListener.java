@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 import team.teamby.teambyteam.icalendar.application.event.CreateIcalendarEvent;
+import team.teamby.teambyteam.icalendar.domain.IcalendarPublishCounter;
 import team.teamby.teambyteam.schedule.application.event.ScheduleEvent;
 import team.teamby.teambyteam.teamplace.application.event.TeamPlaceCreatedEvent;
 
@@ -17,6 +18,7 @@ import team.teamby.teambyteam.teamplace.application.event.TeamPlaceCreatedEvent;
 @RequiredArgsConstructor
 public class IcalendarEventListener {
 
+    private final IcalendarPublishCounter publishCounter;
     private final IcalendarPublishService icalendarPublishService;
 
     @Async
@@ -45,7 +47,13 @@ public class IcalendarEventListener {
     public void updateIcalendar(final ScheduleEvent scheduleEvent) {
         final Long teamPlaceId = scheduleEvent.getTeamPlaceId();
 
+        if (publishCounter.isReachedToMaxCount(teamPlaceId)) {
+            log.warn("ics배포 과요청으로 배포 연기 : {}", teamPlaceId);
+            return;
+        }
+
         icalendarPublishService.updateIcalendar(teamPlaceId);
         log.info("ics파일 업데이트 - teamPlaceId : {}", teamPlaceId);
+        publishCounter.addCountFor(teamPlaceId);
     }
 }

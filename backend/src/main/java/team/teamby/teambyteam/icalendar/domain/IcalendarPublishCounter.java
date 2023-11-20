@@ -33,6 +33,10 @@ public class IcalendarPublishCounter {
                 .toList();
     }
 
+    public void clearFor(final Long teamPlaceId) {
+        teamPlacePublishedCount.remove(teamPlaceId);
+    }
+
     public void clearAll() {
         teamPlacePublishedCount.clear();
     }
