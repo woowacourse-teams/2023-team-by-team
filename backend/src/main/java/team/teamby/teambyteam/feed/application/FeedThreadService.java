@@ -237,7 +237,7 @@ public class FeedThreadService {
     }
 
     private List<FeedImageResponse> mapToFeedImageResponse(final FeedThread feedThread) {
-        final List<FeedThreadImage> images = feedThreadImageRepository.findAllByFeedThread(feedThread);
+        final List<FeedThreadImage> images = feedThread.getImages();
         return images.stream().map(feedThreadImage ->
                         new FeedImageResponse(
                                 feedThreadImage.getId(),
