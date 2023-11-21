@@ -10,6 +10,4 @@ public interface PublishedIcalendarRepository extends JpaRepository<PublishedIca
     boolean existsByTeamPlaceId(Long teamPlaceId);
 
     Optional<PublishedIcalendar> findByTeamPlaceId(Long teamPlaceId);
-
-    List<PublishedIcalendar> findAllByTeamPlaceIds(List<Long> teamPlaceIds);
 }
