@@ -29,7 +29,7 @@ class IcalendarEventListenerTest extends ServiceTest {
     private IcalendarEventListener icalendarEventListener;
 
     @MockBean
-    private IcalendarPublishService icalendarPublishService;
+    private PeriodicIcalendarPublishService icalendarPublishService;
 
     @TestConfiguration
     static class TestConfig {
