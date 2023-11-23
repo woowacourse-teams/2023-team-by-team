@@ -68,6 +68,6 @@ jobs:
           rm -f /home/ubuntu/team-by-team/frontend/backup/*
           mv /home/ubuntu/team-by-team/frontend/www/dist/* /home/ubuntu/team-by-team/frontend/backup/
           mv ./dist/* /home/ubuntu/team-by-team/frontend/www/dist/
-          aws s3 sync /home/ubuntu/team-by-team/frontend/www/dist/ s3://2023-team-project/2023-team-by-team/dev/front --delete
+          aws s3 sync /home/ubuntu/team-by-team/frontend/www/dist/ s3://team-by-team-static-resource/dev/front --delete
           aws cloudfront create-invalidation --distribution-id "$CLOUD_FRONT_DISTRIBUTION_ID" --paths "/*"
 
