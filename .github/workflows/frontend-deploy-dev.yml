@@ -1,6 +1,7 @@
 name: frontend deploy dev
 
 on:
+  workflow_dispatch:
   pull_request:
     types:
       - closed
@@ -13,7 +14,7 @@ permissions:
 
 jobs:
   build-and-upload:
-    if: github.event.pull_request.merged == true
+    # if: github.event.pull_request.merged == true
     runs-on: ubuntu-22.04
     defaults:
       run:
@@ -68,6 +69,6 @@ jobs:
           rm -f /home/ubuntu/team-by-team/frontend/backup/*
           mv /home/ubuntu/team-by-team/frontend/www/dist/* /home/ubuntu/team-by-team/frontend/backup/
           mv ./dist/* /home/ubuntu/team-by-team/frontend/www/dist/
-          aws s3 sync /home/ubuntu/team-by-team/frontend/www/dist/ s3://2023-team-project/2023-team-by-team/dev/front --delete
+          aws s3 sync /home/ubuntu/team-by-team/frontend/www/dist/ s3://team-by-team-static-resource/dev/front --delete
           aws cloudfront create-invalidation --distribution-id "$CLOUD_FRONT_DISTRIBUTION_ID" --paths "/*"
 

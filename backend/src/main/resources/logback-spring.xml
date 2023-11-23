@@ -41,11 +41,9 @@
 
     <springProfile name="dev">
         <logger level="INFO" name="org.springframework.boot">
-            <appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE"/>
         </logger>
         <logger level="INFO" name="team.teamby.teambyteam">
-            <appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE"/>
         </logger>
     </springProfile>
