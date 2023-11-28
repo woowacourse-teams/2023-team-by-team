@@ -1,5 +1,5 @@
 # Automatically set front-end reviewers when front-end files are changed
-/frontend/ @wzrabbit @hafnium1923 @suyoungj
+/frontend/ @wzrabbit @hafnium1923
 
 # Automatically set back-end reviewers when back-end files are changed
-/backend/ @pilyang @sh111-coder @SproutMJ @the9kim
+/backend/ @pilyang
