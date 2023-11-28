@@ -7,15 +7,11 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 
 @Slf4j
 public class SseEmitters {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private static final int NUMBER_OF_THREAD = 100;
-    private static final ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(NUMBER_OF_THREAD);
 
     private final Map<TeamPlaceEmitterId, SseEmitter> emitters;
 
@@ -25,11 +21,16 @@ public class SseEmitters {
 
     public void sendEvent(final TeamPlaceEventId eventId, final TeamPlaceSseEvent event) {
         emitters.forEach(
-                (emitterId, emitter) -> threadPoolExecutor.execute(() -> sendToEmitter(eventId, event.getEvent(emitterId), emitterId, emitter))
+                (emitterId, emitter) -> sendToEmitter(eventId, event.getEvent(emitterId), emitterId, emitter)
         );
     }
 
-    private void sendToEmitter(TeamPlaceEventId eventId, Object event, TeamPlaceEmitterId emitterId, SseEmitter emitter) {
+    private void sendToEmitter(
+            final TeamPlaceEventId eventId,
+            final Object event,
+            final TeamPlaceEmitterId emitterId,
+            final SseEmitter emitter
+    ) {
         log.info("SSE 메시지 보내기 시도 : {}", emitterId.toString());
         try {
             emitter.send(SseEmitter.event()

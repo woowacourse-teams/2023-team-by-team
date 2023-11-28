@@ -83,6 +83,6 @@ class TeamPlaceSsePublisherTest {
         });
 
         // remove cache
-        teamPlaceEmitterRepository.deleteById(emitterId);
+        teamPlaceEmitterRepository.closeById(emitterId);
     }
 }
