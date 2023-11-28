@@ -4,13 +4,15 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 import team.teamby.teambyteam.feed.domain.image.FeedThreadImage;
 import team.teamby.teambyteam.feed.domain.vo.Content;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -20,7 +22,8 @@ public class FeedThread extends Feed {
     @Column(nullable = false)
     private Long authorId;
 
-    @OneToMany(mappedBy = "feedThread", fetch = FetchType.EAGER)
+    @BatchSize(size = 20)
+    @OneToMany(mappedBy = "feedThread", fetch = FetchType.LAZY)
     private final List<FeedThreadImage> images = new ArrayList<>();
 
     public FeedThread(final Long teamPlaceId, final Content content, final Long authorId) {

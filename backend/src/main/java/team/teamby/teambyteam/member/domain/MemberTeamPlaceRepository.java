@@ -1,5 +1,7 @@
 package team.teamby.teambyteam.member.domain;
 
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.EntityGraph.EntityGraphType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -11,5 +13,6 @@ public interface MemberTeamPlaceRepository extends JpaRepository<MemberTeamPlace
 
     List<MemberTeamPlace> findAllByMemberId(Long memberId);
 
+    @EntityGraph(attributePaths = {"member"}, type = EntityGraphType.FETCH)
     List<MemberTeamPlace> findAllByTeamPlaceId(Long teamPlaceId);
 }

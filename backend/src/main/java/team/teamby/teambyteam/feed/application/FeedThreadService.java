@@ -187,7 +187,11 @@ public class FeedThreadService {
                 .toList();
     }
 
-    private List<FeedResponse> getFeedResponsesFromDatasource(Long teamPlaceId, MemberEmailDto memberEmailDto, Integer size) {
+    private List<FeedResponse> getFeedResponsesFromDatasource(
+            final Long teamPlaceId,
+            final MemberEmailDto memberEmailDto,
+            final Integer size
+    ) {
         final Pageable pageSize = getPageableInitSize(size);
         final List<Feed> list = feedRepository.findByTeamPlaceId(teamPlaceId, pageSize);
         return mapFeedResponses(list, memberEmailDto.email(), teamPlaceId);
@@ -222,7 +226,7 @@ public class FeedThreadService {
         return memberTeamPlaceRepository.findAllByTeamPlaceId(teamPlaceId).stream()
                 .collect(Collectors.toMap(
                         MemberTeamPlace::findMemberId,
-                        e -> e
+                        memberTeamPlace -> memberTeamPlace
                 ));
     }
 
@@ -237,7 +241,7 @@ public class FeedThreadService {
     }
 
     private List<FeedImageResponse> mapToFeedImageResponse(final FeedThread feedThread) {
-        final List<FeedThreadImage> images = feedThreadImageRepository.findAllByFeedThread(feedThread);
+        final List<FeedThreadImage> images = feedThread.getImages();
         return images.stream().map(feedThreadImage ->
                         new FeedImageResponse(
                                 feedThreadImage.getId(),
