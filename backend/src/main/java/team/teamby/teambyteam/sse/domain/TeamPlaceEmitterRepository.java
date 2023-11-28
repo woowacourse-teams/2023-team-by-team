@@ -55,12 +55,12 @@ public class TeamPlaceEmitterRepository {
     }
 
     public void closeById(final TeamPlaceEmitterId emitterId) {
-        final SseEmitter emitter = emitters.remove(emitterId);
+        final SseEmitter emitter = emitters.get(emitterId);
         if (emitter != null) {
             emitter.complete();
-            log.info("SseEmitter 제거 : {}, {}", emitterId.toString(), METHOD_CALL);
+            log.info("SseEmitter 종료 : {}, {}", emitterId.toString(), METHOD_CALL);
         } else {
-            log.warn("SseEmitter 제거 실패 - EmitterId 찾을 수 없음 : {}", emitterId.toString());
+            log.warn("SseEmitter 종료 실패 - EmitterId 찾을 수 없음 : {}", emitterId.toString());
         }
     }
 }
