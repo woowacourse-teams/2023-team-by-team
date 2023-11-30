@@ -19,7 +19,6 @@ import team.teamby.teambyteam.feed.application.dto.FeedResponse;
 import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
 import team.teamby.teambyteam.feed.domain.Feed;
 import team.teamby.teambyteam.feed.domain.FeedThread;
-import team.teamby.teambyteam.feed.domain.cache.RecentFeedCache;
 import team.teamby.teambyteam.feed.domain.notification.schedulenotification.ScheduleNotification;
 import team.teamby.teambyteam.feed.domain.vo.Content;
 import team.teamby.teambyteam.filesystem.FileStorageManager;
@@ -63,17 +62,8 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
     @MockBean
     private FileStorageManager fileStorageManager;
 
-    @MockBean
-    private RecentFeedCache recentFeedCache;
-
     @SpyBean
     private Clock clock;
-
-    @BeforeEach
-    void setup() {
-        given(recentFeedCache.isCached(any(Long.class), any(int.class)))
-                .willReturn(false);
-    }
 
     @Nested
     @DisplayName("피드에 스레드 등록 시")

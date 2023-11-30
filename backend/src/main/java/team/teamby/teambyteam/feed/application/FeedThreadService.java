@@ -2,7 +2,6 @@ package team.teamby.teambyteam.feed.application;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -15,16 +14,11 @@ import team.teamby.teambyteam.feed.domain.Feed;
 import team.teamby.teambyteam.feed.domain.FeedRepository;
 import team.teamby.teambyteam.feed.domain.FeedThread;
 import team.teamby.teambyteam.feed.domain.FeedType;
-import team.teamby.teambyteam.feed.domain.cache.RecentFeedCache;
-import team.teamby.teambyteam.feed.domain.cache.RecentFeedCache.FeedCache;
 import team.teamby.teambyteam.feed.domain.image.FeedThreadImage;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
-import team.teamby.teambyteam.member.domain.IdOnly;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
-import team.teamby.teambyteam.member.domain.vo.Email;
-import team.teamby.teambyteam.member.exception.MemberException;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -50,37 +44,13 @@ public class FeedThreadService {
     private final FeedRepository feedRepository;
     private final MemberRepository memberRepository;
     private final MemberTeamPlaceRepository memberTeamPlaceRepository;
-    private final RecentFeedCache feedCache;
 
     @Transactional(readOnly = true)
     public FeedsResponse firstRead(final Long teamPlaceId, final MemberEmailDto memberEmailDto, final Integer size) {
 
-//        final List<FeedResponse> feedResponses = getRecentFeedResponses(teamPlaceId, memberEmailDto, size);
         final List<FeedResponse> feedResponses = getFeedResponsesFromDatasource(teamPlaceId, memberEmailDto, size);
 
         return FeedsResponse.of(feedResponses);
-    }
-
-    private List<FeedResponse> getRecentFeedResponses(final Long teamPlaceId, final MemberEmailDto memberEmailDto, final Integer size) {
-        if (feedCache.isCached(teamPlaceId, size)) {
-            return getFeedResponsesFromCache(teamPlaceId, memberEmailDto, size);
-        }
-        return getFeedResponsesFromDatasource(teamPlaceId, memberEmailDto, size);
-    }
-
-    private List<FeedResponse> getFeedResponsesFromCache(Long teamPlaceId, MemberEmailDto memberEmailDto, Integer size) {
-        final Map<Long, MemberTeamPlace> teamPlaceMembers = getTeamPlaceMembers(teamPlaceId);
-        final IdOnly memberId = memberRepository.findIdByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
-
-        final List<FeedCache> caches = feedCache.getCache(teamPlaceId, size);
-        return caches.stream()
-                .map(cache -> FeedResponse.from(
-                        cache,
-                        teamPlaceMembers.getOrDefault(cache.authorId(), MemberTeamPlace.UNKNOWN_MEMBER_TEAM_PLACE),
-                        memberId)
-                )
-                .toList();
     }
 
     private List<FeedResponse> getFeedResponsesFromDatasource(

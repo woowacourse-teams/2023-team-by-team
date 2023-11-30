@@ -46,7 +46,6 @@ import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
 import team.teamby.teambyteam.feed.domain.Feed;
 import team.teamby.teambyteam.feed.domain.FeedThread;
 import team.teamby.teambyteam.feed.domain.FeedType;
-import team.teamby.teambyteam.feed.domain.cache.RecentFeedCache;
 import team.teamby.teambyteam.feed.domain.notification.schedulenotification.ScheduleNotification;
 import team.teamby.teambyteam.feed.domain.vo.Content;
 import team.teamby.teambyteam.feed.exception.FeedException;
@@ -66,18 +65,8 @@ class FeedThreadServiceTest extends ServiceTest {
     @Autowired
     private FeedThreadService feedThreadService;
 
-    @MockBean
-    private RecentFeedCache recentFeedCache;
-
     @SpyBean
     private Clock clock;
-
-    @BeforeEach
-    void invalidateCaching() {
-        given(recentFeedCache.isCached(any(Long.class), any(int.class)))
-                .willReturn(false);
-
-    }
 
     @Nested
     @DisplayName("피드의 스레드 조회시")
