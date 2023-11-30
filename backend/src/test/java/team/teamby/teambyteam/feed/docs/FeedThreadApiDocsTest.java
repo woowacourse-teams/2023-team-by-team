@@ -16,7 +16,7 @@ import team.teamby.teambyteam.auth.exception.AuthenticationException;
 import team.teamby.teambyteam.common.ApiDocsTest;
 import team.teamby.teambyteam.common.fixtures.FeedThreadFixtures;
 import team.teamby.teambyteam.common.fixtures.FileFixtures;
-import team.teamby.teambyteam.feed.application.FeedThreadService;
+import team.teamby.teambyteam.feed.application.FeedReadService;
 import team.teamby.teambyteam.feed.application.FeedWriteService;
 import team.teamby.teambyteam.feed.application.dto.FeedResponse;
 import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
@@ -57,7 +57,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public final class FeedThreadApiDocsTest extends ApiDocsTest {
 
     @MockBean
-    private FeedThreadService feedThreadService;
+    private FeedReadService feedReadService;
 
     @MockBean
     private FeedWriteService feedWriteService;
@@ -216,7 +216,7 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
             FeedResponse feedResponse = new FeedResponse(1L, FeedType.THREAD.name(), authorId, "author", "/", "created",
                     "hello", List.of(), false);
             final FeedsResponse feedsResponse = new FeedsResponse(List.of(feedResponse));
-            given(feedThreadService.firstRead(any(), any(), any()))
+            given(feedReadService.firstRead(any(), any(), any()))
                     .willReturn(feedsResponse);
 
             // when & then
@@ -318,7 +318,7 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
             final FeedResponse feedResponse = new FeedResponse(1L, FeedType.THREAD.name(), authorId, "author", "/",
                     "created", "hello", List.of(), false);
             final FeedsResponse feedsResponse = new FeedsResponse(List.of(feedResponse));
-            given(feedThreadService.reRead(any(), any(), any(), any()))
+            given(feedReadService.reRead(any(), any(), any(), any()))
                     .willReturn(feedsResponse);
 
             // when & then

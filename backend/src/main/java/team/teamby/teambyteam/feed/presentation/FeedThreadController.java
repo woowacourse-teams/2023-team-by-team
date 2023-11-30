@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import team.teamby.teambyteam.feed.application.FeedThreadService;
+import team.teamby.teambyteam.feed.application.FeedReadService;
 import team.teamby.teambyteam.feed.application.FeedWriteService;
 import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
 import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
@@ -24,7 +24,7 @@ import java.net.URI;
 @RequiredArgsConstructor
 public class FeedThreadController {
 
-    private final FeedThreadService feedThreadService;
+    private final FeedReadService feedReadService;
     private final FeedWriteService feedWriteService;
 
     @PostMapping("/{teamPlaceId}/feed/threads")
@@ -45,7 +45,7 @@ public class FeedThreadController {
             @AuthPrincipal final MemberEmailDto memberEmailDto,
             @RequestParam final Integer size
     ) {
-        FeedsResponse feeds = feedThreadService.firstRead(teamPlaceId, memberEmailDto, size);
+        FeedsResponse feeds = feedReadService.firstRead(teamPlaceId, memberEmailDto, size);
 
         return ResponseEntity.ok(feeds);
     }
@@ -57,7 +57,7 @@ public class FeedThreadController {
             @RequestParam("last-thread-id") final Long threadId,
             @RequestParam final Integer size
     ) {
-        FeedsResponse feeds = feedThreadService.reRead(teamPlaceId, memberEmailDto, threadId, size);
+        FeedsResponse feeds = feedReadService.reRead(teamPlaceId, memberEmailDto, threadId, size);
 
         return ResponseEntity.ok(feeds);
     }

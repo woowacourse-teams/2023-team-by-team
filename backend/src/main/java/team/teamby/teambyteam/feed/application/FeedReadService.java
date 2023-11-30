@@ -16,7 +16,6 @@ import team.teamby.teambyteam.feed.domain.FeedThread;
 import team.teamby.teambyteam.feed.domain.FeedType;
 import team.teamby.teambyteam.feed.domain.image.FeedThreadImage;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
-import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 
@@ -30,7 +29,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class FeedThreadService {
+public class FeedReadService {
 
     public static final String BLANK_PROFILE_IMAGE_URL = "";
     private static final String SORT_CRITERIA = "id";
@@ -42,7 +41,6 @@ public class FeedThreadService {
     private final Clock clock;
 
     private final FeedRepository feedRepository;
-    private final MemberRepository memberRepository;
     private final MemberTeamPlaceRepository memberTeamPlaceRepository;
 
     @Transactional(readOnly = true)
