@@ -37,6 +37,6 @@ export const useSSE = () => {
   }, [queryClient, teamPlaceId, accessToken]);
 
   useEffect(() => {
-    connect();
+    return connect();
   }, [connect]);
 };
