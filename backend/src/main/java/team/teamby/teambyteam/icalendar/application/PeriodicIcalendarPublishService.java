@@ -37,6 +37,8 @@ public class PeriodicIcalendarPublishService {
      */
     @Scheduled(cron = "0 45 * * * *")
     private void publishDelayedIcalendarUpdates() {
+        publishCounter.clearNotDelayedCounts();
+
         final List<Long> teamPlaceIds = publishCounter.getPublishDelayedTeamPlaceIds();
         teamPlaceIds.forEach(teamPlaceId -> {
             icalendarPublishService.updateIcalendar(teamPlaceId);

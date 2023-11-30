@@ -98,6 +98,38 @@ class IcalendarPublishCounterTest {
     }
 
     @Test
+    @DisplayName("딜레이 되지 않은 배포 카운트 초기화 테스트")
+    void clearNotDelayedCountTest() {
+        // given
+        final Long teamPlace1Id = 1L;
+        final Long teamPlace2Id = 2L;
+        final Long teamPlace3Id = 3L;
+
+        for (int i = 0; i < 11; i++) {
+            icalendarPublishCounter.addCountFor(teamPlace1Id);
+            icalendarPublishCounter.addCountFor(teamPlace2Id);
+        }
+        icalendarPublishCounter.addCountFor(teamPlace2Id);
+        for (int i = 0; i < 5; i++) {
+            icalendarPublishCounter.addCountFor(teamPlace3Id);
+        }
+
+        // when
+        icalendarPublishCounter.clearNotDelayedCounts();
+        final List<Long> firstResult = icalendarPublishCounter.getPublishDelayedTeamPlaceIds();
+        for (int i = 0; i < 6; i++) {
+            icalendarPublishCounter.addCountFor(teamPlace3Id);
+        }
+        final List<Long> secondResult = icalendarPublishCounter.getPublishDelayedTeamPlaceIds();
+
+        // then
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(firstResult).containsExactlyInAnyOrder(teamPlace1Id, teamPlace2Id);
+            softly.assertThat(secondResult).containsExactlyInAnyOrder(teamPlace1Id, teamPlace2Id);
+        });
+    }
+
+    @Test
     @DisplayName("배포 카운트 초기화 test")
     void clearTest() {
         // given

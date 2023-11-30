@@ -37,6 +37,15 @@ public class IcalendarPublishCounter {
         teamPlacePublishedCount.remove(teamPlaceId);
     }
 
+    public void clearNotDelayedCounts() {
+        final List<Long> notDelayedTeamPlaceIds = teamPlacePublishedCount.entrySet()
+                .stream()
+                .filter(entry -> entry.getValue() <= MAX_PUBLISH_COUNT_PER_HOUR)
+                .map(Map.Entry::getKey)
+                .toList();
+        notDelayedTeamPlaceIds.forEach(teamPlacePublishedCount::remove);
+    }
+
     public void clearAll() {
         teamPlacePublishedCount.clear();
     }
