@@ -5,6 +5,7 @@ import type { NoticeSize } from '~/types/size';
 export const Container = styled.div<{
   $noticeSize: NoticeSize;
   $isMobile: boolean;
+  $hasImage: boolean;
 }>`
   position: sticky;
   top: ${({ $isMobile }) => ($isMobile ? '-4px' : 0)};
@@ -19,10 +20,14 @@ export const Container = styled.div<{
 
   transition: 0.3s;
 
-  ${({ $noticeSize }) => {
+  ${({ $noticeSize, $hasImage }) => {
     if ($noticeSize === 'sm')
       return css`
         height: 80px;
+      `;
+    if ($noticeSize === 'md' && $hasImage)
+      return css`
+        height: 200px;
       `;
     if ($noticeSize === 'md')
       return css`
@@ -110,7 +115,9 @@ export const AuthorInfo = styled.div`
   height: 16px;
 `;
 
-export const ContentContainer = styled.div<{ $noticeSize: NoticeSize }>`
+export const ContentContainer = styled.div<{
+  $noticeSize: NoticeSize;
+}>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -150,11 +157,14 @@ export const timeInfoText = css`
   color: ${({ theme }) => theme.color.GRAY500};
 `;
 
-export const contentField = (noticeSize: NoticeSize) => {
+export const contentField = (noticeSize: NoticeSize, hasImage: boolean) => {
   let height = '';
 
   if (noticeSize === 'sm') height = '24px';
-  if (noticeSize === 'md') height = '66px';
+
+  if (noticeSize === 'md')
+    if (hasImage) height = '24px';
+    else height = '66px';
   if (noticeSize === 'lg') height = '100%';
 
   return css`
