@@ -25,7 +25,7 @@ export const useSSE = (teamPlaceId: number) => {
 
       eventSource.addEventListener('new_thread', (e) => {
         console.log(e.data);
-        console.log(e.data.content);
+        console.log(e.data.json());
         queryClient.invalidateQueries(['threadData', teamPlaceId]);
       });
 
