@@ -3,10 +3,12 @@ import { useQueryClient } from '@tanstack/react-query';
 import { baseUrl } from '~/apis/http';
 import { EventSourcePolyfill } from 'event-source-polyfill';
 import { useToken } from '~/hooks/useToken';
+import { useTeamPlace } from '~/hooks/useTeamPlace';
 
-export const useSSE = (teamPlaceId: number) => {
+export const useSSE = () => {
   const queryClient = useQueryClient();
   const { accessToken } = useToken();
+  const { teamPlaceId } = useTeamPlace();
 
   useEffect(() => {
     const connect = () => {
@@ -25,7 +27,6 @@ export const useSSE = (teamPlaceId: number) => {
 
       eventSource.addEventListener('new_thread', (e) => {
         console.log('1 ' + e.data);
-        console.log('2 ' + JSON.parse(e.data));
 
         queryClient.invalidateQueries(['threadData', teamPlaceId]);
       });
