@@ -12,6 +12,7 @@ export const useSSE = () => {
 
   useEffect(() => {
     const connect = () => {
+      console.log(teamPlaceId);
       if (!teamPlaceId) {
         return;
       }
