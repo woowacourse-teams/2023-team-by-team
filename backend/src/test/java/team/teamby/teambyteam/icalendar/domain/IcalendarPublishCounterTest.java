@@ -21,7 +21,7 @@ class IcalendarPublishCounterTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {0, 1, 5, 9})
+    @ValueSource(ints = {0, 1, 5, 10})
     @DisplayName("10회 미만 배포한 경우 MAX에 도달했는지 확인시 false 반환 테스트")
     void unreachedMaxTest(final int publishCount) {
         // given
@@ -38,7 +38,7 @@ class IcalendarPublishCounterTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {10, 11})
+    @ValueSource(ints = {11, 12})
     @DisplayName("10회 이상 배포한 경우 MAX에 도달했는지 확인시 true 반환 테스트")
     void reachMaxTest(final int publishCount) {
         // given
@@ -63,7 +63,7 @@ class IcalendarPublishCounterTest {
         final Long teamPlace3Id = 3L;
 
         icalendarPublishCounter.addCountFor(teamPlace3Id);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 11; i++) {
             icalendarPublishCounter.addCountFor(teamPlace1Id);
             icalendarPublishCounter.addCountFor(teamPlace2Id);
         }
@@ -81,7 +81,7 @@ class IcalendarPublishCounterTest {
     void clearSpecificTeamPlaceCounterTest() {
         // given
         final Long teamPlaceId = 1L;
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 11; i++) {
             icalendarPublishCounter.addCountFor(teamPlaceId);
         }
 
@@ -134,7 +134,7 @@ class IcalendarPublishCounterTest {
     void clearTest() {
         // given
         final Long teamPlace1Id = 1L;
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 11; i++) {
             icalendarPublishCounter.addCountFor(teamPlace1Id);
         }
 

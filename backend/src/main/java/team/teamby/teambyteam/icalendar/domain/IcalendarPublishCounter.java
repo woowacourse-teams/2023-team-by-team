@@ -20,7 +20,7 @@ public class IcalendarPublishCounter {
 
     public boolean isReachedToMaxCount(final Long teamPlaceId) {
         if (teamPlacePublishedCount.containsKey(teamPlaceId)) {
-            return teamPlacePublishedCount.get(teamPlaceId) >= MAX_PUBLISH_COUNT_PER_HOUR;
+            return teamPlacePublishedCount.get(teamPlaceId) > MAX_PUBLISH_COUNT_PER_HOUR;
         }
         return false;
     }
@@ -28,7 +28,7 @@ public class IcalendarPublishCounter {
     public List<Long> getPublishDelayedTeamPlaceIds() {
         return teamPlacePublishedCount.entrySet()
                 .stream()
-                .filter(entry -> entry.getValue() >= MAX_PUBLISH_COUNT_PER_HOUR)
+                .filter(entry -> entry.getValue() > MAX_PUBLISH_COUNT_PER_HOUR)
                 .map(Map.Entry::getKey)
                 .toList();
     }
