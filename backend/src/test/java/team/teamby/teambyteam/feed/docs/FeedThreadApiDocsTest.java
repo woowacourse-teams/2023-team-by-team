@@ -41,6 +41,7 @@ import team.teamby.teambyteam.common.ApiDocsTest;
 import team.teamby.teambyteam.common.fixtures.FeedThreadFixtures;
 import team.teamby.teambyteam.common.fixtures.FileFixtures;
 import team.teamby.teambyteam.feed.application.FeedThreadService;
+import team.teamby.teambyteam.feed.application.FeedWriteService;
 import team.teamby.teambyteam.feed.application.dto.FeedResponse;
 import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
 import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
@@ -56,6 +57,9 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
 
     @MockBean
     private FeedThreadService feedThreadService;
+
+    @MockBean
+    private FeedWriteService feedWriteService;
 
     @MockBean
     private FileStorageManager fileStorageManager;
@@ -76,7 +80,7 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
             // given
             final Long teamPlaceId = 1L;
             final Long registeredId = 1L;
-            given(feedThreadService.write(any(), any(), any()))
+            given(feedWriteService.write(any(), any(), any()))
                     .willReturn(registeredId);
 
             // when & then
@@ -115,7 +119,7 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
             // given
             final Long teamPlaceId = 1L;
             willThrow(new FeedException.WritingRequestEmptyException())
-                    .given(feedThreadService)
+                    .given(feedWriteService)
                             .write(any(FeedThreadWritingRequest.class), any(MemberEmailDto.class), eq(teamPlaceId));
 
             // when & then
