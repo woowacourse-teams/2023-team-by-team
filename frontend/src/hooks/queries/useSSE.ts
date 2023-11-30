@@ -9,6 +9,7 @@ export const useSSE = () => {
   const queryClient = useQueryClient();
   const { accessToken } = useToken();
   const { teamPlaceId } = useTeamPlace();
+  const currentId = teamPlaceId;
 
   useEffect(() => {
     const connect = () => {
@@ -31,6 +32,8 @@ export const useSSE = () => {
 
         queryClient.invalidateQueries(['threadData', teamPlaceId]);
       });
+
+      if (currentId !== teamPlaceId) eventSource.close();
 
       return () => {
         eventSource.close();
