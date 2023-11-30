@@ -4,6 +4,8 @@ import { baseUrl } from '~/apis/http';
 import { EventSourcePolyfill } from 'event-source-polyfill';
 import { useToken } from '~/hooks/useToken';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
+import { type ThreadsResponse } from '~/apis/feed';
+import { type Thread } from '~/types/feed';
 
 export const useSSE = () => {
   const queryClient = useQueryClient();
@@ -11,7 +13,6 @@ export const useSSE = () => {
   const { teamPlaceId } = useTeamPlace();
 
   const connect = useCallback(() => {
-    console.log(teamPlaceId);
     if (!teamPlaceId) {
       return;
     }
@@ -26,9 +27,13 @@ export const useSSE = () => {
     );
 
     eventSource.addEventListener('new_thread', (e) => {
-      console.log('1 ' + e.data);
+      const newThread = e.data as Thread;
 
-      queryClient.invalidateQueries(['threadData', teamPlaceId]);
+      queryClient.setQueryData<ThreadsResponse>(['threadData'], (old) => {
+        if (old) {
+          return { threads: [...old.threads, newThread] };
+        }
+      });
     });
 
     return () => {
