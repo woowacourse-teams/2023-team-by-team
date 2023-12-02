@@ -8,14 +8,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.teamby.teambyteam.global.domain.BaseEntity;
 import team.teamby.teambyteam.notice.domain.image.NoticeImage;
 import team.teamby.teambyteam.notice.domain.vo.Content;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -35,7 +36,7 @@ public class Notice extends BaseEntity {
     @Column(nullable = false, updatable = false)
     private Long authorId;
 
-    @OneToMany(mappedBy = "notice", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "notice", fetch = FetchType.LAZY)
     private List<NoticeImage> images = new ArrayList<>();
 
     public Notice(final Content content, final Long teamPlaceId, final Long authorId) {

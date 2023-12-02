@@ -28,6 +28,10 @@ public class TeamPlaceEmitterId {
         return Objects.equals(this.teamPlaceId, teamPlaceId);
     }
 
+    public boolean isMemberId(final Long memberId) {
+        return Objects.equals(this.memberId, memberId);
+    }
+
     @Override
     public String toString() {
         return teamPlaceId + DELIMITER + memberId + DELIMITER + timeStamp;

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import type { RefObject, MutableRefObject } from 'react';
 
-const useClickOutside = <T extends HTMLElement>(
+export const useClickOutside = <T extends HTMLElement>(
   ref: RefObject<T> | MutableRefObject<T>,
   callback: EventListener,
 ) => {
@@ -21,5 +21,3 @@ const useClickOutside = <T extends HTMLElement>(
     };
   }, [callback, ref]);
 };
-
-export default useClickOutside;

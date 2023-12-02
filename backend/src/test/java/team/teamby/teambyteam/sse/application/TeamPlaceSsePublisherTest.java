@@ -45,7 +45,7 @@ class TeamPlaceSsePublisherTest {
 
     @Test
     @DisplayName("발행된 이벤트로 SSE를 전송한다")
-    void sendSseWithEmitter() throws IOException {
+    void sendSseWithEmitter() throws IOException, InterruptedException {
         // given
         final Long teamPlaceId = 1L;
         final String eventName = "test_event";
@@ -60,6 +60,7 @@ class TeamPlaceSsePublisherTest {
         // when
         teamPlaceSsePublisher.publishEvent(testEvent);
 
+        Thread.sleep(1000);
         // then
 
         // verify if the SSE is sent
@@ -82,6 +83,6 @@ class TeamPlaceSsePublisherTest {
         });
 
         // remove cache
-        teamPlaceEmitterRepository.deleteById(emitterId);
+        teamPlaceEmitterRepository.closeById(emitterId);
     }
 }

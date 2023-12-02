@@ -22,7 +22,7 @@ import team.teamby.teambyteam.feed.domain.FeedThread;
 import team.teamby.teambyteam.feed.domain.cache.RecentFeedCache;
 import team.teamby.teambyteam.feed.domain.notification.schedulenotification.ScheduleNotification;
 import team.teamby.teambyteam.feed.domain.vo.Content;
-import team.teamby.teambyteam.filesystem.FileCloudUploader;
+import team.teamby.teambyteam.filesystem.FileStorageManager;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.schedule.application.event.ScheduleCreateEvent;
@@ -61,7 +61,7 @@ import static team.teamby.teambyteam.common.fixtures.acceptance.MemberAcceptance
 public class FeedThreadAcceptanceTest extends AcceptanceTest {
 
     @MockBean
-    private FileCloudUploader fileCloudUploader;
+    private FileStorageManager fileStorageManager;
 
     @MockBean
     private RecentFeedCache recentFeedCache;
@@ -90,7 +90,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             participatedTeamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             participatedMemberTeamPlace = testFixtureBuilder.buildMemberTeamPlace(authedMember, participatedTeamPlace);
             authToken = jwtTokenProvider.generateAccessToken(authedMember.getEmail().getValue());
-            given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class), any(String.class)))
+            given(fileStorageManager.upload(any(MultipartFile.class), any(String.class), any(String.class)))
                     .willReturn("https://s3://seongha-seeik");
         }
 
@@ -253,7 +253,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             participatedTeamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             participatedMemberTeamPlace = testFixtureBuilder.buildMemberTeamPlace(authedMember, participatedTeamPlace);
             authToken = jwtTokenProvider.generateAccessToken(authedMember.getEmail().getValue());
-            given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class), any(String.class)))
+            given(fileStorageManager.upload(any(MultipartFile.class), any(String.class), any(String.class)))
                     .willReturn("https://s3://seongha-seeik");
         }
 

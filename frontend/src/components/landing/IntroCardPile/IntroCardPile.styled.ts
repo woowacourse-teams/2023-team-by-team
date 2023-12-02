@@ -54,7 +54,7 @@ const cardRotate = (afterDegree: string) => keyframes`
   }
 `;
 
-export const Card = styled.div<{ css: CSSProp }>`
+export const Card = styled.div<{ $css: CSSProp }>`
   position: absolute;
   right: 60%;
   bottom: -30%;
@@ -66,7 +66,7 @@ export const Card = styled.div<{ css: CSSProp }>`
 
   transform-origin: bottom right;
 
-  ${({ css }) => css}
+  ${({ $css }) => $css}
 `;
 
 const invertedFadeInOut = keyframes`
@@ -82,7 +82,7 @@ const invertedFadeInOut = keyframes`
   }
 `;
 
-export const Blind = styled.div<{ animation: boolean }>`
+export const Blind = styled.div<{ $animation: boolean }>`
   position: absolute;
   top: 0;
   left: 0;
@@ -94,8 +94,8 @@ export const Blind = styled.div<{ animation: boolean }>`
 
   opacity: 0;
 
-  ${({ animation = true }) =>
-    animation &&
+  ${({ $animation = true }) =>
+    $animation &&
     css`
       opacity: 1;
 

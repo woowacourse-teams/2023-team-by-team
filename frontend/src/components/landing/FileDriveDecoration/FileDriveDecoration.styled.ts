@@ -45,14 +45,14 @@ export const FolderOpenIconWrapper = styled.div`
 `;
 
 export const WritingLine = styled.div<{
-  width: string;
-  delay: string;
+  $width: string;
+  $delay: string;
 }>`
-  width: ${({ width }) => width};
+  width: ${({ $width }) => $width};
   height: 8px;
 
   background-color: ${({ theme }) => theme.color.BLUE500};
 
   animation: ${blink} 5s infinite;
-  animation-delay: ${({ delay }) => delay};
+  animation-delay: ${({ $delay }) => $delay};
 `;

@@ -4,8 +4,8 @@ export const schedules: Schedule[] = [
   {
     id: 0,
     title: 'test0',
-    startDateTime: '2023-07-13 00:00',
-    endDateTime: '2023-07-14 23:59',
+    startDateTime: '2023-11-13 00:00',
+    endDateTime: '2023-11-14 23:59',
   },
   {
     id: 1,

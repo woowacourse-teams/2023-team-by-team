@@ -2,9 +2,9 @@ import { css, styled } from 'styled-components';
 import type { NotificationProps } from '~/components/feed/Notification/Notification';
 import type { ThreadSize } from '~/types/size';
 
-export const Wrapper = styled.div<
-  Pick<NotificationProps, 'teamPlaceColor' | 'threadSize'>
->`
+export const Wrapper = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['teamPlaceColor', 'threadSize'].includes(prop),
+})<Pick<NotificationProps, 'teamPlaceColor' | 'threadSize'>>`
   display: flex;
   justify-content: center;
   align-items: center;

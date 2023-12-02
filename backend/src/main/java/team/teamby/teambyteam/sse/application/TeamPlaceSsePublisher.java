@@ -25,6 +25,5 @@ public class TeamPlaceSsePublisher {
 
         final SseEmitters emitters = teamPlaceEmitterRepository.findByTeamPlaceId(targetTeamPlaceId);
         emitters.sendEvent(eventId, teamPlaceSseEvent);
-        teamPlaceEmitterRepository.addEventCache(eventId, teamPlaceSseEvent.getEvent());
     }
 }

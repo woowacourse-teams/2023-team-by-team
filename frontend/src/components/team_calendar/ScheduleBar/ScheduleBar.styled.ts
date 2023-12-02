@@ -12,7 +12,21 @@ interface InnerProps {
   teamPlaceColor: TeamPlaceColor;
 }
 
-export const Wrapper = styled.div<
+export const Wrapper = styled.div.withConfig({
+  shouldForwardProp: (prop) =>
+    ![
+      'id',
+      'scheduleId',
+      'schedule',
+      'calendarSize',
+      'level',
+      'row',
+      'column',
+      'duration',
+      'roundedStart',
+      'roundedEnd',
+    ].includes(prop),
+})<
   Pick<
     ScheduleBarProps,
     | 'calendarSize'
@@ -45,7 +59,21 @@ export const Wrapper = styled.div<
     `0 ${roundedEnd ? '4px' : 0} 0 ${roundedStart ? '4px' : 0}`};
 `;
 
-export const Inner = styled.div<InnerProps>`
+export const Inner = styled.div.withConfig({
+  shouldForwardProp: (prop) =>
+    ![
+      'id',
+      'scheduleId',
+      'schedule',
+      'row',
+      'column',
+      'duration',
+      'level',
+      'roundedStart',
+      'roundedEnd',
+      'teamPlaceColor',
+    ].includes(prop),
+})<InnerProps>`
   display: flex;
   align-items: center;
   justify-content: space-between;

@@ -3,7 +3,7 @@ import type { ChangeEventHandler, FormEventHandler } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFetchUserInfo } from '~/hooks/queries/useFetchUserInfo';
 import { useModifyUserInfo } from '~/hooks/queries/useModifyUserInfo';
-import useClickOutside from '~/hooks/useClickOutside';
+import { useClickOutside } from '~/hooks/useClickOutside';
 import { useModal } from '~/hooks/useModal';
 import { useToast } from '~/hooks/useToast';
 import { LOCAL_STORAGE_KEY } from '~/constants/localStorage';
@@ -76,6 +76,8 @@ export const useUserInfoModal = () => {
       return;
     }
 
+    setIsUserInfoEditing(() => false);
+
     mutateModifyUserInfo(
       { name },
       {
@@ -84,6 +86,7 @@ export const useUserInfoModal = () => {
           showToast('success', '닉네임이 변경되었습니다.');
         },
         onError: () => {
+          setIsUserInfoEditing(() => true);
           showToast('error', '닉네임 변경에 실패했습니다.');
         },
       },

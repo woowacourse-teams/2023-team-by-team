@@ -1,9 +1,9 @@
 import { css, styled } from 'styled-components';
 import type { ScheduleMoreCellProps } from '~/components/team_calendar/ScheduleMoreCell/ScheduleMoreCell';
 
-export const Wrapper = styled.div<
-  Pick<ScheduleMoreCellProps, 'column' | 'calendarSize'>
->`
+export const Wrapper = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['column', 'calendarSize'].includes(prop),
+})<Pick<ScheduleMoreCellProps, 'column' | 'calendarSize'>>`
   position: absolute;
   display: flex;
   justify-content: center;

@@ -9,6 +9,7 @@ import { useFetchDailySchedules } from '~/hooks/queries/useFetchDailySchedules';
 import type { Position, SchedulePosition } from '~/types/schedule';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import type { CalendarSize } from '~/types/size';
+import { getIsMobile } from '~/utils/getIsMobile';
 
 export interface DailyScheduleModalProps {
   calendarSize?: CalendarSize;
@@ -40,6 +41,7 @@ const DailyScheduleModal = (props: DailyScheduleModalProps) => {
   const { row, column } = position;
   const { closeModal } = useModal();
   const { teamPlaceColor, teamPlaceId } = useTeamPlace();
+  const isMobile = getIsMobile();
 
   const { year, month, date } = parseDate(rawDate);
   const schedules = useFetchDailySchedules(teamPlaceId, year, month, date);
@@ -48,7 +50,14 @@ const DailyScheduleModal = (props: DailyScheduleModalProps) => {
     <Modal>
       <S.Backdrop onClick={closeModal} />
       <S.Container
-        css={S.modalLocation(row, column, calendarWidth, calendarLeft, calendarSize)}
+        $css={S.modalLocation(
+          row,
+          column,
+          calendarWidth,
+          calendarLeft,
+          calendarSize,
+          isMobile,
+        )}
       >
         <S.Header>
           <Text>
@@ -72,7 +81,7 @@ const DailyScheduleModal = (props: DailyScheduleModalProps) => {
               return (
                 <S.ScheduleBox
                   key={index}
-                  teamPlaceColor={teamPlaceColor}
+                  $teamPlaceColor={teamPlaceColor}
                   title={title}
                   onClick={() => {
                     onScheduleModalOpen({

@@ -15,7 +15,7 @@ import { useModal } from '~/hooks/useModal';
 import { useState } from 'react';
 import type { ThreadImage } from '~/types/feed';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
-import { useSSE } from '~/hooks/queries/useSSE';
+import { getIsMobile } from '~/utils/getIsMobile';
 
 interface TeamFeedPageProps {
   threadSize?: ThreadSize;
@@ -23,8 +23,8 @@ interface TeamFeedPageProps {
 
 const TeamFeedPage = (props: TeamFeedPageProps) => {
   const { threadSize = 'md' } = props;
+  const isMobile = getIsMobile();
 
-  const { teamPlaceId } = useTeamPlace();
   const {
     ref,
     noticeThread,
@@ -47,8 +47,6 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
     },
   } = useTeamFeedPage();
 
-  useSSE(teamPlaceId);
-
   const { isModalOpen, openModal } = useModal();
   const [modalImageInfo, setModalImageInfo] = useState<{
     images: ThreadImage[];
@@ -64,7 +62,7 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
   };
 
   return (
-    <S.Container threadSize={threadSize}>
+    <S.Container $isMobile={isMobile}>
       <S.Inner>
         <S.ThreadContainer ref={ref}>
           {noticeThread && noticeThread.id && (
@@ -125,7 +123,7 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
             autoFocus
             readOnly={isSendingImage}
           />
-          <S.ButtonContainer>
+          <S.ButtonContainer $isMobile={isMobile}>
             <Button
               type="button"
               variant="plain"

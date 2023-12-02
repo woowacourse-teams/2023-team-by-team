@@ -30,71 +30,71 @@ const TeamCalendarDecoration = (props: TeamCalendarDecorationProps) => {
         </S.CalendarTable>
         <S.SampleCalendarBarContainer>
           <S.SampleCalendarBar
-            row={0}
-            column={0}
-            length={4}
-            level={0}
-            roundedStart={true}
-            roundedEnd={true}
-            color="#193ecb"
+            $row={0}
+            $column={0}
+            $length={4}
+            $level={0}
+            $roundedStart={true}
+            $roundedEnd={true}
+            $color="#193ecb"
           />
           <S.SampleCalendarBar
-            row={0}
-            column={2}
-            length={4}
-            level={1}
-            roundedStart={true}
-            roundedEnd={true}
-            color="#7c25ff"
+            $row={0}
+            $column={2}
+            $length={4}
+            $level={1}
+            $roundedStart={true}
+            $roundedEnd={true}
+            $color="#7c25ff"
           />
           <S.SampleCalendarBar
-            row={2}
-            column={2}
-            length={5}
-            level={0}
-            roundedStart={true}
-            roundedEnd={false}
-            color="#2546ff"
+            $row={2}
+            $column={2}
+            $length={5}
+            $level={0}
+            $roundedStart={true}
+            $roundedEnd={false}
+            $color="#2546ff"
           />
           <S.SampleCalendarBar
-            row={3}
-            column={0}
-            length={7}
-            level={0}
-            roundedStart={false}
-            roundedEnd={false}
-            color="#2546ff"
+            $row={3}
+            $column={0}
+            $length={7}
+            $level={0}
+            $roundedStart={false}
+            $roundedEnd={false}
+            $color="#2546ff"
           />
           <S.SampleCalendarBar
-            row={4}
-            column={0}
-            length={3}
-            level={0}
-            roundedStart={false}
-            roundedEnd={true}
-            color="#2546ff"
+            $row={4}
+            $column={0}
+            $length={3}
+            $level={0}
+            $roundedStart={false}
+            $roundedEnd={true}
+            $color="#2546ff"
           />
           <S.SampleCalendarBar
-            row={3}
-            column={1}
-            length={5}
-            level={1}
-            roundedStart={true}
-            roundedEnd={true}
-            color="#2596ff"
+            $row={3}
+            $column={1}
+            $length={5}
+            $level={1}
+            $roundedStart={true}
+            $roundedEnd={true}
+            $color="#2596ff"
           />
           <S.SampleCalendarBar
-            row={5}
-            column={4}
-            length={3}
-            level={0}
-            roundedStart={true}
-            roundedEnd={false}
-            color="#2cbeeb"
+            $row={5}
+            $column={4}
+            $length={3}
+            $level={0}
+            $roundedStart={true}
+            $roundedEnd={false}
+            $color="#2cbeeb"
           />
         </S.SampleCalendarBarContainer>
       </S.CalendarContainer>
-      <S.MousePointer src={mousePointer} animation={animation} />
+      <S.MousePointer src={mousePointer} $animation={animation} />
     </S.Container>
   );
 };

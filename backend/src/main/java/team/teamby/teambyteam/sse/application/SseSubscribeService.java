@@ -16,11 +16,6 @@ import team.teamby.teambyteam.sse.domain.TeamPlaceEmitterId;
 import team.teamby.teambyteam.sse.domain.TeamPlaceEmitterRepository;
 import team.teamby.teambyteam.sse.domain.TeamPlaceEventId;
 
-import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.Map;
-import java.util.Objects;
-
 @Slf4j
 @Service
 @Transactional
@@ -28,13 +23,6 @@ import java.util.Objects;
 public class SseSubscribeService {
 
     public static final String DEFAULT_EVENT_ID = "";
-    private static final Comparator<Map.Entry<TeamPlaceEventId, Object>> EVENT_ID_TIME_COMPARATOR = (entity1, entity2) -> {
-        final LocalDateTime timeStamp1 = entity1.getKey().getTimeStamp();
-        final LocalDateTime timeStamp2 = entity2.getKey().getTimeStamp();
-
-        return timeStamp1.compareTo(timeStamp2);
-    };
-
     private final MemberRepository memberRepository;
     private final TeamPlaceEmitterRepository teamplaceEmitterRepository;
 
@@ -54,23 +42,7 @@ public class SseSubscribeService {
         final TeamPlaceEventId dummyEventId = TeamPlaceEventId.of(teamPlaceId, dummyEvent.getEventName());
         emitter.sendEvent(dummyEventId, dummyEvent);
 
-        if (!Objects.isNull(lastEventId) && !lastEventId.isBlank()) {
-            sendCachedEvents(emitter, teamPlaceId, TeamPlaceEventId.from(lastEventId));
-        }
-
         log.info("SSE 연결 생성 {}", emitterId);
         return emitter.getSingleEmitter();
-    }
-
-    private void sendCachedEvents(
-            final SseEmitters emitter,
-            final Long teamPlaceId,
-            final TeamPlaceEventId lastEventId
-    ) {
-        final Map<TeamPlaceEventId, Object> events = teamplaceEmitterRepository.findAllEventCacheWithId(teamPlaceId);
-        events.entrySet().stream()
-                .filter(entry -> entry.getKey().isPublishedAfter(lastEventId))
-                .sorted(EVENT_ID_TIME_COMPARATOR)
-                .forEach(entry -> emitter.sendEvent(entry.getKey(), entry.getValue()));
     }
 }

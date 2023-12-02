@@ -59,7 +59,9 @@ export const RealCheckbox = styled.input`
   appearance: none;
 `;
 
-export const CustomCheckbox = styled.span<CustomCheckboxProps>`
+export const CustomCheckbox = styled.span.withConfig({
+  shouldForwardProp: (prop) => !['size'].includes(prop),
+})<CustomCheckboxProps>`
   display: inline-block;
 
   ${({ size = 'md' }) => checkboxSizes[size]}
@@ -99,7 +101,9 @@ export const CustomCheckbox = styled.span<CustomCheckboxProps>`
   ${({ css }) => css};
 `;
 
-export const CheckIconWrapper = styled.div<CheckIconWrapperProps>`
+export const CheckIconWrapper = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['size'].includes(prop),
+})<CheckIconWrapperProps>`
   display: flex;
   justify-content: center;
   align-items: center;

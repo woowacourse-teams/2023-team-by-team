@@ -9,7 +9,7 @@ import ScheduleEditModal from '~/components/team_calendar/ScheduleEditModal/Sche
 import ScheduleMoreCell from '~/components/team_calendar/ScheduleMoreCell/ScheduleMoreCell';
 import DailyScheduleModal from '~/components/team_calendar/DailyScheduleModal/DailyScheduleModal';
 import ICalendarModal from '~/components/team_calendar/ICalendarModal/ICalendarModal';
-import useCalendar from '~/hooks/useCalendar';
+import { useCalendar } from '~/hooks/useCalendar';
 import { useScheduleModal } from '~/hooks/schedule/useScheduleModal';
 import { useFetchSchedules } from '~/hooks/queries/useFetchSchedules';
 import { useModal } from '~/hooks/useModal';
@@ -30,6 +30,7 @@ import {
 } from '~/assets/svg';
 import * as S from './TeamCalendar.styled';
 import { parseDate } from '~/utils/parseDate';
+import Spacing from '~/components/common/Spacing/Spacing';
 
 interface TeamCalendarProps {
   calendarSize?: CalendarSize;
@@ -174,9 +175,9 @@ const TeamCalendar = (props: TeamCalendarProps) => {
 
   return (
     <>
-      <S.Container calendarSize={calendarSize}>
+      <S.Container $calendarSize={calendarSize}>
         <S.CalendarHeader>
-          <div />
+          <Spacing direction="horizontal" size={56} />
           <S.ButtonContainer>
             <Button
               variant="plain"
@@ -218,7 +219,7 @@ const TeamCalendar = (props: TeamCalendarProps) => {
           </S.FeatureButtonContainer>
         </S.CalendarHeader>
         <div ref={calendarRef}>
-          <S.DaysOfWeek calendarSize={calendarSize}>
+          <S.DaysOfWeek $calendarSize={calendarSize}>
             {DAYS_OF_WEEK.map((day) => {
               return <S.DayOfWeek key={day}>{day}</S.DayOfWeek>;
             })}
@@ -278,7 +279,7 @@ const TeamCalendar = (props: TeamCalendarProps) => {
                       return null;
                     })}
                   </S.ScheduleBarContainer>
-                  <S.DateView calendarSize={calendarSize}>
+                  <S.DateView $calendarSize={calendarSize}>
                     {week.map((day, colIndex) => {
                       const {
                         year: renderYear,

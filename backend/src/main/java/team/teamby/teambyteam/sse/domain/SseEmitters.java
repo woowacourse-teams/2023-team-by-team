@@ -13,38 +13,36 @@ public class SseEmitters {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    private final TeamPlaceEmitterRepository teamPlaceEmitterRepository;
     private final Map<TeamPlaceEmitterId, SseEmitter> emitters;
 
-    public SseEmitters(
-            final Map<TeamPlaceEmitterId, SseEmitter> emitters,
-            final TeamPlaceEmitterRepository teamPlaceEmitterRepository
-    ) {
+    public SseEmitters(final Map<TeamPlaceEmitterId, SseEmitter> emitters) {
         this.emitters = emitters;
-        this.teamPlaceEmitterRepository = teamPlaceEmitterRepository;
     }
 
     public void sendEvent(final TeamPlaceEventId eventId, final TeamPlaceSseEvent event) {
-        sendEvent(eventId, event.getEvent());
+        emitters.forEach(
+                (emitterId, emitter) -> sendToEmitter(eventId, event.getEvent(emitterId), emitterId, emitter)
+        );
     }
 
-    public void sendEvent(final TeamPlaceEventId eventId, final Object event) {
-        emitters.forEach(
-                (emitterId, emitter) -> {
-                    log.info("SSE 메시지 보내기 시도 : {}", emitterId.toString());
-                    try {
-                        emitter.send(SseEmitter.event()
-                                .id(eventId.toString())
-                                .name(eventId.getEventName())
-                                .data(extractEventDataAsJson(event))
-                        );
-                        log.info("SSE 메시지 보내기 성공 : {}, event : {}", emitterId.toString(), eventId.getEventName());
-                    } catch (IOException | RuntimeException exception) {
-                        log.error("SSE 메시지 보내기 실패 : {}, error : {}", exception.getMessage(), exception.getClass());
-                        emitter.complete();
-                    }
-                }
-        );
+    private void sendToEmitter(
+            final TeamPlaceEventId eventId,
+            final Object event,
+            final TeamPlaceEmitterId emitterId,
+            final SseEmitter emitter
+    ) {
+        log.info("SSE 메시지 보내기 시도 : {}", emitterId.toString());
+        try {
+            emitter.send(SseEmitter.event()
+                    .id(eventId.toString())
+                    .name(eventId.getEventName())
+                    .data(extractEventDataAsJson(event))
+            );
+            log.info("SSE 메시지 보내기 성공 : {}, event : {}", emitterId.toString(), eventId.getEventName());
+        } catch (IOException | RuntimeException exception) {
+            log.error("SSE 메시지 보내기 실패 : {}, error : {}", exception.getMessage(), exception.getClass());
+            emitter.complete();
+        }
     }
 
     private String extractEventDataAsJson(final Object event) {

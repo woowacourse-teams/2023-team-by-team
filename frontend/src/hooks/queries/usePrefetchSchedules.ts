@@ -1,5 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { fetchSchedules } from '~/apis/schedule';
+import { STALE_TIME } from '~/constants/query';
 
 export const usePrefetchSchedules = async (
   teamPlaceId: number,
@@ -13,6 +14,9 @@ export const usePrefetchSchedules = async (
     await queryClient.prefetchQuery(
       ['schedules', teamPlaceId, year, month],
       () => fetchSchedules(teamPlaceId, year, month + 1),
+      {
+        staleTime: STALE_TIME.SCHEDULES,
+      },
     );
   }
 };

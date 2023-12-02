@@ -10,7 +10,7 @@ export const Backdrop = styled.div`
   left: 0;
 `;
 
-export const Container = styled.div<{ css: CSSProp }>`
+export const Container = styled.div<{ $css: CSSProp }>`
   display: flex;
   position: absolute;
   flex-direction: column;
@@ -28,7 +28,7 @@ export const Container = styled.div<{ css: CSSProp }>`
     0 15px 25px #1b1d1f33,
     0 5px 10px #1b1d1f1f;
 
-  ${({ css }) => css};
+  ${({ $css }) => $css};
 `;
 
 export const Header = styled.div`
@@ -57,7 +57,7 @@ export const ScheduleWrapper = styled.div`
   gap: 10px;
 `;
 
-export const ScheduleBox = styled.div<{ teamPlaceColor: TeamPlaceColor }>`
+export const ScheduleBox = styled.div<{ $teamPlaceColor: TeamPlaceColor }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -66,8 +66,8 @@ export const ScheduleBox = styled.div<{ teamPlaceColor: TeamPlaceColor }>`
   height: 40px;
   column-gap: 10px;
 
-  background-color: ${({ theme, teamPlaceColor }) =>
-    theme.teamColor[teamPlaceColor]};
+  background-color: ${({ theme, $teamPlaceColor }) =>
+    theme.teamColor[$teamPlaceColor]};
   border-radius: 4px;
 
   color: ${({ theme }) => theme.color.WHITE};
@@ -104,7 +104,16 @@ export const modalLocation = (
   calendarWidth: number,
   calendarLeft: number,
   calendarSize: CalendarSize,
+  isMobile: boolean,
 ) => {
+  if (isMobile)
+    return css`
+      top: 50%;
+      left: 50%;
+
+      transform: translate(-50%, -50%);
+    `;
+
   if (calendarSize === 'md')
     return css`
       position: absolute;

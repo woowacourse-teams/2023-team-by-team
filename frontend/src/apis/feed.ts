@@ -1,6 +1,6 @@
 import { http } from '~/apis/http';
 import { THREAD_SIZE } from '~/constants/feed';
-import type { Thread, NoticeThread, ThreadContent } from '~/types/feed';
+import type { Thread, NoticeThread } from '~/types/feed';
 
 interface ThreadsResponse {
   threads: Thread[];

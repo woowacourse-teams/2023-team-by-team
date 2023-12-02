@@ -41,7 +41,7 @@ import org.springframework.web.multipart.MultipartFile;
 import team.teamby.teambyteam.common.AcceptanceTest;
 import team.teamby.teambyteam.common.fixtures.NoticeFixtures;
 import team.teamby.teambyteam.common.fixtures.NoticeImageFixtures;
-import team.teamby.teambyteam.filesystem.FileCloudUploader;
+import team.teamby.teambyteam.filesystem.FileStorageManager;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.notice.application.dto.NoticeImageResponse;
@@ -51,7 +51,7 @@ import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 public class NoticeAcceptanceTest extends AcceptanceTest {
 
     @MockBean
-    private FileCloudUploader fileCloudUploader;
+    private FileStorageManager fileStorageManager;
 
     @SpyBean
     private Clock clock;
@@ -71,7 +71,7 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
             participatedTeamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             participatedMemberTeamPlace = testFixtureBuilder.buildMemberTeamPlace(authedMember, participatedTeamPlace);
             authToken = jwtTokenProvider.generateAccessToken(authedMember.getEmail().getValue());
-            given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class), any(String.class)))
+            given(fileStorageManager.upload(any(MultipartFile.class), any(String.class), any(String.class)))
                     .willReturn("https://s3://seongha-seeik");
         }
 
@@ -253,7 +253,7 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
             participatedTeamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             participatedMemberTeamPlace = testFixtureBuilder.buildMemberTeamPlace(authedMember, participatedTeamPlace);
             authToken = jwtTokenProvider.generateAccessToken(authedMember.getEmail().getValue());
-            given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class), any(String.class)))
+            given(fileStorageManager.upload(any(MultipartFile.class), any(String.class), any(String.class)))
                     .willReturn("https://s3://seongha-seeik");
         }
 

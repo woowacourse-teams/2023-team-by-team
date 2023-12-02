@@ -1,19 +1,32 @@
 import { styled, css } from 'styled-components';
 
-export const Container = styled.div<{ isOpen: boolean }>`
+export const Container = styled.div<{ $isOpen: boolean; $isMobile: boolean }>`
   display: flex;
   position: absolute;
-  bottom: 46px;
-  left: 30px;
 
-  width: calc(100% - 60px);
+  ${({ $isMobile }) => {
+    if ($isMobile) {
+      return css`
+        bottom: 10px;
+        width: 100%;
+      `;
+    }
+
+    return css`
+      bottom: 46px;
+      left: 30px;
+
+      width: calc(100% - 60px);
+    `;
+  }}
+
   height: 136px;
 
   border-radius: 20px 20px 0 0;
   background: linear-gradient(30deg, #bfc3ff, #eaebff);
 
   transition: 0.35s;
-  transform: translateY(${({ isOpen }) => (isOpen ? '-163px' : '0')});
+  transform: translateY(${({ $isOpen }) => ($isOpen ? '-163px' : '0')});
 `;
 
 export const ContentWrapper = styled.div`

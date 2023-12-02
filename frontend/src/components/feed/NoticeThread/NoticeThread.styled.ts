@@ -2,59 +2,65 @@ import { styled, css } from 'styled-components';
 import { noticeThreadBackground } from '~/assets/png';
 import type { NoticeSize } from '~/types/size';
 
-export const Container = styled.div<{ noticeSize: NoticeSize }>`
+export const Container = styled.div<{
+  $noticeSize: NoticeSize;
+  $isMobile: boolean;
+}>`
   position: sticky;
-  top: 0;
+  top: ${({ $isMobile }) => ($isMobile ? '-4px' : 0)};
   left: 0;
   right: 0;
   z-index: ${({ theme }) => theme.zIndex.NOTICE};
 
-  padding-top: 10px;
+  padding-top: ${({ $isMobile }) => ($isMobile ? 0 : '10px')};
 
   background-color: ${({ theme }) => theme.color.GRAY100};
   border-bottom: 2px solid ${({ theme }) => theme.color.PRIMARY200};
 
   transition: 0.3s;
 
-  ${({ noticeSize }) => {
-    if (noticeSize === 'sm')
+  ${({ $noticeSize }) => {
+    if ($noticeSize === 'sm')
       return css`
         height: 80px;
       `;
-    if (noticeSize === 'md')
+    if ($noticeSize === 'md')
       return css`
         height: 140px;
       `;
-    if (noticeSize === 'lg')
+    if ($noticeSize === 'lg')
       return css`
         height: 610px;
       `;
   }}
 `;
 
-export const BackgroundContainer = styled.div<{ noticeSize: NoticeSize }>`
+export const BackgroundContainer = styled.div<{
+  $noticeSize: NoticeSize;
+  $isMobile: boolean;
+}>`
   display: flex;
   justify-content: space-between;
   overflow: hidden;
 
   height: 100%;
 
-  border-radius: 20px 20px 0 0;
+  border-radius: ${({ $isMobile }) => ($isMobile ? 0 : '20px 20px 0 0')};
   background-image: url(${noticeThreadBackground});
   background-size: 100%;
 
   transition: 0.3s;
 
-  ${({ noticeSize }) => {
-    if (noticeSize === 'sm')
+  ${({ $noticeSize }) => {
+    if ($noticeSize === 'sm')
       return css`
         padding: 18px 20px 18px 28px;
       `;
-    if (noticeSize === 'md')
+    if ($noticeSize === 'md')
       return css`
         padding: 18px 20px 18px 28px;
       `;
-    if (noticeSize === 'lg')
+    if ($noticeSize === 'lg')
       return css`
         flex-direction: column;
 
@@ -63,7 +69,7 @@ export const BackgroundContainer = styled.div<{ noticeSize: NoticeSize }>`
   }}
 `;
 
-export const InnerContainer = styled.div<{ noticeSize: NoticeSize }>`
+export const InnerContainer = styled.div<{ $noticeSize: NoticeSize }>`
   display: flex;
   align-items: center;
   position: relative;
@@ -104,7 +110,7 @@ export const AuthorInfo = styled.div`
   height: 16px;
 `;
 
-export const ContentContainer = styled.div<{ noticeSize: NoticeSize }>`
+export const ContentContainer = styled.div<{ $noticeSize: NoticeSize }>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -114,8 +120,8 @@ export const ContentContainer = styled.div<{ noticeSize: NoticeSize }>`
   width: 100%;
   gap: 4px;
 
-  ${({ noticeSize }) => {
-    if (noticeSize === 'lg')
+  ${({ $noticeSize }) => {
+    if ($noticeSize === 'lg')
       return css`
         height: 400px;
       `;

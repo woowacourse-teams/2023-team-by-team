@@ -31,7 +31,7 @@ const PageIndicator = (props: PageIndicatorProps) => {
             key={index}
             type="button"
             onClick={() => onChangePage(index + 1)}
-            selected={index + 1 === currentPage}
+            $selected={index + 1 === currentPage}
             aria-label={`${index + 1}번째 페이지 보기`}
           />
         ))}

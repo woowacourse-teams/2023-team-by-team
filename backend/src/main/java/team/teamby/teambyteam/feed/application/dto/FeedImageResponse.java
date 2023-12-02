@@ -1,6 +1,5 @@
 package team.teamby.teambyteam.feed.application.dto;
 
-import team.teamby.teambyteam.feed.domain.cache.RecentFeedCache;
 import team.teamby.teambyteam.feed.domain.cache.RecentFeedCache.FeedImageCache;
 
 public record FeedImageResponse(

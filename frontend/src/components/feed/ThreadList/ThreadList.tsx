@@ -79,7 +79,7 @@ const ThreadList = (props: ThreadListProps) => {
         threadPages &&
         threadPages.pages[0].threads.length > 0 && (
           <Text size="lg" css={S.lastThreadText}>
-            마지막 스레드 입니다.
+            마지막 채팅 입니다.
           </Text>
         )}
       {threadPages?.pages

@@ -51,4 +51,5 @@ export const ErrorTextImage = styled.img`
 
 export const errorText = css`
   font-size: 24px;
+  white-space: nowrap;
 `;

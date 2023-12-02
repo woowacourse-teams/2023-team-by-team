@@ -10,7 +10,7 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.web.multipart.MultipartFile;
 import team.teamby.teambyteam.common.ServiceTest;
 import team.teamby.teambyteam.feed.domain.FeedRepository;
-import team.teamby.teambyteam.filesystem.FileCloudUploader;
+import team.teamby.teambyteam.filesystem.FileStorageManager;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
@@ -33,14 +33,14 @@ class FeedThreadWithCacheServiceTest extends ServiceTest {
     private FeedRepository feedRepository;
 
     @MockBean
-    private FileCloudUploader fileCloudUploader;
+    private FileStorageManager fileStorageManager;
 
     @Autowired
     private FeedThreadService feedThreadService;
 
     @BeforeEach
     void setup() {
-        given(fileCloudUploader.upload(any(MultipartFile.class), any(String.class), any(String.class)))
+        given(fileStorageManager.upload(any(MultipartFile.class), any(String.class), any(String.class)))
                 .willReturn("https://s3://seongha-seeik");
     }
 

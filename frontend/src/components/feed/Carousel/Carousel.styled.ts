@@ -1,10 +1,10 @@
 import { styled, css } from 'styled-components';
 
-export const Container = styled.div<{ width: string; height: string }>`
+export const Container = styled.div<{ $width: string; $height: string }>`
   position: relative;
 
-  width: ${({ width }) => width};
-  height: ${({ height }) => height};
+  width: ${({ $width }) => $width};
+  height: ${({ $height }) => $height};
 `;
 
 export const SlidesView = styled.div`
@@ -15,12 +15,12 @@ export const SlidesView = styled.div`
   padding: 20px 0;
 `;
 
-export const Slides = styled.div<{ currentPage: number }>`
+export const Slides = styled.div<{ $currentPage: number }>`
   display: flex;
   height: 100%;
 
   transition: 0.4s;
-  transform: ${({ currentPage }) => `translateX(-${currentPage - 1}00%)`};
+  transform: ${({ $currentPage }) => `translateX(-${$currentPage - 1}00%)`};
 `;
 
 const buttonWrapper = css`
@@ -50,9 +50,11 @@ export const closeButton = css`
   height: 40px;
 `;
 
-export const arrowButton = css`
+export const arrowButton = (disabled: boolean) => css`
   width: 90px;
   padding: 0;
+
+  cursor: ${disabled ? 'not-allowed' : 'pointer'};
 
   & svg {
     width: 60px;
@@ -60,6 +62,7 @@ export const arrowButton = css`
   }
 
   & svg > path {
+    opacity: ${disabled ? 0.3 : 1};
     stroke: ${({ theme }) => theme.color.WHITE};
   }
 `;

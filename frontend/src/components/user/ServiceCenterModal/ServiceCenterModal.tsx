@@ -11,6 +11,7 @@ import {
   TEAM_BY_TEAM_REPOSITORY,
   USER_FEEDBACK_URL,
 } from '~/constants/url';
+import { getIsMobile } from '~/utils/getIsMobile';
 
 interface ServiceCenterModalProps {
   onAccountDeleteButtonClick: () => void;
@@ -18,6 +19,7 @@ interface ServiceCenterModalProps {
 const ServiceCenterModal = (props: ServiceCenterModalProps) => {
   const { closeModal } = useModal();
   const { onAccountDeleteButtonClick } = props;
+  const isMobile = getIsMobile();
 
   return (
     <Modal>
@@ -123,7 +125,7 @@ const ServiceCenterModal = (props: ServiceCenterModalProps) => {
                       Q. 탈퇴는 어떻게 하나요?
                     </Text>
                     <S.ContentContainer>
-                      <Text size="sm" as="span">
+                      <Text size={isMobile ? 'xs' : 'sm'} as="span">
                         회원 탈퇴를 진행하시려면 옆 버튼을 눌러주세요.
                       </Text>
                       <Button
@@ -133,7 +135,10 @@ const ServiceCenterModal = (props: ServiceCenterModalProps) => {
                         onClick={onAccountDeleteButtonClick}
                         aria-label="회원탈퇴하기"
                       >
-                        <Text size="sm" css={S.dangerousText}>
+                        <Text
+                          size={isMobile ? 'xs' : 'sm'}
+                          css={S.dangerousText}
+                        >
                           회원 탈퇴
                         </Text>
                       </Button>

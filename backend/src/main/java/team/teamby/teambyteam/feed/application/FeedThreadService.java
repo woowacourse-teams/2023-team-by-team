@@ -29,11 +29,10 @@ import team.teamby.teambyteam.feed.domain.vo.Content;
 import team.teamby.teambyteam.feed.exception.FeedException;
 import team.teamby.teambyteam.feed.exception.FeedException.WritingRequestEmptyException;
 import team.teamby.teambyteam.filesystem.AllowedImageExtension;
-import team.teamby.teambyteam.filesystem.FileCloudUploader;
+import team.teamby.teambyteam.filesystem.FileStorageManager;
 import team.teamby.teambyteam.filesystem.util.FileUtil;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.IdOnly;
-import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
@@ -47,8 +46,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import static team.teamby.teambyteam.feed.application.event.FeedEvent.Status.WRITE;
 
 @Slf4j
 @Service
@@ -76,7 +73,7 @@ public class FeedThreadService {
     private final FeedThreadImageRepository feedThreadImageRepository;
     private final RecentFeedCache feedCache;
 
-    private final FileCloudUploader fileCloudUploader;
+    private final FileStorageManager fileStorageManager;
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
@@ -86,24 +83,24 @@ public class FeedThreadService {
             final Long teamPlaceId
     ) {
         final String content = feedThreadWritingRequest.content();
-        List<MultipartFile> images = feedThreadWritingRequest.images();
+        final List<MultipartFile> images = feedThreadWritingRequest.images();
         validateEmptyRequest(content, images);
         validateImages(images);
 
-        final Content contentVo = new Content(content);
-        final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
-        final FeedThread feedThread = new FeedThread(teamPlaceId, contentVo, member.getId());
-        final FeedThread savedFeedThread = feedRepository.save(feedThread);
+        final Long memberId = memberRepository.findIdByEmail(new Email(memberEmailDto.email()))
+                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()))
+                .id();
 
+        final FeedThread savedFeedThread = feedRepository.save(new FeedThread(teamPlaceId, new Content(content), memberId));
         saveImages(images, savedFeedThread);
-        Long threadId = savedFeedThread.getId();
+
+        final Long threadId = savedFeedThread.getId();
         log.info("스레드 생성 - 생성자 이메일 : {}, 스레드 아이디 : {}", memberEmailDto.email(), threadId);
 
         // TODO : 캐시 고치고 추가
 //        feedCache.addCache(teamPlaceId, FeedCache.from(savedFeedThread));
 
-        applicationEventPublisher.publishEvent(FeedEvent.of(teamPlaceId, savedFeedThread.getId(), WRITE));
+        sendFeedWritingEvent(memberEmailDto, teamPlaceId, memberId, savedFeedThread);
 
         return threadId;
     }
@@ -137,13 +134,26 @@ public class FeedThreadService {
     private void saveImages(final List<MultipartFile> images, final FeedThread savedFeedThread) {
         images.forEach(image -> {
             final String originalFilename = image.getOriginalFilename();
-            final String generatedImageUrl = fileCloudUploader.upload(image, imageDirectory + "/" + UUID.randomUUID(), originalFilename);
+            final String generatedImageUrl = fileStorageManager.upload(image, imageDirectory + "/" + UUID.randomUUID(), originalFilename);
             final ImageUrl imageUrl = new ImageUrl(generatedImageUrl);
             final ImageName imageName = new ImageName(originalFilename);
             final FeedThreadImage feedThreadImage = new FeedThreadImage(imageUrl, imageName);
             feedThreadImage.confirmFeedThread(savedFeedThread);
             feedThreadImageRepository.save(feedThreadImage);
         });
+    }
+
+    private void sendFeedWritingEvent(
+            final MemberEmailDto memberEmailDto,
+            final Long teamPlaceId,
+            final Long memberId,
+            final FeedThread savedFeedThread
+    ) {
+        final MemberTeamPlace threadAuthorInfo = memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(teamPlaceId, memberId)
+                .orElseThrow(() -> new IllegalArgumentException(String.format("멤버-팀플레이스 조회 실패 memberId : %d, teamPlaceId %d", memberId, teamPlaceId)));
+        applicationEventPublisher.publishEvent(new FeedEvent(teamPlaceId,
+                FeedResponse.from(savedFeedThread, threadAuthorInfo, mapToFeedImageResponse(savedFeedThread), memberEmailDto.email())
+        ));
     }
 
     @Transactional(readOnly = true)
@@ -177,7 +187,11 @@ public class FeedThreadService {
                 .toList();
     }
 
-    private List<FeedResponse> getFeedResponsesFromDatasource(Long teamPlaceId, MemberEmailDto memberEmailDto, Integer size) {
+    private List<FeedResponse> getFeedResponsesFromDatasource(
+            final Long teamPlaceId,
+            final MemberEmailDto memberEmailDto,
+            final Integer size
+    ) {
         final Pageable pageSize = getPageableInitSize(size);
         final List<Feed> list = feedRepository.findByTeamPlaceId(teamPlaceId, pageSize);
         return mapFeedResponses(list, memberEmailDto.email(), teamPlaceId);
@@ -212,7 +226,7 @@ public class FeedThreadService {
         return memberTeamPlaceRepository.findAllByTeamPlaceId(teamPlaceId).stream()
                 .collect(Collectors.toMap(
                         MemberTeamPlace::findMemberId,
-                        e -> e
+                        memberTeamPlace -> memberTeamPlace
                 ));
     }
 
@@ -227,7 +241,7 @@ public class FeedThreadService {
     }
 
     private List<FeedImageResponse> mapToFeedImageResponse(final FeedThread feedThread) {
-        final List<FeedThreadImage> images = feedThreadImageRepository.findAllByFeedThread(feedThread);
+        final List<FeedThreadImage> images = feedThread.getImages();
         return images.stream().map(feedThreadImage ->
                         new FeedImageResponse(
                                 feedThreadImage.getId(),

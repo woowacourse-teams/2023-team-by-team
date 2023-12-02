@@ -9,29 +9,42 @@ export const Backdrop = styled.div`
   height: 100%;
 `;
 
-export const Container = styled.div<{ calendarSize: CalendarSize }>`
+export const Container = styled.div<{
+  $calendarSize: CalendarSize;
+  $isMobile: boolean;
+}>`
+  display: flex;
+  flex-direction: column;
   position: fixed;
-  ${({ calendarSize }) => {
-    if (calendarSize === 'md')
+  ${({ $calendarSize, $isMobile }) => {
+    if ($calendarSize === 'md' || $isMobile)
       return css`
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
       `;
 
-    if (calendarSize === 'sm')
+    if ($calendarSize === 'sm')
       return css`
         top: 20%;
         left: 13.5%;
       `;
   }}
-  display: flex;
-  flex-direction: column;
 
-  width: 496px;
-  min-height: 380px;
-  padding: 20px 30px;
+  ${({ $isMobile }) => {
+    if ($isMobile)
+      return css`
+        width: 300px;
+        padding: 10px 26px 20px;
+      `;
 
+    return css`
+      width: 496px;
+      min-height: 380px;
+      padding: 20px 30px;
+    `;
+  }}
+  
   border-radius: 10px;
   box-shadow:
     0 0 1px #1b1d1f33,
@@ -43,7 +56,7 @@ export const Container = styled.div<{ calendarSize: CalendarSize }>`
     display: flex;
     flex-direction: column;
 
-    row-gap: 20px;
+    row-gap: ${({ $isMobile }) => ($isMobile ? '10px' : '20px')};
   }
 `;
 
@@ -77,24 +90,33 @@ export const CheckboxContainer = styled.div`
   column-gap: 8px;
 `;
 
-export const TimeSelectContainer = styled.div`
+export const TimeSelectContainer = styled.div<{ $isMobile: boolean }>`
   display: flex;
-  align-items: center;
 
   width: 100%;
-  height: 40px;
+  height: ${({ $isMobile }) => ($isMobile ? '74px' : '40px')};
 
-  column-gap: 10px;
+  ${({ $isMobile }) => {
+    if ($isMobile)
+      return css`
+        flex-direction: column;
+        gap: 4px;
+      `;
+
+    return css`
+      align-items: center;
+    `;
+  }}
 `;
 
-export const InputWrapper = styled.div`
+export const InputWrapper = styled.div<{ $isMobile: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  width: calc(100% - 100px);
+  width: ${({ $isMobile }) => !$isMobile && 'calc(100% - 100px)'};
 
-  margin-left: auto;
+  margin-left: ${({ $isMobile }) => !$isMobile && 'auto'};
 `;
 
 export const TeamNameContainer = styled.div`

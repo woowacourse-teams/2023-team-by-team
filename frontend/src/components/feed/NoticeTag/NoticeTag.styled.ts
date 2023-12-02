@@ -1,7 +1,9 @@
 import { styled, css } from 'styled-components';
 import type { NoticeTagProps } from './NoticeTag';
 
-export const TagContainer = styled.div<NoticeTagProps>`
+export const TagContainer = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['size', 'css'].includes(prop),
+})<NoticeTagProps>`
   display: flex;
   justify-content: center;
   align-items: center;

@@ -1,7 +1,7 @@
 import { css, styled } from 'styled-components';
 import type { HeaderModalType } from '~/components/common/Header/Header';
 
-export const Header = styled.header`
+export const Header = styled.header<{ $isMobile: boolean }>`
   display: flex;
   justify-content: space-between;
 
@@ -10,12 +10,20 @@ export const Header = styled.header`
   padding: 0 14px;
 
   border-bottom: 2px solid ${({ theme }) => theme.color.GRAY200};
+
+  ${({ $isMobile }) =>
+    $isMobile &&
+    css`
+      height: 110px;
+      flex-wrap: wrap;
+      flex-direction: row-reverse;
+    `}
 `;
 
 export const InnerContainer = styled.div`
   display: flex;
   column-gap: 20px;
-
+  width: 100%;
   & > div {
     display: flex;
     align-items: center;
@@ -85,6 +93,7 @@ export const notificationButton = css`
 
 export const teamPlaceInfoButton = css`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 
@@ -137,4 +146,8 @@ export const teamColorButton = (
   &:hover svg {
     opacity: 1;
   }
+`;
+
+export const explainText = css`
+  font-size: 10px;
 `;

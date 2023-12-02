@@ -1,15 +1,26 @@
 import { styled, css, type CSSProp } from 'styled-components';
 import type { CalendarSize } from '~/types/size';
 
-export const Container = styled.div<{ css: CSSProp }>`
+export const Container = styled.div<{ $css: CSSProp; $isMobile: boolean }>`
   display: flex;
+  position: absolute;
   flex-direction: column;
   z-index: ${({ theme }) => theme.zIndex.MODAL};
   gap: 28px;
 
-  width: 551px;
-  height: 272px;
-  padding: 20px 30px 30px 40px;
+  ${({ $isMobile }) => {
+    if ($isMobile)
+      return css`
+        width: 300px;
+        padding: 10px 10px 20px 26px;
+      `;
+
+    return css`
+      width: 551px;
+      height: 272px;
+      padding: 20px 30px 30px 40px;
+    `;
+  }}
 
   border-radius: 10px;
   background-color: ${({ theme }) => theme.color.WHITE};
@@ -19,7 +30,7 @@ export const Container = styled.div<{ css: CSSProp }>`
     0 15px 25px #1b1d1f33,
     0 5px 10px #1b1d1f1f;
 
-  ${({ css }) => css};
+  ${({ $css }) => $css};
 `;
 
 export const Backdrop = styled.div`
@@ -47,10 +58,21 @@ export const MenuContainer = styled.div`
   justify-content: space-around;
 `;
 
-export const PeriodWrapper = styled.div`
+export const PeriodWrapper = styled.div<{ $isMobile: boolean }>`
   display: flex;
-  align-items: center;
+
   gap: 2px;
+
+  ${({ $isMobile }) => {
+    if ($isMobile)
+      return css`
+        flex-direction: column;
+      `;
+
+    return css`
+      align-items: center;
+    `;
+  }}
 `;
 
 export const teamName = css`
@@ -78,7 +100,7 @@ export const menuIcon = css`
   }
 `;
 
-export const closeButton = css`
+export const closeButton = ($isMobile: boolean) => css`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -86,6 +108,10 @@ export const closeButton = css`
 
   width: 96px;
   height: 42px;
+  ${$isMobile &&
+  css`
+    margin-right: 10px;
+  `}
   padding: 10px 30px;
 
   cursor: pointer;
@@ -98,7 +124,16 @@ export const modalLocation = (
   calendarWidth: number,
   calendarLeft: number,
   calendarSize: CalendarSize,
+  isMobile: boolean,
 ) => {
+  if (isMobile)
+    return css`
+      top: 50%;
+      left: 50%;
+
+      transform: translate(-50%, -50%);
+    `;
+
   if (calendarSize === 'md')
     return css`
       position: absolute;

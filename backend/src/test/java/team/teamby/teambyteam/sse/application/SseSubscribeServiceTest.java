@@ -15,21 +15,16 @@ import team.teamby.teambyteam.common.ServiceTest;
 import team.teamby.teambyteam.common.fixtures.MemberFixtures;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.Member;
-import team.teamby.teambyteam.sse.TestEvent;
 import team.teamby.teambyteam.sse.domain.SseEmitters;
 import team.teamby.teambyteam.sse.domain.TeamPlaceEmitterId;
 import team.teamby.teambyteam.sse.domain.TeamPlaceEmitterRepository;
-import team.teamby.teambyteam.sse.domain.TeamPlaceEventId;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 class SseSubscribeServiceTest extends ServiceTest {
@@ -45,12 +40,12 @@ class SseSubscribeServiceTest extends ServiceTest {
         final SseEmitter sseEmitter = Mockito.mock(SseEmitter.class);
         final TeamPlaceEmitterId teamPlaceEventId = Mockito.mock(TeamPlaceEmitterId.class);
         BDDMockito.given(teamPlaceEmitterRepository.save(any(), any()))
-                .willReturn(new SseEmitters(Map.of(teamPlaceEventId, sseEmitter), teamPlaceEmitterRepository));
+                .willReturn(new SseEmitters(Map.of(teamPlaceEventId, sseEmitter)));
     }
 
     @Test
     @DisplayName("SSE 연결에 성공 후 더미이벤트를 발행시킨다.")
-    void successWithInitialDummyMessage() throws IOException {
+    void successWithInitialDummyMessage() throws IOException, InterruptedException {
         // given
         final Member member = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
         final MemberEmailDto email = new MemberEmailDto(member.getEmailValue());
@@ -58,6 +53,8 @@ class SseSubscribeServiceTest extends ServiceTest {
 
         // when
         final SseEmitter sseEmitter = sseSubscribeService.subscribe(teamPlaceId, email, null);
+
+        Thread.sleep(1000);
 
         // then
         // verify if the SSE is sent
@@ -75,61 +72,6 @@ class SseSubscribeServiceTest extends ServiceTest {
             softly.assertThat(eventOutputs[1]).isEqualTo("event:connect");
             softly.assertThat(eventOutputs[2]).isEqualTo("data:{\"teamPlaceId\":%d,\"memberId\":%d}", teamPlaceId, member.getId());
         });
-    }
-
-    @Test
-    @DisplayName("SSE 연결 수 저장된 케시 이벤트들을 발행한다.")
-    void successWithCachedEvent() throws IOException, InterruptedException {
-        // given
-        final Member member = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
-        final MemberEmailDto email = new MemberEmailDto(member.getEmailValue());
-        final Long teamPlaceId = 1L;
-        final String eventName = "test";
-        final String eventMessage = "message";
-        final TestEvent cachedEvent = new TestEvent(teamPlaceId, eventName, eventMessage);
-
-        final TeamPlaceEventId lastEventId = TeamPlaceEventId.of(teamPlaceId, eventName);
-        Thread.sleep(100);
-        final TeamPlaceEventId cachedEventId = TeamPlaceEventId.of(teamPlaceId, eventName);
-
-        BDDMockito.given(teamPlaceEmitterRepository.findAllEventCacheWithId(teamPlaceId))
-                .willReturn(Map.of(cachedEventId, cachedEvent.getEvent()));
-
-        // when
-
-        final SseEmitter sseEmitter = sseSubscribeService.subscribe(teamPlaceId, email, lastEventId.toString());
-
-        // then
-        // verify if the SSE is sent
-        ArgumentCaptor<SseEmitter.SseEventBuilder> argumentCaptor = ArgumentCaptor.forClass(SseEmitter.SseEventBuilder.class);
-        verify(sseEmitter, times(2)).send(argumentCaptor.capture());
-
-        // verify the content of the SSE
-        final List<SseEmitter.SseEventBuilder> allEvents = argumentCaptor.getAllValues();
-
-        final Set<ResponseBodyEmitter.DataWithMediaType> dummyEventProperties = allEvents.get(0).build();
-        final String dummySse = SsePropertyToString(dummyEventProperties);
-
-        final Set<ResponseBodyEmitter.DataWithMediaType> cachedEventProperties = allEvents.get(1).build();
-        final String cachedSse = SsePropertyToString(cachedEventProperties);
-
-        final String[] dummyResult = dummySse.split("\n");
-        final String[] cachedResult = cachedSse.split("\n");
-
-        Arrays.stream(dummyResult).forEach(System.out::println);
-        System.out.println();
-        Arrays.stream(cachedResult).forEach(System.out::println);
-
-        SoftAssertions.assertSoftly(softly -> {
-            softly.assertThat(allEvents).hasSize(2);
-            softly.assertThat(dummyResult[0]).startsWith("id:" + teamPlaceId + "_connect_");
-            softly.assertThat(dummyResult[1]).isEqualTo("event:connect");
-            softly.assertThat(dummyResult[2]).isEqualTo("data:{\"teamPlaceId\":%d,\"memberId\":%d}", teamPlaceId, member.getId());
-            softly.assertThat(cachedResult[0]).startsWith("id:" + teamPlaceId + "_" + eventName + "_");
-            softly.assertThat(cachedResult[1]).isEqualTo("event:test");
-            softly.assertThat(cachedResult[2]).isEqualTo("data:{\"id\":1,\"data\":\"message\"}");
-        });
-
     }
 
     private String SsePropertyToString(final Set<ResponseBodyEmitter.DataWithMediaType> dummyEventProperties) {

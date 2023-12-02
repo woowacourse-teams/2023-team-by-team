@@ -12,6 +12,7 @@ import TeamBadge from '~/components/team/TeamBadge/TeamBadge';
 import { useToast } from '~/hooks/useToast';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import type { CalendarSize } from '~/types/size';
+import { getIsMobile } from '~/utils/getIsMobile';
 
 interface ScheduleModalProps {
   calendarWidth: number;
@@ -34,6 +35,7 @@ const ScheduleModal = (props: ScheduleModalProps) => {
   const { closeModal } = useModal();
   const { showToast } = useToast();
   const { teamPlaceColor, teamPlaceId, displayName } = useTeamPlace();
+  const isMobile = getIsMobile();
 
   const { scheduleById } = useFetchScheduleById(teamPlaceId, scheduleId);
   const { mutateDeleteSchedule } = useDeleteSchedule(teamPlaceId, scheduleId);
@@ -57,21 +59,25 @@ const ScheduleModal = (props: ScheduleModalProps) => {
     <Modal>
       <S.Backdrop onClick={closeModal} />
       <S.Container
-        css={S.modalLocation(
+        $isMobile={isMobile}
+        $css={S.modalLocation(
           row,
           column,
           level,
           calendarWidth,
           calendarLeft,
           calendarSize,
+          isMobile,
         )}
       >
         <S.Header>
           <S.TeamWrapper>
             <TeamBadge teamPlaceColor={teamPlaceColor} size="lg" />
-            <div title={displayName}>
-              <Text css={S.teamName}>{displayName}</Text>
-            </div>
+            {!isMobile && (
+              <div title={displayName}>
+                <Text css={S.teamName}>{displayName}</Text>
+              </div>
+            )}
           </S.TeamWrapper>
           <S.MenuContainer>
             <Button
@@ -103,7 +109,7 @@ const ScheduleModal = (props: ScheduleModalProps) => {
         <Text size="xxl" weight="bold" css={S.scheduleTitleText}>
           {title}
         </Text>
-        <S.PeriodWrapper>
+        <S.PeriodWrapper $isMobile={isMobile}>
           <time>
             <Text size="lg">{formatDateTime(startDateTime)}</Text>
           </time>
@@ -115,7 +121,7 @@ const ScheduleModal = (props: ScheduleModalProps) => {
         <Button
           type="button"
           variant="primary"
-          css={S.closeButton}
+          css={S.closeButton(isMobile)}
           onClick={closeModal}
         >
           확인

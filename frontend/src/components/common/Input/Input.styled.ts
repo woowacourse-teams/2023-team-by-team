@@ -1,7 +1,9 @@
 import { styled } from 'styled-components';
 import type { InputProps } from './Input';
 
-export const InputWrapper = styled.input<InputProps>`
+export const InputWrapper = styled.input.withConfig({
+  shouldForwardProp: (prop) => !['width', 'height', 'css'].includes(prop),
+})<InputProps>`
   width: ${({ width }) => width};
   height: ${({ height }) => height};
   padding: 6px;

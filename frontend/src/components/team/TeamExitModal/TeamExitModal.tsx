@@ -2,7 +2,7 @@ import Button from '~/components/common/Button/Button';
 import Modal from '~/components/common/Modal/Modal';
 import Text from '~/components/common/Text/Text';
 import Input from '~/components/common/Input/Input';
-import useTeamExitModal from '~/hooks/team/useTeamExitModal';
+import { useTeamExitModal } from '~/hooks/team/useTeamExitModal';
 import { CloseIcon, LogoutIcon } from '~/assets/svg';
 import * as S from './TeamExitModal.styled';
 import { useModal } from '~/hooks/useModal';

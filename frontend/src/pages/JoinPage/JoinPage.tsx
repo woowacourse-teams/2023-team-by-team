@@ -9,10 +9,12 @@ import { useTeamJoin } from '~/hooks/team/useTeamJoin';
 import IntroCardPile from '~/components/landing/IntroCardPile/IntroCardPile';
 import LandingHeader from '~/components/common/LandingHeader/LandingHeader';
 import BackButton from '~/components/common/BackButton/BackButton';
+import { getIsMobile } from '~/utils/getIsMobile';
 
 const JoinPage = () => {
   const ref = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const isMobile = getIsMobile();
   const navigate = useNavigate();
 
   const {
@@ -41,8 +43,8 @@ const JoinPage = () => {
   return (
     <S.Container>
       <LandingHeader href={PATH_NAME.TEAM_SELECT} />
-      <S.MainContainer>
-        <S.InnerContainer ref={ref} isLinkClicked={isClicked}>
+      <S.MainContainer $isMobile={isMobile}>
+        <S.InnerContainer ref={ref} $isLinkClicked={isClicked}>
           <Text weight="semiBold" css={S.titleText}>
             팀 참가하기
           </Text>
@@ -93,7 +95,7 @@ const JoinPage = () => {
           </S.InviteCodeForm>
         </S.InnerContainer>
       </S.MainContainer>
-      <IntroCardPile animation={false} />
+      {!isMobile && <IntroCardPile animation={false} />}
     </S.Container>
   );
 };

@@ -42,7 +42,7 @@ const Thread = (props: ThreadProps) => {
     useThreadHeight(threadRef, contentRef);
 
   return (
-    <S.Container isMe={isMe}>
+    <S.Container $isMe={isMe}>
       {!isMe && !isContinue && (
         <S.ThreadHeader>
           <S.Author>
@@ -53,8 +53,8 @@ const Thread = (props: ThreadProps) => {
           </S.Author>
         </S.ThreadHeader>
       )}
-      <S.BodyContainer isMe={isMe}>
-        <S.ContentContainer isMe={isMe} ref={threadRef} height={resultHeight}>
+      <S.BodyContainer $isMe={isMe}>
+        <S.ContentContainer $isMe={isMe} ref={threadRef} $height={resultHeight}>
           <S.ContentWrapper>
             <div ref={contentRef}>
               <Text css={S.contentField(threadSize, isMe)}>{content}</Text>
@@ -62,8 +62,8 @@ const Thread = (props: ThreadProps) => {
           </S.ContentWrapper>
           {images.length > 0 && (
             <S.ThumbnailListWrapper
-              isMe={isMe}
-              marginBottom={!shouldShowExpandButton}
+              $isMe={isMe}
+              $marginBottom={!shouldShowExpandButton}
             >
               <ThumbnailList
                 mode="view"
