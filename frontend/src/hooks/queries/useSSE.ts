@@ -4,8 +4,8 @@ import { baseUrl } from '~/apis/http';
 import { EventSourcePolyfill } from 'event-source-polyfill';
 import { useToken } from '~/hooks/useToken';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
-import { type ThreadsResponse } from '~/apis/feed';
-import { type Thread } from '~/types/feed';
+import type { ThreadsResponse } from '~/apis/feed';
+import type { Thread } from '~/types/feed';
 
 export const useSSE = () => {
   const queryClient = useQueryClient();
@@ -26,8 +26,8 @@ export const useSSE = () => {
       },
     );
 
-    eventSource.addEventListener('new_thread', (e) => {
-      const newThread = e.data as Thread;
+    eventSource.addEventListener('new_thread', (e: MessageEvent<Thread>) => {
+      const newThread = e.data;
 
       queryClient.setQueryData<ThreadsResponse>(['threadData'], (old) => {
         if (old) {
