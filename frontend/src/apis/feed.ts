@@ -2,7 +2,7 @@ import { http } from '~/apis/http';
 import { THREAD_SIZE } from '~/constants/feed';
 import type { Thread, NoticeThread } from '~/types/feed';
 
-interface ThreadsResponse {
+export interface ThreadsResponse {
   threads: Thread[];
 }
 
