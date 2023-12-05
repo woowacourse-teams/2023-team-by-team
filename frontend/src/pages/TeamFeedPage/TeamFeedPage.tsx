@@ -14,7 +14,6 @@ import * as S from './TeamFeedPage.styled';
 import { useModal } from '~/hooks/useModal';
 import { useState } from 'react';
 import type { ThreadImage } from '~/types/feed';
-import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { getIsMobile } from '~/utils/getIsMobile';
 
 interface TeamFeedPageProps {
