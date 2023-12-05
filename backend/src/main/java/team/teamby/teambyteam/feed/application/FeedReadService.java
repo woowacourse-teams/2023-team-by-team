@@ -35,7 +35,7 @@ public class FeedReadService {
     private static final String SORT_CRITERIA = "id";
     private static final Sort.Direction SORT_DIRECTION = Sort.Direction.DESC;
     private static final int FIRST_PAGE = 0;
-    public static final String AUTHOR_NAME_SCHEDULE = "schedule";
+    public static final String AUTHOR_NAME_NOTIFICATION = "notification";
     private static final int IMAGE_EXPIRATION_DATE = 90;
 
     private final Clock clock;
@@ -99,7 +99,7 @@ public class FeedReadService {
             return FeedResponse.from(feed, author, mapToFeedImageResponse((FeedThread) feed), loginMemberEmail);
         }
         if (FeedType.NOTIFICATION == feed.getType()) {
-            return FeedResponse.from(feed, AUTHOR_NAME_SCHEDULE, BLANK_PROFILE_IMAGE_URL);
+            return FeedResponse.from(feed, AUTHOR_NAME_NOTIFICATION, BLANK_PROFILE_IMAGE_URL);
         }
         throw new IllegalArgumentException("지원하지 않는 타입입니다.");
     }
