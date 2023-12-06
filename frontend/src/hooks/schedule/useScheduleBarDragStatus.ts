@@ -3,7 +3,7 @@ import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useToast } from '~/hooks/useToast';
 import { useModifySchedule } from '~/hooks/queries/useModifySchedule';
 import type { MouseEvent } from 'react';
-import type { Schedule } from '~/types/schedule';
+import type { Schedule, YYYYMMDDHHMM } from '~/types/schedule';
 
 interface DragStatus {
   isDragging: boolean;
@@ -51,8 +51,8 @@ export const useScheduleDragStatus = () => {
 
   const handleMouseUp = (
     title: string,
-    startDateTime: Schedule['startDateTime'],
-    endDateTime: Schedule['endDateTime'],
+    startDateTime: YYYYMMDDHHMM,
+    endDateTime: YYYYMMDDHHMM,
     shouldUpdate: boolean,
   ) => {
     if (!dragStatus.isDragging) {

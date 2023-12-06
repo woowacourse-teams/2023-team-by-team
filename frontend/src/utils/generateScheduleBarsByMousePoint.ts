@@ -1,6 +1,6 @@
 import { generateScheduleBars } from '~/utils/generateScheduleBars';
 import { CALENDAR, ONE_DAY } from '~/constants/calendar';
-import type { Schedule } from '~/types/schedule';
+import type { Schedule, YYYYMMDDHHMM } from '~/types/schedule';
 import type { CalendarSize } from '~/types/size';
 
 interface GenerateScheduleBarsByMousePointProps {
@@ -32,8 +32,8 @@ interface GenerateScheduleBarsByMousePointProps {
  *
  * @returns {Object}
  * @property {GeneratedScheduleBar[]} scheduleBars - 생성된 스케줄 바들을 의미합니다.
- * @property {Schedule['startDateTime']} startDateTime - 상대좌표를 고려하여 새롭게 반영된 시작 날짜를 의미합니다.
- * @property {Schedule['endDateTime']} endDateTime - 상대좌표를 고려하여 새롭게 반영된 끝 날짜를 의미합니다.
+ * @property {YYYYMMDDHHMM} startDateTime - 상대좌표를 고려하여 새롭게 반영된 시작 날짜를 의미합니다.
+ * @property {YYYYMMDDHHMM} endDateTime - 상대좌표를 고려하여 새롭게 반영된 끝 날짜를 의미합니다.
  */
 export const generateScheduleBarsByMousePoint = (
   params: GenerateScheduleBarsByMousePointProps,
@@ -112,15 +112,12 @@ const getCalendarDateDifferenceByMousePoint = (
  * 《changeDateTimeByDays》
  * YYYY-MM-DD 형식의 날짜와 함께 변경되어야 하는 날의 수가 주어지면, 이를 반영하여 똑같이 YYYY-MM-DD 형식으로 변경된 날짜를 반환합니다.
  *
- * @param {Schedule['startDateTime']} dateTime - 변경을 진행할 YYYY-MM-DD 형식의 날짜 정보입니다.
+ * @param {YYYYMMDDHHMM} dateTime - 변경을 진행할 YYYY-MM-DD 형식의 날짜 정보입니다.
  * @param {number} days - 입력으로 들어가는 날짜 정보의 날짜를 얼마나 변경할 것인지를 의미합니다. 이 값은 정수여야 합니다.
  *
- * @returns {Schedule['startDateTime']} changedDateTime - 변경이 반영된 YYYY-MM-DD 형식의 날짜 정보입니다.
+ * @returns {YYYYMMDDHHMM} changedDateTime - 변경이 반영된 YYYY-MM-DD 형식의 날짜 정보입니다.
  */
-const changeDateTimeByDays = (
-  dateTime: Schedule['startDateTime'],
-  days: number,
-) => {
+const changeDateTimeByDays = (dateTime: YYYYMMDDHHMM, days: number) => {
   const changedDate = new Date(Number(new Date(dateTime)) + ONE_DAY * days);
 
   const year = String(changedDate.getFullYear()).padStart(4, '0');
@@ -129,7 +126,7 @@ const changeDateTimeByDays = (
   const time = dateTime.split(' ')[1];
   const [minute, second] = time.split(':');
 
-  const changedDateTime: Schedule['startDateTime'] = `${year}-${month}-${day} ${minute}:${second}`;
+  const changedDateTime: YYYYMMDDHHMM = `${year}-${month}-${day} ${minute}:${second}`;
 
   return changedDateTime;
 };

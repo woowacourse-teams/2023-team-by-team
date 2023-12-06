@@ -1,7 +1,7 @@
 import * as S from './CalendarDragScreen.styled';
 import { useRef } from 'react';
 import FakeScheduleBarsScreen from '~/components/team_calendar/FakeScheduleBarsScreen/FakeScheduleBarsScreen';
-import type { Schedule } from '~/types/schedule';
+import type { Schedule, YYYYMMDDHHMM } from '~/types/schedule';
 import type { CalendarSize } from '~/types/size';
 import { useCalendarDragScreen } from '~/hooks/schedule/useCalendarDragScreen';
 
@@ -16,8 +16,8 @@ interface CalendarDragScreenProps {
   schedule: Schedule;
   onMouseUp: (
     title: string,
-    startDateTime: Schedule['startDateTime'],
-    endDateTime: Schedule['endDateTime'],
+    startDateTime: YYYYMMDDHHMM,
+    endDateTime: YYYYMMDDHHMM,
     shouldUpdate: boolean,
   ) => void;
 }

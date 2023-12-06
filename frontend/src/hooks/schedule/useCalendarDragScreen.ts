@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { generateScheduleBarsByMousePoint } from '~/utils/generateScheduleBarsByMousePoint';
 import type { RefObject } from 'react';
-import type { Schedule } from '~/types/schedule';
+import type { Schedule, YYYYMMDDHHMM } from '~/types/schedule';
 import type { CalendarSize } from '~/types/size';
 
 interface UseCalendarDragScreenProps {
@@ -10,8 +10,8 @@ interface UseCalendarDragScreenProps {
   calendarSize: CalendarSize;
   onMouseUp: (
     title: string,
-    startDateTime: Schedule['startDateTime'],
-    endDateTime: Schedule['endDateTime'],
+    startDateTime: YYYYMMDDHHMM,
+    endDateTime: YYYYMMDDHHMM,
     shouldUpdate: boolean,
   ) => void;
   initX: number;

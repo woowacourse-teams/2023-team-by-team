@@ -1,5 +1,9 @@
 import { generateScheduleBarsByMousePoint } from '~/utils/generateScheduleBarsByMousePoint';
-import type { GeneratedScheduleBar, Schedule } from '~/types/schedule';
+import type {
+  GeneratedScheduleBar,
+  Schedule,
+  YYYYMMDDHHMM,
+} from '~/types/schedule';
 
 const removeIdFromScheduleBars = (scheduleBars: GeneratedScheduleBar[]) => {
   /* eslint-disable-next-line */
@@ -22,8 +26,8 @@ const defaultParams = {
 type GeneratedScheduleBarWithoutId = Omit<GeneratedScheduleBar, 'id'>;
 
 interface ResultValue {
-  startDateTime: Schedule['startDateTime'];
-  endDateTime: Schedule['endDateTime'];
+  startDateTime: YYYYMMDDHHMM;
+  endDateTime: YYYYMMDDHHMM;
   scheduleBars: GeneratedScheduleBarWithoutId[];
 }
 
