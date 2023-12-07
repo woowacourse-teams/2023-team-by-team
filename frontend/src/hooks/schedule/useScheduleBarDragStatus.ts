@@ -77,9 +77,15 @@ export const useScheduleDragStatus = () => {
       {
         onSuccess: () => {
           showToast('success', '일정이 수정되었습니다.');
+
+          setDragStatus((prev) => ({
+            ...prev,
+            schedule: emptySchedule,
+          }));
         },
         onError: (error) => {
           const response = error as Response;
+
           if (response.status === 500)
             showToast('error', '일정 제목이 최대 글자(250자)를 초과했습니다.');
         },
