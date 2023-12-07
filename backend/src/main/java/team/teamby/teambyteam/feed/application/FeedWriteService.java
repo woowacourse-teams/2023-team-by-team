@@ -133,7 +133,7 @@ public class FeedWriteService {
         return images.stream().map(feedThreadImage ->
                         new FeedImageResponse(
                                 feedThreadImage.getId(),
-                                false,
+                                feedThreadImage.isExpired(),
                                 feedThreadImage.getImageName().getValue(),
                                 feedThreadImage.getImageUrl().getValue()))
                 .toList();

@@ -19,8 +19,6 @@ import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 
-import java.time.Clock;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -36,9 +34,6 @@ public class FeedReadService {
     private static final Sort.Direction SORT_DIRECTION = Sort.Direction.DESC;
     private static final int FIRST_PAGE = 0;
     public static final String AUTHOR_NAME_NOTIFICATION = "notification";
-    private static final int IMAGE_EXPIRATION_DATE = 90;
-
-    private final Clock clock;
 
     private final FeedRepository feedRepository;
     private final MemberTeamPlaceRepository memberTeamPlaceRepository;
@@ -109,13 +104,9 @@ public class FeedReadService {
         return images.stream().map(feedThreadImage ->
                         new FeedImageResponse(
                                 feedThreadImage.getId(),
-                                isExpired(feedThreadImage.getCreatedAt()),
+                                feedThreadImage.isExpired(),
                                 feedThreadImage.getImageName().getValue(),
                                 feedThreadImage.getImageUrl().getValue()))
                 .toList();
-    }
-
-    private boolean isExpired(final LocalDateTime createdAt) {
-        return createdAt.plusDays(IMAGE_EXPIRATION_DATE).isBefore(LocalDateTime.now(clock));
     }
 }

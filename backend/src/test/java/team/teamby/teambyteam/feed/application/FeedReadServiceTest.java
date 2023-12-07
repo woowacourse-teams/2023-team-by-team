@@ -4,6 +4,7 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import team.teamby.teambyteam.common.ServiceTest;
@@ -14,6 +15,9 @@ import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
 import team.teamby.teambyteam.feed.domain.Feed;
 import team.teamby.teambyteam.feed.domain.FeedThread;
 import team.teamby.teambyteam.feed.domain.FeedType;
+import team.teamby.teambyteam.feed.domain.image.FeedThreadImage;
+import team.teamby.teambyteam.feed.domain.image.vo.ImageName;
+import team.teamby.teambyteam.feed.domain.image.vo.ImageUrl;
 import team.teamby.teambyteam.feed.domain.notification.schedulenotification.ScheduleNotification;
 import team.teamby.teambyteam.feed.domain.vo.Content;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
@@ -45,9 +49,6 @@ class FeedReadServiceTest extends ServiceTest {
 
     @Autowired
     private FeedReadService feedReadService;
-
-    @SpyBean
-    private Clock clock;
 
     @Nested
     @DisplayName("피드의 스레드 조회시")
@@ -117,12 +118,12 @@ class FeedReadServiceTest extends ServiceTest {
             final MemberEmailDto memberEmailDto = new MemberEmailDto(member.getEmailValue());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(member, teamPlace);
+            final FeedThreadImage EXPIRED_IMAGE = BDDMockito.spy(new FeedThreadImage(new ImageUrl("expired.com"), new ImageName("expiredImageName")));
+            BDDMockito.given(EXPIRED_IMAGE.isExpired())
+                    .willReturn(true);
 
             final Feed feed1 = testFixtureBuilder.buildFeed(FeedThreadFixtures.CONTENT_AND_IMAGE(teamPlace.getId(), member.getId()));
-            testFixtureBuilder.buildFeedThreadFeedThreadImage((FeedThread) feed1, FeedThreadImageFixtures.A_FEED_THREAD_IMAGE);
-
-            final Instant expiredDate = LocalDateTime.now().plusDays(FeedThreadImageFixtures.IMAGE_EXPIRATION_DATE).plusNanos(1).toInstant(ZoneOffset.systemDefault().getRules().getOffset(LocalDateTime.now()));
-            given(clock.instant()).willReturn(expiredDate);
+            testFixtureBuilder.buildFeedThreadFeedThreadImage((FeedThread) feed1, EXPIRED_IMAGE);
 
             final int size = 10;
 
@@ -136,36 +137,6 @@ class FeedReadServiceTest extends ServiceTest {
                 softly.assertThat(contentAndImage.content()).isEqualTo(feed1.getContent().getValue());
                 softly.assertThat(contentAndImage.images()).isNotEmpty();
                 softly.assertThat(contentAndImage.images().get(0).isExpired()).isTrue();
-            });
-        }
-
-        @Test
-        @DisplayName("이미지는 90일이 지나지 않으면 만료되지 않는다.")
-        void imageNotExpireBefore90Days() {
-            // given
-            final Member member = testFixtureBuilder.buildMember(PHILIP());
-            final MemberEmailDto memberEmailDto = new MemberEmailDto(member.getEmailValue());
-            final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
-            testFixtureBuilder.buildMemberTeamPlace(member, teamPlace);
-
-            final Feed feed1 = testFixtureBuilder.buildFeed(FeedThreadFixtures.CONTENT_AND_IMAGE(teamPlace.getId(), member.getId()));
-            testFixtureBuilder.buildFeedThreadFeedThreadImage((FeedThread) feed1, FeedThreadImageFixtures.A_FEED_THREAD_IMAGE);
-
-            final Instant expiredDate = LocalDateTime.now().plusNanos(1).toInstant(ZoneOffset.systemDefault().getRules().getOffset(LocalDateTime.now()));
-            given(clock.instant()).willReturn(expiredDate);
-
-            final int size = 10;
-
-            // when
-            final FeedsResponse feedsResponse = feedReadService.firstRead(teamPlace.getId(), memberEmailDto, size);
-            final FeedResponse contentAndImage = feedsResponse.threads().get(0);
-
-            //then
-            SoftAssertions.assertSoftly(softly -> {
-                softly.assertThat(contentAndImage.id()).isEqualTo(1);
-                softly.assertThat(contentAndImage.content()).isEqualTo(feed1.getContent().getValue());
-                softly.assertThat(contentAndImage.images()).isNotEmpty();
-                softly.assertThat(contentAndImage.images().get(0).isExpired()).isFalse();
             });
         }
 
