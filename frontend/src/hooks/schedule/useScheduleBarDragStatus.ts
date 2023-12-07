@@ -3,15 +3,7 @@ import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useToast } from '~/hooks/useToast';
 import { useModifySchedule } from '~/hooks/queries/useModifySchedule';
 import type { MouseEvent } from 'react';
-import type { Schedule, YYYYMMDDHHMM } from '~/types/schedule';
-
-interface DragStatus {
-  isDragging: boolean;
-  level: number;
-  schedule: Schedule;
-  initX: number;
-  initY: number;
-}
+import type { Schedule, YYYYMMDDHHMM, DragStatus } from '~/types/schedule';
 
 const emptySchedule = {
   id: 0,

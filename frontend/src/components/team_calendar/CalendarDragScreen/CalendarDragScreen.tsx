@@ -1,19 +1,15 @@
 import * as S from './CalendarDragScreen.styled';
 import { useRef } from 'react';
 import FakeScheduleBarsScreen from '~/components/team_calendar/FakeScheduleBarsScreen/FakeScheduleBarsScreen';
-import type { Schedule, YYYYMMDDHHMM } from '~/types/schedule';
+import type { YYYYMMDDHHMM, DragStatus } from '~/types/schedule';
 import type { CalendarSize } from '~/types/size';
 import { useCalendarDragScreen } from '~/hooks/schedule/useCalendarDragScreen';
 
 interface CalendarDragScreenProps {
-  visible: boolean;
-  initX: number;
-  initY: number;
   calendarSize: CalendarSize;
   year: number;
   month: number;
-  level: number;
-  schedule: Schedule;
+  dragStatus: DragStatus;
   onMouseUp: (
     title: string,
     startDateTime: YYYYMMDDHHMM,
@@ -23,20 +19,11 @@ interface CalendarDragScreenProps {
 }
 
 const CalendarDragScreen = (props: CalendarDragScreenProps) => {
-  const {
-    visible,
-    initX,
-    initY,
-    calendarSize,
-    year,
-    month,
-    level,
-    schedule,
-    onMouseUp,
-  } = props;
+  const { calendarSize, year, month, dragStatus, onMouseUp } = props;
+  const { isDragging, level, schedule, initX, initY } = dragStatus;
   const calendarRef = useRef<HTMLDivElement>(null);
   const { scheduleBars, relativeX, relativeY } = useCalendarDragScreen({
-    visible,
+    isDragging,
     initX,
     initY,
     calendarRef,
@@ -49,7 +36,7 @@ const CalendarDragScreen = (props: CalendarDragScreenProps) => {
   });
 
   return (
-    <S.Container $visible={visible} ref={calendarRef}>
+    <S.Container $isDragging={isDragging} ref={calendarRef}>
       <FakeScheduleBarsScreen mode="indicator" scheduleBars={scheduleBars} />
       <FakeScheduleBarsScreen
         mode="schedule"

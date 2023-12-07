@@ -50,3 +50,11 @@ export interface GeneratedScheduleBar {
   calendarSize?: CalendarSize;
   mode?: 'normal' | 'no-interaction' | 'indicator';
 }
+
+export interface DragStatus {
+  isDragging: boolean;
+  level: number;
+  schedule: Schedule;
+  initX: number;
+  initY: number;
+}

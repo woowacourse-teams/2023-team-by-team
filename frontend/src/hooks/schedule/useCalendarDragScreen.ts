@@ -5,7 +5,7 @@ import type { Schedule, YYYYMMDDHHMM } from '~/types/schedule';
 import type { CalendarSize } from '~/types/size';
 
 interface UseCalendarDragScreenProps {
-  visible: boolean;
+  isDragging: boolean;
   calendarRef: RefObject<HTMLDivElement>;
   calendarSize: CalendarSize;
   onMouseUp: (
@@ -31,7 +31,7 @@ interface CalendarPointInfos {
 
 export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
   const {
-    visible,
+    isDragging,
     calendarRef,
     calendarSize,
     initX,
@@ -52,7 +52,7 @@ export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
   const { relativeX, relativeY, calendarWidth, calendarHeight } =
     calendarPointInfos;
 
-  const scheduleBarsInfo = visible
+  const scheduleBarsInfo = isDragging
     ? generateScheduleBarsByMousePoint({
         schedule,
         year,
@@ -79,7 +79,7 @@ export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
 
   const handleMouseMove = useCallback(
     (e: globalThis.MouseEvent) => {
-      if (!visible) {
+      if (!isDragging) {
         return;
       }
 
@@ -91,11 +91,11 @@ export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
         relativeY: clientY - initY,
       }));
     },
-    [initX, initY, visible],
+    [initX, initY, isDragging],
   );
 
   const handleMouseUp = useCallback(() => {
-    if (!visible || !scheduleBarsInfo) {
+    if (!isDragging || !scheduleBarsInfo) {
       return;
     }
 
@@ -110,7 +110,7 @@ export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
       relativeX: 0,
       relativeY: 0,
     }));
-  }, [onMouseUp, schedule, scheduleBarsInfo, visible]);
+  }, [onMouseUp, schedule, scheduleBarsInfo, isDragging]);
 
   useEffect(() => {
     const calendarElement = calendarRef.current;
