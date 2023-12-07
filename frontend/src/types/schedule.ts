@@ -54,7 +54,7 @@ export interface GeneratedScheduleBar {
 export interface DragStatus {
   isDragging: boolean;
   level: number;
-  schedule: Schedule;
+  schedule: Schedule | null;
   initX: number;
   initY: number;
 }

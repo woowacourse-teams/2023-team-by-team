@@ -19,7 +19,7 @@ interface UseCalendarDragScreenProps {
   year: number;
   month: number;
   level: number;
-  schedule: Schedule;
+  schedule: Schedule | null;
 }
 
 interface CalendarPointInfos {
@@ -52,20 +52,20 @@ export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
   const { relativeX, relativeY, calendarWidth, calendarHeight } =
     calendarPointInfos;
 
-  const scheduleBarsInfo = isDragging
-    ? generateScheduleBarsByMousePoint({
-        schedule,
-        year,
-        month,
-        relativeX,
-        relativeY,
-        calendarWidth,
-        calendarHeight,
-        level,
-        calendarSize,
-      })
-    : null;
-
+  const scheduleBarsInfo =
+    schedule === null
+      ? null
+      : generateScheduleBarsByMousePoint({
+          schedule,
+          year,
+          month,
+          relativeX,
+          relativeY,
+          calendarWidth,
+          calendarHeight,
+          level,
+          calendarSize,
+        });
   const getProcessedRelativePoint = () => {
     const processedRelativeX =
       ((relativeX + calendarWidth * (15 / 14)) % (calendarWidth / 7)) -
@@ -95,7 +95,7 @@ export const useCalendarDragScreen = (props: UseCalendarDragScreenProps) => {
   );
 
   const handleMouseUp = useCallback(() => {
-    if (!isDragging || !scheduleBarsInfo) {
+    if (!isDragging || !scheduleBarsInfo || !schedule) {
       return;
     }
 

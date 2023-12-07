@@ -5,24 +5,17 @@ import { useModifySchedule } from '~/hooks/queries/useModifySchedule';
 import type { MouseEvent } from 'react';
 import type { Schedule, YYYYMMDDHHMM, DragStatus } from '~/types/schedule';
 
-const emptySchedule = {
-  id: 0,
-  title: '',
-  startDateTime: '2000-01-01 00:00',
-  endDateTime: '2000-01-01 00:10',
-} as const;
-
 export const useScheduleDragStatus = () => {
   const [dragStatus, setDragStatus] = useState<DragStatus>({
     isDragging: false,
     level: 0,
-    schedule: emptySchedule,
+    schedule: null,
     initX: 0,
     initY: 0,
   });
   const { showToast } = useToast();
   const { teamPlaceId } = useTeamPlace();
-  const scheduleId = dragStatus.schedule.id;
+  const scheduleId = dragStatus.schedule === null ? 0 : dragStatus.schedule.id;
   const { mutateModifySchedule } = useModifySchedule(teamPlaceId, scheduleId);
 
   const handleDragStart = (
@@ -72,7 +65,7 @@ export const useScheduleDragStatus = () => {
 
           setDragStatus((prev) => ({
             ...prev,
-            schedule: emptySchedule,
+            schedule: null,
           }));
         },
         onError: (error) => {
