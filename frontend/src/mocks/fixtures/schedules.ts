@@ -73,6 +73,42 @@ export const schedules: Schedule[] = [
     startDateTime: '2023-09-30 05:00',
     endDateTime: '2023-10-02 05:00',
   },
+  {
+    id: 12,
+    title: '이전 달 일정',
+    startDateTime: '2023-11-27 10:00',
+    endDateTime: '2023-11-30 18:00',
+  },
+  {
+    id: 13,
+    title: '이번 달과 이전 달에 겹친 일정',
+    startDateTime: '2023-11-29 10:00',
+    endDateTime: '2023-12-01 18:00',
+  },
+  {
+    id: 14,
+    title: '이번 달 일정',
+    startDateTime: '2023-12-12 10:00',
+    endDateTime: '2023-12-14 18:00',
+  },
+  {
+    id: 15,
+    title: '이번 달과 다음 달에 걸친 일정',
+    startDateTime: '2023-12-29 10:00',
+    endDateTime: '2024-01-01 18:00',
+  },
+  {
+    id: 16,
+    title: '다음 달 일정',
+    startDateTime: '2024-01-01 10:00',
+    endDateTime: '2024-01-03 18:00',
+  },
+  {
+    id: 17,
+    title: '다음 달 일정 2',
+    startDateTime: '2024-01-02 10:00',
+    endDateTime: '2024-01-15 18:00',
+  },
 ];
 
 export const mySchedules: ScheduleWithTeamPlaceId[] = [
