@@ -24,16 +24,35 @@ export const calendarHandlers = [
     `/api/team-place/:teamPlaceId/calendar/schedules`,
     (req, res, ctx) => {
       const teamPlaceId = Number(req.params.teamPlaceId);
+      const year = Number(req.url.searchParams.get('year'));
+      const month = Number(req.url.searchParams.get('month'));
+
       const index = teamPlaces.findIndex(
         (teamPlace) => teamPlace.id === teamPlaceId,
       );
 
       if (index === -1) return res(ctx.status(403));
 
+      const searchedSchedules = schedules.filter(
+        ({ startDateTime, endDateTime }) => {
+          const isScheduleInRange = [startDateTime, endDateTime].some(
+            (dateTime) => {
+              const [currentYear, currentMonth] = dateTime
+                .split('-')
+                .map(Number);
+
+              return currentYear === year && currentMonth === month;
+            },
+          );
+
+          return isScheduleInRange;
+        },
+      );
+
       return res(
         ctx.status(200),
         ctx.json({
-          schedules,
+          schedules: searchedSchedules,
         }),
       );
     },
