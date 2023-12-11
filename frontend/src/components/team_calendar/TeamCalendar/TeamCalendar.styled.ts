@@ -17,6 +17,10 @@ export const CalendarHeader = styled.div`
   justify-content: space-between;
 `;
 
+export const CalendarGrid = styled.div`
+  position: relative;
+`;
+
 export const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
