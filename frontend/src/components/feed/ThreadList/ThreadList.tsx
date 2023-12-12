@@ -57,6 +57,14 @@ const ThreadList = (props: ThreadListProps) => {
   }, [threadPages?.pages.length]);
 
   useEffect(() => {
+    if (!threadEndRef.current) {
+      return;
+    }
+
+    threadEndRef.current.scrollIntoView();
+  }, [teamPlaceId]);
+
+  useEffect(() => {
     if (threadPages?.pages[0].threads.length !== threadPagesRef.current) {
       threadPagesRef.current = threadPages?.pages[0].threads.length ?? 0;
     } else {
