@@ -87,7 +87,7 @@ public class TeamCalendarScheduleService {
     }
 
     @Transactional(readOnly = true)
-    public SchedulesResponse findScheduleInPeriod(final Long teamPlaceId, final int targetYear, final int targetMonth) {
+    public SchedulesResponse findScheduleInMonth(final Long teamPlaceId, final int targetYear, final int targetMonth) {
         checkTeamPlaceExist(teamPlaceId);
 
         final CalendarPeriod period = CalendarPeriod.of(targetYear, targetMonth);
@@ -98,7 +98,7 @@ public class TeamCalendarScheduleService {
     }
 
     @Transactional(readOnly = true)
-    public SchedulesResponse findScheduleInPeriod(
+    public SchedulesResponse findScheduleInDay(
             final Long teamPlaceId,
             final int targetYear,
             final int targetMonth,
