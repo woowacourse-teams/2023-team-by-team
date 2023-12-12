@@ -26,8 +26,8 @@ export const useSSE = () => {
       },
     );
 
-    eventSource.addEventListener('new_thread', (e: MessageEvent<Thread>) => {
-      const newThread = e.data;
+    eventSource.addEventListener('new_thread', (e) => {
+      const newThread = JSON.parse(e.data);
 
       queryClient.setQueryData<InfiniteData<ThreadsResponse>>(
         ['threadData', teamPlaceId],
