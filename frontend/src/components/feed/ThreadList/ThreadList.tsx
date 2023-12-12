@@ -32,6 +32,7 @@ const ThreadList = (props: ThreadListProps) => {
 
   const threadEndRef = useRef<HTMLDivElement>(null);
   const threadPagesRef = useRef<number>(0);
+  const firstPagesRef = useRef<number>(0);
   const observeRef = useRef<HTMLDivElement>(null);
   const [scrollHeight, setScrollHeight] = useState(0);
 
@@ -56,8 +57,8 @@ const ThreadList = (props: ThreadListProps) => {
   }, [threadPages?.pages.length]);
 
   useEffect(() => {
-    if (threadPages?.pages.length !== threadPagesRef.current) {
-      threadPagesRef.current = threadPages?.pages.length ?? 0;
+    if (threadPages?.pages[0].threads.length !== threadPagesRef.current) {
+      threadPagesRef.current = threadPages?.pages[0].threads.length ?? 0;
     } else {
       if (!threadEndRef.current) {
         return;
