@@ -39,12 +39,6 @@ export const useSSE = () => {
           }
         },
       );
-
-      const newList = queryClient.getQueryData<ThreadsResponse>([
-        'threadData',
-        teamPlaceId,
-      ]);
-      console.log(newList);
     });
 
     return () => {
