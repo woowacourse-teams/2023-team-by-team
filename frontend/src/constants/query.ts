@@ -11,7 +11,7 @@ export const STALE_TIME = {
 
   TEAM_LINKS: 1000 * 60,
 
-  TEAM_FEED: 1000 * 30,
+  TEAM_FEED: 1000 * 60 * 5,
 
   ICALENDAR_URL: Infinity,
 };

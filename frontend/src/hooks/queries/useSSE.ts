@@ -29,11 +29,20 @@ export const useSSE = () => {
     eventSource.addEventListener('new_thread', (e: MessageEvent<Thread>) => {
       const newThread = e.data;
 
-      queryClient.setQueryData<ThreadsResponse>(['threadData'], (old) => {
-        if (old) {
-          return { threads: [...old.threads, newThread] };
-        }
-      });
+      queryClient.setQueryData<ThreadsResponse>(
+        ['threadData', teamPlaceId],
+        (old) => {
+          if (old) {
+            return { threads: [...old.threads, newThread] };
+          }
+        },
+      );
+
+      const newList = queryClient.getQueryData<ThreadsResponse>([
+        'threadData',
+        teamPlaceId,
+      ]);
+      console.log(newList);
     });
 
     return () => {
