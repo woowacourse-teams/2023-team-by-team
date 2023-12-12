@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
+import { type InfiniteData, useQueryClient } from '@tanstack/react-query';
 import { baseUrl } from '~/apis/http';
 import { EventSourcePolyfill } from 'event-source-polyfill';
 import { useToken } from '~/hooks/useToken';
@@ -29,11 +29,13 @@ export const useSSE = () => {
     eventSource.addEventListener('new_thread', (e: MessageEvent<Thread>) => {
       const newThread = e.data;
 
-      queryClient.setQueryData<ThreadsResponse>(
+      queryClient.setQueryData<InfiniteData<ThreadsResponse>>(
         ['threadData', teamPlaceId],
         (old) => {
           if (old) {
-            return { threads: [...old.threads, newThread] };
+            old.pages[0].threads = [newThread, ...old.pages[0].threads];
+
+            return old;
           }
         },
       );
