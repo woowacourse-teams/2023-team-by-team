@@ -14,6 +14,7 @@ import team.teamby.teambyteam.schedule.domain.Schedule;
 import team.teamby.teambyteam.schedule.domain.ScheduleRepository;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -63,6 +64,31 @@ public class MyCalendarScheduleService {
         final CalendarPeriod dailyPeriod = CalendarPeriod.of(targetYear, targetMonth, targetDay);
         final List<Schedule> dailySchedules = scheduleRepository.findAllByTeamPlaceIdAndPeriod(
                 participatedTeamPlaceIds, dailyPeriod.startDateTime(), dailyPeriod.endDatetime());
+
+        return SchedulesWithTeamPlaceIdResponse.of(dailySchedules);
+    }
+
+    @Transactional(readOnly = true)
+    public SchedulesWithTeamPlaceIdResponse findScheduleInPeriod(
+            final MemberEmailDto memberEmailDto,
+            final String startDateString,
+            final String endDateString
+    ) {
+        final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
+                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
+
+        final List<Long> participatedTeamPlaceIds = member.getTeamPlaces()
+                .stream()
+                .map(TeamPlace::getId)
+                .toList();
+
+        final LocalDate startDate = LocalDateParser.parse(startDateString);
+        final LocalDate endDate = LocalDateParser.parse(endDateString);
+
+        final CalendarPeriod period = CalendarPeriod.of(startDate, endDate);
+
+        final List<Schedule> dailySchedules = scheduleRepository.findAllByTeamPlaceIdAndPeriod(
+                participatedTeamPlaceIds, period.startDateTime(), period.endDatetime());
 
         return SchedulesWithTeamPlaceIdResponse.of(dailySchedules);
     }
