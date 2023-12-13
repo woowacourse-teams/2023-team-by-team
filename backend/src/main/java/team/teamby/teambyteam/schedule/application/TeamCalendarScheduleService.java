@@ -25,7 +25,6 @@ import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @Slf4j
@@ -126,16 +125,10 @@ public class TeamCalendarScheduleService {
     ) {
         checkTeamPlaceExist(teaPlaceId);
 
-        LocalDate startDate;
-        LocalDate endDate;
-        try {
-            startDate = LocalDate.parse(startDateString, DATE_PARAM_FORMAT);
-            endDate = LocalDate.parse(endDateString, DATE_PARAM_FORMAT);
-        } catch (final DateTimeParseException e) {
-            throw new ScheduleException.dateFormatException(e);
-        }
-
+        final LocalDate startDate = LocalDateParser.parse(startDateString);
+        final LocalDate endDate = LocalDateParser.parse(endDateString);
         final CalendarPeriod period = CalendarPeriod.of(startDate, endDate);
+
         final List<Schedule> schedules = scheduleRepository.
                 findAllByTeamPlaceIdAndPeriod(teaPlaceId, period.startDateTime(), period.endDatetime());
 
