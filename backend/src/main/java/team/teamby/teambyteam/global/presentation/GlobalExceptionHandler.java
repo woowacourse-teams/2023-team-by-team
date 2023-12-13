@@ -123,6 +123,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = {
             ScheduleException.SpanWrongOrderException.class,
+            ScheduleException.dateFormatException.class,
             TeamPlaceInviteCodeException.LengthException.class,
             TeamPlaceException.NameLengthException.class,
             TeamPlaceException.NameBlankException.class,

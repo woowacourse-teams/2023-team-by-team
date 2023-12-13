@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import team.teamby.teambyteam.common.ServiceTest;
@@ -132,6 +133,47 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
                 softly.assertThat(scheduleResponses.get(2).title()).isEqualTo(MONTH_7_DAY_28_AND_MONTH_8_SCHEDULE.getTitle().getValue());
                 softly.assertThat(scheduleResponses.get(3).title()).isEqualTo(MONTH_7_DAY_29_AND_MONTH_8_SCHEDULE.getTitle().getValue());
             });
+        }
+
+        @Test
+        @DisplayName("팀 캘린더에서 입력된 기간내 일정들을 조회한다.")
+        void findAllInSpecificPeriod() {
+            // given
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final Schedule MONTH_6_AND_MONTH_7_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_6_AND_MONTH_7_DAY_12_SCHEDULE(ENGLISH_TEAM_PLACE.getId()));
+            final Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(ENGLISH_TEAM_PLACE.getId()));
+            final Schedule MONTH_7_DAY_28_AND_MONTH_8_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_DAY_28_AND_MONTH_8_SCHEDULE(ENGLISH_TEAM_PLACE.getId()));
+            final Schedule MONTH_7_DAY_29_AND_MONTH_8_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_DAY_29_AND_MONTH_8_SCHEDULE(ENGLISH_TEAM_PLACE.getId()));
+
+            final String startDate = "20230712";
+            final String endDate = "20230728";
+
+            // when
+            final SchedulesResponse schedulesResponse = teamCalendarScheduleService.findScheduleInPeriod(ENGLISH_TEAM_PLACE.getId(), startDate, endDate);
+            final List<ScheduleResponse> scheduleResponses = schedulesResponse.schedules();
+
+            //then
+            assertSoftly(softly -> {
+                softly.assertThat(scheduleResponses).hasSize(3);
+                softly.assertThat(scheduleResponses.get(0).title()).isEqualTo(MONTH_6_AND_MONTH_7_SCHEDULE.getTitle().getValue());
+                softly.assertThat(scheduleResponses.get(1).title()).isEqualTo(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getTitle().getValue());
+                softly.assertThat(scheduleResponses.get(2).title()).isEqualTo(MONTH_7_DAY_28_AND_MONTH_8_SCHEDULE.getTitle().getValue());
+            });
+        }
+
+        @ParameterizedTest
+        @CsvSource(value = {"2023712,20230728", "20230712,0728"}, delimiter = ',')
+        @DisplayName("특정기간 조회시 일정 포멧이 yyyyMMdd와 다르면 예외를 발생시킨다.")
+        void failWithWrongDateFormat(final String startDate, final String endDate) {
+            // given
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+
+            // when
+            // then
+            assertThatThrownBy(() -> teamCalendarScheduleService.findScheduleInPeriod(ENGLISH_TEAM_PLACE.getId(), startDate, endDate))
+                    .isInstanceOf(ScheduleException.dateFormatException.class)
+                    .hasMessage("잘못된 날짜 입력 형식입니다.");
+
         }
 
         @Test

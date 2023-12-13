@@ -22,7 +22,10 @@ import team.teamby.teambyteam.schedule.exception.ScheduleException;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceRepository;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @Slf4j
@@ -30,6 +33,8 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class TeamCalendarScheduleService {
+
+    private static final DateTimeFormatter DATE_PARAM_FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd");
 
     private final ScheduleRepository scheduleRepository;
     private final TeamPlaceRepository teamPlaceRepository;
@@ -111,6 +116,30 @@ public class TeamCalendarScheduleService {
                 .findAllByTeamPlaceIdAndPeriod(teamPlaceId, dailyPeriod.startDateTime(), dailyPeriod.endDatetime());
 
         return SchedulesResponse.of(dailySchedules);
+    }
+
+    @Transactional(readOnly = true)
+    public SchedulesResponse findScheduleInPeriod(
+            final Long teaPlaceId,
+            final String startDateString,
+            final String endDateString
+    ) {
+        checkTeamPlaceExist(teaPlaceId);
+
+        LocalDate startDate;
+        LocalDate endDate;
+        try {
+            startDate = LocalDate.parse(startDateString, DATE_PARAM_FORMAT);
+            endDate = LocalDate.parse(endDateString, DATE_PARAM_FORMAT);
+        } catch (final DateTimeParseException e) {
+            throw new ScheduleException.dateFormatException(e);
+        }
+
+        final CalendarPeriod period = CalendarPeriod.of(startDate, endDate);
+        final List<Schedule> schedules = scheduleRepository.
+                findAllByTeamPlaceIdAndPeriod(teaPlaceId, period.startDateTime(), period.endDatetime());
+
+        return SchedulesResponse.of(schedules);
     }
 
     public void update(final ScheduleUpdateRequest scheduleUpdateRequest, final Long teamPlaceId, final Long scheduleId) {
