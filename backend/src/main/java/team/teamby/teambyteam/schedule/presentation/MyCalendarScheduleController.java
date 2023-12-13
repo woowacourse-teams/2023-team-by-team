@@ -40,4 +40,15 @@ public class MyCalendarScheduleController {
 
         return ResponseEntity.ok(responseBody);
     }
+
+    @GetMapping(value = "/schedules", params = {"startdate", "enddate"})
+    public ResponseEntity<SchedulesWithTeamPlaceIdResponse> findDailySchedule(
+            @AuthPrincipal final MemberEmailDto memberEmailDto,
+            @RequestParam(value = "startdate") final String startDate,
+            @RequestParam(value = "enddate") final String endDate
+    ) {
+        final SchedulesWithTeamPlaceIdResponse responseBody = myCalendarScheduleService.findScheduleInPeriod(memberEmailDto, startDate, endDate);
+
+        return ResponseEntity.ok(responseBody);
+    }
 }
