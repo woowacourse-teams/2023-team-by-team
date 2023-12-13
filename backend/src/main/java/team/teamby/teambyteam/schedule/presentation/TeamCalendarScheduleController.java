@@ -60,6 +60,17 @@ public class TeamCalendarScheduleController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping(value = "/{teamPlaceId}/calendar/schedules", params = {"startdate", "enddate"})
+    public ResponseEntity<SchedulesResponse> findDailySchedule(
+            @PathVariable final Long teamPlaceId,
+            @RequestParam(value = "startdate") final String startDate,
+            @RequestParam(value = "enddate") final String endDate
+    ) {
+        final SchedulesResponse response = teamCalendarScheduleService.findScheduleInPeriod(teamPlaceId, startDate, endDate);
+
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/{teamPlaceId}/calendar/schedules")
     public ResponseEntity<Void> register(
             @RequestBody @Valid final ScheduleRegisterRequest scheduleRegisterRequest,

@@ -34,10 +34,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
 import static team.teamby.teambyteam.common.fixtures.MemberTeamPlaceFixtures.PHILIP_ENGLISH_TEAM_PLACE;
-import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.*;
+import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_6_AND_MONTH_7_DAY_12_SCHEDULE;
+import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE;
+import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE;
+import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_REGISTER_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_TITLE;
+import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_UPDATE_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_DAY_28_AND_MONTH_8_SCHEDULE;
+import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_DAY_29_AND_MONTH_8_SCHEDULE;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.JAPANESE_TEAM_PLACE;
-import static team.teamby.teambyteam.common.fixtures.acceptance.TeamCalendarScheduleAcceptanceFixtures.*;
+import static team.teamby.teambyteam.common.fixtures.acceptance.TeamCalendarScheduleAcceptanceFixtures.DELETE_SCHEDULE_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.acceptance.TeamCalendarScheduleAcceptanceFixtures.FIND_DAILY_SCHEDULE_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.acceptance.TeamCalendarScheduleAcceptanceFixtures.FIND_PERIOD_SCHEDULE_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.acceptance.TeamCalendarScheduleAcceptanceFixtures.FIND_SPECIFIC_SCHEDULE_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.acceptance.TeamCalendarScheduleAcceptanceFixtures.REGISTER_SCHEDULE_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.acceptance.TeamCalendarScheduleAcceptanceFixtures.UPDATE_SCHEDULE_REQUEST;
 
 public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
 
@@ -129,7 +141,7 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
 
     @Nested
     @DisplayName("팀 캘린더 내 기간 일정 조회 시")
-    class FindTeamCalendarScheduleInPeriod {
+    class FindTeamCalendarScheduleInMonthlyPeriod {
 
         @Test
         @DisplayName("기간으로 조회 성공한다.")
@@ -208,6 +220,79 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
 
             //then
             assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        }
+    }
+
+    @Nested
+    @DisplayName("팀 캘린더 기간 지정 일정 조회 시")
+    class FindTeamCalendarScheduleInSpecificPeriod {
+
+        @Test
+        @DisplayName("기간으로 조회 성공한다.")
+        void success() {
+            // given
+            final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final MemberTeamPlace PHILIP_ENGLISH_TEAM_PLACE = PHILIP_ENGLISH_TEAM_PLACE();
+            PHILIP_ENGLISH_TEAM_PLACE.setMemberAndTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
+            testFixtureBuilder.buildMemberTeamPlace(PHILIP_ENGLISH_TEAM_PLACE);
+
+            final List<Schedule> schedulesToSave = List.of(
+                    MONTH_6_AND_MONTH_7_DAY_12_SCHEDULE(ENGLISH_TEAM_PLACE.getId()),
+                    MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE(ENGLISH_TEAM_PLACE.getId()),
+                    MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(ENGLISH_TEAM_PLACE.getId()),
+                    MONTH_7_DAY_28_AND_MONTH_8_SCHEDULE(ENGLISH_TEAM_PLACE.getId()),
+                    MONTH_7_DAY_29_AND_MONTH_8_SCHEDULE(ENGLISH_TEAM_PLACE.getId())
+            );
+            final List<Schedule> expectedSchedules = testFixtureBuilder.buildSchedules(schedulesToSave);
+            final String startDate = "20230712";
+            final String endDate = "20230728";
+
+            // when
+            final ExtractableResponse<Response> response = FIND_PERIOD_SCHEDULE_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), startDate, endDate);
+            final List<ScheduleResponse> actualSchedules = response.jsonPath().getList("schedules", ScheduleResponse.class);
+
+            //then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+                softly.assertThat(actualSchedules.size()).isEqualTo(4);
+                softly.assertThat(actualSchedules.get(0).title()).isEqualTo(expectedSchedules.get(0).getTitle().getValue());
+                softly.assertThat(actualSchedules.get(1).title()).isEqualTo(expectedSchedules.get(1).getTitle().getValue());
+                softly.assertThat(actualSchedules.get(2).title()).isEqualTo(expectedSchedules.get(2).getTitle().getValue());
+                softly.assertThat(actualSchedules.get(3).title()).isEqualTo(expectedSchedules.get(3).getTitle().getValue());
+            });
+        }
+
+        @Test
+        @DisplayName("잘못된 날짜 형식으로 요청시 실패한다.")
+        void failWithWrongFormat() {
+            // given
+            final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final MemberTeamPlace PHILIP_ENGLISH_TEAM_PLACE = PHILIP_ENGLISH_TEAM_PLACE();
+            PHILIP_ENGLISH_TEAM_PLACE.setMemberAndTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
+            testFixtureBuilder.buildMemberTeamPlace(PHILIP_ENGLISH_TEAM_PLACE);
+
+            final List<Schedule> schedulesToSave = List.of(
+                    MONTH_6_AND_MONTH_7_DAY_12_SCHEDULE(ENGLISH_TEAM_PLACE.getId()),
+                    MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE(ENGLISH_TEAM_PLACE.getId()),
+                    MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(ENGLISH_TEAM_PLACE.getId()),
+                    MONTH_7_DAY_28_AND_MONTH_8_SCHEDULE(ENGLISH_TEAM_PLACE.getId()),
+                    MONTH_7_DAY_29_AND_MONTH_8_SCHEDULE(ENGLISH_TEAM_PLACE.getId())
+            );
+            testFixtureBuilder.buildSchedules(schedulesToSave);
+            final String startDate = "2023-07-12";
+            final String endDate = "2023-07-28";
+
+            // when
+            final ExtractableResponse<Response> response = FIND_PERIOD_SCHEDULE_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), startDate, endDate);
+            final String errorMessage = response.jsonPath().get("error");
+
+            //then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+                softly.assertThat(errorMessage).isEqualTo("잘못된 날짜 입력 형식입니다.");
+            });
         }
     }
 
@@ -498,7 +583,6 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
                     .extract();
         }
     }
-
 
     @Nested
     @DisplayName("일정 수정 시")
