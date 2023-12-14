@@ -25,7 +25,7 @@ export const useSSE = () => {
       },
     );
 
-    eventSource.addEventListener('open', () => {
+    eventSource.addEventListener('connect', () => {
       queryClient.invalidateQueries([['threadData', teamPlaceId]]);
     });
 
