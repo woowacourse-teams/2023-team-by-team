@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import team.teamby.teambyteam.schedule.application.parser.LocalDateParser;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
 
 import java.time.LocalDate;
@@ -13,6 +14,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class LocalDateParserTest {
 
+    private final LocalDateParser localDateParser = new LocalDateParser();
+
     @Test
     @DisplayName("LocalDate 파싱을 성공한다")
     void success() {
@@ -20,7 +23,7 @@ class LocalDateParserTest {
         final String input = "20230102";
 
         // when
-        final LocalDate actual = LocalDateParser.parse(input);
+        final LocalDate actual = localDateParser.parse(input);
 
         // then
         assertThat(actual).isEqualTo(LocalDate.of(2023, 1, 2));
@@ -34,7 +37,7 @@ class LocalDateParserTest {
 
         // when
         // then
-        assertThatThrownBy(() -> LocalDateParser.parse(input))
+        assertThatThrownBy(() -> localDateParser.parse(input))
                 .isInstanceOf(ScheduleException.dateFormatException.class)
                 .hasMessage("잘못된 날짜 입력 형식입니다.");
 

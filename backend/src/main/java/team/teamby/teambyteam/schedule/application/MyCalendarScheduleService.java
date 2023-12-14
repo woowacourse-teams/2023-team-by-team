@@ -9,6 +9,7 @@ import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.schedule.application.dto.SchedulesWithTeamPlaceIdResponse;
+import team.teamby.teambyteam.schedule.application.parser.LocalDateParser;
 import team.teamby.teambyteam.schedule.domain.CalendarPeriod;
 import team.teamby.teambyteam.schedule.domain.Schedule;
 import team.teamby.teambyteam.schedule.domain.ScheduleRepository;
@@ -24,6 +25,7 @@ public class MyCalendarScheduleService {
 
     private final MemberRepository memberRepository;
     private final ScheduleRepository scheduleRepository;
+    private final LocalDateParser localDateParser;
 
     @Transactional(readOnly = true)
     public SchedulesWithTeamPlaceIdResponse findScheduleInPeriod(
@@ -82,8 +84,8 @@ public class MyCalendarScheduleService {
                 .map(TeamPlace::getId)
                 .toList();
 
-        final LocalDate startDate = LocalDateParser.parse(startDateString);
-        final LocalDate endDate = LocalDateParser.parse(endDateString);
+        final LocalDate startDate = localDateParser.parse(startDateString);
+        final LocalDate endDate = localDateParser.parse(endDateString);
 
         final CalendarPeriod period = CalendarPeriod.of(startDate, endDate);
 

@@ -13,6 +13,7 @@ import team.teamby.teambyteam.schedule.application.event.ScheduleCreateEvent;
 import team.teamby.teambyteam.schedule.application.event.ScheduleDeleteEvent;
 import team.teamby.teambyteam.schedule.application.event.ScheduleUpdateEvent;
 import team.teamby.teambyteam.schedule.application.event.ScheduleUpdateEventDto;
+import team.teamby.teambyteam.schedule.application.parser.LocalDateParser;
 import team.teamby.teambyteam.schedule.domain.CalendarPeriod;
 import team.teamby.teambyteam.schedule.domain.Schedule;
 import team.teamby.teambyteam.schedule.domain.ScheduleRepository;
@@ -24,7 +25,6 @@ import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Slf4j
@@ -33,11 +33,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeamCalendarScheduleService {
 
-    private static final DateTimeFormatter DATE_PARAM_FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd");
-
     private final ScheduleRepository scheduleRepository;
     private final TeamPlaceRepository teamPlaceRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
+    private final LocalDateParser localDateParser;
 
     public Long register(final ScheduleRegisterRequest scheduleRegisterRequest, final Long teamPlaceId) {
         checkTeamPlaceExist(teamPlaceId);
@@ -125,8 +124,8 @@ public class TeamCalendarScheduleService {
     ) {
         checkTeamPlaceExist(teaPlaceId);
 
-        final LocalDate startDate = LocalDateParser.parse(startDateString);
-        final LocalDate endDate = LocalDateParser.parse(endDateString);
+        final LocalDate startDate = localDateParser.parse(startDateString);
+        final LocalDate endDate = localDateParser.parse(endDateString);
         final CalendarPeriod period = CalendarPeriod.of(startDate, endDate);
 
         final List<Schedule> schedules = scheduleRepository.
