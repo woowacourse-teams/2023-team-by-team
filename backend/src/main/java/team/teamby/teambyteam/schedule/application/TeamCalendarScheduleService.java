@@ -13,6 +13,7 @@ import team.teamby.teambyteam.schedule.application.event.ScheduleCreateEvent;
 import team.teamby.teambyteam.schedule.application.event.ScheduleDeleteEvent;
 import team.teamby.teambyteam.schedule.application.event.ScheduleUpdateEvent;
 import team.teamby.teambyteam.schedule.application.event.ScheduleUpdateEventDto;
+import team.teamby.teambyteam.schedule.application.parser.LocalDateParser;
 import team.teamby.teambyteam.schedule.domain.CalendarPeriod;
 import team.teamby.teambyteam.schedule.domain.Schedule;
 import team.teamby.teambyteam.schedule.domain.ScheduleRepository;
@@ -22,6 +23,7 @@ import team.teamby.teambyteam.schedule.exception.ScheduleException;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceRepository;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,6 +36,7 @@ public class TeamCalendarScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final TeamPlaceRepository teamPlaceRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
+    private final LocalDateParser localDateParser;
 
     public Long register(final ScheduleRegisterRequest scheduleRegisterRequest, final Long teamPlaceId) {
         checkTeamPlaceExist(teamPlaceId);
@@ -87,7 +90,7 @@ public class TeamCalendarScheduleService {
     }
 
     @Transactional(readOnly = true)
-    public SchedulesResponse findScheduleInPeriod(final Long teamPlaceId, final int targetYear, final int targetMonth) {
+    public SchedulesResponse findScheduleInMonth(final Long teamPlaceId, final int targetYear, final int targetMonth) {
         checkTeamPlaceExist(teamPlaceId);
 
         final CalendarPeriod period = CalendarPeriod.of(targetYear, targetMonth);
@@ -98,7 +101,7 @@ public class TeamCalendarScheduleService {
     }
 
     @Transactional(readOnly = true)
-    public SchedulesResponse findScheduleInPeriod(
+    public SchedulesResponse findScheduleInDay(
             final Long teamPlaceId,
             final int targetYear,
             final int targetMonth,
@@ -111,6 +114,24 @@ public class TeamCalendarScheduleService {
                 .findAllByTeamPlaceIdAndPeriod(teamPlaceId, dailyPeriod.startDateTime(), dailyPeriod.endDatetime());
 
         return SchedulesResponse.of(dailySchedules);
+    }
+
+    @Transactional(readOnly = true)
+    public SchedulesResponse findScheduleInPeriod(
+            final Long teaPlaceId,
+            final String startDateString,
+            final String endDateString
+    ) {
+        checkTeamPlaceExist(teaPlaceId);
+
+        final LocalDate startDate = localDateParser.parse(startDateString);
+        final LocalDate endDate = localDateParser.parse(endDateString);
+        final CalendarPeriod period = CalendarPeriod.of(startDate, endDate);
+
+        final List<Schedule> schedules = scheduleRepository.
+                findAllByTeamPlaceIdAndPeriod(teaPlaceId, period.startDateTime(), period.endDatetime());
+
+        return SchedulesResponse.of(schedules);
     }
 
     public void update(final ScheduleUpdateRequest scheduleUpdateRequest, final Long teamPlaceId, final Long scheduleId) {

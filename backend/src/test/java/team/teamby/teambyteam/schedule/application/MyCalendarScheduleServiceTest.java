@@ -17,6 +17,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
+import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_5_LAST_DAY_SCHEDULE;
 import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_6_AND_MONTH_7_DAY_12_SCHEDULE;
 import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_6_AND_MONTH_7_SCHEDULE;
 import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE;
@@ -126,6 +127,45 @@ public class MyCalendarScheduleServiceTest extends ServiceTest {
 
             // then
             assertThat(dailyScheduleResponse.schedules()).hasSize(0);
+        }
+    }
+
+    @Nested
+    @DisplayName("특정 기간 안에서 내 캘린더 정보 조회 시")
+    class FindScheduleInMyCalendarInSpecificPeriod {
+
+        @Test
+        @DisplayName("내 캘린더 정보 조회를 성공한다.")
+        void success() {
+            // given
+            final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final TeamPlace JAPANESE_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(JAPANESE_TEAM_PLACE());
+
+            testFixtureBuilder.buildMemberTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
+            testFixtureBuilder.buildMemberTeamPlace(PHILIP, JAPANESE_TEAM_PLACE);
+
+            final List<Schedule> expectedSchedules = List.of(
+                    MONTH_5_LAST_DAY_SCHEDULE(ENGLISH_TEAM_PLACE.getId()),
+                    MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE(ENGLISH_TEAM_PLACE.getId()),
+                    MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(JAPANESE_TEAM_PLACE.getId())
+            );
+            testFixtureBuilder.buildSchedules(expectedSchedules);
+
+            final MemberEmailDto memberEmailDto = new MemberEmailDto(PHILIP.getEmail().getValue());
+            final String startDate = "20230601";
+            final String endDate = "20230712";
+
+            // when
+            final SchedulesWithTeamPlaceIdResponse scheduleInPeriod = myCalendarScheduleService.findScheduleInPeriod(memberEmailDto, startDate, endDate);
+            final List<ScheduleWithTeamPlaceIdResponse> scheduleResponses = scheduleInPeriod.schedules();
+
+            //then
+            assertSoftly(softly -> {
+                softly.assertThat(scheduleResponses).hasSize(2);
+                softly.assertThat(scheduleResponses.get(0).title()).isEqualTo(expectedSchedules.get(1).getTitle().getValue());
+                softly.assertThat(scheduleResponses.get(1).title()).isEqualTo(expectedSchedules.get(2).getTitle().getValue());
+            });
         }
     }
 }

@@ -38,12 +38,12 @@ public class TeamCalendarScheduleController {
     }
 
     @GetMapping(value = "/{teamPlaceId}/calendar/schedules", params = {"year", "month"})
-    public ResponseEntity<SchedulesResponse> findSchedulesInPeriod(
+    public ResponseEntity<SchedulesResponse> findScheduleInMonth(
             @PathVariable final Long teamPlaceId,
             @RequestParam final Integer year,
             @RequestParam final Integer month
     ) {
-        final SchedulesResponse responseBody = teamCalendarScheduleService.findScheduleInPeriod(teamPlaceId, year, month);
+        final SchedulesResponse responseBody = teamCalendarScheduleService.findScheduleInMonth(teamPlaceId, year, month);
 
         return ResponseEntity.ok(responseBody);
     }
@@ -55,7 +55,18 @@ public class TeamCalendarScheduleController {
             @RequestParam final Integer month,
             @RequestParam final Integer day
     ) {
-        final SchedulesResponse response = teamCalendarScheduleService.findScheduleInPeriod(teamPlaceId, year, month, day);
+        final SchedulesResponse response = teamCalendarScheduleService.findScheduleInDay(teamPlaceId, year, month, day);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(value = "/{teamPlaceId}/calendar/schedules", params = {"startdate", "enddate"})
+    public ResponseEntity<SchedulesResponse> findDailySchedule(
+            @PathVariable final Long teamPlaceId,
+            @RequestParam(value = "startdate") final String startDate,
+            @RequestParam(value = "enddate") final String endDate
+    ) {
+        final SchedulesResponse response = teamCalendarScheduleService.findScheduleInPeriod(teamPlaceId, startDate, endDate);
 
         return ResponseEntity.ok(response);
     }
