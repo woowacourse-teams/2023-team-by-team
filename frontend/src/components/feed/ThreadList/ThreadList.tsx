@@ -32,7 +32,6 @@ const ThreadList = (props: ThreadListProps) => {
 
   const threadEndRef = useRef<HTMLDivElement>(null);
   const threadPagesRef = useRef<number>(0);
-  const firstPagesRef = useRef<number>(0);
   const observeRef = useRef<HTMLDivElement>(null);
   const [scrollHeight, setScrollHeight] = useState(0);
 
