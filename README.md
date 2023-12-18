@@ -120,16 +120,16 @@
 </tr>
 <tr>
 <td align="center">
-      <img src='https://github.com/woowacourse-teams/2023-team-by-team/assets/79538610/8f0149f0-822b-400f-a827-af58ca57e489'>
+      <img src='https://github.com/woowacourse-teams/2023-team-by-team/assets/79538610/bdd33938-1838-4b34-86f1-7cee4d8a37dc'>
     </td>
 </tr>
 </table>
 
-|                                                        팀 캘린더                                                        |                                                         팀 피드                                                         |
+|                                                        팀 캘린더                                                        |                                                         팀 채팅                                                         |
 | :---------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------: |
-| <img src='https://github.com/woowacourse-teams/2023-team-by-team/assets/79538610/4b578b01-4412-49ee-921b-cdb126c252fe'> | <img src='https://github.com/woowacourse-teams/2023-team-by-team/assets/79538610/40e8927a-8d13-4fb9-a8f4-9f9745753d23'> |
+| <img src='https://github.com/woowacourse-teams/2023-team-by-team/assets/79538610/f223d8bc-9bb4-482d-acf1-34db66eb93e0'> | <img src='https://github.com/woowacourse-teams/2023-team-by-team/assets/79538610/7440e842-3c81-4b5f-ba54-5a2787561e31'> |
 |                                                     <b>팀 링크</b>                                                      |                                                <b>팀 생성 및 팀 참가</b>                                                |
-| <img src='https://github.com/woowacourse-teams/2023-team-by-team/assets/79538610/2ae57d8a-daeb-40b1-97b9-be497ba3bb68'> | <img src='https://github.com/woowacourse-teams/2023-team-by-team/assets/79538610/36222b93-3b06-4f41-a20f-c3a8df0bdfa7'> |
+| <img src='https://github.com/woowacourse-teams/2023-team-by-team/assets/79538610/767f9240-04e3-43c4-8b10-d2ed14606be6'> | <img src='https://github.com/woowacourse-teams/2023-team-by-team/assets/79538610/203982f5-1fc4-4d08-aa53-e6f1d5f76ab0'> |
 
 <p align="center">
     <a href='https://sites.google.com/woowahan.com/woowacourse-demo-5th/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/%ED%8C%80%EB%B0%94%ED%8C%80'>팀바팀을 더 자세히 알고 싶다면, 여기로!</a>
