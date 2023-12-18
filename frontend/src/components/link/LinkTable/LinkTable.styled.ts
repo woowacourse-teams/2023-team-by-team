@@ -99,8 +99,7 @@ export const Table = styled.table`
     height: 32px;
   }
 
-  & > tr :not(:first-child),
-  & th {
+  & td:not(:first-child) {
     text-align: center;
   }
 `;
