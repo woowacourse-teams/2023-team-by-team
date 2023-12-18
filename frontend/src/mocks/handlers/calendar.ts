@@ -4,17 +4,35 @@ import {
   mySchedules as myScheduleData,
 } from '~/mocks/fixtures/schedules';
 import { teamPlaces } from '~/mocks/fixtures/team';
+import { generateYYYYMMDD } from '~/utils/generateYYYYMMDD';
 
 let schedules = [...scheduleData];
 let mySchedules = [...myScheduleData];
 
 export const calendarHandlers = [
   //통합캘린더 일정 기간 조회
-  rest.get(`/api/my-calendar/schedules`, (_, res, ctx) => {
+  rest.get(`/api/my-calendar/schedules`, (req, res, ctx) => {
+    const startDateFormat = req.url.searchParams.get('startdate');
+    const endDateFormat = req.url.searchParams.get('enddate');
+
+    if (!startDateFormat || !endDateFormat) {
+      return res(ctx.status(400));
+    }
+
+    const searchedMySchedules = mySchedules.filter(
+      ({ startDateTime, endDateTime }) => {
+        const isScheduleInRange =
+          startDateFormat <= generateYYYYMMDD(new Date(startDateTime)) ||
+          endDateFormat >= generateYYYYMMDD(new Date(endDateTime));
+
+        return isScheduleInRange;
+      },
+    );
+
     return res(
       ctx.status(200),
       ctx.json({
-        schedules: mySchedules,
+        schedules: searchedMySchedules,
       }),
     );
   }),
@@ -24,16 +42,33 @@ export const calendarHandlers = [
     `/api/team-place/:teamPlaceId/calendar/schedules`,
     (req, res, ctx) => {
       const teamPlaceId = Number(req.params.teamPlaceId);
+      const startDateFormat = req.url.searchParams.get('startdate');
+      const endDateFormat = req.url.searchParams.get('enddate');
+
       const index = teamPlaces.findIndex(
         (teamPlace) => teamPlace.id === teamPlaceId,
       );
 
       if (index === -1) return res(ctx.status(403));
 
+      if (!startDateFormat || !endDateFormat) {
+        return res(ctx.status(400));
+      }
+
+      const searchedSchedules = schedules.filter(
+        ({ startDateTime, endDateTime }) => {
+          const isScheduleInRange =
+            startDateFormat <= generateYYYYMMDD(new Date(startDateTime)) ||
+            endDateFormat >= generateYYYYMMDD(new Date(endDateTime));
+
+          return isScheduleInRange;
+        },
+      );
+
       return res(
         ctx.status(200),
         ctx.json({
-          schedules,
+          schedules: searchedSchedules,
         }),
       );
     },
