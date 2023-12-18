@@ -64,53 +64,50 @@ const LinkTable = (props: LinkTableProps) => {
           </Button>
         </S.MenuHeader>
         <S.TableContainer $linkSize={linkSize} $isMobile={isMobile}>
-          {teamLinks.length > 0 ? (
-            <S.TableWrapper>
-              <S.Table>
-                <S.TableHeader>
-                  <tr>
-                    {linkTableHeaderValues.map((value) => (
-                      <th key={value}>{value}</th>
-                    ))}
+          <S.TableWrapper>
+            <S.Table>
+              <S.TableHeader>
+                <tr>
+                  {linkTableHeaderValues.map((value) => (
+                    <th key={value}>{value}</th>
+                  ))}
+                </tr>
+              </S.TableHeader>
+              <tbody>
+                {teamLinks.map(({ id, title, url, memberName, updatedAt }) => (
+                  <tr key={id}>
+                    <td>
+                      <a
+                        href={generateHttpsUrl(url)}
+                        target="_blank"
+                        rel="noreferrer"
+                        title={title}
+                      >
+                        {title}
+                      </a>
+                    </td>
+                    <td title={memberName}>{memberName}</td>
+                    <td>
+                      <time>{updatedAt}</time>
+                    </td>
+                    <td>
+                      <Button
+                        variant="plain"
+                        css={S.deleteButton}
+                        onClick={() => handleDeleteTeamLink(id, title)}
+                        aria-label="링크 삭제하기"
+                      >
+                        <DeleteIcon />
+                      </Button>
+                    </td>
                   </tr>
-                </S.TableHeader>
-                <tbody>
-                  {teamLinks.map(
-                    ({ id, title, url, memberName, updatedAt }) => (
-                      <tr key={id}>
-                        <td>
-                          <a
-                            href={generateHttpsUrl(url)}
-                            target="_blank"
-                            rel="noreferrer"
-                            title={title}
-                          >
-                            {title}
-                          </a>
-                        </td>
-                        <td title={memberName}>{memberName}</td>
-                        <td>
-                          <time>{updatedAt}</time>
-                        </td>
-                        <td>
-                          <Button
-                            variant="plain"
-                            css={S.deleteButton}
-                            onClick={() => handleDeleteTeamLink(id, title)}
-                            aria-label="링크 삭제하기"
-                          >
-                            <DeleteIcon />
-                          </Button>
-                        </td>
-                      </tr>
-                    ),
-                  )}
-                </tbody>
-              </S.Table>
-            </S.TableWrapper>
-          ) : (
-            <EmptyLinkPlaceholder onClick={openModal} />
-          )}
+                ))}
+              </tbody>
+            </S.Table>
+            {teamLinks.length === 0 && (
+              <EmptyLinkPlaceholder onClick={openModal} />
+            )}
+          </S.TableWrapper>
         </S.TableContainer>
       </S.Container>
       {isModalOpen && <LinkAddModal linkSize={linkSize} />}
