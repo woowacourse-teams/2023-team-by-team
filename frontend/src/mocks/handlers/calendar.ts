@@ -94,7 +94,9 @@ export const calendarHandlers = [
   rest.patch(
     `/api/team-place/:teamPlaceId/calendar/schedules/:scheduleId`,
     async (req, res, ctx) => {
+      const teamPlaceId = Number(req.params.teamPlaceId);
       const scheduleId = Number(req.params.scheduleId);
+
       const { title, startDateTime, endDateTime } = await req.json();
       const index = schedules.findIndex(
         (schedule) => schedule.id === scheduleId,
@@ -116,7 +118,7 @@ export const calendarHandlers = [
 
       mySchedules[myIndex] = {
         id: scheduleId,
-        teamPlaceId: mySchedules[myIndex].teamPlaceId,
+        teamPlaceId,
         title,
         startDateTime,
         endDateTime,
