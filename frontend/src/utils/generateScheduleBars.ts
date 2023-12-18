@@ -43,7 +43,7 @@ export const generateScheduleBars = (
   return slicedScheduleBars;
 };
 
-const getFirstLastDateOfCalendar = (year: number, month: number) => {
+export const getFirstLastDateOfCalendar = (year: number, month: number) => {
   const firstDateOfMonth = new Date(year, month);
   const firstDateOfCalendar = new Date(
     firstDateOfMonth.getTime() - ONE_DAY * firstDateOfMonth.getDay(),
