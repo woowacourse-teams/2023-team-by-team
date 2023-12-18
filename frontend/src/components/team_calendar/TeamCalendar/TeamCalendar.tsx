@@ -17,8 +17,16 @@ import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useCalendarResizePosition } from '~/hooks/useCalendarResizePosition';
 import { usePrefetchSchedules } from '~/hooks/queries/usePrefetchSchedules';
 import { useScheduleDragStatus } from '~/hooks/schedule/useScheduleBarDragStatus';
-import { DAYS_OF_WEEK, MODAL_OPEN_TYPE } from '~/constants/calendar';
-import { generateScheduleBars } from '~/utils/generateScheduleBars';
+import {
+  ONE_DAY,
+  DAYS_IN_CALENDAR_PAGE,
+  DAYS_OF_WEEK,
+  MODAL_OPEN_TYPE,
+} from '~/constants/calendar';
+import {
+  generateScheduleBars,
+  getFirstLastDateOfCalendar,
+} from '~/utils/generateScheduleBars';
 import { arrayOf } from '~/utils/arrayOf';
 import { getDateByPosition } from '~/utils/getDateByPosition';
 import type { Position, ModalOpenType } from '~/types/schedule';
@@ -60,17 +68,36 @@ const TeamCalendar = (props: TeamCalendarProps) => {
     handlers: { handleScheduleModalOpen },
   } = useScheduleModal();
 
-  const schedules = useFetchSchedules(teamPlaceId, year, month);
-  // NOTE: month의 값은 0부터 시작하므로 1월, 11월에 해당하는 month의 값은 각각 0, 11이다.
-  usePrefetchSchedules(
+  const { firstDateOfCalendar, lastDateOfCalendar } =
+    getFirstLastDateOfCalendar(year, month);
+
+  const firstDateOfPreviousMonthCalendar = new Date(
+    firstDateOfCalendar.getTime() - ONE_DAY * DAYS_IN_CALENDAR_PAGE,
+  );
+  const lastDateOfPreviousMonthCalendar = new Date(
+    lastDateOfCalendar.getTime() - ONE_DAY * DAYS_IN_CALENDAR_PAGE,
+  );
+  const firstDateOfNextMonthCalendar = new Date(
+    firstDateOfCalendar.getTime() + ONE_DAY * DAYS_IN_CALENDAR_PAGE,
+  );
+  const lastDateOfNextMonthCalendar = new Date(
+    lastDateOfCalendar.getTime() + ONE_DAY * DAYS_IN_CALENDAR_PAGE,
+  );
+
+  const schedules = useFetchSchedules(
     teamPlaceId,
-    month === 11 ? year + 1 : year,
-    month === 11 ? 0 : month + 1,
+    firstDateOfCalendar,
+    lastDateOfCalendar,
   );
   usePrefetchSchedules(
     teamPlaceId,
-    month === 0 ? year - 1 : year,
-    month === 0 ? 11 : month - 1,
+    firstDateOfPreviousMonthCalendar,
+    lastDateOfPreviousMonthCalendar,
+  );
+  usePrefetchSchedules(
+    teamPlaceId,
+    firstDateOfNextMonthCalendar,
+    lastDateOfNextMonthCalendar,
   );
 
   const [clickedDate, setClickedDate] = useState(currentDate);
