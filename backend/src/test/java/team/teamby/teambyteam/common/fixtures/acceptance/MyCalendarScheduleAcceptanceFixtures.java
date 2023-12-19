@@ -28,8 +28,8 @@ public class MyCalendarScheduleAcceptanceFixtures {
     ) {
         return RestAssured.given().log().all()
                 .header(new Header(HttpHeaders.AUTHORIZATION, JWT_PREFIX + token))
-                .queryParam("startdate", startDate)
-                .queryParam("enddate", endDate)
+                .queryParam("startDate", startDate)
+                .queryParam("endDate", endDate)
                 .when().log().all()
                 .get("/api/my-calendar/schedules")
                 .then().log().all()
