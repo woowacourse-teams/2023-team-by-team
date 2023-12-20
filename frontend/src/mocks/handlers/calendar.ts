@@ -12,8 +12,8 @@ let mySchedules = [...myScheduleData];
 export const calendarHandlers = [
   //통합캘린더 일정 기간 조회
   rest.get(`/api/my-calendar/schedules`, (req, res, ctx) => {
-    const startDateFormat = req.url.searchParams.get('startdate');
-    const endDateFormat = req.url.searchParams.get('enddate');
+    const startDateFormat = req.url.searchParams.get('startDate');
+    const endDateFormat = req.url.searchParams.get('endDate');
 
     if (!startDateFormat || !endDateFormat) {
       return res(ctx.status(400));
@@ -42,8 +42,8 @@ export const calendarHandlers = [
     `/api/team-place/:teamPlaceId/calendar/schedules`,
     (req, res, ctx) => {
       const teamPlaceId = Number(req.params.teamPlaceId);
-      const startDateFormat = req.url.searchParams.get('startdate');
-      const endDateFormat = req.url.searchParams.get('enddate');
+      const startDateFormat = req.url.searchParams.get('startDate');
+      const endDateFormat = req.url.searchParams.get('endDate');
 
       const index = teamPlaces.findIndex(
         (teamPlace) => teamPlace.id === teamPlaceId,

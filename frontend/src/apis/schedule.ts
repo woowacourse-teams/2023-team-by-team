@@ -23,7 +23,7 @@ export const fetchSchedules = (
   endDateFormat: string,
 ) => {
   return http.get<SchedulesResponse>(
-    `/api/team-place/${teamPlaceId}/calendar/schedules?startdate=${startDateFormat}&enddate=${endDateFormat}`,
+    `/api/team-place/${teamPlaceId}/calendar/schedules?startDate=${startDateFormat}&endDate=${endDateFormat}`,
   );
 };
 
@@ -32,7 +32,7 @@ export const fetchMySchedules = (
   endDateFormat: string,
 ) => {
   return http.get<MySchedulesResponse>(
-    `/api/my-calendar/schedules?startdate=${startDateFormat}&enddate=${endDateFormat}`,
+    `/api/my-calendar/schedules?startDate=${startDateFormat}&endDate=${endDateFormat}`,
   );
 };
 
