@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 
 export const PageContainer = styled.div`
+  justify-content: space-between;
   position: absolute;
   top: 0;
   left: 0;
@@ -13,5 +14,5 @@ export const PageContainer = styled.div`
 export const PageWrapper = styled.main`
   flex: 1;
 
-  height: calc(100vh - 170px);
+  height: calc(var(--vh, 1vh) - 150px);
 `;

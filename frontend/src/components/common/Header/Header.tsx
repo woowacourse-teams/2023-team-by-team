@@ -171,7 +171,7 @@ const Header = () => {
             onFocus={prefetchTeamPlaceInfo}
             onMouseEnter={prefetchTeamPlaceInfo}
             onClick={handleTeamButtonClick}
-            css={S.teamPlaceInfoButton}
+            css={S.teamPlaceInfoButton(isMobile)}
             aria-label="팀 정보 보기"
           >
             <TeamIcon height={isMobile ? '32' : '22'} />
@@ -187,11 +187,15 @@ const Header = () => {
           <Button
             type="button"
             variant="plain"
-            css={S.userInfoButton}
+            css={S.userInfoButton(isMobile)}
             onClick={handleUserButtonClick}
             aria-label="프로필 보기"
           >
-            <S.ProfileImage src={userInfo?.profileImageUrl} alt="프로필 사진" />
+            <S.ProfileImage
+              $isMobile={isMobile}
+              src={userInfo?.profileImageUrl}
+              alt="프로필 사진"
+            />
           </Button>
         </S.ButtonContainer>
       </S.Header>
