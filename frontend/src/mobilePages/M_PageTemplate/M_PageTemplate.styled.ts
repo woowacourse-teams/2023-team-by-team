@@ -14,5 +14,5 @@ export const PageContainer = styled.div`
 export const PageWrapper = styled.main`
   flex: 1;
 
-  height: calc(var(--vh, 1vh) - 150px);
+  height: calc(var(--vh, 1vh) * 100 - 150px);
 `;
