@@ -64,14 +64,16 @@ const LinkTable = (props: LinkTableProps) => {
           </Button>
         </S.MenuHeader>
         <S.TableContainer $linkSize={linkSize} $isMobile={isMobile}>
-          <S.TableHeader>
-            {linkTableHeaderValues.map((value) => (
-              <th key={value}>{value}</th>
-            ))}
-          </S.TableHeader>
-          {teamLinks.length > 0 ? (
-            <S.TableBody>
-              <S.Table>
+          <S.TableWrapper>
+            <S.Table>
+              <S.TableHeader>
+                <tr>
+                  {linkTableHeaderValues.map((value) => (
+                    <th key={value}>{value}</th>
+                  ))}
+                </tr>
+              </S.TableHeader>
+              <tbody>
                 {teamLinks.map(({ id, title, url, memberName, updatedAt }) => (
                   <tr key={id}>
                     <td>
@@ -100,11 +102,12 @@ const LinkTable = (props: LinkTableProps) => {
                     </td>
                   </tr>
                 ))}
-              </S.Table>
-            </S.TableBody>
-          ) : (
-            <EmptyLinkPlaceholder onClick={openModal} />
-          )}
+              </tbody>
+            </S.Table>
+            {teamLinks.length === 0 && (
+              <EmptyLinkPlaceholder onClick={openModal} />
+            )}
+          </S.TableWrapper>
         </S.TableContainer>
       </S.Container>
       {isModalOpen && <LinkAddModal linkSize={linkSize} />}

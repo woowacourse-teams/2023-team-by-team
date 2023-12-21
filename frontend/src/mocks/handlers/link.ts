@@ -36,6 +36,8 @@ export const LinkHandlers = [
 
     if (index === -1) return res(ctx.status(403));
 
+    if (teamPlaceId === 2)
+      return res(ctx.status(200), ctx.json({ teamLinks: [] }));
     return res(ctx.status(200), ctx.json({ teamLinks }));
   }),
 
