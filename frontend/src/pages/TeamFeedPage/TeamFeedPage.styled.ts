@@ -113,6 +113,10 @@ export const scrollBottomButton = css`
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 `;
 
+export const noPaddingButton = css`
+  padding: 0px;
+`;
+
 export const noticeText = css`
   margin-right: 10px;
 
