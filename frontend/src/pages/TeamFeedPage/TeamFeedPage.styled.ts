@@ -42,8 +42,8 @@ export const ThreadListWrapper = styled.div`
   display: flex;
   flex-direction: column;
 
-  row-gap: 24px;
-  padding: 20px 30px;
+  row-gap: 16px;
+  padding: 20px 30px 0;
 
   background-color: ${({ theme }) => theme.color.WHITE};
 `;
