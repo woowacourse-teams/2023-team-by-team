@@ -25,8 +25,20 @@
   background-color: ${({theme})=>theme.color.WHITE};
 
   box-shadow: 0 10px 20px ${({theme})=>theme.color.GRAY300};
-`,tableProperties=styled_components_browser_esm.iv`
-  & > th,
+`,TableWrapper=styled_components_browser_esm.zo.div`
+  overflow-y: auto;
+
+  width: 100%;
+  height: 100%;
+
+  scrollbar-gutter: stable both-edges;
+`,Table=styled_components_browser_esm.zo.table`
+  width: 100%;
+
+  font-size: 18px;
+
+  table-layout: fixed;
+
   & td {
     display: table-cell;
     overflow: hidden;
@@ -38,57 +50,29 @@
     padding: 8px;
   }
 
-  & > tr {
-    border-bottom: 2px solid ${({theme})=>theme.color.GRAY200};
-  }
-
-  & > th:first-child(),
-  & td:first-child() {
+  & td:first-child(),
+  thead > tr > th:first-child() {
     width: 40%;
   }
 
-  & > th:nth-child(2),
-  & td:nth-child(2) {
+  & td:nth-child(2),
+  thead > tr > th:nth-child(2) {
     width: 20%;
   }
-  & > th:nth-child(3),
-  & td:nth-child(3) {
+
+  & td:nth-child(3),
+  thead > tr > th:nth-child(3) {
     width: 30%;
   }
 
-  & > th:nth-child(4),
-  & td:nth-child(4) {
+  & td:nth-child(4),
+  thead > tr > th:nth-child(4) {
     width: 10%;
   }
 
-  & > tr :not(:first-child),
-  & th {
-    text-align: center;
+  tbody > tr {
+    border-bottom: 2px solid ${({theme})=>theme.color.GRAY200};
   }
-
-  font-size: 18px;
-
-  table-layout: fixed;
-`,TableHeader=styled_components_browser_esm.zo.table`
-  width: calc(100% - 32px);
-  height: 60px;
-
-  ${tableProperties}
-
-  & > th {
-    font-weight: 600;
-  }
-`,TableBody=styled_components_browser_esm.zo.div`
-  overflow-y: auto;
-
-  width: 100%;
-  height: 100%;
-
-  scrollbar-gutter: stable both-edges;
-`,Table=styled_components_browser_esm.zo.table`
-  width: 100%;
-
-  ${tableProperties}
 
   & td > a {
     font-weight: 700;
@@ -98,6 +82,18 @@
   & td:nth-child(4) svg {
     width: 32px;
     height: 32px;
+  }
+
+  & td:not(:first-child) {
+    text-align: center;
+  }
+`,TableHeader=styled_components_browser_esm.zo.thead`
+  width: calc(100% - 32px);
+  height: 48px;
+
+  tr > th {
+    vertical-align: middle;
+    font-weight: 600;
   }
 `,linkTableTitle=linkSize=>styled_components_browser_esm.iv`
   font-size: ${"md"===linkSize?24:18}px;
@@ -119,7 +115,7 @@
   & svg {
     color: ${({theme})=>theme.color.RED};
   }
-`;var Text=__webpack_require__("./src/components/common/Text/Text.tsx"),Button=__webpack_require__("./src/components/common/Button/Button.tsx"),LinkAddModal=__webpack_require__("./src/components/link/LinkAddModal/LinkAddModal.tsx"),EmptyLinkPlaceholder=__webpack_require__("./src/components/link/EmptyLinkPlaceholder/EmptyLinkPlaceholder.tsx"),svg=__webpack_require__("./src/assets/svg/index.ts"),useQuery=__webpack_require__("./node_modules/@tanstack/react-query/build/lib/useQuery.mjs"),apis_link=__webpack_require__("./src/apis/link.ts"),query=__webpack_require__("./src/constants/query.ts");var QueryClientProvider=__webpack_require__("./node_modules/@tanstack/react-query/build/lib/QueryClientProvider.mjs"),useMutation=__webpack_require__("./node_modules/@tanstack/react-query/build/lib/useMutation.mjs");var useTeamPlace=__webpack_require__("./src/hooks/useTeamPlace.ts"),useModal=__webpack_require__("./src/hooks/useModal.ts"),useToast=__webpack_require__("./src/hooks/useToast.ts");const linkTableHeaderValues=["링크명","이름","날짜",""];var generateHttpsUrl=__webpack_require__("./src/utils/generateHttpsUrl.ts"),getIsMobile=__webpack_require__("./src/utils/getIsMobile.ts"),jsx_runtime=__webpack_require__("./node_modules/react/jsx-runtime.js");const LinkTable=props=>{const{linkSize="md"}=props,isMobile=(0,getIsMobile.W)(),{openModal,isModalOpen}=(0,useModal.d)(),{teamPlaceId}=(0,useTeamPlace.l)(),teamLinks=(teamPlaceId=>{const{data}=(0,useQuery.a)(["teamLinks",teamPlaceId],(()=>(0,apis_link.qp)(teamPlaceId)),{enabled:teamPlaceId>0,staleTime:query.i.TEAM_LINKS});if(void 0===data)return[];const{teamLinks}=data;return teamLinks})(teamPlaceId),{mutateDeleteTeamLink}=(teamPlaceId=>{const queryClient=(0,QueryClientProvider.NL)(),{mutate}=(0,useMutation.D)((teamLinkId=>(0,apis_link.m3)(teamPlaceId,teamLinkId)),{onSuccess:()=>{queryClient.invalidateQueries(["teamLinks",teamPlaceId])}});return{mutateDeleteTeamLink:mutate}})(teamPlaceId),{showToast}=(0,useToast.p)();return(0,jsx_runtime.jsxs)(jsx_runtime.Fragment,{children:[(0,jsx_runtime.jsxs)(Container,{children:[(0,jsx_runtime.jsxs)(MenuHeader,{$linkSize:linkSize,children:[(0,jsx_runtime.jsx)(Text.Z,{weight:"semiBold",css:linkTableTitle(linkSize),children:"팀 링크"}),(0,jsx_runtime.jsx)(Button.Z,{css:linkAddButton(linkSize),"aria-label":"새로운 링크 등록하기",onClick:openModal,children:(0,jsx_runtime.jsx)(svg.pO,{})})]}),(0,jsx_runtime.jsxs)(TableContainer,{$linkSize:linkSize,$isMobile:isMobile,children:[(0,jsx_runtime.jsx)(TableHeader,{children:linkTableHeaderValues.map((value=>(0,jsx_runtime.jsx)("th",{children:value},value)))}),teamLinks.length>0?(0,jsx_runtime.jsx)(TableBody,{children:(0,jsx_runtime.jsx)(Table,{children:teamLinks.map((({id,title,url,memberName,updatedAt})=>(0,jsx_runtime.jsxs)("tr",{children:[(0,jsx_runtime.jsx)("td",{children:(0,jsx_runtime.jsx)("a",{href:(0,generateHttpsUrl.x)(url),target:"_blank",rel:"noreferrer",title,children:title})}),(0,jsx_runtime.jsx)("td",{title:memberName,children:memberName}),(0,jsx_runtime.jsx)("td",{children:(0,jsx_runtime.jsx)("time",{children:updatedAt})}),(0,jsx_runtime.jsx)("td",{children:(0,jsx_runtime.jsx)(Button.Z,{variant:"plain",css:deleteButton,onClick:()=>((id,title)=>{const slicedTitle=title.length>30?`${title.slice(0,30)}...`:title;confirm(`"${slicedTitle}" 링크를 제거하시겠습니까?`)&&mutateDeleteTeamLink(id,{onSuccess:()=>{showToast("success","링크를 삭제했습니다.")},onError:()=>{showToast("error","링크를 삭제하는 데 실패했습니다. 잠시 후 다시 시도해 주세요.")}})})(id,title),"aria-label":"링크 삭제하기",children:(0,jsx_runtime.jsx)(svg.pJ,{})})})]},id)))})}):(0,jsx_runtime.jsx)(EmptyLinkPlaceholder.Z,{onClick:openModal})]})]}),isModalOpen&&(0,jsx_runtime.jsx)(LinkAddModal.Z,{linkSize})]})},LinkTable_LinkTable=LinkTable;try{LinkTable.displayName="LinkTable",LinkTable.__docgenInfo={description:"",displayName:"LinkTable",props:{linkSize:{defaultValue:null,description:"",name:"linkSize",required:!1,type:{name:"enum",value:[{value:'"sm"'},{value:'"md"'}]}}}},"undefined"!=typeof STORYBOOK_REACT_CLASSES&&(STORYBOOK_REACT_CLASSES["src/components/link/LinkTable/LinkTable.tsx#LinkTable"]={docgenInfo:LinkTable.__docgenInfo,name:"LinkTable",path:"src/components/link/LinkTable/LinkTable.tsx#LinkTable"})}catch(__react_docgen_typescript_loader_error){}const LinkTable_stories={title:"Link/TeamLinkTable",component:LinkTable_LinkTable,tags:["autodocs"],decorators:[Story=>(0,jsx_runtime.jsx)("div",{style:{width:"100%",height:"500px",padding:"30px",backgroundColor:"#e9e9e9"},children:(0,jsx_runtime.jsx)(Story,{})})],parameters:{docs:{description:{component:"`LinkTable` 는 팀 링크 목록을 표시할 메뉴 컴포넌트입니다."}}}},Default={args:{}};Default.parameters={...Default.parameters,docs:{...Default.parameters?.docs,source:{originalSource:"{\n  args: {}\n}",...Default.parameters?.docs?.source},description:{story:"회색 배경은 컴포넌트를 고정시키고 크기를 조절하기 위해 사용한 것으로, 컴포넌트에는 포함되지 않습니다.",...Default.parameters?.docs?.description}}};const __namedExportsOrder=["Default"];try{Default.displayName="Default",Default.__docgenInfo={description:"회색 배경은 컴포넌트를 고정시키고 크기를 조절하기 위해 사용한 것으로, 컴포넌트에는 포함되지 않습니다.",displayName:"Default",props:{}},"undefined"!=typeof STORYBOOK_REACT_CLASSES&&(STORYBOOK_REACT_CLASSES["src/components/link/LinkTable/LinkTable.stories.tsx#Default"]={docgenInfo:Default.__docgenInfo,name:"Default",path:"src/components/link/LinkTable/LinkTable.stories.tsx#Default"})}catch(__react_docgen_typescript_loader_error){}},"./src/apis/link.ts":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{__webpack_require__.d(__webpack_exports__,{N:()=>sendTeamLink,m3:()=>deleteTeamLink,qp:()=>fetchTeamLinks});var _apis_http__WEBPACK_IMPORTED_MODULE_0__=__webpack_require__("./src/apis/http.ts");const sendTeamLink=(teamPlaceId,body)=>_apis_http__WEBPACK_IMPORTED_MODULE_0__.d.post(`/api/team-place/${teamPlaceId}/team-links`,body),fetchTeamLinks=teamPlaceId=>_apis_http__WEBPACK_IMPORTED_MODULE_0__.d.get(`/api/team-place/${teamPlaceId}/team-links`),deleteTeamLink=(teamPlaceId,teamLinkId)=>_apis_http__WEBPACK_IMPORTED_MODULE_0__.d.delete(`/api/team-place/${teamPlaceId}/team-links/${teamLinkId}`)},"./src/assets/png/index.ts":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{__webpack_require__.d(__webpack_exports__,{WG:()=>feed_empty_image_namespaceObject,Rs:()=>link_empty_image_namespaceObject,Ok:()=>mouse_pointer_namespaceObject,Ep:()=>notice_thread_background_namespaceObject,wp:()=>thumbnail_fallback_image_namespaceObject});const notice_thread_background_namespaceObject=__webpack_require__.p+"static/media/notice-thread-background.48ca8103.png",link_empty_image_namespaceObject=(__webpack_require__.p,__webpack_require__.p+"static/media/link-empty-image.5fc72217.png"),feed_empty_image_namespaceObject=__webpack_require__.p+"static/media/feed-empty-image.0ca39879.png",mouse_pointer_namespaceObject=__webpack_require__.p+"static/media/mouse-pointer.0c55151b.png",thumbnail_fallback_image_namespaceObject=(__webpack_require__.p,__webpack_require__.p+"static/media/thumbnail-fallback-image.c23bee9d.png")},"./src/components/common/Button/Button.tsx":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{__webpack_require__.d(__webpack_exports__,{Z:()=>Button_Button});var styled_components_browser_esm=__webpack_require__("./node_modules/styled-components/dist/styled-components.browser.esm.js");const paddingSize={sm:"6px",md:"12px",lg:"18px"},variants={primary:styled_components_browser_esm.iv`
+`;var Text=__webpack_require__("./src/components/common/Text/Text.tsx"),Button=__webpack_require__("./src/components/common/Button/Button.tsx"),LinkAddModal=__webpack_require__("./src/components/link/LinkAddModal/LinkAddModal.tsx"),EmptyLinkPlaceholder=__webpack_require__("./src/components/link/EmptyLinkPlaceholder/EmptyLinkPlaceholder.tsx"),svg=__webpack_require__("./src/assets/svg/index.ts"),useQuery=__webpack_require__("./node_modules/@tanstack/react-query/build/lib/useQuery.mjs"),apis_link=__webpack_require__("./src/apis/link.ts"),query=__webpack_require__("./src/constants/query.ts");var QueryClientProvider=__webpack_require__("./node_modules/@tanstack/react-query/build/lib/QueryClientProvider.mjs"),useMutation=__webpack_require__("./node_modules/@tanstack/react-query/build/lib/useMutation.mjs");var useTeamPlace=__webpack_require__("./src/hooks/useTeamPlace.ts"),useModal=__webpack_require__("./src/hooks/useModal.ts"),useToast=__webpack_require__("./src/hooks/useToast.ts");const linkTableHeaderValues=["링크명","이름","날짜",""];var generateHttpsUrl=__webpack_require__("./src/utils/generateHttpsUrl.ts"),getIsMobile=__webpack_require__("./src/utils/getIsMobile.ts"),jsx_runtime=__webpack_require__("./node_modules/react/jsx-runtime.js");const LinkTable=props=>{const{linkSize="md"}=props,isMobile=(0,getIsMobile.W)(),{openModal,isModalOpen}=(0,useModal.d)(),{teamPlaceId}=(0,useTeamPlace.l)(),teamLinks=(teamPlaceId=>{const{data}=(0,useQuery.a)(["teamLinks",teamPlaceId],(()=>(0,apis_link.qp)(teamPlaceId)),{enabled:teamPlaceId>0,staleTime:query.i.TEAM_LINKS});if(void 0===data)return[];const{teamLinks}=data;return teamLinks})(teamPlaceId),{mutateDeleteTeamLink}=(teamPlaceId=>{const queryClient=(0,QueryClientProvider.NL)(),{mutate}=(0,useMutation.D)((teamLinkId=>(0,apis_link.m3)(teamPlaceId,teamLinkId)),{onSuccess:()=>{queryClient.invalidateQueries(["teamLinks",teamPlaceId])}});return{mutateDeleteTeamLink:mutate}})(teamPlaceId),{showToast}=(0,useToast.p)();return(0,jsx_runtime.jsxs)(jsx_runtime.Fragment,{children:[(0,jsx_runtime.jsxs)(Container,{children:[(0,jsx_runtime.jsxs)(MenuHeader,{$linkSize:linkSize,children:[(0,jsx_runtime.jsx)(Text.Z,{weight:"semiBold",css:linkTableTitle(linkSize),children:"팀 링크"}),(0,jsx_runtime.jsx)(Button.Z,{css:linkAddButton(linkSize),"aria-label":"새로운 링크 등록하기",onClick:openModal,children:(0,jsx_runtime.jsx)(svg.pO,{})})]}),(0,jsx_runtime.jsx)(TableContainer,{$linkSize:linkSize,$isMobile:isMobile,children:(0,jsx_runtime.jsxs)(TableWrapper,{children:[(0,jsx_runtime.jsxs)(Table,{children:[(0,jsx_runtime.jsx)(TableHeader,{children:(0,jsx_runtime.jsx)("tr",{children:linkTableHeaderValues.map((value=>(0,jsx_runtime.jsx)("th",{children:value},value)))})}),(0,jsx_runtime.jsx)("tbody",{children:teamLinks.map((({id,title,url,memberName,updatedAt})=>(0,jsx_runtime.jsxs)("tr",{children:[(0,jsx_runtime.jsx)("td",{children:(0,jsx_runtime.jsx)("a",{href:(0,generateHttpsUrl.x)(url),target:"_blank",rel:"noreferrer",title,children:title})}),(0,jsx_runtime.jsx)("td",{title:memberName,children:memberName}),(0,jsx_runtime.jsx)("td",{children:(0,jsx_runtime.jsx)("time",{children:updatedAt})}),(0,jsx_runtime.jsx)("td",{children:(0,jsx_runtime.jsx)(Button.Z,{variant:"plain",css:deleteButton,onClick:()=>((id,title)=>{const slicedTitle=title.length>30?`${title.slice(0,30)}...`:title;confirm(`"${slicedTitle}" 링크를 제거하시겠습니까?`)&&mutateDeleteTeamLink(id,{onSuccess:()=>{showToast("success","링크를 삭제했습니다.")},onError:()=>{showToast("error","링크를 삭제하는 데 실패했습니다. 잠시 후 다시 시도해 주세요.")}})})(id,title),"aria-label":"링크 삭제하기",children:(0,jsx_runtime.jsx)(svg.pJ,{})})})]},id)))})]}),0===teamLinks.length&&(0,jsx_runtime.jsx)(EmptyLinkPlaceholder.Z,{onClick:openModal})]})})]}),isModalOpen&&(0,jsx_runtime.jsx)(LinkAddModal.Z,{linkSize})]})},LinkTable_LinkTable=LinkTable;try{LinkTable.displayName="LinkTable",LinkTable.__docgenInfo={description:"",displayName:"LinkTable",props:{linkSize:{defaultValue:null,description:"",name:"linkSize",required:!1,type:{name:"enum",value:[{value:'"sm"'},{value:'"md"'}]}}}},"undefined"!=typeof STORYBOOK_REACT_CLASSES&&(STORYBOOK_REACT_CLASSES["src/components/link/LinkTable/LinkTable.tsx#LinkTable"]={docgenInfo:LinkTable.__docgenInfo,name:"LinkTable",path:"src/components/link/LinkTable/LinkTable.tsx#LinkTable"})}catch(__react_docgen_typescript_loader_error){}const LinkTable_stories={title:"Link/TeamLinkTable",component:LinkTable_LinkTable,tags:["autodocs"],decorators:[Story=>(0,jsx_runtime.jsx)("div",{style:{width:"100%",height:"500px",padding:"30px",backgroundColor:"#e9e9e9"},children:(0,jsx_runtime.jsx)(Story,{})})],parameters:{docs:{description:{component:"`LinkTable` 는 팀 링크 목록을 표시할 메뉴 컴포넌트입니다."}}}},Default={args:{}};Default.parameters={...Default.parameters,docs:{...Default.parameters?.docs,source:{originalSource:"{\n  args: {}\n}",...Default.parameters?.docs?.source},description:{story:"회색 배경은 컴포넌트를 고정시키고 크기를 조절하기 위해 사용한 것으로, 컴포넌트에는 포함되지 않습니다.",...Default.parameters?.docs?.description}}};const __namedExportsOrder=["Default"];try{Default.displayName="Default",Default.__docgenInfo={description:"회색 배경은 컴포넌트를 고정시키고 크기를 조절하기 위해 사용한 것으로, 컴포넌트에는 포함되지 않습니다.",displayName:"Default",props:{}},"undefined"!=typeof STORYBOOK_REACT_CLASSES&&(STORYBOOK_REACT_CLASSES["src/components/link/LinkTable/LinkTable.stories.tsx#Default"]={docgenInfo:Default.__docgenInfo,name:"Default",path:"src/components/link/LinkTable/LinkTable.stories.tsx#Default"})}catch(__react_docgen_typescript_loader_error){}},"./src/apis/link.ts":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{__webpack_require__.d(__webpack_exports__,{N:()=>sendTeamLink,m3:()=>deleteTeamLink,qp:()=>fetchTeamLinks});var _apis_http__WEBPACK_IMPORTED_MODULE_0__=__webpack_require__("./src/apis/http.ts");const sendTeamLink=(teamPlaceId,body)=>_apis_http__WEBPACK_IMPORTED_MODULE_0__.d.post(`/api/team-place/${teamPlaceId}/team-links`,body),fetchTeamLinks=teamPlaceId=>_apis_http__WEBPACK_IMPORTED_MODULE_0__.d.get(`/api/team-place/${teamPlaceId}/team-links`),deleteTeamLink=(teamPlaceId,teamLinkId)=>_apis_http__WEBPACK_IMPORTED_MODULE_0__.d.delete(`/api/team-place/${teamPlaceId}/team-links/${teamLinkId}`)},"./src/assets/png/index.ts":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{__webpack_require__.d(__webpack_exports__,{WG:()=>feed_empty_image_namespaceObject,Rs:()=>link_empty_image_namespaceObject,Ok:()=>mouse_pointer_namespaceObject,Ep:()=>notice_thread_background_namespaceObject,wp:()=>thumbnail_fallback_image_namespaceObject});const notice_thread_background_namespaceObject=__webpack_require__.p+"static/media/notice-thread-background.48ca8103.png",link_empty_image_namespaceObject=(__webpack_require__.p,__webpack_require__.p+"static/media/link-empty-image.5fc72217.png"),feed_empty_image_namespaceObject=__webpack_require__.p+"static/media/feed-empty-image.0ca39879.png",mouse_pointer_namespaceObject=__webpack_require__.p+"static/media/mouse-pointer.0c55151b.png",thumbnail_fallback_image_namespaceObject=(__webpack_require__.p,__webpack_require__.p+"static/media/thumbnail-fallback-image.c23bee9d.png")},"./src/components/common/Button/Button.tsx":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{__webpack_require__.d(__webpack_exports__,{Z:()=>Button_Button});var styled_components_browser_esm=__webpack_require__("./node_modules/styled-components/dist/styled-components.browser.esm.js");const paddingSize={sm:"6px",md:"12px",lg:"18px"},variants={primary:styled_components_browser_esm.iv`
     background-color: ${({theme})=>theme.color.PRIMARY};
     color: ${({theme})=>theme.color.WHITE};
   `,normal:styled_components_browser_esm.iv`
@@ -302,4 +298,4 @@
 
   font-size: 17px;
 `;var Modal=__webpack_require__("./src/components/common/Modal/Modal.tsx"),Button=__webpack_require__("./src/components/common/Button/Button.tsx"),svg=__webpack_require__("./src/assets/svg/index.ts"),Text=__webpack_require__("./src/components/common/Text/Text.tsx"),Input=__webpack_require__("./src/components/common/Input/Input.tsx"),react=__webpack_require__("./node_modules/react/index.js"),QueryClientProvider=__webpack_require__("./node_modules/@tanstack/react-query/build/lib/QueryClientProvider.mjs"),useMutation=__webpack_require__("./node_modules/@tanstack/react-query/build/lib/useMutation.mjs"),apis_link=__webpack_require__("./src/apis/link.ts");var useModal=__webpack_require__("./src/hooks/useModal.ts"),useTeamPlace=__webpack_require__("./src/hooks/useTeamPlace.ts"),useToast=__webpack_require__("./src/hooks/useToast.ts"),generateHttpsUrl=__webpack_require__("./src/utils/generateHttpsUrl.ts");const URL_REGEX=/^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i,useTeamLinkAddModal=linkRef=>{const{teamPlaceId}=(0,useTeamPlace.l)(),{closeModal}=(0,useModal.d)(),[linkName,setLinkName]=(0,react.useState)(""),[link,setLink]=(0,react.useState)(""),{showToast}=(0,useToast.p)(),{mutateSendTeamLink}=(teamPlaceId=>{const queryClient=(0,QueryClientProvider.NL)(),{mutate}=(0,useMutation.D)((body=>(0,apis_link.N)(teamPlaceId,body)),{onSuccess:()=>{queryClient.invalidateQueries(["teamLinks",teamPlaceId])}});return{mutateSendTeamLink:mutate}})(teamPlaceId),handleClose=()=>{setLinkName((()=>"")),setLink((()=>"")),closeModal()};return{linkName,link,handlers:{handleClose,handleTeamLinkSubmit:e=>{if(e.preventDefault(),!URL_REGEX.test(link))return showToast("error","올바르지 않은 링크 형식입니다."),void linkRef.current?.focus();mutateSendTeamLink({title:linkName,url:(0,generateHttpsUrl.x)(link)},{onSuccess:()=>{showToast("success","링크가 등록되었습니다."),handleClose()}})},handleLinkNameChange:e=>{const{value}=e.target;setLinkName((()=>value))},handleLinkChange:e=>{const{value}=e.target;setLink((()=>value))}}}};var getIsMobile=__webpack_require__("./src/utils/getIsMobile.ts"),jsx_runtime=__webpack_require__("./node_modules/react/jsx-runtime.js");const LinkAddModal=props=>{const{linkSize="md"}=props,isMobile=(0,getIsMobile.W)(),linkRef=(0,react.useRef)(null),{linkName,link,handlers:{handleClose,handleTeamLinkSubmit,handleLinkNameChange,handleLinkChange}}=useTeamLinkAddModal(linkRef);return(0,jsx_runtime.jsxs)(Modal.Z,{children:[(0,jsx_runtime.jsx)(Backdrop,{onClick:handleClose}),(0,jsx_runtime.jsxs)(Container,{$linkSize:linkSize,$isMobile:isMobile,children:[(0,jsx_runtime.jsx)(IconWrapper,{children:(0,jsx_runtime.jsx)(Button.Z,{variant:"plain",type:"button",onClick:handleClose,css:closeButton,"aria-label":"팀 링크 등록 모달 닫기",children:(0,jsx_runtime.jsx)(svg.Tw,{})})}),(0,jsx_runtime.jsxs)("form",{onSubmit:handleTeamLinkSubmit,children:[(0,jsx_runtime.jsxs)(InputContainer,{children:[(0,jsx_runtime.jsx)(Text.Z,{size:"xl",weight:"semiBold",children:"링크 이름"}),(0,jsx_runtime.jsx)(Input.Z,{width:"100%",height:"38px",placeholder:"링크 이름을 입력해 주세요.",css:title,value:linkName,onChange:handleLinkNameChange,required:!0})]}),(0,jsx_runtime.jsxs)(InputContainer,{children:[(0,jsx_runtime.jsx)(Text.Z,{size:"xl",weight:"semiBold",children:"링크"}),(0,jsx_runtime.jsx)(Input.Z,{width:"100%",height:"38px",placeholder:"공유할 링크를 입력해 주세요.",css:title,value:link,ref:linkRef,onChange:handleLinkChange,required:!0})]}),(0,jsx_runtime.jsx)(ControlButtonWrapper,{children:(0,jsx_runtime.jsx)(Button.Z,{variant:"primary",css:submitButton,children:"등록"})})]})]})]})};LinkAddModal.displayName="LinkAddModal";const LinkAddModal_LinkAddModal=LinkAddModal;try{LinkAddModal.displayName="LinkAddModal",LinkAddModal.__docgenInfo={description:"",displayName:"LinkAddModal",props:{linkSize:{defaultValue:null,description:"",name:"linkSize",required:!1,type:{name:"enum",value:[{value:'"sm"'},{value:'"md"'}]}}}},"undefined"!=typeof STORYBOOK_REACT_CLASSES&&(STORYBOOK_REACT_CLASSES["src/components/link/LinkAddModal/LinkAddModal.tsx#LinkAddModal"]={docgenInfo:LinkAddModal.__docgenInfo,name:"LinkAddModal",path:"src/components/link/LinkAddModal/LinkAddModal.tsx#LinkAddModal"})}catch(__react_docgen_typescript_loader_error){}},"./src/constants/query.ts":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{__webpack_require__.d(__webpack_exports__,{i:()=>STALE_TIME});const STALE_TIME={SCHEDULES:3e4,DAILY_SCHEDULES:3e4,MY_SCHEDULES:3e4,MY_DAILY_SCHEDULES:3e4,USER_INFO:3e5,TEAM_PLACE_MEMBERS:6e4,TEAM_PLACE_INVITE_CODE:1/0,TEAM_LINKS:6e4,TEAM_FEED:3e5,ICALENDAR_URL:1/0}},"./src/hooks/useModal.ts":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{__webpack_require__.d(__webpack_exports__,{d:()=>useModal});var react__WEBPACK_IMPORTED_MODULE_0__=__webpack_require__("./node_modules/react/index.js"),_components_common_Modal_ModalContext__WEBPACK_IMPORTED_MODULE_1__=__webpack_require__("./src/components/common/Modal/ModalContext.tsx");const useModal=()=>{const context=(0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_components_common_Modal_ModalContext__WEBPACK_IMPORTED_MODULE_1__.t);if(void 0===context)throw new Error("useModal must be used within a ModalProvider");return context}},"./src/hooks/useTeamPlace.ts":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{__webpack_require__.d(__webpack_exports__,{l:()=>useTeamPlace});var react__WEBPACK_IMPORTED_MODULE_0__=__webpack_require__("./node_modules/react/index.js"),_contexts_TeamPlaceContext__WEBPACK_IMPORTED_MODULE_1__=__webpack_require__("./src/contexts/TeamPlaceContext.tsx");const useTeamPlace=()=>{const context=(0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_contexts_TeamPlaceContext__WEBPACK_IMPORTED_MODULE_1__.Q);if(void 0===context)throw new Error("useTeamPlace must be used within a TeamPlaceContext");return context}},"./src/hooks/useToast.ts":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{__webpack_require__.d(__webpack_exports__,{p:()=>useToast});var react__WEBPACK_IMPORTED_MODULE_0__=__webpack_require__("./node_modules/react/index.js"),_components_common_Toast_ToastContext__WEBPACK_IMPORTED_MODULE_1__=__webpack_require__("./src/components/common/Toast/ToastContext.tsx");const useToast=()=>{const context=(0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_components_common_Toast_ToastContext__WEBPACK_IMPORTED_MODULE_1__.u);if(void 0===context)throw new Error("useToast must be used within a ToastProvider");return context}},"./src/utils/generateHttpsUrl.ts":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{__webpack_require__.d(__webpack_exports__,{x:()=>generateHttpsUrl});const HTTPS_PREFIX_REGEX=/^https?:\/\/.*/,generateHttpsUrl=url=>HTTPS_PREFIX_REGEX.test(url)?url:`https://${url}`},"./src/utils/getIsMobile.ts":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{__webpack_require__.d(__webpack_exports__,{W:()=>getIsMobile});const getIsMobile=()=>{const isIos=null!==window.navigator.userAgent.match(/ipad|iphone/i),isAndroid=null!==window.navigator.userAgent.match(/Android/i);return!(!isIos&&!isAndroid)}}}]);
-//# sourceMappingURL=components-link-LinkTable-LinkTable-stories.c4d2dad6.iframe.bundle.js.map
+//# sourceMappingURL=components-link-LinkTable-LinkTable-stories.ff85d157.iframe.bundle.js.map
