@@ -163,4 +163,24 @@ export const useDateTimeRange = (
       startTime: newEndTime,
     }));
   };
+
+  const handleIsAllDayChange = () => {
+    setDateTimeRange((prev) => ({ ...prev, isAllDay: !prev.isAllDay }));
+  };
+
+  return {
+    handleScheduleChange,
+    handleScheduleBlur,
+    handleStartTimeChange,
+    handleEndTimeChange,
+    handleIsAllDayChange,
+
+    title,
+    startDate,
+    endDate,
+    startTime: isAllDay ? '00:00' : startTime,
+    endTime: isAllDay ? '23:59' : endTime,
+    isValid: isDateTimeRangeValid(dateTimeRange),
+    isAllDay,
+  };
 };
