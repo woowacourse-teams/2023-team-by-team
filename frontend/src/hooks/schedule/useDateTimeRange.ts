@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { ChangeEventHandler } from 'react';
+import type { ChangeEventHandler, FocusEventHandler } from 'react';
 import { ONE_DAY } from '~/constants/calendar';
 import { generateYYYYMMDD } from '~/utils/generateYYYYMMDD';
 import { generateYYYYMMDDHHMM } from '~/utils/generateYYYYMMDDHHMM';
@@ -103,6 +103,36 @@ export const useDateTimeRange = (
     setDateTimeRange((prev) => ({
       ...prev,
       [name]: value,
+    }));
+  };
+
+  const handleScheduleBlur: FocusEventHandler<HTMLInputElement> = (e) => {
+    const { name } = e.target;
+
+    if (
+      !['startDate', 'endDate'].includes(name) ||
+      !isYYYYMMDD(startDate) ||
+      !isYYYYMMDD(endDate)
+    ) {
+      return;
+    }
+
+    if (name === 'startDate') {
+      const newEndDate = getDateAfterDays(startDate, dateDifference);
+
+      setDateTimeRange((prev) => ({
+        ...prev,
+        endDate: newEndDate,
+      }));
+
+      return;
+    }
+
+    const newDateDifference = getDateDifference(startDate, endDate);
+
+    setDateTimeRange((prev) => ({
+      ...prev,
+      dateDifference: newDateDifference,
     }));
   };
 };
