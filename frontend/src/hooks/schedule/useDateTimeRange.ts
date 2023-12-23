@@ -135,4 +135,18 @@ export const useDateTimeRange = (
       dateDifference: newDateDifference,
     }));
   };
+
+  const handleStartTimeChange = (newStartTime: string) => {
+    const newDateTimeRange = { ...dateTimeRange, startTime: newStartTime };
+
+    if (startDate < endDate || newStartTime <= endTime) {
+      setDateTimeRange(() => newDateTimeRange);
+      return;
+    }
+
+    setDateTimeRange(() => ({
+      ...newDateTimeRange,
+      endTime: newStartTime,
+    }));
+  };
 };
