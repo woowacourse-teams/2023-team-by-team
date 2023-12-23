@@ -19,6 +19,13 @@ const getDateDifference = (beforeDate: YYYYMMDD, afterDate: YYYYMMDD) => {
   return dateTimeDifference;
 };
 
+const getDateAfterDays = (date: YYYYMMDD, days: number) => {
+  const afterDate = generateYYYYMMDD(
+    new Date(new Date(date).getTime() + ONE_DAY * days),
+  );
+
+  return afterDate;
+};
 export const useDateTimeRange = () => {
   return null;
 };
