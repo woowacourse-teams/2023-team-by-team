@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import type { ChangeEventHandler } from 'react';
 import { ONE_DAY } from '~/constants/calendar';
 import { generateYYYYMMDD } from '~/utils/generateYYYYMMDD';
 import { generateYYYYMMDDHHMM } from '~/utils/generateYYYYMMDDHHMM';
@@ -91,4 +92,17 @@ export const useDateTimeRange = (
     dateDifference,
     isAllDay,
   } = dateTimeRange;
+
+  const handleScheduleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const { name, value } = e.target;
+
+    if (!['title', 'startDate', 'endDate'].includes(name)) {
+      return;
+    }
+
+    setDateTimeRange((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 };
