@@ -43,12 +43,27 @@ const isDateTimeRangeValid = (dateTimeRange: DateTimeRange) => {
   );
 };
 
-const generateDateTimeRange = (dateData: Date | Schedule, title: string) => {
+const generateDateTimeRange = (
+  dateData: Date | Schedule | undefined,
+  title: string | undefined,
+) => {
+  if (!dateData) {
+    return {
+      title: title ?? '',
+      startDate: '',
+      endDate: '',
+      startTime: '09:00',
+      endTime: '10:00',
+      dateDifference: 0,
+      isAllDay: false,
+    };
+  }
+
   if (dateData instanceof Date) {
     const [initDate] = generateYYYYMMDDHHMM(dateData).split(' ');
 
     return {
-      title,
+      title: title ?? '',
       startDate: initDate,
       endDate: initDate,
       startTime: '09:00',
@@ -66,7 +81,7 @@ const generateDateTimeRange = (dateData: Date | Schedule, title: string) => {
       : 0;
 
   return {
-    title,
+    title: title ?? '',
     startDate,
     startTime,
     endDate,
@@ -77,8 +92,8 @@ const generateDateTimeRange = (dateData: Date | Schedule, title: string) => {
 };
 
 export const useDateTimeRange = (
-  dateData: Date | Schedule,
-  initTitle: string,
+  dateData: Date | Schedule | undefined,
+  initTitle: string | undefined,
 ) => {
   const [dateTimeRange, setDateTimeRange] = useState<DateTimeRange>(
     generateDateTimeRange(dateData, initTitle),
