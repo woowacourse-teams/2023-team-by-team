@@ -1,6 +1,7 @@
 import { ONE_DAY } from '~/constants/calendar';
 import type { YYYYMMDD } from '~/types/schedule';
 import { generateYYYYMMDD } from '~/utils/generateYYYYMMDD';
+import { isYYYYMMDDHHMM } from '~/types/typeGuard';
 
 interface DateTimeRange {
   title: string;
@@ -26,6 +27,19 @@ const getDateAfterDays = (date: YYYYMMDD, days: number) => {
 
   return afterDate;
 };
+
+const isDateTimeRangeValid = (dateTimeRange: DateTimeRange) => {
+  const { startDate, endDate, startTime, endTime } = dateTimeRange;
+  const startDateTime = `${startDate} ${startTime}`;
+  const endDateTime = `${endDate} ${endTime}`;
+
+  return (
+    isYYYYMMDDHHMM(startDateTime) &&
+    isYYYYMMDDHHMM(endDateTime) &&
+    startDateTime <= endDateTime
+  );
+};
+
 export const useDateTimeRange = () => {
   return null;
 };
