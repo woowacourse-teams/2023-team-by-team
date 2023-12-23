@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { ONE_DAY } from '~/constants/calendar';
 import { generateYYYYMMDD } from '~/utils/generateYYYYMMDD';
 import { generateYYYYMMDDHHMM } from '~/utils/generateYYYYMMDDHHMM';
@@ -74,6 +75,20 @@ const generateDateTimeRange = (dateData: Date | Schedule, title: string) => {
   };
 };
 
-export const useDateTimeRange = () => {
-  return null;
+export const useDateTimeRange = (
+  dateData: Date | Schedule,
+  initTitle: string,
+) => {
+  const [dateTimeRange, setDateTimeRange] = useState<DateTimeRange>(
+    generateDateTimeRange(dateData, initTitle),
+  );
+  const {
+    title,
+    startDate,
+    endDate,
+    startTime,
+    endTime,
+    dateDifference,
+    isAllDay,
+  } = dateTimeRange;
 };
