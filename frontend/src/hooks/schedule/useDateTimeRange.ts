@@ -1,7 +1,8 @@
 import { ONE_DAY } from '~/constants/calendar';
-import type { YYYYMMDD } from '~/types/schedule';
 import { generateYYYYMMDD } from '~/utils/generateYYYYMMDD';
-import { isYYYYMMDDHHMM } from '~/types/typeGuard';
+import { generateYYYYMMDDHHMM } from '~/utils/generateYYYYMMDDHHMM';
+import { isYYYYMMDD, isYYYYMMDDHHMM } from '~/types/typeGuard';
+import type { Schedule, YYYYMMDD } from '~/types/schedule';
 
 interface DateTimeRange {
   title: string;
@@ -38,6 +39,39 @@ const isDateTimeRangeValid = (dateTimeRange: DateTimeRange) => {
     isYYYYMMDDHHMM(endDateTime) &&
     startDateTime <= endDateTime
   );
+};
+
+const generateDateTimeRange = (dateData: Date | Schedule, title: string) => {
+  if (dateData instanceof Date) {
+    const [initDate] = generateYYYYMMDDHHMM(dateData).split(' ');
+
+    return {
+      title,
+      startDate: initDate,
+      endDate: initDate,
+      startTime: '09:00',
+      endTime: '10:00',
+      dateDifference: 0,
+      isAllDay: false,
+    };
+  }
+
+  const [startDate, startTime] = dateData.startDateTime.split(' ');
+  const [endDate, endTime] = dateData.endDateTime.split(' ');
+  const dateDifference =
+    isYYYYMMDD(startDate) && isYYYYMMDD(endDate)
+      ? getDateDifference(startDate, endDate)
+      : 0;
+
+  return {
+    title,
+    startDate,
+    startTime,
+    endDate,
+    endTime,
+    dateDifference,
+    isAllDay: endTime === '23:59',
+  };
 };
 
 export const useDateTimeRange = () => {
