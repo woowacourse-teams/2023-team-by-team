@@ -30,6 +30,7 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
     times,
     handlers: {
       handleScheduleChange,
+      handleScheduleBlur,
       handleIsAllDayChange,
       handleStartTimeChange,
       handleEndTimeChange,
@@ -67,7 +68,7 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
               css={S.title}
               name="title"
               maxLength={250}
-              value={schedule['title']}
+              value={schedule.title}
               ref={titleInputRef}
               required
               onChange={handleScheduleChange}
@@ -84,15 +85,16 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
                 height="40px"
                 type="date"
                 css={S.dateTimeLocalInput}
-                name="startDateTime"
-                value={schedule['startDateTime']}
+                name="startDate"
+                value={schedule.startDate}
                 onChange={handleScheduleChange}
-                aria-label={`일정 시작 일자는 ${schedule['startDateTime']} 입니다`}
+                onBlur={handleScheduleBlur}
+                aria-label={`일정 시작 일자는 ${schedule.startDate} 입니다`}
                 required
               />
               {!isAllDay && (
                 <TimeTableMenu
-                  displayValue={times['startTime']}
+                  displayValue={times.startTime}
                   onSelect={handleStartTimeChange}
                 />
               )}
@@ -108,15 +110,16 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
                 height="40px"
                 type="date"
                 css={S.dateTimeLocalInput}
-                name="endDateTime"
-                value={schedule['endDateTime']}
-                aria-label={`일정 마감 일자는 ${schedule['endDateTime']} 입니다`}
+                name="endDate"
+                value={schedule.endDate}
+                aria-label={`일정 마감 일자는 ${schedule.endDate} 입니다`}
                 onChange={handleScheduleChange}
+                onBlur={handleScheduleBlur}
                 required
               />
               {!isAllDay && (
                 <TimeTableMenu
-                  displayValue={times['endTime']}
+                  displayValue={times.endTime}
                   onSelect={handleEndTimeChange}
                 />
               )}
