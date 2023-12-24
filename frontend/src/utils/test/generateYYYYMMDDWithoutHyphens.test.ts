@@ -1,4 +1,4 @@
-import { generateYYYYMMDD } from '~/utils/generateYYYYMMDD';
+import { generateYYYYMMDDWithoutHyphens } from '~/utils/generateYYYYMMDDWithoutHyphens';
 
 describe('YYYYMMDD 포맷 생성 테스트', () => {
   it.each([
@@ -14,7 +14,7 @@ describe('YYYYMMDD 포맷 생성 테스트', () => {
   ])(
     '%s 정보를 지니는 Date 객체에 대해 %s 값이 반환되어야 한다.',
     (date, expected) => {
-      expect(generateYYYYMMDD(date)).toBe(expected);
+      expect(generateYYYYMMDDWithoutHyphens(date)).toBe(expected);
     },
   );
 });
