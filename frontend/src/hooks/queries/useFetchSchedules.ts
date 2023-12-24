@@ -1,19 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchSchedules } from '~/apis/schedule';
 import { STALE_TIME } from '~/constants/query';
-import { generateYYYYMMDD } from '~/utils/generateYYYYMMDD';
+import type { DateRange } from '~/types/schedule';
 
 export const useFetchSchedules = (
   teamPlaceId: number,
-  startDate: Date,
-  endDate: Date,
+  dateRange: DateRange,
 ) => {
-  const startDateFormat = generateYYYYMMDD(startDate);
-  const endDateFormat = generateYYYYMMDD(endDate);
+  const { startDate, endDate } = dateRange;
 
   const { data } = useQuery(
-    ['schedules', teamPlaceId, startDateFormat, endDateFormat],
-    () => fetchSchedules(teamPlaceId, startDateFormat, endDateFormat),
+    ['schedules', teamPlaceId, startDate, endDate],
+    () => fetchSchedules(teamPlaceId, startDate, endDate),
     {
       enabled: teamPlaceId > 0,
       staleTime: STALE_TIME.SCHEDULES,
