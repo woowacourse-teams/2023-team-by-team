@@ -17,18 +17,11 @@ import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useCalendarResizePosition } from '~/hooks/useCalendarResizePosition';
 import { usePrefetchSchedules } from '~/hooks/queries/usePrefetchSchedules';
 import { useScheduleDragStatus } from '~/hooks/schedule/useScheduleBarDragStatus';
-import {
-  ONE_DAY,
-  DAYS_IN_CALENDAR_PAGE,
-  DAYS_OF_WEEK,
-  MODAL_OPEN_TYPE,
-} from '~/constants/calendar';
-import {
-  generateScheduleBars,
-  getFirstLastDateOfCalendar,
-} from '~/utils/generateScheduleBars';
+import { DAYS_OF_WEEK, MODAL_OPEN_TYPE } from '~/constants/calendar';
+import { generateScheduleBars } from '~/utils/generateScheduleBars';
 import { arrayOf } from '~/utils/arrayOf';
 import { getDateByPosition } from '~/utils/getDateByPosition';
+import { generateCalendarRangeByYearMonth } from '~/utils/generateCalendarRangeByYearMonth';
 import type { Position, ModalOpenType } from '~/types/schedule';
 import type { CalendarSize } from '~/types/size';
 import {
@@ -68,36 +61,23 @@ const TeamCalendar = (props: TeamCalendarProps) => {
     handlers: { handleScheduleModalOpen },
   } = useScheduleModal();
 
-  const { firstDateOfCalendar, lastDateOfCalendar } =
-    getFirstLastDateOfCalendar(year, month);
-
-  const firstDateOfPreviousMonthCalendar = new Date(
-    firstDateOfCalendar.getTime() - ONE_DAY * DAYS_IN_CALENDAR_PAGE,
-  );
-  const lastDateOfPreviousMonthCalendar = new Date(
-    lastDateOfCalendar.getTime() - ONE_DAY * DAYS_IN_CALENDAR_PAGE,
-  );
-  const firstDateOfNextMonthCalendar = new Date(
-    firstDateOfCalendar.getTime() + ONE_DAY * DAYS_IN_CALENDAR_PAGE,
-  );
-  const lastDateOfNextMonthCalendar = new Date(
-    lastDateOfCalendar.getTime() + ONE_DAY * DAYS_IN_CALENDAR_PAGE,
-  );
-
   const schedules = useFetchSchedules(
     teamPlaceId,
-    firstDateOfCalendar,
-    lastDateOfCalendar,
+    generateCalendarRangeByYearMonth(year, month),
   );
   usePrefetchSchedules(
     teamPlaceId,
-    firstDateOfPreviousMonthCalendar,
-    lastDateOfPreviousMonthCalendar,
+    generateCalendarRangeByYearMonth(
+      month === 0 ? year - 1 : year,
+      month === 0 ? 11 : month - 1,
+    ),
   );
   usePrefetchSchedules(
     teamPlaceId,
-    firstDateOfNextMonthCalendar,
-    lastDateOfNextMonthCalendar,
+    generateCalendarRangeByYearMonth(
+      month === 11 ? year + 1 : year,
+      month === 11 ? 0 : month + 1,
+    ),
   );
 
   const [clickedDate, setClickedDate] = useState(currentDate);

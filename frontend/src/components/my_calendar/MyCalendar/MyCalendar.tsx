@@ -5,11 +5,7 @@ import { useCalendar } from '~/hooks/useCalendar';
 import * as S from './MyCalendar.styled';
 import DateCell from '~/components/common/DateCell/DateCell';
 import { ArrowLeftIcon, ArrowRightIcon } from '~/assets/svg';
-import {
-  DAYS_OF_WEEK,
-  ONE_DAY,
-  DAYS_IN_CALENDAR_PAGE,
-} from '~/constants/calendar';
+import { DAYS_OF_WEEK } from '~/constants/calendar';
 import { useFetchMySchedules } from '~/hooks/queries/useFetchMySchedules';
 import { parseDate } from '~/utils/parseDate';
 import { generateScheduleCirclesMatrix } from '~/utils/generateScheduleCirclesMatrix';
@@ -17,7 +13,7 @@ import TeamBadge from '~/components/team/TeamBadge/TeamBadge';
 import { getInfoByTeamPlaceId } from '~/utils/getInfoByTeamPlaceId';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { usePrefetchMySchedules } from '~/hooks/queries/usePrefetchMySchedules';
-import { getFirstLastDateOfCalendar } from '~/utils/generateScheduleBars';
+import { generateCalendarRangeByYearMonth } from '~/utils/generateCalendarRangeByYearMonth';
 
 interface MyCalendarProps {
   onDailyClick: (date: Date) => void;
@@ -36,33 +32,20 @@ const MyCalendar = (props: MyCalendarProps) => {
 
   const { teamPlaces } = useTeamPlace();
 
-  const { firstDateOfCalendar, lastDateOfCalendar } =
-    getFirstLastDateOfCalendar(year, month);
-
-  const firstDateOfPreviousMonthCalendar = new Date(
-    firstDateOfCalendar.getTime() - ONE_DAY * DAYS_IN_CALENDAR_PAGE,
-  );
-  const lastDateOfPreviousMonthCalendar = new Date(
-    lastDateOfCalendar.getTime() - ONE_DAY * DAYS_IN_CALENDAR_PAGE,
-  );
-  const firstDateOfNextMonthCalendar = new Date(
-    firstDateOfCalendar.getTime() + ONE_DAY * DAYS_IN_CALENDAR_PAGE,
-  );
-  const lastDateOfNextMonthCalendar = new Date(
-    lastDateOfCalendar.getTime() + ONE_DAY * DAYS_IN_CALENDAR_PAGE,
-  );
-
   const schedules = useFetchMySchedules(
-    firstDateOfCalendar,
-    lastDateOfCalendar,
+    generateCalendarRangeByYearMonth(year, month),
   );
   usePrefetchMySchedules(
-    firstDateOfPreviousMonthCalendar,
-    lastDateOfPreviousMonthCalendar,
+    generateCalendarRangeByYearMonth(
+      month === 0 ? year - 1 : year,
+      month === 0 ? 11 : month - 1,
+    ),
   );
   usePrefetchMySchedules(
-    firstDateOfNextMonthCalendar,
-    lastDateOfNextMonthCalendar,
+    generateCalendarRangeByYearMonth(
+      month === 11 ? year + 1 : year,
+      month === 11 ? 0 : month + 1,
+    ),
   );
 
   const scheduleCircles = generateScheduleCirclesMatrix(year, month, schedules);
