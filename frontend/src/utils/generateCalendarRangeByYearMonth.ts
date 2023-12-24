@@ -1,10 +1,11 @@
 import { CALENDAR, ONE_DAY } from '~/constants/calendar';
 import { generateYYYYMMDDWithoutHyphens } from '~/utils/generateYYYYMMDDWithoutHyphens';
+import type { DateRange } from '~/types/schedule';
 
 export const generateCalendarRangeByYearMonth = (
   year: number,
   month: number,
-) => {
+): DateRange => {
   const firstDateOfMonth = new Date(year, month);
   const firstDateOfCalendar = new Date(
     firstDateOfMonth.getTime() - ONE_DAY * firstDateOfMonth.getDay(),

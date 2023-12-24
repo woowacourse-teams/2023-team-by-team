@@ -58,3 +58,8 @@ export interface DragStatus {
   initX: number;
   initY: number;
 }
+
+export interface DateRange {
+  startDate: string;
+  endDate: string;
+}
