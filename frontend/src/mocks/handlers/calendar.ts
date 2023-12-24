@@ -4,7 +4,7 @@ import {
   mySchedules as myScheduleData,
 } from '~/mocks/fixtures/schedules';
 import { teamPlaces } from '~/mocks/fixtures/team';
-import { generateYYYYMMDD } from '~/utils/generateYYYYMMDD';
+import { generateYYYYMMDDWithoutHyphens } from '~/utils/generateYYYYMMDDWithoutHyphens';
 
 let schedules = [...scheduleData];
 let mySchedules = [...myScheduleData];
@@ -22,8 +22,10 @@ export const calendarHandlers = [
     const searchedMySchedules = mySchedules.filter(
       ({ startDateTime, endDateTime }) => {
         const isScheduleInRange =
-          startDateFormat <= generateYYYYMMDD(new Date(startDateTime)) ||
-          endDateFormat >= generateYYYYMMDD(new Date(endDateTime));
+          startDateFormat <=
+            generateYYYYMMDDWithoutHyphens(new Date(startDateTime)) ||
+          endDateFormat >=
+            generateYYYYMMDDWithoutHyphens(new Date(endDateTime));
 
         return isScheduleInRange;
       },
@@ -58,8 +60,10 @@ export const calendarHandlers = [
       const searchedSchedules = schedules.filter(
         ({ startDateTime, endDateTime }) => {
           const isScheduleInRange =
-            startDateFormat <= generateYYYYMMDD(new Date(startDateTime)) ||
-            endDateFormat >= generateYYYYMMDD(new Date(endDateTime));
+            startDateFormat <=
+              generateYYYYMMDDWithoutHyphens(new Date(startDateTime)) ||
+            endDateFormat >=
+              generateYYYYMMDDWithoutHyphens(new Date(endDateTime));
 
           return isScheduleInRange;
         },
