@@ -19,20 +19,17 @@ interface ICalendarResponse {
 
 export const fetchSchedules = (
   teamPlaceId: number,
-  startDateFormat: string,
-  endDateFormat: string,
+  startDate: string,
+  endDate: string,
 ) => {
   return http.get<SchedulesResponse>(
-    `/api/team-place/${teamPlaceId}/calendar/schedules?startDate=${startDateFormat}&endDate=${endDateFormat}`,
+    `/api/team-place/${teamPlaceId}/calendar/schedules?startDate=${startDate}&endDate=${endDate}`,
   );
 };
 
-export const fetchMySchedules = (
-  startDateFormat: string,
-  endDateFormat: string,
-) => {
+export const fetchMySchedules = (startDate: string, endDate: string) => {
   return http.get<MySchedulesResponse>(
-    `/api/my-calendar/schedules?startDate=${startDateFormat}&endDate=${endDateFormat}`,
+    `/api/my-calendar/schedules?startDate=${startDate}&endDate=${endDate}`,
   );
 };
 
