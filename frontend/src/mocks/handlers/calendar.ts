@@ -12,20 +12,19 @@ let mySchedules = [...myScheduleData];
 export const calendarHandlers = [
   //통합캘린더 일정 기간 조회
   rest.get(`/api/my-calendar/schedules`, (req, res, ctx) => {
-    const startDateFormat = req.url.searchParams.get('startDate');
-    const endDateFormat = req.url.searchParams.get('endDate');
+    const startDate = req.url.searchParams.get('startDate');
+    const endDate = req.url.searchParams.get('endDate');
 
-    if (!startDateFormat || !endDateFormat) {
+    if (!startDate || !endDate) {
       return res(ctx.status(400));
     }
 
     const searchedMySchedules = mySchedules.filter(
       ({ startDateTime, endDateTime }) => {
         const isScheduleInRange =
-          startDateFormat <=
+          startDate <=
             generateYYYYMMDDWithoutHyphens(new Date(startDateTime)) ||
-          endDateFormat >=
-            generateYYYYMMDDWithoutHyphens(new Date(endDateTime));
+          endDate >= generateYYYYMMDDWithoutHyphens(new Date(endDateTime));
 
         return isScheduleInRange;
       },
@@ -44,8 +43,8 @@ export const calendarHandlers = [
     `/api/team-place/:teamPlaceId/calendar/schedules`,
     (req, res, ctx) => {
       const teamPlaceId = Number(req.params.teamPlaceId);
-      const startDateFormat = req.url.searchParams.get('startDate');
-      const endDateFormat = req.url.searchParams.get('endDate');
+      const startDate = req.url.searchParams.get('startDate');
+      const endDate = req.url.searchParams.get('endDate');
 
       const index = teamPlaces.findIndex(
         (teamPlace) => teamPlace.id === teamPlaceId,
@@ -53,17 +52,16 @@ export const calendarHandlers = [
 
       if (index === -1) return res(ctx.status(403));
 
-      if (!startDateFormat || !endDateFormat) {
+      if (!startDate || !endDate) {
         return res(ctx.status(400));
       }
 
       const searchedSchedules = schedules.filter(
         ({ startDateTime, endDateTime }) => {
           const isScheduleInRange =
-            startDateFormat <=
+            startDate <=
               generateYYYYMMDDWithoutHyphens(new Date(startDateTime)) ||
-            endDateFormat >=
-              generateYYYYMMDDWithoutHyphens(new Date(endDateTime));
+            endDate >= generateYYYYMMDDWithoutHyphens(new Date(endDateTime));
 
           return isScheduleInRange;
         },
