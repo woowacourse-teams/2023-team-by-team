@@ -10,7 +10,7 @@ export const useFetchMySchedules = (dateRange: DateRange) => {
     ['mySchedules', startDate, endDate],
     () => fetchMySchedules(startDate, endDate),
     {
-      staleTime: STALE_TIME.SCHEDULES,
+      staleTime: STALE_TIME.MY_SCHEDULES,
     },
   );
 
