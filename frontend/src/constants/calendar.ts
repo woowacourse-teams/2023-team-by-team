@@ -4,8 +4,6 @@ export const DAYS_OF_WEEK = ['일', '월', '화', '수', '목', '금', '토'] as
 
 export const ONE_DAY = 86_400_000;
 
-export const DAYS_IN_CALENDAR_PAGE = 42;
-
 export const CALENDAR = {
   ROW_SIZE: 6,
   COLUMN_SIZE: 7,
