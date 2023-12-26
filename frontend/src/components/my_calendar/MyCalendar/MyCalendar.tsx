@@ -32,20 +32,19 @@ const MyCalendar = (props: MyCalendarProps) => {
 
   const { teamPlaces } = useTeamPlace();
 
+  const prevCalendarYear = month === 0 ? year - 1 : year;
+  const prevCalendarMonth = month === 0 ? 11 : month - 1;
+  const nextCalendarYear = month === 11 ? year + 1 : year;
+  const nextCalendarMonth = month === 11 ? 0 : month + 1;
+
   const schedules = useFetchMySchedules(
     generateCalendarRangeByYearMonth(year, month),
   );
   usePrefetchMySchedules(
-    generateCalendarRangeByYearMonth(
-      month === 0 ? year - 1 : year,
-      month === 0 ? 11 : month - 1,
-    ),
+    generateCalendarRangeByYearMonth(prevCalendarYear, prevCalendarMonth),
   );
   usePrefetchMySchedules(
-    generateCalendarRangeByYearMonth(
-      month === 11 ? year + 1 : year,
-      month === 11 ? 0 : month + 1,
-    ),
+    generateCalendarRangeByYearMonth(nextCalendarYear, nextCalendarMonth),
   );
 
   const scheduleCircles = generateScheduleCirclesMatrix(year, month, schedules);
