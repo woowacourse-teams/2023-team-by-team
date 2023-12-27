@@ -1,11 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchMySchedules } from '~/apis/schedule';
 import { STALE_TIME } from '~/constants/query';
+import type { DateRange } from '~/types/schedule';
 
-export const useFetchMySchedules = (year: number, month: number) => {
+export const useFetchMySchedules = (dateRange: DateRange) => {
+  const { startDate, endDate } = dateRange;
+
   const { data } = useQuery(
-    ['mySchedules', year, month],
-    () => fetchMySchedules(year, month + 1),
+    ['mySchedules', startDate, endDate],
+    () => fetchMySchedules(startDate, endDate),
     {
       staleTime: STALE_TIME.MY_SCHEDULES,
     },

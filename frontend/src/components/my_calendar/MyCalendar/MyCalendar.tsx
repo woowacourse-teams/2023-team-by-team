@@ -13,6 +13,7 @@ import TeamBadge from '~/components/team/TeamBadge/TeamBadge';
 import { getInfoByTeamPlaceId } from '~/utils/getInfoByTeamPlaceId';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { usePrefetchMySchedules } from '~/hooks/queries/usePrefetchMySchedules';
+import { generateCalendarRangeByYearMonth } from '~/utils/generateCalendarRangeByYearMonth';
 
 interface MyCalendarProps {
   onDailyClick: (date: Date) => void;
@@ -28,15 +29,22 @@ const MyCalendar = (props: MyCalendarProps) => {
     today,
     handlers: { handlePrevButtonClick, handleNextButtonClick },
   } = useCalendar();
-  const schedules = useFetchMySchedules(year, month);
+
   const { teamPlaces } = useTeamPlace();
-  usePrefetchMySchedules(
-    month === 11 ? year + 1 : year,
-    month === 11 ? 0 : month + 1,
+
+  const prevCalendarYear = month === 0 ? year - 1 : year;
+  const prevCalendarMonth = month === 0 ? 11 : month - 1;
+  const nextCalendarYear = month === 11 ? year + 1 : year;
+  const nextCalendarMonth = month === 11 ? 0 : month + 1;
+
+  const schedules = useFetchMySchedules(
+    generateCalendarRangeByYearMonth(year, month),
   );
   usePrefetchMySchedules(
-    month === 0 ? year - 1 : year,
-    month === 0 ? 11 : month - 1,
+    generateCalendarRangeByYearMonth(prevCalendarYear, prevCalendarMonth),
+  );
+  usePrefetchMySchedules(
+    generateCalendarRangeByYearMonth(nextCalendarYear, nextCalendarMonth),
   );
 
   const scheduleCircles = generateScheduleCirclesMatrix(year, month, schedules);

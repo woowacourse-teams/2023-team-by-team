@@ -21,6 +21,7 @@ import { DAYS_OF_WEEK, MODAL_OPEN_TYPE } from '~/constants/calendar';
 import { generateScheduleBars } from '~/utils/generateScheduleBars';
 import { arrayOf } from '~/utils/arrayOf';
 import { getDateByPosition } from '~/utils/getDateByPosition';
+import { generateCalendarRangeByYearMonth } from '~/utils/generateCalendarRangeByYearMonth';
 import type { Position, ModalOpenType } from '~/types/schedule';
 import type { CalendarSize } from '~/types/size';
 import {
@@ -60,17 +61,22 @@ const TeamCalendar = (props: TeamCalendarProps) => {
     handlers: { handleScheduleModalOpen },
   } = useScheduleModal();
 
-  const schedules = useFetchSchedules(teamPlaceId, year, month);
-  // NOTE: month의 값은 0부터 시작하므로 1월, 11월에 해당하는 month의 값은 각각 0, 11이다.
-  usePrefetchSchedules(
+  const prevCalendarYear = month === 0 ? year - 1 : year;
+  const prevCalendarMonth = month === 0 ? 11 : month - 1;
+  const nextCalendarYear = month === 11 ? year + 1 : year;
+  const nextCalendarMonth = month === 11 ? 0 : month + 1;
+
+  const schedules = useFetchSchedules(
     teamPlaceId,
-    month === 11 ? year + 1 : year,
-    month === 11 ? 0 : month + 1,
+    generateCalendarRangeByYearMonth(year, month),
   );
   usePrefetchSchedules(
     teamPlaceId,
-    month === 0 ? year - 1 : year,
-    month === 0 ? 11 : month - 1,
+    generateCalendarRangeByYearMonth(prevCalendarYear, prevCalendarMonth),
+  );
+  usePrefetchSchedules(
+    teamPlaceId,
+    generateCalendarRangeByYearMonth(nextCalendarYear, nextCalendarMonth),
   );
 
   const [clickedDate, setClickedDate] = useState(currentDate);

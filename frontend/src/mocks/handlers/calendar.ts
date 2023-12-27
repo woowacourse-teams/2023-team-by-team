@@ -4,17 +4,36 @@ import {
   mySchedules as myScheduleData,
 } from '~/mocks/fixtures/schedules';
 import { teamPlaces } from '~/mocks/fixtures/team';
+import { generateYYYYMMDDWithoutHyphens } from '~/utils/generateYYYYMMDDWithoutHyphens';
 
 let schedules = [...scheduleData];
 let mySchedules = [...myScheduleData];
 
 export const calendarHandlers = [
   //통합캘린더 일정 기간 조회
-  rest.get(`/api/my-calendar/schedules`, (_, res, ctx) => {
+  rest.get(`/api/my-calendar/schedules`, (req, res, ctx) => {
+    const startDate = req.url.searchParams.get('startDate');
+    const endDate = req.url.searchParams.get('endDate');
+
+    if (!startDate || !endDate) {
+      return res(ctx.status(400));
+    }
+
+    const searchedMySchedules = mySchedules.filter(
+      ({ startDateTime, endDateTime }) => {
+        const isScheduleInRange =
+          startDate <=
+            generateYYYYMMDDWithoutHyphens(new Date(startDateTime)) ||
+          endDate >= generateYYYYMMDDWithoutHyphens(new Date(endDateTime));
+
+        return isScheduleInRange;
+      },
+    );
+
     return res(
       ctx.status(200),
       ctx.json({
-        schedules: mySchedules,
+        schedules: searchedMySchedules,
       }),
     );
   }),
@@ -24,16 +43,34 @@ export const calendarHandlers = [
     `/api/team-place/:teamPlaceId/calendar/schedules`,
     (req, res, ctx) => {
       const teamPlaceId = Number(req.params.teamPlaceId);
+      const startDate = req.url.searchParams.get('startDate');
+      const endDate = req.url.searchParams.get('endDate');
+
       const index = teamPlaces.findIndex(
         (teamPlace) => teamPlace.id === teamPlaceId,
       );
 
       if (index === -1) return res(ctx.status(403));
 
+      if (!startDate || !endDate) {
+        return res(ctx.status(400));
+      }
+
+      const searchedSchedules = schedules.filter(
+        ({ startDateTime, endDateTime }) => {
+          const isScheduleInRange =
+            startDate <=
+              generateYYYYMMDDWithoutHyphens(new Date(startDateTime)) ||
+            endDate >= generateYYYYMMDDWithoutHyphens(new Date(endDateTime));
+
+          return isScheduleInRange;
+        },
+      );
+
       return res(
         ctx.status(200),
         ctx.json({
-          schedules,
+          schedules: searchedSchedules,
         }),
       );
     },
@@ -94,7 +131,9 @@ export const calendarHandlers = [
   rest.patch(
     `/api/team-place/:teamPlaceId/calendar/schedules/:scheduleId`,
     async (req, res, ctx) => {
+      const teamPlaceId = Number(req.params.teamPlaceId);
       const scheduleId = Number(req.params.scheduleId);
+
       const { title, startDateTime, endDateTime } = await req.json();
       const index = schedules.findIndex(
         (schedule) => schedule.id === scheduleId,
@@ -116,7 +155,7 @@ export const calendarHandlers = [
 
       mySchedules[myIndex] = {
         id: scheduleId,
-        teamPlaceId: mySchedules[myIndex].teamPlaceId,
+        teamPlaceId,
         title,
         startDateTime,
         endDateTime,
