@@ -99,6 +99,7 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
           isOpen={isImageDrawerOpen}
           onClose={handleImageDrawerToggle}
           isUploading={isSendingImage}
+          slideDistance={isMobile ? 142 : 162}
         >
           <ThumbnailList
             mode="delete"

@@ -6,6 +6,7 @@ import { getIsMobile } from '~/utils/getIsMobile';
 
 interface ImageUploadDrawerProps {
   isOpen: boolean;
+  slideDistance: number;
   onClose: () => void;
   isUploading: boolean;
 }
@@ -13,11 +14,15 @@ interface ImageUploadDrawerProps {
 const ImageUploadDrawer = (
   props: PropsWithChildren<ImageUploadDrawerProps>,
 ) => {
-  const { isOpen, onClose, children, isUploading } = props;
+  const { isOpen, onClose, children, isUploading, slideDistance } = props;
   const isMobile = getIsMobile();
 
   return (
-    <S.Container $isOpen={isOpen} $isMobile={isMobile}>
+    <S.Container
+      $isOpen={isOpen}
+      $isMobile={isMobile}
+      $slideDistance={slideDistance}
+    >
       <S.ContentWrapper>{children}</S.ContentWrapper>
       {!isUploading && (
         <S.CloseButtonWrapper>
