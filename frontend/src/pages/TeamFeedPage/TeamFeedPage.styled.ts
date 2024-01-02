@@ -114,7 +114,7 @@ export const scrollBottomButton = css`
 `;
 
 export const noPaddingButton = css`
-  padding: 0px;
+  padding: 0;
 `;
 
 export const noticeText = css`
