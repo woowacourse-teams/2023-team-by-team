@@ -63,6 +63,7 @@ const ThreadList = (props: ThreadListProps) => {
   }, [teamPlaceId]);
 
   useEffect(() => {
+    console.log(threadPages);
     if (!threadEndRef.current) {
       return;
     }
