@@ -4,6 +4,7 @@ import * as S from './MyDailyScheduleList.styled';
 import { getInfoByTeamPlaceId } from '~/utils/getInfoByTeamPlaceId';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import MyDailySchedule from '~/components/my_calendar/MyDailySchedule/MyDailySchedule';
+import { generateYYYYMMDDWithoutHyphens } from '~/utils/generateYYYYMMDDWithoutHyphens';
 
 interface MyDailyScheduleListProps {
   rawDate: Date;
@@ -12,7 +13,8 @@ interface MyDailyScheduleListProps {
 const MyDailyScheduleList = (props: MyDailyScheduleListProps) => {
   const { rawDate } = props;
   const { year, month, date } = parseDate(rawDate);
-  const schedules = useFetchMyDailySchedules(year, month, date);
+  const scheduleDate = generateYYYYMMDDWithoutHyphens(rawDate);
+  const schedules = useFetchMyDailySchedules(scheduleDate);
   const { teamPlaces } = useTeamPlace();
 
   return (
