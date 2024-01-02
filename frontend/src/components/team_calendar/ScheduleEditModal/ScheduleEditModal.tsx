@@ -32,6 +32,7 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
     isAllDay,
     handlers: {
       handleScheduleChange,
+      handleScheduleBlur,
       handleScheduleSubmit,
       handleStartTimeChange,
       handleEndTimeChange,
@@ -66,7 +67,7 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
               placeholder="일정 제목"
               css={S.title}
               name="title"
-              value={schedule['title']}
+              value={schedule.title}
               required
               onChange={handleScheduleChange}
             />
@@ -83,13 +84,14 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
                 type="date"
                 css={S.dateTimeLocalInput}
                 name="startDate"
-                value={schedule['startDate']}
+                value={schedule.startDate}
                 onChange={handleScheduleChange}
+                onBlur={handleScheduleBlur}
                 required
               />
               {!isAllDay && (
                 <TimeTableMenu
-                  displayValue={times['startTime']}
+                  displayValue={times.startTime}
                   onSelect={handleStartTimeChange}
                 />
               )}
@@ -106,14 +108,15 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
                 type="date"
                 css={S.dateTimeLocalInput}
                 name="endDate"
-                value={schedule['endDate']}
-                min={schedule['startDate']}
+                value={schedule.endDate}
+                min={schedule.startDate}
                 onChange={handleScheduleChange}
+                onBlur={handleScheduleBlur}
                 required
               />
               {!isAllDay && (
                 <TimeTableMenu
-                  displayValue={times['endTime']}
+                  displayValue={times.endTime}
                   onSelect={handleEndTimeChange}
                 />
               )}

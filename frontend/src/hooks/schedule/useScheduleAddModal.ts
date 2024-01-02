@@ -1,121 +1,57 @@
-import { useState } from 'react';
 import { useSendSchedule } from '~/hooks/queries/useSendSchedule';
 import { useModal } from '~/hooks/useModal';
 import { isYYYYMMDDHHMM } from '~/types/typeGuard';
-import { parseDate } from '~/utils/parseDate';
-import type { ChangeEventHandler, FormEventHandler } from 'react';
+import type { FormEventHandler } from 'react';
 import { useToast } from '~/hooks/useToast';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
+import { useDateTimeRange } from '~/hooks/schedule/useDateTimeRange';
 
 export const useScheduleAddModal = (clickedDate: Date) => {
-  const { year, month, date } = parseDate(clickedDate);
-  const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(
-    date,
-  ).padStart(2, '0')}`;
-  const [schedule, setSchedule] = useState({
-    title: '',
-    startDateTime: dateString,
-    endDateTime: dateString,
-  });
-  const [times, setTimes] = useState({
-    startTime: '09:00',
-    endTime: '10:00',
-  });
-  const [isAllDay, setIsAllDay] = useState(false);
+  const {
+    title,
+    startDate,
+    endDate,
+    startTime,
+    endTime,
+    isValid,
+    isAllDay,
+    handleScheduleChange,
+    handleScheduleBlur,
+    handleStartTimeChange,
+    handleEndTimeChange,
+    handleIsAllDayChange,
+  } = useDateTimeRange(clickedDate, '');
   const { closeModal } = useModal();
   const { showToast } = useToast();
   const { teamPlaceId } = useTeamPlace();
   const { mutateSendSchedule } = useSendSchedule(teamPlaceId);
 
-  const handleScheduleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const { name, value } = e.target;
-
-    setSchedule((prev) => {
-      return {
-        ...prev,
-        [name]: value,
-      };
-    });
-  };
-
-  const handleStartTimeChange = (value: string) => {
-    if (!isValidEndTime(value, times['endTime'])) {
-      setTimes((prev) => {
-        return {
-          ...prev,
-          ['startTime']: value,
-          ['endTime']: value,
-        };
-      });
-      return;
-    }
-    setTimes((prev) => {
-      return {
-        ...prev,
-        ['startTime']: value,
-      };
-    });
-  };
-
-  const handleEndTimeChange = (value: string) => {
-    if (!isValidEndTime(times['startTime'], value)) {
-      setTimes((prev) => {
-        return {
-          ...prev,
-          ['endTime']: prev['startTime'],
-        };
-      });
-      return;
-    }
-    setTimes((prev) => {
-      return {
-        ...prev,
-        ['endTime']: value,
-      };
-    });
-  };
-
-  const isValidEndTime = (startTime: string, endTime: string) => {
-    const { startDateTime, endDateTime } = schedule;
-    const start = new Date(`${startDateTime} ${startTime}`);
-    const end = new Date(`${endDateTime} ${endTime}`);
-
-    return start < end;
-  };
-
-  const handleIsAllDayChange = () => {
-    setIsAllDay((prev) => !prev);
-  };
+  const schedule = { title, startDate, endDate };
+  const times = { startTime, endTime };
 
   const handleScheduleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
-    const { title, startDateTime, endDateTime } = schedule;
-    const { startTime, endTime } = times;
-    const formattedStartDateTime = `${startDateTime} ${
-      isAllDay ? '00:00' : startTime
-    }`;
-    const formattedEndDateTime = `${endDateTime} ${
-      isAllDay ? '23:59' : endTime
-    }`;
+    const startDateTime = `${startDate} ${startTime}`;
+    const endDateTime = `${endDate} ${endTime}`;
 
-    if (
-      !isYYYYMMDDHHMM(formattedStartDateTime) ||
-      !isYYYYMMDDHHMM(formattedEndDateTime)
-    ) {
+    if (!isYYYYMMDDHHMM(startDateTime) || !isYYYYMMDDHHMM(endDateTime)) {
       return;
     }
 
-    if (!isValidEndTime(startTime, endTime) && !isAllDay) {
-      showToast('error', '마감 시간은 시작 시간 이후여야 합니다.');
+    if (!isValid) {
+      showToast(
+        'error',
+        '날짜/시간 형식이 올바르지 않습니다. 올바르게 입력 후 다시 시도해 주세요.',
+      );
       return;
     }
 
     mutateSendSchedule(
       {
         title,
-        startDateTime: formattedStartDateTime,
-        endDateTime: formattedEndDateTime,
+        startDateTime,
+        endDateTime,
       },
       {
         onSuccess: () => {
@@ -138,6 +74,7 @@ export const useScheduleAddModal = (clickedDate: Date) => {
 
     handlers: {
       handleScheduleChange,
+      handleScheduleBlur,
       handleIsAllDayChange,
       handleStartTimeChange,
       handleEndTimeChange,
