@@ -185,7 +185,7 @@
   position: relative;
   overflow: hidden;
 
-  padding: 16px 28px;
+  padding: 10px 24px;
 `,ThreadHeader=styled_components_browser_esm.zo.div`
   display: flex;
   align-items: center;
@@ -208,7 +208,7 @@
   height: 136px;
   padding: 40px 20px 0 20px;
   margin-top: -20px;
-  margin-bottom: ${({$marginBottom})=>$marginBottom?"40px":"20px"};
+  margin-bottom: ${({$marginBottom})=>$marginBottom?"30px":"10px"};
 
   background: ${({theme,$isMe})=>$isMe?theme.gradient.BLURPLE("116px"):theme.gradient.WHITE("116px")};
 
@@ -223,7 +223,7 @@
   width: 100%;
   white-space: pre-wrap;
 
-  font-size: ${"md"===threadSize?18:16}px;
+  font-size: ${"md"===threadSize?16:14}px;
   color: ${({theme})=>isMe?theme.color.WHITE:theme.color.BLACK};
 
   word-break: break-all;
@@ -297,4 +297,4 @@
 
   border-radius: 12px;
 `;var Button=__webpack_require__("./src/components/common/Button/Button.tsx"),png=__webpack_require__("./src/assets/png/index.ts"),jsx_runtime=__webpack_require__("./node_modules/react/jsx-runtime.js");const ViewableThumbnail=props=>{const{image,size="md",onClick}=props,{isExpired,name,url}=image;return(0,jsx_runtime.jsx)(Container,{$size:size,children:(0,jsx_runtime.jsx)(Button.Z,{variant:"plain",type:"button",css:viewButton,onClick,"aria-label":`${name} 이미지 자세히 보기`,children:(0,jsx_runtime.jsx)(Image,{src:isExpired?png.wp:url,alt:name,onError:e=>{e.currentTarget.src=png.wp,e.currentTarget.alt="손상된 이미지"}})})})};ViewableThumbnail.displayName="ViewableThumbnail";const ViewableThumbnail_ViewableThumbnail=ViewableThumbnail;try{ViewableThumbnail.displayName="ViewableThumbnail",ViewableThumbnail.__docgenInfo={description:"",displayName:"ViewableThumbnail",props:{image:{defaultValue:null,description:"",name:"image",required:!0,type:{name:"ThreadImage"}},size:{defaultValue:null,description:"",name:"size",required:!1,type:{name:"enum",value:[{value:'"sm"'},{value:'"md"'}]}},onClick:{defaultValue:null,description:"",name:"onClick",required:!0,type:{name:"() => void"}}}},"undefined"!=typeof STORYBOOK_REACT_CLASSES&&(STORYBOOK_REACT_CLASSES["src/components/feed/ViewableThumbnail/ViewableThumbnail.tsx#ViewableThumbnail"]={docgenInfo:ViewableThumbnail.__docgenInfo,name:"ViewableThumbnail",path:"src/components/feed/ViewableThumbnail/ViewableThumbnail.tsx#ViewableThumbnail"})}catch(__react_docgen_typescript_loader_error){}},"./src/constants/feed.ts":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{__webpack_require__.d(__webpack_exports__,{KD:()=>THREAD_TYPE,Yz:()=>THREAD_SIZE,rW:()=>DEFAULT_MAX_THREAD_HEIGHT,vO:()=>MAX_UPLOAD_IMAGE_COUNT});const DEFAULT_MAX_THREAD_HEIGHT=500,THREAD_TYPE={THREAD:"thread",NOTIFICATION:"notification"},THREAD_SIZE=20,MAX_UPLOAD_IMAGE_COUNT=4},"./src/constants/query.ts":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{__webpack_require__.d(__webpack_exports__,{i:()=>STALE_TIME});const STALE_TIME={SCHEDULES:3e4,DAILY_SCHEDULES:3e4,MY_SCHEDULES:3e4,MY_DAILY_SCHEDULES:3e4,USER_INFO:3e5,TEAM_PLACE_MEMBERS:6e4,TEAM_PLACE_INVITE_CODE:1/0,TEAM_LINKS:6e4,TEAM_FEED:3e5,ICALENDAR_URL:1/0}},"./src/hooks/useTeamPlace.ts":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{__webpack_require__.d(__webpack_exports__,{l:()=>useTeamPlace});var react__WEBPACK_IMPORTED_MODULE_0__=__webpack_require__("./node_modules/react/index.js"),_contexts_TeamPlaceContext__WEBPACK_IMPORTED_MODULE_1__=__webpack_require__("./src/contexts/TeamPlaceContext.tsx");const useTeamPlace=()=>{const context=(0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_contexts_TeamPlaceContext__WEBPACK_IMPORTED_MODULE_1__.Q);if(void 0===context)throw new Error("useTeamPlace must be used within a TeamPlaceContext");return context}},"./src/utils/formatWriteTime.ts":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{__webpack_require__.d(__webpack_exports__,{o:()=>formatWriteTime});const formatWriteTime=rawDateTime=>rawDateTime.replaceAll("-","/")}}]);
-//# sourceMappingURL=components-feed-ThreadList-ThreadList-stories.45f63654.iframe.bundle.js.map
+//# sourceMappingURL=components-feed-ThreadList-ThreadList-stories.a61a83cf.iframe.bundle.js.map
