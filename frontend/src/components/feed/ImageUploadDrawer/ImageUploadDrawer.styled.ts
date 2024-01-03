@@ -1,6 +1,10 @@
 import { styled, css } from 'styled-components';
 
-export const Container = styled.div<{ $isOpen: boolean; $isMobile: boolean }>`
+export const Container = styled.div<{
+  $isOpen: boolean;
+  $isMobile: boolean;
+  $slideDistance: number;
+}>`
   display: flex;
   position: absolute;
 
@@ -26,7 +30,9 @@ export const Container = styled.div<{ $isOpen: boolean; $isMobile: boolean }>`
   background: linear-gradient(30deg, #bfc3ff, #eaebff);
 
   transition: 0.35s;
-  transform: translateY(${({ $isOpen }) => ($isOpen ? '-163px' : '0')});
+  transform: translateY(
+    ${({ $isOpen, $slideDistance }) => ($isOpen ? `-${$slideDistance}px` : 0)}
+  );
 `;
 
 export const ContentWrapper = styled.div`

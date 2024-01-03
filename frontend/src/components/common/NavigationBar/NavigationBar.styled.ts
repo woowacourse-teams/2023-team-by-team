@@ -9,7 +9,6 @@ export const Nav = styled.nav<{ $isMobile: boolean }>`
       return css`
         width: 100%;
         height: 60px;
-        padding: 10px;
       `;
 
     return css`
