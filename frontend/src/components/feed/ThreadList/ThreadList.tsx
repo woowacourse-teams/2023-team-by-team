@@ -75,7 +75,7 @@ const ThreadList = (props: ThreadListProps) => {
     threadEndRef.current.scrollIntoView();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [threadPages]);
+  }, [threadPages?.pages[0].threads.length]);
 
   return (
     <>
