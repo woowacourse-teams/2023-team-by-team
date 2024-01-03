@@ -6,7 +6,7 @@
 [![](https://img.shields.io/badge/-teamby.team-important?style=flat&logo=airplayvideo&logoColor=white&labelColor=black&color=%233145FF)](https://teamby.team/)
 [![](https://img.shields.io/badge/-Tech%20Blog-important?style=flat&logo=angellist&logoColor=balck&labelColor=black&color=white)
 ](https://team-by-team.github.io/)
-[![](https://img.shields.io/badge/release-v1.5.2-critical?style=flat&logo=github&logoColor=balck&labelColor=black&color=white)
+[![](https://img.shields.io/badge/release-v1.6.0-critical?style=flat&logo=github&logoColor=balck&labelColor=black&color=white)
 ](https://github.com/woowacourse-teams/2023-team-by-team/releases)
 
 # 팀바팀
