@@ -1,4 +1,5 @@
 import type { MODAL_OPEN_TYPE } from '~/constants/calendar';
+import type { CalendarSize } from '~/types/size';
 
 export interface Schedule {
   id: number;
@@ -12,6 +13,8 @@ export interface ScheduleWithTeamPlaceId extends Schedule {
 }
 
 export type ScheduleWithoutId = Omit<Schedule, 'id'>;
+
+export type YYYYMMDD = `${string}-${string}-${string}`;
 
 export type YYYYMMDDHHMM = `${string}-${string}-${string} ${string}:${string}`;
 
@@ -46,4 +49,19 @@ export interface GeneratedScheduleBar {
   level: number;
   roundedStart: boolean;
   roundedEnd: boolean;
+  calendarSize?: CalendarSize;
+  mode?: 'normal' | 'no-interaction' | 'indicator';
+}
+
+export interface DragStatus {
+  isDragging: boolean;
+  level: number;
+  schedule: Schedule | null;
+  initX: number;
+  initY: number;
+}
+
+export interface DateRange {
+  startDate: string;
+  endDate: string;
 }

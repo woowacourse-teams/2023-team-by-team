@@ -38,7 +38,11 @@ const NoticeThread = (props: NoticeThreadProps) => {
   };
 
   return (
-    <S.Container $noticeSize={noticeSize} $isMobile={isMobile}>
+    <S.Container
+      $noticeSize={noticeSize}
+      $isMobile={isMobile}
+      $hasImage={images.length > 0}
+    >
       <S.BackgroundContainer $noticeSize={noticeSize} $isMobile={isMobile}>
         <S.InnerContainer
           $noticeSize={noticeSize}
@@ -49,10 +53,14 @@ const NoticeThread = (props: NoticeThreadProps) => {
           </S.MegaphoneWrapper>
 
           <S.ContentContainer $noticeSize={noticeSize}>
-            <Text size="lg" weight="semiBold" css={S.contentField(noticeSize)}>
+            <Text
+              size="lg"
+              weight="semiBold"
+              css={S.contentField(noticeSize, images.length > 0)}
+            >
               {content}
             </Text>
-            {images.length > 0 && noticeSize === 'lg' && (
+            {images.length > 0 && noticeSize !== 'sm' && (
               <ThumbnailList
                 mode="view"
                 size="sm"

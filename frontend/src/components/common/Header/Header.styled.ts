@@ -14,7 +14,7 @@ export const Header = styled.header<{ $isMobile: boolean }>`
   ${({ $isMobile }) =>
     $isMobile &&
     css`
-      height: 110px;
+      height: 90px;
       flex-wrap: wrap;
       flex-direction: row-reverse;
     `}
@@ -62,9 +62,17 @@ export const TeamNameWrapper = styled.div`
   align-items: center;
 `;
 
-export const ProfileImage = styled.img`
-  width: 40px;
-  height: 40px;
+export const ProfileImage = styled.img<{ $isMobile: boolean }>`
+  ${({ $isMobile }) =>
+    $isMobile
+      ? css`
+          width: 30px;
+          height: 30px;
+        `
+      : css`
+          width: 40px;
+          height: 40px;
+        `}
 
   border-radius: 50%;
   object-fit: cover;
@@ -91,14 +99,22 @@ export const notificationButton = css`
   }
 `;
 
-export const teamPlaceInfoButton = css`
+export const teamPlaceInfoButton = ($isMobile: boolean) => css`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 
-  width: 44px;
-  height: 44px;
+  ${$isMobile
+    ? css`
+        width: 30px;
+        height: 30px;
+      `
+    : css`
+        width: 44px;
+        height: 44px;
+      `}
+
   padding: 0;
 
   border-radius: 50%;
@@ -108,13 +124,21 @@ export const teamPlaceInfoButton = css`
   }
 `;
 
-export const userInfoButton = css`
+export const userInfoButton = ($isMobile: boolean) => css`
   display: flex;
   align-items: center;
   justify-content: center;
 
-  width: 50px;
-  height: 50px;
+  ${$isMobile
+    ? css`
+        width: 30px;
+        height: 30px;
+      `
+    : css`
+        width: 50px;
+        height: 50px;
+      `}
+
   padding: 0;
 `;
 

@@ -27,7 +27,11 @@ const ThumbnailList = (props: ThumbnailListProps) => {
   const { mode, images } = props;
 
   return (
-    <S.Container role="list" $mode={mode}>
+    <S.Container
+      role="list"
+      $mode={mode}
+      $size={mode === 'view' ? props.size : undefined}
+    >
       {mode === 'delete'
         ? images.map((image) => (
             <DeletableThumbnail

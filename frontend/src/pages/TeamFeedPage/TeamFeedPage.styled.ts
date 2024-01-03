@@ -42,8 +42,8 @@ export const ThreadListWrapper = styled.div`
   display: flex;
   flex-direction: column;
 
-  row-gap: 24px;
-  padding: 20px 30px;
+  row-gap: 16px;
+  padding: 20px 30px 0;
 
   background-color: ${({ theme }) => theme.color.WHITE};
 `;
@@ -111,6 +111,10 @@ export const ThreadInputForm = styled.form`
 export const scrollBottomButton = css`
   background-color: ${({ theme }) => theme.color.WHITE};
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+`;
+
+export const noPaddingButton = css`
+  padding: 0;
 `;
 
 export const noticeText = css`

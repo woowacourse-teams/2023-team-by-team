@@ -4,7 +4,6 @@ import { useModal } from '~/hooks/useModal';
 import * as S from './ScheduleModal.styled';
 import { CloseIcon, DeleteIcon, EditIcon } from '~/assets/svg';
 import Button from '~/components/common/Button/Button';
-import { formatDateTime } from '~/utils/formatDateTime';
 import type { SchedulePosition } from '~/types/schedule';
 import { useFetchScheduleById } from '~/hooks/queries/useFetchScheduleById';
 import { useDeleteSchedule } from '~/hooks/queries/useDeleteSchedule';
@@ -13,6 +12,7 @@ import { useToast } from '~/hooks/useToast';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import type { CalendarSize } from '~/types/size';
 import { getIsMobile } from '~/utils/getIsMobile';
+import { generateDateTimeRangeDescription } from '~/utils/generateDateTimeRangeDescription';
 
 interface ScheduleModalProps {
   calendarWidth: number;
@@ -111,11 +111,9 @@ const ScheduleModal = (props: ScheduleModalProps) => {
         </Text>
         <S.PeriodWrapper $isMobile={isMobile}>
           <time>
-            <Text size="lg">{formatDateTime(startDateTime)}</Text>
-          </time>
-          <Text size="lg">~</Text>
-          <time>
-            <Text size="lg">{formatDateTime(endDateTime)}</Text>
+            <Text size="lg">
+              {generateDateTimeRangeDescription(startDateTime, endDateTime)}
+            </Text>
           </time>
         </S.PeriodWrapper>
         <Button

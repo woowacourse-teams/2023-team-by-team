@@ -8,6 +8,10 @@ public class ScheduleException extends RuntimeException {
         super(message);
     }
 
+    public ScheduleException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
     public static class ScheduleNotFoundException extends ScheduleException {
         public ScheduleNotFoundException(final Long scheduleId) {
             super(String.format("조회한 일정이 존재하지 않습니다. - request info { schedule_id : %d }", scheduleId));
@@ -31,9 +35,14 @@ public class ScheduleException extends RuntimeException {
     }
 
     public static class TitleBlankException extends ScheduleException {
-
         public TitleBlankException() {
             super("일정의 제목은 빈 칸일 수 없습니다.");
+        }
+    }
+
+    public static class dateFormatException extends ScheduleException {
+        public dateFormatException(final Exception e) {
+            super("잘못된 날짜 입력 형식입니다.", e);
         }
     }
 }

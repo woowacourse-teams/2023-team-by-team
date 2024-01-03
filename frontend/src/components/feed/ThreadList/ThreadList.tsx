@@ -31,7 +31,6 @@ const ThreadList = (props: ThreadListProps) => {
     useFetchThreads(teamPlaceId);
 
   const threadEndRef = useRef<HTMLDivElement>(null);
-  const threadPagesRef = useRef<number>(0);
   const observeRef = useRef<HTMLDivElement>(null);
   const [scrollHeight, setScrollHeight] = useState(0);
 
@@ -56,21 +55,27 @@ const ThreadList = (props: ThreadListProps) => {
   }, [threadPages?.pages.length]);
 
   useEffect(() => {
-    if (threadPages?.pages.length !== threadPagesRef.current) {
-      threadPagesRef.current = threadPages?.pages.length ?? 0;
-    } else {
-      if (!threadEndRef.current) {
-        return;
-      }
-
-      if (isShowScrollBottomButton) {
-        return;
-      }
-
-      threadEndRef.current.scrollIntoView();
+    if (!threadEndRef.current) {
+      return;
     }
+
+    threadEndRef.current.scrollIntoView();
+  }, [teamPlaceId]);
+
+  useEffect(() => {
+    console.log(threadPages);
+    if (!threadEndRef.current) {
+      return;
+    }
+
+    if (isShowScrollBottomButton) {
+      return;
+    }
+
+    threadEndRef.current.scrollIntoView();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [threadPages]);
+  }, [threadPages?.pages[0].threads.length]);
 
   return (
     <>

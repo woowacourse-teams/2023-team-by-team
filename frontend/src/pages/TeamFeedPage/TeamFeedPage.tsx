@@ -14,7 +14,6 @@ import * as S from './TeamFeedPage.styled';
 import { useModal } from '~/hooks/useModal';
 import { useState } from 'react';
 import type { ThreadImage } from '~/types/feed';
-import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { getIsMobile } from '~/utils/getIsMobile';
 
 interface TeamFeedPageProps {
@@ -100,6 +99,7 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
           isOpen={isImageDrawerOpen}
           onClose={handleImageDrawerToggle}
           isUploading={isSendingImage}
+          slideDistance={isMobile ? 142 : 162}
         >
           <ThumbnailList
             mode="delete"
@@ -129,6 +129,7 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
               variant="plain"
               aria-label="이미지 업로드하기"
               onClick={handleImageDrawerToggle}
+              css={isMobile && S.noPaddingButton}
               disabled={isSendingImage}
             >
               <ImageIcon />
@@ -147,6 +148,7 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
                 variant="plain"
                 aria-label="채팅 전송하기"
                 disabled={isSendingImage}
+                css={isMobile && S.noPaddingButton}
               >
                 <AirplaneIcon
                   fill={isSendingImage ? 'white' : '#8e92ff'}

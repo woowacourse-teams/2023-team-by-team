@@ -44,6 +44,18 @@ public class TeamCalendarScheduleAcceptanceFixtures {
                 .extract();
     }
 
+    public static ExtractableResponse<Response> FIND_PERIOD_SCHEDULE_REQUEST(final String token, final Long teamPlaceId, final String startDate, final String endDate) {
+        return RestAssured.given().log().all()
+                .header(new Header(HttpHeaders.AUTHORIZATION, JWT_PREFIX + token))
+                .pathParam("teamPlaceId", teamPlaceId)
+                .queryParam("startDate", startDate)
+                .queryParam("endDate", endDate)
+                .when().log().all()
+                .get("/api/team-place/{teamPlaceId}/calendar/schedules")
+                .then().log().all()
+                .extract();
+    }
+
     public static ExtractableResponse<Response> FIND_DAILY_SCHEDULE_REQUEST(final String token, final Long teamPlaceId, final int year, final int month, final int day) {
         return RestAssured.given().log().all()
                 .header(new Header(HttpHeaders.AUTHORIZATION, JWT_PREFIX + token))

@@ -38,64 +38,7 @@ export const TableContainer = styled.div<{
   box-shadow: 0 10px 20px ${({ theme }) => theme.color.GRAY300};
 `;
 
-export const tableProperties = css`
-  & > th,
-  & td {
-    display: table-cell;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    vertical-align: middle;
-
-    height: 48px;
-    padding: 8px;
-  }
-
-  & > tr {
-    border-bottom: 2px solid ${({ theme }) => theme.color.GRAY200};
-  }
-
-  & > th:first-child(),
-  & td:first-child() {
-    width: 40%;
-  }
-
-  & > th:nth-child(2),
-  & td:nth-child(2) {
-    width: 20%;
-  }
-  & > th:nth-child(3),
-  & td:nth-child(3) {
-    width: 30%;
-  }
-
-  & > th:nth-child(4),
-  & td:nth-child(4) {
-    width: 10%;
-  }
-
-  & > tr :not(:first-child),
-  & th {
-    text-align: center;
-  }
-
-  font-size: 18px;
-
-  table-layout: fixed;
-`;
-
-export const TableHeader = styled.table`
-  width: calc(100% - 32px);
-  height: 60px;
-
-  ${tableProperties}
-
-  & > th {
-    font-weight: 600;
-  }
-`;
-
-export const TableBody = styled.div`
+export const TableWrapper = styled.div`
   overflow-y: auto;
 
   width: 100%;
@@ -107,7 +50,44 @@ export const TableBody = styled.div`
 export const Table = styled.table`
   width: 100%;
 
-  ${tableProperties}
+  font-size: 18px;
+
+  table-layout: fixed;
+
+  & td {
+    display: table-cell;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+
+    height: 48px;
+    padding: 8px;
+  }
+
+  & td:first-child(),
+  thead > tr > th:first-child() {
+    width: 40%;
+  }
+
+  & td:nth-child(2),
+  thead > tr > th:nth-child(2) {
+    width: 20%;
+  }
+
+  & td:nth-child(3),
+  thead > tr > th:nth-child(3) {
+    width: 30%;
+  }
+
+  & td:nth-child(4),
+  thead > tr > th:nth-child(4) {
+    width: 10%;
+  }
+
+  tbody > tr {
+    border-bottom: 2px solid ${({ theme }) => theme.color.GRAY200};
+  }
 
   & td > a {
     font-weight: 700;
@@ -117,6 +97,20 @@ export const Table = styled.table`
   & td:nth-child(4) svg {
     width: 32px;
     height: 32px;
+  }
+
+  & td:not(:first-child) {
+    text-align: center;
+  }
+`;
+
+export const TableHeader = styled.thead`
+  width: calc(100% - 32px);
+  height: 48px;
+
+  tr > th {
+    vertical-align: middle;
+    font-weight: 600;
   }
 `;
 

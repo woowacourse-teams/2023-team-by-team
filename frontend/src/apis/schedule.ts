@@ -19,25 +19,18 @@ interface ICalendarResponse {
 
 export const fetchSchedules = (
   teamPlaceId: number,
-  year: number,
-  month: number,
-  day?: number,
+  startDate: string,
+  endDate: string,
 ) => {
-  const query = day
-    ? `year=${year}&month=${month}&day=${day}`
-    : `year=${year}&month=${month}`;
-
   return http.get<SchedulesResponse>(
-    `/api/team-place/${teamPlaceId}/calendar/schedules?${query}`,
+    `/api/team-place/${teamPlaceId}/calendar/schedules?startDate=${startDate}&endDate=${endDate}`,
   );
 };
 
-export const fetchMySchedules = (year: number, month: number, day?: number) => {
-  const query = day
-    ? `year=${year}&month=${month}&day=${day}`
-    : `year=${year}&month=${month}`;
-
-  return http.get<MySchedulesResponse>(`/api/my-calendar/schedules?${query}`);
+export const fetchMySchedules = (startDate: string, endDate: string) => {
+  return http.get<MySchedulesResponse>(
+    `/api/my-calendar/schedules?startDate=${startDate}&endDate=${endDate}`,
+  );
 };
 
 export const fetchScheduleById = (teamPlaceId: number, scheduleId: number) => {

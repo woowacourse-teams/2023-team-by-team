@@ -100,4 +100,107 @@ public class MyCalendarScheduleAcceptanceTest extends AcceptanceTest {
             });
         }
     }
+
+
+
+    @Nested
+    @DisplayName("내 캘린더 일정을 특정 기간 사이에서 조회를 한다")
+    class MyCalendarFindScheduleInSpecificPeriod {
+
+        @Test
+        @DisplayName("기간으로 조회 성공한다.")
+        void success() {
+            // given
+            final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
+
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final TeamPlace JAPANESE_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(JAPANESE_TEAM_PLACE());
+
+            testFixtureBuilder.buildMemberTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
+            testFixtureBuilder.buildMemberTeamPlace(PHILIP, JAPANESE_TEAM_PLACE);
+
+            final Schedule MONTH_6_AND_MONTH_7_DAY_12_ENGLISH_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_6_AND_MONTH_7_DAY_12_SCHEDULE(ENGLISH_TEAM_PLACE.getId()));
+            final Schedule MONTH_7_AND_DAY_12_ALL_DAY_ENGLISH_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE(ENGLISH_TEAM_PLACE.getId()));
+            final Schedule MONTH_7_AND_DAY_12_N_HOUR_JAPANESE_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(JAPANESE_TEAM_PLACE.getId()));
+            final Schedule MONTH_7_DAY_28_AND_MONTH_8_SCHEDULE_JAPANESE_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_DAY_28_AND_MONTH_8_SCHEDULE(JAPANESE_TEAM_PLACE.getId()));
+
+            final String startDate = "20230711";
+            final String endDate = "20230712";
+
+            // when
+            final ExtractableResponse<Response> response = FIND_PERIOD_SCHEDULE_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), startDate, endDate);
+            final List<ScheduleWithTeamPlaceIdResponse> schedules = response.jsonPath().getList("schedules", ScheduleWithTeamPlaceIdResponse.class);
+
+            //then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+                softly.assertThat(schedules).hasSize(3);
+                softly.assertThat(schedules.get(0).title()).isEqualTo(MONTH_6_AND_MONTH_7_DAY_12_ENGLISH_SCHEDULE.getTitle().getValue());
+                softly.assertThat(schedules.get(1).title()).isEqualTo(MONTH_7_AND_DAY_12_ALL_DAY_ENGLISH_SCHEDULE.getTitle().getValue());
+                softly.assertThat(schedules.get(2).title()).isEqualTo(MONTH_7_AND_DAY_12_N_HOUR_JAPANESE_SCHEDULE.getTitle().getValue());
+            });
+        }
+
+        @Test
+        @DisplayName("날짜의 순서가 잘못되면 실패한다.")
+        void failWithWrongPeriodDateOrder() {
+            // given
+            final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
+
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final TeamPlace JAPANESE_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(JAPANESE_TEAM_PLACE());
+
+            testFixtureBuilder.buildMemberTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
+            testFixtureBuilder.buildMemberTeamPlace(PHILIP, JAPANESE_TEAM_PLACE);
+
+            testFixtureBuilder.buildSchedule(MONTH_6_AND_MONTH_7_DAY_12_SCHEDULE(ENGLISH_TEAM_PLACE.getId()));
+            testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE(ENGLISH_TEAM_PLACE.getId()));
+            testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(JAPANESE_TEAM_PLACE.getId()));
+            testFixtureBuilder.buildSchedule(MONTH_7_DAY_28_AND_MONTH_8_SCHEDULE(JAPANESE_TEAM_PLACE.getId()));
+
+            final String startDate = "20230711";
+            final String endDate = "20230710";
+
+            // when
+            final ExtractableResponse<Response> response = FIND_PERIOD_SCHEDULE_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), startDate, endDate);
+            final String errorMessage = response.jsonPath().get("error");
+
+            //then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+                softly.assertThat(errorMessage).contains("시작 일자가 종료 일자보다 이후일 수 없습니다.");
+            });
+        }
+
+        @Test
+        @DisplayName("잘못된 형식으로 조회요청시 실패한다")
+        void failWithWrongDateFormant() {
+            // given
+            final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
+
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final TeamPlace JAPANESE_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(JAPANESE_TEAM_PLACE());
+
+            testFixtureBuilder.buildMemberTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
+            testFixtureBuilder.buildMemberTeamPlace(PHILIP, JAPANESE_TEAM_PLACE);
+
+            testFixtureBuilder.buildSchedule(MONTH_6_AND_MONTH_7_DAY_12_SCHEDULE(ENGLISH_TEAM_PLACE.getId()));
+            testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE(ENGLISH_TEAM_PLACE.getId()));
+            testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(JAPANESE_TEAM_PLACE.getId()));
+            testFixtureBuilder.buildSchedule(MONTH_7_DAY_28_AND_MONTH_8_SCHEDULE(JAPANESE_TEAM_PLACE.getId()));
+
+            final String startDate = "2023-07-11";
+            final String endDate = "20230712";
+
+            // when
+            final ExtractableResponse<Response> response = FIND_PERIOD_SCHEDULE_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), startDate, endDate);
+            final String errorMessage = response.jsonPath().get("error");
+
+            //then
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+                softly.assertThat(errorMessage).isEqualTo("잘못된 날짜 입력 형식입니다.");
+            });
+        }
+    }
 }

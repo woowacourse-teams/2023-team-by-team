@@ -1,23 +1,37 @@
 import { styled, css } from 'styled-components';
 
-export const Container = styled.ul<{ $mode: 'delete' | 'view' }>`
+export const Container = styled.ul<{
+  $mode: 'delete' | 'view';
+  $size: 'md' | 'sm' | undefined;
+}>`
   display: flex;
   flex-direction: row;
   flex-shrink: 0;
   column-gap: 12px;
 
   width: 100%;
-  height: 116px;
 
-  ${({ $mode }) =>
-    $mode === 'view'
-      ? css`
+  ${({ $mode, $size }) => {
+    if ($mode === 'view')
+      if ($size === 'sm')
+        return css`
+          overflow-x: auto;
+          overflow-y: hidden;
+        `;
+      else
+        return css`
+          height: 116px;
+
           overflow-x: auto;
           overflow-y: hidden;
 
           padding-bottom: 20px;
-        `
-      : css`
-          overflow-x: visible;
-        `}
+        `;
+    else
+      return css`
+        height: 116px;
+
+        overflow-x: visible;
+      `;
+  }}
 `;

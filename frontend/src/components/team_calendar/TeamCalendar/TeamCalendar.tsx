@@ -16,10 +16,12 @@ import { useModal } from '~/hooks/useModal';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useCalendarResizePosition } from '~/hooks/useCalendarResizePosition';
 import { usePrefetchSchedules } from '~/hooks/queries/usePrefetchSchedules';
+import { useScheduleDragStatus } from '~/hooks/schedule/useScheduleBarDragStatus';
 import { DAYS_OF_WEEK, MODAL_OPEN_TYPE } from '~/constants/calendar';
 import { generateScheduleBars } from '~/utils/generateScheduleBars';
 import { arrayOf } from '~/utils/arrayOf';
 import { getDateByPosition } from '~/utils/getDateByPosition';
+import { generateCalendarRangeByYearMonth } from '~/utils/generateCalendarRangeByYearMonth';
 import type { Position, ModalOpenType } from '~/types/schedule';
 import type { CalendarSize } from '~/types/size';
 import {
@@ -30,6 +32,7 @@ import {
 } from '~/assets/svg';
 import * as S from './TeamCalendar.styled';
 import { parseDate } from '~/utils/parseDate';
+import CalendarDragScreen from '../CalendarDragScreen/CalendarDragScreen';
 import Spacing from '~/components/common/Spacing/Spacing';
 
 interface TeamCalendarProps {
@@ -38,6 +41,9 @@ interface TeamCalendarProps {
 
 const TeamCalendar = (props: TeamCalendarProps) => {
   const { calendarSize = 'md' } = props;
+
+  const { dragStatus, handleDragStart, handleMouseUp } =
+    useScheduleDragStatus();
 
   const { teamPlaceId } = useTeamPlace();
   const {
@@ -55,17 +61,22 @@ const TeamCalendar = (props: TeamCalendarProps) => {
     handlers: { handleScheduleModalOpen },
   } = useScheduleModal();
 
-  const schedules = useFetchSchedules(teamPlaceId, year, month);
-  // NOTE: month의 값은 0부터 시작하므로 1월, 11월에 해당하는 month의 값은 각각 0, 11이다.
-  usePrefetchSchedules(
+  const prevCalendarYear = month === 0 ? year - 1 : year;
+  const prevCalendarMonth = month === 0 ? 11 : month - 1;
+  const nextCalendarYear = month === 11 ? year + 1 : year;
+  const nextCalendarMonth = month === 11 ? 0 : month + 1;
+
+  const schedules = useFetchSchedules(
     teamPlaceId,
-    month === 11 ? year + 1 : year,
-    month === 11 ? 0 : month + 1,
+    generateCalendarRangeByYearMonth(year, month),
   );
   usePrefetchSchedules(
     teamPlaceId,
-    month === 0 ? year - 1 : year,
-    month === 0 ? 11 : month - 1,
+    generateCalendarRangeByYearMonth(prevCalendarYear, prevCalendarMonth),
+  );
+  usePrefetchSchedules(
+    teamPlaceId,
+    generateCalendarRangeByYearMonth(nextCalendarYear, nextCalendarMonth),
   );
 
   const [clickedDate, setClickedDate] = useState(currentDate);
@@ -224,14 +235,21 @@ const TeamCalendar = (props: TeamCalendarProps) => {
               return <S.DayOfWeek key={day}>{day}</S.DayOfWeek>;
             })}
           </S.DaysOfWeek>
-          <div>
+          <S.CalendarGrid>
             {calendar.map((week, rowIndex) => {
               return (
                 <Fragment key={rowIndex}>
                   <S.ScheduleBarContainer>
                     {scheduleBars.map((scheduleBar) => {
-                      const { id, scheduleId, row, column, level, duration } =
-                        scheduleBar;
+                      const {
+                        id,
+                        scheduleId,
+                        row,
+                        column,
+                        level,
+                        duration,
+                        schedule,
+                      } = scheduleBar;
 
                       if (row === rowIndex && level > 2)
                         return arrayOf(duration).map((_, index) => {
@@ -272,6 +290,9 @@ const TeamCalendar = (props: TeamCalendarProps) => {
                                 level,
                               });
                             }}
+                            onDragStart={(e) =>
+                              handleDragStart(e, level, schedule)
+                            }
                             {...scheduleBar}
                           />
                         );
@@ -316,7 +337,14 @@ const TeamCalendar = (props: TeamCalendarProps) => {
                 </Fragment>
               );
             })}
-          </div>
+            <CalendarDragScreen
+              calendarSize={calendarSize}
+              year={year}
+              month={month}
+              dragStatus={dragStatus}
+              onMouseUp={handleMouseUp}
+            />
+          </S.CalendarGrid>
         </div>
       </S.Container>
       {modal}

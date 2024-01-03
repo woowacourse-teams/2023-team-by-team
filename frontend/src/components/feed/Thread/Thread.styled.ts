@@ -47,7 +47,7 @@ export const ContentWrapper = styled.div`
   position: relative;
   overflow: hidden;
 
-  padding: 16px 28px;
+  padding: 10px 24px;
 `;
 
 export const ThreadHeader = styled.div`
@@ -81,7 +81,7 @@ export const ThumbnailListWrapper = styled.div<{
   height: 136px;
   padding: 40px 20px 0 20px;
   margin-top: -20px;
-  margin-bottom: ${({ $marginBottom }) => ($marginBottom ? '40px' : '20px')};
+  margin-bottom: ${({ $marginBottom }) => ($marginBottom ? '30px' : '10px')};
 
   background: ${({ theme, $isMe }) =>
     $isMe ? theme.gradient.BLURPLE('116px') : theme.gradient.WHITE('116px')};
@@ -101,7 +101,7 @@ export const contentField = (threadSize: ThreadSize, isMe: boolean) => css`
   width: 100%;
   white-space: pre-wrap;
 
-  font-size: ${threadSize === 'md' ? 18 : 16}px;
+  font-size: ${threadSize === 'md' ? 16 : 14}px;
   color: ${({ theme }) => (isMe ? theme.color.WHITE : theme.color.BLACK)};
 
   word-break: break-all;
