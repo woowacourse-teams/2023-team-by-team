@@ -34,7 +34,6 @@ public class ScheduleNotificationFactory {
         return new ScheduleNotification(teamPlaceId, content, scheduleId);
     }
 
-
     private static ScheduleNotification generateScheduleNotificationDeleteEvent(final ScheduleEvent scheduleEvent) {
         final Long scheduleId = scheduleEvent.getScheduleId();
         final Long teamPlaceId = scheduleEvent.getTeamPlaceId();
