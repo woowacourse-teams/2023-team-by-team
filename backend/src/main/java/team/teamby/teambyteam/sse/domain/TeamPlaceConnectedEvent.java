@@ -1,6 +1,8 @@
 package team.teamby.teambyteam.sse.domain;
 
-public class TeamPlaceConnectedEvent implements TeamPlaceSseEvent {
+import team.teamby.teambyteam.common.domain.DomainEvent;
+
+public class TeamPlaceConnectedEvent implements TeamPlaceSseEvent, DomainEvent<String> {
 
     private static final String EVENT_NAME = "connect";
 
@@ -27,6 +29,11 @@ public class TeamPlaceConnectedEvent implements TeamPlaceSseEvent {
     @Override
     public Object getEvent(final TeamPlaceEmitterId emitterId) {
         return event;
+    }
+
+    @Override
+    public String getDomainId() {
+        return String.format("%d-%d", event.teamPlaceId, event.memberId);
     }
 
     private record DummyEvent(Long teamPlaceId, Long memberId) {
