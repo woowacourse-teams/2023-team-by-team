@@ -19,7 +19,7 @@ public record FeedResponse(
         Boolean isMe
 ) {
     private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm";
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
+    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
 
     public static FeedResponse from(final Feed feed, final String authorName, final String profileImageUrl) {
         final String createdAt = feed.getCreatedAt().format(DATE_TIME_FORMATTER);
