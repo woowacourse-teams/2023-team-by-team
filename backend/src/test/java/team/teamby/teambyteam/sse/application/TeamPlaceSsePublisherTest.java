@@ -16,10 +16,10 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter.SseEventBuilder;
 import team.teamby.teambyteam.common.domain.DomainEvent;
 import team.teamby.teambyteam.sse.TestSseEvent;
-import team.teamby.teambyteam.sse.domain.TeamPlaceEmitterId;
-import team.teamby.teambyteam.sse.domain.TeamPlaceEmitterRepository;
-import team.teamby.teambyteam.sse.domain.TeamPlaceSseConverter;
 import team.teamby.teambyteam.sse.domain.TeamPlaceSseEvent;
+import team.teamby.teambyteam.sse.domain.converter.TeamPlaceSseConverter;
+import team.teamby.teambyteam.sse.domain.emitter.TeamPlaceEmitterId;
+import team.teamby.teambyteam.sse.domain.emitter.TeamPlaceEmitterRepository;
 
 import java.io.IOException;
 import java.util.Set;
@@ -99,7 +99,7 @@ class TeamPlaceSsePublisherTest {
         final SseEmitter savedEmitter = teamPlaceEmitterRepository.save(emitterId, sseEmitter).getSingleEmitter();
 
         // when
-        teamPlaceSsePublisher.publishEvent(new TestConfig.TestDomainEvent(1L,testSseEvent));
+        teamPlaceSsePublisher.publishEvent(new TestConfig.TestDomainEvent(1L, testSseEvent));
 
         Thread.sleep(1000);
         // then

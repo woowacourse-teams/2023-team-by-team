@@ -1,4 +1,4 @@
-package team.teamby.teambyteam.sse.domain;
+package team.teamby.teambyteam.sse.domain.converter;
 
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
@@ -15,6 +15,8 @@ import team.teamby.teambyteam.feed.application.event.FeedEvent;
 import team.teamby.teambyteam.feed.domain.Feed;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
+import team.teamby.teambyteam.sse.domain.TeamPlaceSseEvent;
+import team.teamby.teambyteam.sse.domain.emitter.TeamPlaceEmitterId;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
 import static org.assertj.core.api.Assertions.assertThat;

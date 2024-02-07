@@ -1,7 +1,8 @@
-package team.teamby.teambyteam.sse.domain;
+package team.teamby.teambyteam.sse.domain.converter;
 
 import org.springframework.stereotype.Component;
 import team.teamby.teambyteam.common.domain.DomainEvent;
+import team.teamby.teambyteam.sse.domain.TeamPlaceSseEvent;
 
 import java.util.HashMap;
 import java.util.List;

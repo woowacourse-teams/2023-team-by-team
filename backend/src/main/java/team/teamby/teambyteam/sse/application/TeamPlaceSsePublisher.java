@@ -7,11 +7,11 @@ import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 import team.teamby.teambyteam.common.domain.DomainEvent;
 import team.teamby.teambyteam.feed.application.event.FeedEvent;
-import team.teamby.teambyteam.sse.domain.SseEmitters;
-import team.teamby.teambyteam.sse.domain.TeamPlaceEmitterRepository;
-import team.teamby.teambyteam.sse.domain.TeamPlaceEventConvertMapper;
 import team.teamby.teambyteam.sse.domain.TeamPlaceEventId;
 import team.teamby.teambyteam.sse.domain.TeamPlaceSseEvent;
+import team.teamby.teambyteam.sse.domain.converter.TeamPlaceEventConvertMapper;
+import team.teamby.teambyteam.sse.domain.emitter.SseEmitters;
+import team.teamby.teambyteam.sse.domain.emitter.TeamPlaceEmitterRepository;
 
 @RequiredArgsConstructor
 @Service

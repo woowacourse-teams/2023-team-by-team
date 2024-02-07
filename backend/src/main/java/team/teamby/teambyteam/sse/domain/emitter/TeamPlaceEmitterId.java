@@ -1,4 +1,4 @@
-package team.teamby.teambyteam.sse.domain;
+package team.teamby.teambyteam.sse.domain.emitter;
 
 import lombok.EqualsAndHashCode;
 

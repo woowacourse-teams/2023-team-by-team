@@ -1,7 +1,7 @@
 package team.teamby.teambyteam.sse;
 
-import team.teamby.teambyteam.sse.domain.TeamPlaceEmitterId;
 import team.teamby.teambyteam.sse.domain.TeamPlaceSseEvent;
+import team.teamby.teambyteam.sse.domain.emitter.TeamPlaceEmitterId;
 
 public class TestSseEvent implements TeamPlaceSseEvent {
     private final Long teamPlaceId;

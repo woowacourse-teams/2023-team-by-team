@@ -1,5 +1,7 @@
 package team.teamby.teambyteam.sse.domain;
 
+import team.teamby.teambyteam.sse.domain.emitter.TeamPlaceEmitterId;
+
 public class TeamPlaceConnectedSseEvent implements TeamPlaceSseEvent {
 
     private static final String EVENT_NAME = "connect";

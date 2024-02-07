@@ -15,9 +15,9 @@ import team.teamby.teambyteam.common.ServiceTest;
 import team.teamby.teambyteam.common.fixtures.MemberFixtures;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.Member;
-import team.teamby.teambyteam.sse.domain.SseEmitters;
-import team.teamby.teambyteam.sse.domain.TeamPlaceEmitterId;
-import team.teamby.teambyteam.sse.domain.TeamPlaceEmitterRepository;
+import team.teamby.teambyteam.sse.domain.emitter.SseEmitters;
+import team.teamby.teambyteam.sse.domain.emitter.TeamPlaceEmitterId;
+import team.teamby.teambyteam.sse.domain.emitter.TeamPlaceEmitterRepository;
 
 import java.io.IOException;
 import java.util.Map;

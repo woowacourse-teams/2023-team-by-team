@@ -1,4 +1,4 @@
-package team.teamby.teambyteam.sse.domain;
+package team.teamby.teambyteam.sse.domain.converter;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -13,6 +13,8 @@ import team.teamby.teambyteam.feed.domain.FeedThread;
 import team.teamby.teambyteam.feed.domain.image.FeedThreadImage;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
+import team.teamby.teambyteam.sse.domain.TeamPlaceSseEvent;
+import team.teamby.teambyteam.sse.domain.emitter.TeamPlaceEmitterId;
 
 import java.util.List;
 
