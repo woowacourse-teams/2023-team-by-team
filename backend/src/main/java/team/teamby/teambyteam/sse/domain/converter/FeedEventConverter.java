@@ -52,14 +52,13 @@ public class FeedEventConverter implements TeamPlaceSseConverter {
 
         public FeedSse(final Feed feed, final MemberTeamPlace author) {
             this.teamPlaceId = feed.getTeamPlaceId();
-            final String createdAt = feed.getCreatedAt().format(FeedResponse.DATE_TIME_FORMATTER);
             this.forMe = new FeedResponse(
                     feed.getId(),
                     feed.getType().name().toLowerCase(),
                     feed.getAuthorId(),
                     author.getDisplayMemberNameValue(),
                     author.findMemberProfileImageUrl(),
-                    createdAt,
+                    feed.getCreatedAt(),
                     feed.getContent().getValue(),
                     convertImageResponses(((FeedThread) feed).getImages()),
                     true
