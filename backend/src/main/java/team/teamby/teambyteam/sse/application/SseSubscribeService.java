@@ -10,11 +10,11 @@ import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.exception.MemberException;
-import team.teamby.teambyteam.sse.domain.SseEmitters;
-import team.teamby.teambyteam.sse.domain.TeamPlaceConnectedEvent;
-import team.teamby.teambyteam.sse.domain.TeamPlaceEmitterId;
-import team.teamby.teambyteam.sse.domain.TeamPlaceEmitterRepository;
+import team.teamby.teambyteam.sse.domain.TeamPlaceConnectedSseEvent;
 import team.teamby.teambyteam.sse.domain.TeamPlaceEventId;
+import team.teamby.teambyteam.sse.domain.emitter.SseEmitters;
+import team.teamby.teambyteam.sse.domain.emitter.TeamPlaceEmitterId;
+import team.teamby.teambyteam.sse.domain.emitter.TeamPlaceEmitterRepository;
 
 @Slf4j
 @Service
@@ -38,7 +38,7 @@ public class SseSubscribeService {
         final TeamPlaceEmitterId emitterId = TeamPlaceEmitterId.of(teamPlaceId, memberId);
         final SseEmitters emitter = teamplaceEmitterRepository.save(emitterId, new SseEmitter(connectionTimeOut));
 
-        final TeamPlaceConnectedEvent dummyEvent = TeamPlaceConnectedEvent.of(teamPlaceId, memberId);
+        final TeamPlaceConnectedSseEvent dummyEvent = TeamPlaceConnectedSseEvent.of(teamPlaceId, memberId);
         final TeamPlaceEventId dummyEventId = TeamPlaceEventId.of(teamPlaceId, dummyEvent.getEventName());
         emitter.sendEvent(dummyEventId, dummyEvent);
 

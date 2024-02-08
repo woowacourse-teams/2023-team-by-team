@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import team.teamby.teambyteam.feed.application.dto.FeedImageResponse;
-import team.teamby.teambyteam.feed.application.dto.FeedResponse;
 import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
 import team.teamby.teambyteam.feed.application.event.FeedEvent;
 import team.teamby.teambyteam.feed.domain.FeedRepository;
@@ -24,7 +22,6 @@ import team.teamby.teambyteam.filesystem.FileStorageManager;
 import team.teamby.teambyteam.filesystem.util.FileUtil;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.MemberRepository;
-import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.exception.MemberException;
@@ -72,7 +69,7 @@ public class FeedWriteService {
         final Long threadId = savedFeedThread.getId();
         log.info("스레드 생성 - 생성자 이메일 : {}, 스레드 아이디 : {}", memberEmailDto.email(), threadId);
 
-        sendFeedWritingEvent(memberEmailDto, teamPlaceId, memberId, savedFeedThread);
+        sendFeedWritingEvent(savedFeedThread);
 
         return threadId;
     }
@@ -115,27 +112,7 @@ public class FeedWriteService {
         });
     }
 
-    private void sendFeedWritingEvent(
-            final MemberEmailDto memberEmailDto,
-            final Long teamPlaceId,
-            final Long memberId,
-            final FeedThread savedFeedThread
-    ) {
-        final MemberTeamPlace threadAuthorInfo = memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(teamPlaceId, memberId)
-                .orElseThrow(() -> new IllegalArgumentException(String.format("멤버-팀플레이스 조회 실패 memberId : %d, teamPlaceId %d", memberId, teamPlaceId)));
-        applicationEventPublisher.publishEvent(new FeedEvent(teamPlaceId,
-                FeedResponse.from(savedFeedThread, threadAuthorInfo, mapToFeedImageResponse(savedFeedThread), memberEmailDto.email())
-        ));
-    }
-
-    private List<FeedImageResponse> mapToFeedImageResponse(final FeedThread feedThread) {
-        final List<FeedThreadImage> images = feedThread.getImages();
-        return images.stream().map(feedThreadImage ->
-                        new FeedImageResponse(
-                                feedThreadImage.getId(),
-                                feedThreadImage.isExpired(),
-                                feedThreadImage.getImageName().getValue(),
-                                feedThreadImage.getImageUrl().getValue()))
-                .toList();
+    private void sendFeedWritingEvent(final FeedThread savedFeedThread) {
+        applicationEventPublisher.publishEvent(new FeedEvent(savedFeedThread.getId()));
     }
 }

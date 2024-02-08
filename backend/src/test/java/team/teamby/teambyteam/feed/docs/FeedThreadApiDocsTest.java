@@ -28,6 +28,7 @@ import team.teamby.teambyteam.filesystem.FileStorageManager;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -213,8 +214,17 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
             final int size = 3;
             final Long authorId = 1L;
 
-            FeedResponse feedResponse = new FeedResponse(1L, FeedType.THREAD.name(), authorId, "author", "/", "created",
-                    "hello", List.of(), false);
+            final LocalDateTime createdAt = LocalDateTime.now();
+            FeedResponse feedResponse = new FeedResponse(
+                    1L,
+                    FeedType.THREAD.name(),
+                    authorId,
+                    "author",
+                    "/",
+                    createdAt,
+                    "hello",
+                    List.of(),
+                    false);
             final FeedsResponse feedsResponse = new FeedsResponse(List.of(feedResponse));
             given(feedReadService.firstRead(any(), any(), any()))
                     .willReturn(feedsResponse);
@@ -315,8 +325,18 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
             final int size = 3;
             final Long authorId = 1L;
 
-            final FeedResponse feedResponse = new FeedResponse(1L, FeedType.THREAD.name(), authorId, "author", "/",
-                    "created", "hello", List.of(), false);
+            final LocalDateTime createdAt = LocalDateTime.now();
+            final FeedResponse feedResponse = new FeedResponse(
+                    1L,
+                    FeedType.THREAD.name(),
+                    authorId,
+                    "author",
+                    "/",
+                    createdAt,
+                    "hello",
+                    List.of(),
+                    false
+            );
             final FeedsResponse feedsResponse = new FeedsResponse(List.of(feedResponse));
             given(feedReadService.reRead(any(), any(), any(), any()))
                     .willReturn(feedsResponse);
