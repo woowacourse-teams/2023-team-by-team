@@ -2,9 +2,10 @@ import { URL_REGEX } from '~/constants/link';
 import { generateHttpsUrl } from '~/utils/generateHttpsUrl';
 import type { ParsedThreadContent } from '~/types/feed';
 
+const LINK_SEPARATOR_REGEX = /\S+(?=https?:\/\/)|https?:\/\/\S+|\s+|\S+/g;
+
 export const parseThreadContent = (rawContent: string) => {
-  const splittedThreadContent =
-    rawContent.match(/\S+(?=https?:\/\/)|https?:\/\/\S+|\s+|\S+/g) ?? [];
+  const splittedThreadContent = rawContent.match(LINK_SEPARATOR_REGEX) ?? [];
   const generatedThreadContent: ParsedThreadContent = [];
   let textContent = '';
 
