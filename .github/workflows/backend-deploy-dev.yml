@@ -83,13 +83,12 @@ jobs:
           token: ${{ secrets.TBT_REPO_TOKEN }}
           path: backend/dev/
           sparse-checkout: |
-            backend/src/main/resources/security/application-dev.yml
-          sparse-checkout-cone-mode: false
+            backend/src/main/resources/security
 
       - name: Move dev application.yml
         working-directory: backend/dev/
         run: |
-          cp 2023-team-by-team/backend/src/main/resources/security/application-dev.yml ./
+          cp backend/src/main/resources/security/application-dev.yml ./
 
       - name: Move jar file and application yml to deploy directory
         working-directory: backend/dev/
