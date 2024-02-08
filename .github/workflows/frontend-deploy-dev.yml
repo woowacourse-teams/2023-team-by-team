@@ -22,10 +22,10 @@ jobs:
 
     steps:
       - name: Setup Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup node with cache
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: "npm"
@@ -42,7 +42,7 @@ jobs:
         run: npm run build:dev
 
       - name: Upload frontend build file to artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: FrontendApplication
           path: frontend/dist
@@ -58,7 +58,7 @@ jobs:
         run: rm -rf dist
 
       - name: Download build file from artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: FrontendApplication
           path: frontend/dev/dist
@@ -71,4 +71,3 @@ jobs:
           mv ./dist/* /home/ubuntu/team-by-team/frontend/www/dist/
           aws s3 sync /home/ubuntu/team-by-team/frontend/www/dist/ s3://team-by-team-static-resource/dev/front --delete
           aws cloudfront create-invalidation --distribution-id "$CLOUD_FRONT_DISTRIBUTION_ID" --paths "/*"
-
