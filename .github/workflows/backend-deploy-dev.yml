@@ -59,7 +59,6 @@ jobs:
     needs: build-and-upload
     runs-on: self-hosted
     env:
-      DEV_PROPERTY: ${{ secrets.DEV_PROPERTY }}
       DEV_DEPLOY_SCRIPT: ${{ secrets.DEV_BACK_DEPLOY_SCRIPT }}
     steps:
       - name: Remove previous version jar
@@ -77,10 +76,20 @@ jobs:
           name: BackendApplicationJar
           path: backend/dev/
 
-      - name: Make dev application.yml
+      - name: Checkout for get property
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          token: ${{ secrets.TBT_REPO_TOKEN }}
+          path: backend/dev/
+          sparse-checkout: |
+            2023-team-by-team/backend/src/main/resources/security/application-dev.yml
+          sparse-checkout-cone-mode: false
+
+      - name: Move dev application.yml
         working-directory: backend/dev/
         run: |
-          echo "$DEV_PROPERTY" > application-dev.yml
+          cp 2023-team-by-team/backend/src/main/resources/security/application-dev.yml ./
 
       - name: Move jar file and application yml to deploy directory
         working-directory: backend/dev/
