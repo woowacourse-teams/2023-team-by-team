@@ -4,6 +4,7 @@ import Button from '~/components/common/Button/Button';
 import ThumbnailList from '../ThumbnailList/ThumbnailList';
 import type { YYYYMMDDHHMM } from '~/types/schedule';
 import { formatWriteTime } from '~/utils/formatWriteTime';
+import { parseThreadContent } from '~/utils/parseThreadContent';
 import type { NoticeSize } from '~/types/size';
 import type { ThreadImage } from '~/types/feed';
 import {
@@ -26,6 +27,7 @@ const NoticeThread = (props: NoticeThreadProps) => {
   const { authorName, createdAt, content, images, onClickImage } = props;
   const isMobile = getIsMobile();
   const [noticeSize, setNoticeSize] = useState<NoticeSize>('sm');
+  const parsedThreadContent = parseThreadContent(content);
 
   const handleExpandMoreClick = () => {
     if (noticeSize === 'sm') setNoticeSize(() => 'md');
@@ -58,7 +60,19 @@ const NoticeThread = (props: NoticeThreadProps) => {
               weight="semiBold"
               css={S.contentField(noticeSize, images.length > 0)}
             >
-              {content}
+              {parsedThreadContent.map((content, index) =>
+                content.type === 'text' ? (
+                  content.text
+                ) : (
+                  <S.LinkContent
+                    key={index}
+                    target="__blank"
+                    href={content.link}
+                  >
+                    {content.text}
+                  </S.LinkContent>
+                ),
+              )}
             </Text>
             {images.length > 0 && noticeSize !== 'sm' && (
               <ThumbnailList
