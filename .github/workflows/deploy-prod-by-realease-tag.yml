@@ -124,12 +124,11 @@ jobs:
           token: ${{ secrets.TBT_REPO_TOKEN }}
           path: backend/prod/
           sparse-checkout: |
-            backend/src/main/resources/security/application-prod.yml
-          sparse-checkout-cone-mode: false
+            backend/src/main/resources/security
 
       - name: Move prod application.yml
         working-directory: backend/prod/
-        run: cp 2023-team-by-team/backend/src/main/resources/security/application-prod.yml ./
+        run: cp backend/src/main/resources/security/application-prod.yml ./
 
       - name: Deploy BACK to production server
         working-directory: backend/prod/
