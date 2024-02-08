@@ -70,13 +70,7 @@ jobs:
           rm -rf /home/ubuntu/team-by-team/backend/backup/*
           find /home/ubuntu/team-by-team/backend/current/ -mindepth 1 -maxdepth 1 -exec mv {} /home/ubuntu/team-by-team/backend/backup/ \;
 
-      - name: Download jar file from artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: BackendApplicationJar
-          path: backend/dev/
-
-      - name: Checkout for get property
+      - name: Init Checkout for get property
         uses: actions/checkout@v4
         with:
           submodules: true
@@ -84,6 +78,12 @@ jobs:
           path: backend/dev/
           sparse-checkout: |
             backend/src/main/resources/security
+
+      - name: Download jar file from artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: BackendApplicationJar
+          path: backend/dev/
 
       - name: Move dev application.yml
         working-directory: backend/dev/

@@ -110,13 +110,7 @@ jobs:
         working-directory: backend/prod/
         run: rm -f team-by-team-*.jar
 
-      - name: Download BACK jar file from artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: BackendApplicationJar
-          path: backend/prod/
-
-      - name: Checkout for get property
+      - name: Init Checkout for get property
         uses: actions/checkout@v4
         with:
           ref: ${{  github.event.inputs.version  }}
@@ -125,6 +119,12 @@ jobs:
           path: backend/prod/
           sparse-checkout: |
             backend/src/main/resources/security
+
+      - name: Download BACK jar file from artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: BackendApplicationJar
+          path: backend/prod/
 
       - name: Move prod application.yml
         working-directory: backend/prod/
