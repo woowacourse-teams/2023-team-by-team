@@ -8,8 +8,7 @@ export const parseThreadContent = (rawContent: string) => {
   const generatedThreadContent: ParsedThreadContent = [];
   let textContent = '';
 
-  for (let i = 0; i < splittedThreadContent.length; i++) {
-    const currentContent = splittedThreadContent[i];
+  splittedThreadContent.forEach((currentContent) => {
     const isLink = URL_REGEX.test(currentContent);
 
     if (isLink && textContent !== '') {
@@ -24,15 +23,13 @@ export const parseThreadContent = (rawContent: string) => {
     if (isLink) {
       generatedThreadContent.push({
         type: 'link',
-        text: splittedThreadContent[i],
-        link: generateHttpsUrl(splittedThreadContent[i]),
+        text: currentContent,
+        link: generateHttpsUrl(currentContent),
       });
-
-      continue;
+    } else {
+      textContent += currentContent;
     }
-
-    textContent += splittedThreadContent[i];
-  }
+  });
 
   if (textContent !== '') {
     generatedThreadContent.push({
