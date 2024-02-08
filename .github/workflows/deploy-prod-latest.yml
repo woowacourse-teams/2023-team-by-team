@@ -124,7 +124,7 @@ jobs:
           token: ${{ secrets.TBT_REPO_TOKEN }}
           path: backend/prod/
           sparse-checkout: |
-            2023-team-by-team/backend/src/main/resources/security/application-prod.yml
+            backend/src/main/resources/security/application-prod.yml
           sparse-checkout-cone-mode: false
 
       - name: Move prod application.yml
