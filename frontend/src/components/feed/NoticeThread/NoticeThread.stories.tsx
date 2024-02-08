@@ -104,3 +104,15 @@ export const ImageContent: Story = {
     },
   },
 };
+
+export const ContentWithLink: Story = {
+  args: {
+    authorName: '공지에서조차 팀바팀을 홍보하는 사람',
+    createdAt: '2022-03-04 12:34',
+    content: '회의 접속 링크: https://teamby.team/',
+    images: [],
+    onClickImage: () => {
+      alert('onClickImage');
+    },
+  },
+};
