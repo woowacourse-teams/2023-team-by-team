@@ -1,6 +1,7 @@
 package team.teamby.teambyteam.sse.domain.converter;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import team.teamby.teambyteam.common.domain.DomainEvent;
@@ -18,6 +19,7 @@ import team.teamby.teambyteam.sse.domain.emitter.TeamPlaceEmitterId;
 
 import java.util.List;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class FeedEventConverter implements TeamPlaceSseConverter {
@@ -30,7 +32,11 @@ public class FeedEventConverter implements TeamPlaceSseConverter {
     public TeamPlaceSseEvent convert(final DomainEvent event) {
         final Long feedId = (Long) event.getDomainId();
         final Feed feed = feedRepository.findById(feedId)
-                .orElseThrow(() -> new RuntimeException("No FeedFound ID : " + feedId));
+                .orElseThrow(() -> {
+                    final String message = "No FeedFound ID : " + feedId;
+                    log.error(message);
+                    return new RuntimeException(message);
+                });
         final MemberTeamPlace author = memberTeamPlaceRepository
                 .findByTeamPlaceIdAndMemberId(feed.getTeamPlaceId(), feed.getAuthorId())
                 .orElse(MemberTeamPlace.UNKNOWN_MEMBER_TEAM_PLACE);
