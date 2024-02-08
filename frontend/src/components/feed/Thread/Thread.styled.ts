@@ -90,6 +90,17 @@ export const ThumbnailListWrapper = styled.div<{
   box-sizing: border-box;
 `;
 
+export const LinkContent = styled.a<{ $isMe: boolean }>`
+  color: ${({ $isMe, theme }) =>
+    $isMe ? theme.color.WHITE : theme.color.PRIMARY900};
+  text-decoration: underline;
+  font-weight: 600;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 export const threadInfoText = css`
   white-space: pre-wrap;
 

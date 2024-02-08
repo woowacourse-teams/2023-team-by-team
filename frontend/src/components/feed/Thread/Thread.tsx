@@ -2,6 +2,7 @@ import type { YYYYMMDDHHMM } from '~/types/schedule';
 import * as S from './Thread.styled';
 import Text from '~/components/common/Text/Text';
 import { formatWriteTime } from '~/utils/formatWriteTime';
+import { parseThreadContent } from '~/utils/parseThreadContent';
 import type { ThreadSize } from '~/types/size';
 import type { ThreadImage } from '~/types/feed';
 import { useRef } from 'react';
@@ -34,6 +35,7 @@ const Thread = (props: ThreadProps) => {
     onClickImage,
   } = props;
   const createdTime = formatWriteTime(createdAt).split(' ').join('\n');
+  const parsedThreadContent = parseThreadContent(content);
 
   const threadRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -57,7 +59,22 @@ const Thread = (props: ThreadProps) => {
         <S.ContentContainer $isMe={isMe} ref={threadRef} $height={resultHeight}>
           <S.ContentWrapper>
             <div ref={contentRef}>
-              <Text css={S.contentField(threadSize, isMe)}>{content}</Text>
+              <Text css={S.contentField(threadSize, isMe)}>
+                {parsedThreadContent.map((content, index) =>
+                  content.type === 'text' ? (
+                    content.text
+                  ) : (
+                    <S.LinkContent
+                      key={index}
+                      target="__blank"
+                      href={content.link}
+                      $isMe={isMe}
+                    >
+                      {content.text}
+                    </S.LinkContent>
+                  ),
+                )}
+              </Text>
             </div>
           </S.ContentWrapper>
           {images.length > 0 && (
