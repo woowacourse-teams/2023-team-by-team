@@ -44,3 +44,16 @@ export interface FileWithUuid {
   uuid: string;
   file: File;
 }
+
+interface ThreadText {
+  type: 'text';
+  text: string;
+}
+
+interface ThreadLink {
+  type: 'link';
+  text: string;
+  link: string;
+}
+
+export type ParsedThreadContent = (ThreadText | ThreadLink)[];

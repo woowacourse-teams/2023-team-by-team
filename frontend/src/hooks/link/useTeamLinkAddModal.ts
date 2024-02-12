@@ -9,9 +9,7 @@ import { useModal } from '~/hooks/useModal';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useToast } from '~/hooks/useToast';
 import { generateHttpsUrl } from '~/utils/generateHttpsUrl';
-
-const URL_REGEX =
-  /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i;
+import { URL_REGEX } from '~/constants/link';
 
 export const useTeamLinkAddModal = (linkRef: RefObject<HTMLInputElement>) => {
   const { teamPlaceId } = useTeamPlace();

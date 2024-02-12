@@ -145,6 +145,16 @@ export const Divider = styled.span`
   background-color: ${({ theme }) => theme.color.GRAY400};
 `;
 
+export const LinkContent = styled.a`
+  color: ${({ theme }) => theme.color.PRIMARY900};
+  text-decoration: underline;
+  font-weight: 600;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 export const authorInfoText = css`
   overflow: hidden;
   text-overflow: ellipsis;
