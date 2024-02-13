@@ -50,10 +50,10 @@ class TeamPlaceSsePublisherTest {
             return new TestSseConverter();
         }
 
-        public static class TestSseConverter implements TeamPlaceSseConverter {
+        public static class TestSseConverter implements TeamPlaceSseConverter<Long> {
 
             @Override
-            public TeamPlaceSseEvent convert(DomainEvent event) {
+            public TeamPlaceSseEvent convert(DomainEvent<Long> event) {
                 return ((TestDomainEvent) event).getTestSseEvent();
             }
 
