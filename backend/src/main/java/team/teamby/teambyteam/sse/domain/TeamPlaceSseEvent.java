@@ -1,5 +1,7 @@
 package team.teamby.teambyteam.sse.domain;
 
+import team.teamby.teambyteam.sse.domain.emitter.TeamPlaceEmitterId;
+
 public interface TeamPlaceSseEvent {
 
     Long getTeamPlaceId();

@@ -6,10 +6,9 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: '배포할 Version Tag'
+        description: "배포할 Version Tag"
         required: true
         type: string
-      
 
 permissions:
   contents: read
@@ -23,33 +22,33 @@ jobs:
 
     steps:
       - name: Set up Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{  github.event.inputs.version  }}
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
-          java-version: '17'
-          distribution: 'corretto'
+          java-version: "17"
+          distribution: "corretto"
 
       - name: Give permission for Gradle
         run: chmod +x gradlew
-      
+
       - name: Cache Gradle
         id: cache-gradle
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-      
+
       - name: Build with Gradle
         run: ./gradlew bootJar
-      
+
       - name: Upload jar file artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: BackendApplicationJar
           path: backend/build/libs/*.jar
@@ -62,16 +61,16 @@ jobs:
 
     steps:
       - name: Set up Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{  github.event.inputs.version  }}
 
       - name: Setup node with cache
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
+          cache: "npm"
+          cache-dependency-path: "**/package-lock.json"
 
       - name: Setup environment variables
         run: |
@@ -84,7 +83,7 @@ jobs:
         run: npm run build:prod
 
       - name: Upload frontend build file to artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: FrontendApplication
           path: frontend/dist
@@ -93,7 +92,6 @@ jobs:
     needs: [build-frontend, build-backend]
     runs-on: self-hosted
     env:
-      BACK_PROD_PROPERTY: ${{ secrets.PROD_BACK_PROPERTY }}
       BACK_DEPLOY_SCRIPT: ${{ secrets.PROD_BACK_DEPLOY_SCRIPT }}
       CLOUD_FRONT_DISTRIBUTION_ID: ${{ secrets.CLOUD_FRONT_PROD_DISTRIBUTION_ID}}
 
@@ -103,7 +101,7 @@ jobs:
         run: rm -rf dist
 
       - name: Download FRONT build file from artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: FrontendApplication
           path: frontend/prod/dist
@@ -112,15 +110,25 @@ jobs:
         working-directory: backend/prod/
         run: rm -f team-by-team-*.jar
 
+      - name: Init Checkout for get property
+        uses: actions/checkout@v4
+        with:
+          ref: ${{  github.event.inputs.version  }}
+          submodules: true
+          token: ${{ secrets.TBT_REPO_TOKEN }}
+          path: backend/prod/
+          sparse-checkout: |
+            backend/src/main/resources/security
+
       - name: Download BACK jar file from artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: BackendApplicationJar
           path: backend/prod/
 
-      - name : Make BACK prod application.yml
+      - name: Move prod application.yml
         working-directory: backend/prod/
-        run: echo "$BACK_PROD_PROPERTY" > application-prod.yml
+        run: cp backend/src/main/resources/security/application-prod.yml ./
 
       - name: Deploy BACK to production server
         working-directory: backend/prod/
@@ -134,4 +142,3 @@ jobs:
         run: |
           aws s3 sync ./dist/ s3://team-by-team-static-resource/prod/front --delete
           aws cloudfront create-invalidation --distribution-id "$CLOUD_FRONT_DISTRIBUTION_ID" --paths "/*"
-

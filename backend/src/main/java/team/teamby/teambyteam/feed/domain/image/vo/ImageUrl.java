@@ -2,10 +2,11 @@ package team.teamby.teambyteam.feed.domain.image.vo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import java.util.Objects;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.Objects;
 
 @Embeddable
 @Getter

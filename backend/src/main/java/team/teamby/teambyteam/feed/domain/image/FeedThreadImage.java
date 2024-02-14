@@ -35,9 +35,12 @@ public class FeedThreadImage extends BaseEntity {
     @Embedded
     private ImageName imageName;
 
+    private boolean isExpired;
+
     public FeedThreadImage(final ImageUrl imageUrl, final ImageName imageName) {
         this.imageUrl = imageUrl;
         this.imageName = imageName;
+        this.isExpired = false;
     }
 
     public void confirmFeedThread(final FeedThread feedThread) {

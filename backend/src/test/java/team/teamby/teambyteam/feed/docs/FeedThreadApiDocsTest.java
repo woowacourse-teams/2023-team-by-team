@@ -1,5 +1,36 @@
 package team.teamby.teambyteam.feed.docs;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockPart;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.multipart.MultipartFile;
+import team.teamby.teambyteam.auth.exception.AuthenticationException;
+import team.teamby.teambyteam.common.ApiDocsTest;
+import team.teamby.teambyteam.common.fixtures.FeedThreadFixtures;
+import team.teamby.teambyteam.common.fixtures.FileFixtures;
+import team.teamby.teambyteam.feed.application.FeedReadService;
+import team.teamby.teambyteam.feed.application.FeedWriteService;
+import team.teamby.teambyteam.feed.application.dto.FeedResponse;
+import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
+import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
+import team.teamby.teambyteam.feed.domain.FeedType;
+import team.teamby.teambyteam.feed.exception.FeedException;
+import team.teamby.teambyteam.feed.presentation.FeedThreadController;
+import team.teamby.teambyteam.filesystem.FileStorageManager;
+import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
+import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -23,39 +54,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockPart;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.multipart.MultipartFile;
-import team.teamby.teambyteam.auth.exception.AuthenticationException;
-import team.teamby.teambyteam.common.ApiDocsTest;
-import team.teamby.teambyteam.common.fixtures.FeedThreadFixtures;
-import team.teamby.teambyteam.common.fixtures.FileFixtures;
-import team.teamby.teambyteam.feed.application.FeedThreadService;
-import team.teamby.teambyteam.feed.application.dto.FeedResponse;
-import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
-import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
-import team.teamby.teambyteam.feed.domain.FeedType;
-import team.teamby.teambyteam.feed.exception.FeedException;
-import team.teamby.teambyteam.feed.presentation.FeedThreadController;
-import team.teamby.teambyteam.filesystem.FileStorageManager;
-import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
-import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
-
 @WebMvcTest(FeedThreadController.class)
 public final class FeedThreadApiDocsTest extends ApiDocsTest {
 
     @MockBean
-    private FeedThreadService feedThreadService;
+    private FeedReadService feedReadService;
+
+    @MockBean
+    private FeedWriteService feedWriteService;
 
     @MockBean
     private FileStorageManager fileStorageManager;
@@ -76,7 +82,7 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
             // given
             final Long teamPlaceId = 1L;
             final Long registeredId = 1L;
-            given(feedThreadService.write(any(), any(), any()))
+            given(feedWriteService.write(any(), any(), any()))
                     .willReturn(registeredId);
 
             // when & then
@@ -115,8 +121,8 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
             // given
             final Long teamPlaceId = 1L;
             willThrow(new FeedException.WritingRequestEmptyException())
-                    .given(feedThreadService)
-                            .write(any(FeedThreadWritingRequest.class), any(MemberEmailDto.class), eq(teamPlaceId));
+                    .given(feedWriteService)
+                    .write(any(FeedThreadWritingRequest.class), any(MemberEmailDto.class), eq(teamPlaceId));
 
             // when & then
             mockMvc.perform(multipart("/api/team-place/{teamPlaceId}/feed/threads", teamPlaceId)
@@ -208,10 +214,19 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
             final int size = 3;
             final Long authorId = 1L;
 
-            FeedResponse feedResponse = new FeedResponse(1L, FeedType.THREAD.name(), authorId, "author", "/", "created",
-                    "hello", List.of(), false);
+            final LocalDateTime createdAt = LocalDateTime.now();
+            FeedResponse feedResponse = new FeedResponse(
+                    1L,
+                    FeedType.THREAD.name(),
+                    authorId,
+                    "author",
+                    "/",
+                    createdAt,
+                    "hello",
+                    List.of(),
+                    false);
             final FeedsResponse feedsResponse = new FeedsResponse(List.of(feedResponse));
-            given(feedThreadService.firstRead(any(), any(), any()))
+            given(feedReadService.firstRead(any(), any(), any()))
                     .willReturn(feedsResponse);
 
             // when & then
@@ -310,10 +325,20 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
             final int size = 3;
             final Long authorId = 1L;
 
-            final FeedResponse feedResponse = new FeedResponse(1L, FeedType.THREAD.name(), authorId, "author", "/",
-                    "created", "hello", List.of(), false);
+            final LocalDateTime createdAt = LocalDateTime.now();
+            final FeedResponse feedResponse = new FeedResponse(
+                    1L,
+                    FeedType.THREAD.name(),
+                    authorId,
+                    "author",
+                    "/",
+                    createdAt,
+                    "hello",
+                    List.of(),
+                    false
+            );
             final FeedsResponse feedsResponse = new FeedsResponse(List.of(feedResponse));
-            given(feedThreadService.reRead(any(), any(), any(), any()))
+            given(feedReadService.reRead(any(), any(), any(), any()))
                     .willReturn(feedsResponse);
 
             // when & then

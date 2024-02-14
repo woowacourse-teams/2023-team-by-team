@@ -1,7 +1,7 @@
 import { getDateByPosition } from '../getDateByPosition';
 
 describe('날짜 객체 반환 테스트', () => {
-  test.each([
+  it.each([
     [2023, 6, 0, 0, new Date(2023, 5, 25)],
     [2023, 6, 0, 1, new Date(2023, 5, 26)],
     [2023, 6, 0, 4, new Date(2023, 5, 29)],
@@ -25,7 +25,7 @@ describe('날짜 객체 반환 테스트', () => {
 });
 
 describe('예외 처리 테스트', () => {
-  test.each([
+  it.each([
     [2023, 6, -1, 0],
     [2021, 9, 6, 6],
     [2023, 4, 10, 23],

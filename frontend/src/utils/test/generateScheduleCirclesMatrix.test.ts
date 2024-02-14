@@ -2,7 +2,7 @@ import { generateScheduleCirclesMatrix } from '../generateScheduleCirclesMatrix'
 import type { ScheduleWithTeamPlaceId } from '~/types/schedule';
 
 describe('Test #1 - 스케줄 서클 기본 기능 테스트', () => {
-  test('하나의 스케줄 정보와 연/월에 대한 정보가 주어지면, 주어진 정보에 해당하는 스케줄 서클 분포를 2차원 배열로 반환해야 한다.', () => {
+  it('하나의 스케줄 정보와 연/월에 대한 정보가 주어지면, 주어진 정보에 해당하는 스케줄 서클 분포를 2차원 배열로 반환해야 한다.', () => {
     const schedules: ScheduleWithTeamPlaceId[] = [
       {
         id: 20,
@@ -28,7 +28,7 @@ describe('Test #1 - 스케줄 서클 기본 기능 테스트', () => {
     );
   });
 
-  test('여러 개의 스케줄 정보가 서로 겹치더라도, 올바른 결과를 반환해야 한다. 반환 시에는 아이디를 오름차순 정렬하여 반환하고, 한계 랜더링 개수를 넘기지 않도록 반환한다.', () => {
+  it('여러 개의 스케줄 정보가 서로 겹치더라도, 올바른 결과를 반환해야 한다. 반환 시에는 아이디를 오름차순 정렬하여 반환하고, 한계 랜더링 개수를 넘기지 않도록 반환한다.', () => {
     const schedules: ScheduleWithTeamPlaceId[] = [
       {
         id: 116,
@@ -159,7 +159,7 @@ describe('Test #1 - 스케줄 서클 기본 기능 테스트', () => {
 });
 
 describe('Test #2 - 범위를 벗어나는 일정 테스트', () => {
-  test('일정이 해당 달력의 범위를 전부 또는 일부를 벗어날 경우, 달력에 해당하는 부분만 반환해야 한다.', () => {
+  it('일정이 해당 달력의 범위를 전부 또는 일부를 벗어날 경우, 달력에 해당하는 부분만 반환해야 한다.', () => {
     const schedules: ScheduleWithTeamPlaceId[] = [
       {
         id: 0,
@@ -255,7 +255,7 @@ describe('Test #2 - 범위를 벗어나는 일정 테스트', () => {
 });
 
 describe('Test #3 - 중복 방지 테스트', () => {
-  test('팀플레이스 아이디 목록을 반환할 때, 같은 아이디는 한 번만 반환해야 한다.', () => {
+  it('팀플레이스 아이디 목록을 반환할 때, 같은 아이디는 한 번만 반환해야 한다.', () => {
     const schedules: ScheduleWithTeamPlaceId[] = [
       {
         id: 1223,

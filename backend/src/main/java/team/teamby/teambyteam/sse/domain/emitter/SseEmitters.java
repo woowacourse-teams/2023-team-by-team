@@ -1,9 +1,12 @@
-package team.teamby.teambyteam.sse.domain;
+package team.teamby.teambyteam.sse.domain.emitter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import team.teamby.teambyteam.sse.domain.TeamPlaceEventId;
+import team.teamby.teambyteam.sse.domain.TeamPlaceSseEvent;
 
 import java.io.IOException;
 import java.util.Map;
@@ -11,9 +14,14 @@ import java.util.Map;
 @Slf4j
 public class SseEmitters {
 
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectMapper objectMapper;
 
     private final Map<TeamPlaceEmitterId, SseEmitter> emitters;
+
+    static {
+        objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+    }
 
     public SseEmitters(final Map<TeamPlaceEmitterId, SseEmitter> emitters) {
         this.emitters = emitters;

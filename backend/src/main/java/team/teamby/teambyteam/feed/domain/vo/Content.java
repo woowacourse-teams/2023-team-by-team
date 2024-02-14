@@ -3,11 +3,12 @@ package team.teamby.teambyteam.feed.domain.vo;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Lob;
-import java.util.Objects;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.teamby.teambyteam.feed.exception.FeedException;
+
+import java.util.Objects;
 
 @Embeddable
 @Getter
