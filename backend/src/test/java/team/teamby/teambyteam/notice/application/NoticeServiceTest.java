@@ -44,6 +44,7 @@ import team.teamby.teambyteam.notice.application.dto.NoticeRegisterRequest;
 import team.teamby.teambyteam.notice.application.dto.NoticeResponse;
 import team.teamby.teambyteam.notice.domain.Notice;
 import team.teamby.teambyteam.notice.domain.NoticeRepository;
+import team.teamby.teambyteam.notice.domain.event.NoticeCreationEvent;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException.NotFoundException;
 
@@ -91,6 +92,23 @@ class NoticeServiceTest extends ServiceTest {
 
             // then
             assertThat(registeredId).isNotNull();
+        }
+
+        @Test
+        @DisplayName("공지 등록 이벤트를 발행한다")
+        void publishCreatedEvent() {
+            // given
+
+            // when
+            final Long registeredId = noticeService.register(request, teamPlace.getId(), memberEmailDto);
+
+            // then
+            final Optional<NoticeCreationEvent> event = applicationEvents.stream(NoticeCreationEvent.class).findAny();
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(event).isNotEmpty();
+                softly.assertThat(event.get().getDomainId()).isEqualTo(registeredId);
+            });
+
         }
 
         @Test

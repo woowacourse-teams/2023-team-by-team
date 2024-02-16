@@ -43,7 +43,6 @@ public class FeedWriteService {
     private final FeedRepository feedRepository;
     private final FeedThreadImageRepository feedThreadImageRepository;
     private final MemberRepository memberRepository;
-    private final MemberTeamPlaceRepository memberTeamPlaceRepository;
     private final FileStorageManager fileStorageManager;
 
     @Value("${aws.s3.image-directory}")
