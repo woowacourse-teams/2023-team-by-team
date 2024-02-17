@@ -35,6 +35,7 @@ export const IconWrapper = styled.div`
     height: 24px;
 
     color: ${({ theme }) => theme.color.BLUE500};
+    fill: ${({ theme }) => theme.color.BLUE500};
   }
 `;
 
