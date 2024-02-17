@@ -7,7 +7,6 @@ export const Container = styled.div`
 
   width: 100%;
   height: 30px;
-  padding: 0 10px;
 `;
 
 export const Line = styled.div`
