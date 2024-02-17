@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import Notification from '~/components/feed/Notification/Notification';
-import { EnterIcon } from '~/assets/svg';
+import { EnterIcon, CalendarIcon } from '~/assets/svg';
 
 const meta = {
   title: 'Feed/Notification',
@@ -46,8 +46,8 @@ export const Time: Story = {
 
 export const Icon: Story = {
   args: {
-    icon: <EnterIcon />,
-    content: '팀바팀 님이 입장하셨습니다.',
+    icon: <CalendarIcon />,
+    content: '2024년 2월 17일',
   },
 };
 
