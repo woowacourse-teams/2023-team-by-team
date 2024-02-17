@@ -43,13 +43,13 @@ const ThreadList = (props: ThreadListProps) => {
   useIntersectionObserver(observeRef, onIntersect, hasNextPage);
 
   useEffect(() => {
-    if (!containerRef) return;
+    const containerElement = containerRef?.current;
 
-    if (containerRef.current) {
-      const scrollTop = containerRef.current.scrollHeight - scrollHeight;
-      containerRef.current.scrollTop = scrollTop;
-      setScrollHeight(containerRef.current.scrollHeight);
-    }
+    if (!containerElement) return;
+
+    const scrollTop = containerElement.scrollHeight - scrollHeight;
+    containerElement.scrollTop = scrollTop;
+    setScrollHeight(() => containerElement.scrollHeight);
 
     /* eslint-disable-next-line */
   }, [threadPages?.pages.length]);
