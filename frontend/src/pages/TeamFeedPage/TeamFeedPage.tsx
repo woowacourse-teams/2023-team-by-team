@@ -120,7 +120,7 @@ const TeamFeedPage = (props: TeamFeedPageProps) => {
                 : '여기에 채팅을 입력하세요. \n\nShift + Enter로 새 행을 추가합니다.'
             }
             maxLength={10000}
-            autoFocus={isMobile ? false : true}
+            autoFocus={!isMobile}
             readOnly={isSendingImage}
           />
           <S.ButtonContainer $isMobile={isMobile}>
