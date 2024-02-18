@@ -86,7 +86,7 @@ export const ControlButtonWrapper = styled.div`
 `;
 
 export const submitButton = css`
-  width: 70px;
+  width: 80px;
   padding: 0;
 `;
 

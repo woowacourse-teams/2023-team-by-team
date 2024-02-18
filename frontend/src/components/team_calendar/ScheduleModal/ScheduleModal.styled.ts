@@ -111,7 +111,7 @@ export const closeButton = ($isMobile: boolean) => css`
   align-items: center;
   align-self: flex-end;
 
-  width: 70px;
+  width: 80px;
   height: 42px;
   ${$isMobile &&
   css`

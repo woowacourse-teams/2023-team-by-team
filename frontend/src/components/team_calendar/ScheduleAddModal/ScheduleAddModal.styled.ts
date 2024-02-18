@@ -184,6 +184,6 @@ export const teamPlaceName = css`
 `;
 
 export const submitButton = css`
-  width: 70px;
+  width: 80px;
   padding: 0;
 `;
