@@ -10,7 +10,12 @@ export const useFetchDailySchedules = (
 ) => {
   const { data } = useQuery(
     ['dailySchedules', year, month, day],
-    () => fetchSchedules(teamPlaceId, year, month + 1, day),
+    () =>
+      fetchSchedules(
+        teamPlaceId,
+        `${year}${month + 1}${day}`,
+        `${year}${month + 1}${day}`,
+      ),
     {
       enabled: teamPlaceId > 0,
       staleTime: STALE_TIME.DAILY_SCHEDULES,
