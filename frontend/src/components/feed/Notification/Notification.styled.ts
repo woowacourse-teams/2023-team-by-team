@@ -1,4 +1,5 @@
 import { styled, css } from 'styled-components';
+import type { ThreadSize } from '~/types/size';
 
 export const Container = styled.div`
   display: flex;
@@ -26,13 +27,13 @@ export const Inner = styled.div`
   max-width: 80%;
 `;
 
-export const IconWrapper = styled.div`
-  width: 24px;
-  height: 24px;
+export const IconWrapper = styled.div<{ $size: ThreadSize }>`
+  width: ${({ $size }) => ($size === 'md' ? '24px' : '20px')};
+  height: ${({ $size }) => ($size === 'md' ? '24px' : '20px')};
 
   & svg {
-    width: 24px;
-    height: 24px;
+    width: ${({ $size }) => ($size === 'md' ? '24px' : '20px')};
+    height: ${({ $size }) => ($size === 'md' ? '24px' : '20px')};
 
     color: ${({ theme }) => theme.color.BLUE500};
     fill: ${({ theme }) => theme.color.BLUE500};

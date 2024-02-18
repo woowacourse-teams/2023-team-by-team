@@ -1,24 +1,28 @@
 import Text from '~/components/common/Text/Text';
 import * as S from './Notification.styled';
 import type { ReactElement } from 'react';
+import type { ThreadSize } from '~/types/size';
 
 interface NotificationProps {
   content: string;
   icon?: ReactElement;
   time?: string;
+  size?: ThreadSize;
 }
 
 const Notification = (props: NotificationProps) => {
-  const { content, icon, time } = props;
+  const { content, icon, time, size = 'md' } = props;
 
   return (
     <S.Container>
       <S.Line />
       <S.Inner>
-        {icon && <S.IconWrapper>{icon}</S.IconWrapper>}
-        <Text css={S.content}>{content}</Text>
+        {icon && <S.IconWrapper $size={size}>{icon}</S.IconWrapper>}
+        <Text size={size === 'md' ? 'md' : 'sm'} css={S.content}>
+          {content}
+        </Text>
         {time && (
-          <Text size="xs" css={S.time}>
+          <Text size={size === 'md' ? 'xs' : 'xxs'} css={S.time}>
             {time}
           </Text>
         )}
