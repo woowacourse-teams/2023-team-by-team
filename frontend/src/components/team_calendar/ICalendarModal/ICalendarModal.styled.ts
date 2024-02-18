@@ -38,14 +38,14 @@ export const Container = styled.div<{
     if ($isMobile)
       return css`
         width: 300px;
-        min-height: 180px;
+        height: 180px;
         padding: 10px 20px;
       `;
 
     return css`
-      width: 400px;
-      min-height: 200px;
-      padding: 20px;
+      width: 360px;
+      height: 190px;
+      padding: 16px;
     `;
   }}
  
@@ -112,7 +112,7 @@ export const UrlWrapper = styled.div`
   justify-content: center;
 
   width: 90%;
-  height: 40px;
+  height: 36px;
   padding: 0 8px;
 
   & > div {
@@ -129,7 +129,15 @@ export const UserGuideLink = styled.a`
 `;
 
 export const closeButton = css`
+  width: 28px;
+  height: 28px;
   padding: 0;
+  margin-bottom: 4px;
+
+  svg {
+    width: 28px;
+    height: 28px;
+  }
 `;
 
 export const copyButton = css`

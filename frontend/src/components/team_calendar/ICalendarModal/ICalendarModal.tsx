@@ -49,7 +49,7 @@ const ICalendarModal = (props: ICalendarModalProps) => {
           <Text as="span" size="xl" weight="semiBold">
             일정 내보내기
           </Text>
-          <Spacing size={8} direction="horizontal" />
+          <Spacing size={6} direction="horizontal" />
           <S.TooltipWrapper
             tabIndex={0}
             onFocus={() => setIsTooltipOpen(true)}
