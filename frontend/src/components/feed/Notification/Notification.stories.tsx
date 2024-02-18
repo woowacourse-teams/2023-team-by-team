@@ -17,6 +17,10 @@ const meta = {
     time: {
       description: '알림의 우측에 표시될 알림의 수신 시각을 의미합니다.',
     },
+    size: {
+      description:
+        '알림 컴포넌트의 크기를 의미합니다. 사용처에 맞게 적절한 값을 사용하십시오.',
+    },
   },
 } satisfies Meta<typeof Notification>;
 
@@ -56,5 +60,14 @@ export const TimeAndIcon: Story = {
     time: '23:35',
     icon: <EnterIcon />,
     content: '팀바팀 님이 입장하셨습니다.',
+  },
+};
+
+export const TimeIconAndSmallSize: Story = {
+  args: {
+    time: '23:35',
+    icon: <EnterIcon />,
+    content: '팀바팀 님이 입장하셨습니다.',
+    size: 'sm',
   },
 };
