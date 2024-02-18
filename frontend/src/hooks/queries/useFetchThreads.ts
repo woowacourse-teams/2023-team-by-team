@@ -14,7 +14,7 @@ export const useFetchThreads = (teamPlaceId: number) => {
     {
       enabled: teamPlaceId > 0,
       getNextPageParam: (lastPage) => {
-        if (lastPage.threads.length !== THREAD_SIZE) return undefined;
+        if (lastPage.threads.length < THREAD_SIZE) return undefined;
         return lastPage.threads[THREAD_SIZE - 1].id;
       },
       staleTime: STALE_TIME.TEAM_FEED,
