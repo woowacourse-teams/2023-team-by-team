@@ -16,8 +16,8 @@ export const Container = styled.div<{ $css: CSSProp }>`
   flex-direction: column;
   z-index: ${({ theme }) => theme.zIndex.MODAL};
 
-  width: 300px;
-  height: 338px;
+  width: 250px;
+  max-height: 338px;
   padding: 10px 20px 20px 20px;
 
   border-radius: 10px;
