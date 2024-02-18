@@ -47,7 +47,7 @@ const LinkAddModal = (props: LinkAddModalProps) => {
         </S.IconWrapper>
         <form onSubmit={handleTeamLinkSubmit}>
           <S.InputContainer>
-            <Text size="xl" weight="semiBold">
+            <Text size="lg" weight="semiBold">
               링크 이름
             </Text>
             <Input
@@ -61,7 +61,7 @@ const LinkAddModal = (props: LinkAddModalProps) => {
             />
           </S.InputContainer>
           <S.InputContainer>
-            <Text size="xl" weight="semiBold">
+            <Text size="lg" weight="semiBold">
               링크
             </Text>
             <Input
