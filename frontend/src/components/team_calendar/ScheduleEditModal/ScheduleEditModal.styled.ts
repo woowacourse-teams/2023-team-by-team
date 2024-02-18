@@ -39,9 +39,9 @@ export const Container = styled.div<{
       `;
 
     return css`
-      width: 496px;
-      min-height: 380px;
-      padding: 20px 30px;
+      width: 400px;
+      min-height: 320px;
+      padding: 18px 22px;
     `;
   }}
 
@@ -56,7 +56,7 @@ export const Container = styled.div<{
     display: flex;
     flex-direction: column;
 
-    row-gap: ${({ $isMobile }) => ($isMobile ? '10px' : '20px')};
+    row-gap: ${({ $isMobile }) => ($isMobile ? '10px' : '16px')};
   }
 `;
 
@@ -65,14 +65,15 @@ export const Header = styled.div`
   justify-content: flex-end;
 
   width: 100%;
-  margin-bottom: 22px;
+  height: 34px;
+  margin-bottom: 18px;
 
   border-bottom: ${({ theme }) => `1px solid ${theme.color.GRAY300}`};
 `;
 
 export const TitleWrapper = styled.div`
   width: 100%;
-  height: 44px;
+  height: 38px;
 `;
 
 export const InnerContainer = styled.div`
@@ -86,6 +87,7 @@ export const InnerContainer = styled.div`
 export const CheckboxContainer = styled.div`
   display: flex;
   align-items: center;
+  justify-content: flex-end;
 
   column-gap: 8px;
 `;
@@ -114,7 +116,7 @@ export const InputWrapper = styled.div<{ $isMobile: boolean }>`
   align-items: center;
   justify-content: space-between;
 
-  width: ${({ $isMobile }) => !$isMobile && 'calc(100% - 100px)'};
+  width: ${({ $isMobile }) => !$isMobile && 'calc(100% - 80px)'};
 
   margin-left: ${({ $isMobile }) => !$isMobile && 'auto'};
 `;
@@ -133,7 +135,7 @@ export const ControlButtonWrapper = styled.div`
   justify-content: flex-end;
 
   width: 100%;
-  height: 40px;
+  height: 38px;
 `;
 
 export const title = css`
@@ -143,14 +145,19 @@ export const title = css`
   border-radius: 10px;
   background-color: ${({ theme }) => theme.color.GRAY200};
 
-  font-size: 20px;
+  font-size: 18px;
 `;
 
 export const closeButton = css`
-  width: 22px;
-  height: 38px;
-  padding: 8px 0;
+  width: 28px;
+  height: 28px;
+  padding: 0;
   margin-bottom: 4px;
+
+  svg {
+    width: 28px;
+    height: 28px;
+  }
 `;
 
 export const dateTimeLocalInput = css`
@@ -169,5 +176,6 @@ export const teamPlaceName = css`
 `;
 
 export const submitButton = css`
-  width: 90px;
+  width: 70px;
+  padding: 0;
 `;
