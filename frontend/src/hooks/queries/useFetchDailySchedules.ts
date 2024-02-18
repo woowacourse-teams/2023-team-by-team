@@ -8,13 +8,17 @@ export const useFetchDailySchedules = (
   month: number,
   day: number,
 ) => {
+  const stringYear = String(year).padStart(4, '0');
+  const stringMonth = String(month + 1).padStart(2, '0');
+  const stringDay = String(day).padStart(2, '0');
+
   const { data } = useQuery(
     ['dailySchedules', year, month, day],
     () =>
       fetchSchedules(
         teamPlaceId,
-        `${year}${month + 1}${day}`,
-        `${year}${month + 1}${day}`,
+        `${stringYear}${stringMonth}${stringDay}`,
+        `${stringYear}${stringMonth}${stringDay}`,
       ),
     {
       enabled: teamPlaceId > 0,
