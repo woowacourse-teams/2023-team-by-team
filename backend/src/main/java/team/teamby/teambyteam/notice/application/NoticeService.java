@@ -9,6 +9,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +28,7 @@ import team.teamby.teambyteam.notice.application.dto.NoticeRegisterRequest;
 import team.teamby.teambyteam.notice.application.dto.NoticeResponse;
 import team.teamby.teambyteam.notice.domain.Notice;
 import team.teamby.teambyteam.notice.domain.NoticeRepository;
+import team.teamby.teambyteam.notice.domain.event.NoticeCreationEvent;
 import team.teamby.teambyteam.notice.domain.image.NoticeImage;
 import team.teamby.teambyteam.notice.domain.image.NoticeImageRepository;
 import team.teamby.teambyteam.notice.domain.image.vo.ImageName;
@@ -52,6 +54,7 @@ public class NoticeService {
 
     private final Clock clock;
 
+    private final ApplicationEventPublisher applicationEventPublisher;
     private final NoticeRepository noticeRepository;
     private final TeamPlaceRepository teamPlaceRepository;
     private final MemberRepository memberRepository;
@@ -75,9 +78,10 @@ public class NoticeService {
         final Notice savedNotice = noticeRepository.save(new Notice(contentVo, teamPlaceId, memberId.id()));
         saveImages(images, savedNotice);
 
-        Long savedNoticeId = savedNotice.getId();
+        final Long savedNoticeId = savedNotice.getId();
         log.info("공지 등록 - 등록자 이메일 : {}, 팀플레이스 아이디 : {}, 공지 아이디 : {}", memberEmailDto.email(), teamPlaceId,
                 savedNoticeId);
+        applicationEventPublisher.publishEvent(new NoticeCreationEvent(savedNotice));
         return savedNoticeId;
     }
 

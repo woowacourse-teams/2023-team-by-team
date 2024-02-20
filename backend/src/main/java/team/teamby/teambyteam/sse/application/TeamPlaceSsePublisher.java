@@ -7,6 +7,7 @@ import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 import team.teamby.teambyteam.common.domain.DomainEvent;
 import team.teamby.teambyteam.feed.application.event.FeedEvent;
+import team.teamby.teambyteam.notice.domain.event.NoticeCreationEvent;
 import team.teamby.teambyteam.sse.domain.TeamPlaceEventId;
 import team.teamby.teambyteam.sse.domain.TeamPlaceSseEvent;
 import team.teamby.teambyteam.sse.domain.converter.TeamPlaceEventConvertMapper;
@@ -22,7 +23,10 @@ public class TeamPlaceSsePublisher {
 
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT,
-            classes = {FeedEvent.class}
+            classes = {
+                    FeedEvent.class,
+                    NoticeCreationEvent.class
+            }
     )
     public void publishEvent(final DomainEvent domainEvent) {
         final TeamPlaceSseEvent teamPlaceSseEvent = eventConvertMapper.convert(domainEvent);

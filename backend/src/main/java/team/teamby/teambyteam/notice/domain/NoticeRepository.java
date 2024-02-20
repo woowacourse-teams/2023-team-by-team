@@ -16,4 +16,7 @@ public interface NoticeRepository extends JpaRepository<Notice, Long> {
             "LIMIT 1"
     )
     Optional<Notice> findMostRecentByTeamPlaceId(Long teamPlaceId);
+
+    @Query("SELECT n.teamPlaceId FROM Notice n WHERE n.id = :id")
+    Optional<Long> findTeamPlaceIdByNoticeId(Long id);
 }

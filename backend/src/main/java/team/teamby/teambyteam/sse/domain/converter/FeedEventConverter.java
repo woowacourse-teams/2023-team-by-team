@@ -22,15 +22,15 @@ import java.util.List;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class FeedEventConverter implements TeamPlaceSseConverter {
+public class FeedEventConverter implements TeamPlaceSseConverter<Long> {
 
     private final FeedRepository feedRepository;
     private final MemberTeamPlaceRepository memberTeamPlaceRepository;
 
     @Override
     @Transactional(readOnly = true)
-    public TeamPlaceSseEvent convert(final DomainEvent event) {
-        final Long feedId = (Long) event.getDomainId();
+    public TeamPlaceSseEvent convert(final DomainEvent<Long> event) {
+        final Long feedId =  event.getDomainId();
         final Feed feed = feedRepository.findById(feedId)
                 .orElseThrow(() -> {
                     final String message = "No FeedFound ID : " + feedId;
