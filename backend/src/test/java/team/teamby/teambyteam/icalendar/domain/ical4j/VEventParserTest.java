@@ -21,7 +21,7 @@ class VEventParserTest {
 
     @BeforeEach
     void setUp() {
-        this.vEventParser = new VEventParser();
+        this.vEventParser = new VEventParser(new ScheduleUidGenerator());
     }
 
     @Test
