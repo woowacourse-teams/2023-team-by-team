@@ -344,7 +344,7 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
     class RegisterSchedule {
 
         @Test
-        @DisplayName("일정 등록에 성공한다.")
+        @DisplayName("메모가 없는 일정 등록에 성공한다.")
         void success() {
             // given
             final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
@@ -369,6 +369,22 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
 
             // then
             assertThat(registeredId).isNotNull();
+        }
+
+        @Test
+        @DisplayName("100자 초과의 메모 입력시 예외를 발생시킨다.")
+        void failWithTooLongDescription() {
+            // given
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final String testTitle = "test";
+            final String testDescription = ".".repeat(101);
+            final ScheduleRegisterRequest request = new ScheduleRegisterRequest(testTitle, testDescription, LocalDateTime.now(), LocalDateTime.now());
+
+            // when
+            // then
+            assertThatThrownBy(() -> teamCalendarScheduleService.register(request, ENGLISH_TEAM_PLACE.getId()))
+                    .isInstanceOf(ScheduleException.DescriptionLengthException.class)
+                    .hasMessage("일정 메모가 너무 깁니다.");
         }
 
         @Test

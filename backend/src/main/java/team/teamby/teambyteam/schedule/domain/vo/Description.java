@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team.teamby.teambyteam.schedule.exception.ScheduleException;
 
 import java.util.Objects;
 
@@ -15,6 +16,8 @@ import java.util.Objects;
 @EqualsAndHashCode
 public class Description {
 
+    private static final int MAX_LENGTH = 100;
+
     @Column(name = "description", nullable = true)
     private String value;
 
@@ -23,7 +26,14 @@ public class Description {
             this.value = null;
             return;
         }
+        validate(value);
         this.value = value.trim();
+    }
+
+    private static void validate(final String value) {
+        if (value.length() > MAX_LENGTH) {
+            throw new ScheduleException.DescriptionLengthException();
+        }
     }
 
     public boolean isExist() {

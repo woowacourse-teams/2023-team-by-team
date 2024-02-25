@@ -634,6 +634,33 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             });
         }
 
+        @Test
+        @DisplayName("너무 긴 메모로 등록시 실패한다.")
+        void failTooLongDescriptionRequest() {
+            // given
+            final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final MemberTeamPlace PHILIP_ENGLISH_TEAM_PLACE = PHILIP_ENGLISH_TEAM_PLACE();
+            PHILIP_ENGLISH_TEAM_PLACE.setMemberAndTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
+            testFixtureBuilder.buildMemberTeamPlace(PHILIP_ENGLISH_TEAM_PLACE);
+            final Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(ENGLISH_TEAM_PLACE.getId()));
+            final String title = "test";
+            final String description = ".".repeat(101);
+            final LocalDateTime startDateTime = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getStartDateTime();
+            final LocalDateTime endDateTime = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getEndDateTime();
+
+            final ScheduleUpdateRequest request = new ScheduleUpdateRequest(title, description, startDateTime, endDateTime);
+
+            // when
+            final ExtractableResponse<Response> blankTitleResponse = UPDATE_SCHEDULE_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId(), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getTeamPlaceId(), request);
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(blankTitleResponse.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+                softly.assertThat(blankTitleResponse.jsonPath().getString("error")).contains("일정 메모가 너무 깁니다.");
+            });
+        }
+
         @ParameterizedTest
         @ValueSource(strings = {"2023-07-12 10-00", "2023:07:12 10:00", "2023-07-1210:10", "2023:07:12 10-00", "2023-07-12 10:00:00"})
         @DisplayName("잘못된 날짜 형식 요청이면 실패한다.")

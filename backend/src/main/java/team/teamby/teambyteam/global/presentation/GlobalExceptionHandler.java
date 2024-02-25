@@ -126,6 +126,7 @@ public class GlobalExceptionHandler {
             ScheduleException.SpanWrongOrderException.class,
             ScheduleException.dateFormatException.class,
             ScheduleException.TitleBlankException.class,
+            ScheduleException.DescriptionLengthException.class,
             TeamPlaceInviteCodeException.LengthException.class,
             TeamPlaceException.NameLengthException.class,
             TeamPlaceException.NameBlankException.class,

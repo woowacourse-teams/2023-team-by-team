@@ -40,6 +40,12 @@ public class ScheduleException extends RuntimeException {
         }
     }
 
+    public static class DescriptionLengthException extends ScheduleException {
+        public DescriptionLengthException() {
+            super("일정 메모가 너무 깁니다.");
+        }
+    }
+
     public static class dateFormatException extends ScheduleException {
         public dateFormatException(final Exception e) {
             super("잘못된 날짜 입력 형식입니다.", e);
