@@ -11,7 +11,6 @@ import org.springframework.data.domain.Sort;
 import team.teamby.teambyteam.common.RepositoryTest;
 import team.teamby.teambyteam.common.fixtures.ScheduleEventFixtures;
 import team.teamby.teambyteam.feed.domain.notification.Notification;
-import team.teamby.teambyteam.feed.domain.notification.schedulenotification.ScheduleNotification;
 import team.teamby.teambyteam.feed.domain.vo.Content;
 import team.teamby.teambyteam.schedule.application.event.ScheduleCreateEvent;
 import team.teamby.teambyteam.schedule.domain.Schedule;
@@ -37,23 +36,17 @@ class FeedRepositoryTest extends RepositoryTest {
     @DisplayName("팀플레이스 id로 피드를 조회한다.")
     void findByTeamPlaceId() {
         //given
-        Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE =
-                testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(1L));
         FeedThread feedThread = new FeedThread(1L, new Content("테스트 스레드"), 1L);
-        Notification notification = ScheduleNotification.from(ScheduleEventFixtures.SCHEDULE_CREATE_EVENT(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE));
         feedRepository.save(feedThread);
-        feedRepository.save(notification);
 
         //when
         List<Feed> feeds = feedRepository.findByTeamPlaceId(1L);
 
         ///then
         assertSoftly(softly -> {
-            softly.assertThat(feeds).hasSize(2);
+            softly.assertThat(feeds).hasSize(1);
             softly.assertThat(feeds.get(0)).isInstanceOf(FeedThread.class);
             softly.assertThat(feeds.get(0).getContent()).isEqualTo(new Content("테스트 스레드"));
-            softly.assertThat(feeds.get(1)).isInstanceOf(ScheduleNotification.class);
-            softly.assertThat(feeds.get(1).getContent()).isEqualTo(notification.getContent());
         });
     }
 
@@ -63,11 +56,8 @@ class FeedRepositoryTest extends RepositoryTest {
         //given
         List<Feed> insertFeeds = new ArrayList<>();
         insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
-        insertFeeds.add(ScheduleNotification.from(new ScheduleCreateEvent(1L, 1L, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
         insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
-        insertFeeds.add(ScheduleNotification.from(new ScheduleCreateEvent(2L, 1L, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
         insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
-        insertFeeds.add(ScheduleNotification.from(new ScheduleCreateEvent(3L, 1L, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
         testFixtureBuilder.buildFeeds(insertFeeds);
         final int size = 3;
 
@@ -79,9 +69,9 @@ class FeedRepositoryTest extends RepositoryTest {
         ///then
         assertSoftly(softly -> {
             softly.assertThat(feeds).hasSize(size);
-            softly.assertThat(feeds.get(0).getId()).isEqualTo(6);
-            softly.assertThat(feeds.get(1).getId()).isEqualTo(5);
-            softly.assertThat(feeds.get(2).getId()).isEqualTo(4);
+            softly.assertThat(feeds.get(0).getId()).isEqualTo(3);
+            softly.assertThat(feeds.get(1).getId()).isEqualTo(2);
+            softly.assertThat(feeds.get(2).getId()).isEqualTo(1);
         });
     }
 
@@ -91,11 +81,8 @@ class FeedRepositoryTest extends RepositoryTest {
         //given
         List<Feed> insertFeeds = new ArrayList<>();
         insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
-        insertFeeds.add(ScheduleNotification.from(new ScheduleCreateEvent(1L, 1L, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
         insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
-        insertFeeds.add(ScheduleNotification.from(new ScheduleCreateEvent(1L, 1L, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
         insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
-        insertFeeds.add(ScheduleNotification.from(new ScheduleCreateEvent(1L, 1L, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
         testFixtureBuilder.buildFeeds(insertFeeds);
         final long lastId = 5L;
         final int size = 3;
@@ -108,9 +95,9 @@ class FeedRepositoryTest extends RepositoryTest {
         ///then
         assertSoftly(softly -> {
             softly.assertThat(feeds).hasSize(size);
-            softly.assertThat(feeds.get(0).getId()).isEqualTo(4);
-            softly.assertThat(feeds.get(1).getId()).isEqualTo(3);
-            softly.assertThat(feeds.get(2).getId()).isEqualTo(2);
+            softly.assertThat(feeds.get(0).getId()).isEqualTo(3);
+            softly.assertThat(feeds.get(1).getId()).isEqualTo(2);
+            softly.assertThat(feeds.get(2).getId()).isEqualTo(1);
         });
     }
 
@@ -147,11 +134,8 @@ class FeedRepositoryTest extends RepositoryTest {
         //given
         List<Feed> insertFeeds = new ArrayList<>();
         insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
-        insertFeeds.add(ScheduleNotification.from(new ScheduleCreateEvent(1L, 1L, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
         insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
-        insertFeeds.add(ScheduleNotification.from(new ScheduleCreateEvent(1L, 1L, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
         insertFeeds.add(new FeedThread(1L, new Content("테스트 스레드"), 1L));
-        insertFeeds.add(ScheduleNotification.from(new ScheduleCreateEvent(1L, 1L, new Title("테스트 알림"), new Span(LocalDateTime.now(), LocalDateTime.now()))));
         testFixtureBuilder.buildFeeds(insertFeeds);
         final int size = 10;
 
@@ -163,12 +147,9 @@ class FeedRepositoryTest extends RepositoryTest {
         ///then
         assertSoftly(softly -> {
             softly.assertThat(feeds).hasSize(insertFeeds.size());
-            softly.assertThat(feeds.get(0).getId()).isEqualTo(6);
-            softly.assertThat(feeds.get(1).getId()).isEqualTo(5);
-            softly.assertThat(feeds.get(2).getId()).isEqualTo(4);
-            softly.assertThat(feeds.get(3).getId()).isEqualTo(3);
-            softly.assertThat(feeds.get(4).getId()).isEqualTo(2);
-            softly.assertThat(feeds.get(5).getId()).isEqualTo(1);
+            softly.assertThat(feeds.get(0).getId()).isEqualTo(3);
+            softly.assertThat(feeds.get(1).getId()).isEqualTo(2);
+            softly.assertThat(feeds.get(2).getId()).isEqualTo(1);
         });
     }
 }

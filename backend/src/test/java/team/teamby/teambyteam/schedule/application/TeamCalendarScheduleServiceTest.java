@@ -35,6 +35,7 @@ import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AN
 import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_REGISTER_REQUEST;
 import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_TITLE;
 import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_UPDATE_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_WITH_DESCRIPTION_SCHEDULE;
 import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_DAY_28_AND_MONTH_8_SCHEDULE;
 import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_DAY_29_AND_MONTH_8_SCHEDULE;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
@@ -440,6 +441,65 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
 
             // then
             assertThat(updatedSchedule.getSpan().getStartDateTime()).isEqualTo(startTimeToUpdate);
+        }
+
+        @Test
+        @DisplayName("일정의 description만 변경한다")
+        void changeDescription() {
+            // given
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final Long ENGLISH_TEAM_PLACE_ID = ENGLISH_TEAM_PLACE.getId();
+            final Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_N_HOUR_WITH_DESCRIPTION_SCHEDULE(ENGLISH_TEAM_PLACE_ID));
+            final Long MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_ID = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId();
+
+            final String newDescription = "new description";
+            final ScheduleUpdateRequest request = new ScheduleUpdateRequest(null, newDescription, null, null);
+
+            // when
+            teamCalendarScheduleService.update(request, ENGLISH_TEAM_PLACE_ID, MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_ID);
+            final Schedule updatedSchedule = scheduleRepository.findById(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_ID).get();
+
+            // then
+            assertThat(updatedSchedule.getDescription().getValue()).isEqualTo(newDescription);
+        }
+
+        @Test
+        @DisplayName("빈값을 입력해서 메모를 삭제한다.")
+        void deleteDescriptionWithBlankValue() {
+            // given
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final Long ENGLISH_TEAM_PLACE_ID = ENGLISH_TEAM_PLACE.getId();
+            final Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_N_HOUR_WITH_DESCRIPTION_SCHEDULE(ENGLISH_TEAM_PLACE_ID));
+            final Long MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_ID = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId();
+
+            final ScheduleUpdateRequest request = new ScheduleUpdateRequest(null, "", null, null);
+
+            // when
+            teamCalendarScheduleService.update(request, ENGLISH_TEAM_PLACE_ID, MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_ID);
+            final Schedule updatedSchedule = scheduleRepository.findById(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_ID).get();
+
+            // then
+            assertThat(updatedSchedule.getDescription().isExist()).isFalse();
+        }
+
+        @Test
+        @DisplayName("일정의 title만 변경한다")
+        void changeOnlyTitle() {
+            // given
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final Long ENGLISH_TEAM_PLACE_ID = ENGLISH_TEAM_PLACE.getId();
+            final Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_N_HOUR_WITH_DESCRIPTION_SCHEDULE(ENGLISH_TEAM_PLACE_ID));
+            final Long MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_ID = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId();
+
+            final String newTitle = "new title";
+            final ScheduleUpdateRequest request = new ScheduleUpdateRequest(newTitle, null, null, null);
+
+            // when
+            teamCalendarScheduleService.update(request, ENGLISH_TEAM_PLACE_ID, MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_ID);
+            final Schedule updatedSchedule = scheduleRepository.findById(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_ID).get();
+
+            // then
+            assertThat(updatedSchedule.getTitle().getValue()).isEqualTo(newTitle);
         }
 
         @Test

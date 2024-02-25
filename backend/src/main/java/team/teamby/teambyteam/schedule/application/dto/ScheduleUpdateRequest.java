@@ -1,10 +1,8 @@
 package team.teamby.teambyteam.schedule.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import team.teamby.teambyteam.schedule.exception.ScheduleException;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 public record ScheduleUpdateRequest(
         String title,
