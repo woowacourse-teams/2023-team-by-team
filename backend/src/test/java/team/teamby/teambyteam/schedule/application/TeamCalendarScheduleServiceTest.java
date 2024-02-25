@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import team.teamby.teambyteam.common.ServiceTest;
 import team.teamby.teambyteam.common.fixtures.ScheduleFixtures;
@@ -359,6 +358,20 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
         }
 
         @Test
+        @DisplayName("메모가 있는 일정 등록에 성공한다.")
+        void successWithDescription() {
+            // given
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final ScheduleRegisterRequest request = ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_WITH_DESCRIPTION_REGISTER_REQUEST;
+
+            // when
+            final Long registeredId = teamCalendarScheduleService.register(request, ENGLISH_TEAM_PLACE.getId());
+
+            // then
+            assertThat(registeredId).isNotNull();
+        }
+
+        @Test
         @DisplayName("일정 등록 시 Span 순서가 맞지 않으면 예외가 발생한다.")
         void failSpanWrongOrder() {
             // given
@@ -411,25 +424,6 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
 
             // then
             assertThat(updatedSchedule.getSpan().getStartDateTime()).isEqualTo(startTimeToUpdate);
-        }
-
-        @ParameterizedTest
-        @ValueSource(strings = {"", " ", "    "})
-        @DisplayName("일정 수정 시 수정할 일정 제목이 빈 값이면 예외가 발생한다.")
-        void failUpdateTitleBlank(String titleToUpdate) {
-            // given
-            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
-            final Long ENGLISH_TEAM_PLACE_ID = ENGLISH_TEAM_PLACE.getId();
-            final Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(ENGLISH_TEAM_PLACE_ID));
-
-            final LocalDateTime startDateTime = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getStartDateTime();
-            final LocalDateTime endDateTime = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getEndDateTime();
-            final ScheduleUpdateRequest request = new ScheduleUpdateRequest(titleToUpdate, startDateTime, endDateTime);
-
-            // when & then
-            assertThatThrownBy(() -> teamCalendarScheduleService.update(request, ENGLISH_TEAM_PLACE_ID, MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId()))
-                    .isInstanceOf(ScheduleException.TitleBlankException.class)
-                    .hasMessageContaining("일정의 제목은 빈 칸일 수 없습니다.");
         }
 
         @Test

@@ -33,8 +33,4 @@ public class Title {
             throw new ScheduleException.TitleBlankException();
         }
     }
-
-    public Title change(final String value) {
-        return new Title(value);
-    }
 }

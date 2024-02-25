@@ -1,6 +1,5 @@
 package team.teamby.teambyteam.schedule.docs;
 
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -101,6 +100,7 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
                                     ),
                                     requestFields(
                                             fieldWithPath("title").type(JsonFieldType.STRING).description("등록할 일정 제목"),
+                                            fieldWithPath("description").type(JsonFieldType.STRING).description("등록할 일정의 메모").optional(),
                                             fieldWithPath("startDateTime").type(JsonFieldType.STRING).description("등록할 일정의 시작 일시(형식 : yyyy-MM-dd HH:mm)"),
                                             fieldWithPath("endDateTime").type(JsonFieldType.STRING).description("등록할 일정의 종료 일시(형식 : yyyy-MM-dd HH:mm)")
                                     )
@@ -121,7 +121,6 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
             willThrow(new ScheduleException.TitleBlankException())
                     .given(teamCalendarScheduleService)
                     .register(any(ScheduleRegisterRequest.class), eq(teamPlaceId));
-
 
             // when & then
             mockMvc.perform(post("/api/team-place/{teamPlaceId}/calendar/schedules", teamPlaceId)
@@ -154,7 +153,6 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
                     .given(teamCalendarScheduleService)
                     .register(any(ScheduleRegisterRequest.class), eq(teamPlaceId));
 
-
             // when & then
             mockMvc.perform(post("/api/team-place/{teamPlaceId}/calendar/schedules", teamPlaceId)
                             .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
@@ -178,7 +176,6 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
             willThrow(new TeamPlaceException.NotFoundException(notExistTeamPlaceId))
                     .given(teamCalendarScheduleService)
                     .register(any(), eq(notExistTeamPlaceId));
-
 
             // when & then
             mockMvc.perform(post("/api/team-place/{teamPlaceId}/calendar/schedules", notExistTeamPlaceId)
@@ -223,7 +220,6 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
         }
     }
 
-
     @Nested
     @DisplayName("일정 수정 문서화")
     class UpdateScheduleDocs {
@@ -255,6 +251,7 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
                                     ),
                                     requestFields(
                                             fieldWithPath("title").type(JsonFieldType.STRING).description("수정할 일정 제목"),
+                                            fieldWithPath("description").type(JsonFieldType.STRING).description("변경할 일정의 메모").optional(),
                                             fieldWithPath("startDateTime").type(JsonFieldType.STRING).description("수정할 일정의 시작 일시(형식 : yyyy-MM-dd HH:mm)"),
                                             fieldWithPath("endDateTime").type(JsonFieldType.STRING).description("수정할 일정의 종료 일시(형식 : yyyy-MM-dd HH:mm)")
                                     )
@@ -274,11 +271,10 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
             final LocalDateTime startDateTime = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getStartDateTime();
             final LocalDateTime endDateTime = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getEndDateTime();
 
-            ScheduleUpdateRequest request = new ScheduleUpdateRequest(blankTitle, startDateTime, endDateTime);
+            final ScheduleUpdateRequest request = new ScheduleUpdateRequest(blankTitle, startDateTime, endDateTime);
             willThrow(new ScheduleException.TitleBlankException())
                     .given(teamCalendarScheduleService)
                     .update(any(ScheduleUpdateRequest.class), eq(teamPlaceId), eq(id));
-
 
             // when & then
             mockMvc.perform(patch("/api/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}", teamPlaceId, id)
@@ -312,7 +308,6 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
                     .given(teamCalendarScheduleService)
                     .update(any(ScheduleUpdateRequest.class), eq(teamPlaceId), eq(id));
 
-
             // when & then
             mockMvc.perform(patch("/api/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}", teamPlaceId, id)
                             .header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_HEADER_VALUE)
@@ -337,7 +332,6 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
             willThrow(new TeamPlaceException.NotFoundException(notExistTeamPlaceId))
                     .given(teamCalendarScheduleService)
                     .update(any(), eq(notExistTeamPlaceId), eq(id));
-
 
             // when & then
             mockMvc.perform(patch("/api/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}", notExistTeamPlaceId, id)
@@ -392,7 +386,6 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
             willThrow(new ScheduleException.ScheduleNotFoundException(notExistScheduleId))
                     .given(teamCalendarScheduleService)
                     .update(any(), eq(teamPlaceId), eq(notExistScheduleId));
-
 
             // when & then
             mockMvc.perform(patch("/api/team-place/{teamPlaceId}/calendar/schedules/{scheduleId}", teamPlaceId, notExistScheduleId)

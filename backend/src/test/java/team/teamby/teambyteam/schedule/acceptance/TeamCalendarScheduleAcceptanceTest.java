@@ -625,12 +625,12 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             final ScheduleUpdateRequest request = new ScheduleUpdateRequest(blankTitle, startDateTime, endDateTime);
 
             // when
-            final ExtractableResponse<Response> blankTitleRequest = UPDATE_SCHEDULE_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId(), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getTeamPlaceId(), request);
+            final ExtractableResponse<Response> blankTitleResponse = UPDATE_SCHEDULE_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId(), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getTeamPlaceId(), request);
 
             // then
             assertSoftly(softly -> {
-                softly.assertThat(blankTitleRequest.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-                softly.assertThat(blankTitleRequest.jsonPath().getString("error")).contains("제목은 빈 값일 수 없습니다.");
+                softly.assertThat(blankTitleResponse.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+                softly.assertThat(blankTitleResponse.jsonPath().getString("error")).contains("일정의 제목은 빈 칸일 수 없습니다.");
             });
         }
 

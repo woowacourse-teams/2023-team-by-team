@@ -23,6 +23,11 @@ public class ScheduleFixtures {
     public static final String MONTH_7_DAY_29_AND_MONTH_8_SCHEDULE_TITLE = "7월 29일~8월 일정";
 
     /**
+     * description
+     */
+    public static final String DESCRIPTION = "description";
+
+    /**
      * DATE
      */
     public static final LocalDateTime DATE_2023_05_01_00_00_00 = LocalDateTime.of(2023, 5, 1, 0, 0, 0);
@@ -44,6 +49,8 @@ public class ScheduleFixtures {
      * REGISTER_REQUEST
      */
     public static final ScheduleRegisterRequest MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_REGISTER_REQUEST = new ScheduleRegisterRequest(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_TITLE, DATE_2023_07_12_10_00_00, DATE_2023_07_12_18_00_00);
+
+    public static final ScheduleRegisterRequest MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_WITH_DESCRIPTION_REGISTER_REQUEST = new ScheduleRegisterRequest(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_TITLE, DESCRIPTION, DATE_2023_07_12_10_00_00, DATE_2023_07_12_18_00_00);
 
     /**
      * UPDATE_REQUEST

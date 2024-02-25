@@ -17,6 +17,7 @@ import team.teamby.teambyteam.schedule.application.parser.LocalDateParser;
 import team.teamby.teambyteam.schedule.domain.CalendarPeriod;
 import team.teamby.teambyteam.schedule.domain.Schedule;
 import team.teamby.teambyteam.schedule.domain.ScheduleRepository;
+import team.teamby.teambyteam.schedule.domain.vo.Description;
 import team.teamby.teambyteam.schedule.domain.vo.Span;
 import team.teamby.teambyteam.schedule.domain.vo.Title;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
@@ -26,6 +27,7 @@ import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -43,7 +45,8 @@ public class TeamCalendarScheduleService {
 
         final Title title = new Title(scheduleRegisterRequest.title());
         final Span span = new Span(scheduleRegisterRequest.startDateTime(), scheduleRegisterRequest.endDateTime());
-        final Schedule schedule = new Schedule(teamPlaceId, title, span);
+        final Description description = new Description(scheduleRegisterRequest.description());
+        final Schedule schedule = new Schedule(teamPlaceId, title, description, span);
 
         final Schedule savedSchedule = scheduleRepository.save(schedule);
         log.info("일정 등록 - 팀플레이스 아이디 : {}, 일정 아이디 : {}", teamPlaceId, savedSchedule.getId());
@@ -144,15 +147,22 @@ public class TeamCalendarScheduleService {
         final Title previousTitle = schedule.getTitle();
         final Span previousSpan = schedule.getSpan();
 
-        final String titleToUpdate = scheduleUpdateRequest.title();
+        if(Objects.nonNull(scheduleUpdateRequest.title())) {
+            schedule.changeTitle(scheduleUpdateRequest.title());
+        }
+
+        schedule.changeDescription(scheduleUpdateRequest.description());
+
         final LocalDateTime startDateTimeToUpdate = scheduleUpdateRequest.startDateTime();
         final LocalDateTime endDateTimeToUpdate = scheduleUpdateRequest.endDateTime();
+        if(Objects.nonNull(startDateTimeToUpdate) && Objects.nonNull(endDateTimeToUpdate)) {
+            schedule.changeSpan(startDateTimeToUpdate, endDateTimeToUpdate);
+        }
 
-        schedule.change(titleToUpdate, startDateTimeToUpdate, endDateTimeToUpdate);
         log.info("일정 수정 - 팀플레이스 아이디 : {}, 일정 아이디 : {}", teamPlaceId, scheduleId);
 
         final ScheduleUpdateEventDto updatedScheduleInfo =
-                ScheduleUpdateEventDto.of(titleToUpdate, startDateTimeToUpdate, endDateTimeToUpdate);
+                ScheduleUpdateEventDto.of(scheduleUpdateRequest.title(), startDateTimeToUpdate, endDateTimeToUpdate);
 
         applicationEventPublisher.publishEvent(new ScheduleUpdateEvent(
                 scheduleId,
