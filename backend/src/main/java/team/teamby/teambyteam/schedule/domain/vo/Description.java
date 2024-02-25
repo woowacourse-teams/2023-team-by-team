@@ -25,4 +25,8 @@ public class Description {
         }
         this.value = value.trim();
     }
+
+    public boolean isExist() {
+        return Objects.nonNull(value);
+    }
 }

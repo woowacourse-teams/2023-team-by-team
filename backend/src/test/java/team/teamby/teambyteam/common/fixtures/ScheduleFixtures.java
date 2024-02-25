@@ -3,6 +3,7 @@ package team.teamby.teambyteam.common.fixtures;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleUpdateRequest;
 import team.teamby.teambyteam.schedule.domain.Schedule;
+import team.teamby.teambyteam.schedule.domain.vo.Description;
 import team.teamby.teambyteam.schedule.domain.vo.Span;
 import team.teamby.teambyteam.schedule.domain.vo.Title;
 
@@ -25,7 +26,7 @@ public class ScheduleFixtures {
     /**
      * description
      */
-    public static final String DESCRIPTION = "description";
+    public static final String DESCRIPTION = "this is the description for schedule.";
 
     /**
      * DATE
@@ -78,6 +79,10 @@ public class ScheduleFixtures {
 
     public static Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(final Long teamPlaceId) {
         return new Schedule(teamPlaceId, new Title(teamPlaceId + "번 팀플 " + MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_TITLE), new Span(DATE_2023_07_12_10_00_00, DATE_2023_07_12_18_00_00));
+    }
+
+    public static Schedule MONTH_7_AND_DAY_12_N_HOUR_WITH_DESCRIPTION_SCHEDULE(final Long teamPlaceId) {
+        return new Schedule(teamPlaceId, new Title(teamPlaceId + "번 팀플 " + MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_TITLE), new Description(ScheduleFixtures.DESCRIPTION), new Span(DATE_2023_07_12_10_00_00, DATE_2023_07_12_18_00_00));
     }
 
     public static Schedule MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE(final Long teamPlaceId) {

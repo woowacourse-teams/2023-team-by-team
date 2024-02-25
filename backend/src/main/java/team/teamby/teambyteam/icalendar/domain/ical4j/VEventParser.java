@@ -2,6 +2,7 @@ package team.teamby.teambyteam.icalendar.domain.ical4j;
 
 import lombok.RequiredArgsConstructor;
 import net.fortuna.ical4j.model.component.VEvent;
+import net.fortuna.ical4j.model.property.Description;
 import team.teamby.teambyteam.schedule.domain.Schedule;
 
 import java.time.LocalDateTime;
@@ -24,6 +25,9 @@ public class VEventParser {
         final Temporal endTemporal = getEndTemporal(schedule);
 
         final VEvent vEvent = new VEvent(startTemporal, endTemporal, title);
+        if (schedule.getDescription().isExist()) {
+            vEvent.withProperty(new Description(schedule.getDescription().getValue()));
+        }
 
         vEvent.add(uidGenerator.generateUid(schedule));
 
@@ -44,7 +48,7 @@ public class VEventParser {
         return convertToSeoulDateTime(schedule.getEndDateTime());
     }
 
-    private ZonedDateTime convertToSeoulDateTime(final LocalDateTime startDateTime) {
-        return startDateTime.atZone(TimeZone.getTimeZone(ASIA_SEOUL).toZoneId());
+    private ZonedDateTime convertToSeoulDateTime(final LocalDateTime localDateTime) {
+        return localDateTime.atZone(TimeZone.getTimeZone(ASIA_SEOUL).toZoneId());
     }
 }
