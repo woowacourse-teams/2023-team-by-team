@@ -1,23 +1,34 @@
 import Text from '~/components/common/Text/Text';
 import * as S from './Notification.styled';
-import type { ReactElement } from 'react';
+import { EnterIcon, ExitIcon, CalendarIcon } from '~/assets/svg';
 import type { ThreadSize } from '~/types/size';
+import type { NotificationType } from '~/types/feed';
 
 interface NotificationProps {
   content: string;
-  icon?: ReactElement;
+  type: NotificationType;
   time?: string;
   size?: ThreadSize;
 }
 
 const Notification = (props: NotificationProps) => {
-  const { content, icon, time, size = 'md' } = props;
+  const { content, type, time, size = 'md' } = props;
 
   return (
     <S.Container>
       <S.Line />
       <S.Inner>
-        {icon && <S.IconWrapper $size={size}>{icon}</S.IconWrapper>}
+        {type !== 'normal' && (
+          <S.IconWrapper $size={size}>
+            {type === 'join' ? (
+              <EnterIcon />
+            ) : type === 'leave' ? (
+              <ExitIcon />
+            ) : (
+              <CalendarIcon />
+            )}
+          </S.IconWrapper>
+        )}
         <Text size={size === 'md' ? 'md' : 'sm'} css={S.content}>
           {content}
         </Text>
