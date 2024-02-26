@@ -625,12 +625,39 @@ public class TeamCalendarScheduleAcceptanceTest extends AcceptanceTest {
             final ScheduleUpdateRequest request = new ScheduleUpdateRequest(blankTitle, startDateTime, endDateTime);
 
             // when
-            final ExtractableResponse<Response> blankTitleRequest = UPDATE_SCHEDULE_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId(), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getTeamPlaceId(), request);
+            final ExtractableResponse<Response> blankTitleResponse = UPDATE_SCHEDULE_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId(), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getTeamPlaceId(), request);
 
             // then
             assertSoftly(softly -> {
-                softly.assertThat(blankTitleRequest.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-                softly.assertThat(blankTitleRequest.jsonPath().getString("error")).contains("제목은 빈 값일 수 없습니다.");
+                softly.assertThat(blankTitleResponse.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+                softly.assertThat(blankTitleResponse.jsonPath().getString("error")).contains("일정의 제목은 빈 칸일 수 없습니다.");
+            });
+        }
+
+        @Test
+        @DisplayName("너무 긴 메모로 등록시 실패한다.")
+        void failTooLongDescriptionRequest() {
+            // given
+            final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final MemberTeamPlace PHILIP_ENGLISH_TEAM_PLACE = PHILIP_ENGLISH_TEAM_PLACE();
+            PHILIP_ENGLISH_TEAM_PLACE.setMemberAndTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
+            testFixtureBuilder.buildMemberTeamPlace(PHILIP_ENGLISH_TEAM_PLACE);
+            final Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(ENGLISH_TEAM_PLACE.getId()));
+            final String title = "test";
+            final String description = ".".repeat(101);
+            final LocalDateTime startDateTime = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getStartDateTime();
+            final LocalDateTime endDateTime = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getEndDateTime();
+
+            final ScheduleUpdateRequest request = new ScheduleUpdateRequest(title, description, startDateTime, endDateTime);
+
+            // when
+            final ExtractableResponse<Response> blankTitleResponse = UPDATE_SCHEDULE_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId(), MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getTeamPlaceId(), request);
+
+            // then
+            assertSoftly(softly -> {
+                softly.assertThat(blankTitleResponse.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+                softly.assertThat(blankTitleResponse.jsonPath().getString("error")).contains("일정 메모가 너무 깁니다.");
             });
         }
 

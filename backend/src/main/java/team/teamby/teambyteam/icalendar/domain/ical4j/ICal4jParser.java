@@ -31,7 +31,7 @@ public class ICal4jParser implements IcalendarParser {
     private static final String STANDARD_DT_START = "19700101T000000";
     private static final String SEOUL_TZ_OFFSET = "+0900";
 
-    private final VEventParser vEventParser = new VEventParser();
+    private final VEventParser vEventParser = new VEventParser(new ScheduleUidGenerator());
 
     @Override
     public String parse(final TeamPlace teamPlace, final List<Schedule> schedules) {
