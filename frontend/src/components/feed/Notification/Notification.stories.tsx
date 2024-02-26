@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import Notification from '~/components/feed/Notification/Notification';
-import { EnterIcon, CalendarIcon } from '~/assets/svg';
 
 const meta = {
   title: 'Feed/Notification',
@@ -10,9 +9,9 @@ const meta = {
     content: {
       description: '알림에 쓰일 내용을 의미합니다.',
     },
-    icon: {
+    type: {
       description:
-        '알림의 좌측에 표시될 아이콘을 의미합니다. 아이콘은 **리액트 컴포넌트 방식의 SVG 이미지**여야 합니다. 아이콘의 색상 및 크기는 자동으로 조정됩니다.',
+        '알림의 종류를 의미합니다. 알림의 종류에 따라 보여지는 아이콘이 달라집니다.',
     },
     time: {
       description: '알림의 우측에 표시될 알림의 수신 시각을 의미합니다.',
@@ -30,43 +29,46 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
+    type: 'normal',
     content: '기본 알림입니다.',
   },
 };
 
 export const LongContent: Story = {
   args: {
+    type: 'normal',
     content:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce suscipit ac diam ac viverra. Integer euismod, nulla id ullamcorper posuere, mauris ex luctus mauris, eget tincidunt mi dolor vel ante.',
   },
 };
 
-export const Time: Story = {
+export const Join: Story = {
   args: {
+    type: 'join',
     time: '23:35',
     content: '팀바팀 님이 입장하셨습니다.',
   },
 };
 
-export const Icon: Story = {
+export const Leave: Story = {
   args: {
-    icon: <CalendarIcon />,
-    content: '2024년 2월 17일',
+    type: 'leave',
+    time: '23:35',
+    content: '팀바팀 님이 퇴장하셨습니다.',
   },
 };
 
-export const TimeAndIcon: Story = {
+export const Date: Story = {
   args: {
-    time: '23:35',
-    icon: <EnterIcon />,
-    content: '팀바팀 님이 입장하셨습니다.',
+    type: 'date',
+    content: '2023년 2월 7일',
   },
 };
 
-export const TimeIconAndSmallSize: Story = {
+export const Small: Story = {
   args: {
+    type: 'join',
     time: '23:35',
-    icon: <EnterIcon />,
     content: '팀바팀 님이 입장하셨습니다.',
     size: 'sm',
   },
