@@ -155,6 +155,7 @@ const ThreadList = (props: ThreadListProps) => {
                 <Fragment key={id}>
                   {isFirstThreadOfDay && (
                     <Notification
+                      type="date"
                       content={formatDate(currentDateTime.date)}
                       size={size}
                     />
@@ -173,12 +174,13 @@ const ThreadList = (props: ThreadListProps) => {
                 <Fragment key={id}>
                   {isFirstThreadOfDay && (
                     <Notification
+                      type="date"
                       content={formatDate(currentDateTime.date)}
                       size={size}
                     />
                   )}
                   <Notification
-                    key={id}
+                    type="date"
                     content={content}
                     time={currentDateTime.time}
                     size={size}
