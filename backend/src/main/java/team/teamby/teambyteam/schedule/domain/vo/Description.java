@@ -18,7 +18,7 @@ public class Description {
 
     private static final int MAX_LENGTH = 100;
 
-    @Column(name = "description", nullable = true)
+    @Column(name = "description", columnDefinition = "TEXT", nullable = true)
     private String value;
 
     public Description(final String value) {

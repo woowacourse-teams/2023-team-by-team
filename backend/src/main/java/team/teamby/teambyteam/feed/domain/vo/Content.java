@@ -2,7 +2,6 @@ package team.teamby.teambyteam.feed.domain.vo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.Lob;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +18,6 @@ public class Content {
     public static final int MAX_LENGTH = 10000;
 
     @Column(name = "content", columnDefinition = "text")
-    @Lob
     private String value;
 
     public Content(final String value) {
