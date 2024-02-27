@@ -3,6 +3,7 @@ package team.teamby.teambyteam.common.fixtures;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleRegisterRequest;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleUpdateRequest;
 import team.teamby.teambyteam.schedule.domain.Schedule;
+import team.teamby.teambyteam.schedule.domain.vo.Description;
 import team.teamby.teambyteam.schedule.domain.vo.Span;
 import team.teamby.teambyteam.schedule.domain.vo.Title;
 
@@ -21,6 +22,11 @@ public class ScheduleFixtures {
     public static final String MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE_TITLE = "7월 12일 종일 일정";
     public static final String MONTH_7_DAY_28_AND_MONTH_8_SCHEDULE_TITLE = "7월 28일~8월 일정";
     public static final String MONTH_7_DAY_29_AND_MONTH_8_SCHEDULE_TITLE = "7월 29일~8월 일정";
+
+    /**
+     * description
+     */
+    public static final String DESCRIPTION = "this is the description for schedule.";
 
     /**
      * DATE
@@ -44,6 +50,8 @@ public class ScheduleFixtures {
      * REGISTER_REQUEST
      */
     public static final ScheduleRegisterRequest MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_REGISTER_REQUEST = new ScheduleRegisterRequest(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_TITLE, DATE_2023_07_12_10_00_00, DATE_2023_07_12_18_00_00);
+
+    public static final ScheduleRegisterRequest MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_WITH_DESCRIPTION_REGISTER_REQUEST = new ScheduleRegisterRequest(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_TITLE, DESCRIPTION, DATE_2023_07_12_10_00_00, DATE_2023_07_12_18_00_00);
 
     /**
      * UPDATE_REQUEST
@@ -71,6 +79,10 @@ public class ScheduleFixtures {
 
     public static Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(final Long teamPlaceId) {
         return new Schedule(teamPlaceId, new Title(teamPlaceId + "번 팀플 " + MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_TITLE), new Span(DATE_2023_07_12_10_00_00, DATE_2023_07_12_18_00_00));
+    }
+
+    public static Schedule MONTH_7_AND_DAY_12_N_HOUR_WITH_DESCRIPTION_SCHEDULE(final Long teamPlaceId) {
+        return new Schedule(teamPlaceId, new Title(teamPlaceId + "번 팀플 " + MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_TITLE), new Description(ScheduleFixtures.DESCRIPTION), new Span(DATE_2023_07_12_10_00_00, DATE_2023_07_12_18_00_00));
     }
 
     public static Schedule MONTH_7_AND_DAY_12_ALL_DAY_SCHEDULE(final Long teamPlaceId) {

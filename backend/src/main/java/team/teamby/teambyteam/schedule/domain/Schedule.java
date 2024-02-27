@@ -10,6 +10,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.teamby.teambyteam.global.domain.BaseEntity;
+import team.teamby.teambyteam.schedule.domain.vo.Description;
 import team.teamby.teambyteam.schedule.domain.vo.Span;
 import team.teamby.teambyteam.schedule.domain.vo.Title;
 
@@ -32,11 +33,22 @@ public class Schedule extends BaseEntity {
     private Title title;
 
     @Embedded
+    private Description description;
+
+    @Embedded
     private Span span;
 
     public Schedule(final Long teamPlaceId, final Title title, final Span span) {
         this.teamPlaceId = teamPlaceId;
         this.title = title;
+        this.span = span;
+        this.description = new Description(null);
+    }
+
+    public Schedule(final Long teamPlaceId, final Title title, final Description description, final Span span) {
+        this.teamPlaceId = teamPlaceId;
+        this.title = title;
+        this.description = description;
         this.span = span;
     }
 
@@ -44,11 +56,16 @@ public class Schedule extends BaseEntity {
         return Objects.equals(teamPlaceId, this.teamPlaceId);
     }
 
-    public void change(final String titleToUpdate,
-                       final LocalDateTime startDateTimeToUpdate,
-                       final LocalDateTime endDateTimeToUpdate) {
-        this.title = title.change(titleToUpdate);
-        this.span = span.change(startDateTimeToUpdate, endDateTimeToUpdate);
+    public void changeTitle(final String titleValue) {
+        this.title = new Title(titleValue);
+    }
+
+    public void changeDescription(final String descriptionValue) {
+        this.description = new Description(descriptionValue);
+    }
+
+    public void changeSpan(final LocalDateTime startDateTime, final LocalDateTime endDateTime) {
+        this.span = new Span(startDateTime, endDateTime);
     }
 
     public LocalDateTime getStartDateTime() {

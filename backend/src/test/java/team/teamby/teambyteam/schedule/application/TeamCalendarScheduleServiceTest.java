@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import team.teamby.teambyteam.common.ServiceTest;
 import team.teamby.teambyteam.common.fixtures.ScheduleFixtures;
@@ -36,6 +35,7 @@ import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AN
 import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_REGISTER_REQUEST;
 import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_TITLE;
 import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_UPDATE_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_WITH_DESCRIPTION_SCHEDULE;
 import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_DAY_28_AND_MONTH_8_SCHEDULE;
 import static team.teamby.teambyteam.common.fixtures.ScheduleFixtures.MONTH_7_DAY_29_AND_MONTH_8_SCHEDULE;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
@@ -345,7 +345,7 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
     class RegisterSchedule {
 
         @Test
-        @DisplayName("일정 등록에 성공한다.")
+        @DisplayName("메모가 없는 일정 등록에 성공한다.")
         void success() {
             // given
             final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
@@ -356,6 +356,36 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
 
             // then
             assertThat(registeredId).isNotNull();
+        }
+
+        @Test
+        @DisplayName("메모가 있는 일정 등록에 성공한다.")
+        void successWithDescription() {
+            // given
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final ScheduleRegisterRequest request = ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_WITH_DESCRIPTION_REGISTER_REQUEST;
+
+            // when
+            final Long registeredId = teamCalendarScheduleService.register(request, ENGLISH_TEAM_PLACE.getId());
+
+            // then
+            assertThat(registeredId).isNotNull();
+        }
+
+        @Test
+        @DisplayName("100자 초과의 메모 입력시 예외를 발생시킨다.")
+        void failWithTooLongDescription() {
+            // given
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final String testTitle = "test";
+            final String testDescription = ".".repeat(101);
+            final ScheduleRegisterRequest request = new ScheduleRegisterRequest(testTitle, testDescription, LocalDateTime.now(), LocalDateTime.now());
+
+            // when
+            // then
+            assertThatThrownBy(() -> teamCalendarScheduleService.register(request, ENGLISH_TEAM_PLACE.getId()))
+                    .isInstanceOf(ScheduleException.DescriptionLengthException.class)
+                    .hasMessage("일정 메모가 너무 깁니다.");
         }
 
         @Test
@@ -413,23 +443,63 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
             assertThat(updatedSchedule.getSpan().getStartDateTime()).isEqualTo(startTimeToUpdate);
         }
 
-        @ParameterizedTest
-        @ValueSource(strings = {"", " ", "    "})
-        @DisplayName("일정 수정 시 수정할 일정 제목이 빈 값이면 예외가 발생한다.")
-        void failUpdateTitleBlank(String titleToUpdate) {
+        @Test
+        @DisplayName("일정의 description만 변경한다")
+        void changeDescription() {
             // given
             final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             final Long ENGLISH_TEAM_PLACE_ID = ENGLISH_TEAM_PLACE.getId();
-            final Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(ENGLISH_TEAM_PLACE_ID));
+            final Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_N_HOUR_WITH_DESCRIPTION_SCHEDULE(ENGLISH_TEAM_PLACE_ID));
+            final Long MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_ID = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId();
 
-            final LocalDateTime startDateTime = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getStartDateTime();
-            final LocalDateTime endDateTime = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getEndDateTime();
-            final ScheduleUpdateRequest request = new ScheduleUpdateRequest(titleToUpdate, startDateTime, endDateTime);
+            final String newDescription = "new description";
+            final ScheduleUpdateRequest request = new ScheduleUpdateRequest(null, newDescription, null, null);
 
-            // when & then
-            assertThatThrownBy(() -> teamCalendarScheduleService.update(request, ENGLISH_TEAM_PLACE_ID, MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId()))
-                    .isInstanceOf(ScheduleException.TitleBlankException.class)
-                    .hasMessageContaining("일정의 제목은 빈 칸일 수 없습니다.");
+            // when
+            teamCalendarScheduleService.update(request, ENGLISH_TEAM_PLACE_ID, MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_ID);
+            final Schedule updatedSchedule = scheduleRepository.findById(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_ID).get();
+
+            // then
+            assertThat(updatedSchedule.getDescription().getValue()).isEqualTo(newDescription);
+        }
+
+        @Test
+        @DisplayName("빈값을 입력해서 메모를 삭제한다.")
+        void deleteDescriptionWithBlankValue() {
+            // given
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final Long ENGLISH_TEAM_PLACE_ID = ENGLISH_TEAM_PLACE.getId();
+            final Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_N_HOUR_WITH_DESCRIPTION_SCHEDULE(ENGLISH_TEAM_PLACE_ID));
+            final Long MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_ID = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId();
+
+            final ScheduleUpdateRequest request = new ScheduleUpdateRequest(null, "", null, null);
+
+            // when
+            teamCalendarScheduleService.update(request, ENGLISH_TEAM_PLACE_ID, MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_ID);
+            final Schedule updatedSchedule = scheduleRepository.findById(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_ID).get();
+
+            // then
+            assertThat(updatedSchedule.getDescription().isExist()).isFalse();
+        }
+
+        @Test
+        @DisplayName("일정의 title만 변경한다")
+        void changeOnlyTitle() {
+            // given
+            final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
+            final Long ENGLISH_TEAM_PLACE_ID = ENGLISH_TEAM_PLACE.getId();
+            final Schedule MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE = testFixtureBuilder.buildSchedule(MONTH_7_AND_DAY_12_N_HOUR_WITH_DESCRIPTION_SCHEDULE(ENGLISH_TEAM_PLACE_ID));
+            final Long MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_ID = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId();
+
+            final String newTitle = "new title";
+            final ScheduleUpdateRequest request = new ScheduleUpdateRequest(newTitle, null, null, null);
+
+            // when
+            teamCalendarScheduleService.update(request, ENGLISH_TEAM_PLACE_ID, MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_ID);
+            final Schedule updatedSchedule = scheduleRepository.findById(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE_ID).get();
+
+            // then
+            assertThat(updatedSchedule.getTitle().getValue()).isEqualTo(newTitle);
         }
 
         @Test

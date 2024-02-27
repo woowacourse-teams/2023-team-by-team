@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import team.teamby.teambyteam.common.ServiceTest;
 import team.teamby.teambyteam.common.fixtures.FeedThreadFixtures;
 import team.teamby.teambyteam.common.fixtures.FeedThreadImageFixtures;
@@ -18,26 +17,17 @@ import team.teamby.teambyteam.feed.domain.FeedType;
 import team.teamby.teambyteam.feed.domain.image.FeedThreadImage;
 import team.teamby.teambyteam.feed.domain.image.vo.ImageName;
 import team.teamby.teambyteam.feed.domain.image.vo.ImageUrl;
-import team.teamby.teambyteam.feed.domain.notification.schedulenotification.ScheduleNotification;
 import team.teamby.teambyteam.feed.domain.vo.Content;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.vo.DisplayMemberName;
-import team.teamby.teambyteam.schedule.application.event.ScheduleCreateEvent;
-import team.teamby.teambyteam.schedule.domain.vo.Span;
-import team.teamby.teambyteam.schedule.domain.vo.Title;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
-import java.time.Clock;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP_EMAIL;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.ROY;
@@ -251,28 +241,6 @@ class FeedReadServiceTest extends ServiceTest {
         }
 
         @Test
-        @DisplayName("일정 알림 타입이 소문자다.")
-        void scheduleNotificationTypeLowerCase() {
-            // given
-            final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
-            final List<Feed> feeds = new ArrayList<>();
-            feeds.add(ScheduleNotification.from(new ScheduleCreateEvent(1L, teamPlace.getId(), new Title("테스트 알림"),
-                    new Span(LocalDateTime.now(), LocalDateTime.now()))));
-            testFixtureBuilder.buildFeeds(feeds);
-            final int size = 10;
-            final String type = FeedType.NOTIFICATION.name().toLowerCase();
-            final MemberEmailDto memberEmailDto = new MemberEmailDto(PHILIP_EMAIL);
-
-            // when
-            final FeedsResponse feedsResponse = feedReadService.firstRead(teamPlace.getId(), memberEmailDto, size);
-
-            //then
-            SoftAssertions.assertSoftly(softly -> {
-                softly.assertThat(feedsResponse.threads().get(0).type()).isEqualTo(type);
-            });
-        }
-
-        @Test
         @DisplayName("피드를 조회하면 스레드와 일정 알림이 동시에 조회된다.")
         void feedCombinationReadSuccess() {
             // given
@@ -282,16 +250,11 @@ class FeedReadServiceTest extends ServiceTest {
             testFixtureBuilder.buildMemberTeamPlace(member, teamPlace);
             final List<Feed> feeds = new ArrayList<>();
             feeds.add(new FeedThread(1L, new Content("테스트 스레드"), member.getId()));
-            feeds.add(ScheduleNotification.from(new ScheduleCreateEvent(1L, 1L, new Title("테스트 알림"),
-                    new Span(LocalDateTime.now(), LocalDateTime.now()))));
             feeds.add(new FeedThread(1L, new Content("테스트 스레드"), member.getId()));
-            feeds.add(ScheduleNotification.from(new ScheduleCreateEvent(2L, 1L, new Title("테스트 알림"),
-                    new Span(LocalDateTime.now(), LocalDateTime.now()))));
             feeds.add(new FeedThread(1L, new Content("테스트 스레드"), member.getId()));
             testFixtureBuilder.buildFeeds(feeds);
             final String threadType = FeedType.THREAD.name().toLowerCase();
-            final String notificationType = FeedType.NOTIFICATION.name().toLowerCase();
-            final int size = 5;
+            final int size = 3;
 
             // when
             final FeedsResponse feedsResponse = feedReadService.firstRead(teamPlace.getId(), memberEmailDto, size);
@@ -299,10 +262,8 @@ class FeedReadServiceTest extends ServiceTest {
             //then
             SoftAssertions.assertSoftly(softly -> {
                 softly.assertThat(feedsResponse.threads().get(0).type()).isEqualTo(threadType);
-                softly.assertThat(feedsResponse.threads().get(1).type()).isEqualTo(notificationType);
+                softly.assertThat(feedsResponse.threads().get(1).type()).isEqualTo(threadType);
                 softly.assertThat(feedsResponse.threads().get(2).type()).isEqualTo(threadType);
-                softly.assertThat(feedsResponse.threads().get(3).type()).isEqualTo(notificationType);
-                softly.assertThat(feedsResponse.threads().get(4).type()).isEqualTo(threadType);
             });
         }
 

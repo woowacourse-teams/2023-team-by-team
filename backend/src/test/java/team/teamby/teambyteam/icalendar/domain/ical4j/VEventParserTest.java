@@ -21,7 +21,7 @@ class VEventParserTest {
 
     @BeforeEach
     void setUp() {
-        this.vEventParser = new VEventParser();
+        this.vEventParser = new VEventParser(new ScheduleUidGenerator());
     }
 
     @Test
@@ -41,6 +41,30 @@ class VEventParserTest {
                 "DTSTART;TZID=Asia/Seoul:20230712T110000",
                 "DTEND;TZID=Asia/Seoul:20230712T190000",
                 "SUMMARY:2번 팀플 7월 12일 N시간 일정",
+                "UID:2-1",
+                "END:VEVENT"
+        );
+        assertThat(parsedMetaDataLines).containsAll(expects);
+    }
+
+    @Test
+    @DisplayName("n시간 Description(메모)가 있는 Schedule로 ical 이벤트 메타데이터 생성")
+    void nHourScheduleWithDescriptionParsing() {
+        // given
+        final Schedule schedule = Mockito.spy(ScheduleFixtures.MONTH_7_AND_DAY_12_N_HOUR_WITH_DESCRIPTION_SCHEDULE(TEAM_PLACE_ID_2));
+        when(schedule.getId()).thenReturn(1L);
+
+        // when
+        final VEvent vEvent = vEventParser.parse(schedule);
+
+        // then
+        final List<String> parsedMetaDataLines = List.of(vEvent.toString().split("\\r\\n"));
+        final List<String> expects = List.of(
+                "BEGIN:VEVENT",
+                "DTSTART;TZID=Asia/Seoul:20230712T110000",
+                "DTEND;TZID=Asia/Seoul:20230712T190000",
+                "SUMMARY:2번 팀플 7월 12일 N시간 일정",
+                "DESCRIPTION:this is the description for schedule.",
                 "UID:2-1",
                 "END:VEVENT"
         );
