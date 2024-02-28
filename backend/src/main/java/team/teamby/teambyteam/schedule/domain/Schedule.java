@@ -48,7 +48,7 @@ public class Schedule extends BaseEntity {
     public Schedule(final Long teamPlaceId, final Title title, final Description description, final Span span) {
         this.teamPlaceId = teamPlaceId;
         this.title = title;
-        this.description = description;
+        this.description = (description != null) ? description : new Description(null);
         this.span = span;
     }
 
@@ -66,6 +66,13 @@ public class Schedule extends BaseEntity {
 
     public void changeSpan(final LocalDateTime startDateTime, final LocalDateTime endDateTime) {
         this.span = new Span(startDateTime, endDateTime);
+    }
+
+    public boolean hasDescription() {
+        if (description == null || !description.isExist()) {
+            return false;
+        }
+        return true;
     }
 
     public LocalDateTime getStartDateTime() {
