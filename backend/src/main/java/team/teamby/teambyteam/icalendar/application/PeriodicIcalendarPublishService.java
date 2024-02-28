@@ -17,18 +17,20 @@ public class PeriodicIcalendarPublishService {
     private final IcalendarPublishCounter publishCounter;
 
     public void createAndPublishIcalendar(final Long teamPlaceId) {
+        log.info("ics파일 생성 시도 - teamPlaceId : {}", teamPlaceId);
         icalendarPublishService.createAndPublishIcalendar(teamPlaceId);
-        log.info("ics파일 생성 - teamPlaceId : {}", teamPlaceId);
+        log.info("ics파일 생성 성공 - teamPlaceId : {}", teamPlaceId);
     }
 
     public void updateIcalendar(final Long teamPlaceId) {
+        log.info("ics파일 업데이트 시도 - teamPlaceId : {}", teamPlaceId);
         if (publishCounter.isReachedToMaxCount(teamPlaceId)) {
             log.warn("ics배포 과요청으로 배포 연기 : {}", teamPlaceId);
             return;
         }
 
         icalendarPublishService.updateIcalendar(teamPlaceId);
-        log.info("ics파일 업데이트 - teamPlaceId : {}", teamPlaceId);
+        log.info("ics파일 업데이트 성공 - teamPlaceId : {}", teamPlaceId);
         publishCounter.addCountFor(teamPlaceId);
     }
 
