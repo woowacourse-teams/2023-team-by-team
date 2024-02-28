@@ -25,7 +25,7 @@ public class VEventParser {
         final Temporal endTemporal = getEndTemporal(schedule);
 
         final VEvent vEvent = new VEvent(startTemporal, endTemporal, title);
-        if (schedule.getDescription().isExist()) {
+        if (schedule.hasDescription()) {
             vEvent.withProperty(new Description(schedule.getDescription().getValue()));
         }
 
