@@ -35,17 +35,21 @@ public class ICal4jParser implements IcalendarParser {
 
     @Override
     public String parse(final TeamPlace teamPlace, final List<Schedule> schedules) {
+        try {
+            final Calendar calendar = generateCalendar(teamPlace);
 
-        final Calendar calendar = generateCalendar(teamPlace);
+            final List<VEvent> vEvents = schedules.stream()
+                    .map(vEventParser::parse)
+                    .toList();
 
-        final List<VEvent> vEvents = schedules.stream()
-                .map(vEventParser::parse)
-                .toList();
-
-        for (VEvent vEvent : vEvents) {
-            calendar.add(vEvent);
+            for (VEvent vEvent : vEvents) {
+                calendar.add(vEvent);
+            }
+            return calendar.toString();
+        } catch (RuntimeException e) {
+            log.error("ICS parsing 에러 " + e.getMessage());
+            throw e;
         }
-        return calendar.toString();
     }
 
     private Calendar generateCalendar(final TeamPlace teamPlace) {
