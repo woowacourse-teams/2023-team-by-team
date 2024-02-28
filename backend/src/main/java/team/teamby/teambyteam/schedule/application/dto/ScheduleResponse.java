@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 public record ScheduleResponse(
         Long id,
         String title,
+        String description,
         String startDateTime,
         String endDateTime
 ) {
@@ -22,6 +23,7 @@ public record ScheduleResponse(
         return new ScheduleResponse(
                 schedule.getId(),
                 schedule.getTitle().getValue(),
+                schedule.getDescriptionValue(),
                 startDateTime,
                 endDateTime
         );

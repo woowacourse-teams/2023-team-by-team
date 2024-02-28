@@ -75,6 +75,13 @@ public class Schedule extends BaseEntity {
         return true;
     }
 
+    public String getDescriptionValue() {
+        if (hasDescription()) {
+            return description.getValue();
+        }
+        return null;
+    }
+
     public LocalDateTime getStartDateTime() {
         return span.getStartDateTime();
     }

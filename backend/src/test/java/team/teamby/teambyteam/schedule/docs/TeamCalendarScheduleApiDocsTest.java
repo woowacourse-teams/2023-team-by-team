@@ -447,6 +447,7 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
                                             fieldWithPath("schedules").type(JsonFieldType.ARRAY).description("등록된 일정들 리스트"),
                                             fieldWithPath("schedules[0].id").type(JsonFieldType.NUMBER).description("조회한 일정 ID"),
                                             fieldWithPath("schedules[0].title").type(JsonFieldType.STRING).description("조회한 일정 제목"),
+                                            fieldWithPath("schedules[0].description").type(JsonFieldType.STRING).description("조회한 일정의 메모").optional(),
                                             fieldWithPath("schedules[0].startDateTime").type(JsonFieldType.STRING).description("조회한 일정의 시작 일시(형식 : yyyy-MM-dd HH:mm)"),
                                             fieldWithPath("schedules[0].endDateTime").type(JsonFieldType.STRING).description("조회한 일정의 종료 일시(형식 : yyyy-MM-dd HH:mm)")
                                     )
@@ -527,6 +528,7 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
                                             fieldWithPath("schedules").type(JsonFieldType.ARRAY).description("등록된 일정들 리스트"),
                                             fieldWithPath("schedules[0].id").type(JsonFieldType.NUMBER).description("조회한 하루 일정 ID"),
                                             fieldWithPath("schedules[0].title").type(JsonFieldType.STRING).description("조회한 하루 일정 제목"),
+                                            fieldWithPath("schedules[0].description").type(JsonFieldType.STRING).description("조회한 일정의 메모").optional(),
                                             fieldWithPath("schedules[0].startDateTime").type(JsonFieldType.STRING).description("조회한 하루 일정의 시작 일시(형식 : yyyy-MM-dd HH:mm)"),
                                             fieldWithPath("schedules[0].endDateTime").type(JsonFieldType.STRING).description("조회한 하루 일정의 종료 일시(형식 : yyyy-MM-dd HH:mm)")
                                     )
@@ -598,6 +600,7 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
                                     responseFields(
                                             fieldWithPath("id").type(JsonFieldType.NUMBER).description("조회한 특정 일정 ID"),
                                             fieldWithPath("title").type(JsonFieldType.STRING).description("조회한 특정 일정 제목"),
+                                            fieldWithPath("description").type(JsonFieldType.STRING).description("조회한 일정의 메모").optional(),
                                             fieldWithPath("startDateTime").type(JsonFieldType.STRING).description("조회한 특정 일정의 시작 일시(형식 : yyyy-MM-dd HH:mm)"),
                                             fieldWithPath("endDateTime").type(JsonFieldType.STRING).description("조회한 특정 일정의 종료 일시(형식 : yyyy-MM-dd HH:mm)")
                                     )
