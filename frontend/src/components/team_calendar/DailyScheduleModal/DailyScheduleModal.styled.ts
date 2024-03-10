@@ -118,7 +118,7 @@ export const modalLocation = (
     return css`
       position: absolute;
       top: ${(row > 3 ? -228 : 0) + 148 + 110 * row}px;
-      left: ${(column > 3 ? -300 : calendarWidth / 7) +
+      left: ${(column > 3 ? -250 : calendarWidth / 7) +
       calendarLeft +
       (calendarWidth * column) / 7}px;
     `;

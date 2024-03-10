@@ -141,11 +141,11 @@ export const modalLocation = (
   if (calendarSize === 'md')
     return css`
       position: absolute;
-      top: ${(row < 3 ? 92 : -199) + (row + 1) * 110 + level * 18}px;
+      top: ${(row < 3 ? 92 : -128) + (row + 1) * 110 + level * 18}px;
       left: ${(column > 3
-        ? calendarWidth / 7 - 550
+        ? calendarWidth / 7 - 446
         : column === 3
-        ? calendarWidth / 14 - 275
+        ? calendarWidth / 14 - 223
         : 0) +
       calendarLeft +
       (calendarWidth * column) / 7}px;
