@@ -1,69 +1,54 @@
-import { css, styled } from 'styled-components';
-import type { NotificationProps } from '~/components/feed/Notification/Notification';
+import { styled, css } from 'styled-components';
 import type { ThreadSize } from '~/types/size';
 
-export const Wrapper = styled.div.withConfig({
-  shouldForwardProp: (prop) => !['teamPlaceColor', 'threadSize'].includes(prop),
-})<Pick<NotificationProps, 'teamPlaceColor' | 'threadSize'>>`
+export const Container = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
+  gap: 16px;
 
   width: 100%;
+  height: 30px;
+`;
 
-  color: ${({ theme }) => theme.color.WHITE};
-  white-space: pre-wrap;
+export const Line = styled.div`
+  flex-grow: 1;
 
-  background-color: ${({ theme, teamPlaceColor = 0 }) =>
-    theme.teamColor[teamPlaceColor]};
-
-  filter: brightness(1.2);
-  box-shadow: 0 0 8px ${({ theme }) => theme.color.GRAY500};
-
-  ${({ threadSize }) => {
-    if (threadSize === 'md')
-      return css`
-        padding: 10px 50px;
-        height: 50px;
-
-        border-radius: 20px;
-      `;
-
-    if (threadSize === 'sm')
-      return css`
-        padding: 10px 20px;
-        height: 42px;
-
-        border-radius: 16px;
-      `;
-  }}
-
-  &.can-hover {
-    &:hover {
-      height: 130px;
-      text-overflow: initial;
-    }
-
-    transition: 0.2s;
-  }
+  min-width: 8%;
+  margin: auto;
+  border-top: 1px solid ${({ theme }) => theme.color.BLUE300};
 `;
 
 export const Inner = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  column-gap: 8px;
 
-  max-width: 700px;
-  height: 100%;
+  max-width: 80%;
 `;
 
-export const notification = (threadSize: ThreadSize) => css`
+export const IconWrapper = styled.div<{ $size: ThreadSize }>`
+  width: ${({ $size }) => ($size === 'md' ? '24px' : '20px')};
+  height: ${({ $size }) => ($size === 'md' ? '24px' : '20px')};
+
+  & svg {
+    width: ${({ $size }) => ($size === 'md' ? '24px' : '20px')};
+    height: ${({ $size }) => ($size === 'md' ? '24px' : '20px')};
+
+    color: ${({ theme }) => theme.color.BLUE500};
+    fill: ${({ theme }) => theme.color.BLUE500};
+  }
+`;
+
+export const content = css`
   overflow: hidden;
 
-  width: 100%;
-  max-height: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
 
-  font-size: ${threadSize === 'md' ? 18 : 16}px;
-  font-weight: 500;
-  letter-spacing: 0.8px;
+export const time = css`
+  display: block;
+
+  color: ${({ theme }) => theme.color.BLUE500};
 `;

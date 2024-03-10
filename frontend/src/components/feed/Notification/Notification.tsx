@@ -1,30 +1,45 @@
 import Text from '~/components/common/Text/Text';
 import * as S from './Notification.styled';
-import type { NotificationSize } from '~/types/size';
-import type { TeamPlaceColor } from '~/types/team';
+import { EnterIcon, ExitIcon, CalendarIcon } from '~/assets/svg';
+import type { ThreadSize } from '~/types/size';
+import type { NotificationType } from '~/types/feed';
 
-export interface NotificationProps {
-  teamPlaceColor: TeamPlaceColor;
-  threadSize?: NotificationSize;
+interface NotificationProps {
   content: string;
+  type: NotificationType;
+  time?: string;
+  size?: ThreadSize;
 }
 
 const Notification = (props: NotificationProps) => {
-  const { teamPlaceColor, content, threadSize = 'md' } = props;
-  const isCanHover = /[\r\n]/.test(content) || content.length > 80;
+  const { content, type, time, size = 'md' } = props;
 
   return (
-    <S.Wrapper
-      teamPlaceColor={teamPlaceColor}
-      className={isCanHover ? 'can-hover' : ''}
-      threadSize={threadSize}
-    >
+    <S.Container>
+      <S.Line />
       <S.Inner>
-        <Text weight="semiBold" css={S.notification(threadSize)}>
+        {type !== 'normal' && (
+          <S.IconWrapper $size={size}>
+            {type === 'join' ? (
+              <EnterIcon />
+            ) : type === 'leave' ? (
+              <ExitIcon />
+            ) : (
+              <CalendarIcon />
+            )}
+          </S.IconWrapper>
+        )}
+        <Text size={size === 'md' ? 'md' : 'sm'} css={S.content}>
           {content}
         </Text>
+        {time && (
+          <Text size={size === 'md' ? 'xs' : 'xxs'} css={S.time}>
+            {time}
+          </Text>
+        )}
       </S.Inner>
-    </S.Wrapper>
+      <S.Line />
+    </S.Container>
   );
 };
 

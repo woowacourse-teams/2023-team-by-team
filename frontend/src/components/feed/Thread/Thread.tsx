@@ -34,7 +34,7 @@ const Thread = (props: ThreadProps) => {
     isContinue,
     onClickImage,
   } = props;
-  const createdTime = formatWriteTime(createdAt).split(' ').join('\n');
+  const createdTime = createdAt.split(' ')[1];
   const parsedThreadContent = parseThreadContent(content);
 
   const threadRef = useRef<HTMLDivElement>(null);
