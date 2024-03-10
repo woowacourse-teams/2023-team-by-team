@@ -224,3 +224,19 @@ export const ThreadWithLinkAndSentByMe: Story = {
     },
   },
 };
+
+export const ThreadWithLinkAndLongDomain: Story = {
+  args: {
+    authorName: '엣지케이스를 제공하는 필립',
+    isMe: false,
+    profileImageUrl:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYZjvO1QuvfgCfQxBwwzmJcHIT5pTXIBGOLeyBDIbZknn6Dhkd40WrU0ZCdjt-IoXLzI0&usqp=CAU',
+    createdAt: '2024-03-08 15:48',
+    content: '지금 바로 접속: https://whatever.community/mock-resume',
+    images: [],
+    isContinue: false,
+    onClickImage: (images, selectedImage) => {
+      alert(JSON.stringify({ images, selectedImage }));
+    },
+  },
+};
