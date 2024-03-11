@@ -84,8 +84,7 @@
   z-index: ${({theme})=>theme.zIndex.MODAL};
 
   width: 500px;
-  min-height: 280px;
-  padding: 20px 30px;
+  padding: 18px 22px;
 
   border-radius: 10px;
   background-color: ${({theme})=>theme.color.WHITE};
@@ -103,6 +102,9 @@
   height: 100%;
 `,Header=styled_components_browser_esm.zo.div`
   display: flex;
+  width: 100%;
+  height: 34px;
+  margin-bottom: 18px;
 
   border-bottom: ${({theme})=>`1px solid ${theme.color.GRAY300}`};
 `,Body=styled_components_browser_esm.zo.div`
@@ -110,15 +112,14 @@
   flex-direction: column;
 
   height: 100%;
-  margin-top: 20px;
-  row-gap: 36px;
+  row-gap: 22px;
 
   & > label {
     display: flex;
     flex-direction: column;
     align-items: center;
 
-    row-gap: 36px;
+    row-gap: 26px;
   }
 `,ButtonContainer=styled_components_browser_esm.zo.div`
   display: flex;
@@ -135,17 +136,22 @@
 `,strongContent=styled_components_browser_esm.iv`
   text-decoration: underline;
 `,closeButton=styled_components_browser_esm.iv`
-  width: 22px;
-  height: 38px;
-  padding: 8px 0;
-
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  margin-bottom: 4px;
   margin-left: auto;
+
+  svg {
+    width: 28px;
+    height: 28px;
+  }
 `,cancelButton=styled_components_browser_esm.iv`
-  width: 90px;
+  width: 80px;
 
   background-color: ${({theme})=>theme.color.GRAY500};
 `,exitConfirmButton=styled_components_browser_esm.iv`
-  width: 90px;
+  width: 80px;
 
   background-color: ${({theme})=>theme.color.RED};
 `,teamNameInput=styled_components_browser_esm.iv`
@@ -156,4 +162,4 @@
   border-radius: 4px;
   border: 1px solid ${({theme})=>theme.color.GRAY400};
 `;var jsx_runtime=__webpack_require__("./node_modules/react/jsx-runtime.js");const TeamExitModal=props=>{const{onClose}=props,{openModal}=(0,useModal.d)(),{teamName,displayName,handlers:{handleTeamNameChange,handleSubmit,handleClose}}=useTeamExitModal(onClose);return(0,jsx_runtime.jsxs)(jsx_runtime.Fragment,{children:[(0,jsx_runtime.jsxs)(Button.Z,{type:"button",variant:"normal",onClick:openModal,css:exitButton,children:["팀 나가기",(0,jsx_runtime.jsx)(svg.R0,{})]}),(0,jsx_runtime.jsxs)(Modal.Z,{children:[(0,jsx_runtime.jsx)(Backdrop,{onClick:handleClose}),(0,jsx_runtime.jsx)("form",{onSubmit:handleSubmit,children:(0,jsx_runtime.jsxs)(Container,{children:[(0,jsx_runtime.jsx)(Header,{children:(0,jsx_runtime.jsx)(Button.Z,{type:"button",variant:"plain",onClick:handleClose,css:closeButton,children:(0,jsx_runtime.jsx)(svg.Tw,{})})}),(0,jsx_runtime.jsxs)(Body,{children:[(0,jsx_runtime.jsxs)("label",{children:[(0,jsx_runtime.jsxs)(Text.Z,{as:"span",size:"lg",children:["팀 탈퇴를 위해"," ",(0,jsx_runtime.jsx)(Text.Z,{as:"strong",size:"lg",weight:"semiBold",css:strongContent,children:displayName}),"을(를) 입력해 주세요."]}),(0,jsx_runtime.jsx)(Input.Z,{width:"340px",height:"40px",placeholder:displayName,css:teamNameInput,autoFocus:!0,required:!0,value:teamName,onChange:handleTeamNameChange})]}),(0,jsx_runtime.jsxs)(ButtonContainer,{children:[(0,jsx_runtime.jsx)(Button.Z,{type:"button",css:cancelButton,onClick:handleClose,children:"취소"}),(0,jsx_runtime.jsx)(Button.Z,{disabled:teamName!==displayName,css:exitConfirmButton,children:"확인"})]})]})]})})]})]})},TeamExitModal_TeamExitModal=TeamExitModal;try{TeamExitModal.displayName="TeamExitModal",TeamExitModal.__docgenInfo={description:"",displayName:"TeamExitModal",props:{onClose:{defaultValue:null,description:"",name:"onClose",required:!0,type:{name:"() => void"}}}},"undefined"!=typeof STORYBOOK_REACT_CLASSES&&(STORYBOOK_REACT_CLASSES["src/components/team/TeamExitModal/TeamExitModal.tsx#TeamExitModal"]={docgenInfo:TeamExitModal.__docgenInfo,name:"TeamExitModal",path:"src/components/team/TeamExitModal/TeamExitModal.tsx#TeamExitModal"})}catch(__react_docgen_typescript_loader_error){}},"./src/constants/routes.ts":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{__webpack_require__.d(__webpack_exports__,{y:()=>PATH_NAME});const PATH_NAME={LANDING:"/",POLICY:"/policy",LOGIN:"/login",START:"/start",JOIN:"/join",CREATE:"/create",TEAM_SELECT:"/team",TEAM_OVERVIEW:"/team/overview",TEAM_CALENDAR:"/team/calendar",TEAM_FEED:"/team/feed",TEAM_LINK:"/team/link"}},"./src/hooks/useModal.ts":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{__webpack_require__.d(__webpack_exports__,{d:()=>useModal});var react__WEBPACK_IMPORTED_MODULE_0__=__webpack_require__("./node_modules/react/index.js"),_components_common_Modal_ModalContext__WEBPACK_IMPORTED_MODULE_1__=__webpack_require__("./src/components/common/Modal/ModalContext.tsx");const useModal=()=>{const context=(0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_components_common_Modal_ModalContext__WEBPACK_IMPORTED_MODULE_1__.t);if(void 0===context)throw new Error("useModal must be used within a ModalProvider");return context}},"./src/hooks/useTeamPlace.ts":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{__webpack_require__.d(__webpack_exports__,{l:()=>useTeamPlace});var react__WEBPACK_IMPORTED_MODULE_0__=__webpack_require__("./node_modules/react/index.js"),_contexts_TeamPlaceContext__WEBPACK_IMPORTED_MODULE_1__=__webpack_require__("./src/contexts/TeamPlaceContext.tsx");const useTeamPlace=()=>{const context=(0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_contexts_TeamPlaceContext__WEBPACK_IMPORTED_MODULE_1__.Q);if(void 0===context)throw new Error("useTeamPlace must be used within a TeamPlaceContext");return context}},"./src/hooks/useToast.ts":(__unused_webpack_module,__webpack_exports__,__webpack_require__)=>{__webpack_require__.d(__webpack_exports__,{p:()=>useToast});var react__WEBPACK_IMPORTED_MODULE_0__=__webpack_require__("./node_modules/react/index.js"),_components_common_Toast_ToastContext__WEBPACK_IMPORTED_MODULE_1__=__webpack_require__("./src/components/common/Toast/ToastContext.tsx");const useToast=()=>{const context=(0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_components_common_Toast_ToastContext__WEBPACK_IMPORTED_MODULE_1__.u);if(void 0===context)throw new Error("useToast must be used within a ToastProvider");return context}}}]);
-//# sourceMappingURL=components-team-TeamExitModal-TeamExitModal-stories.98590eca.iframe.bundle.js.map
+//# sourceMappingURL=components-team-TeamExitModal-TeamExitModal-stories.0371a6fb.iframe.bundle.js.map
