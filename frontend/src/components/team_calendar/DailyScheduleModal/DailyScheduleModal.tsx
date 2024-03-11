@@ -93,16 +93,12 @@ const DailyScheduleModal = (props: DailyScheduleModalProps) => {
                     onSetModalType();
                   }}
                 >
-                  <Text size="lg" css={S.teamName}>
-                    {title}
-                  </Text>
+                  <Text css={S.teamName}>{title}</Text>
                 </S.ScheduleBox>
               );
             })
           ) : (
-            <Text size="lg" css={S.teamName}>
-              등록된 일정이 없습니다.
-            </Text>
+            <Text css={S.teamName}>등록된 일정이 없습니다.</Text>
           )}
         </S.ScheduleWrapper>
       </S.Container>

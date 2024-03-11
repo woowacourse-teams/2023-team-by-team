@@ -7,8 +7,7 @@ export const Container = styled.div`
   z-index: ${({ theme }) => theme.zIndex.MODAL};
 
   width: 500px;
-  min-height: 280px;
-  padding: 20px 30px;
+  padding: 18px 22px;
 
   border-radius: 10px;
   background-color: ${({ theme }) => theme.color.WHITE};
@@ -30,6 +29,9 @@ export const Backdrop = styled.div`
 
 export const Header = styled.div`
   display: flex;
+  width: 100%;
+  height: 34px;
+  margin-bottom: 18px;
 
   border-bottom: ${({ theme }) => `1px solid ${theme.color.GRAY300}`};
 `;
@@ -39,15 +41,14 @@ export const Body = styled.div`
   flex-direction: column;
 
   height: 100%;
-  margin-top: 20px;
-  row-gap: 36px;
+  row-gap: 22px;
 
   & > label {
     display: flex;
     flex-direction: column;
     align-items: center;
 
-    row-gap: 36px;
+    row-gap: 26px;
   }
 `;
 
@@ -72,21 +73,26 @@ export const strongContent = css`
 `;
 
 export const closeButton = css`
-  width: 22px;
-  height: 38px;
-  padding: 8px 0;
-
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  margin-bottom: 4px;
   margin-left: auto;
+
+  svg {
+    width: 28px;
+    height: 28px;
+  }
 `;
 
 export const cancelButton = css`
-  width: 90px;
+  width: 80px;
 
   background-color: ${({ theme }) => theme.color.GRAY500};
 `;
 
 export const exitConfirmButton = css`
-  width: 90px;
+  width: 80px;
 
   background-color: ${({ theme }) => theme.color.RED};
 `;

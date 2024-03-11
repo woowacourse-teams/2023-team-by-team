@@ -6,7 +6,7 @@ export const Container = styled.div<{ $css: CSSProp; $isMobile: boolean }>`
   position: absolute;
   flex-direction: column;
   z-index: ${({ theme }) => theme.zIndex.MODAL};
-  gap: 28px;
+  gap: 16px;
 
   ${({ $isMobile }) => {
     if ($isMobile)
@@ -16,9 +16,8 @@ export const Container = styled.div<{ $css: CSSProp; $isMobile: boolean }>`
       `;
 
     return css`
-      width: 551px;
-      height: 272px;
-      padding: 20px 30px 30px 40px;
+      width: 446px;
+      padding: 18px 22px;
     `;
   }}
 
@@ -56,6 +55,8 @@ export const MenuContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
+
+  gap: 6px;
 `;
 
 export const PeriodWrapper = styled.div<{ $isMobile: boolean }>`
@@ -88,12 +89,16 @@ export const menuIcon = css`
   align-items: center;
   justify-content: center;
 
-  width: 42px;
-  height: 42px;
-
+  width: 28px;
+  height: 28px;
   padding: 0;
 
   border-radius: 8px;
+
+  svg {
+    width: 28px;
+    height: 28px;
+  }
 
   &:hover {
     background-color: ${({ theme }) => theme.color.GRAY100};
@@ -106,13 +111,12 @@ export const closeButton = ($isMobile: boolean) => css`
   align-items: center;
   align-self: flex-end;
 
-  width: 96px;
+  width: 80px;
   height: 42px;
   ${$isMobile &&
   css`
     margin-right: 10px;
   `}
-  padding: 10px 30px;
 
   cursor: pointer;
 `;
@@ -137,11 +141,11 @@ export const modalLocation = (
   if (calendarSize === 'md')
     return css`
       position: absolute;
-      top: ${(row < 3 ? 92 : -199) + (row + 1) * 110 + level * 18}px;
+      top: ${(row < 3 ? 92 : -128) + (row + 1) * 110 + level * 18}px;
       left: ${(column > 3
-        ? calendarWidth / 7 - 550
+        ? calendarWidth / 7 - 446
         : column === 3
-        ? calendarWidth / 14 - 275
+        ? calendarWidth / 14 - 223
         : 0) +
       calendarLeft +
       (calendarWidth * column) / 7}px;

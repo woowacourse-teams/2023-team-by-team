@@ -76,7 +76,7 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
           </S.TitleWrapper>
 
           <S.TimeSelectContainer $isMobile={isMobile}>
-            <Text size="xl" weight="semiBold">
+            <Text size="lg" weight="semiBold">
               일정 시작
             </Text>
             <S.InputWrapper $isMobile={isMobile}>
@@ -101,7 +101,7 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
             </S.InputWrapper>
           </S.TimeSelectContainer>
           <S.TimeSelectContainer $isMobile={isMobile}>
-            <Text size="xl" weight="semiBold">
+            <Text size="lg" weight="semiBold">
               일정 마감
             </Text>
             <S.InputWrapper $isMobile={isMobile}>
@@ -126,10 +126,14 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
             </S.InputWrapper>
           </S.TimeSelectContainer>
           <S.CheckboxContainer>
-            <Text size="lg" weight="semiBold">
+            <Text size="md" weight="semiBold">
               종일
             </Text>
-            <Checkbox isChecked={isAllDay} onChange={handleIsAllDayChange} />
+            <Checkbox
+              size="sm"
+              isChecked={isAllDay}
+              onChange={handleIsAllDayChange}
+            />
 
             <p
               className="hidden"
