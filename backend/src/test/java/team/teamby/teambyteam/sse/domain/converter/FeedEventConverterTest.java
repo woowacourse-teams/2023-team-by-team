@@ -54,7 +54,14 @@ class FeedEventConverterTest {
 
         final Feed savedFeed = testFixtureBuilder.buildFeed(FeedThreadFixtures.CONTENT_ONLY_AND_IMAGE_EMPTY(savedTeamPlace.getId(), savedMember.getId()));
 
-        final FeedEvent testEvent = new FeedEvent(savedFeed.getId());
+        final FeedResponse response = FeedResponse.from(
+                savedFeed,
+                savedMemberTeamplcae,
+                null,
+                savedMember.getEmailValue()
+        );
+
+        final FeedEvent testEvent = new FeedEvent(response);
 
         // when
         final TeamPlaceSseEvent sseEvent = feedEventConverter.convert(testEvent);
