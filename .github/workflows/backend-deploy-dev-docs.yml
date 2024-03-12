@@ -1,19 +1,21 @@
 name: backend deploy dev api docs
 
 on:
+  workflow_dispatch:
   pull_request:
     types:
       - closed
     branches: ["develop"]
     paths:
       - "backend/src/docs/**"
+      - "backend/src/test/**/docs/**"
 
 permissions:
   contents: read
 
 jobs:
   build-and-upload:
-    if: github.event.pull_request.merged == true
+    if: ${{ github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-22.04
     defaults:
       run:

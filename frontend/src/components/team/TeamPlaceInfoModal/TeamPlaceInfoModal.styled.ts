@@ -17,9 +17,9 @@ export const Container = styled.div`
   right: 20px;
   z-index: ${({ theme }) => theme.zIndex.MODAL};
 
-  width: 320px;
-  height: 500px;
-  padding: 20px 30px;
+  width: 310px;
+  max-height: 500px;
+  padding: 22px;
 
   border-radius: 8px;
   box-shadow:

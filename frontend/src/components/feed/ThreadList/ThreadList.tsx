@@ -1,14 +1,20 @@
-import { type RefObject, useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, Fragment } from 'react';
+import type { RefObject } from 'react';
 import Thread from '~/components/feed/Thread/Thread';
 import EmptyFeedPlaceholder from '~/components/feed/EmptyFeedPlaceholder/EmptyFeedPlaceholder';
+import Notification from '~/components/feed/Notification/Notification';
 import Text from '~/components/common/Text/Text';
 import { useFetchThreads } from '~/hooks/queries/useFetchThreads';
 import { useIntersectionObserver } from '~/hooks/useIntersectionObserver';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
+import { useFirstDateTime } from '~/hooks/thread/useFirstDateTime';
 import type { ThreadSize } from '~/types/size';
 import { THREAD_TYPE } from '~/constants/feed';
 import * as S from './ThreadList.styled';
 import type { ThreadImage } from '~/types/feed';
+import { formatDate } from '~/utils/formatDate';
+import { splitDateTime } from '~/utils/splitDateTime';
+import type { YYYYMMDD } from '~/types/schedule';
 
 interface ThreadListProps {
   containerRef?: RefObject<HTMLDivElement>;
@@ -16,6 +22,22 @@ interface ThreadListProps {
   onClickImage: (images: ThreadImage[], selectedImage: number) => void;
   isShowScrollBottomButton?: boolean;
 }
+
+const checkFirstThreadOfDay = (
+  currentDate: YYYYMMDD,
+  firstDate?: YYYYMMDD,
+  previousDate?: YYYYMMDD,
+) => {
+  if (previousDate) {
+    return currentDate !== previousDate;
+  }
+
+  if (!firstDate) {
+    return true;
+  }
+
+  return currentDate !== firstDate;
+};
 
 const ThreadList = (props: ThreadListProps) => {
   const {
@@ -33,6 +55,7 @@ const ThreadList = (props: ThreadListProps) => {
   const threadEndRef = useRef<HTMLDivElement>(null);
   const observeRef = useRef<HTMLDivElement>(null);
   const [scrollHeight, setScrollHeight] = useState(0);
+  const { firstDate, setFirstDateTime } = useFirstDateTime();
 
   const onIntersect: IntersectionObserverCallback = ([entry]) => {
     if (entry.isIntersecting && teamPlaceId > 0) {
@@ -43,12 +66,19 @@ const ThreadList = (props: ThreadListProps) => {
   useIntersectionObserver(observeRef, onIntersect, hasNextPage);
 
   useEffect(() => {
-    if (!containerRef) return;
+    const containerElement = containerRef?.current;
 
-    if (containerRef.current) {
-      const scrollTop = containerRef.current.scrollHeight - scrollHeight;
-      containerRef.current.scrollTop = scrollTop;
-      setScrollHeight(containerRef.current.scrollHeight);
+    if (!containerElement) return;
+
+    const scrollTop = containerElement.scrollHeight - scrollHeight;
+    containerElement.scrollTop = scrollTop;
+    setScrollHeight(() => containerElement.scrollHeight);
+
+    if (threadPages) {
+      const newFirstDateTime = threadPages.pages.at(-1)?.threads.at(-1)
+        ?.createdAt;
+
+      setFirstDateTime(() => newFirstDateTime);
     }
 
     /* eslint-disable-next-line */
@@ -94,29 +124,69 @@ const ThreadList = (props: ThreadListProps) => {
             .slice()
             .reverse()
             .map((thread, index, threads) => {
-              const { id, type, profileImageUrl, content, authorId, ...rest } =
-                thread;
+              const {
+                id,
+                type,
+                profileImageUrl,
+                content,
+                authorId,
+                createdAt,
+                ...rest
+              } = thread;
+
+              const previousThread = threads[index - 1];
+              const currentDateTime = splitDateTime(createdAt);
+              const previousDateTime = previousThread
+                ? splitDateTime(previousThread.createdAt)
+                : null;
+
+              const isFirstThreadOfDay = checkFirstThreadOfDay(
+                currentDateTime.date,
+                firstDate,
+                previousDateTime?.date,
+              );
 
               const isContinue =
-                index - 1 >= 0 && authorId === threads[index - 1].authorId;
+                index - 1 >= 0 &&
+                authorId === previousThread.authorId &&
+                !isFirstThreadOfDay;
 
               return type === THREAD_TYPE.THREAD ? (
-                <Thread
-                  key={id}
-                  threadSize={size}
-                  profileImageUrl={profileImageUrl}
-                  content={content}
-                  isContinue={isContinue}
-                  onClickImage={onClickImage}
-                  {...rest}
-                />
-              ) : // <Notification
-              //   teamPlaceColor={teamPlaceColor}
-              //   key={id}
-              //   threadSize={size}
-              //   content={content}
-              // />
-              null;
+                <Fragment key={id}>
+                  {isFirstThreadOfDay && (
+                    <Notification
+                      type="date"
+                      content={formatDate(currentDateTime.date)}
+                      size={size}
+                    />
+                  )}
+                  <Thread
+                    threadSize={size}
+                    profileImageUrl={profileImageUrl}
+                    createdAt={createdAt}
+                    content={content}
+                    isContinue={isContinue}
+                    onClickImage={onClickImage}
+                    {...rest}
+                  />
+                </Fragment>
+              ) : (
+                <Fragment key={id}>
+                  {isFirstThreadOfDay && (
+                    <Notification
+                      type="date"
+                      content={formatDate(currentDateTime.date)}
+                      size={size}
+                    />
+                  )}
+                  <Notification
+                    type="date"
+                    content={content}
+                    time={currentDateTime.time}
+                    size={size}
+                  />
+                </Fragment>
+              );
             }),
         )}
       <div ref={threadEndRef} />

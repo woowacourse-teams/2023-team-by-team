@@ -16,8 +16,8 @@ export const Container = styled.div<{ $css: CSSProp }>`
   flex-direction: column;
   z-index: ${({ theme }) => theme.zIndex.MODAL};
 
-  width: 300px;
-  height: 338px;
+  width: 250px;
+  max-height: 338px;
   padding: 10px 20px 20px 20px;
 
   border-radius: 10px;
@@ -118,7 +118,7 @@ export const modalLocation = (
     return css`
       position: absolute;
       top: ${(row > 3 ? -228 : 0) + 148 + 110 * row}px;
-      left: ${(column > 3 ? -300 : calendarWidth / 7) +
+      left: ${(column > 3 ? -250 : calendarWidth / 7) +
       calendarLeft +
       (calendarWidth * column) / 7}px;
     `;

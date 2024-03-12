@@ -33,3 +33,4 @@ export { ReactComponent as WarningIcon } from './warning.svg';
 export { ReactComponent as QuestionIcon } from './question.svg';
 export { ReactComponent as ExportIcon } from './export.svg';
 export { ReactComponent as TeamSmallIcon } from './team-small.svg';
+export { ReactComponent as EnterIcon } from './enter.svg';

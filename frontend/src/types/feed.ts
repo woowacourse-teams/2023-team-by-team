@@ -57,3 +57,5 @@ interface ThreadLink {
 }
 
 export type ParsedThreadContent = (ThreadText | ThreadLink)[];
+
+export type NotificationType = 'normal' | 'join' | 'leave' | 'date';

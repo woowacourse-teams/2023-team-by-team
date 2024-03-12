@@ -111,7 +111,7 @@ const ScheduleModal = (props: ScheduleModalProps) => {
         </Text>
         <S.PeriodWrapper $isMobile={isMobile}>
           <time>
-            <Text size="lg">
+            <Text>
               {generateDateTimeRangeDescription(startDateTime, endDateTime)}
             </Text>
           </time>

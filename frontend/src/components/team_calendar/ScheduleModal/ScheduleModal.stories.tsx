@@ -1,11 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import Button from '~/components/common/Button/Button';
 import ScheduleModal from '~/components/team_calendar/ScheduleModal/ScheduleModal';
 import { useModal } from '~/hooks/useModal';
-import { arrayOf } from '~/utils/arrayOf';
 
 const meta = {
   title: 'Schedule/ScheduleModal',
   component: ScheduleModal,
+  tags: ['autodocs'],
 } satisfies Meta<typeof ScheduleModal>;
 
 export default meta;
@@ -15,19 +16,9 @@ type Story = StoryObj<typeof meta>;
 const SampleModal = () => {
   const { openModal } = useModal();
 
-  const handleOpen = () => {
-    openModal();
-  };
-
   return (
     <>
-      {arrayOf(5).map((_, index) => {
-        return (
-          <div key={index} onClick={() => handleOpen()}>
-            모달 열기
-          </div>
-        );
-      })}
+      <Button onClick={openModal}>모달 열기</Button>
       <ScheduleModal
         calendarWidth={1000}
         calendarLeft={200}
