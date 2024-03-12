@@ -101,12 +101,7 @@ public class FeedReadService {
 
     private List<FeedImageResponse> mapToFeedImageResponse(final FeedThread feedThread) {
         final List<FeedThreadImage> images = feedThread.getImages();
-        return images.stream().map(feedThreadImage ->
-                        new FeedImageResponse(
-                                feedThreadImage.getId(),
-                                feedThreadImage.isExpired(),
-                                feedThreadImage.getImageName().getValue(),
-                                feedThreadImage.getImageUrl().getValue()))
+        return images.stream().map(FeedImageResponse::from)
                 .toList();
     }
 }

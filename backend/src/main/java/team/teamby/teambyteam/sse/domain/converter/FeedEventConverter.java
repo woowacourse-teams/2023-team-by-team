@@ -5,42 +5,23 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import team.teamby.teambyteam.common.domain.DomainEvent;
-import team.teamby.teambyteam.feed.application.dto.FeedImageResponse;
 import team.teamby.teambyteam.feed.application.dto.FeedResponse;
 import team.teamby.teambyteam.feed.application.event.FeedEvent;
-import team.teamby.teambyteam.feed.domain.Feed;
-import team.teamby.teambyteam.feed.domain.FeedRepository;
-import team.teamby.teambyteam.feed.domain.FeedThread;
-import team.teamby.teambyteam.feed.domain.image.FeedThreadImage;
-import team.teamby.teambyteam.member.domain.MemberTeamPlace;
-import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.sse.domain.TeamPlaceSseEvent;
 import team.teamby.teambyteam.sse.domain.emitter.TeamPlaceEmitterId;
-
-import java.util.List;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class FeedEventConverter implements TeamPlaceSseConverter<Long> {
 
-    private final FeedRepository feedRepository;
-    private final MemberTeamPlaceRepository memberTeamPlaceRepository;
-
     @Override
     @Transactional(readOnly = true)
     public TeamPlaceSseEvent convert(final DomainEvent<Long> event) {
-        final Long feedId =  event.getDomainId();
-        final Feed feed = feedRepository.findById(feedId)
-                .orElseThrow(() -> {
-                    final String message = "No FeedFound ID : " + feedId;
-                    log.error(message);
-                    return new RuntimeException(message);
-                });
-        final MemberTeamPlace author = memberTeamPlaceRepository
-                .findByTeamPlaceIdAndMemberId(feed.getTeamPlaceId(), feed.getAuthorId())
-                .orElse(MemberTeamPlace.UNKNOWN_MEMBER_TEAM_PLACE);
-        return new FeedSse(feed, author);
+        final FeedEvent feedEvent = (FeedEvent) event;
+        final Long teamplaceId = feedEvent.getTeamPlaceId();
+
+        return new FeedSse(feedEvent.response(), teamplaceId);
     }
 
     @Override
@@ -53,32 +34,32 @@ public class FeedEventConverter implements TeamPlaceSseConverter<Long> {
         private static final String EVENT_NAME = "new_thread";
 
         private final Long teamPlaceId;
-        private final FeedResponse forMe;
+        private FeedResponse forMe;
         private FeedResponse forOthers;
 
-        public FeedSse(final Feed feed, final MemberTeamPlace author) {
-            this.teamPlaceId = feed.getTeamPlaceId();
-            this.forMe = new FeedResponse(
-                    feed.getId(),
-                    feed.getType().name().toLowerCase(),
-                    feed.getAuthorId(),
-                    author.getDisplayMemberNameValue(),
-                    author.findMemberProfileImageUrl(),
-                    feed.getCreatedAt(),
-                    feed.getContent().getValue(),
-                    convertImageResponses(((FeedThread) feed).getImages()),
-                    true
-            );
+        public FeedSse(final FeedResponse response, final Long teamPlaceId) {
+            this.teamPlaceId = teamPlaceId;
+            if (response.isMe()) {
+                forMe = response;
+                forOthers = reverseForMeField(response);
+                return;
+            }
+            forMe = reverseForMeField(response);
+            forOthers = response;
         }
 
-        private static List<FeedImageResponse> convertImageResponses(final List<FeedThreadImage> images) {
-            return images.stream().map(feedThreadImage ->
-                            new FeedImageResponse(
-                                    feedThreadImage.getId(),
-                                    feedThreadImage.isExpired(),
-                                    feedThreadImage.getImageName().getValue(),
-                                    feedThreadImage.getImageUrl().getValue()))
-                    .toList();
+        private static FeedResponse reverseForMeField(final FeedResponse response) {
+            return new FeedResponse(
+                    response.id(),
+                    response.type(),
+                    response.authorId(),
+                    response.authorName(),
+                    response.profileImageUrl(),
+                    response.createdAt(),
+                    response.content(),
+                    response.images(),
+                    !response.isMe()
+            );
         }
 
         @Override
@@ -95,19 +76,6 @@ public class FeedEventConverter implements TeamPlaceSseConverter<Long> {
         public Object getEvent(final TeamPlaceEmitterId emitterId) {
             if (emitterId.isMemberId(forMe.authorId())) {
                 return forMe;
-            }
-            if (forOthers == null) {
-                return new FeedResponse(
-                        forMe.id(),
-                        forMe.type(),
-                        forMe.authorId(),
-                        forMe.authorName(),
-                        forMe.profileImageUrl(),
-                        forMe.createdAt(),
-                        forMe.content(),
-                        forMe.images(),
-                        false
-                );
             }
             return forOthers;
         }
