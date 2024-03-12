@@ -61,7 +61,7 @@ class FeedEventConverterTest {
                 savedMember.getEmailValue()
         );
 
-        final FeedEvent testEvent = new FeedEvent(response);
+        final FeedEvent testEvent = new FeedEvent(response, savedTeamPlace.getId());
 
         // when
         final TeamPlaceSseEvent sseEvent = feedEventConverter.convert(testEvent);

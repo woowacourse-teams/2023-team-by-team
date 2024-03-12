@@ -81,7 +81,7 @@ public class FeedWriteService {
                 imageResponses,
                 memberEmailDto.email()
         );
-        sendFeedWritingEvent(responseForMe);
+        sendFeedWritingEvent(responseForMe, teamPlaceId);
 
         return threadId;
     }
@@ -126,7 +126,7 @@ public class FeedWriteService {
                 .toList();
     }
 
-    private void sendFeedWritingEvent(final FeedResponse response) {
-        applicationEventPublisher.publishEvent(new FeedEvent(response));
+    private void sendFeedWritingEvent(final FeedResponse response, final Long teamPlaceId) {
+        applicationEventPublisher.publishEvent(new FeedEvent(response, teamPlaceId));
     }
 }
