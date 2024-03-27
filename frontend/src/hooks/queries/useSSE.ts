@@ -1,10 +1,11 @@
 import { useCallback, useEffect } from 'react';
-import { type InfiniteData, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
+import type { InfiniteData } from '@tanstack/react-query';
 import { baseUrl } from '~/apis/http';
 import { EventSourcePolyfill } from 'event-source-polyfill';
 import { useToken } from '~/hooks/useToken';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
-import { type ThreadsResponse } from '~/apis/feed';
+import type { ThreadsResponse } from '~/apis/feed';
 
 export const useSSE = () => {
   const queryClient = useQueryClient();
@@ -34,11 +35,20 @@ export const useSSE = () => {
 
       queryClient.setQueryData<InfiniteData<ThreadsResponse>>(
         ['threadData', teamPlaceId],
-        (old) => {
-          if (old) {
-            old.pages[0].threads = [newThread, ...old.pages[0].threads];
+        (oldData) => {
+          if (oldData) {
+            const newFirstPageThreads = {
+              threads: [newThread, ...oldData.pages[0].threads],
+            };
+            const newData = {
+              pageParams: oldData.pageParams,
+              pages:
+                oldData.pages.length === 1
+                  ? [newFirstPageThreads]
+                  : [newFirstPageThreads, ...oldData.pages.slice(1)],
+            };
 
-            return old;
+            return newData;
           }
         },
       );
