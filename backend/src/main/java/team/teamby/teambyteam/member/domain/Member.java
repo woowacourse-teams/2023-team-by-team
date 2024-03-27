@@ -11,7 +11,7 @@ import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import team.teamby.teambyteam.global.domain.BaseEntity;
+import team.teamby.teambyteam.common.domain.BaseEntity;
 import team.teamby.teambyteam.member.domain.vo.DisplayMemberName;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.domain.vo.Name;

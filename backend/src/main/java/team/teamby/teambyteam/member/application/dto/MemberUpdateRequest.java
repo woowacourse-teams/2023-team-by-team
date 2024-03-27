@@ -1,4 +1,4 @@
-package team.teamby.teambyteam.member.configuration.dto;
+package team.teamby.teambyteam.member.application.dto;
 
 import jakarta.validation.constraints.NotBlank;
 

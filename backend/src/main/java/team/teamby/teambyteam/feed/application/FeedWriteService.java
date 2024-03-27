@@ -21,6 +21,7 @@ import team.teamby.teambyteam.feed.domain.vo.Content;
 import team.teamby.teambyteam.feed.exception.FeedException;
 import team.teamby.teambyteam.filesystem.AllowedImageExtension;
 import team.teamby.teambyteam.filesystem.FileStorageManager;
+import team.teamby.teambyteam.filesystem.exception.FileControlException;
 import team.teamby.teambyteam.filesystem.util.FileUtil;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.MemberRepository;
@@ -107,8 +108,16 @@ public class FeedWriteService {
         if (image.getSize() > LIMIT_IMAGE_SIZE) {
             throw new FeedException.ImageSizeException(LIMIT_IMAGE_SIZE, image.getSize());
         }
-        if (AllowedImageExtension.isNotContain(FileUtil.getFileExtension(image))) {
+        if (AllowedImageExtension.isNotContain(getFileExtension(image))) {
             throw new FeedException.NotAllowedImageExtensionException(image.getOriginalFilename());
+        }
+    }
+
+    private String getFileExtension(final MultipartFile file) {
+        try {
+            return FileUtil.getFileExtension(file);
+        } catch (final FileControlException.FileExtensionException e) {
+            throw new FeedException.NotFoundImageExtensionException(file.getOriginalFilename());
         }
     }
 

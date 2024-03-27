@@ -5,7 +5,17 @@ public class FileControlException extends RuntimeException {
         super(cause);
     }
 
+    public FileControlException(final String message) {
+        super(message);
+    }
+
     public FileControlException(final String message, final Throwable cause) {
         super(message, cause);
+    }
+
+    public static class FileExtensionException extends FileControlException {
+        public FileExtensionException(final String message) {
+            super(message);
+        }
     }
 }

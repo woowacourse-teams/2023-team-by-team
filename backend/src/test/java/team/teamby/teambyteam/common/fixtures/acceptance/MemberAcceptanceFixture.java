@@ -6,7 +6,7 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import team.teamby.teambyteam.member.configuration.dto.MemberUpdateRequest;
+import team.teamby.teambyteam.member.application.dto.MemberUpdateRequest;
 
 public class MemberAcceptanceFixture {
 

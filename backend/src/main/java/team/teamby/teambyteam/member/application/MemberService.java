@@ -9,7 +9,7 @@ import team.teamby.teambyteam.member.application.dto.MemberInfoResponse;
 import team.teamby.teambyteam.member.application.dto.TeamPlacesResponse;
 import team.teamby.teambyteam.member.application.event.MemberLeaveEvent;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
-import team.teamby.teambyteam.member.configuration.dto.MemberUpdateRequest;
+import team.teamby.teambyteam.member.application.dto.MemberUpdateRequest;
 import team.teamby.teambyteam.member.domain.IdOnly;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberRepository;

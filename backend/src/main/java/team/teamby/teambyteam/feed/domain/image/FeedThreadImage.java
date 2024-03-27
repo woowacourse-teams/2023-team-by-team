@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 import team.teamby.teambyteam.feed.domain.FeedThread;
 import team.teamby.teambyteam.feed.domain.image.vo.ImageName;
 import team.teamby.teambyteam.feed.domain.image.vo.ImageUrl;
-import team.teamby.teambyteam.global.domain.BaseEntity;
+import team.teamby.teambyteam.common.domain.BaseEntity;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

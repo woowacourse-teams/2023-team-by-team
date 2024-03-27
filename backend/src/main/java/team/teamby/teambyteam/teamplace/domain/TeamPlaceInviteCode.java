@@ -11,7 +11,7 @@ import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import team.teamby.teambyteam.global.domain.BaseEntity;
+import team.teamby.teambyteam.common.domain.BaseEntity;
 import team.teamby.teambyteam.teamplace.domain.vo.InviteCode;
 
 @Getter

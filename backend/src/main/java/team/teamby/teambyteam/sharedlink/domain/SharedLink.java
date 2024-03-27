@@ -9,7 +9,7 @@ import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import team.teamby.teambyteam.global.domain.BaseEntity;
+import team.teamby.teambyteam.common.domain.BaseEntity;
 import team.teamby.teambyteam.sharedlink.domain.vo.SharedURL;
 import team.teamby.teambyteam.sharedlink.domain.vo.Title;
 import team.teamby.teambyteam.sharedlink.exception.SharedLinkException;
