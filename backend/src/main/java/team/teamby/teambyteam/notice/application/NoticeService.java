@@ -1,11 +1,5 @@
 package team.teamby.teambyteam.notice.application;
 
-import java.time.Clock;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import team.teamby.teambyteam.filesystem.AllowedImageExtension;
 import team.teamby.teambyteam.filesystem.FileStorageManager;
+import team.teamby.teambyteam.filesystem.exception.FileControlException;
 import team.teamby.teambyteam.filesystem.util.FileUtil;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.IdOnly;
@@ -38,6 +33,13 @@ import team.teamby.teambyteam.notice.exception.NoticeException;
 import team.teamby.teambyteam.notice.exception.NoticeException.WritingRequestEmptyException;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceRepository;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
+
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -116,8 +118,16 @@ public class NoticeService {
         if (image.getSize() > LIMIT_IMAGE_SIZE) {
             throw new NoticeException.ImageSizeException(LIMIT_IMAGE_SIZE, image.getSize());
         }
-        if (AllowedImageExtension.isNotContain(FileUtil.getFileExtension(image))) {
+        if (AllowedImageExtension.isNotContain(getFileExtension(image))) {
             throw new NoticeException.NotAllowedImageExtensionException(image.getOriginalFilename());
+        }
+    }
+
+    private String getFileExtension(final MultipartFile file) {
+        try {
+            return FileUtil.getFileExtension(file);
+        } catch (final FileControlException.FileExtensionException e) {
+            throw new NoticeException.NotFoundImageExtensionException(file.getOriginalFilename());
         }
     }
 
