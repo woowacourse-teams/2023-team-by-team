@@ -14,7 +14,7 @@ import team.teamby.teambyteam.common.fixtures.MemberFixtures;
 import team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures;
 import team.teamby.teambyteam.common.fixtures.TokenFixtures;
 import team.teamby.teambyteam.member.application.dto.TeamPlacesResponse;
-import team.teamby.teambyteam.member.configuration.dto.MemberUpdateRequest;
+import team.teamby.teambyteam.member.application.dto.MemberUpdateRequest;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceParticipantResponse;

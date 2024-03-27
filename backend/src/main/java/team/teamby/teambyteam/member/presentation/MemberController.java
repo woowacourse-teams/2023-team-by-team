@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import team.teamby.teambyteam.member.application.MemberService;
-import team.teamby.teambyteam.member.configuration.dto.MemberUpdateRequest;
+import team.teamby.teambyteam.member.application.dto.MemberUpdateRequest;
 import team.teamby.teambyteam.member.application.dto.MemberInfoResponse;
 import team.teamby.teambyteam.member.application.dto.TeamPlacesResponse;
 import team.teamby.teambyteam.member.configuration.AuthPrincipal;

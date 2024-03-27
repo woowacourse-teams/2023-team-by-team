@@ -1,7 +1,6 @@
 package team.teamby.teambyteam.sharedlink.application;
 
 import org.assertj.core.api.SoftAssertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -16,8 +15,6 @@ import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.sharedlink.application.dto.SharedLinkCreateRequest;
 import team.teamby.teambyteam.sharedlink.application.dto.SharedLinksResponse;
-import team.teamby.teambyteam.sharedlink.application.event.SharedLinkCreateEvent;
-import team.teamby.teambyteam.sharedlink.application.event.SharedLinkDeleteEvent;
 import team.teamby.teambyteam.sharedlink.domain.SharedLink;
 import team.teamby.teambyteam.sharedlink.domain.SharedLinkRepository;
 import team.teamby.teambyteam.sharedlink.exception.SharedLinkException;
@@ -27,7 +24,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static team.teamby.teambyteam.common.fixtures.SharedLinkFixtures.TEAM_BY_TEAM_LINK;
-import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
 
 class SharedLinkServiceTest extends ServiceTest {
 
