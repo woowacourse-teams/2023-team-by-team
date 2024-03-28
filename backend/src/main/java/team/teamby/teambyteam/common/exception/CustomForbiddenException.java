@@ -1,6 +1,6 @@
 package team.teamby.teambyteam.common.exception;
 
-public class CustomForbiddenException extends RuntimeException {
+public abstract class CustomForbiddenException extends RuntimeException {
 
     public CustomForbiddenException(String message) {
         super(message);

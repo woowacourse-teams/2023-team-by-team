@@ -1,6 +1,6 @@
 package team.teamby.teambyteam.common.exception;
 
-public class CustomUnauthorizedException extends RuntimeException {
+public abstract class CustomUnauthorizedException extends RuntimeException {
 
     public CustomUnauthorizedException(String message) {
         super(message);
