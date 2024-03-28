@@ -6,7 +6,7 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import team.teamby.teambyteam.schedule.exception.ScheduleException;
+import team.teamby.teambyteam.schedule.exception.ScheduleTitleBlankException;
 
 import java.util.Objects;
 
@@ -30,7 +30,7 @@ public class Title {
         }
 
         if (value.isBlank()) {
-            throw new ScheduleException.TitleBlankException();
+            throw new ScheduleTitleBlankException();
         }
     }
 }

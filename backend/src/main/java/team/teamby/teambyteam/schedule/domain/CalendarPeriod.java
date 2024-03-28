@@ -1,6 +1,6 @@
 package team.teamby.teambyteam.schedule.domain;
 
-import team.teamby.teambyteam.schedule.exception.ScheduleException;
+import team.teamby.teambyteam.schedule.exception.ScheduleSpanWrongOrderException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -46,7 +46,7 @@ public record CalendarPeriod(
 
     private static void validateOrder(final LocalDate startDate, final LocalDate endDate) {
         if (endDate.isBefore(startDate)) {
-            throw new ScheduleException.SpanWrongOrderException(
+            throw new ScheduleSpanWrongOrderException(
                     LocalDateTime.of(startDate, START_TIME_OF_DAY),
                     LocalDateTime.of(endDate, START_TIME_OF_DAY)
             );

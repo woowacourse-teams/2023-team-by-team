@@ -9,7 +9,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
-import team.teamby.teambyteam.member.exception.MemberException;
+import team.teamby.teambyteam.member.exception.MemberNotFoundException;
 import team.teamby.teambyteam.sse.domain.TeamPlaceConnectedSseEvent;
 import team.teamby.teambyteam.sse.domain.TeamPlaceEventId;
 import team.teamby.teambyteam.sse.domain.emitter.SseEmitters;
@@ -32,7 +32,7 @@ public class SseSubscribeService {
     public SseEmitter subscribe(final Long teamPlaceId, final MemberEmailDto memberEmailDto, final String lastEventId) {
 
         final Long memberId = memberRepository.findIdByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()))
+                .orElseThrow(() -> new MemberNotFoundException(memberEmailDto.email()))
                 .id();
 
         final TeamPlaceEmitterId emitterId = TeamPlaceEmitterId.of(teamPlaceId, memberId);

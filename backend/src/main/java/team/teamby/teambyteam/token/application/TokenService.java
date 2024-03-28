@@ -8,7 +8,7 @@ import team.teamby.teambyteam.auth.jwt.JwtTokenProvider;
 import team.teamby.teambyteam.token.application.dto.TokenResponse;
 import team.teamby.teambyteam.token.domain.Token;
 import team.teamby.teambyteam.token.domain.TokenRepository;
-import team.teamby.teambyteam.token.exception.TokenException;
+import team.teamby.teambyteam.token.exception.TokenNotFoundException;
 
 @Slf4j
 @Service
@@ -24,7 +24,7 @@ public class TokenService {
         final String generateAccessToken = jwtTokenProvider.generateAccessToken(email);
         final String generateRefreshToken = jwtTokenProvider.generateRefreshToken(email);
         final Token token = tokenRepository.findByRefreshToken(refreshToken)
-                .orElseThrow(() -> new TokenException.TokenNotFoundException(email));
+                .orElseThrow(() -> new TokenNotFoundException(email));
 
         token.changeToken(generateRefreshToken);
 

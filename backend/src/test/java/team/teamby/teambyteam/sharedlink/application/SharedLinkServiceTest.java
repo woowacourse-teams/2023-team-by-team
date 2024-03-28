@@ -18,6 +18,8 @@ import team.teamby.teambyteam.sharedlink.application.dto.SharedLinksResponse;
 import team.teamby.teambyteam.sharedlink.domain.SharedLink;
 import team.teamby.teambyteam.sharedlink.domain.SharedLinkRepository;
 import team.teamby.teambyteam.sharedlink.exception.SharedLinkException;
+import team.teamby.teambyteam.sharedlink.exception.SharedLinkNotFoundException;
+import team.teamby.teambyteam.sharedlink.exception.TeamSharedLinkAccessException;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
 import java.util.Optional;
@@ -190,7 +192,7 @@ class SharedLinkServiceTest extends ServiceTest {
             // when & then
             SoftAssertions.assertSoftly(softly -> {
                 softly.assertThatThrownBy(() -> sharedLinkService.deleteLink(teamPlace.getId(), invalidSharedLinkId))
-                        .isInstanceOf(SharedLinkException.NotFoundException.class)
+                        .isInstanceOf(SharedLinkNotFoundException.class)
                         .hasMessageContaining("존재하지 않는 공유 링크입니다.");
             });
         }
@@ -208,7 +210,7 @@ class SharedLinkServiceTest extends ServiceTest {
             // when & then
             SoftAssertions.assertSoftly(softly -> {
                 softly.assertThatThrownBy(() -> sharedLinkService.deleteLink(invalidTeamPlaceId, sharedLink.getId()))
-                        .isInstanceOf(SharedLinkException.OwnerForbiddenException.class)
+                        .isInstanceOf(TeamSharedLinkAccessException.class)
                         .hasMessageContaining("팀플레이스에 소속되지 않은 공유링크입니다.");
             });
         }

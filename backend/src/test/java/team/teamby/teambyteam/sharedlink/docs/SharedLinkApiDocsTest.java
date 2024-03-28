@@ -14,9 +14,9 @@ import team.teamby.teambyteam.sharedlink.application.SharedLinkService;
 import team.teamby.teambyteam.sharedlink.application.dto.SharedLinkCreateRequest;
 import team.teamby.teambyteam.sharedlink.application.dto.SharedLinkResponse;
 import team.teamby.teambyteam.sharedlink.application.dto.SharedLinksResponse;
-import team.teamby.teambyteam.sharedlink.exception.SharedLinkException;
+import team.teamby.teambyteam.sharedlink.exception.SharedLinkNotFoundException;
 import team.teamby.teambyteam.sharedlink.presentation.SharedLinkController;
-import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
+import team.teamby.teambyteam.teamplace.exception.TeamPlaceAccessForbiddenException;
 
 import java.util.List;
 
@@ -198,7 +198,7 @@ public final class SharedLinkApiDocsTest extends ApiDocsTest {
             final Long teamPlaceId = 1L;
             final SharedLinkCreateRequest sharedLinkCreateRequest = new SharedLinkCreateRequest("title", "url");
             given(teamPlaceParticipationInterceptor.preHandle(any(), any(), any()))
-                    .willThrow(new TeamPlaceException.TeamPlaceAccessForbidden(teamPlaceId,"사용자 email"));
+                    .willThrow(new TeamPlaceAccessForbiddenException(teamPlaceId,"사용자 email"));
 
             // when & then
             mockMvc.perform(post("/api/team-place/{teamPlaceId}/team-links", teamPlaceId)
@@ -294,7 +294,7 @@ public final class SharedLinkApiDocsTest extends ApiDocsTest {
             // given
             final Long teamPlaceId = 1L;
             given(teamPlaceParticipationInterceptor.preHandle(any(), any(), any()))
-                    .willThrow(new TeamPlaceException.TeamPlaceAccessForbidden(teamPlaceId,"사용자 email"));
+                    .willThrow(new TeamPlaceAccessForbiddenException(teamPlaceId,"사용자 email"));
 
             // when & then
             mockMvc.perform(get("/api/team-place/{teamPlaceId}/team-links", teamPlaceId)
@@ -355,7 +355,7 @@ public final class SharedLinkApiDocsTest extends ApiDocsTest {
             // given
             final Long teamPlaceId = 1L;
             final Long teamLinkId = 1L;
-            doThrow(new SharedLinkException.NotFoundException(teamLinkId))
+            doThrow(new SharedLinkNotFoundException(teamLinkId))
                     .when(sharedLinkService)
                     .deleteLink(any(), any());
 
@@ -417,7 +417,7 @@ public final class SharedLinkApiDocsTest extends ApiDocsTest {
             final Long teamPlaceId = 1L;
             final Long teamLinkId = 1L;
             given(teamPlaceParticipationInterceptor.preHandle(any(), any(), any()))
-                    .willThrow(new TeamPlaceException.TeamPlaceAccessForbidden(teamPlaceId,"사용자 email"));
+                    .willThrow(new TeamPlaceAccessForbiddenException(teamPlaceId,"사용자 email"));
 
             // when & then
             mockMvc.perform(delete("/api/team-place/{teamPlaceId}/team-links/{teamLinkId}", teamPlaceId, teamLinkId)

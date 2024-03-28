@@ -22,12 +22,14 @@ import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.DisplayMemberName;
-import team.teamby.teambyteam.member.exception.MemberException;
-import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
+import team.teamby.teambyteam.member.exception.MemberNameBlankException;
+import team.teamby.teambyteam.member.exception.MemberNotFoundException;
+import team.teamby.teambyteam.member.exception.MemberNameLengthException;
+import team.teamby.teambyteam.member.exception.memberteamplace.NotFoundParticipatedTeamPlaceException;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceParticipantResponse;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 import team.teamby.teambyteam.teamplace.domain.vo.InviteCode;
-import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeException;
+import team.teamby.teambyteam.teamplace.exception.invitecode.TeamPlaceInviteCodeNotFoundException;
 
 import java.util.List;
 
@@ -132,7 +134,7 @@ class MemberServiceTest extends ServiceTest {
 
             // when & then
             assertThatThrownBy(() -> memberService.leaveTeamPlace(new MemberEmailDto(MemberFixtures.PHILIP_EMAIL), ENGLISH_TEAM_PLACE.getId()))
-                    .isInstanceOf(MemberException.MemberNotFoundException.class)
+                    .isInstanceOf(MemberNotFoundException.class)
                     .hasMessageContaining("조회한 멤버가 존재하지 않습니다.");
         }
 
@@ -147,7 +149,7 @@ class MemberServiceTest extends ServiceTest {
 
             // when & then
             assertThatThrownBy(() -> memberService.leaveTeamPlace(new MemberEmailDto(ENDEL.getEmail().getValue()), JAPANESE_TEAM_PLACE.getId()))
-                    .isInstanceOf(MemberTeamPlaceException.NotFoundParticipatedTeamPlaceException.class)
+                    .isInstanceOf(NotFoundParticipatedTeamPlaceException.class)
                     .hasMessageContaining("해당 팀 플레이스에 가입되어 있지 않습니다.");
         }
     }
@@ -208,7 +210,7 @@ class MemberServiceTest extends ServiceTest {
             // when & then
             assertSoftly(softly -> {
                 softly.assertThatThrownBy(() -> memberService.participateTeamPlace(new MemberEmailDto(invalidEmail), inviteCode))
-                        .isInstanceOf(MemberException.MemberNotFoundException.class)
+                        .isInstanceOf(MemberNotFoundException.class)
                         .hasMessageContaining("조회한 멤버가 존재하지 않습니다.");
             });
         }
@@ -224,7 +226,7 @@ class MemberServiceTest extends ServiceTest {
             // when & then
             assertSoftly(softly -> {
                 softly.assertThatThrownBy(() -> memberService.participateTeamPlace(new MemberEmailDto(PHILIP.getEmail().getValue()), invalidInviteCode))
-                        .isInstanceOf(TeamPlaceInviteCodeException.NotFoundException.class)
+                        .isInstanceOf(TeamPlaceInviteCodeNotFoundException.class)
                         .hasMessageContaining("존재하지 않는 초대코드 입니다.");
             });
         }
@@ -260,7 +262,7 @@ class MemberServiceTest extends ServiceTest {
 
             // when & then
             assertThatThrownBy(() -> memberService.getMemberInformation(new MemberEmailDto(NON_REGISTERED_MEMBER.getEmail().getValue())))
-                    .isInstanceOf(MemberException.MemberNotFoundException.class)
+                    .isInstanceOf(MemberNotFoundException.class)
                     .hasMessageContaining("조회한 멤버가 존재하지 않습니다.");
         }
     }
@@ -298,7 +300,7 @@ class MemberServiceTest extends ServiceTest {
 
             // when & then
             assertThatThrownBy(() -> memberService.updateMemberInformation(memberUpdateRequest, new MemberEmailDto(NON_REGISTERED_MEMBER.getEmail().getValue())))
-                    .isInstanceOf(MemberException.MemberNotFoundException.class)
+                    .isInstanceOf(MemberNotFoundException.class)
                     .hasMessageContaining("조회한 멤버가 존재하지 않습니다.");
         }
 
@@ -312,7 +314,7 @@ class MemberServiceTest extends ServiceTest {
 
             // then
             assertThatThrownBy(() -> memberService.updateMemberInformation(memberUpdateRequest, new MemberEmailDto(member.getEmail().getValue())))
-                    .isInstanceOf(MemberException.NameBlankException.class)
+                    .isInstanceOf(MemberNameBlankException.class)
                     .hasMessage("멤버 이름은 공백을 제외한 1자 이상이어야합니다.");
         }
 
@@ -328,7 +330,7 @@ class MemberServiceTest extends ServiceTest {
 
             // then
             assertThatThrownBy(() -> memberService.updateMemberInformation(memberUpdateRequest, new MemberEmailDto(member.getEmail().getValue())))
-                    .isInstanceOf(MemberException.NameLengthException.class)
+                    .isInstanceOf(MemberNameLengthException.class)
                     .hasMessageContaining("멤버 이름의 길이가 최대 이름 길이를 초과했습니다.");
         }
 
@@ -432,7 +434,7 @@ class MemberServiceTest extends ServiceTest {
 
             // when & then
             Assertions.assertThatThrownBy(() -> memberService.leaveMember(new MemberEmailDto(NON_REGISTERED_MEMBER.getEmail().getValue())))
-                    .isInstanceOf(MemberException.MemberNotFoundException.class)
+                    .isInstanceOf(MemberNotFoundException.class)
                     .hasMessageContaining("조회한 멤버가 존재하지 않습니다.");
         }
     }

@@ -19,9 +19,10 @@ import team.teamby.teambyteam.schedule.domain.ScheduleRepository;
 import team.teamby.teambyteam.schedule.domain.vo.Description;
 import team.teamby.teambyteam.schedule.domain.vo.Span;
 import team.teamby.teambyteam.schedule.domain.vo.Title;
-import team.teamby.teambyteam.schedule.exception.ScheduleException;
+import team.teamby.teambyteam.schedule.exception.ScheduleNotFoundException;
+import team.teamby.teambyteam.schedule.exception.TeamScheduleAccessException;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceRepository;
-import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
+import team.teamby.teambyteam.teamplace.exception.TeamPlaceNotFoundException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -57,7 +58,7 @@ public class TeamCalendarScheduleService {
 
     private void checkTeamPlaceExist(final Long teamPlaceId) {
         if (notExistTeamPlace(teamPlaceId)) {
-            throw new TeamPlaceException.NotFoundException(teamPlaceId);
+            throw new TeamPlaceNotFoundException(teamPlaceId);
         }
     }
 
@@ -70,7 +71,7 @@ public class TeamCalendarScheduleService {
         checkTeamPlaceExist(teamPlaceId);
 
         final Schedule schedule = scheduleRepository.findById(scheduleId)
-                .orElseThrow(() -> new ScheduleException.ScheduleNotFoundException(scheduleId));
+                .orElseThrow(() -> new ScheduleNotFoundException(scheduleId));
         validateScheduleOwnerTeam(teamPlaceId, schedule);
 
         return ScheduleResponse.from(schedule);
@@ -78,7 +79,7 @@ public class TeamCalendarScheduleService {
 
     private void validateScheduleOwnerTeam(final Long teamPlaceId, final Schedule schedule) {
         if (isNotScheduleOfTeam(teamPlaceId, schedule)) {
-            throw new ScheduleException.TeamAccessForbidden(schedule.getId(), teamPlaceId);
+            throw new TeamScheduleAccessException(schedule.getId(), teamPlaceId);
         }
     }
 
@@ -135,7 +136,7 @@ public class TeamCalendarScheduleService {
         checkTeamPlaceExist(teamPlaceId);
 
         final Schedule schedule = scheduleRepository.findById(scheduleId)
-                .orElseThrow(() -> new ScheduleException.ScheduleNotFoundException(scheduleId));
+                .orElseThrow(() -> new ScheduleNotFoundException(scheduleId));
         validateScheduleOwnerTeam(teamPlaceId, schedule);
 
         if (Objects.nonNull(scheduleUpdateRequest.title())) {
@@ -161,7 +162,7 @@ public class TeamCalendarScheduleService {
         checkTeamPlaceExist(teamPlaceId);
 
         final Schedule schedule = scheduleRepository.findById(scheduleId)
-                .orElseThrow(() -> new ScheduleException.ScheduleNotFoundException(scheduleId));
+                .orElseThrow(() -> new ScheduleNotFoundException(scheduleId));
         validateScheduleOwnerTeam(teamPlaceId, schedule);
 
         scheduleRepository.deleteById(scheduleId);
