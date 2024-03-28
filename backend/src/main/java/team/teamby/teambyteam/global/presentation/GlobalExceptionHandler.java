@@ -12,6 +12,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import team.teamby.teambyteam.auth.exception.AuthenticationException;
 import team.teamby.teambyteam.common.exception.CustomNotFondException;
+import team.teamby.teambyteam.common.exception.CustomUnauthorizedException;
 import team.teamby.teambyteam.feed.exception.FeedException;
 import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
@@ -20,7 +21,7 @@ import team.teamby.teambyteam.schedule.exception.ScheduleException;
 import team.teamby.teambyteam.sharedlink.exception.SharedLinkException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeException;
-import team.teamby.teambyteam.token.exception.TokenException;
+import team.teamby.teambyteam.token.exception.TokenNotFoundException;
 
 import java.time.DateTimeException;
 import java.util.Random;
@@ -82,7 +83,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = {
             ExpiredJwtException.class,
-            TokenException.TokenNotFoundException.class
+            CustomUnauthorizedException.class
     })
     public ResponseEntity<ErrorResponse> handleAuthenticationException(final RuntimeException exception) {
         final String message = exception.getMessage();
