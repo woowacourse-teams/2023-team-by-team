@@ -22,13 +22,14 @@ import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.DisplayMemberName;
-import team.teamby.teambyteam.member.exception.MemberException;
+import team.teamby.teambyteam.member.exception.MemberNameBlankException;
 import team.teamby.teambyteam.member.exception.MemberNotFoundException;
-import team.teamby.teambyteam.member.exception.NotFoundParticipatedTeamPlaceException;
+import team.teamby.teambyteam.member.exception.MemberNameLengthException;
+import team.teamby.teambyteam.member.exception.memberteamplace.NotFoundParticipatedTeamPlaceException;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceParticipantResponse;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 import team.teamby.teambyteam.teamplace.domain.vo.InviteCode;
-import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeNotFoundException;
+import team.teamby.teambyteam.teamplace.exception.invitecode.TeamPlaceInviteCodeNotFoundException;
 
 import java.util.List;
 
@@ -313,7 +314,7 @@ class MemberServiceTest extends ServiceTest {
 
             // then
             assertThatThrownBy(() -> memberService.updateMemberInformation(memberUpdateRequest, new MemberEmailDto(member.getEmail().getValue())))
-                    .isInstanceOf(MemberException.NameBlankException.class)
+                    .isInstanceOf(MemberNameBlankException.class)
                     .hasMessage("멤버 이름은 공백을 제외한 1자 이상이어야합니다.");
         }
 
@@ -329,7 +330,7 @@ class MemberServiceTest extends ServiceTest {
 
             // then
             assertThatThrownBy(() -> memberService.updateMemberInformation(memberUpdateRequest, new MemberEmailDto(member.getEmail().getValue())))
-                    .isInstanceOf(MemberException.NameLengthException.class)
+                    .isInstanceOf(MemberNameLengthException.class)
                     .hasMessageContaining("멤버 이름의 길이가 최대 이름 길이를 초과했습니다.");
         }
 

@@ -15,7 +15,7 @@ import team.teamby.teambyteam.member.domain.TeamPlaceColor;
 import team.teamby.teambyteam.member.domain.vo.DisplayMemberName;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.exception.MemberNotFoundException;
-import team.teamby.teambyteam.member.exception.NotFoundParticipatedTeamPlaceException;
+import team.teamby.teambyteam.member.exception.memberteamplace.NotFoundParticipatedTeamPlaceException;
 import team.teamby.teambyteam.teamplace.application.dto.DisplayMemberNameChangeRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceChangeColorRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateRequest;
@@ -31,7 +31,7 @@ import team.teamby.teambyteam.teamplace.domain.TeamPlaceInviteCodeRepository;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceRepository;
 import team.teamby.teambyteam.teamplace.domain.vo.InviteCode;
 import team.teamby.teambyteam.teamplace.domain.vo.Name;
-import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeException;
+import team.teamby.teambyteam.teamplace.exception.invitecode.TeamPlaceInviteCodeException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceNotFoundException;
 
 import java.util.List;

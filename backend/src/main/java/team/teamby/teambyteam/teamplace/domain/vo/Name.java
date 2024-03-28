@@ -6,7 +6,8 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
+import team.teamby.teambyteam.teamplace.exception.TeamPlaceNameBlankException;
+import team.teamby.teambyteam.teamplace.exception.TeamPlaceNameLengthException;
 
 import java.util.Objects;
 
@@ -31,10 +32,10 @@ public class Name {
             throw new NullPointerException("팀 플레이스 이름은 null일 수 없습니다.");
         }
         if (value.length() > MAX_LENGTH) {
-            throw new TeamPlaceException.NameLengthException(MAX_LENGTH, value);
+            throw new TeamPlaceNameLengthException(MAX_LENGTH, value);
         }
         if (value.isBlank()) {
-            throw new TeamPlaceException.NameBlankException();
+            throw new TeamPlaceNameBlankException();
         }
     }
 }

@@ -3,7 +3,7 @@ package team.teamby.teambyteam.schedule.domain;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import team.teamby.teambyteam.schedule.domain.vo.Span;
-import team.teamby.teambyteam.schedule.exception.ScheduleException;
+import team.teamby.teambyteam.schedule.exception.ScheduleSpanWrongOrderException;
 
 import java.time.LocalDateTime;
 
@@ -20,7 +20,7 @@ class SpanTest {
 
         // when & then
         assertThatThrownBy(() -> new Span(startDateTime, endDateTime))
-                .isInstanceOf(ScheduleException.SpanWrongOrderException.class)
+                .isInstanceOf(ScheduleSpanWrongOrderException.class)
                 .hasMessageContaining("시작 일자가 종료 일자보다 이후일 수 없습니다.");
     }
 }

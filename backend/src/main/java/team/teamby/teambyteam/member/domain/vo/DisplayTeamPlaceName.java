@@ -6,7 +6,7 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
+import team.teamby.teambyteam.member.exception.memberteamplace.MemberTeamPlaceException;
 
 import java.util.Objects;
 

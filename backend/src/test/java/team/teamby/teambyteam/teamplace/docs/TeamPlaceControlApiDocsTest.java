@@ -9,14 +9,15 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import team.teamby.teambyteam.common.ApiDocsTest;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
-import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
+import team.teamby.teambyteam.member.exception.memberteamplace.TeamPlaceColorNotExistException;
 import team.teamby.teambyteam.teamplace.application.TeamPlaceService;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceChangeColorRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateResponse;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceInviteCodeResponse;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceAccessForbiddenException;
-import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
+import team.teamby.teambyteam.teamplace.exception.TeamPlaceNameBlankException;
+import team.teamby.teambyteam.teamplace.exception.TeamPlaceNameLengthException;
 import team.teamby.teambyteam.teamplace.presentation.TeamPlaceController;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -92,7 +93,7 @@ public class TeamPlaceControlApiDocsTest extends ApiDocsTest {
         void badRequestForBlankTeamPlaceName() throws Exception {
             // given
             final TeamPlaceCreateRequest request = new TeamPlaceCreateRequest("");
-            willThrow(new TeamPlaceException.NameBlankException())
+            willThrow(new TeamPlaceNameBlankException())
                     .given(teamPlaceService)
                     .create(any(MemberEmailDto.class), any(TeamPlaceCreateRequest.class));
 
@@ -117,7 +118,7 @@ public class TeamPlaceControlApiDocsTest extends ApiDocsTest {
             // given
             final String longName = "a".repeat(31);
             final TeamPlaceCreateRequest request = new TeamPlaceCreateRequest(longName);
-            willThrow(new TeamPlaceException.NameLengthException(30, longName))
+            willThrow(new TeamPlaceNameLengthException(30, longName))
                     .given(teamPlaceService)
                     .create(any(MemberEmailDto.class), any(TeamPlaceCreateRequest.class));
 
@@ -262,7 +263,7 @@ public class TeamPlaceControlApiDocsTest extends ApiDocsTest {
             final Long teamPlaceId = 1L;
             int notExistTeamPlaceColor = -1;
             final TeamPlaceChangeColorRequest request = new TeamPlaceChangeColorRequest(notExistTeamPlaceColor);
-            willThrow(new MemberTeamPlaceException.TeamPlaceColorNotExistException(notExistTeamPlaceColor))
+            willThrow(new TeamPlaceColorNotExistException(notExistTeamPlaceColor))
                     .given(teamPlaceService)
                     .changeMemberTeamPlaceColor(any(MemberEmailDto.class), eq(teamPlaceId), any(TeamPlaceChangeColorRequest.class));
 

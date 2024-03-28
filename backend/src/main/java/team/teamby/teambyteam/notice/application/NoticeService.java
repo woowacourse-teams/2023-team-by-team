@@ -29,8 +29,11 @@ import team.teamby.teambyteam.notice.domain.image.NoticeImageRepository;
 import team.teamby.teambyteam.notice.domain.image.vo.ImageName;
 import team.teamby.teambyteam.notice.domain.image.vo.ImageUrl;
 import team.teamby.teambyteam.notice.domain.vo.Content;
-import team.teamby.teambyteam.notice.exception.NoticeException;
-import team.teamby.teambyteam.notice.exception.NoticeException.WritingRequestEmptyException;
+import team.teamby.teambyteam.notice.exception.NoticeWritingRequestEmptyException;
+import team.teamby.teambyteam.notice.exception.NoticeImageOverCountException;
+import team.teamby.teambyteam.notice.exception.NoticeImageSizeException;
+import team.teamby.teambyteam.notice.exception.NoticeNotAllowedImageExtensionException;
+import team.teamby.teambyteam.notice.exception.NoticeNotFoundImageExtensionException;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceRepository;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceNotFoundException;
 
@@ -99,7 +102,7 @@ public class NoticeService {
 
     private void validateEmptyRequest(final String content, final List<MultipartFile> images) {
         if (isEmptyRequest(content, images)) {
-            throw new WritingRequestEmptyException();
+            throw new NoticeWritingRequestEmptyException();
         }
     }
 
@@ -109,17 +112,17 @@ public class NoticeService {
 
     private void validateImages(final List<MultipartFile> images) {
         if (images.size() > LIMIT_IMAGE_COUNT) {
-            throw new NoticeException.ImageOverCountException(LIMIT_IMAGE_COUNT, images.size());
+            throw new NoticeImageOverCountException(LIMIT_IMAGE_COUNT, images.size());
         }
         images.forEach(this::validateImage);
     }
 
     private void validateImage(final MultipartFile image) {
         if (image.getSize() > LIMIT_IMAGE_SIZE) {
-            throw new NoticeException.ImageSizeException(LIMIT_IMAGE_SIZE, image.getSize());
+            throw new NoticeImageSizeException(LIMIT_IMAGE_SIZE, image.getSize());
         }
         if (AllowedImageExtension.isNotContain(getFileExtension(image))) {
-            throw new NoticeException.NotAllowedImageExtensionException(image.getOriginalFilename());
+            throw new NoticeNotAllowedImageExtensionException(image.getOriginalFilename());
         }
     }
 
@@ -127,7 +130,7 @@ public class NoticeService {
         try {
             return FileUtil.getFileExtension(file);
         } catch (final FileControlException.FileExtensionException e) {
-            throw new NoticeException.NotFoundImageExtensionException(file.getOriginalFilename());
+            throw new NoticeNotFoundImageExtensionException(file.getOriginalFilename());
         }
     }
 

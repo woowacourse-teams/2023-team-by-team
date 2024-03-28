@@ -14,8 +14,10 @@ import team.teamby.teambyteam.schedule.application.dto.ScheduleUpdateRequest;
 import team.teamby.teambyteam.schedule.application.dto.SchedulesResponse;
 import team.teamby.teambyteam.schedule.domain.Schedule;
 import team.teamby.teambyteam.schedule.domain.ScheduleRepository;
-import team.teamby.teambyteam.schedule.exception.ScheduleException;
+import team.teamby.teambyteam.schedule.exception.ScheduleDateFormatException;
+import team.teamby.teambyteam.schedule.exception.ScheduleDescriptionLengthException;
 import team.teamby.teambyteam.schedule.exception.ScheduleNotFoundException;
+import team.teamby.teambyteam.schedule.exception.ScheduleSpanWrongOrderException;
 import team.teamby.teambyteam.schedule.exception.TeamScheduleAccessException;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceNotFoundException;
@@ -173,7 +175,7 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
             // when
             // then
             assertThatThrownBy(() -> teamCalendarScheduleService.findScheduleInPeriod(ENGLISH_TEAM_PLACE.getId(), startDate, endDate))
-                    .isInstanceOf(ScheduleException.dateFormatException.class)
+                    .isInstanceOf(ScheduleDateFormatException.class)
                     .hasMessage("잘못된 날짜 입력 형식입니다.");
 
         }
@@ -386,7 +388,7 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
             // when
             // then
             assertThatThrownBy(() -> teamCalendarScheduleService.register(request, ENGLISH_TEAM_PLACE.getId()))
-                    .isInstanceOf(ScheduleException.DescriptionLengthException.class)
+                    .isInstanceOf(ScheduleDescriptionLengthException.class)
                     .hasMessage("일정 메모가 너무 깁니다.");
         }
 
@@ -403,7 +405,7 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
 
             // when & then
             assertThatThrownBy(() -> teamCalendarScheduleService.register(request, ENGLISH_TEAM_PLACE.getId()))
-                    .isInstanceOf(ScheduleException.SpanWrongOrderException.class)
+                    .isInstanceOf(ScheduleSpanWrongOrderException.class)
                     .hasMessageContaining("시작 일자가 종료 일자보다 이후일 수 없습니다.");
         }
 
@@ -519,7 +521,7 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
 
             // when & then
             assertThatThrownBy(() -> teamCalendarScheduleService.update(request, ENGLISH_TEAM_PLACE_ID, MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId()))
-                    .isInstanceOf(ScheduleException.SpanWrongOrderException.class)
+                    .isInstanceOf(ScheduleSpanWrongOrderException.class)
                     .hasMessageContaining("시작 일자가 종료 일자보다 이후일 수 없습니다.");
         }
 

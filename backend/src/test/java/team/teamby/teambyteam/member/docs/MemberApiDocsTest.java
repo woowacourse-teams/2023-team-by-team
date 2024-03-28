@@ -16,8 +16,8 @@ import team.teamby.teambyteam.member.exception.MemberNotFoundException;
 import team.teamby.teambyteam.member.presentation.MemberController;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceParticipantResponse;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceAccessForbiddenException;
-import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeException;
-import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeNotFoundException;
+import team.teamby.teambyteam.teamplace.exception.invitecode.TeamPlaceInviteCodeLengthException;
+import team.teamby.teambyteam.teamplace.exception.invitecode.TeamPlaceInviteCodeNotFoundException;
 
 import java.util.List;
 
@@ -310,7 +310,7 @@ public final class MemberApiDocsTest extends ApiDocsTest {
             // given
             final String invalidInviteCode = "123456789";
             given(memberService.participateTeamPlace(any(), any()))
-                    .willThrow(new TeamPlaceInviteCodeException.LengthException(8, invalidInviteCode));
+                    .willThrow(new TeamPlaceInviteCodeLengthException(8, invalidInviteCode));
 
             // when & then
             mockMvc.perform(post("/api/me/team-places/{inviteCode}", invalidInviteCode)

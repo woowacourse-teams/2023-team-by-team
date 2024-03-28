@@ -11,7 +11,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.multipart.MultipartFile;
 import team.teamby.teambyteam.common.ServiceTest;
 import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
-import team.teamby.teambyteam.feed.exception.FeedException;
+import team.teamby.teambyteam.feed.exception.FeedImageOverCountException;
+import team.teamby.teambyteam.feed.exception.FeedImageSizeException;
+import team.teamby.teambyteam.feed.exception.FeedNotAllowedImageExtensionException;
+import team.teamby.teambyteam.feed.exception.FeedWritingRequestEmptyException;
 import team.teamby.teambyteam.filesystem.FileStorageManager;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.Member;
@@ -88,7 +91,7 @@ class FeedWriteServiceTest extends ServiceTest {
             // when & then
             assertThatThrownBy(() -> feedWriteService.write(request, new MemberEmailDto(author.getEmail().getValue()),
                     teamPlace.getId()))
-                    .isInstanceOf(FeedException.ImageOverCountException.class)
+                    .isInstanceOf(FeedImageOverCountException.class)
                     .hasMessageContaining("허용된 이미지의 개수를 초과했습니다.");
         }
 
@@ -103,7 +106,7 @@ class FeedWriteServiceTest extends ServiceTest {
             // when & then
             assertThatThrownBy(() -> feedWriteService.write(request, new MemberEmailDto(author.getEmail().getValue()),
                     teamPlace.getId()))
-                    .isInstanceOf(FeedException.ImageSizeException.class)
+                    .isInstanceOf(FeedImageSizeException.class)
                     .hasMessageContaining("허용된 이미지의 크기를 초과했습니다.");
         }
 
@@ -118,7 +121,7 @@ class FeedWriteServiceTest extends ServiceTest {
             // when & then
             assertThatThrownBy(() -> feedWriteService.write(request, new MemberEmailDto(author.getEmail().getValue()),
                     teamPlace.getId()))
-                    .isInstanceOf(FeedException.NotAllowedImageExtensionException.class)
+                    .isInstanceOf(FeedNotAllowedImageExtensionException.class)
                     .hasMessageContaining("허용되지 않은 확장자입니다.");
         }
 
@@ -133,7 +136,7 @@ class FeedWriteServiceTest extends ServiceTest {
             // when & then
             assertThatThrownBy(() -> feedWriteService.write(request, new MemberEmailDto(author.getEmail().getValue()),
                     teamPlace.getId()))
-                    .isInstanceOf(FeedException.WritingRequestEmptyException.class)
+                    .isInstanceOf(FeedWritingRequestEmptyException.class)
                     .hasMessageContaining("내용과 이미지가 모두 존재하지 않습니다.");
         }
 

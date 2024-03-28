@@ -18,7 +18,11 @@ import team.teamby.teambyteam.feed.domain.image.FeedThreadImageRepository;
 import team.teamby.teambyteam.feed.domain.image.vo.ImageName;
 import team.teamby.teambyteam.feed.domain.image.vo.ImageUrl;
 import team.teamby.teambyteam.feed.domain.vo.Content;
-import team.teamby.teambyteam.feed.exception.FeedException;
+import team.teamby.teambyteam.feed.exception.FeedImageOverCountException;
+import team.teamby.teambyteam.feed.exception.FeedImageSizeException;
+import team.teamby.teambyteam.feed.exception.FeedNotAllowedImageExtensionException;
+import team.teamby.teambyteam.feed.exception.FeedNotFoundImageExtensionException;
+import team.teamby.teambyteam.feed.exception.FeedWritingRequestEmptyException;
 import team.teamby.teambyteam.filesystem.AllowedImageExtension;
 import team.teamby.teambyteam.filesystem.FileStorageManager;
 import team.teamby.teambyteam.filesystem.exception.FileControlException;
@@ -29,7 +33,7 @@ import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.exception.MemberNotFoundException;
-import team.teamby.teambyteam.member.exception.NotFoundParticipatedTeamPlaceException;
+import team.teamby.teambyteam.member.exception.memberteamplace.NotFoundParticipatedTeamPlaceException;
 
 import java.util.List;
 import java.util.Objects;
@@ -89,7 +93,7 @@ public class FeedWriteService {
 
     private void validateEmptyRequest(final String content, final List<MultipartFile> images) {
         if (isEmptyRequest(content, images)) {
-            throw new FeedException.WritingRequestEmptyException();
+            throw new FeedWritingRequestEmptyException();
         }
     }
 
@@ -99,17 +103,17 @@ public class FeedWriteService {
 
     private void validateImages(final List<MultipartFile> images) {
         if (images.size() > LIMIT_IMAGE_COUNT) {
-            throw new FeedException.ImageOverCountException(LIMIT_IMAGE_COUNT, images.size());
+            throw new FeedImageOverCountException(LIMIT_IMAGE_COUNT, images.size());
         }
         images.forEach(this::validateImage);
     }
 
     private void validateImage(final MultipartFile image) {
         if (image.getSize() > LIMIT_IMAGE_SIZE) {
-            throw new FeedException.ImageSizeException(LIMIT_IMAGE_SIZE, image.getSize());
+            throw new FeedImageSizeException(LIMIT_IMAGE_SIZE, image.getSize());
         }
         if (AllowedImageExtension.isNotContain(getFileExtension(image))) {
-            throw new FeedException.NotAllowedImageExtensionException(image.getOriginalFilename());
+            throw new FeedNotAllowedImageExtensionException(image.getOriginalFilename());
         }
     }
 
@@ -117,7 +121,7 @@ public class FeedWriteService {
         try {
             return FileUtil.getFileExtension(file);
         } catch (final FileControlException.FileExtensionException e) {
-            throw new FeedException.NotFoundImageExtensionException(file.getOriginalFilename());
+            throw new FeedNotFoundImageExtensionException(file.getOriginalFilename());
         }
     }
 

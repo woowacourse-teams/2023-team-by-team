@@ -22,7 +22,7 @@ import team.teamby.teambyteam.feed.application.dto.FeedResponse;
 import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
 import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
 import team.teamby.teambyteam.feed.domain.FeedType;
-import team.teamby.teambyteam.feed.exception.FeedException;
+import team.teamby.teambyteam.feed.exception.FeedWritingRequestEmptyException;
 import team.teamby.teambyteam.feed.presentation.FeedThreadController;
 import team.teamby.teambyteam.filesystem.FileStorageManager;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
@@ -120,7 +120,7 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
         void failIfEmptyContentAndImages() throws Exception {
             // given
             final Long teamPlaceId = 1L;
-            willThrow(new FeedException.WritingRequestEmptyException())
+            willThrow(new FeedWritingRequestEmptyException())
                     .given(feedWriteService)
                     .write(any(FeedThreadWritingRequest.class), any(MemberEmailDto.class), eq(teamPlaceId));
 

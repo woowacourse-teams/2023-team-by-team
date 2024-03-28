@@ -16,7 +16,7 @@ import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.DisplayMemberName;
 import team.teamby.teambyteam.member.domain.vo.DisplayTeamPlaceName;
 import team.teamby.teambyteam.member.exception.MemberNotFoundException;
-import team.teamby.teambyteam.member.exception.NotFoundParticipatedTeamPlaceException;
+import team.teamby.teambyteam.member.exception.memberteamplace.NotFoundParticipatedTeamPlaceException;
 import team.teamby.teambyteam.teamplace.application.dto.DisplayMemberNameChangeRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceChangeColorRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateRequest;

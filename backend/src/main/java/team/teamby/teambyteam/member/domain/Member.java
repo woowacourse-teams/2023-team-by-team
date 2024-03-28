@@ -16,7 +16,7 @@ import team.teamby.teambyteam.member.domain.vo.DisplayMemberName;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.domain.vo.Name;
 import team.teamby.teambyteam.member.domain.vo.ProfileImageUrl;
-import team.teamby.teambyteam.member.exception.NotFoundParticipatedTeamPlaceException;
+import team.teamby.teambyteam.member.exception.memberteamplace.NotFoundParticipatedTeamPlaceException;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
 import java.util.ArrayList;

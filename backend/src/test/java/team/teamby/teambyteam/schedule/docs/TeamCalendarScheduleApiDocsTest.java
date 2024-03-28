@@ -15,8 +15,9 @@ import team.teamby.teambyteam.schedule.application.dto.ScheduleResponse;
 import team.teamby.teambyteam.schedule.application.dto.ScheduleUpdateRequest;
 import team.teamby.teambyteam.schedule.application.dto.SchedulesResponse;
 import team.teamby.teambyteam.schedule.domain.Schedule;
-import team.teamby.teambyteam.schedule.exception.ScheduleException;
 import team.teamby.teambyteam.schedule.exception.ScheduleNotFoundException;
+import team.teamby.teambyteam.schedule.exception.ScheduleSpanWrongOrderException;
+import team.teamby.teambyteam.schedule.exception.ScheduleTitleBlankException;
 import team.teamby.teambyteam.schedule.presentation.TeamCalendarScheduleController;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceNotFoundException;
 
@@ -119,7 +120,7 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
             LocalDateTime startDateTime = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(teamPlaceId).getSpan().getStartDateTime();
             LocalDateTime endDateTime = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE(teamPlaceId).getSpan().getEndDateTime();
             ScheduleUpdateRequest request = new ScheduleUpdateRequest(blankTitle, startDateTime, endDateTime);
-            willThrow(new ScheduleException.TitleBlankException())
+            willThrow(new ScheduleTitleBlankException())
                     .given(teamCalendarScheduleService)
                     .register(any(ScheduleRegisterRequest.class), eq(teamPlaceId));
 
@@ -202,7 +203,7 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
             final LocalDateTime wrongEndDateTime = startDateTime.minusDays(1);
             final ScheduleRegisterRequest request = new ScheduleRegisterRequest(title, startDateTime, wrongEndDateTime);
 
-            willThrow(new ScheduleException.SpanWrongOrderException(startDateTime, wrongEndDateTime))
+            willThrow(new ScheduleSpanWrongOrderException(startDateTime, wrongEndDateTime))
                     .given(teamCalendarScheduleService)
                     .register(request, teamPlaceId);
 
@@ -273,7 +274,7 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
             final LocalDateTime endDateTime = MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getSpan().getEndDateTime();
 
             final ScheduleUpdateRequest request = new ScheduleUpdateRequest(blankTitle, startDateTime, endDateTime);
-            willThrow(new ScheduleException.TitleBlankException())
+            willThrow(new ScheduleTitleBlankException())
                     .given(teamCalendarScheduleService)
                     .update(any(ScheduleUpdateRequest.class), eq(teamPlaceId), eq(id));
 
@@ -359,7 +360,7 @@ public class TeamCalendarScheduleApiDocsTest extends ApiDocsTest {
             final LocalDateTime wrongEndDateTime = startDateTime.minusDays(1);
             final ScheduleUpdateRequest request = new ScheduleUpdateRequest(title, startDateTime, wrongEndDateTime);
 
-            willThrow(new ScheduleException.SpanWrongOrderException(startDateTime, wrongEndDateTime))
+            willThrow(new ScheduleSpanWrongOrderException(startDateTime, wrongEndDateTime))
                     .given(teamCalendarScheduleService)
                     .update(request, teamPlaceId, id);
 

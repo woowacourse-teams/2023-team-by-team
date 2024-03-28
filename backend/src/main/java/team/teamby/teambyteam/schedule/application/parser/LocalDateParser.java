@@ -1,7 +1,7 @@
 package team.teamby.teambyteam.schedule.application.parser;
 
 import org.springframework.stereotype.Component;
-import team.teamby.teambyteam.schedule.exception.ScheduleException;
+import team.teamby.teambyteam.schedule.exception.ScheduleDateFormatException;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -16,7 +16,7 @@ public class LocalDateParser {
         try {
             return LocalDate.parse(yearMonthDay, DATE_PARAM_FORMAT);
         } catch (final DateTimeParseException e) {
-            throw new ScheduleException.dateFormatException(e);
+            throw new ScheduleDateFormatException(e);
         }
     }
 }

@@ -11,16 +11,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import team.teamby.teambyteam.auth.exception.AuthenticationException;
+import team.teamby.teambyteam.common.exception.CustomBadRequestException;
 import team.teamby.teambyteam.common.exception.CustomForbiddenException;
 import team.teamby.teambyteam.common.exception.CustomNotFondException;
 import team.teamby.teambyteam.common.exception.CustomUnauthorizedException;
-import team.teamby.teambyteam.feed.exception.FeedException;
-import team.teamby.teambyteam.member.exception.MemberException;
-import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
-import team.teamby.teambyteam.notice.exception.NoticeException;
-import team.teamby.teambyteam.schedule.exception.ScheduleException;
-import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
-import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeException;
 
 import java.time.DateTimeException;
 import java.util.Random;
@@ -115,29 +109,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = {
-            ScheduleException.SpanWrongOrderException.class,
-            ScheduleException.dateFormatException.class,
-            ScheduleException.TitleBlankException.class,
-            ScheduleException.DescriptionLengthException.class,
-            TeamPlaceInviteCodeException.LengthException.class,
-            TeamPlaceException.NameLengthException.class,
-            TeamPlaceException.NameBlankException.class,
-            MemberTeamPlaceException.TeamPlaceColorNotExistException.class,
-            MemberTeamPlaceException.MemberNameBlankException.class,
-            MemberTeamPlaceException.MemberDisplayNameLengthException.class,
-            MemberException.NameLengthException.class,
-            MemberException.NameBlankException.class,
-            FeedException.ImageSizeException.class,
-            FeedException.NotFoundImageExtensionException.class,
-            FeedException.NotAllowedImageExtensionException.class,
-            FeedException.ImageOverCountException.class,
-            FeedException.WritingRequestEmptyException.class,
-            NoticeException.ImageSizeException.class,
-            NoticeException.NotFoundImageExtensionException.class,
-            NoticeException.NotAllowedImageExtensionException.class,
-            NoticeException.ImageOverCountException.class,
-            NoticeException.WritingRequestEmptyException.class,
-            MaxUploadSizeExceededException.class
+            MaxUploadSizeExceededException.class,
+            CustomBadRequestException.class
     })
     public ResponseEntity<ErrorResponse> handleCustomBadRequestException(final RuntimeException exception) {
         final String message = exception.getMessage();

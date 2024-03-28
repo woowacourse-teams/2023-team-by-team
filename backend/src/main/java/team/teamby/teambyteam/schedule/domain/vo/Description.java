@@ -6,7 +6,7 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import team.teamby.teambyteam.schedule.exception.ScheduleException;
+import team.teamby.teambyteam.schedule.exception.ScheduleDescriptionLengthException;
 
 import java.util.Objects;
 
@@ -32,7 +32,7 @@ public class Description {
 
     private static void validate(final String value) {
         if (value.length() > MAX_LENGTH) {
-            throw new ScheduleException.DescriptionLengthException();
+            throw new ScheduleDescriptionLengthException();
         }
     }
 

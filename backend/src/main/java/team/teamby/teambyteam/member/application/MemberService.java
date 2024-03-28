@@ -22,8 +22,8 @@ import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceInviteCode;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceInviteCodeRepository;
 import team.teamby.teambyteam.teamplace.domain.vo.InviteCode;
-import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeException;
-import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeNotFoundException;
+import team.teamby.teambyteam.teamplace.exception.invitecode.TeamPlaceInviteCodeLengthException;
+import team.teamby.teambyteam.teamplace.exception.invitecode.TeamPlaceInviteCodeNotFoundException;
 
 import java.util.List;
 
@@ -82,7 +82,7 @@ public class MemberService {
         try {
             inviteCodeVo = new InviteCode(inviteCode);
         } catch (IllegalArgumentException e) {
-            throw new TeamPlaceInviteCodeException.LengthException(InviteCode.LENGTH, inviteCode);
+            throw new TeamPlaceInviteCodeLengthException(InviteCode.LENGTH, inviteCode);
         }
         return inviteCodeVo;
     }

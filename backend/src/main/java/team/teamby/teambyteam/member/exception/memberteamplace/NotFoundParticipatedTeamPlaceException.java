@@ -1,4 +1,4 @@
-package team.teamby.teambyteam.member.exception;
+package team.teamby.teambyteam.member.exception.memberteamplace;
 
 import team.teamby.teambyteam.common.exception.CustomForbiddenException;
 
