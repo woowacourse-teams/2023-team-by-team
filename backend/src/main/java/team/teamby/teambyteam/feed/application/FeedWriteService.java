@@ -29,7 +29,7 @@ import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.exception.MemberNotFoundException;
-import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
+import team.teamby.teambyteam.member.exception.NotFoundParticipatedTeamPlaceException;
 
 import java.util.List;
 import java.util.Objects;
@@ -68,7 +68,7 @@ public class FeedWriteService {
                 .orElseThrow(() -> new MemberNotFoundException(memberEmailDto.email()))
                 .id();
         final MemberTeamPlace author = memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(teamPlaceId, memberId)
-                .orElseThrow(() -> new MemberTeamPlaceException.NotFoundParticipatedTeamPlaceException(memberEmailDto.email(), teamPlaceId));
+                .orElseThrow(() -> new NotFoundParticipatedTeamPlaceException(memberEmailDto.email(), teamPlaceId));
 
         final FeedThread savedFeedThread = feedRepository.save(new FeedThread(teamPlaceId, new Content(content), memberId));
         final List<FeedImageResponse> imageResponses = saveImages(images, savedFeedThread);

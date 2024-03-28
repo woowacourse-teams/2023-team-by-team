@@ -12,12 +12,6 @@ public class ScheduleException extends RuntimeException {
         super(message, cause);
     }
 
-    public static class TeamAccessForbidden extends ScheduleException {
-        public TeamAccessForbidden(final Long scheduleId, final Long teamPlaceId) {
-            super(String.format("해당 팀플레이스에 일정을 조회할 권한이 없습니다. - request info { schedule_id : %d, team_place_id : %d }", scheduleId, teamPlaceId));
-        }
-    }
-
     public static class SpanWrongOrderException extends ScheduleException {
         public SpanWrongOrderException(final LocalDateTime startDateTime, final LocalDateTime endDateTime) {
             super(String.format(

@@ -23,13 +23,4 @@ public class TeamPlaceException extends RuntimeException {
         }
     }
 
-    public static class TeamPlaceAccessForbidden extends TeamPlaceException {
-        public TeamPlaceAccessForbidden(final Long teamPlaceId, final String memberEmail) {
-            super(String.format(
-                    "접근할 수 없는 팀플레이스입니다. - request info { team_place_id : %d, member_email : %s }",
-                    teamPlaceId,
-                    memberEmail)
-            );
-        }
-    }
 }

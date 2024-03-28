@@ -15,7 +15,7 @@ import team.teamby.teambyteam.member.domain.TeamPlaceColor;
 import team.teamby.teambyteam.member.domain.vo.DisplayMemberName;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.exception.MemberNotFoundException;
-import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
+import team.teamby.teambyteam.member.exception.NotFoundParticipatedTeamPlaceException;
 import team.teamby.teambyteam.teamplace.application.dto.DisplayMemberNameChangeRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceChangeColorRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateRequest;
@@ -113,7 +113,7 @@ public class TeamPlaceService {
                 .orElseThrow(() -> new MemberNotFoundException(memberEmail));
 
         final MemberTeamPlace memberTeamPlace = memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(teamPlaceId, memberId.id())
-                .orElseThrow(() -> new MemberTeamPlaceException.NotFoundParticipatedTeamPlaceException(memberEmail, teamPlaceId));
+                .orElseThrow(() -> new NotFoundParticipatedTeamPlaceException(memberEmail, teamPlaceId));
 
         final TeamPlaceColor findTeamPlaceColor = TeamPlaceColor.findTeamPlaceColor(request.teamPlaceColor());
         memberTeamPlace.changeTeamPlaceColor(findTeamPlaceColor);
@@ -129,7 +129,7 @@ public class TeamPlaceService {
         final IdOnly memberId = memberRepository.findIdByEmail(new Email(memberEmail))
                 .orElseThrow(() -> new MemberNotFoundException(memberEmail));
         final MemberTeamPlace memberTeamPlace = memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(teamPlaceId, memberId.id())
-                .orElseThrow(() -> new MemberTeamPlaceException.NotFoundParticipatedTeamPlaceException(memberEmail, teamPlaceId));
+                .orElseThrow(() -> new NotFoundParticipatedTeamPlaceException(memberEmail, teamPlaceId));
 
         memberTeamPlace.changeDisplayMemberName(new DisplayMemberName(request.name()));
     }

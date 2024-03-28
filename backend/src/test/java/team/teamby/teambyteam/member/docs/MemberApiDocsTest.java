@@ -15,7 +15,7 @@ import team.teamby.teambyteam.member.application.dto.TeamPlacesResponse;
 import team.teamby.teambyteam.member.exception.MemberNotFoundException;
 import team.teamby.teambyteam.member.presentation.MemberController;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceParticipantResponse;
-import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
+import team.teamby.teambyteam.teamplace.exception.TeamPlaceAccessForbiddenException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeNotFoundException;
 
@@ -220,7 +220,7 @@ public final class MemberApiDocsTest extends ApiDocsTest {
             // given
             final Long teamPlaceId = 1L;
             given(teamPlaceParticipationInterceptor.preHandle(any(), any(), any()))
-                    .willThrow(new TeamPlaceException.TeamPlaceAccessForbidden(teamPlaceId, "사용자 email"));
+                    .willThrow(new TeamPlaceAccessForbiddenException(teamPlaceId, "사용자 email"));
 
             // when & then
             mockMvc.perform(delete("/api/me/team-places/{teamPlaceId}", teamPlaceId)

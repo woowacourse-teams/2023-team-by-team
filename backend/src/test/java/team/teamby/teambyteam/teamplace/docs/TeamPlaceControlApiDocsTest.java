@@ -15,6 +15,7 @@ import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceChangeColorRequ
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateResponse;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceInviteCodeResponse;
+import team.teamby.teambyteam.teamplace.exception.TeamPlaceAccessForbiddenException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 import team.teamby.teambyteam.teamplace.presentation.TeamPlaceController;
 
@@ -177,7 +178,7 @@ public class TeamPlaceControlApiDocsTest extends ApiDocsTest {
         void forbiddenWithUnparticipatedTeamPlace() throws Exception {
             // given
             final Long teamPlaceId = 2L;
-            willThrow(new TeamPlaceException.TeamPlaceAccessForbidden(teamPlaceId, "test@email.com"))
+            willThrow(new TeamPlaceAccessForbiddenException(teamPlaceId, "test@email.com"))
                     .given(teamPlaceParticipationInterceptor)
                     .preHandle(any(), any(), any());
 
@@ -236,7 +237,7 @@ public class TeamPlaceControlApiDocsTest extends ApiDocsTest {
             final Long notParticipatedTeamPlaceId = -1L;
             final TeamPlaceChangeColorRequest request = new TeamPlaceChangeColorRequest(1);
             String seonghaEmail = SEONGHA_EMAIL;
-            willThrow(new TeamPlaceException.TeamPlaceAccessForbidden(notParticipatedTeamPlaceId, seonghaEmail))
+            willThrow(new TeamPlaceAccessForbiddenException(notParticipatedTeamPlaceId, seonghaEmail))
                     .given(teamPlaceService)
                     .changeMemberTeamPlaceColor(any(MemberEmailDto.class), eq(notParticipatedTeamPlaceId), any(TeamPlaceChangeColorRequest.class));
 

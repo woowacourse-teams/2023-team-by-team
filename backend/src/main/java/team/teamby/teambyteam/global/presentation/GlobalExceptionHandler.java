@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import team.teamby.teambyteam.auth.exception.AuthenticationException;
+import team.teamby.teambyteam.common.exception.CustomForbiddenException;
 import team.teamby.teambyteam.common.exception.CustomNotFondException;
 import team.teamby.teambyteam.common.exception.CustomUnauthorizedException;
 import team.teamby.teambyteam.feed.exception.FeedException;
@@ -18,10 +19,8 @@ import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
 import team.teamby.teambyteam.notice.exception.NoticeException;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
-import team.teamby.teambyteam.sharedlink.exception.SharedLinkException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeException;
-import team.teamby.teambyteam.token.exception.TokenNotFoundException;
 
 import java.time.DateTimeException;
 import java.util.Random;
@@ -105,10 +104,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = {
-            ScheduleException.TeamAccessForbidden.class,
-            TeamPlaceException.TeamPlaceAccessForbidden.class,
-            MemberTeamPlaceException.NotFoundParticipatedTeamPlaceException.class,
-            SharedLinkException.OwnerForbiddenException.class
+            CustomForbiddenException.class
     })
     public ResponseEntity<ErrorResponse> handleCustomForbiddenException(final RuntimeException exception) {
         final String message = exception.getMessage();

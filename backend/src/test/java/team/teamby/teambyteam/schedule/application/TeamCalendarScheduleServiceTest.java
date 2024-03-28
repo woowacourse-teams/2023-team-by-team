@@ -16,6 +16,7 @@ import team.teamby.teambyteam.schedule.domain.Schedule;
 import team.teamby.teambyteam.schedule.domain.ScheduleRepository;
 import team.teamby.teambyteam.schedule.exception.ScheduleException;
 import team.teamby.teambyteam.schedule.exception.ScheduleNotFoundException;
+import team.teamby.teambyteam.schedule.exception.TeamScheduleAccessException;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceNotFoundException;
 
@@ -105,7 +106,7 @@ public class TeamCalendarScheduleServiceTest extends ServiceTest {
 
             // when & then
             assertThatThrownBy(() -> teamCalendarScheduleService.findSchedule(MONTH_7_AND_DAY_12_N_HOUR_SCHEDULE.getId(), JAPANESE_TEAM_PLACE_ID))
-                    .isInstanceOf(ScheduleException.TeamAccessForbidden.class)
+                    .isInstanceOf(TeamScheduleAccessException.class)
                     .hasMessageContaining("해당 팀플레이스에 일정을 조회할 권한이 없습니다.");
         }
 

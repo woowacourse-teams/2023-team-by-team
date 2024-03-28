@@ -37,16 +37,6 @@ public class MemberTeamPlaceException extends RuntimeException {
         }
     }
 
-    public static class NotFoundParticipatedTeamPlaceException extends MemberTeamPlaceException {
-        public NotFoundParticipatedTeamPlaceException(final String memberEmail, final Long teamPlaceId) {
-            super(String.format(
-                    "해당 팀 플레이스에 가입되어 있지 않습니다. - request info { member_email : %s, team_place_id : %d }",
-                    memberEmail,
-                    teamPlaceId)
-            );
-        }
-    }
-
     public static class TeamPlaceColorNotExistException extends MemberTeamPlaceException {
 
         public TeamPlaceColorNotExistException(final int colorNumber) {

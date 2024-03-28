@@ -12,7 +12,7 @@ import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.exception.MemberNotFoundException;
-import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
+import team.teamby.teambyteam.teamplace.exception.TeamPlaceAccessForbiddenException;
 
 import java.util.Map;
 import java.util.Objects;
@@ -39,7 +39,7 @@ public final class TeamPlaceParticipationInterceptor implements HandlerIntercept
         final Long teamPlaceId = Long.parseLong(pathVariables.get(PATH_VARIABLE_KEY));
 
         if (hasNotMemberInTeamPlace(teamPlaceId, email)) {
-            throw new TeamPlaceException.TeamPlaceAccessForbidden(teamPlaceId, email);
+            throw new TeamPlaceAccessForbiddenException(teamPlaceId, email);
         }
         return true;
     }

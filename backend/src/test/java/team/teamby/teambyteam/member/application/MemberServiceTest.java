@@ -24,7 +24,7 @@ import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.DisplayMemberName;
 import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.member.exception.MemberNotFoundException;
-import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
+import team.teamby.teambyteam.member.exception.NotFoundParticipatedTeamPlaceException;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceParticipantResponse;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 import team.teamby.teambyteam.teamplace.domain.vo.InviteCode;
@@ -148,7 +148,7 @@ class MemberServiceTest extends ServiceTest {
 
             // when & then
             assertThatThrownBy(() -> memberService.leaveTeamPlace(new MemberEmailDto(ENDEL.getEmail().getValue()), JAPANESE_TEAM_PLACE.getId()))
-                    .isInstanceOf(MemberTeamPlaceException.NotFoundParticipatedTeamPlaceException.class)
+                    .isInstanceOf(NotFoundParticipatedTeamPlaceException.class)
                     .hasMessageContaining("해당 팀 플레이스에 가입되어 있지 않습니다.");
         }
     }

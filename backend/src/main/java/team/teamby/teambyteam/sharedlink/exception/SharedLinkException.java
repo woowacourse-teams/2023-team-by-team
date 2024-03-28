@@ -18,13 +18,4 @@ public class SharedLinkException extends RuntimeException {
         }
     }
 
-    public static class OwnerForbiddenException extends SharedLinkException {
-        public OwnerForbiddenException(final Long teamPlaceId, final Long sharedLinkId) {
-            super(String.format(
-                    "팀플레이스에 소속되지 않은 공유링크입니다. - request info { team_place_id : %d, sharedLinkId : %d }",
-                    teamPlaceId,
-                    sharedLinkId)
-            );
-        }
-    }
 }

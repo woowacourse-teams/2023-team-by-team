@@ -16,7 +16,7 @@ import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.DisplayMemberName;
 import team.teamby.teambyteam.member.domain.vo.DisplayTeamPlaceName;
 import team.teamby.teambyteam.member.exception.MemberNotFoundException;
-import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
+import team.teamby.teambyteam.member.exception.NotFoundParticipatedTeamPlaceException;
 import team.teamby.teambyteam.teamplace.application.dto.DisplayMemberNameChangeRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceChangeColorRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateRequest;
@@ -254,7 +254,7 @@ class TeamPlaceServiceTest extends ServiceTest {
 
             // when & then
             assertThatThrownBy(() -> teamPlaceService.changeMemberTeamPlaceColor(memberEmailDto, teamPlaceId, request))
-                    .isInstanceOf(MemberTeamPlaceException.NotFoundParticipatedTeamPlaceException.class)
+                    .isInstanceOf(NotFoundParticipatedTeamPlaceException.class)
                     .hasMessage(String.format(
                             "해당 팀 플레이스에 가입되어 있지 않습니다. - request info { member_email : %s, team_place_id : %d }",
                             memberEmailDto.email(),
@@ -303,7 +303,7 @@ class TeamPlaceServiceTest extends ServiceTest {
                                     new DisplayMemberNameChangeRequest(CHANGED_NAME),
                                     new MemberEmailDto(PHILIP.getEmail().getValue())
                             ))
-                    .isInstanceOf(MemberTeamPlaceException.NotFoundParticipatedTeamPlaceException.class)
+                    .isInstanceOf(NotFoundParticipatedTeamPlaceException.class)
                     .hasMessageContaining("해당 팀 플레이스에 가입되어 있지 않습니다.");
         }
     }

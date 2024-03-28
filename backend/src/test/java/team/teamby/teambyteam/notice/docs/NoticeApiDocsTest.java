@@ -49,7 +49,7 @@ import team.teamby.teambyteam.notice.application.dto.NoticeRegisterRequest;
 import team.teamby.teambyteam.notice.application.dto.NoticeResponse;
 import team.teamby.teambyteam.notice.domain.Notice;
 import team.teamby.teambyteam.notice.presentation.NoticeController;
-import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
+import team.teamby.teambyteam.teamplace.exception.TeamPlaceAccessForbiddenException;
 
 @WebMvcTest(NoticeController.class)
 public class NoticeApiDocsTest extends ApiDocsTest {
@@ -119,7 +119,7 @@ public class NoticeApiDocsTest extends ApiDocsTest {
             // given
             final Long teamPlaceId = 1L;
             given(teamPlaceParticipationInterceptor.preHandle(any(), any(), any()))
-                    .willThrow(new TeamPlaceException.TeamPlaceAccessForbidden(teamPlaceId, "email@email.com"));
+                    .willThrow(new TeamPlaceAccessForbiddenException(teamPlaceId, "email@email.com"));
 
             // when & then
             mockMvc.perform(multipart(POST_REQUEST_URL, teamPlaceId)
@@ -147,7 +147,7 @@ public class NoticeApiDocsTest extends ApiDocsTest {
             // given
             final Long nonExistTeamPlaceId = -1L;
             given(noticeService.register(any(NoticeRegisterRequest.class), eq(nonExistTeamPlaceId), any()))
-                    .willThrow(new TeamPlaceException.TeamPlaceAccessForbidden(nonExistTeamPlaceId, "email@email.com"));
+                    .willThrow(new TeamPlaceAccessForbiddenException(nonExistTeamPlaceId, "email@email.com"));
 
             // when & then
             mockMvc.perform(multipart(POST_REQUEST_URL, nonExistTeamPlaceId)
@@ -342,7 +342,7 @@ public class NoticeApiDocsTest extends ApiDocsTest {
             final Long nonExistTeamPlaceId = -1L;
 
             given(noticeService.findMostRecentNotice(nonExistTeamPlaceId))
-                    .willThrow(new TeamPlaceException.TeamPlaceAccessForbidden(nonExistTeamPlaceId, "email@email.com"));
+                    .willThrow(new TeamPlaceAccessForbiddenException(nonExistTeamPlaceId, "email@email.com"));
 
             // when & then
             mockMvc.perform(get(GET_REQUEST_URL, nonExistTeamPlaceId)
@@ -370,7 +370,7 @@ public class NoticeApiDocsTest extends ApiDocsTest {
             final Long teamPlaceId = 1L;
 
             given(noticeService.findMostRecentNotice(teamPlaceId))
-                    .willThrow(new TeamPlaceException.TeamPlaceAccessForbidden(teamPlaceId, "email@email.com"));
+                    .willThrow(new TeamPlaceAccessForbiddenException(teamPlaceId, "email@email.com"));
 
             // when & then
             mockMvc.perform(get(GET_REQUEST_URL, teamPlaceId)

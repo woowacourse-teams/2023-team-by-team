@@ -26,7 +26,7 @@ import team.teamby.teambyteam.feed.exception.FeedException;
 import team.teamby.teambyteam.feed.presentation.FeedThreadController;
 import team.teamby.teambyteam.filesystem.FileStorageManager;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
-import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
+import team.teamby.teambyteam.teamplace.exception.TeamPlaceAccessForbiddenException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -149,7 +149,7 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
             final Long teamPlaceId = 1L;
             final FeedThreadWritingRequest request = FeedThreadFixtures.CONTENT_AND_IMAGE_REQUEST;
             given(teamPlaceParticipationInterceptor.preHandle(any(), any(), any()))
-                    .willThrow(new TeamPlaceException.TeamPlaceAccessForbidden(teamPlaceId, "사용자 email"));
+                    .willThrow(new TeamPlaceAccessForbiddenException(teamPlaceId, "사용자 email"));
 
             // when & then
             mockMvc.perform(multipart("/api/team-place/{teamPlaceId}/feed/threads", teamPlaceId)
@@ -291,7 +291,7 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
             final Long teamPlaceId = 1L;
             final int size = 3;
             given(teamPlaceParticipationInterceptor.preHandle(any(), any(), any()))
-                    .willThrow(new TeamPlaceException.TeamPlaceAccessForbidden(teamPlaceId, "사용자 email"));
+                    .willThrow(new TeamPlaceAccessForbiddenException(teamPlaceId, "사용자 email"));
 
             // when & then
             mockMvc.perform(get("/api/team-place/{teamPlaceId}/feed/threads", teamPlaceId)
@@ -413,7 +413,7 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
             final Long lastThreadId = 5L;
             final int size = 3;
             given(teamPlaceParticipationInterceptor.preHandle(any(), any(), any()))
-                    .willThrow(new TeamPlaceException.TeamPlaceAccessForbidden(teamPlaceId, "사용자 email"));
+                    .willThrow(new TeamPlaceAccessForbiddenException(teamPlaceId, "사용자 email"));
 
             // when & then
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
