@@ -15,7 +15,7 @@ import team.teamby.teambyteam.feed.exception.FeedException;
 import team.teamby.teambyteam.filesystem.FileStorageManager;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.Member;
-import team.teamby.teambyteam.member.exception.MemberException;
+import team.teamby.teambyteam.member.exception.MemberNotFoundException;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
 import java.util.stream.Stream;
@@ -149,7 +149,7 @@ class FeedWriteServiceTest extends ServiceTest {
             assertThatThrownBy(
                     () -> feedWriteService.write(request, new MemberEmailDto(author.getEmail().getValue() + "x"),
                             teamPlace.getId()))
-                    .isInstanceOf(MemberException.MemberNotFoundException.class)
+                    .isInstanceOf(MemberNotFoundException.class)
                     .hasMessageContaining("조회한 멤버가 존재하지 않습니다.");
         }
     }

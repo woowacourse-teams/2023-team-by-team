@@ -39,14 +39,14 @@ import team.teamby.teambyteam.filesystem.FileStorageManager;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
-import team.teamby.teambyteam.member.exception.MemberException.MemberNotFoundException;
+import team.teamby.teambyteam.member.exception.MemberNotFoundException;
 import team.teamby.teambyteam.notice.application.dto.NoticeRegisterRequest;
 import team.teamby.teambyteam.notice.application.dto.NoticeResponse;
 import team.teamby.teambyteam.notice.domain.Notice;
 import team.teamby.teambyteam.notice.domain.NoticeRepository;
 import team.teamby.teambyteam.notice.domain.event.NoticeCreationEvent;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
-import team.teamby.teambyteam.teamplace.exception.TeamPlaceException.NotFoundException;
+import team.teamby.teambyteam.teamplace.exception.TeamPlaceNotFoundException;
 
 class NoticeServiceTest extends ServiceTest {
 
@@ -119,7 +119,7 @@ class NoticeServiceTest extends ServiceTest {
 
             // when & then
             assertThatThrownBy(() -> noticeService.register(request, notExistTeamPlaceId, ROY_MEMBER_EMAIL_REQUEST))
-                    .isInstanceOf(NotFoundException.class)
+                    .isInstanceOf(TeamPlaceNotFoundException.class)
                     .hasMessageContaining("조회한 팀 플레이스가 존재하지 않습니다.");
         }
 
@@ -212,7 +212,7 @@ class NoticeServiceTest extends ServiceTest {
 
             // when & then
             assertThatThrownBy(() -> noticeService.findMostRecentNotice(notExistTeamPlaceId))
-                    .isInstanceOf(NotFoundException.class)
+                    .isInstanceOf(TeamPlaceNotFoundException.class)
                     .hasMessageContaining("조회한 팀 플레이스가 존재하지 않습니다.");
         }
 

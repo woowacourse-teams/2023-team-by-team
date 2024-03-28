@@ -28,7 +28,7 @@ import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
-import team.teamby.teambyteam.member.exception.MemberException;
+import team.teamby.teambyteam.member.exception.MemberNotFoundException;
 import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
 
 import java.util.List;
@@ -65,7 +65,7 @@ public class FeedWriteService {
         validateImages(images);
 
         final Long memberId = memberRepository.findIdByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()))
+                .orElseThrow(() -> new MemberNotFoundException(memberEmailDto.email()))
                 .id();
         final MemberTeamPlace author = memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(teamPlaceId, memberId)
                 .orElseThrow(() -> new MemberTeamPlaceException.NotFoundParticipatedTeamPlaceException(memberEmailDto.email(), teamPlaceId));

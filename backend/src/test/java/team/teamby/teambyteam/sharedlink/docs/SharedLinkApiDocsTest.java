@@ -14,7 +14,7 @@ import team.teamby.teambyteam.sharedlink.application.SharedLinkService;
 import team.teamby.teambyteam.sharedlink.application.dto.SharedLinkCreateRequest;
 import team.teamby.teambyteam.sharedlink.application.dto.SharedLinkResponse;
 import team.teamby.teambyteam.sharedlink.application.dto.SharedLinksResponse;
-import team.teamby.teambyteam.sharedlink.exception.SharedLinkException;
+import team.teamby.teambyteam.sharedlink.exception.SharedLinkNotFoundException;
 import team.teamby.teambyteam.sharedlink.presentation.SharedLinkController;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
@@ -355,7 +355,7 @@ public final class SharedLinkApiDocsTest extends ApiDocsTest {
             // given
             final Long teamPlaceId = 1L;
             final Long teamLinkId = 1L;
-            doThrow(new SharedLinkException.NotFoundException(teamLinkId))
+            doThrow(new SharedLinkNotFoundException(teamLinkId))
                     .when(sharedLinkService)
                     .deleteLink(any(), any());
 

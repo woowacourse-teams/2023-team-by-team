@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import team.teamby.teambyteam.auth.exception.AuthenticationException;
+import team.teamby.teambyteam.common.exception.CustomNotFondException;
 import team.teamby.teambyteam.feed.exception.FeedException;
-import team.teamby.teambyteam.icalendar.exception.IcalendarNotFoundException;
 import team.teamby.teambyteam.member.exception.MemberException;
 import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
 import team.teamby.teambyteam.notice.exception.NoticeException;
@@ -70,12 +70,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = {
-            MemberException.MemberNotFoundException.class,
-            TeamPlaceException.NotFoundException.class,
-            ScheduleException.ScheduleNotFoundException.class,
-            TeamPlaceInviteCodeException.NotFoundException.class,
-            SharedLinkException.NotFoundException.class,
-            IcalendarNotFoundException.class
+            CustomNotFondException.class
     })
     public ResponseEntity<ErrorResponse> handleNotFoundException(final RuntimeException exception) {
         final String message = exception.getMessage();

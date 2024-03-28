@@ -12,12 +12,6 @@ public class ScheduleException extends RuntimeException {
         super(message, cause);
     }
 
-    public static class ScheduleNotFoundException extends ScheduleException {
-        public ScheduleNotFoundException(final Long scheduleId) {
-            super(String.format("조회한 일정이 존재하지 않습니다. - request info { schedule_id : %d }", scheduleId));
-        }
-    }
-
     public static class TeamAccessForbidden extends ScheduleException {
         public TeamAccessForbidden(final Long scheduleId, final Long teamPlaceId) {
             super(String.format("해당 팀플레이스에 일정을 조회할 권한이 없습니다. - request info { schedule_id : %d, team_place_id : %d }", scheduleId, teamPlaceId));

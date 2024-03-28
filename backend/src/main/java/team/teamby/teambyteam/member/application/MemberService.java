@@ -16,13 +16,14 @@ import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
-import team.teamby.teambyteam.member.exception.MemberException;
+import team.teamby.teambyteam.member.exception.MemberNotFoundException;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceParticipantResponse;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceInviteCode;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceInviteCodeRepository;
 import team.teamby.teambyteam.teamplace.domain.vo.InviteCode;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeException;
+import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeNotFoundException;
 
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class MemberService {
     @Transactional(readOnly = true)
     public TeamPlacesResponse getParticipatedTeamPlaces(final MemberEmailDto memberEmailDto) {
         final IdOnly memberId = memberRepository.findIdByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
+                .orElseThrow(() -> new MemberNotFoundException(memberEmailDto.email()));
 
         final List<MemberTeamPlace> allByMemberId = memberTeamPlaceRepository.findAllByMemberId(memberId.id());
 
@@ -49,7 +50,7 @@ public class MemberService {
 
     public void leaveTeamPlace(final MemberEmailDto memberEmailDto, final Long teamPlaceId) {
         final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
+                .orElseThrow(() -> new MemberNotFoundException(memberEmailDto.email()));
 
         final MemberTeamPlace memberTeamPlaceToLeave = member.leaveTeamPlace(teamPlaceId);
         memberTeamPlaceRepository.delete(memberTeamPlaceToLeave);
@@ -59,11 +60,11 @@ public class MemberService {
 
     public TeamPlaceParticipantResponse participateTeamPlace(final MemberEmailDto memberEmailDto, final String inviteCode) {
         final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
+                .orElseThrow(() -> new MemberNotFoundException(memberEmailDto.email()));
 
         final InviteCode inviteCodeVo = validteInviteCode(inviteCode);
         final TeamPlaceInviteCode teamPlaceInviteCode = teamPlaceInviteCodeRepository.findByInviteCode(inviteCodeVo)
-                .orElseThrow(() -> new TeamPlaceInviteCodeException.NotFoundException(inviteCodeVo.getValue()));
+                .orElseThrow(() -> new TeamPlaceInviteCodeNotFoundException(inviteCodeVo.getValue()));
         final TeamPlace teamPlace = teamPlaceInviteCode.getTeamPlace();
         if (member.isMemberOf(teamPlace.getId())) {
             return new TeamPlaceParticipantResponse(teamPlace.getId());
@@ -89,14 +90,14 @@ public class MemberService {
     @Transactional(readOnly = true)
     public MemberInfoResponse getMemberInformation(final MemberEmailDto memberEmailDto) {
         final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
+                .orElseThrow(() -> new MemberNotFoundException(memberEmailDto.email()));
 
         return MemberInfoResponse.of(member);
     }
 
     public void updateMemberInformation(final MemberUpdateRequest memberUpdateRequest, final MemberEmailDto memberEmailDto) {
         final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
+                .orElseThrow(() -> new MemberNotFoundException(memberEmailDto.email()));
 
         member.changeName(memberUpdateRequest.name());
     }
@@ -104,7 +105,7 @@ public class MemberService {
 
     public void leaveMember(final MemberEmailDto memberEmailDto) {
         final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
+                .orElseThrow(() -> new MemberNotFoundException(memberEmailDto.email()));
         publisher.publishEvent(new MemberLeaveEvent(member.getId()));
 
         memberRepository.delete(member);

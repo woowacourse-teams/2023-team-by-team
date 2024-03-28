@@ -11,7 +11,7 @@ import team.teamby.teambyteam.auth.jwt.JwtTokenProvider;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
-import team.teamby.teambyteam.member.exception.MemberException;
+import team.teamby.teambyteam.member.exception.MemberNotFoundException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 
 import java.util.Map;
@@ -46,7 +46,7 @@ public final class TeamPlaceParticipationInterceptor implements HandlerIntercept
 
     private boolean hasNotMemberInTeamPlace(final Long teamPlaceId, final String email) {
         final Long memberId = memberRepository.findIdByEmail(new Email(email))
-                .orElseThrow(() -> new MemberException.MemberNotFoundException(email))
+                .orElseThrow(() -> new MemberNotFoundException(email))
                 .id();
 
         return memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(teamPlaceId, memberId)

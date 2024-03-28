@@ -18,12 +18,6 @@ public class SharedLinkException extends RuntimeException {
         }
     }
 
-    public static class NotFoundException extends SharedLinkException {
-        public NotFoundException(final Long sharedLinkId) {
-            super(String.format("존재하지 않는 공유 링크입니다. - request info { sharedLinkId : %d }", sharedLinkId));
-        }
-    }
-
     public static class OwnerForbiddenException extends SharedLinkException {
         public OwnerForbiddenException(final Long teamPlaceId, final Long sharedLinkId) {
             super(String.format(

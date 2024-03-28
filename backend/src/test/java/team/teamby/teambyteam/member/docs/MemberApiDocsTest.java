@@ -12,11 +12,12 @@ import team.teamby.teambyteam.member.application.MemberService;
 import team.teamby.teambyteam.member.application.dto.MemberInfoResponse;
 import team.teamby.teambyteam.member.application.dto.TeamPlaceResponse;
 import team.teamby.teambyteam.member.application.dto.TeamPlacesResponse;
-import team.teamby.teambyteam.member.exception.MemberException;
+import team.teamby.teambyteam.member.exception.MemberNotFoundException;
 import team.teamby.teambyteam.member.presentation.MemberController;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceParticipantResponse;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeException;
+import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeNotFoundException;
 
 import java.util.List;
 
@@ -281,7 +282,7 @@ public final class MemberApiDocsTest extends ApiDocsTest {
             // given
             final String invalidInviteCode = "aaaa1234";
             given(memberService.participateTeamPlace(any(), any()))
-                    .willThrow(new TeamPlaceInviteCodeException.NotFoundException(invalidInviteCode));
+                    .willThrow(new TeamPlaceInviteCodeNotFoundException(invalidInviteCode));
 
             // when & then
             mockMvc.perform(post("/api/me/team-places/{inviteCode}", invalidInviteCode)
@@ -389,7 +390,7 @@ public final class MemberApiDocsTest extends ApiDocsTest {
         void failIfNotRegisteredMember() throws Exception {
             //given
             given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willThrow(new MemberException.MemberNotFoundException("없는 이메일"));
+                    .willThrow(new MemberNotFoundException("없는 이메일"));
 
 
             // when & then

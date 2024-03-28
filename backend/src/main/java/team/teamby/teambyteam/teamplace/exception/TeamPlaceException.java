@@ -23,13 +23,6 @@ public class TeamPlaceException extends RuntimeException {
         }
     }
 
-    public static class NotFoundException extends TeamPlaceException {
-
-        public NotFoundException(final Long teamPlaceId) {
-            super(String.format("조회한 팀 플레이스가 존재하지 않습니다. - request info { team_place_id : %d }", teamPlaceId));
-        }
-    }
-
     public static class TeamPlaceAccessForbidden extends TeamPlaceException {
         public TeamPlaceAccessForbidden(final Long teamPlaceId, final String memberEmail) {
             super(String.format(

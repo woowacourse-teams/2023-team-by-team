@@ -43,7 +43,7 @@ import team.teamby.teambyteam.common.ApiDocsTest;
 import team.teamby.teambyteam.common.fixtures.FileFixtures;
 import team.teamby.teambyteam.filesystem.FileStorageManager;
 import team.teamby.teambyteam.member.domain.Member;
-import team.teamby.teambyteam.member.exception.MemberException;
+import team.teamby.teambyteam.member.exception.MemberNotFoundException;
 import team.teamby.teambyteam.notice.application.NoticeService;
 import team.teamby.teambyteam.notice.application.dto.NoticeRegisterRequest;
 import team.teamby.teambyteam.notice.application.dto.NoticeResponse;
@@ -176,7 +176,7 @@ public class NoticeApiDocsTest extends ApiDocsTest {
             // given
             final Long teamPlaceId = 1L;
             given(memberInterceptor.preHandle(any(), any(), any()))
-                    .willThrow(new MemberException.MemberNotFoundException("email@email.com"));
+                    .willThrow(new MemberNotFoundException("email@email.com"));
 
             // when & then
             mockMvc.perform(multipart(POST_REQUEST_URL, teamPlaceId)

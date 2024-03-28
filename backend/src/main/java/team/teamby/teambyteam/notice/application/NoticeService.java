@@ -17,7 +17,7 @@ import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
-import team.teamby.teambyteam.member.exception.MemberException;
+import team.teamby.teambyteam.member.exception.MemberNotFoundException;
 import team.teamby.teambyteam.notice.application.dto.NoticeImageResponse;
 import team.teamby.teambyteam.notice.application.dto.NoticeRegisterRequest;
 import team.teamby.teambyteam.notice.application.dto.NoticeResponse;
@@ -32,7 +32,7 @@ import team.teamby.teambyteam.notice.domain.vo.Content;
 import team.teamby.teambyteam.notice.exception.NoticeException;
 import team.teamby.teambyteam.notice.exception.NoticeException.WritingRequestEmptyException;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceRepository;
-import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
+import team.teamby.teambyteam.teamplace.exception.TeamPlaceNotFoundException;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -75,7 +75,7 @@ public class NoticeService {
 
         checkTeamPlaceExist(teamPlaceId);
         final IdOnly memberId = memberRepository.findIdByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
+                .orElseThrow(() -> new MemberNotFoundException(memberEmailDto.email()));
         final Content contentVo = new Content(noticeRegisterRequest.content());
         final Notice savedNotice = noticeRepository.save(new Notice(contentVo, teamPlaceId, memberId.id()));
         saveImages(images, savedNotice);
@@ -89,7 +89,7 @@ public class NoticeService {
 
     private void checkTeamPlaceExist(final Long teamPlaceId) {
         if (notExistTeamPlace(teamPlaceId)) {
-            throw new TeamPlaceException.NotFoundException(teamPlaceId);
+            throw new TeamPlaceNotFoundException(teamPlaceId);
         }
     }
 

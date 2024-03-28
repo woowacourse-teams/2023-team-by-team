@@ -15,7 +15,7 @@ import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.DisplayMemberName;
 import team.teamby.teambyteam.member.domain.vo.DisplayTeamPlaceName;
-import team.teamby.teambyteam.member.exception.MemberException;
+import team.teamby.teambyteam.member.exception.MemberNotFoundException;
 import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
 import team.teamby.teambyteam.teamplace.application.dto.DisplayMemberNameChangeRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceChangeColorRequest;
@@ -31,7 +31,7 @@ import team.teamby.teambyteam.teamplace.domain.TeamPlaceInviteCodeRepository;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceRepository;
 import team.teamby.teambyteam.teamplace.domain.vo.InviteCode;
 import team.teamby.teambyteam.teamplace.domain.vo.Name;
-import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
+import team.teamby.teambyteam.teamplace.exception.TeamPlaceNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -97,7 +97,7 @@ class TeamPlaceServiceTest extends ServiceTest {
 
             // when & then
             Assertions.assertThatThrownBy(() -> teamPlaceService.create(new MemberEmailDto(PHILIP.getEmail().getValue()), new TeamPlaceCreateRequest(TEAM_PLACE_NAME)))
-                    .isInstanceOf(MemberException.MemberNotFoundException.class)
+                    .isInstanceOf(MemberNotFoundException.class)
                     .hasMessageContaining("조회한 멤버가 존재하지 않습니다.");
         }
     }
@@ -153,7 +153,7 @@ class TeamPlaceServiceTest extends ServiceTest {
             // when & then
             SoftAssertions.assertSoftly(softly -> {
                 softly.assertThatThrownBy(() -> teamPlaceService.getTeamPlaceInviteCode(notExistTeamPlaceId))
-                        .isInstanceOf(TeamPlaceException.NotFoundException.class)
+                        .isInstanceOf(TeamPlaceNotFoundException.class)
                         .hasMessageContaining("조회한 팀 플레이스가 존재하지 않습니다.");
             });
         }
@@ -235,7 +235,7 @@ class TeamPlaceServiceTest extends ServiceTest {
 
             // when & then
             assertThatThrownBy(() -> teamPlaceService.changeMemberTeamPlaceColor(memberEmailDto, teamPlaceId, request))
-                    .isInstanceOf(MemberException.MemberNotFoundException.class)
+                    .isInstanceOf(MemberNotFoundException.class)
                     .hasMessage(String.format("조회한 멤버가 존재하지 않습니다. - request info { email : %s }",
                             notExistMemberEmail));
         }

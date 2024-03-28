@@ -6,12 +6,6 @@ public final class TeamPlaceInviteCodeException extends RuntimeException {
         super(message);
     }
 
-    public static class NotFoundException extends TeamPlaceException {
-        public NotFoundException(final String inviteCode) {
-            super(String.format("존재하지 않는 초대코드 입니다. - request Info { invite_code : %s }", inviteCode));
-        }
-    }
-
     public static class NotGeneratedInviteCodeException extends TeamPlaceException {
         public NotGeneratedInviteCodeException(final Long teamPlaceId) {
             super(String.format("팀 플레이스의 초대코드가 생성되지 않았습니다. - request info { team_place_id : %d }", teamPlaceId));
