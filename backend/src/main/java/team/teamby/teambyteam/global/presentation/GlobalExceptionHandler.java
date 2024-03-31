@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import team.teamby.teambyteam.auth.exception.AuthenticationException;
 import team.teamby.teambyteam.common.exception.CustomBadRequestException;
 import team.teamby.teambyteam.common.exception.CustomForbiddenException;
-import team.teamby.teambyteam.common.exception.CustomNotFondException;
+import team.teamby.teambyteam.common.exception.CustomNotFoundException;
 import team.teamby.teambyteam.common.exception.CustomUnauthorizedException;
 
 import java.time.DateTimeException;
@@ -64,7 +64,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = {
-            CustomNotFondException.class
+            CustomNotFoundException.class
     })
     public ResponseEntity<ErrorResponse> handleNotFoundException(final RuntimeException exception) {
         final String message = exception.getMessage();
