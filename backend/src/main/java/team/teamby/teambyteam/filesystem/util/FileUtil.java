@@ -1,12 +1,14 @@
 package team.teamby.teambyteam.filesystem.util;
 
-import java.util.Objects;
 import org.springframework.web.multipart.MultipartFile;
-import team.teamby.teambyteam.feed.exception.FeedException;
+import team.teamby.teambyteam.filesystem.exception.FileControlException;
+
+import java.util.Objects;
 
 public class FileUtil {
 
-    private FileUtil() {}
+    private FileUtil() {
+    }
 
     public static String getFileExtension(final MultipartFile file) {
         final String originalFilename = file.getOriginalFilename();
@@ -17,6 +19,6 @@ public class FileUtil {
             }
         }
 
-        throw new FeedException.NotFoundImageExtensionException(originalFilename);
+        throw new FileControlException.FileExtensionException("파일 확장자를 찾을 수 없습니다.");
     }
 }

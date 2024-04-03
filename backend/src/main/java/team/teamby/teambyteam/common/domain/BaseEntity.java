@@ -1,4 +1,4 @@
-package team.teamby.teambyteam.global.domain;
+package team.teamby.teambyteam.common.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

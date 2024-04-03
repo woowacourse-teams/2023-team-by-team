@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import team.teamby.teambyteam.schedule.application.parser.LocalDateParser;
-import team.teamby.teambyteam.schedule.exception.ScheduleException;
+import team.teamby.teambyteam.schedule.exception.ScheduleDateFormatException;
 
 import java.time.LocalDate;
 
@@ -38,7 +38,7 @@ class LocalDateParserTest {
         // when
         // then
         assertThatThrownBy(() -> localDateParser.parse(input))
-                .isInstanceOf(ScheduleException.dateFormatException.class)
+                .isInstanceOf(ScheduleDateFormatException.class)
                 .hasMessage("잘못된 날짜 입력 형식입니다.");
 
     }

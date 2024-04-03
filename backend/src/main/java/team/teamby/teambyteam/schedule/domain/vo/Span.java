@@ -6,7 +6,7 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import team.teamby.teambyteam.schedule.exception.ScheduleException;
+import team.teamby.teambyteam.schedule.exception.ScheduleSpanWrongOrderException;
 
 import java.time.LocalDateTime;
 
@@ -30,7 +30,7 @@ public class Span {
 
     private void validateDateTimeOrder(final LocalDateTime startDateTime, final LocalDateTime endDateTime) {
         if (startDateTime.isAfter(endDateTime)) {
-            throw new ScheduleException.SpanWrongOrderException(startDateTime, endDateTime);
+            throw new ScheduleSpanWrongOrderException(startDateTime, endDateTime);
         }
     }
 

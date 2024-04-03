@@ -3,7 +3,7 @@ package team.teamby.teambyteam.schedule.domain.vo;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import team.teamby.teambyteam.schedule.exception.ScheduleException;
+import team.teamby.teambyteam.schedule.exception.ScheduleDescriptionLengthException;
 
 class DescriptionTest {
 
@@ -16,7 +16,7 @@ class DescriptionTest {
         // when
         // then
         Assertions.assertThatThrownBy(() -> new Description(description))
-                .isInstanceOf(ScheduleException.DescriptionLengthException.class)
+                .isInstanceOf(ScheduleDescriptionLengthException.class)
                 .hasMessage("일정 메모가 너무 깁니다.");
 
     }

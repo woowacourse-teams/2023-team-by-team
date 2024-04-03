@@ -11,12 +11,12 @@ import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import team.teamby.teambyteam.global.domain.BaseEntity;
+import team.teamby.teambyteam.common.domain.BaseEntity;
 import team.teamby.teambyteam.member.domain.vo.DisplayMemberName;
 import team.teamby.teambyteam.member.domain.vo.Email;
 import team.teamby.teambyteam.member.domain.vo.Name;
 import team.teamby.teambyteam.member.domain.vo.ProfileImageUrl;
-import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
+import team.teamby.teambyteam.member.exception.memberteamplace.NotFoundParticipatedTeamPlaceException;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
 import java.util.ArrayList;
@@ -94,7 +94,7 @@ public class Member extends BaseEntity {
                 .filter(memberTeamPlace -> memberTeamPlace.getTeamPlace().getId().equals(teamPlaceId))
                 .findAny()
                 .orElseThrow(() ->
-                        new MemberTeamPlaceException.NotFoundParticipatedTeamPlaceException(this.email.getValue(), teamPlaceId)
+                        new NotFoundParticipatedTeamPlaceException(this.email.getValue(), teamPlaceId)
                 );
 
         memberTeamPlaces.remove(teamPlaceToLeave);

@@ -6,7 +6,8 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import team.teamby.teambyteam.member.exception.MemberException;
+import team.teamby.teambyteam.member.exception.MemberNameBlankException;
+import team.teamby.teambyteam.member.exception.MemberNameLengthException;
 
 import java.util.Objects;
 
@@ -36,10 +37,10 @@ public class Name {
 
     private void validate(final String value) {
         if (value.length() > MAX_LENGTH) {
-            throw new MemberException.NameLengthException(MAX_LENGTH, value);
+            throw new MemberNameLengthException(MAX_LENGTH, value);
         }
         if (value.isBlank()) {
-            throw new MemberException.NameBlankException();
+            throw new MemberNameBlankException();
         }
     }
 

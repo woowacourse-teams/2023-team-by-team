@@ -18,17 +18,22 @@ import team.teamby.teambyteam.feed.domain.image.FeedThreadImageRepository;
 import team.teamby.teambyteam.feed.domain.image.vo.ImageName;
 import team.teamby.teambyteam.feed.domain.image.vo.ImageUrl;
 import team.teamby.teambyteam.feed.domain.vo.Content;
-import team.teamby.teambyteam.feed.exception.FeedException;
+import team.teamby.teambyteam.feed.exception.FeedImageOverCountException;
+import team.teamby.teambyteam.feed.exception.FeedImageSizeException;
+import team.teamby.teambyteam.feed.exception.FeedNotAllowedImageExtensionException;
+import team.teamby.teambyteam.feed.exception.FeedNotFoundImageExtensionException;
+import team.teamby.teambyteam.feed.exception.FeedWritingRequestEmptyException;
 import team.teamby.teambyteam.filesystem.AllowedImageExtension;
 import team.teamby.teambyteam.filesystem.FileStorageManager;
+import team.teamby.teambyteam.filesystem.exception.FileControlException;
 import team.teamby.teambyteam.filesystem.util.FileUtil;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
-import team.teamby.teambyteam.member.exception.MemberException;
-import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
+import team.teamby.teambyteam.member.exception.MemberNotFoundException;
+import team.teamby.teambyteam.member.exception.memberteamplace.NotFoundParticipatedTeamPlaceException;
 
 import java.util.List;
 import java.util.Objects;
@@ -64,10 +69,10 @@ public class FeedWriteService {
         validateImages(images);
 
         final Long memberId = memberRepository.findIdByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()))
+                .orElseThrow(() -> new MemberNotFoundException(memberEmailDto.email()))
                 .id();
         final MemberTeamPlace author = memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(teamPlaceId, memberId)
-                .orElseThrow(() -> new MemberTeamPlaceException.NotFoundParticipatedTeamPlaceException(memberEmailDto.email(), teamPlaceId));
+                .orElseThrow(() -> new NotFoundParticipatedTeamPlaceException(memberEmailDto.email(), teamPlaceId));
 
         final FeedThread savedFeedThread = feedRepository.save(new FeedThread(teamPlaceId, new Content(content), memberId));
         final List<FeedImageResponse> imageResponses = saveImages(images, savedFeedThread);
@@ -88,7 +93,7 @@ public class FeedWriteService {
 
     private void validateEmptyRequest(final String content, final List<MultipartFile> images) {
         if (isEmptyRequest(content, images)) {
-            throw new FeedException.WritingRequestEmptyException();
+            throw new FeedWritingRequestEmptyException();
         }
     }
 
@@ -98,17 +103,25 @@ public class FeedWriteService {
 
     private void validateImages(final List<MultipartFile> images) {
         if (images.size() > LIMIT_IMAGE_COUNT) {
-            throw new FeedException.ImageOverCountException(LIMIT_IMAGE_COUNT, images.size());
+            throw new FeedImageOverCountException(LIMIT_IMAGE_COUNT, images.size());
         }
         images.forEach(this::validateImage);
     }
 
     private void validateImage(final MultipartFile image) {
         if (image.getSize() > LIMIT_IMAGE_SIZE) {
-            throw new FeedException.ImageSizeException(LIMIT_IMAGE_SIZE, image.getSize());
+            throw new FeedImageSizeException(LIMIT_IMAGE_SIZE, image.getSize());
         }
-        if (AllowedImageExtension.isNotContain(FileUtil.getFileExtension(image))) {
-            throw new FeedException.NotAllowedImageExtensionException(image.getOriginalFilename());
+        if (AllowedImageExtension.isNotContain(getFileExtension(image))) {
+            throw new FeedNotAllowedImageExtensionException(image.getOriginalFilename());
+        }
+    }
+
+    private String getFileExtension(final MultipartFile file) {
+        try {
+            return FileUtil.getFileExtension(file);
+        } catch (final FileControlException.FileExtensionException e) {
+            throw new FeedNotFoundImageExtensionException(file.getOriginalFilename());
         }
     }
 

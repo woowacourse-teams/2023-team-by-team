@@ -1,7 +1,6 @@
 package team.teamby.teambyteam.sharedlink.application;
 
 import org.assertj.core.api.SoftAssertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -16,18 +15,17 @@ import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.sharedlink.application.dto.SharedLinkCreateRequest;
 import team.teamby.teambyteam.sharedlink.application.dto.SharedLinksResponse;
-import team.teamby.teambyteam.sharedlink.application.event.SharedLinkCreateEvent;
-import team.teamby.teambyteam.sharedlink.application.event.SharedLinkDeleteEvent;
 import team.teamby.teambyteam.sharedlink.domain.SharedLink;
 import team.teamby.teambyteam.sharedlink.domain.SharedLinkRepository;
 import team.teamby.teambyteam.sharedlink.exception.SharedLinkException;
+import team.teamby.teambyteam.sharedlink.exception.SharedLinkNotFoundException;
+import team.teamby.teambyteam.sharedlink.exception.TeamSharedLinkAccessException;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static team.teamby.teambyteam.common.fixtures.SharedLinkFixtures.TEAM_BY_TEAM_LINK;
-import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
 
 class SharedLinkServiceTest extends ServiceTest {
 
@@ -194,7 +192,7 @@ class SharedLinkServiceTest extends ServiceTest {
             // when & then
             SoftAssertions.assertSoftly(softly -> {
                 softly.assertThatThrownBy(() -> sharedLinkService.deleteLink(teamPlace.getId(), invalidSharedLinkId))
-                        .isInstanceOf(SharedLinkException.NotFoundException.class)
+                        .isInstanceOf(SharedLinkNotFoundException.class)
                         .hasMessageContaining("존재하지 않는 공유 링크입니다.");
             });
         }
@@ -212,7 +210,7 @@ class SharedLinkServiceTest extends ServiceTest {
             // when & then
             SoftAssertions.assertSoftly(softly -> {
                 softly.assertThatThrownBy(() -> sharedLinkService.deleteLink(invalidTeamPlaceId, sharedLink.getId()))
-                        .isInstanceOf(SharedLinkException.OwnerForbiddenException.class)
+                        .isInstanceOf(TeamSharedLinkAccessException.class)
                         .hasMessageContaining("팀플레이스에 소속되지 않은 공유링크입니다.");
             });
         }

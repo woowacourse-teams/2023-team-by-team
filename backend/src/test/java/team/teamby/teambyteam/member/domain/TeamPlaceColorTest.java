@@ -4,7 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
+import team.teamby.teambyteam.member.exception.memberteamplace.TeamPlaceColorNotExistException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -31,7 +31,7 @@ class TeamPlaceColorTest {
     void failFindTeamPlaceColorWhenNotExistColorNumber(final int notExistColorNumber) {
         // when & then
         assertThatThrownBy(() -> TeamPlaceColor.findTeamPlaceColor(notExistColorNumber))
-                .isInstanceOf(MemberTeamPlaceException.TeamPlaceColorNotExistException.class)
+                .isInstanceOf(TeamPlaceColorNotExistException.class)
                 .hasMessage(String.format("존재하지 않는 팀 플레이스 색상입니다. - request info { team_place_color : %d }", notExistColorNumber));
     }
 }

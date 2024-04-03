@@ -14,8 +14,8 @@ import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.TeamPlaceColor;
 import team.teamby.teambyteam.member.domain.vo.DisplayMemberName;
 import team.teamby.teambyteam.member.domain.vo.Email;
-import team.teamby.teambyteam.member.exception.MemberException;
-import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
+import team.teamby.teambyteam.member.exception.MemberNotFoundException;
+import team.teamby.teambyteam.member.exception.memberteamplace.NotFoundParticipatedTeamPlaceException;
 import team.teamby.teambyteam.teamplace.application.dto.DisplayMemberNameChangeRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceChangeColorRequest;
 import team.teamby.teambyteam.teamplace.application.dto.TeamPlaceCreateRequest;
@@ -31,8 +31,8 @@ import team.teamby.teambyteam.teamplace.domain.TeamPlaceInviteCodeRepository;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceRepository;
 import team.teamby.teambyteam.teamplace.domain.vo.InviteCode;
 import team.teamby.teambyteam.teamplace.domain.vo.Name;
-import team.teamby.teambyteam.teamplace.exception.TeamPlaceException;
-import team.teamby.teambyteam.teamplace.exception.TeamPlaceInviteCodeException;
+import team.teamby.teambyteam.teamplace.exception.invitecode.TeamPlaceInviteCodeException;
+import team.teamby.teambyteam.teamplace.exception.TeamPlaceNotFoundException;
 
 import java.util.List;
 
@@ -52,7 +52,7 @@ public class TeamPlaceService {
     public TeamPlaceCreateResponse create(final MemberEmailDto memberEmailDto, final TeamPlaceCreateRequest request) {
 
         final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
+                .orElseThrow(() -> new MemberNotFoundException(memberEmailDto.email()));
 
         final TeamPlace createdTeamPlace = teamPlaceRepository.save(new TeamPlace(new Name(request.name())));
         final MemberTeamPlace participatedMemberTeamPlace = member.participate(createdTeamPlace);
@@ -73,7 +73,7 @@ public class TeamPlaceService {
             return new TeamPlaceInviteCodeResponse(teamPlaceId, inviteCode.getValue());
         }
         final TeamPlace teamPlace = teamPlaceRepository.findById(teamPlaceId)
-                .orElseThrow(() -> new TeamPlaceException.NotFoundException(teamPlaceId));
+                .orElseThrow(() -> new TeamPlaceNotFoundException(teamPlaceId));
         final InviteCode inviteCode = generateInviteCode();
         final TeamPlaceInviteCode teamPlaceInviteCode = teamPlaceInviteCodeRepository.save(new TeamPlaceInviteCode(inviteCode, teamPlace));
 
@@ -95,7 +95,7 @@ public class TeamPlaceService {
     @Transactional(readOnly = true)
     public TeamPlaceMembersResponse findMembers(final Long teamPlaceId, final MemberEmailDto memberEmailDto) {
         final Member loginMember = memberRepository.findByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
+                .orElseThrow(() -> new MemberNotFoundException(memberEmailDto.email()));
         final List<MemberTeamPlace> memberTeamPlaces = memberTeamPlaceRepository.findAllByTeamPlaceId(teamPlaceId);
 
         final List<TeamPlaceMemberResponse> teamPlaceMembers = memberTeamPlaces.stream()
@@ -110,10 +110,10 @@ public class TeamPlaceService {
                                            final TeamPlaceChangeColorRequest request) {
         final String memberEmail = memberEmailDto.email();
         final IdOnly memberId = memberRepository.findIdByEmail(new Email(memberEmail))
-                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmail));
+                .orElseThrow(() -> new MemberNotFoundException(memberEmail));
 
         final MemberTeamPlace memberTeamPlace = memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(teamPlaceId, memberId.id())
-                .orElseThrow(() -> new MemberTeamPlaceException.NotFoundParticipatedTeamPlaceException(memberEmail, teamPlaceId));
+                .orElseThrow(() -> new NotFoundParticipatedTeamPlaceException(memberEmail, teamPlaceId));
 
         final TeamPlaceColor findTeamPlaceColor = TeamPlaceColor.findTeamPlaceColor(request.teamPlaceColor());
         memberTeamPlace.changeTeamPlaceColor(findTeamPlaceColor);
@@ -127,9 +127,9 @@ public class TeamPlaceService {
         final String memberEmail = memberEmailDto.email();
 
         final IdOnly memberId = memberRepository.findIdByEmail(new Email(memberEmail))
-                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmail));
+                .orElseThrow(() -> new MemberNotFoundException(memberEmail));
         final MemberTeamPlace memberTeamPlace = memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(teamPlaceId, memberId.id())
-                .orElseThrow(() -> new MemberTeamPlaceException.NotFoundParticipatedTeamPlaceException(memberEmail, teamPlaceId));
+                .orElseThrow(() -> new NotFoundParticipatedTeamPlaceException(memberEmail, teamPlaceId));
 
         memberTeamPlace.changeDisplayMemberName(new DisplayMemberName(request.name()));
     }

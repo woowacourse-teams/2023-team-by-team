@@ -5,7 +5,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import team.teamby.teambyteam.member.exception.MemberTeamPlaceException;
+import team.teamby.teambyteam.member.exception.memberteamplace.TeamPlaceMemberDisplayNameLengthException;
+import team.teamby.teambyteam.member.exception.memberteamplace.TeamPlaceMemberNameBlankException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -29,7 +30,7 @@ class DisplayMemberNameTest {
     void failWithBlankDisplayName(final String value) {
         // when & then
         Assertions.assertThatThrownBy(() -> new DisplayMemberName(value))
-                .isInstanceOf(MemberTeamPlaceException.MemberNameBlankException.class)
+                .isInstanceOf(TeamPlaceMemberNameBlankException.class)
                 .hasMessage("멤버 이름은 공백을 제외한 1자 이상이어야합니다.");
     }
 
@@ -38,7 +39,7 @@ class DisplayMemberNameTest {
     void failWithOverNameLength() {
         // when & then
         Assertions.assertThatThrownBy(() -> new DisplayMemberName(".".repeat(21)))
-                .isInstanceOf(MemberTeamPlaceException.MemberDisplayNameLengthException.class)
+                .isInstanceOf(TeamPlaceMemberDisplayNameLengthException.class)
                 .hasMessageContaining("멤버 이름의 길이가 최대 이름 길이를 초과했습니다.");
     }
 

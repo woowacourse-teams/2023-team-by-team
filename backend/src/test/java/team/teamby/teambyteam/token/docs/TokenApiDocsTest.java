@@ -12,7 +12,7 @@ import team.teamby.teambyteam.common.ApiDocsTest;
 import team.teamby.teambyteam.token.application.TokenService;
 import team.teamby.teambyteam.token.application.dto.TokenResponse;
 import team.teamby.teambyteam.token.domain.TokenRepository;
-import team.teamby.teambyteam.token.exception.TokenException;
+import team.teamby.teambyteam.token.exception.TokenNotFoundException;
 import team.teamby.teambyteam.token.presentation.TokenController;
 
 import java.util.Optional;
@@ -176,7 +176,7 @@ public class TokenApiDocsTest extends ApiDocsTest {
             // given
             final String refreshToken = CORRECT_REFRESH_TOKEN;
             given(jwtTokenExtractor.extractRefreshToken(any())).willReturn(refreshToken);
-            willThrow(new TokenException.TokenNotFoundException(PHILIP_EMAIL))
+            willThrow(new TokenNotFoundException(PHILIP_EMAIL))
                     .given(tokenService)
                     .reissueToken(refreshToken);
 

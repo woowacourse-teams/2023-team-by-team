@@ -9,7 +9,7 @@ import team.teamby.teambyteam.common.ServiceTest;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.token.application.dto.TokenResponse;
 import team.teamby.teambyteam.token.domain.Token;
-import team.teamby.teambyteam.token.exception.TokenException;
+import team.teamby.teambyteam.token.exception.TokenNotFoundException;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -94,7 +94,7 @@ class TokenServiceTest extends ServiceTest {
 
         // when & then
         assertThatThrownBy(() -> tokenService.reissueToken(refreshToken))
-                .isInstanceOf(TokenException.TokenNotFoundException.class)
+                .isInstanceOf(TokenNotFoundException.class)
                 .hasMessageContaining("토큰을 찾을 수 없습니다.");
     }
 }

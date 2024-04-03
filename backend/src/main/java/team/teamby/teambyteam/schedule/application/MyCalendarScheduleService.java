@@ -7,7 +7,7 @@ import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
-import team.teamby.teambyteam.member.exception.MemberException;
+import team.teamby.teambyteam.member.exception.MemberNotFoundException;
 import team.teamby.teambyteam.schedule.application.dto.SchedulesWithTeamPlaceIdResponse;
 import team.teamby.teambyteam.schedule.application.parser.LocalDateParser;
 import team.teamby.teambyteam.schedule.domain.CalendarPeriod;
@@ -34,7 +34,7 @@ public class MyCalendarScheduleService {
             final int targetMonth
     ) {
         final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
+                .orElseThrow(() -> new MemberNotFoundException(memberEmailDto.email()));
 
         final List<Long> participatedTeamPlaceIds = member.getTeamPlaces()
                 .stream()
@@ -56,7 +56,7 @@ public class MyCalendarScheduleService {
             final int targetDay
     ) {
         final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
+                .orElseThrow(() -> new MemberNotFoundException(memberEmailDto.email()));
 
         final List<Long> participatedTeamPlaceIds = member.getTeamPlaces()
                 .stream()
@@ -77,7 +77,7 @@ public class MyCalendarScheduleService {
             final String endDateString
     ) {
         final Member member = memberRepository.findByEmail(new Email(memberEmailDto.email()))
-                .orElseThrow(() -> new MemberException.MemberNotFoundException(memberEmailDto.email()));
+                .orElseThrow(() -> new MemberNotFoundException(memberEmailDto.email()));
 
         final List<Long> participatedTeamPlaceIds = member.getTeamPlaces()
                 .stream()
