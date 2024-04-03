@@ -3,11 +3,10 @@
 <img width="150px" src="https://github.com/woowacourse-teams/2023-team-by-team/assets/79538610/4a919657-68e2-4f38-8576-95625649c55e" alt="팀바팀 이동하기"/>
 </a>
 
-[![](https://img.shields.io/badge/-teamby.team-important?style=flat&logo=airplayvideo&logoColor=white&labelColor=black&color=%233145FF)](https://teamby.team/)
-[![](https://img.shields.io/badge/-Tech%20Blog-important?style=flat&logo=angellist&logoColor=balck&labelColor=black&color=white)
-](https://team-by-team.github.io/)
-[![](https://img.shields.io/badge/release-v1.7.0-critical?style=flat&logo=github&logoColor=balck&labelColor=black&color=white)
-](https://github.com/woowacourse-teams/2023-team-by-team/releases)
+[![](https://img.shields.io/badge/-teamby.team-important?style=flat&logo=airplayvideo&logoColor=white&labelColor=black&color=%233145FF)](https://teamby.team/) 
+[![](https://img.shields.io/badge/-Tech%20Blog-important?style=flat&logo=angellist&logoColor=balck&labelColor=black&color=white)](https://team-by-team.github.io/) 
+![GitHub Release](https://img.shields.io/github/v/release/woowacourse-teams/2023-team-by-team)
+
 
 # 팀바팀
 
