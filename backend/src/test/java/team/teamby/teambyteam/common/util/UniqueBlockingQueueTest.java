@@ -1,4 +1,4 @@
-package team.teamby.teambyteam.icalendar.util;
+package team.teamby.teambyteam.common.util;
 
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;

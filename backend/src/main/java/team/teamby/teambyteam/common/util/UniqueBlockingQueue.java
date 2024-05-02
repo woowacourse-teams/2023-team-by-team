@@ -1,4 +1,4 @@
-package team.teamby.teambyteam.icalendar.util;
+package team.teamby.teambyteam.common.util;
 
 import java.util.HashSet;
 import java.util.Set;
