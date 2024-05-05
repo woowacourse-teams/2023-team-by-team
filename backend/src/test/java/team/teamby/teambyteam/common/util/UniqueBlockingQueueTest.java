@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -136,4 +137,54 @@ class UniqueBlockingQueueTest {
         }
     }
 
+    @Nested
+    @DisplayName("poll 메서드 테스트")
+    class PollTest {
+
+        @Test
+        @DisplayName("큐가 비어있지 않고 timeout 동안 poll 메서드가 호출될 때")
+        void testPollWhenQueueIsNotEmpty() throws InterruptedException {
+            // given
+            final int value = 1;
+            uniqueBlockingQueue.add(value);
+
+            // when
+            Optional<Integer> result = uniqueBlockingQueue.poll(1, TimeUnit.SECONDS);
+
+            // then
+            assertThat(result).isPresent().contains(value);
+        }
+
+        @Test
+        @DisplayName("큐가 비어 있고 timeout 동안 poll 메서드가 호출될 때")
+        void testPollWhenQueueIsEmpty() throws InterruptedException {
+            // when
+            Optional<Integer> result = uniqueBlockingQueue.poll(1, TimeUnit.SECONDS);
+
+            // then
+            assertThat(result).isNotPresent();
+        }
+
+        @Test
+        @DisplayName("큐가 비어 있고 timeout 동안 poll 메서드가 호출되고 timeout 전에 요소가 추가될 때")
+        void testPollWhenElementIsAddedBeforeTimeout() throws InterruptedException {
+            // given
+            final int value = 1;
+            Thread thread = new Thread(() -> {
+                try {
+                    TimeUnit.MILLISECONDS.sleep(500);
+                    uniqueBlockingQueue.add(value);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            });
+            thread.start();
+
+            // when
+            Optional<Integer> result = uniqueBlockingQueue.poll(1, TimeUnit.SECONDS);
+
+            // then
+            assertThat(result).isPresent().contains(value);
+        }
+    }
 }

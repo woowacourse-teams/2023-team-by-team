@@ -1,9 +1,11 @@
 package team.teamby.teambyteam.common.util;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 public class UniqueBlockingQueue<E> {
 
@@ -45,5 +47,31 @@ public class UniqueBlockingQueue<E> {
         E e = queue.take();
         set.remove(e);
         return e;
+    }
+
+    /**
+     * 이 큐의 헤드를 검색하고 제거. 필요한 경우 요소가 사용 가능해질 때까지 지정된 시간 동안 대기.
+     * 지정된 시간 내에 요소가 사용 가능하지 않은 경우, 빈 Optional을 반환.
+     *
+     * @param timeout 대기할 최대 시간
+     * @param unit timeout의 시간 단위
+     * @return 이 큐의 헤드를 포함하는 Optional, 또는 지정된 시간 내에 요소가 사용 가능하지 않은 경우 빈 Optional
+     * @throws InterruptedException 대기하는 동안 중단된 경우
+     */
+    public Optional<E> poll(long timeout, TimeUnit unit) throws InterruptedException {
+        E e = queue.poll(timeout, unit);
+        if (e != null) {
+            set.remove(e);
+            return Optional.of(e);
+        }
+        return Optional.empty();
+    }
+
+    public boolean contains(E e) {
+        return set.contains(e);
+    }
+
+    public boolean isEmpty() {
+        return queue.isEmpty();
     }
 }
