@@ -13,13 +13,16 @@ import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.test.context.ActiveProfiles;
 import team.teamby.teambyteam.common.AcceptanceTest;
 import team.teamby.teambyteam.common.fixtures.MemberFixtures;
 import team.teamby.teambyteam.common.fixtures.PublishedIcalendarFixtures;
 import team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures;
 import team.teamby.teambyteam.filesystem.FileStorageManager;
+import team.teamby.teambyteam.icalendar.configuration.TestIcalendarPublishEventListenerThreadPoolConfig;
 import team.teamby.teambyteam.icalendar.domain.PublishedIcalendar;
 import team.teamby.teambyteam.member.domain.Member;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
@@ -29,6 +32,7 @@ import java.util.concurrent.CountDownLatch;
 import static org.mockito.ArgumentMatchers.any;
 import static team.teamby.teambyteam.common.fixtures.acceptance.IcalendarAcceptanceFixtures.GET_ICALENDAR_PUBLISHED_URL;
 
+@Import(TestIcalendarPublishEventListenerThreadPoolConfig.class)
 public class IcalendarAcceptanceTest extends AcceptanceTest {
 
     @MockBean
@@ -50,7 +54,7 @@ public class IcalendarAcceptanceTest extends AcceptanceTest {
                 countDownLatch = new CountDownLatch(1);
             }
 
-            @After("execution(* team.teamby.teambyteam.icalendar.application.IcalendarEventListener.createIcalendar(*))")
+            @After("execution(* team.teamby.teambyteam.icalendar.application.IcalendarPublishService.updateIcalendar(*))")
             public void afterIcalendarCreation() {
                 countDownLatch.countDown();
             }

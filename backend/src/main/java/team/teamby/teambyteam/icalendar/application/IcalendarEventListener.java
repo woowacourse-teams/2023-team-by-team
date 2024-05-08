@@ -3,11 +3,10 @@ package team.teamby.teambyteam.icalendar.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 import team.teamby.teambyteam.icalendar.application.event.CreateIcalendarEvent;
+import team.teamby.teambyteam.icalendar.util.DeployWaitingQueue;
 import team.teamby.teambyteam.schedule.application.event.ScheduleEvent;
 import team.teamby.teambyteam.teamplace.application.event.TeamPlaceCreatedEvent;
 
@@ -15,26 +14,23 @@ import team.teamby.teambyteam.teamplace.application.event.TeamPlaceCreatedEvent;
 @RequiredArgsConstructor
 public class IcalendarEventListener {
 
-    private final PeriodicIcalendarPublishService periodicIcalendarPublishService;
+    private final DeployWaitingQueue queue;
 
-    @Async
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Async("icalendarEventListenerAsyncExecutor")
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void createIcalendar(final TeamPlaceCreatedEvent teamPlaceCreatedEvent) {
-        periodicIcalendarPublishService.createAndPublishIcalendar(teamPlaceCreatedEvent.teamPlaceId());
+        queue.addCreate(teamPlaceCreatedEvent.teamPlaceId());
     }
 
-    @Async
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Async("icalendarEventListenerAsyncExecutor")
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void createIcalendar(final CreateIcalendarEvent createIcalendarEvent) {
-        periodicIcalendarPublishService.createAndPublishIcalendar(createIcalendarEvent.teamPlaceId());
+        queue.addCreate(createIcalendarEvent.teamPlaceId());
     }
 
-    @Async
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Async("icalendarEventListenerAsyncExecutor")
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void updateIcalendar(final ScheduleEvent scheduleEvent) {
-        periodicIcalendarPublishService.updateIcalendar(scheduleEvent.getTeamPlaceId());
+        queue.addUpdate(scheduleEvent.getTeamPlaceId());
     }
 }

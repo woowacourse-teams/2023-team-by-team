@@ -1,43 +1,50 @@
 package team.teamby.teambyteam.icalendar.application;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
-import org.springframework.core.task.SyncTaskExecutor;
+import org.springframework.context.annotation.Import;
 import team.teamby.teambyteam.common.ServiceTest;
 import team.teamby.teambyteam.common.fixtures.ScheduleFixtures;
 import team.teamby.teambyteam.icalendar.application.event.CreateIcalendarEvent;
+import team.teamby.teambyteam.icalendar.configuration.TestSynchronousTaskExecutorConfig;
+import team.teamby.teambyteam.icalendar.util.DeployWaitingQueue;
 import team.teamby.teambyteam.schedule.application.event.ScheduleCreateEvent;
 import team.teamby.teambyteam.schedule.application.event.ScheduleEvent;
 import team.teamby.teambyteam.schedule.domain.Schedule;
 import team.teamby.teambyteam.teamplace.application.event.TeamPlaceCreatedEvent;
 import team.teamby.teambyteam.teamplace.domain.TeamPlace;
 
-import java.util.concurrent.Executor;
-
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
 
+@Import({TestSynchronousTaskExecutorConfig.class})
 class IcalendarEventListenerTest extends ServiceTest {
 
     @Autowired
     private IcalendarEventListener icalendarEventListener;
 
     @MockBean
-    private PeriodicIcalendarPublishService icalendarPublishService;
+    private DeployWaitingQueue deployWaitingQueue;
 
-    @TestConfiguration
-    static class TestConfig {
-        @Bean
-        @Primary
-        public Executor executor() {
-            return new SyncTaskExecutor();
-        }
+//    @TestConfiguration
+//    @Profile("test")
+//    static class TestConfig {
+//
+//        @Bean("icalendarEventListenerAsyncExecutor")
+//        @Primary
+//        public Executor executor() {
+//            return new SyncTaskExecutor();
+//        }
+//    }
+
+    @BeforeEach
+    void setUp() {
+        Mockito.reset(deployWaitingQueue);
     }
 
     @Test
@@ -51,7 +58,7 @@ class IcalendarEventListenerTest extends ServiceTest {
         icalendarEventListener.createIcalendar(teamPlaceCreatedEvent);
 
         // then
-        verify(icalendarPublishService, times(1)).createAndPublishIcalendar(teamPlaceId);
+        verify(deployWaitingQueue, times(1)).addCreate(teamPlaceId);
     }
 
     @Test
@@ -66,7 +73,7 @@ class IcalendarEventListenerTest extends ServiceTest {
         icalendarEventListener.createIcalendar(createIcalendarEvent);
 
         // then
-        verify(icalendarPublishService, times(1)).createAndPublishIcalendar(ENGLISH_TEAM_PLACE.getId());
+        verify(deployWaitingQueue, times(1)).addCreate(ENGLISH_TEAM_PLACE.getId());
     }
 
     @Test
@@ -82,6 +89,6 @@ class IcalendarEventListenerTest extends ServiceTest {
         icalendarEventListener.updateIcalendar(scheduleEvent);
 
         // then
-        verify(icalendarPublishService, times(1)).updateIcalendar(ENGLISH_TEAM_PLACE.getId());
+        verify(deployWaitingQueue, times(1)).addUpdate(ENGLISH_TEAM_PLACE.getId());
     }
 }
