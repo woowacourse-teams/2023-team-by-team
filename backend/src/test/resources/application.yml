@@ -7,6 +7,9 @@ spring:
       max-file-size: 5MB
       max-request-size: 20MB
 
+  main:
+    allow-bean-definition-overriding: true
+
   # for test
   h2:
     console:

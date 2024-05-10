@@ -50,7 +50,7 @@ public class IcalendarAcceptanceTest extends AcceptanceTest {
                 countDownLatch = new CountDownLatch(1);
             }
 
-            @After("execution(* team.teamby.teambyteam.icalendar.application.IcalendarEventListener.createIcalendar(*))")
+            @After("execution(* team.teamby.teambyteam.icalendar.application.IcalendarPublishService.updateIcalendar(*))")
             public void afterIcalendarCreation() {
                 countDownLatch.countDown();
             }
