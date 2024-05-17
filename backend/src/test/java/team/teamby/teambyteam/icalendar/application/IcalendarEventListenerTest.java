@@ -10,6 +10,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.task.SyncTaskExecutor;
+import org.springframework.test.context.TestPropertySource;
 import team.teamby.teambyteam.common.ServiceTest;
 import team.teamby.teambyteam.common.fixtures.ScheduleFixtures;
 import team.teamby.teambyteam.icalendar.application.event.CreateIcalendarEvent;
@@ -26,6 +27,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
 
+@TestPropertySource(locations = "classpath:bean-definition-overriding-config.properties")
 class IcalendarEventListenerTest extends ServiceTest {
 
     @Autowired
