@@ -28,7 +28,7 @@ public class FeedThreadImage extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false, updatable = false)
+    @JoinColumn
     private FeedThread feedThread;
 
     @Embedded
