@@ -2,6 +2,8 @@ package team.teamby.teambyteam.feed.domain.image;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,10 +13,10 @@ import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team.teamby.teambyteam.common.domain.BaseEntity;
 import team.teamby.teambyteam.feed.domain.FeedThread;
 import team.teamby.teambyteam.feed.domain.image.vo.ImageName;
 import team.teamby.teambyteam.feed.domain.image.vo.ImageUrl;
-import team.teamby.teambyteam.common.domain.BaseEntity;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -35,16 +37,21 @@ public class FeedThreadImage extends BaseEntity {
     @Embedded
     private ImageName imageName;
 
-    private boolean isExpired;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
-    public FeedThreadImage(final ImageUrl imageUrl, final ImageName imageName) {
+    public FeedThreadImage(final ImageUrl imageUrl, final ImageName imageName, final Status status) {
         this.imageUrl = imageUrl;
         this.imageName = imageName;
-        this.isExpired = false;
+        this.status = status;
     }
 
     public void confirmFeedThread(final FeedThread feedThread) {
         this.feedThread = feedThread;
         feedThread.getImages().add(this);
+    }
+
+    public boolean isExpired() {
+        return Status.EXPIRED.equals(status);
     }
 }

@@ -15,6 +15,7 @@ import team.teamby.teambyteam.feed.domain.Feed;
 import team.teamby.teambyteam.feed.domain.FeedThread;
 import team.teamby.teambyteam.feed.domain.FeedType;
 import team.teamby.teambyteam.feed.domain.image.FeedThreadImage;
+import team.teamby.teambyteam.feed.domain.image.Status;
 import team.teamby.teambyteam.feed.domain.image.vo.ImageName;
 import team.teamby.teambyteam.feed.domain.image.vo.ImageUrl;
 import team.teamby.teambyteam.feed.domain.vo.Content;
@@ -108,7 +109,7 @@ class FeedReadServiceTest extends ServiceTest {
             final MemberEmailDto memberEmailDto = new MemberEmailDto(member.getEmailValue());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(member, teamPlace);
-            final FeedThreadImage EXPIRED_IMAGE = BDDMockito.spy(new FeedThreadImage(new ImageUrl("expired.com"), new ImageName("expiredImageName")));
+            final FeedThreadImage EXPIRED_IMAGE = BDDMockito.spy(new FeedThreadImage(new ImageUrl("expired.com"), new ImageName("expiredImageName"), Status.ACTIVATED));
             BDDMockito.given(EXPIRED_IMAGE.isExpired())
                     .willReturn(true);
 

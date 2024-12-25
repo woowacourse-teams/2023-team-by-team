@@ -15,6 +15,7 @@ import team.teamby.teambyteam.feed.domain.FeedRepository;
 import team.teamby.teambyteam.feed.domain.FeedThread;
 import team.teamby.teambyteam.feed.domain.image.FeedThreadImage;
 import team.teamby.teambyteam.feed.domain.image.FeedThreadImageRepository;
+import team.teamby.teambyteam.feed.domain.image.Status;
 import team.teamby.teambyteam.feed.domain.image.vo.ImageName;
 import team.teamby.teambyteam.feed.domain.image.vo.ImageUrl;
 import team.teamby.teambyteam.feed.domain.vo.Content;
@@ -103,7 +104,7 @@ public class FeedWriteService {
                     final String generatedImageUrl = fileStorageManager.upload(image, imageDirectory + "/" + UUID.randomUUID(), originalFilename);
                     final ImageUrl imageUrl = new ImageUrl(generatedImageUrl);
                     final ImageName imageName = new ImageName(originalFilename);
-                    final FeedThreadImage feedThreadImage = new FeedThreadImage(imageUrl, imageName);
+                    final FeedThreadImage feedThreadImage = new FeedThreadImage(imageUrl, imageName, Status.ACTIVATED);
                     feedThreadImage.confirmFeedThread(savedFeedThread);
                     return feedThreadImageRepository.save(feedThreadImage);
                 })
