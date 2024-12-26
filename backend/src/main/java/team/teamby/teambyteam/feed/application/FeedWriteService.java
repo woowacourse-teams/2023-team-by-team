@@ -18,7 +18,6 @@ import team.teamby.teambyteam.feed.domain.image.FeedThreadImageRepository;
 import team.teamby.teambyteam.feed.domain.image.vo.ImageName;
 import team.teamby.teambyteam.feed.domain.image.vo.ImageUrl;
 import team.teamby.teambyteam.feed.domain.vo.Content;
-import team.teamby.teambyteam.feed.exception.FeedImageOverCountException;
 import team.teamby.teambyteam.feed.exception.FeedImageSizeException;
 import team.teamby.teambyteam.feed.exception.FeedNotAllowedImageExtensionException;
 import team.teamby.teambyteam.feed.exception.FeedNotFoundImageExtensionException;
@@ -46,7 +45,6 @@ import java.util.UUID;
 public class FeedWriteService {
 
     private static final int LIMIT_IMAGE_SIZE = 5242880;
-    private static final int LIMIT_IMAGE_COUNT = 4;
 
     private final ApplicationEventPublisher applicationEventPublisher;
     private final FeedRepository feedRepository;
@@ -102,9 +100,6 @@ public class FeedWriteService {
     }
 
     private void validateImages(final List<MultipartFile> images) {
-        if (images.size() > LIMIT_IMAGE_COUNT) {
-            throw new FeedImageOverCountException(LIMIT_IMAGE_COUNT, images.size());
-        }
         images.forEach(this::validateImage);
     }
 

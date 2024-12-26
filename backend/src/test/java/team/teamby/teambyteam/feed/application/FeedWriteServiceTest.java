@@ -11,7 +11,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.multipart.MultipartFile;
 import team.teamby.teambyteam.common.ServiceTest;
 import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
-import team.teamby.teambyteam.feed.exception.FeedImageOverCountException;
 import team.teamby.teambyteam.feed.exception.FeedImageSizeException;
 import team.teamby.teambyteam.feed.exception.FeedNotAllowedImageExtensionException;
 import team.teamby.teambyteam.feed.exception.FeedWritingRequestEmptyException;
@@ -32,7 +31,6 @@ import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.CONTENT_
 import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.EMPTY_REQUEST;
 import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.IMAGE_ONLY_REQUEST;
 import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.NOT_ALLOWED_IMAGE_EXTENSION_REQUEST;
-import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.OVER_IMAGE_COUNT_REQUEST;
 import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.OVER_IMAGE_SIZE_REQUEST;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
@@ -78,21 +76,6 @@ class FeedWriteServiceTest extends ServiceTest {
 
             //then
             assertThat(feedId).isNotNull();
-        }
-
-        @Test
-        @DisplayName("이미지 개수가 4개보다 많으면 예외가 발생한다.")
-        void failWhenOverImageCount() {
-            // given
-            final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
-            final Member author = testFixtureBuilder.buildMember(PHILIP());
-            final FeedThreadWritingRequest request = OVER_IMAGE_COUNT_REQUEST;
-
-            // when & then
-            assertThatThrownBy(() -> feedWriteService.write(request, new MemberEmailDto(author.getEmail().getValue()),
-                    teamPlace.getId()))
-                    .isInstanceOf(FeedImageOverCountException.class)
-                    .hasMessageContaining("허용된 이미지의 개수를 초과했습니다.");
         }
 
         @Test

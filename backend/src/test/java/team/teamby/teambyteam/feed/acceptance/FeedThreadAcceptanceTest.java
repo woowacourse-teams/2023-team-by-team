@@ -146,7 +146,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             //then
             assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-                softly.assertThat(response.body().asString()).contains("허용된 이미지의 개수를 초과했습니다.");
+                softly.assertThat(response.body().asString()).contains("이미지는 최대 4개까지 첨부할 수 있습니다.");
             });
         }
 
