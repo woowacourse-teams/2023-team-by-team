@@ -76,13 +76,11 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
           </S.TitleWrapper>
 
           <S.TimeSelectContainer $isMobile={isMobile}>
-            <Text size="lg" weight="semiBold">
-              일정 시작
-            </Text>
+            <Text weight="semiBold">일정 시작</Text>
             <S.InputWrapper $isMobile={isMobile}>
               <Input
                 width={isAllDay ? '100%' : '50%'}
-                height="40px"
+                height="36px"
                 type="date"
                 css={S.dateTimeLocalInput}
                 name="startDate"
@@ -101,13 +99,13 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
             </S.InputWrapper>
           </S.TimeSelectContainer>
           <S.TimeSelectContainer $isMobile={isMobile}>
-            <Text size="lg" weight="semiBold">
+            <Text size="md" weight="semiBold">
               일정 마감
             </Text>
             <S.InputWrapper $isMobile={isMobile}>
               <Input
                 width={isAllDay ? '100%' : '50%'}
-                height="40px"
+                height="36px"
                 type="date"
                 css={S.dateTimeLocalInput}
                 name="endDate"
@@ -147,8 +145,12 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
           </S.CheckboxContainer>
           <S.InnerContainer>
             <S.TeamNameContainer title={displayName}>
-              <TeamBadge teamPlaceColor={teamPlaceColor} size="lg" />
-              {!isMobile && <Text css={S.teamPlaceName}>{displayName}</Text>}
+              <TeamBadge teamPlaceColor={teamPlaceColor} size="md" />
+              {!isMobile && (
+                <Text css={S.teamPlaceName} size="sm">
+                  {displayName}
+                </Text>
+              )}
             </S.TeamNameContainer>
             <S.ControlButtonWrapper>
               <Button variant="primary" css={S.submitButton}>
