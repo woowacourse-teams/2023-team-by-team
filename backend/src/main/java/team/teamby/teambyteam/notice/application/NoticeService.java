@@ -29,11 +29,10 @@ import team.teamby.teambyteam.notice.domain.image.NoticeImageRepository;
 import team.teamby.teambyteam.notice.domain.image.vo.ImageName;
 import team.teamby.teambyteam.notice.domain.image.vo.ImageUrl;
 import team.teamby.teambyteam.notice.domain.vo.Content;
-import team.teamby.teambyteam.notice.exception.NoticeWritingRequestEmptyException;
-import team.teamby.teambyteam.notice.exception.NoticeImageOverCountException;
 import team.teamby.teambyteam.notice.exception.NoticeImageSizeException;
 import team.teamby.teambyteam.notice.exception.NoticeNotAllowedImageExtensionException;
 import team.teamby.teambyteam.notice.exception.NoticeNotFoundImageExtensionException;
+import team.teamby.teambyteam.notice.exception.NoticeWritingRequestEmptyException;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceRepository;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceNotFoundException;
 
@@ -51,7 +50,6 @@ import java.util.UUID;
 public class NoticeService {
 
     private static final int LIMIT_IMAGE_SIZE = 5242880;
-    private static final int LIMIT_IMAGE_COUNT = 4;
     private static final int IMAGE_EXPIRATION_DATE = 90;
 
     @Value("${aws.s3.image-directory}")
@@ -111,9 +109,6 @@ public class NoticeService {
     }
 
     private void validateImages(final List<MultipartFile> images) {
-        if (images.size() > LIMIT_IMAGE_COUNT) {
-            throw new NoticeImageOverCountException(LIMIT_IMAGE_COUNT, images.size());
-        }
         images.forEach(this::validateImage);
     }
 
