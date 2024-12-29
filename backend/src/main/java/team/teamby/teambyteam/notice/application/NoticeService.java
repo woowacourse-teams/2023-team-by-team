@@ -7,10 +7,8 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import team.teamby.teambyteam.filesystem.AllowedImageExtension;
 import team.teamby.teambyteam.filesystem.FileStorageManager;
-import team.teamby.teambyteam.filesystem.exception.FileControlException;
-import team.teamby.teambyteam.filesystem.util.FileUtil;
+import team.teamby.teambyteam.filesystem.ImageValidationService;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.IdOnly;
 import team.teamby.teambyteam.member.domain.MemberRepository;
@@ -29,9 +27,6 @@ import team.teamby.teambyteam.notice.domain.image.NoticeImageRepository;
 import team.teamby.teambyteam.notice.domain.image.vo.ImageName;
 import team.teamby.teambyteam.notice.domain.image.vo.ImageUrl;
 import team.teamby.teambyteam.notice.domain.vo.Content;
-import team.teamby.teambyteam.notice.exception.NoticeImageSizeException;
-import team.teamby.teambyteam.notice.exception.NoticeNotAllowedImageExtensionException;
-import team.teamby.teambyteam.notice.exception.NoticeNotFoundImageExtensionException;
 import team.teamby.teambyteam.notice.exception.NoticeWritingRequestEmptyException;
 import team.teamby.teambyteam.teamplace.domain.TeamPlaceRepository;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceNotFoundException;
@@ -49,7 +44,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class NoticeService {
 
-    private static final int LIMIT_IMAGE_SIZE = 5242880;
     private static final int IMAGE_EXPIRATION_DATE = 90;
 
     @Value("${aws.s3.image-directory}")
@@ -64,6 +58,7 @@ public class NoticeService {
     private final MemberTeamPlaceRepository memberTeamPlaceRepository;
     private final NoticeImageRepository noticeImageRepository;
     private final FileStorageManager fileStorageManager;
+    private final ImageValidationService imageValidationService;
 
     public Long register(final NoticeRegisterRequest noticeRegisterRequest,
                          final Long teamPlaceId,
@@ -109,24 +104,7 @@ public class NoticeService {
     }
 
     private void validateImages(final List<MultipartFile> images) {
-        images.forEach(this::validateImage);
-    }
-
-    private void validateImage(final MultipartFile image) {
-        if (image.getSize() > LIMIT_IMAGE_SIZE) {
-            throw new NoticeImageSizeException(LIMIT_IMAGE_SIZE, image.getSize());
-        }
-        if (AllowedImageExtension.isNotContain(getFileExtension(image))) {
-            throw new NoticeNotAllowedImageExtensionException(image.getOriginalFilename());
-        }
-    }
-
-    private String getFileExtension(final MultipartFile file) {
-        try {
-            return FileUtil.getFileExtension(file);
-        } catch (final FileControlException.FileExtensionException e) {
-            throw new NoticeNotFoundImageExtensionException(file.getOriginalFilename());
-        }
+        images.forEach(imageValidationService::validateImage);
     }
 
     private void saveImages(final List<MultipartFile> images, final Notice savedNotice) {

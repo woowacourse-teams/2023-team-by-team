@@ -18,14 +18,9 @@ import team.teamby.teambyteam.feed.domain.image.FeedThreadImageRepository;
 import team.teamby.teambyteam.feed.domain.image.vo.ImageName;
 import team.teamby.teambyteam.feed.domain.image.vo.ImageUrl;
 import team.teamby.teambyteam.feed.domain.vo.Content;
-import team.teamby.teambyteam.feed.exception.FeedImageSizeException;
-import team.teamby.teambyteam.feed.exception.FeedNotAllowedImageExtensionException;
-import team.teamby.teambyteam.feed.exception.FeedNotFoundImageExtensionException;
 import team.teamby.teambyteam.feed.exception.FeedWritingRequestEmptyException;
-import team.teamby.teambyteam.filesystem.AllowedImageExtension;
 import team.teamby.teambyteam.filesystem.FileStorageManager;
-import team.teamby.teambyteam.filesystem.exception.FileControlException;
-import team.teamby.teambyteam.filesystem.util.FileUtil;
+import team.teamby.teambyteam.filesystem.ImageValidationService;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
@@ -44,14 +39,13 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class FeedWriteService {
 
-    private static final int LIMIT_IMAGE_SIZE = 5242880;
-
     private final ApplicationEventPublisher applicationEventPublisher;
     private final FeedRepository feedRepository;
     private final FeedThreadImageRepository feedThreadImageRepository;
     private final MemberRepository memberRepository;
     private final MemberTeamPlaceRepository memberTeamPlaceRepository;
     private final FileStorageManager fileStorageManager;
+    private final ImageValidationService imageValidationService;
 
     @Value("${aws.s3.image-directory}")
     private String imageDirectory;
@@ -100,24 +94,7 @@ public class FeedWriteService {
     }
 
     private void validateImages(final List<MultipartFile> images) {
-        images.forEach(this::validateImage);
-    }
-
-    private void validateImage(final MultipartFile image) {
-        if (image.getSize() > LIMIT_IMAGE_SIZE) {
-            throw new FeedImageSizeException(LIMIT_IMAGE_SIZE, image.getSize());
-        }
-        if (AllowedImageExtension.isNotContain(getFileExtension(image))) {
-            throw new FeedNotAllowedImageExtensionException(image.getOriginalFilename());
-        }
-    }
-
-    private String getFileExtension(final MultipartFile file) {
-        try {
-            return FileUtil.getFileExtension(file);
-        } catch (final FileControlException.FileExtensionException e) {
-            throw new FeedNotFoundImageExtensionException(file.getOriginalFilename());
-        }
+        images.forEach(imageValidationService::validateImage);
     }
 
     private List<FeedImageResponse> saveImages(final List<MultipartFile> images, final FeedThread savedFeedThread) {
