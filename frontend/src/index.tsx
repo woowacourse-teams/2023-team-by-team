@@ -16,11 +16,15 @@ import { TokenProvider } from '~/contexts/TokenContext';
 import { useToast } from '~/hooks/useToast';
 import GlobalStyle from '~/styles/GlobalStyle';
 import { theme } from './styles/theme';
-import { worker } from '~/mocks/browser';
 
-if (process.env.WORKER === 'on') {
-  worker.start();
-}
+const enableMocking = async () => {
+  if (process.env.NODE_ENV === 'production') {
+    return;
+  }
+
+  const { worker } = await import('./mocks/browser');
+  await worker.start();
+};
 
 const _QueryClientProvider = ({ children }: { children: ReactNode }) => {
   const { showToast } = useToast();
@@ -61,21 +65,23 @@ const _QueryClientProvider = ({ children }: { children: ReactNode }) => {
 
 const root = createRoot(document.getElementById('root') as HTMLElement);
 
-root.render(
-  <StrictMode>
-    <ThemeProvider theme={theme}>
-      <ToastProvider>
-        <TokenProvider>
-          <_QueryClientProvider>
-            <GlobalStyle />
-            <BrowserRouter>
-              <App />
-            </BrowserRouter>
-            <ToastList />
-            <ReactQueryDevtools initialIsOpen={false} />
-          </_QueryClientProvider>
-        </TokenProvider>
-      </ToastProvider>
-    </ThemeProvider>
-  </StrictMode>,
-);
+enableMocking().then(() => {
+  root.render(
+    <StrictMode>
+      <ThemeProvider theme={theme}>
+        <ToastProvider>
+          <TokenProvider>
+            <_QueryClientProvider>
+              <GlobalStyle />
+              <BrowserRouter>
+                <App />
+              </BrowserRouter>
+              <ToastList />
+              <ReactQueryDevtools initialIsOpen={false} />
+            </_QueryClientProvider>
+          </TokenProvider>
+        </ToastProvider>
+      </ThemeProvider>
+    </StrictMode>,
+  );
+});
