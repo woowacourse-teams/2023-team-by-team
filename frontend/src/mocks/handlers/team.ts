@@ -5,6 +5,7 @@ import {
   INVITE_CODE,
   MEMBERS,
 } from '~/mocks/fixtures/team';
+import type { TeamInfo, TeamPlace } from '~/types/team';
 
 const teamPlaces = [...teamPlacesData];
 
@@ -31,26 +32,29 @@ export const teamHandlers = [
   }),
 
   // 팀플레이스 생성
-  http.post('/api/team-places', async ({ request }) => {
-    const { name } = await request.json();
+  http.post<never, Pick<TeamInfo, 'name'>>(
+    '/api/team-places',
+    async ({ request }) => {
+      const { name } = await request.json();
 
-    if (typeof name !== 'string')
-      return new HttpResponse(null, { status: 400 });
+      if (typeof name !== 'string')
+        return new HttpResponse(null, { status: 400 });
 
-    const newId = teamPlaces.length + 1;
-    teamPlaces.push({
-      id: newId,
-      displayName: name,
-      teamPlaceColor: 3,
-    });
+      const newId = teamPlaces.length + 1;
+      teamPlaces.push({
+        id: newId,
+        displayName: name,
+        teamPlaceColor: 3,
+      });
 
-    HttpResponse.json(
-      {
-        teamPlaceId: newId,
-      },
-      { status: 201 },
-    );
-  }),
+      HttpResponse.json(
+        {
+          teamPlaceId: newId,
+        },
+        { status: 201 },
+      );
+    },
+  ),
 
   // 팀플레이스 참가
   http.post('/api/me/team-places/:inviteCode', async ({ params }) => {
@@ -91,7 +95,7 @@ export const teamHandlers = [
     return HttpResponse.json({ members: MEMBERS });
   }),
 
-  http.patch(
+  http.patch<{ teamPlaceId: string }, Pick<TeamPlace, 'teamPlaceColor'>>(
     '/api/team-places/:teamPlaceId/color',
     async ({ request, params }) => {
       const teamPlaceId = Number(params.teamPlaceId);

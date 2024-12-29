@@ -5,6 +5,7 @@ import {
 } from '~/mocks/fixtures/schedules';
 import { teamPlaces } from '~/mocks/fixtures/team';
 import { generateYYYYMMDDWithoutHyphens } from '~/utils/generateYYYYMMDDWithoutHyphens';
+import type { ScheduleWithoutId } from '~/types/schedule';
 
 let schedules = [...scheduleData];
 let mySchedules = [...myScheduleData];
@@ -95,7 +96,7 @@ export const calendarHandlers = [
   ),
 
   //팀플레이스 일정 등록
-  http.post(
+  http.post<{ teamPlaceId: string }, ScheduleWithoutId>(
     `/api/team-place/:teamPlaceId/calendar/schedules`,
     async ({ request, params }) => {
       const { title, startDateTime, endDateTime } = await request.json();
@@ -126,7 +127,7 @@ export const calendarHandlers = [
   ),
 
   //팀플레이스 일정 수정
-  http.patch(
+  http.patch<{ teamPlaceId: string; scheduleId: string }, ScheduleWithoutId>(
     `/api/team-place/:teamPlaceId/calendar/schedules/:scheduleId`,
     async ({ request, params }) => {
       const teamPlaceId = Number(params.teamPlaceId);

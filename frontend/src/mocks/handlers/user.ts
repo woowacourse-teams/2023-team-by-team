@@ -1,4 +1,5 @@
 import { http, HttpResponse } from 'msw';
+import type { UserInfo } from '~/types/team';
 
 const user = {
   id: 1,
@@ -14,7 +15,7 @@ export const userHandlers = [
   }),
 
   // 사용자 정보 수정
-  http.patch('/api/me', async ({ request }) => {
+  http.patch<never, Pick<UserInfo, 'name'>>('/api/me', async ({ request }) => {
     const { name } = await request.json();
 
     if (typeof name !== 'string') {
