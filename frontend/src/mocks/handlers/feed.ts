@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { delay, http, HttpResponse } from 'msw';
 import { threads as threadData } from '~/mocks/fixtures/threads';
 import { noticeThread as noticeData } from '~/mocks/fixtures/threads';
 import { teamPlaces } from '~/mocks/fixtures/team';
@@ -10,50 +10,48 @@ const noticeThread = { ...noticeData };
 
 export const feedHandlers = [
   //팀채팅 채팅 조회
-  rest.get(
+  http.get(
     '/api/team-place/:teamPlaceId/feed/threads',
-    async (req, res, ctx) => {
-      const lastThreadId = Number(req.url.searchParams.get('last-thread-id'));
-      const size = Number(req.url.searchParams.get('size'));
-      const teamPlaceId = Number(req.params.teamPlaceId);
+    async ({ request, params }) => {
+      const url = new URL(request.url);
+      const lastThreadId = Number(url.searchParams.get('last-thread-id'));
+      const size = Number(url.searchParams.get('size'));
+      const teamPlaceId = Number(params.teamPlaceId);
       const teamIndex = teamPlaces.findIndex(
         (teamPlace) => teamPlace.id === teamPlaceId,
       );
 
-      if (teamIndex === -1) return res(ctx.status(403));
+      if (teamIndex === -1) return new HttpResponse(null, { status: 403 });
 
       const index = threads.findIndex((thread) => thread.id === lastThreadId);
 
-      return res(
-        ctx.status(200),
-        ctx.json({
-          threads: threads.slice(index + 1, index + size + 1),
-        }),
-      );
+      return HttpResponse.json({
+        threads: threads.slice(index + 1, index + size + 1),
+      });
     },
   ),
 
   //팀피드 공지 조회
-  rest.get(
+  http.get(
     '/api/team-place/:teamPlaceId/feed/notice/recent',
-    async (req, res, ctx) => {
-      const teamPlaceId = Number(req.params.teamPlaceId);
+    async ({ params }) => {
+      const teamPlaceId = Number(params.teamPlaceId);
       const teamIndex = teamPlaces.findIndex(
         (teamPlace) => teamPlace.id === teamPlaceId,
       );
 
-      if (teamIndex === -1) return res(ctx.status(403));
+      if (teamIndex === -1) return new HttpResponse(null, { status: 403 });
 
-      return res(ctx.status(200), ctx.json(noticeThread));
+      return HttpResponse.json(noticeThread);
     },
   ),
 
   //팀피드 채팅 생성
-  rest.post(
+  http.post(
     '/api/team-place/:teamPlaceId/feed/threads',
-    async (req, res, ctx) => {
-      const teamPlaceId = Number(req.params.teamPlaceId);
-      const bufferData = await req.arrayBuffer();
+    async ({ request, params }) => {
+      const teamPlaceId = Number(params.teamPlaceId);
+      const bufferData = await request.arrayBuffer();
 
       // formData를 추출
       const formData = new TextDecoder('utf-8').decode(bufferData);
@@ -88,32 +86,31 @@ export const feedHandlers = [
       threads.unshift(newThread);
 
       if (imageCount !== 0) {
-        return res(
-          ctx.delay(2000),
-          ctx.status(201),
-          ctx.set(
-            'Location',
-            `/api/team-place/${teamPlaceId}/feed/threads/${newThread.id}`,
-          ),
-        );
+        await delay(2000);
+
+        return new HttpResponse(null, {
+          status: 201,
+          headers: {
+            Location: `/api/team-place/${teamPlaceId}/feed/threads/${newThread.id}`,
+          },
+        });
       }
 
-      return res(
-        ctx.status(201),
-        ctx.set(
-          'Location',
-          `/api/team-place/${teamPlaceId}/feed/threads/${newThread.id}`,
-        ),
-      );
+      return new HttpResponse(null, {
+        status: 201,
+        headers: {
+          Location: `/api/team-place/${teamPlaceId}/feed/threads/${newThread.id}`,
+        },
+      });
     },
   ),
 
   //팀피드 공지 채팅 생성
-  rest.post(
+  http.post(
     '/api/team-place/:teamPlaceId/feed/notice',
-    async (req, res, ctx) => {
-      const teamPlaceId = Number(req.params.teamPlaceId);
-      const bufferData = await req.arrayBuffer();
+    async ({ request, params }) => {
+      const teamPlaceId = Number(params.teamPlaceId);
+      const bufferData = await request.arrayBuffer();
 
       // formData를 추출
       const formData = new TextDecoder('utf-8').decode(bufferData);
@@ -153,23 +150,22 @@ export const feedHandlers = [
       noticeThread.images = newNoticeThread.images;
 
       if (imageCount !== 0) {
-        return res(
-          ctx.delay(2000),
-          ctx.status(201),
-          ctx.set(
-            'Location',
-            `/api/team-place/${teamPlaceId}/feed/threads/notice/${newNoticeThread.id}`,
-          ),
-        );
+        await delay(2000);
+
+        return new HttpResponse(null, {
+          status: 201,
+          headers: {
+            Location: `/api/team-place/${teamPlaceId}/feed/threads/notice/${newNoticeThread.id}`,
+          },
+        });
       }
 
-      return res(
-        ctx.status(201),
-        ctx.set(
-          'Location',
-          `/api/team-place/${teamPlaceId}/feed/threads/notice/${newNoticeThread.id}`,
-        ),
-      );
+      return new HttpResponse(null, {
+        status: 201,
+        headers: {
+          Location: `/api/team-place/${teamPlaceId}/feed/threads/notice/${newNoticeThread.id}`,
+        },
+      });
     },
   ),
 ];
