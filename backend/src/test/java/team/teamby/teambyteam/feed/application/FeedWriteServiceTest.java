@@ -30,8 +30,8 @@ import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.CONTENT_
 import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.CONTENT_ONLY_REQUEST;
 import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.EMPTY_REQUEST;
 import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.IMAGE_ONLY_REQUEST;
-import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.NOT_ALLOWED_IMAGE_EXTENSION_REQUEST;
-import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.OVER_IMAGE_SIZE_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.FEED_WITH_NOT_ALLOWED_IMAGE_EXTENSION_REQUEST;
+import static team.teamby.teambyteam.common.fixtures.FeedThreadFixtures.FEED_WITH_OVER_IMAGE_SIZE_REQUEST;
 import static team.teamby.teambyteam.common.fixtures.MemberFixtures.PHILIP;
 import static team.teamby.teambyteam.common.fixtures.TeamPlaceFixtures.ENGLISH_TEAM_PLACE;
 
@@ -84,7 +84,7 @@ class FeedWriteServiceTest extends ServiceTest {
             // given
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             final Member author = testFixtureBuilder.buildMember(PHILIP());
-            final FeedThreadWritingRequest request = OVER_IMAGE_SIZE_REQUEST;
+            final FeedThreadWritingRequest request = FEED_WITH_OVER_IMAGE_SIZE_REQUEST;
 
             // when & then
             assertThatThrownBy(() -> feedWriteService.write(request, new MemberEmailDto(author.getEmail().getValue()),
@@ -99,7 +99,7 @@ class FeedWriteServiceTest extends ServiceTest {
             // given
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             final Member author = testFixtureBuilder.buildMember(PHILIP());
-            final FeedThreadWritingRequest request = NOT_ALLOWED_IMAGE_EXTENSION_REQUEST;
+            final FeedThreadWritingRequest request = FEED_WITH_NOT_ALLOWED_IMAGE_EXTENSION_REQUEST;
 
             // when & then
             assertThatThrownBy(() -> feedWriteService.write(request, new MemberEmailDto(author.getEmail().getValue()),

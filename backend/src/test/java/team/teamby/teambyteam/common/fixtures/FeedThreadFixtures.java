@@ -1,13 +1,9 @@
 package team.teamby.teambyteam.common.fixtures;
 
-import org.springframework.mock.web.MockMultipartFile;
 import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
+import team.teamby.teambyteam.feed.application.dto.UploadImageRequest;
 import team.teamby.teambyteam.feed.domain.FeedThread;
 import team.teamby.teambyteam.feed.domain.vo.Content;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 
 import static team.teamby.teambyteam.common.fixtures.FileFixtures.OVER_SIZE_PNG_MOCK_MULTIPART_FILE;
 import static team.teamby.teambyteam.common.fixtures.FileFixtures.UNDER_SIZE_PNG_MOCK_MULTIPART_FILE1;
@@ -17,9 +13,6 @@ import static team.teamby.teambyteam.common.fixtures.FileFixtures.UNDER_SIZE_PNG
 import static team.teamby.teambyteam.common.fixtures.FileFixtures.UNDER_SIZE_WRONG_EXTENSION_MOCK_MULTIPART_FILE;
 
 import java.util.List;
-import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
-import team.teamby.teambyteam.feed.domain.FeedThread;
-import team.teamby.teambyteam.feed.domain.vo.Content;
 
 public class FeedThreadFixtures {
 
@@ -44,8 +37,8 @@ public class FeedThreadFixtures {
             List.of(UNDER_SIZE_PNG_MOCK_MULTIPART_FILE1, UNDER_SIZE_PNG_MOCK_MULTIPART_FILE2, UNDER_SIZE_PNG_MOCK_MULTIPART_FILE3, UNDER_SIZE_PNG_MOCK_MULTIPART_FILE4,
                     UNDER_SIZE_PNG_MOCK_MULTIPART_FILE1));
 
-    public static final FeedThreadWritingRequest OVER_IMAGE_SIZE_REQUEST = new FeedThreadWritingRequest(CONTENT_AND_IMAGE, List.of(OVER_SIZE_PNG_MOCK_MULTIPART_FILE));
-    public static final FeedThreadWritingRequest NOT_ALLOWED_IMAGE_EXTENSION_REQUEST = new FeedThreadWritingRequest(CONTENT_AND_IMAGE, List.of(UNDER_SIZE_WRONG_EXTENSION_MOCK_MULTIPART_FILE));
+    public static final FeedThreadWritingRequest FEED_WITH_OVER_IMAGE_SIZE_REQUEST = new FeedThreadWritingRequest(CONTENT_AND_IMAGE, List.of(OVER_SIZE_PNG_MOCK_MULTIPART_FILE));
+    public static final FeedThreadWritingRequest FEED_WITH_NOT_ALLOWED_IMAGE_EXTENSION_REQUEST = new FeedThreadWritingRequest(CONTENT_AND_IMAGE, List.of(UNDER_SIZE_WRONG_EXTENSION_MOCK_MULTIPART_FILE));
 
     public static final FeedThreadWritingRequest EMPTY_REQUEST = new FeedThreadWritingRequest(CONTENT_EMPTY_AND_IMAGE_EMPTY, null);
 
