@@ -16,6 +16,7 @@ import team.teamby.teambyteam.auth.exception.AuthenticationException;
 import team.teamby.teambyteam.common.ApiDocsTest;
 import team.teamby.teambyteam.common.fixtures.FeedThreadFixtures;
 import team.teamby.teambyteam.common.fixtures.FileFixtures;
+import team.teamby.teambyteam.feed.application.FeedImageService;
 import team.teamby.teambyteam.feed.application.FeedReadService;
 import team.teamby.teambyteam.feed.application.FeedWriteService;
 import team.teamby.teambyteam.feed.application.dto.FeedResponse;
@@ -62,6 +63,9 @@ public final class FeedThreadApiDocsTest extends ApiDocsTest {
 
     @MockBean
     private FeedWriteService feedWriteService;
+
+    @MockBean
+    private FeedImageService feedImageService;
 
     @MockBean
     private FileStorageManager fileStorageManager;
