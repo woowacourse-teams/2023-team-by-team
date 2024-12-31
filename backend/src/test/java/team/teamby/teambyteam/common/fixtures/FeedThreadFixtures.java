@@ -43,6 +43,13 @@ public class FeedThreadFixtures {
     public static final FeedThreadWritingRequest EMPTY_REQUEST = new FeedThreadWritingRequest(CONTENT_EMPTY_AND_IMAGE_EMPTY, null);
 
     /**
+     * IMAGE REQUESTS
+     */
+    public static final UploadImageRequest IMAGE_REQUEST = new UploadImageRequest(List.of(UNDER_SIZE_PNG_MOCK_MULTIPART_FILE1, UNDER_SIZE_PNG_MOCK_MULTIPART_FILE2));
+    public static final UploadImageRequest NOT_ALLOWED_IMAGE_EXTENSION_REQUEST = new UploadImageRequest(List.of(UNDER_SIZE_WRONG_EXTENSION_MOCK_MULTIPART_FILE));
+    public static final UploadImageRequest OVER_IMAGE_SIZE_REQUEST = new UploadImageRequest(List.of(OVER_SIZE_PNG_MOCK_MULTIPART_FILE));
+
+    /**
      * ENTITY
      */
     public static FeedThread CONTENT_AND_IMAGE(final Long teamPlaceId, final Long authorId) {
