@@ -6,6 +6,7 @@ export interface Schedule {
   title: string;
   startDateTime: YYYYMMDDHHMM;
   endDateTime: YYYYMMDDHHMM;
+  description?: string;
 }
 
 export interface ScheduleWithTeamPlaceId extends Schedule {

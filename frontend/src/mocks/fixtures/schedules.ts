@@ -169,4 +169,12 @@ export const mySchedules: ScheduleWithTeamPlaceId[] = [
     startDateTime: '2023-06-30 05:00',
     endDateTime: '2023-07-02 05:00',
   },
+  {
+    id: 8,
+    teamPlaceId: 1,
+    title: 'test7',
+    startDateTime: '2025-01-03 05:00',
+    endDateTime: '2023-01-04 05:00',
+    description: '멤모멤모테스트',
+  },
 ];
