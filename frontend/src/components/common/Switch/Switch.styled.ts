@@ -121,15 +121,24 @@ export const TrackDiv = styled.div<{
 export const LabelSpan = styled.span<{
   $size: SwitchSize;
   $isOn: boolean;
+  $offColor: string | undefined;
+  $onColor: string | undefined;
 }>`
-  font-size: 10px;
+  font-size: 14px;
   white-space: nowrap;
-  color: ${theme.color.WHITE};
+  color: ${({ $isOn, $onColor, $offColor }) =>
+    $isOn ? $onColor || theme.color.WHITE : $offColor || theme.color.GRAY700};
   flex-grow: 1;
   text-align: center;
 
   ${({ $size }) => {
-    if ($size === 'xs' || $size === 'sm')
+    if ($size === 'sm') {
+      return css`
+        font-size: 12px;
+      `;
+    }
+
+    if ($size === 'xs')
       return css`
         font-size: 8px;
       `;

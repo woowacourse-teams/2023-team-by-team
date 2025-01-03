@@ -9,10 +9,11 @@ import { useScheduleEditModal } from '~/hooks/schedule/useScheduleEditModal';
 import type { Schedule } from '~/types/schedule';
 import TeamBadge from '~/components/team/TeamBadge/TeamBadge';
 import TimeTableMenu from '~/components/team_calendar/TimeTableMenu/TimeTableMenu';
-import Checkbox from '~/components/common/Checkbox/Checkbox';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import type { CalendarSize } from '~/types/size';
 import { getIsMobile } from '~/utils/getIsMobile';
+import Switch from '~/components/common/Switch/Switch';
+import theme from '~/styles/theme';
 
 interface ScheduleEditModalProps {
   calendarSize?: CalendarSize;
@@ -119,14 +120,22 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
             </S.InputWrapper>
           </S.TimeSelectContainer>
           <S.CheckboxContainer>
-            <Text size="md" weight="semiBold">
-              종일
-            </Text>
-            <Checkbox
-              size="sm"
-              isChecked={isAllDay}
+            <Switch
+              checked={isAllDay}
               onChange={handleIsAllDayChange}
-            />
+              onLabel={'종일'}
+              offLabel={'종일'}
+              onColor={theme.color.PRIMARY}
+            />{' '}
+            <p
+              className="hidden"
+              aria-live="assertive"
+              aria-relevant="additions"
+            >
+              {isAllDay
+                ? '종일 일정이 선택되었습니다.'
+                : '종일 일정이 해제되었습니다.'}
+            </p>
           </S.CheckboxContainer>
           <S.InnerContainer>
             <S.TeamNameContainer title={displayName}>

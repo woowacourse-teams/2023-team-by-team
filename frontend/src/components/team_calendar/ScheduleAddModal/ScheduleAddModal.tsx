@@ -6,13 +6,14 @@ import Text from '~/components/common/Text/Text';
 import Button from '~/components/common/Button/Button';
 import Input from '~/components/common/Input/Input';
 import { useScheduleAddModal } from '~/hooks/schedule/useScheduleAddModal';
-import Checkbox from '~/components/common/Checkbox/Checkbox';
 import TeamBadge from '~/components/team/TeamBadge/TeamBadge';
 import TimeTableMenu from '~/components/team_calendar/TimeTableMenu/TimeTableMenu';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useRef, useEffect } from 'react';
 import type { CalendarSize } from '~/types/size';
 import { getIsMobile } from '~/utils/getIsMobile';
+import Switch from '~/components/common/Switch/Switch';
+import theme from '~/styles/theme';
 
 interface ScheduleAddModalProps {
   calendarSize?: CalendarSize;
@@ -124,15 +125,13 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
             </S.InputWrapper>
           </S.TimeSelectContainer>
           <S.CheckboxContainer>
-            <Text size="md" weight="semiBold">
-              종일
-            </Text>
-            <Checkbox
-              size="sm"
-              isChecked={isAllDay}
+            <Switch
+              checked={isAllDay}
               onChange={handleIsAllDayChange}
+              onLabel={'종일'}
+              offLabel={'종일'}
+              onColor={theme.color.PRIMARY}
             />
-
             <p
               className="hidden"
               aria-live="assertive"

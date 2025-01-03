@@ -87,7 +87,7 @@ export const InnerContainer = styled.div`
 export const CheckboxContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
 
   column-gap: 8px;
 `;
