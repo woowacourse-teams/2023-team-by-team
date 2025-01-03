@@ -114,7 +114,7 @@ export const schedules: Schedule[] = [
     id: 18,
     title: 'test7',
     startDateTime: '2025-01-03 05:00',
-    endDateTime: '2023-01-04 05:00',
+    endDateTime: '2025-01-04 05:00',
     description: '멤모멤모테스트',
   },
 ];
