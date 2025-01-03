@@ -14,6 +14,7 @@ import type { CalendarSize } from '~/types/size';
 import { getIsMobile } from '~/utils/getIsMobile';
 import Switch from '~/components/common/Switch/Switch';
 import theme from '~/styles/theme';
+import Svg from '~/components/common/Svg/Svg';
 
 interface ScheduleEditModalProps {
   calendarSize?: CalendarSize;
@@ -31,6 +32,9 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
     schedule,
     times,
     isAllDay,
+    isDescription,
+    isDescriptionMaxLength,
+
     handlers: {
       handleScheduleChange,
       handleScheduleBlur,
@@ -38,6 +42,8 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
       handleStartTimeChange,
       handleEndTimeChange,
       handleIsAllDayChange,
+      handleIsDescription,
+      handleDescriptionInput,
     },
   } = useScheduleEditModal(scheduleId, initialSchedule);
 
@@ -119,7 +125,7 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
               )}
             </S.InputWrapper>
           </S.TimeSelectContainer>
-          <S.CheckboxContainer>
+          <S.ConvenientContainer>
             <Switch
               checked={isAllDay}
               onChange={handleIsAllDayChange}
@@ -136,7 +142,47 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
                 ? '종일 일정이 선택되었습니다.'
                 : '종일 일정이 해제되었습니다.'}
             </p>
-          </S.CheckboxContainer>
+            <Button
+              variant="plain"
+              type="button"
+              css={S.descriptionButton(isDescription)}
+              onClick={handleIsDescription}
+            >
+              <Svg
+                type="MemoIcon"
+                size={18}
+                fill={isDescription ? theme.color.WHITE : theme.color.PRIMARY}
+              />
+              <Text
+                css={S.descriptionText(isDescription)}
+                weight="semiBold"
+                size="sm"
+              >
+                메모
+              </Text>
+            </Button>
+          </S.ConvenientContainer>
+          <div>
+            {isDescription && (
+              <S.DescriptionTextarea
+                rows={1}
+                placeholder="메모를 작성해주세요.(최대 100자)"
+                value={schedule.description}
+                onChange={handleDescriptionInput}
+                required
+              />
+            )}
+            <S.WarnDiv>
+              {isDescription &&
+                (!isDescriptionMaxLength ? (
+                  <Text size="xs">({schedule.description.length} / 100자)</Text>
+                ) : (
+                  <Text size="xs" css={S.errorText}>
+                    최대 100자까지 입력가능합니다.
+                  </Text>
+                ))}
+            </S.WarnDiv>
+          </div>
           <S.InnerContainer>
             <S.TeamNameContainer title={displayName}>
               <TeamBadge teamPlaceColor={teamPlaceColor} size="lg" />

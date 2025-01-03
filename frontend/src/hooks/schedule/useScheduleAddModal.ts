@@ -1,7 +1,7 @@
 import { useSendSchedule } from '~/hooks/queries/useSendSchedule';
 import { useModal } from '~/hooks/useModal';
 import { isYYYYMMDDHHMM } from '~/types/typeGuard';
-import type { FormEventHandler } from 'react';
+import { type ChangeEvent, useState, type FormEventHandler } from 'react';
 import { useToast } from '~/hooks/useToast';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useDateTimeRange } from '~/hooks/schedule/useDateTimeRange';
@@ -9,6 +9,7 @@ import { useDateTimeRange } from '~/hooks/schedule/useDateTimeRange';
 export const useScheduleAddModal = (clickedDate: Date) => {
   const {
     title,
+    description,
     startDate,
     endDate,
     startTime,
@@ -20,14 +21,42 @@ export const useScheduleAddModal = (clickedDate: Date) => {
     handleStartTimeChange,
     handleEndTimeChange,
     handleIsAllDayChange,
-  } = useDateTimeRange(clickedDate, '');
+    handleDescriptionChange,
+  } = useDateTimeRange(clickedDate, '', '');
+  const [isDescription, setIsDescription] = useState(false);
+  const [isDescriptionMaxLength, setIsDescriptionMaxLength] = useState(false);
   const { closeModal } = useModal();
   const { showToast } = useToast();
   const { teamPlaceId } = useTeamPlace();
   const { mutateSendSchedule } = useSendSchedule(teamPlaceId);
 
-  const schedule = { title, startDate, endDate };
+  const schedule = { title, description, startDate, endDate };
   const times = { startTime, endTime };
+
+  const handleIsDescription = () => {
+    setIsDescription((prev) => {
+      if (prev) {
+        handleDescriptionChange('');
+        setIsDescriptionMaxLength(false);
+      }
+      return !prev;
+    });
+  };
+
+  const handleDescriptionInput = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const textarea = e.target;
+
+    textarea.style.height = 'auto';
+    textarea.style.height = `${textarea.scrollHeight}px`;
+
+    if (textarea.value.length > 100) {
+      setIsDescriptionMaxLength(true);
+    } else {
+      setIsDescriptionMaxLength(false);
+    }
+
+    handleDescriptionChange(textarea.value.trim().slice(0, 100));
+  };
 
   const handleScheduleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
@@ -52,6 +81,7 @@ export const useScheduleAddModal = (clickedDate: Date) => {
         title,
         startDateTime,
         endDateTime,
+        description,
       },
       {
         onSuccess: () => {
@@ -71,6 +101,8 @@ export const useScheduleAddModal = (clickedDate: Date) => {
     schedule,
     isAllDay,
     times,
+    isDescription,
+    isDescriptionMaxLength,
 
     handlers: {
       handleScheduleChange,
@@ -79,6 +111,8 @@ export const useScheduleAddModal = (clickedDate: Date) => {
       handleStartTimeChange,
       handleEndTimeChange,
       handleScheduleSubmit,
+      handleIsDescription,
+      handleDescriptionInput,
     },
   };
 };

@@ -1,4 +1,5 @@
 import { styled, css } from 'styled-components';
+import theme from '~/styles/theme';
 import type { CalendarSize } from '~/types/size';
 
 export const Backdrop = styled.div`
@@ -84,7 +85,7 @@ export const InnerContainer = styled.div`
   width: 100%;
 `;
 
-export const CheckboxContainer = styled.div`
+export const ConvenientContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -137,6 +138,25 @@ export const ControlButtonWrapper = styled.div`
   height: 38px;
 `;
 
+export const DescriptionTextarea = styled.textarea`
+  padding: 6px 10px;
+  border: none;
+  border-bottom: 1px solid ${theme.color.GRAY200};
+  border-radius: 10px;
+
+  font-size: 14px;
+
+  width: 100%;
+  white-space: normal;
+  overflow-wrap: break-word;
+  display: inline-block;
+`;
+
+export const WarnDiv = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
 export const title = css`
   padding: 10px 20px;
 
@@ -185,4 +205,21 @@ export const teamPlaceName = css`
 export const submitButton = css`
   width: 76px;
   padding: 0;
+`;
+
+export const descriptionButton = ($isDescription: boolean) => css`
+  display: flex;
+  padding: 2px 6px;
+  align-items: center;
+  border: 1px solid ${theme.color.PRIMARY};
+  border-radius: 25px;
+  background-color: ${$isDescription ? theme.color.PRIMARY : theme.color.WHITE};
+`;
+
+export const descriptionText = ($isDescription: boolean) => css`
+  color: ${$isDescription ? theme.color.WHITE : theme.color.PRIMARY};
+`;
+
+export const errorText = css`
+  color: ${theme.color.RED};
 `;
