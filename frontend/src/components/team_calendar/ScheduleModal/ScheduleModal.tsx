@@ -13,6 +13,8 @@ import { useTeamPlace } from '~/hooks/useTeamPlace';
 import type { CalendarSize } from '~/types/size';
 import { getIsMobile } from '~/utils/getIsMobile';
 import { generateDateTimeRangeDescription } from '~/utils/generateDateTimeRangeDescription';
+import Svg from '~/components/common/Svg/Svg';
+import theme from '~/styles/theme';
 
 interface ScheduleModalProps {
   calendarWidth: number;
@@ -41,7 +43,7 @@ const ScheduleModal = (props: ScheduleModalProps) => {
   const { mutateDeleteSchedule } = useDeleteSchedule(teamPlaceId, scheduleId);
 
   if (scheduleById === undefined) return;
-  const { title, startDateTime, endDateTime } = scheduleById;
+  const { title, startDateTime, endDateTime, description } = scheduleById;
   const { row, column, level } = position;
 
   const handleScheduleDelete = () => {
@@ -72,7 +74,7 @@ const ScheduleModal = (props: ScheduleModalProps) => {
       >
         <S.Header>
           <S.TeamWrapper>
-            <TeamBadge teamPlaceColor={teamPlaceColor} size="lg" />
+            <TeamBadge teamPlaceColor={teamPlaceColor} size="md" />
             {!isMobile && (
               <div title={displayName}>
                 <Text css={S.teamName}>{displayName}</Text>
@@ -116,6 +118,13 @@ const ScheduleModal = (props: ScheduleModalProps) => {
             </Text>
           </time>
         </S.PeriodWrapper>
+        {description && (
+          <S.DescriptionDiv>
+            <Svg fill={theme.color.BLACK} size={18} type="MemoIcon" />
+            <Text size="sm">{description}</Text>
+          </S.DescriptionDiv>
+        )}
+
         <Button
           type="button"
           variant="primary"
