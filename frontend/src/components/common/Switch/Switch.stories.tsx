@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 
 import Switch from './Switch';
 
@@ -7,11 +8,10 @@ import Switch from './Switch';
  * 공용 Switch 컴포넌트
  */
 const meta: Meta<typeof Switch> = {
-  title: 'Common/Switch',
+  title: 'common/Switch',
   component: Switch,
   tags: ['autodocs'],
-  render: (args) => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+  render: function Render(args) {
     const [checked, setChecked] = useState(false);
 
     const handleChange = () => {
@@ -95,7 +95,7 @@ export const Solid: Story = {
   args: {
     size: 'md',
     checked: false,
-    onChange: () => console.log('Switch Changed'),
+    onChange: fn(),
   },
 };
 
@@ -103,7 +103,7 @@ export const Raised: Story = {
   args: {
     size: 'md',
     checked: false,
-    onChange: () => console.log('Switch Changed'),
+    onChange: fn(),
     variant: 'raised',
   },
 };
@@ -112,7 +112,7 @@ export const ExtraSmall: Story = {
   args: {
     size: 'xs',
     checked: false,
-    onChange: () => console.log('Switch Changed'),
+    onChange: fn(),
   },
 };
 
@@ -120,7 +120,7 @@ export const Small: Story = {
   args: {
     size: 'sm',
     checked: false,
-    onChange: () => console.log('Switch Changed'),
+    onChange: fn(),
   },
 };
 
@@ -128,7 +128,7 @@ export const Medium: Story = {
   args: {
     size: 'md',
     checked: false,
-    onChange: () => console.log('Switch Changed'),
+    onChange: fn(),
   },
 };
 
@@ -136,7 +136,7 @@ export const Large: Story = {
   args: {
     size: 'lg',
     checked: false,
-    onChange: () => console.log('Switch Changed'),
+    onChange: fn(),
   },
 };
 
@@ -144,7 +144,7 @@ export const WithDescription: Story = {
   args: {
     size: 'md',
     checked: false,
-    onChange: () => console.log('Switch Changed'),
+    onChange: fn(),
     description: <div>이것은 설명입니다.</div>,
   },
 };
@@ -153,7 +153,7 @@ export const WithDescriptionComponent: Story = {
   args: {
     size: 'md',
     checked: false,
-    onChange: () => console.log('Switch changed'),
+    onChange: fn(),
     description: (
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <span style={{ marginLeft: '8px' }}>로그인</span>
@@ -166,7 +166,7 @@ export const WithCustomColor: Story = {
   args: {
     size: 'md',
     checked: false,
-    onChange: () => console.log('Switch Changed'),
+    onChange: fn(),
     onColor: 'rgb(21, 99, 223)',
     offColor: '#99b4d9',
     thumbOnColor: '#1a0cdc',
@@ -178,7 +178,7 @@ export const WithThumbText: Story = {
   args: {
     size: 'lg',
     checked: false,
-    onChange: () => console.log('Switch Changed'),
+    onChange: fn(),
     onThumb: 'ON',
     offThumb: 'OFF',
   },
@@ -188,7 +188,7 @@ export const WithInnerLabel: Story = {
   args: {
     size: 'lg',
     checked: false,
-    onChange: () => console.log('Switch Changed'),
+    onChange: fn(),
     onLabel: '자동 업데이트',
     offLabel: '수동 업데이트',
   },
@@ -198,7 +198,7 @@ export const Disabled: Story = {
   args: {
     size: 'md',
     checked: false,
-    onChange: () => console.log('Switch Changed'),
+    onChange: fn(),
     description: 'Disabled switch',
     disabled: true,
   },
@@ -208,7 +208,7 @@ export const ReadOnly: Story = {
   args: {
     size: 'md',
     checked: false,
-    onChange: () => console.log('Switch Changed'),
+    onChange: fn(),
     description: 'Read-only switch',
     readonly: true,
   },

@@ -162,27 +162,24 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
               </Text>
             </Button>
           </S.ConvenientContainer>
-          <div>
-            {isDescription && (
-              <S.DescriptionTextarea
-                rows={1}
-                placeholder="메모를 작성해주세요.(최대 100자)"
-                value={schedule.description}
-                onChange={handleDescriptionInput}
-                required
-              />
-            )}
+          <S.DescriptionDiv $isDescription={isDescription}>
+            <S.DescriptionTextarea
+              rows={1}
+              placeholder="메모를 작성해주세요.(최대 100자)"
+              value={schedule.description}
+              onChange={handleDescriptionInput}
+              required
+            />
             <S.WarnDiv>
-              {isDescription &&
-                (!isDescriptionMaxLength ? (
-                  <Text size="xs">({schedule.description.length} / 100자)</Text>
-                ) : (
-                  <Text size="xs" css={S.errorText}>
-                    최대 100자까지 입력가능합니다.
-                  </Text>
-                ))}
+              {!isDescriptionMaxLength ? (
+                <Text size="xs">({schedule.description.length} / 100자)</Text>
+              ) : (
+                <Text size="xs" css={S.errorText}>
+                  최대 100자까지 입력가능합니다.
+                </Text>
+              )}
             </S.WarnDiv>
-          </div>
+          </S.DescriptionDiv>
           <S.InnerContainer>
             <S.TeamNameContainer title={displayName}>
               <TeamBadge teamPlaceColor={teamPlaceColor} size="lg" />

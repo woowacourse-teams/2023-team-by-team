@@ -91,7 +91,8 @@ const Switch = ({
   const handleClickToggle = () => {
     if (!readonly && !disabled) {
       setIsOn((prevState) => !prevState);
-      throttledOnChange();
+      onChange();
+      // throttledOnChange();
     }
   };
 
@@ -101,13 +102,13 @@ const Switch = ({
     }
   }, [checked, isOn]);
 
-  useEffect(() => {
-    return () => {
-      if (throttleTimeout.current !== null) {
-        clearTimeout(throttleTimeout.current);
-      }
-    };
-  }, []);
+  // useEffect(() => {
+  //   return () => {
+  //     if (throttleTimeout.current !== null) {
+  //       clearTimeout(throttleTimeout.current);
+  //     }
+  //   };
+  // }, []);
 
   return (
     <S.ContainerDiv $descriptionPosition={descriptionPosition} style={style}>
