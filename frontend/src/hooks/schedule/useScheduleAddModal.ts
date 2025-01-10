@@ -5,6 +5,7 @@ import { type ChangeEvent, useState, type FormEventHandler } from 'react';
 import { useToast } from '~/hooks/useToast';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useDateTimeRange } from '~/hooks/schedule/useDateTimeRange';
+import { SCHEDULE_DESCRIPTION_MAX_LENGTH } from '~/constants/calendar';
 
 export const useScheduleAddModal = (clickedDate: Date) => {
   const {
@@ -49,13 +50,15 @@ export const useScheduleAddModal = (clickedDate: Date) => {
     textarea.style.height = 'auto';
     textarea.style.height = `${textarea.scrollHeight}px`;
 
-    if (textarea.value.length > 100) {
+    if (textarea.value.length > SCHEDULE_DESCRIPTION_MAX_LENGTH) {
       setIsDescriptionMaxLength(true);
     } else {
       setIsDescriptionMaxLength(false);
     }
 
-    handleDescriptionChange(textarea.value.trim().slice(0, 100));
+    handleDescriptionChange(
+      textarea.value.slice(0, SCHEDULE_DESCRIPTION_MAX_LENGTH),
+    );
   };
 
   const handleScheduleSubmit: FormEventHandler<HTMLFormElement> = (e) => {

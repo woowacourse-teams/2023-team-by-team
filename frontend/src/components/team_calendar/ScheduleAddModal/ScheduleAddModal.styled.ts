@@ -57,7 +57,7 @@ export const Container = styled.div<{
     display: flex;
     flex-direction: column;
 
-    row-gap: ${({ $isMobile }) => ($isMobile ? '10px' : '10px')};
+    row-gap: 10px;
   }
 `;
 
@@ -138,18 +138,23 @@ export const ControlButtonWrapper = styled.div`
   height: 38px;
 `;
 
+export const DescriptionDiv = styled.div<{ $isDescription: boolean }>`
+  display: ${({ $isDescription }) => ($isDescription ? 'block' : 'none')};
+`;
+
 export const DescriptionTextarea = styled.textarea`
+  display: inline-block;
+  width: 100%;
   padding: 6px 10px;
+
   border: none;
   border-bottom: 1px solid ${theme.color.GRAY200};
   border-radius: 10px;
 
   font-size: 14px;
-
-  width: 100%;
+  resize: none;
   white-space: normal;
   overflow-wrap: break-word;
-  display: inline-block;
 `;
 
 export const WarnDiv = styled.div`
