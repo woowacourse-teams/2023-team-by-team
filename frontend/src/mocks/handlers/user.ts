@@ -1,4 +1,5 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
+import type { UserInfo } from '~/types/team';
 
 const user = {
   id: 1,
@@ -9,24 +10,24 @@ const user = {
 
 export const userHandlers = [
   // 사용자 정보 조회
-  rest.get('/api/me', (_, res, ctx) => {
-    return res(ctx.status(200), ctx.json(user));
+  http.get('/api/me', () => {
+    return HttpResponse.json(user);
   }),
 
   // 사용자 정보 수정
-  rest.patch('/api/me', async (req, res, ctx) => {
-    const { name } = await req.json();
+  http.patch<never, Pick<UserInfo, 'name'>>('/api/me', async ({ request }) => {
+    const { name } = await request.json();
 
     if (typeof name !== 'string') {
-      return res(ctx.status(400));
+      return new HttpResponse(null, { status: 400 });
     }
 
     user['name'] = name;
 
-    return res(ctx.status(200), ctx.json(user));
+    return HttpResponse.json(user);
   }),
 
-  rest.delete('/api/me/account', async (_, res, ctx) => {
-    return res(ctx.status(204));
+  http.delete('/api/me/account', async () => {
+    return new HttpResponse(null, { status: 204 });
   }),
 ];

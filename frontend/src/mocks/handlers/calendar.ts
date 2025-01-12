@@ -1,22 +1,27 @@
-import { rest } from 'msw';
+import { delay, http, HttpResponse } from 'msw';
 import {
   schedules as scheduleData,
   mySchedules as myScheduleData,
 } from '~/mocks/fixtures/schedules';
 import { teamPlaces } from '~/mocks/fixtures/team';
 import { generateYYYYMMDDWithoutHyphens } from '~/utils/generateYYYYMMDDWithoutHyphens';
+import type { ScheduleWithoutId } from '~/types/schedule';
 
 let schedules = [...scheduleData];
 let mySchedules = [...myScheduleData];
 
 export const calendarHandlers = [
   //통합캘린더 일정 기간 조회
-  rest.get(`/api/my-calendar/schedules`, (req, res, ctx) => {
-    const startDate = req.url.searchParams.get('startDate');
-    const endDate = req.url.searchParams.get('endDate');
+  http.get(`/api/my-calendar/schedules`, ({ request }) => {
+    const url = new URL(request.url);
+
+    const startDate = url.searchParams.get('startDate');
+    const endDate = url.searchParams.get('endDate');
 
     if (!startDate || !endDate) {
-      return res(ctx.status(400));
+      return new HttpResponse(null, {
+        status: 400,
+      });
     }
 
     const searchedMySchedules = mySchedules.filter(
@@ -30,31 +35,28 @@ export const calendarHandlers = [
       },
     );
 
-    return res(
-      ctx.status(200),
-      ctx.json({
-        schedules: searchedMySchedules,
-      }),
-    );
+    return HttpResponse.json({
+      schedules: searchedMySchedules,
+    });
   }),
 
   //팀플레이스 일정 기간 조회
-  rest.get(
+  http.get(
     `/api/team-place/:teamPlaceId/calendar/schedules`,
-    (req, res, ctx) => {
-      const teamPlaceId = Number(req.params.teamPlaceId);
-      const startDate = req.url.searchParams.get('startDate');
-      const endDate = req.url.searchParams.get('endDate');
+    ({ request, params }) => {
+      const url = new URL(request.url);
+      const teamPlaceId = Number(params.teamPlaceId);
+      const startDate = url.searchParams.get('startDate');
+      const endDate = url.searchParams.get('endDate');
 
       const index = teamPlaces.findIndex(
         (teamPlace) => teamPlace.id === teamPlaceId,
       );
 
-      if (index === -1) return res(ctx.status(403));
+      if (index === -1) return new HttpResponse(null, { status: 403 });
 
-      if (!startDate || !endDate) {
-        return res(ctx.status(400));
-      }
+      if (!startDate || !endDate)
+        return new HttpResponse(null, { status: 400 });
 
       const searchedSchedules = schedules.filter(
         ({ startDateTime, endDateTime }) => {
@@ -67,74 +69,72 @@ export const calendarHandlers = [
         },
       );
 
-      return res(
-        ctx.status(200),
-        ctx.json({
-          schedules: searchedSchedules,
-        }),
-      );
+      return HttpResponse.json({ schedules: searchedSchedules });
     },
   ),
 
   //팀플레이스 특정 일정 조회
-  rest.get(
+  http.get(
     `/api/team-place/:teamPlaceId/calendar/schedules/:scheduleId`,
-    (req, res, ctx) => {
-      const scheduleId = Number(req.params.scheduleId);
+    ({ params }) => {
+      const scheduleId = Number(params.scheduleId);
       const data = schedules.find((schedule) => schedule.id === scheduleId);
 
-      const teamPlaceId = Number(req.params.teamPlaceId);
+      console.log('테스트', { scheduleId, data });
+
+      const teamPlaceId = Number(params.teamPlaceId);
       const index = teamPlaces.findIndex(
         (teamPlace) => teamPlace.id === teamPlaceId,
       );
 
-      if (index === -1) return res(ctx.status(403));
+      if (index === -1) return new HttpResponse(null, { status: 403 });
 
-      if (data === undefined) return res(ctx.status(404));
-      return res(ctx.status(200), ctx.json(data));
+      if (data === undefined) return new HttpResponse(null, { status: 404 });
+
+      return HttpResponse.json(data);
     },
   ),
 
   //팀플레이스 일정 등록
-  rest.post(
+  http.post<{ teamPlaceId: string }, ScheduleWithoutId>(
     `/api/team-place/:teamPlaceId/calendar/schedules`,
-    async (req, res, ctx) => {
-      const { title, startDateTime, endDateTime } = await req.json();
+    async ({ request, params }) => {
+      const { title, startDateTime, endDateTime } = await request.json();
       const newSchedule = {
         id: Date.now(),
         title,
         startDateTime,
         endDateTime,
       };
-      const teamPlaceId = Number(req.params.teamPlaceId);
+      const teamPlaceId = Number(params.teamPlaceId);
       const index = teamPlaces.findIndex(
         (teamPlace) => teamPlace.id === teamPlaceId,
       );
 
-      if (index === -1) return res(ctx.status(403));
-      if (title.length > 250) return res(ctx.status(500));
+      if (index === -1) return new HttpResponse(null, { status: 403 });
+      if (title.length > 250) return new HttpResponse(null, { status: 500 });
 
       schedules.push(newSchedule);
       mySchedules.push({ ...newSchedule, teamPlaceId: 1 });
 
-      return res(
-        ctx.status(201),
-        ctx.set(
-          'Location',
-          `/api/team-place/${teamPlaceId}/calendar/schedules/${newSchedule.id}`,
-        ),
-      );
+      return new HttpResponse(null, {
+        status: 201,
+        headers: {
+          Location: `/api/team-place/${teamPlaceId}/calendar/schedules/${newSchedule.id}`,
+        },
+      });
     },
   ),
 
   //팀플레이스 일정 수정
-  rest.patch(
+  http.patch<{ teamPlaceId: string; scheduleId: string }, ScheduleWithoutId>(
     `/api/team-place/:teamPlaceId/calendar/schedules/:scheduleId`,
-    async (req, res, ctx) => {
-      const teamPlaceId = Number(req.params.teamPlaceId);
-      const scheduleId = Number(req.params.scheduleId);
+    async ({ request, params }) => {
+      const teamPlaceId = Number(params.teamPlaceId);
+      const scheduleId = Number(params.scheduleId);
 
-      const { title, startDateTime, endDateTime } = await req.json();
+      const { title, startDateTime, endDateTime } = await request.json();
+      console.log('테스트', title, startDateTime, endDateTime);
       const index = schedules.findIndex(
         (schedule) => schedule.id === scheduleId,
       );
@@ -143,8 +143,9 @@ export const calendarHandlers = [
         (schedule) => schedule.id === scheduleId,
       );
 
-      if (index === -1) return res(ctx.status(404));
-      if (title.length > 250) return res(ctx.status(500));
+      if (index === -1) return new HttpResponse(null, { status: 404 });
+
+      if (title.length > 250) new HttpResponse(null, { status: 500 });
 
       schedules[index] = {
         id: scheduleId,
@@ -161,43 +162,42 @@ export const calendarHandlers = [
         endDateTime,
       };
 
-      return res(ctx.status(200));
+      return new HttpResponse(null);
     },
   ),
 
   //팀플레이스 일정 삭제
-  rest.delete(
+  http.delete(
     `/api/team-place/:teamPlaceId/calendar/schedules/:scheduleId`,
-    async (req, res, ctx) => {
-      const scheduleId = Number(req.params.scheduleId);
+    async ({ params }) => {
+      const scheduleId = Number(params.scheduleId);
       const index = schedules.findIndex(
         (schedule) => schedule.id === scheduleId,
       );
-      if (index === -1) return res(ctx.status(404));
+      if (index === -1) return new HttpResponse(null, { status: 404 });
 
       schedules = schedules.filter((schedule) => schedule.id !== scheduleId);
       mySchedules = mySchedules.filter(
         (schedule) => schedule.id !== scheduleId,
       );
-      return res(ctx.status(204));
+
+      return new HttpResponse(null, { status: 204 });
     },
   ),
 
   //팀플레이스 iCalendar URL 조회
-  rest.get(`/api/team-place/:teamPlaceId/icalendar-url`, (req, res, ctx) => {
-    const teamPlaceId = Number(req.params.teamPlaceId);
+  http.get(`/api/team-place/:teamPlaceId/icalendar-url`, async ({ params }) => {
+    const teamPlaceId = Number(params.teamPlaceId);
     const index = teamPlaces.findIndex(
       (teamPlace) => teamPlace.id === teamPlaceId,
     );
 
-    if (index === -1) return res(ctx.status(403));
+    if (index === -1) return new HttpResponse(null, { status: 403 });
 
-    return res(
-      ctx.status(200),
-      ctx.json({
-        url: 'https://assets.teamby.team/prod/ical/1-5',
-      }),
-      ctx.delay(1000),
-    );
+    await delay(1000);
+
+    return HttpResponse.json({
+      url: 'https://assets.teamby.team/prod/ical/1-5',
+    });
   }),
 ];

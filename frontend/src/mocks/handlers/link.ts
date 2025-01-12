@@ -1,6 +1,7 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { teamLinks } from '../fixtures/link';
 import { teamPlaces } from '~/mocks/fixtures/team';
+import type { TeamLinkWithoutInfo } from '~/types/link';
 
 let incrementalId = 1;
 
@@ -10,10 +11,10 @@ const getIncrementalId = () => {
 
 export const LinkHandlers = [
   // 팀 링크 등록
-  rest.post(
+  http.post<never, TeamLinkWithoutInfo>(
     '/api/team-place/:teamPlaceId/team-links',
-    async (req, res, ctx) => {
-      const { title, url } = await req.json();
+    async ({ request }) => {
+      const { title, url } = await request.json();
       teamLinks.push({
         id: getIncrementalId(),
         memberId: 123123,
@@ -23,38 +24,38 @@ export const LinkHandlers = [
         url,
       });
 
-      return res(ctx.status(201));
+      return new HttpResponse(null, { status: 201 });
     },
   ),
 
   // 팀 링크목록 조회
-  rest.get('/api/team-place/:teamPlaceId/team-links', async (req, res, ctx) => {
-    const teamPlaceId = Number(req.params.teamPlaceId);
+  http.get('/api/team-place/:teamPlaceId/team-links', async ({ params }) => {
+    const teamPlaceId = Number(params.teamPlaceId);
     const index = teamPlaces.findIndex(
       (teamPlace) => teamPlace.id === teamPlaceId,
     );
 
-    if (index === -1) return res(ctx.status(403));
+    if (index === -1) return new HttpResponse(null, { status: 403 });
 
-    if (teamPlaceId === 2)
-      return res(ctx.status(200), ctx.json({ teamLinks: [] }));
-    return res(ctx.status(200), ctx.json({ teamLinks }));
+    if (teamPlaceId === 2) return HttpResponse.json({ teamLinks: [] });
+
+    return HttpResponse.json({ teamLinks });
   }),
 
   // 팀 링크 삭제
-  rest.delete(
+  http.delete(
     '/api/team-place/:teamPlaceId/team-links/:teamLinkId',
-    async (req, res, ctx) => {
-      const teamLinkId = Number(req.params.teamLinkId);
+    async ({ params }) => {
+      const teamLinkId = Number(params.teamLinkId);
       const deleteIndex = teamLinks.findIndex(({ id }) => id === teamLinkId);
 
       if (deleteIndex === -1) {
-        return res(ctx.status(404));
+        return new HttpResponse(null, { status: 404 });
       }
 
       teamLinks.splice(deleteIndex, 1);
 
-      return res(ctx.status(204));
+      return new HttpResponse(null, { status: 204 });
     },
   ),
 ];
