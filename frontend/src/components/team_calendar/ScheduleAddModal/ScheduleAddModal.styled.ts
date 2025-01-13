@@ -1,4 +1,5 @@
 import { styled, css } from 'styled-components';
+import theme from '~/styles/theme';
 import type { CalendarSize } from '~/types/size';
 
 export const Backdrop = styled.div`
@@ -39,9 +40,9 @@ export const Container = styled.div<{
       `;
 
     return css`
-      width: 400px;
-      min-height: 320px;
-      padding: 18px 22px;
+      width: 380px;
+      min-height: 300px;
+      padding: 16px 20px;
     `;
   }}
   
@@ -56,7 +57,7 @@ export const Container = styled.div<{
     display: flex;
     flex-direction: column;
 
-    row-gap: ${({ $isMobile }) => ($isMobile ? '10px' : '16px')};
+    row-gap: 10px;
   }
 `;
 
@@ -65,7 +66,7 @@ export const Header = styled.div`
   justify-content: flex-end;
 
   width: 100%;
-  height: 34px;
+  height: 30px;
   margin-bottom: 18px;
 
   border-bottom: ${({ theme }) => `1px solid ${theme.color.GRAY300}`};
@@ -84,16 +85,17 @@ export const InnerContainer = styled.div`
   width: 100%;
 `;
 
-export const CheckboxContainer = styled.div`
+export const ConvenientContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
 
   column-gap: 8px;
 `;
 
 export const TimeSelectContainer = styled.div<{ $isMobile: boolean }>`
   display: flex;
+  justify-content: space-between;
 
   width: 100%;
   height: ${({ $isMobile }) => ($isMobile ? '74px' : '40px')};
@@ -116,9 +118,7 @@ export const InputWrapper = styled.div<{ $isMobile: boolean }>`
   align-items: center;
   justify-content: space-between;
 
-  width: ${({ $isMobile }) => !$isMobile && 'calc(100% - 80px)'};
-
-  margin-left: ${({ $isMobile }) => !$isMobile && 'auto'};
+  width: ${({ $isMobile }) => !$isMobile && 'calc(100% - 70px)'};
 `;
 
 export const TeamNameContainer = styled.div`
@@ -138,6 +138,26 @@ export const ControlButtonWrapper = styled.div`
   height: 38px;
 `;
 
+export const DescriptionTextarea = styled.textarea`
+  display: inline-block;
+  width: 100%;
+  padding: 6px 10px;
+
+  border: none;
+  border-bottom: 1px solid ${theme.color.GRAY200};
+  border-radius: 10px;
+
+  font-size: 14px;
+  resize: none;
+  white-space: normal;
+  overflow-wrap: break-word;
+`;
+
+export const WarnDiv = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
 export const title = css`
   padding: 10px 20px;
 
@@ -145,18 +165,18 @@ export const title = css`
   border-radius: 10px;
   background-color: ${({ theme }) => theme.color.GRAY200};
 
-  font-size: 18px;
+  font-size: 16px;
 `;
 
 export const closeButton = css`
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   padding: 0;
   margin-bottom: 4px;
 
   svg {
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
   }
 `;
 
@@ -184,6 +204,23 @@ export const teamPlaceName = css`
 `;
 
 export const submitButton = css`
-  width: 80px;
+  width: 76px;
   padding: 0;
+`;
+
+export const descriptionButton = ($isDescription: boolean) => css`
+  display: flex;
+  padding: 2px 6px;
+  align-items: center;
+  border: 1px solid ${theme.color.PRIMARY};
+  border-radius: 25px;
+  background-color: ${$isDescription ? theme.color.PRIMARY : theme.color.WHITE};
+`;
+
+export const descriptionText = ($isDescription: boolean) => css`
+  color: ${$isDescription ? theme.color.WHITE : theme.color.PRIMARY};
+`;
+
+export const errorText = css`
+  color: ${theme.color.RED};
 `;

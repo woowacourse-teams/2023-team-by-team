@@ -8,6 +8,7 @@ import type { Schedule, YYYYMMDD } from '~/types/schedule';
 
 interface DateTimeRange {
   title: string;
+  description: string;
   startDate: string;
   startTime: string;
   endDate: string;
@@ -46,6 +47,7 @@ const isDateTimeRangeValid = (dateTimeRange: DateTimeRange) => {
 const generateDateTimeRange = (
   dateData: Date | Schedule | undefined,
   title: string | undefined,
+  initDescription: string | undefined,
 ) => {
   if (!dateData) {
     return {
@@ -56,6 +58,7 @@ const generateDateTimeRange = (
       endTime: '10:00',
       dateDifference: 0,
       isAllDay: false,
+      description: initDescription ?? '',
     };
   }
 
@@ -70,6 +73,7 @@ const generateDateTimeRange = (
       endTime: '10:00',
       dateDifference: 0,
       isAllDay: false,
+      description: initDescription ?? '',
     };
   }
 
@@ -88,18 +92,21 @@ const generateDateTimeRange = (
     endTime,
     dateDifference,
     isAllDay: endTime === '23:59',
+    description: initDescription ?? '',
   };
 };
 
 export const useDateTimeRange = (
   dateData: Date | Schedule | undefined,
   initTitle: string | undefined,
+  initDescription: string | undefined,
 ) => {
   const [dateTimeRange, setDateTimeRange] = useState<DateTimeRange>(
-    generateDateTimeRange(dateData, initTitle),
+    generateDateTimeRange(dateData, initTitle, initDescription),
   );
   const {
     title,
+    description,
     startDate,
     endDate,
     startTime,
@@ -107,6 +114,13 @@ export const useDateTimeRange = (
     dateDifference,
     isAllDay,
   } = dateTimeRange;
+
+  const handleDescriptionChange = (description: string) => {
+    setDateTimeRange((prev) => ({
+      ...prev,
+      description: description,
+    }));
+  };
 
   const handleScheduleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const { name, value } = e.target;
@@ -189,10 +203,12 @@ export const useDateTimeRange = (
     handleStartTimeChange,
     handleEndTimeChange,
     handleIsAllDayChange,
+    handleDescriptionChange,
 
     title,
     startDate,
     endDate,
+    description,
     startTime: isAllDay ? '00:00' : startTime,
     endTime: isAllDay ? '23:59' : endTime,
     isValid: isDateTimeRangeValid(dateTimeRange),

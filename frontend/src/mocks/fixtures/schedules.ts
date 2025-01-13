@@ -12,6 +12,7 @@ export const schedules: Schedule[] = [
     title: 'test1',
     startDateTime: '2023-07-13 01:00',
     endDateTime: '2023-07-14 01:00',
+    description: '이것은 멤모입니다.',
   },
   {
     id: 2,
@@ -109,6 +110,13 @@ export const schedules: Schedule[] = [
     startDateTime: '2024-01-02 10:00',
     endDateTime: '2024-01-15 18:00',
   },
+  {
+    id: 18,
+    title: 'test7',
+    startDateTime: '2025-01-03 05:00',
+    endDateTime: '2025-01-04 05:00',
+    description: '멤모멤모테스트',
+  },
 ];
 
 export const mySchedules: ScheduleWithTeamPlaceId[] = [
@@ -168,5 +176,13 @@ export const mySchedules: ScheduleWithTeamPlaceId[] = [
     title: 'test7',
     startDateTime: '2023-06-30 05:00',
     endDateTime: '2023-07-02 05:00',
+  },
+  {
+    id: 8,
+    teamPlaceId: 1,
+    title: 'test7',
+    startDateTime: '2025-01-03 05:00',
+    endDateTime: '2025-01-04 05:00',
+    description: '멤모멤모테스트',
   },
 ];
