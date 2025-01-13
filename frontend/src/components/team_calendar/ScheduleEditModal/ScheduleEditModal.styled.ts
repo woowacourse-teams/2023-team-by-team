@@ -138,10 +138,6 @@ export const ControlButtonWrapper = styled.div`
   height: 38px;
 `;
 
-export const DescriptionDiv = styled.div<{ $isDescription: boolean }>`
-  display: ${({ $isDescription }) => ($isDescription ? 'block' : 'none')};
-`;
-
 export const DescriptionTextarea = styled.textarea`
   display: inline-block;
   width: 100%;

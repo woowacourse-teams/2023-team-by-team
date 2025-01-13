@@ -15,6 +15,7 @@ import { getIsMobile } from '~/utils/getIsMobile';
 import Switch from '~/components/common/Switch/Switch';
 import theme from '~/styles/theme';
 import Svg from '~/components/common/Svg/Svg';
+import { SCHEDULE_DESCRIPTION_MAX_LENGTH } from '~/constants/calendar';
 
 interface ScheduleEditModalProps {
   calendarSize?: CalendarSize;
@@ -162,24 +163,29 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
               </Text>
             </Button>
           </S.ConvenientContainer>
-          <S.DescriptionDiv $isDescription={isDescription}>
-            <S.DescriptionTextarea
-              rows={1}
-              placeholder="메모를 작성해주세요.(최대 100자)"
-              value={schedule.description}
-              onChange={handleDescriptionInput}
-              required
-            />
-            <S.WarnDiv>
-              {!isDescriptionMaxLength ? (
-                <Text size="xs">({schedule.description.length} / 100자)</Text>
-              ) : (
-                <Text size="xs" css={S.errorText}>
-                  최대 100자까지 입력가능합니다.
-                </Text>
-              )}
-            </S.WarnDiv>
-          </S.DescriptionDiv>
+          {isDescription && (
+            <>
+              <S.DescriptionTextarea
+                rows={1}
+                placeholder={`메모를 작성해주세요.(최대 ${SCHEDULE_DESCRIPTION_MAX_LENGTH}자)`}
+                value={schedule.description}
+                onChange={handleDescriptionInput}
+              />
+              <S.WarnDiv>
+                {!isDescriptionMaxLength ? (
+                  <Text size="xs">
+                    ({schedule.description.length} / $
+                    {SCHEDULE_DESCRIPTION_MAX_LENGTH}자)
+                  </Text>
+                ) : (
+                  <Text size="xs" css={S.errorText}>
+                    최대 ${SCHEDULE_DESCRIPTION_MAX_LENGTH}자까지
+                    입력가능합니다.
+                  </Text>
+                )}
+              </S.WarnDiv>
+            </>
+          )}
           <S.InnerContainer>
             <S.TeamNameContainer title={displayName}>
               <TeamBadge teamPlaceColor={teamPlaceColor} size="lg" />
