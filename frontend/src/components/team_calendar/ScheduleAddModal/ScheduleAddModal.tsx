@@ -185,7 +185,7 @@ const ScheduleAddModal = (props: ScheduleAddModalProps) => {
               <S.WarnDiv>
                 {!isDescriptionMaxLength ? (
                   <Text size="xs">
-                    ({schedule.description.length} / $
+                    ({schedule.description.length} /
                     {SCHEDULE_DESCRIPTION_MAX_LENGTH}자)
                   </Text>
                 ) : (
