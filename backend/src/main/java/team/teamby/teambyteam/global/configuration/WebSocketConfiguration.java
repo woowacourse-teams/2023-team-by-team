@@ -2,28 +2,51 @@ package team.teamby.teambyteam.global.configuration;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.handler.invocation.HandlerMethodArgumentResolver;
 import org.springframework.messaging.simp.config.ChannelRegistration;
+import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
-import team.teamby.teambyteam.global.presentation.ConnectInboundChannelInterceptor;
+import team.teamby.teambyteam.auth.jwt.JwtTokenProvider;
+import team.teamby.teambyteam.global.presentation.InboundChannelInterceptor;
+import team.teamby.teambyteam.member.configuration.MemberArgumentResolver;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer {
 
-    private final ConnectInboundChannelInterceptor connectInboundChannelInterceptor;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final InboundChannelInterceptor inboundChannelInterceptor;
 
     @Override
     public void registerStompEndpoints(final StompEndpointRegistry registry) {
         registry.addEndpoint("/ws/chat")
+                .setAllowedOriginPatterns("*")
                 .withSockJS();
+
+        registry.addEndpoint("/ws/chat")
+                .setAllowedOriginPatterns("*");
+    }
+
+    @Override
+    public void configureMessageBroker(MessageBrokerRegistry registry) {
+        registry.enableSimpleBroker("/topic");
+        registry.setApplicationDestinationPrefixes("/app");
     }
 
     @Override
     public void configureClientInboundChannel(final ChannelRegistration registration) {
-        registration.interceptors(connectInboundChannelInterceptor);
+        registration.interceptors(inboundChannelInterceptor);
         WebSocketMessageBrokerConfigurer.super.configureClientInboundChannel(registration);
+    }
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+        argumentResolvers.add(new MemberArgumentResolver(jwtTokenProvider));
+        WebSocketMessageBrokerConfigurer.super.addArgumentResolvers(argumentResolvers);
     }
 }
