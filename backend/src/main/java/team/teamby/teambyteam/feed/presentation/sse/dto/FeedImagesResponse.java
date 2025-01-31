@@ -1,4 +1,4 @@
-package team.teamby.teambyteam.feed.presentation.dto;
+package team.teamby.teambyteam.feed.presentation.sse.dto;
 
 import team.teamby.teambyteam.feed.application.dto.FeedImageResponse;
 
