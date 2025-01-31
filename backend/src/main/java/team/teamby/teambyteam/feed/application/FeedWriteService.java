@@ -1,6 +1,7 @@
 package team.teamby.teambyteam.feed.application;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import team.teamby.teambyteam.feed.application.dto.FeedImageResponse;
 import team.teamby.teambyteam.feed.application.dto.FeedResponse;
+import team.teamby.teambyteam.feed.application.dto.FeedThreadWebsocketWritingRequest;
 import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
+import team.teamby.teambyteam.feed.application.dto.FeedWebsocketResponse;
 import team.teamby.teambyteam.feed.application.event.FeedEvent;
 import team.teamby.teambyteam.feed.domain.FeedRepository;
 import team.teamby.teambyteam.feed.domain.FeedThread;
@@ -23,6 +26,7 @@ import team.teamby.teambyteam.feed.exception.FeedWritingRequestEmptyException;
 import team.teamby.teambyteam.filesystem.FileStorageManager;
 import team.teamby.teambyteam.filesystem.ImageValidationService;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
+import team.teamby.teambyteam.member.domain.IdOnly;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlace;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
@@ -32,6 +36,7 @@ import team.teamby.teambyteam.member.exception.memberteamplace.NotFoundParticipa
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -84,13 +89,13 @@ public class FeedWriteService {
         return threadId;
     }
 
-    private void validateEmptyRequest(final String content, final List<MultipartFile> images) {
+    private void validateEmptyRequest(final String content, final List images) {
         if (isEmptyRequest(content, images)) {
             throw new FeedWritingRequestEmptyException();
         }
     }
 
-    private boolean isEmptyRequest(final String content, final List<MultipartFile> images) {
+    private boolean isEmptyRequest(final String content, final List images) {
         return (("".equals(content) || Objects.isNull(content)) && images.size() == 0);
     }
 
@@ -114,5 +119,23 @@ public class FeedWriteService {
 
     private void sendFeedWritingEvent(final FeedResponse response, final Long teamPlaceId) {
         applicationEventPublisher.publishEvent(new FeedEvent(response, teamPlaceId));
+    }
+
+    public FeedWebsocketResponse writeFeedThread(Long teamplaceId, MemberEmailDto memberEmailDto, String requestId, @Valid FeedThreadWebsocketWritingRequest request) {
+        final Long memberId = memberRepository.findIdByEmail(new Email(memberEmailDto.email()))
+                .orElseThrow(() -> new MemberNotFoundException(memberEmailDto.email()))
+                .id();
+        List<FeedThreadImage> images = feedThreadImageRepository.findAllById(request.imageIds());
+        final MemberTeamPlace author = memberTeamPlaceRepository.findByTeamPlaceIdAndMemberId(teamplaceId, memberId)
+                .orElseThrow(() -> new NotFoundParticipatedTeamPlaceException(memberEmailDto.email(), teamplaceId));
+        validateEmptyRequest(request.content(), images);
+
+
+        FeedThread feedThread = feedRepository.save(new FeedThread(teamplaceId, new Content(request.content()), memberId));
+
+        log.info("스레드 생성 - 생성자 이메일 : {}, 스레드 아이디 : {}", memberEmailDto.email(), feedThread.getId());
+
+        List<FeedImageResponse> feedImageResponses = images.stream().map(FeedImageResponse::from).toList();
+        return FeedWebsocketResponse.from(feedThread,author.getDisplayMemberNameValue(), author.findMemberProfileImageUrl(), feedImageResponses);
     }
 }
