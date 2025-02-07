@@ -61,6 +61,7 @@
     "webpack-dev-server": "^4.15.1"
   },
   "dependencies": {
+    "@stomp/stompjs": "^7.0.0",
     "@tanstack/react-query": "^4.29.25",
     "@tanstack/react-query-devtools": "^4.36.1",
     "dotenv": "^16.3.1",

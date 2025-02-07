@@ -5,37 +5,29 @@ import type {
 } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useFetchNoticeThread } from '~/hooks/queries/useFetchNoticeThread';
-import { useSendNoticeThread } from '~/hooks/queries/useSendNoticeThread';
-import { useSendThread } from '~/hooks/queries/useSendThread';
 import { useImageUpload } from '~/hooks/thread/useImageUpload';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useToast } from '~/hooks/useToast';
+import type { Thread } from '~/types/feed';
 
-export const useTeamFeedPage = () => {
+interface UseTeamFeedPageParams {
+  sendThreadToStomp: (thread: Thread, callback: () => void) => void;
+}
+
+export const useTeamFeedPage = (params: UseTeamFeedPageParams) => {
+  const { sendThreadToStomp } = params;
   const { teamPlaceId } = useTeamPlace();
   const { showToast } = useToast();
-  const {
-    previewImages,
-    imageFiles,
-    updateImages,
-    deleteImageByUuid,
-    deleteAllImages,
-  } = useImageUpload();
+  const { previewImages, updateImages, deleteImageByUuid, deleteAllImages } =
+    useImageUpload();
   const { noticeThread } = useFetchNoticeThread(teamPlaceId);
-  const { mutateSendThread, isSendThreadLoading } = useSendThread(teamPlaceId);
-  const { mutateSendNoticeThread, isSendNoticeThreadLoading } =
-    useSendNoticeThread(teamPlaceId);
-
   const [isNotice, setIsNotice] = useState(false);
   const [isShowScrollBottomButton, setIsShowScrollBottomButton] =
     useState(false);
   const [isImageDrawerOpen, setIsImageDrawerOpen] = useState(false);
   const [chatContent, setChatContent] = useState('');
   const ref = useRef<HTMLDivElement>(null);
-
-  const isSendingImage =
-    (isSendNoticeThreadLoading || isSendThreadLoading) &&
-    imageFiles.length !== 0;
+  const isSendingImage = false;
 
   const handleIsNoticeChange = () => {
     setIsNotice((prev) => !prev);
@@ -49,6 +41,29 @@ export const useTeamFeedPage = () => {
     e,
   ) => {
     setChatContent(() => e.target.value);
+  };
+
+  const handleSendThread = () => {
+    sendThreadToStomp(
+      {
+        type: isNotice ? 'notice' : 'thread',
+        content: chatContent,
+        imagesId: [],
+      },
+      () => {
+        if (isNotice) {
+          showToast('success', '공지가 등록되었습니다.');
+        }
+        console.log('채팅 감지!');
+      },
+    );
+
+    deleteAllImages();
+    resetChatBox();
+
+    if (isImageDrawerOpen) {
+      handleImageDrawerToggle();
+    }
   };
 
   const handleEnterKeydown: KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
@@ -66,7 +81,7 @@ export const useTeamFeedPage = () => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
 
-      sendNewThread();
+      handleSendThread();
     }
   };
 
@@ -83,46 +98,7 @@ export const useTeamFeedPage = () => {
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
-    sendNewThread();
-  };
-
-  const sendNewThread = () => {
-    if (chatContent.trim() === '' && imageFiles.length === 0) {
-      return;
-    }
-
-    if (isNotice) {
-      mutateSendNoticeThread(
-        { content: chatContent, images: imageFiles },
-        {
-          onSuccess: () => {
-            showToast('success', '공지가 등록되었습니다.');
-            deleteAllImages();
-            resetChatBox();
-            if (isImageDrawerOpen) handleImageDrawerToggle();
-          },
-          onError: () => {
-            showToast('error', '공지 등록에 실패했습니다.');
-          },
-        },
-      );
-
-      return;
-    }
-
-    mutateSendThread(
-      { content: chatContent, images: imageFiles },
-      {
-        onSuccess: () => {
-          resetChatBox();
-          deleteAllImages();
-          if (isImageDrawerOpen) handleImageDrawerToggle();
-        },
-        onError: () => {
-          showToast('error', '스레드 등록에 실패했습니다.');
-        },
-      },
-    );
+    handleSendThread();
   };
 
   const resetChatBox = () => {
