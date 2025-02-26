@@ -47,7 +47,7 @@ public class MyCalendarScheduleAcceptanceTest extends AcceptanceTest {
             final int month = 7;
 
             // when
-            final ExtractableResponse<Response> response = FIND_PERIOD_SCHEDULE_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), year, month);
+            final ExtractableResponse<Response> response = FIND_PERIOD_SCHEDULE_REQUEST(jwtAccessTokenManager.generateToken(PHILIP.getEmail().getValue()), year, month);
             final List<ScheduleWithTeamPlaceIdResponse> schedules = response.jsonPath().getList("schedules", ScheduleWithTeamPlaceIdResponse.class);
 
             //then
@@ -86,7 +86,7 @@ public class MyCalendarScheduleAcceptanceTest extends AcceptanceTest {
             final int day = 12;
 
             // when
-            final ExtractableResponse<Response> response = FIND_DAILY_SCHEDULE_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), year, month, day);
+            final ExtractableResponse<Response> response = FIND_DAILY_SCHEDULE_REQUEST(jwtAccessTokenManager.generateToken(PHILIP.getEmail().getValue()), year, month, day);
             final List<ScheduleWithTeamPlaceIdResponse> schedules = response.jsonPath().getList("schedules", ScheduleWithTeamPlaceIdResponse.class);
 
             //then
@@ -128,7 +128,7 @@ public class MyCalendarScheduleAcceptanceTest extends AcceptanceTest {
             final String endDate = "20230712";
 
             // when
-            final ExtractableResponse<Response> response = FIND_PERIOD_SCHEDULE_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), startDate, endDate);
+            final ExtractableResponse<Response> response = FIND_PERIOD_SCHEDULE_REQUEST(jwtAccessTokenManager.generateToken(PHILIP.getEmail().getValue()), startDate, endDate);
             final List<ScheduleWithTeamPlaceIdResponse> schedules = response.jsonPath().getList("schedules", ScheduleWithTeamPlaceIdResponse.class);
 
             //then
@@ -162,7 +162,7 @@ public class MyCalendarScheduleAcceptanceTest extends AcceptanceTest {
             final String endDate = "20230710";
 
             // when
-            final ExtractableResponse<Response> response = FIND_PERIOD_SCHEDULE_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), startDate, endDate);
+            final ExtractableResponse<Response> response = FIND_PERIOD_SCHEDULE_REQUEST(jwtAccessTokenManager.generateToken(PHILIP.getEmail().getValue()), startDate, endDate);
             final String errorMessage = response.jsonPath().get("error");
 
             //then
@@ -193,7 +193,7 @@ public class MyCalendarScheduleAcceptanceTest extends AcceptanceTest {
             final String endDate = "20230712";
 
             // when
-            final ExtractableResponse<Response> response = FIND_PERIOD_SCHEDULE_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), startDate, endDate);
+            final ExtractableResponse<Response> response = FIND_PERIOD_SCHEDULE_REQUEST(jwtAccessTokenManager.generateToken(PHILIP.getEmail().getValue()), startDate, endDate);
             final String errorMessage = response.jsonPath().get("error");
 
             //then

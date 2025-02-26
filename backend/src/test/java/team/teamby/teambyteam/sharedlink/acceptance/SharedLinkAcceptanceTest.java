@@ -40,7 +40,7 @@ public final class SharedLinkAcceptanceTest extends AcceptanceTest {
             final SharedLinkCreateRequest sharedLinkCreateRequest = new SharedLinkCreateRequest("title", "/");
 
             // when
-            final ExtractableResponse<Response> successRequest = REGISTER_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), sharedLinkCreateRequest);
+            final ExtractableResponse<Response> successRequest = REGISTER_SHARED_LINK_REQUEST(jwtAccessTokenManager.generateToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), sharedLinkCreateRequest);
 
             // then
             assertSoftly(softly -> {
@@ -60,7 +60,7 @@ public final class SharedLinkAcceptanceTest extends AcceptanceTest {
             final SharedLinkCreateRequest sharedLinkCreateRequest = new SharedLinkCreateRequest(invalidTitle, "/");
 
             // when
-            final ExtractableResponse<Response> response = REGISTER_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), sharedLinkCreateRequest);
+            final ExtractableResponse<Response> response = REGISTER_SHARED_LINK_REQUEST(jwtAccessTokenManager.generateToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), sharedLinkCreateRequest);
 
             // then
             assertSoftly(softly -> {
@@ -81,7 +81,7 @@ public final class SharedLinkAcceptanceTest extends AcceptanceTest {
 
 
             // when
-            final ExtractableResponse<Response> response = REGISTER_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), sharedLinkCreateRequest);
+            final ExtractableResponse<Response> response = REGISTER_SHARED_LINK_REQUEST(jwtAccessTokenManager.generateToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), sharedLinkCreateRequest);
 
             // then
             assertSoftly(softly -> {
@@ -118,7 +118,7 @@ public final class SharedLinkAcceptanceTest extends AcceptanceTest {
             final SharedLinkCreateRequest sharedLinkCreateRequest = new SharedLinkCreateRequest("title", "/");
 
             // when
-            final ExtractableResponse<Response> response = REGISTER_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), invalidTeamPlaceId, sharedLinkCreateRequest);
+            final ExtractableResponse<Response> response = REGISTER_SHARED_LINK_REQUEST(jwtAccessTokenManager.generateToken(PHILIP.getEmail().getValue()), invalidTeamPlaceId, sharedLinkCreateRequest);
 
             // then
             assertSoftly(softly -> {
@@ -140,10 +140,10 @@ public final class SharedLinkAcceptanceTest extends AcceptanceTest {
             final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(PHILIP, ENGLISH_TEAM_PLACE);
             final SharedLinkCreateRequest sharedLinkCreateRequest = new SharedLinkCreateRequest("title", "/");
-            REGISTER_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), sharedLinkCreateRequest);
+            REGISTER_SHARED_LINK_REQUEST(jwtAccessTokenManager.generateToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), sharedLinkCreateRequest);
 
             // when
-            final ExtractableResponse<Response> successRequest = GET_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId());
+            final ExtractableResponse<Response> successRequest = GET_SHARED_LINK_REQUEST(jwtAccessTokenManager.generateToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId());
 
             // then
             final SharedLinksResponse sharedLinksResponse = successRequest.as(SharedLinksResponse.class);
@@ -179,7 +179,7 @@ public final class SharedLinkAcceptanceTest extends AcceptanceTest {
             final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
 
             // when
-            final ExtractableResponse<Response> response = GET_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId());
+            final ExtractableResponse<Response> response = GET_SHARED_LINK_REQUEST(jwtAccessTokenManager.generateToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId());
 
             // then
             assertSoftly(softly -> {
@@ -203,7 +203,7 @@ public final class SharedLinkAcceptanceTest extends AcceptanceTest {
             final SharedLink sharedLink = testFixtureBuilder.buildSharedLink(TEAM_BY_TEAM_LINK(ENGLISH_TEAM_PLACE.getId(), PHILIP.getId()));
 
             // when
-            final ExtractableResponse<Response> successRequest = DELETE_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), sharedLink.getId());
+            final ExtractableResponse<Response> successRequest = DELETE_SHARED_LINK_REQUEST(jwtAccessTokenManager.generateToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), sharedLink.getId());
 
             // then
             assertSoftly(softly -> {
@@ -221,7 +221,7 @@ public final class SharedLinkAcceptanceTest extends AcceptanceTest {
             final Long invalidId = -1L;
 
             // when
-            final ExtractableResponse<Response> response = DELETE_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), invalidId);
+            final ExtractableResponse<Response> response = DELETE_SHARED_LINK_REQUEST(jwtAccessTokenManager.generateToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), invalidId);
 
             // then
             assertSoftly(softly -> {
@@ -242,7 +242,7 @@ public final class SharedLinkAcceptanceTest extends AcceptanceTest {
             testFixtureBuilder.buildMemberTeamPlace(SEONGHA, ENGLISH_TEAM_PLACE);
 
             // when
-            final ExtractableResponse<Response> successRequest = DELETE_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(SEONGHA.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), sharedLink.getId());
+            final ExtractableResponse<Response> successRequest = DELETE_SHARED_LINK_REQUEST(jwtAccessTokenManager.generateToken(SEONGHA.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), sharedLink.getId());
 
             // then
             assertSoftly(softly -> {
@@ -261,7 +261,7 @@ public final class SharedLinkAcceptanceTest extends AcceptanceTest {
             final SharedLink sharedLink = testFixtureBuilder.buildSharedLink(TEAM_BY_TEAM_LINK(anotherTeamPlaceId, PHILIP.getId()));
 
             // when
-            final ExtractableResponse<Response> response = DELETE_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), sharedLink.getId());
+            final ExtractableResponse<Response> response = DELETE_SHARED_LINK_REQUEST(jwtAccessTokenManager.generateToken(PHILIP.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), sharedLink.getId());
 
             // then
             assertSoftly(softly -> {
@@ -300,7 +300,7 @@ public final class SharedLinkAcceptanceTest extends AcceptanceTest {
             final Member SEONGHA = testFixtureBuilder.buildMember(SEONGHA());
 
             // when
-            final ExtractableResponse<Response> response = DELETE_SHARED_LINK_REQUEST(jwtTokenProvider.generateAccessToken(SEONGHA.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), sharedLink.getId());
+            final ExtractableResponse<Response> response = DELETE_SHARED_LINK_REQUEST(jwtAccessTokenManager.generateToken(SEONGHA.getEmail().getValue()), ENGLISH_TEAM_PLACE.getId(), sharedLink.getId());
 
             // then
             assertSoftly(softly -> {

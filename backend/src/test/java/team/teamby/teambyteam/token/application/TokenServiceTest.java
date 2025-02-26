@@ -25,16 +25,18 @@ class TokenServiceTest extends ServiceTest {
     @Autowired
     private TokenService tokenService;
 
+    private static final String TOKEN_PREFIX = "Bearer ";
+
     @Test
     @DisplayName("받은 리프레시 토큰이 정상인 경우 액세스 토큰, 리프레시 토큰을 재발급한다.")
     void successReissueToken() {
         // given
         final Member philip = testFixtureBuilder.buildMember(PHILIP());
         final String refreshToken = CORRECT_REFRESH_TOKEN;
-        final Token token = testFixtureBuilder.buildToken(TOKEN_ENTITY(philip, refreshToken));
+        testFixtureBuilder.buildToken(new Token(philip, CORRECT_REFRESH_TOKEN));
 
         // when
-        final TokenResponse tokenResponse = tokenService.reissueToken(refreshToken);
+        final TokenResponse tokenResponse = tokenService.reissueToken(TOKEN_PREFIX + refreshToken);
 
         // then
         assertSoftly(softly -> {
@@ -50,12 +52,11 @@ class TokenServiceTest extends ServiceTest {
         // given
         final Member philip = testFixtureBuilder.buildMember(PHILIP());
         final String expiredRefreshToken = EXPIRED_REFRESH_TOKEN;
-        final Token token = testFixtureBuilder.buildToken(TOKEN_ENTITY(philip, expiredRefreshToken));
 
         // when & then
-        assertThatThrownBy(() -> tokenService.reissueToken(expiredRefreshToken))
+        assertThatThrownBy(() -> tokenService.reissueToken(TOKEN_PREFIX + expiredRefreshToken))
                 .isInstanceOf(ExpiredJwtException.class)
-                .hasMessage("EXPIRED_REFRESH_TOKEN");
+                .hasMessage("EXPIRED_TOKEN");
     }
 
     @Test
@@ -67,9 +68,9 @@ class TokenServiceTest extends ServiceTest {
         final Token token = testFixtureBuilder.buildToken(TOKEN_ENTITY(philip, missingClaimRefreshToken));
 
         // when & then
-        assertThatThrownBy(() -> tokenService.reissueToken(missingClaimRefreshToken))
+        assertThatThrownBy(() -> tokenService.reissueToken(TOKEN_PREFIX + missingClaimRefreshToken))
                 .isInstanceOf(AuthenticationException.FailAuthenticationException.class)
-                .hasMessage("인증 실패(JWT 리프레시 토큰 Payload 이메일 누락) - 토큰 : " + token.getRefreshToken());
+                .hasMessage("인증 실패(JWT Payload 이메일 누락) - 토큰 : " + token.getRefreshToken());
     }
 
     @Test
@@ -81,19 +82,19 @@ class TokenServiceTest extends ServiceTest {
         final Token token = testFixtureBuilder.buildToken(TOKEN_ENTITY(philip, malformedJwtToken));
 
         // when & then
-        assertThatThrownBy(() -> tokenService.reissueToken(malformedJwtToken))
+        assertThatThrownBy(() -> tokenService.reissueToken(TOKEN_PREFIX + malformedJwtToken))
                 .isInstanceOf(AuthenticationException.FailAuthenticationException.class)
-                .hasMessage("인증 실패(잘못된 리프레시 토큰) - 토큰 : " + token.getRefreshToken());
+                .hasMessage("인증 실패(잘못된 토큰) - 토큰 : " + token.getRefreshToken());
     }
 
     @Test
     @DisplayName("받은 리프레시 토큰이 DB에 없는 경우 예외가 발생한다.")
     void failReissueTokenNotExistRefreshToken() {
         // given
-        final String refreshToken = CORRECT_REFRESH_TOKEN;
+        final String refreshTokenHeader = TOKEN_PREFIX + CORRECT_REFRESH_TOKEN;
 
         // when & then
-        assertThatThrownBy(() -> tokenService.reissueToken(refreshToken))
+        assertThatThrownBy(() -> tokenService.reissueToken(refreshTokenHeader))
                 .isInstanceOf(TokenNotFoundException.class)
                 .hasMessageContaining("토큰을 찾을 수 없습니다.");
     }

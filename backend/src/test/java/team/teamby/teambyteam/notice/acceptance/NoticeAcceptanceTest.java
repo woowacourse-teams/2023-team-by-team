@@ -70,7 +70,7 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
             authedMember = testFixtureBuilder.buildMember(PHILIP());
             participatedTeamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             participatedMemberTeamPlace = testFixtureBuilder.buildMemberTeamPlace(authedMember, participatedTeamPlace);
-            authToken = jwtTokenProvider.generateAccessToken(authedMember.getEmail().getValue());
+            authToken = jwtAccessTokenManager.generateToken(authedMember.getEmail().getValue());
             given(fileStorageManager.upload(any(MultipartFile.class), any(String.class), any(String.class)))
                     .willReturn("https://s3://seongha-seeik");
         }
@@ -224,7 +224,7 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
         @DisplayName("인증되지 않은 사용자로 요청 시 등록이 실패한다.")
         void failUnAuthorizedMember() {
             // given
-            final String unauthorizedToken = jwtTokenProvider.generateAccessToken(ROY().getEmail().getValue());
+            final String unauthorizedToken = jwtAccessTokenManager.generateToken(ROY().getEmail().getValue());
 
             // when
             final ExtractableResponse<Response> response = POST_NOTICE_ONLY_CONTENT_REQUEST(unauthorizedToken,
@@ -252,7 +252,7 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
             authedMember = testFixtureBuilder.buildMember(PHILIP());
             participatedTeamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             participatedMemberTeamPlace = testFixtureBuilder.buildMemberTeamPlace(authedMember, participatedTeamPlace);
-            authToken = jwtTokenProvider.generateAccessToken(authedMember.getEmail().getValue());
+            authToken = jwtAccessTokenManager.generateToken(authedMember.getEmail().getValue());
             given(fileStorageManager.upload(any(MultipartFile.class), any(String.class), any(String.class)))
                     .willReturn("https://s3://seongha-seeik");
         }
@@ -332,7 +332,7 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
             final Member otherMember = testFixtureBuilder.buildMember(ROY());
             testFixtureBuilder.buildMemberTeamPlace(otherMember, participatedTeamPlace);
 
-            final String otherMemberToken = jwtTokenProvider.generateAccessToken(otherMember.getEmail().getValue());
+            final String otherMemberToken = jwtAccessTokenManager.generateToken(otherMember.getEmail().getValue());
 
             // when
             final ExtractableResponse<Response> response = GET_NOTICE_REQUEST(otherMemberToken,
@@ -360,7 +360,7 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
             final TeamPlace additionalTeamPlace = testFixtureBuilder.buildTeamPlace(JAPANESE_TEAM_PLACE());
             final MemberTeamPlace additionalMemberTeamPlace = testFixtureBuilder.buildMemberTeamPlace(additionalMember,
                     additionalTeamPlace);
-            final String additionalToken = jwtTokenProvider.generateAccessToken(additionalMember.getEmail().getValue());
+            final String additionalToken = jwtAccessTokenManager.generateToken(additionalMember.getEmail().getValue());
 
             // when
             final ExtractableResponse<Response> response = GET_NOTICE_REQUEST(additionalToken,
@@ -386,7 +386,7 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
             testFixtureBuilder.buildMemberTeamPlace(otherMember, participatedTeamPlace);
             authedMember.leaveTeamPlace(participatedTeamPlace.getId());
             testFixtureBuilder.deleteMemberTeamPlace(participatedMemberTeamPlace);
-            final String otherMemberToken = jwtTokenProvider.generateAccessToken(otherMember.getEmail().getValue());
+            final String otherMemberToken = jwtAccessTokenManager.generateToken(otherMember.getEmail().getValue());
 
             // when
             final ExtractableResponse<Response> response = GET_NOTICE_REQUEST(otherMemberToken,
@@ -417,7 +417,7 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
             final Member otherMember = testFixtureBuilder.buildMember(ROY());
             testFixtureBuilder.buildMemberTeamPlace(otherMember, participatedTeamPlace);
             testFixtureBuilder.deleteMember(authedMember);
-            final String otherMemberToken = jwtTokenProvider.generateAccessToken(otherMember.getEmail().getValue());
+            final String otherMemberToken = jwtAccessTokenManager.generateToken(otherMember.getEmail().getValue());
 
             // when
             final ExtractableResponse<Response> response = GET_NOTICE_REQUEST(otherMemberToken,
@@ -456,7 +456,7 @@ public class NoticeAcceptanceTest extends AcceptanceTest {
         void failWithForbiddenTeamPlace() {
             // given
             final Member forbiddenMember = testFixtureBuilder.buildMember(ROY());
-            final String forbiddenToken = jwtTokenProvider.generateAccessToken(forbiddenMember.getEmail().getValue());
+            final String forbiddenToken = jwtAccessTokenManager.generateToken(forbiddenMember.getEmail().getValue());
 
             // when
             final ExtractableResponse<Response> response = GET_NOTICE_REQUEST(forbiddenToken,

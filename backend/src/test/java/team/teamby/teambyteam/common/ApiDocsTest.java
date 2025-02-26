@@ -9,7 +9,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.web.servlet.MockMvc;
-import team.teamby.teambyteam.auth.jwt.JwtTokenProvider;
+import team.teamby.teambyteam.auth.jwt.JwtAccessTokenManager;
+import team.teamby.teambyteam.auth.jwt.JwtRefreshTokenManager;
 import team.teamby.teambyteam.auth.presentation.MemberInterceptor;
 import team.teamby.teambyteam.auth.presentation.TeamPlaceParticipationInterceptor;
 
@@ -37,7 +38,10 @@ public abstract class ApiDocsTest {
     protected TeamPlaceParticipationInterceptor teamPlaceParticipationInterceptor;
 
     @MockBean
-    protected JwtTokenProvider jwtTokenProvider;
+    protected JwtAccessTokenManager jwtAccessTokenManager;
+
+    @MockBean
+    protected JwtRefreshTokenManager jwtRefreshTokenManager;
 
     @BeforeEach
     void setup() throws Exception {

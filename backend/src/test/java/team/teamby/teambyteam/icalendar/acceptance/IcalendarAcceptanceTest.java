@@ -75,7 +75,7 @@ public class IcalendarAcceptanceTest extends AcceptanceTest {
             member = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
             teamPlace = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.FLUID_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(member, teamPlace);
-            authCode = jwtTokenProvider.generateAccessToken(member.getEmailValue());
+            authCode = jwtAccessTokenManager.generateToken(member.getEmailValue());
         }
 
         @Test

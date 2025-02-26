@@ -54,7 +54,7 @@ public class TokenAcceptanceTest extends AcceptanceTest {
         // then
         assertSoftly(softly -> {
             softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
-            softly.assertThat(response.jsonPath().getString("error")).isEqualTo("EXPIRED_REFRESH_TOKEN");
+            softly.assertThat(response.jsonPath().getString("error")).isEqualTo("EXPIRED_TOKEN");
             softly.assertThat(response.header(ACCESS_TOKEN_HEADER)).isNull();
             softly.assertThat(response.header(REFRESH_TOKEN_HEADER)).isNull();
         });

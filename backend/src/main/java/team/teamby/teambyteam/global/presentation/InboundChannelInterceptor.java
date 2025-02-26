@@ -10,7 +10,7 @@ import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import team.teamby.teambyteam.auth.exception.AuthenticationException;
-import team.teamby.teambyteam.auth.jwt.JwtTokenProvider;
+import team.teamby.teambyteam.auth.jwt.JwtAccessTokenManager;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
@@ -26,7 +26,7 @@ public final class InboundChannelInterceptor implements ChannelInterceptor {
 
     private static final String PREFIX_BEARER = "Bearer ";
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtAccessTokenManager jwtAccessTokenManager;
     private final MemberRepository memberRepository;
     private final MemberTeamPlaceRepository memberTeamPlaceRepository;
 
@@ -38,7 +38,7 @@ public final class InboundChannelInterceptor implements ChannelInterceptor {
         final String accessToken = extractAccessToken(authorizationHeader);
 
         if (Objects.equals(StompCommand.CONNECT, accessor.getCommand())) {
-            final String email = jwtTokenProvider.extractEmailFromAccessToken(accessToken);
+            final String email = jwtAccessTokenManager.parseEmail(accessToken);
             validateMemberExist(email);
             return message;
         }
@@ -73,7 +73,7 @@ public final class InboundChannelInterceptor implements ChannelInterceptor {
     }
 
     private void isParticipatedInTeamPlace(final String token, final Long teamPlaceId) {
-        final String email = jwtTokenProvider.extractEmailFromAccessToken(token);
+        final String email = jwtAccessTokenManager.parseEmail(token);
 
         if (hasNotMemberInTeamPlace(teamPlaceId, email)) {
             throw new TeamPlaceAccessForbiddenException(teamPlaceId, email);

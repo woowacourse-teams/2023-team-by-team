@@ -10,7 +10,7 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-import team.teamby.teambyteam.auth.jwt.JwtTokenProvider;
+import team.teamby.teambyteam.auth.jwt.JwtAccessTokenManager;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 
 import java.util.Objects;
@@ -21,7 +21,7 @@ public class MemberArgumentResolver implements HandlerMethodArgumentResolver, or
 
     private static final int TOKEN_INDEX = 1;
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtAccessTokenManager jwtAccessTokenManager;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -41,7 +41,7 @@ public class MemberArgumentResolver implements HandlerMethodArgumentResolver, or
 
     private MemberEmailDto resolve(String authorizationHeader) {
         final String jwtToken = authorizationHeader.split(" ")[TOKEN_INDEX];
-        String email = jwtTokenProvider.extractEmailFromAccessToken(jwtToken);
+        String email = jwtAccessTokenManager.parseEmail(jwtToken);
         return new MemberEmailDto(email);
     }
 }
