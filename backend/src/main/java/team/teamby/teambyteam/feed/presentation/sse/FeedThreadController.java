@@ -1,4 +1,4 @@
-package team.teamby.teambyteam.feed.presentation;
+package team.teamby.teambyteam.feed.presentation.sse;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import team.teamby.teambyteam.feed.application.dto.FeedImageResponse;
 import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
 import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
 import team.teamby.teambyteam.feed.application.dto.UploadImageRequest;
-import team.teamby.teambyteam.feed.presentation.dto.FeedImagesResponse;
+import team.teamby.teambyteam.feed.presentation.sse.dto.FeedImagesResponse;
 import team.teamby.teambyteam.member.configuration.AuthPrincipal;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 

@@ -24,7 +24,7 @@ import team.teamby.teambyteam.feed.application.dto.FeedThreadWritingRequest;
 import team.teamby.teambyteam.feed.application.dto.FeedsResponse;
 import team.teamby.teambyteam.feed.domain.FeedType;
 import team.teamby.teambyteam.feed.exception.FeedWritingRequestEmptyException;
-import team.teamby.teambyteam.feed.presentation.FeedThreadController;
+import team.teamby.teambyteam.feed.presentation.sse.FeedThreadController;
 import team.teamby.teambyteam.filesystem.FileStorageManager;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 import team.teamby.teambyteam.teamplace.exception.TeamPlaceAccessForbiddenException;
