@@ -5,18 +5,35 @@ import type { RuleSetRule } from 'webpack';
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
+
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
+    '@storybook/addon-webpack5-compiler-babel',
+    '@chromatic-com/storybook',
   ],
+
   framework: {
     name: '@storybook/react-webpack5',
-    options: {},
+    options: {
+      builder: {
+        useSWC: true,
+      },
+    },
   },
   docs: {
     autodocs: 'tag',
   },
+  swc: () => ({
+    jsc: {
+      transform: {
+        react: {
+          runtime: 'automatic',
+        },
+      },
+    },
+  }),
   staticDirs: [path.join(__dirname, '..', 'public')],
   webpackFinal: async (config, { configType }) => {
     config.resolve!.plugins = [new TsconfigPathsPlugin()];
@@ -35,6 +52,10 @@ const config: StorybookConfig = {
     });
 
     return config;
+  },
+
+  typescript: {
+    reactDocgen: 'react-docgen-typescript',
   },
 };
 export default config;

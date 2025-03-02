@@ -1,11 +1,12 @@
 import { useModifySchedule } from '~/hooks/queries/useModifySchedule';
 import { useModal } from '~/hooks/useModal';
 import { isYYYYMMDDHHMM } from '~/types/typeGuard';
-import type { FormEventHandler } from 'react';
+import { type ChangeEvent, useState, type FormEventHandler } from 'react';
 import type { Schedule } from '~/types/schedule';
 import { useToast } from '~/hooks/useToast';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useDateTimeRange } from '~/hooks/schedule/useDateTimeRange';
+import { SCHEDULE_DESCRIPTION_MAX_LENGTH } from '~/constants/calendar';
 
 export const useScheduleEditModal = (
   scheduleId: Schedule['id'],
@@ -13,6 +14,7 @@ export const useScheduleEditModal = (
 ) => {
   const {
     title,
+    description,
     startDate,
     endDate,
     startTime,
@@ -24,14 +26,51 @@ export const useScheduleEditModal = (
     handleStartTimeChange,
     handleEndTimeChange,
     handleIsAllDayChange,
-  } = useDateTimeRange(initialSchedule, initialSchedule?.title);
+    handleDescriptionChange,
+  } = useDateTimeRange(
+    initialSchedule,
+    initialSchedule?.title,
+    initialSchedule?.description ?? '',
+  );
+  const [isDescription, setIsDescription] = useState(
+    initialSchedule?.description ? true : false,
+  );
+  const [isDescriptionMaxLength, setIsDescriptionMaxLength] = useState(false);
+
   const { closeModal } = useModal();
   const { showToast } = useToast();
   const { teamPlaceId } = useTeamPlace();
   const { mutateModifySchedule } = useModifySchedule(teamPlaceId, scheduleId);
 
-  const schedule = { title, startDate, endDate };
+  const schedule = { title, description, startDate, endDate };
   const times = { startTime, endTime };
+
+  const handleIsDescription = () => {
+    setIsDescription((prev) => {
+      if (prev) {
+        handleDescriptionChange('');
+        setIsDescriptionMaxLength(false);
+      }
+      return !prev;
+    });
+  };
+
+  const handleDescriptionInput = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const textarea = e.target;
+
+    textarea.style.height = 'auto';
+    textarea.style.height = `${textarea.scrollHeight}px`;
+
+    if (textarea.value.length > SCHEDULE_DESCRIPTION_MAX_LENGTH) {
+      setIsDescriptionMaxLength(true);
+    } else {
+      setIsDescriptionMaxLength(false);
+    }
+
+    handleDescriptionChange(
+      textarea.value.slice(0, SCHEDULE_DESCRIPTION_MAX_LENGTH),
+    );
+  };
 
   const handleScheduleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
@@ -56,6 +95,7 @@ export const useScheduleEditModal = (
         title,
         startDateTime,
         endDateTime,
+        description,
       },
       {
         onSuccess: () => {
@@ -75,6 +115,8 @@ export const useScheduleEditModal = (
     schedule,
     times,
     isAllDay,
+    isDescription,
+    isDescriptionMaxLength,
 
     handlers: {
       handleScheduleChange,
@@ -83,6 +125,8 @@ export const useScheduleEditModal = (
       handleStartTimeChange,
       handleEndTimeChange,
       handleIsAllDayChange,
+      handleIsDescription,
+      handleDescriptionInput,
     },
   };
 };
