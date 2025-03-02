@@ -2,6 +2,7 @@ package team.teamby.teambyteam.feed.presentation.websocket;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
@@ -16,6 +17,7 @@ import team.teamby.teambyteam.feed.application.dto.FeedWebsocketResponse;
 import team.teamby.teambyteam.member.configuration.AuthPrincipal;
 import team.teamby.teambyteam.member.configuration.dto.MemberEmailDto;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public final class FeedThreadWebSocketController {
@@ -29,6 +31,8 @@ public final class FeedThreadWebSocketController {
                                                       @Header("RequestId") String requestId,
                                                       @Valid @Payload final FeedThreadWebsocketWritingRequest request) {
 
+        log.error(requestId);
+        log.error(request.content());
         FeedWebsocketResponse feedWebsocketResponse = feedWriteService.writeFeedThread(teamplaceId, memberEmailDto, requestId, request);
 
         return MessageBuilder
