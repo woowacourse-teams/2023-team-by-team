@@ -21,6 +21,7 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
 
     private final JwtTokenProvider jwtTokenProvider;
     private final InboundChannelInterceptor inboundChannelInterceptor;
+    private final StompErrorHandler stompErrorHandler;
 
     @Override
     public void registerStompEndpoints(final StompEndpointRegistry registry) {
@@ -30,6 +31,8 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
 
         registry.addEndpoint("/ws/chat")
                 .setAllowedOriginPatterns("*");
+
+        registry.setErrorHandler(stompErrorHandler);
     }
 
     @Override
