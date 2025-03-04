@@ -15,10 +15,13 @@ import static team.teamby.teambyteam.common.fixtures.TokenFixtures.MISSING_CLAIM
 import static team.teamby.teambyteam.common.fixtures.TokenFixtures.MISSING_CLAIM_REFRESH_TOKEN;
 
 @SpringBootTest
-class JwtTokenProviderTest {
+class JwtTokenTest {
 
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    private JwtAccessTokenManager jwtAccessTokenManager;
+
+    @Autowired
+    private JwtRefreshTokenManager jwtRefreshTokenManager;
 
     @Nested
     @DisplayName("액세스 토큰 테스트")
@@ -31,7 +34,7 @@ class JwtTokenProviderTest {
             String email = PHILIP_EMAIL;
 
             // when
-            String accessToken = jwtTokenProvider.generateAccessToken(email);
+            String accessToken = jwtAccessTokenManager.generateToken(email);
 
             // then
             assertThat(accessToken).isNotNull();
@@ -42,10 +45,10 @@ class JwtTokenProviderTest {
         void successExtractEmailFromAccessToken() {
             // given
             String email = PHILIP_EMAIL;
-            String accessToken = jwtTokenProvider.generateAccessToken(email);
+            String accessToken = jwtAccessTokenManager.generateToken(email);
 
             // when
-            String actualEmail = jwtTokenProvider.extractEmailFromAccessToken(accessToken);
+            String actualEmail = jwtAccessTokenManager.parseEmail(accessToken);
 
             // then
             assertThat(actualEmail).isEqualTo(email);
@@ -58,9 +61,9 @@ class JwtTokenProviderTest {
             String malFormedJwtToken = MALFORMED_JWT_TOKEN;
 
             // when & then
-            assertThatThrownBy(() -> jwtTokenProvider.extractEmailFromAccessToken(malFormedJwtToken))
+            assertThatThrownBy(() -> jwtAccessTokenManager.parseEmail(malFormedJwtToken))
                     .isInstanceOf(AuthenticationException.FailAuthenticationException.class)
-                    .hasMessageContaining("인증 실패(잘못된 액세스 토큰) - 토큰 : ");
+                    .hasMessageContaining("인증 실패(잘못된 토큰) - 토큰 : ");
         }
 
         @Test
@@ -70,9 +73,9 @@ class JwtTokenProviderTest {
             String missingClaimToken = MISSING_CLAIM_ACCESS_TOKEN;
 
             // when & then
-            assertThatThrownBy(() -> jwtTokenProvider.extractEmailFromAccessToken(missingClaimToken))
+            assertThatThrownBy(() -> jwtAccessTokenManager.parseEmail(missingClaimToken))
                     .isInstanceOf(AuthenticationException.FailAuthenticationException.class)
-                    .hasMessageContaining("인증 실패(JWT 액세스 토큰 Payload 이메일 누락) - 토큰 : " + missingClaimToken);
+                    .hasMessageContaining("인증 실패(JWT Payload 이메일 누락) - 토큰 : " + missingClaimToken);
         }
     }
 
@@ -87,7 +90,7 @@ class JwtTokenProviderTest {
             String email = PHILIP_EMAIL;
 
             // when
-            String refreshToken = jwtTokenProvider.generateRefreshToken(email);
+            String refreshToken = jwtRefreshTokenManager.generateToken(email);
 
             // then
             assertThat(refreshToken).isNotNull();
@@ -98,10 +101,10 @@ class JwtTokenProviderTest {
         void successExtractEmailFromRefreshToken() {
             // given
             String email = PHILIP_EMAIL;
-            String refreshToken = jwtTokenProvider.generateRefreshToken(email);
+            String refreshToken = jwtRefreshTokenManager.generateToken(email);
 
             // when
-            String actualEmail = jwtTokenProvider.extractEmailFromRefreshToken(refreshToken);
+            String actualEmail = jwtRefreshTokenManager.parseEmail(refreshToken);
 
             // then
             assertThat(actualEmail).isEqualTo(email);
@@ -114,9 +117,9 @@ class JwtTokenProviderTest {
             String malFormedJwtToken = MALFORMED_JWT_TOKEN;
 
             // when & then
-            assertThatThrownBy(() -> jwtTokenProvider.extractEmailFromRefreshToken(malFormedJwtToken))
+            assertThatThrownBy(() -> jwtRefreshTokenManager.parseClaims(malFormedJwtToken))
                     .isInstanceOf(AuthenticationException.FailAuthenticationException.class)
-                    .hasMessageContaining("인증 실패(잘못된 리프레시 토큰) - 토큰 : " + malFormedJwtToken);
+                    .hasMessageContaining("인증 실패(잘못된 토큰) - 토큰 : " + malFormedJwtToken);
         }
 
         @Test
@@ -126,9 +129,9 @@ class JwtTokenProviderTest {
             String missingClaimToken = MISSING_CLAIM_REFRESH_TOKEN;
 
             // when & then
-            assertThatThrownBy(() -> jwtTokenProvider.extractEmailFromRefreshToken(missingClaimToken))
+            assertThatThrownBy(() -> jwtRefreshTokenManager.parseEmail(missingClaimToken))
                     .isInstanceOf(AuthenticationException.FailAuthenticationException.class)
-                    .hasMessage("인증 실패(JWT 리프레시 토큰 Payload 이메일 누락) - 토큰 : " + missingClaimToken);
+                    .hasMessage("인증 실패(JWT Payload 이메일 누락) - 토큰 : " + missingClaimToken);
         }
     }
 }

@@ -55,7 +55,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
         void success() {
             // given
             final Member ENDL = testFixtureBuilder.buildMember(MemberFixtures.ENDEL());
-            final String ENDL_TOKEN = jwtTokenProvider.generateAccessToken(ENDL.getEmail().getValue());
+            final String ENDL_TOKEN = jwtAccessTokenManager.generateToken(ENDL.getEmail().getValue());
             final String NEW_TEAM_PLACE_NAME = "새로운 팀플레이스";
             final TeamPlaceCreateRequest request = new TeamPlaceCreateRequest(NEW_TEAM_PLACE_NAME);
 
@@ -96,7 +96,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
         void failWithBlankTeamPlaceName() {
             // given
             final Member ENDL = testFixtureBuilder.buildMember(MemberFixtures.ENDEL());
-            final String ENDL_TOKEN = jwtTokenProvider.generateAccessToken(ENDL.getEmail().getValue());
+            final String ENDL_TOKEN = jwtAccessTokenManager.generateToken(ENDL.getEmail().getValue());
             final String BLANK_NAME = "";
             final TeamPlaceCreateRequest request = new TeamPlaceCreateRequest(BLANK_NAME);
 
@@ -114,7 +114,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
         @DisplayName("너무 긴 이름(30자 초과)의 팀플레이스는 생성할 수 없다.")
         void failWithLongTeamPlaceName() {
             final Member ENDL = testFixtureBuilder.buildMember(MemberFixtures.ENDEL());
-            final String ENDL_TOKEN = jwtTokenProvider.generateAccessToken(ENDL.getEmail().getValue());
+            final String ENDL_TOKEN = jwtAccessTokenManager.generateToken(ENDL.getEmail().getValue());
             final String BLANK_NAME = "a".repeat(31);
             final TeamPlaceCreateRequest request = new TeamPlaceCreateRequest(BLANK_NAME);
 
@@ -140,7 +140,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
             final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(PHILIP, teamPlace);
-            final String PHILIP_TOKEN = jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue());
+            final String PHILIP_TOKEN = jwtAccessTokenManager.generateToken(PHILIP.getEmail().getValue());
             final TeamPlaceInviteCodeResponse generatedCodeResponse = GET_TEAM_PLACE_INVITE_CODE(PHILIP_TOKEN, teamPlace.getId()).as(TeamPlaceInviteCodeResponse.class);
 
             // when
@@ -161,7 +161,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
             final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
             final TeamPlace teamPlace = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(PHILIP, teamPlace);
-            final String PHILIP_TOKEN = jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue());
+            final String PHILIP_TOKEN = jwtAccessTokenManager.generateToken(PHILIP.getEmail().getValue());
 
             // when
             final ExtractableResponse<Response> extractableResponse = GET_TEAM_PLACE_INVITE_CODE(PHILIP_TOKEN, teamPlace.getId());
@@ -180,7 +180,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
         void failIfNotExistTeamPlaceId() {
             // given
             final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
-            final String PHILIP_TOKEN = jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue());
+            final String PHILIP_TOKEN = jwtAccessTokenManager.generateToken(PHILIP.getEmail().getValue());
             final Long notExistTeamPlaceId = -1L;
 
             // when
@@ -197,7 +197,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
         void failIfNotParticipatedTeamPlace() {
             // given
             final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
-            final String PHILIP_TOKEN = jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue());
+            final String PHILIP_TOKEN = jwtAccessTokenManager.generateToken(PHILIP.getEmail().getValue());
             final Long notParticipatedTeamPlaceId = -1L;
 
             // when
@@ -265,7 +265,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
             final TeamPlaceMembersResponse response = TeamPlaceMembersResponse.from(teamPlaceMembers);
             final List<TeamPlaceMemberResponse> expectedResponse = response.members();
 
-            final String accessToken = jwtTokenProvider.generateAccessToken(member1.getEmail().getValue());
+            final String accessToken = jwtAccessTokenManager.generateToken(member1.getEmail().getValue());
 
             // when
             final ExtractableResponse<Response> membersResponse = GET_MEMBERS_REQUEST(accessToken, teamPlace.getId());
@@ -294,7 +294,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
         @DisplayName("소속되지 않은 팀 플레이스의 멤버를 조회하면 실패한다.")
         void failWhenNotParticipatedTeamPlace() {
             // given
-            final String accessToken = jwtTokenProvider.generateAccessToken(member1.getEmail().getValue());
+            final String accessToken = jwtAccessTokenManager.generateToken(member1.getEmail().getValue());
             long notParticipatedTeamPlaceId = teamPlace.getId() + 1;
 
             // when
@@ -327,7 +327,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
         void success() {
             // given
             final int teamPlaceColorToChange = 1;
-            final String token = jwtTokenProvider.generateAccessToken(member.getEmail().getValue());
+            final String token = jwtAccessTokenManager.generateToken(member.getEmail().getValue());
             final Long teamPlaceId = teamPlace.getId();
             final TeamPlaceChangeColorRequest request = new TeamPlaceChangeColorRequest(teamPlaceColorToChange);
 
@@ -343,7 +343,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
         void failWhenNotExistMember() {
             // given
             final int teamPlaceColorToChange = 1;
-            final String notExistMemberToken = jwtTokenProvider.generateAccessToken("notExistMemberEmail@gmail.com");
+            final String notExistMemberToken = jwtAccessTokenManager.generateToken("notExistMemberEmail@gmail.com");
             final Long teamPlaceId = teamPlace.getId();
             final TeamPlaceChangeColorRequest request = new TeamPlaceChangeColorRequest(teamPlaceColorToChange);
 
@@ -372,7 +372,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
             // then
             assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
-                softly.assertThat(response.jsonPath().getString("error")).isEqualTo("EXPIRED_ACCESS_TOKEN");
+                softly.assertThat(response.jsonPath().getString("error")).isEqualTo("EXPIRED_TOKEN");
             });
         }
 
@@ -419,7 +419,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
         @DisplayName("요청한 색상 번호가 존재하지 않으면 실패한다.")
         void failWhenNotExistTeamPlaceColor(int notExistTeamPlaceColor) {
             // given
-            final String token = jwtTokenProvider.generateAccessToken(member.getEmail().getValue());
+            final String token = jwtAccessTokenManager.generateToken(member.getEmail().getValue());
             final Long teamPlaceId = teamPlace.getId();
             final TeamPlaceChangeColorRequest request = new TeamPlaceChangeColorRequest(notExistTeamPlaceColor);
 
@@ -438,7 +438,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
         void failWhenNotParticipatedTeamPlace() {
             // given
             final int teamPlaceColorToChange = 1;
-            final String token = jwtTokenProvider.generateAccessToken(member.getEmail().getValue());
+            final String token = jwtAccessTokenManager.generateToken(member.getEmail().getValue());
             final Long notParticipatedTeamPlaceId = 2L;
             final TeamPlaceChangeColorRequest request = new TeamPlaceChangeColorRequest(teamPlaceColorToChange);
 
@@ -467,7 +467,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
             PHILIP = testFixtureBuilder.buildMember(PHILIP());
             STATICS_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.STATICS_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(PHILIP, STATICS_TEAM_PLACE);
-            PHILIP_ACCESS_TOKEN = jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue());
+            PHILIP_ACCESS_TOKEN = jwtAccessTokenManager.generateToken(PHILIP.getEmail().getValue());
         }
 
         @Test
@@ -558,7 +558,7 @@ public class TeamPlaceAcceptanceTest extends AcceptanceTest {
         void failWithWrongAccessTokenUnauthorized() {
             final String NEW_NAME = "새로온 필립";
             final DisplayMemberNameChangeRequest requestBody = new DisplayMemberNameChangeRequest(NEW_NAME);
-            final String UNAUTHORIZED_MEMBER_TOKEN = jwtTokenProvider.generateAccessToken(MemberFixtures.ENDEL_EMAIL);
+            final String UNAUTHORIZED_MEMBER_TOKEN = jwtAccessTokenManager.generateToken(MemberFixtures.ENDEL_EMAIL);
 
             // when
             final ExtractableResponse<Response> response = PATCH_DISPLAY_MEMBER_NAME_CHANGE(UNAUTHORIZED_MEMBER_TOKEN, STATICS_TEAM_PLACE.getId(), requestBody);

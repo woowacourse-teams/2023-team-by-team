@@ -66,7 +66,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             authedMember = testFixtureBuilder.buildMember(PHILIP());
             participatedTeamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             participatedMemberTeamPlace = testFixtureBuilder.buildMemberTeamPlace(authedMember, participatedTeamPlace);
-            authToken = jwtTokenProvider.generateAccessToken(authedMember.getEmail().getValue());
+            authToken = jwtAccessTokenManager.generateToken(authedMember.getEmail().getValue());
             given(fileStorageManager.upload(any(MultipartFile.class), any(String.class), any(String.class)))
                     .willReturn("https://s3://seongha-seeik");
         }
@@ -201,7 +201,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
         @DisplayName("인증되지 않은 사용자로 요청시 등록이 실패한다.")
         void failWithUnauthorizedMember() {
             // given
-            final String unauthorizedToken = jwtTokenProvider.generateAccessToken(ROY().getEmail().getValue());
+            final String unauthorizedToken = jwtAccessTokenManager.generateToken(ROY().getEmail().getValue());
 
             // when
             final ExtractableResponse<Response> response = POST_FEED_THREAD_IMAGE_AND_CONTENT_REQUEST(unauthorizedToken,
@@ -229,7 +229,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             authedMember = testFixtureBuilder.buildMember(PHILIP());
             participatedTeamPlace = testFixtureBuilder.buildTeamPlace(ENGLISH_TEAM_PLACE());
             participatedMemberTeamPlace = testFixtureBuilder.buildMemberTeamPlace(authedMember, participatedTeamPlace);
-            authToken = jwtTokenProvider.generateAccessToken(authedMember.getEmail().getValue());
+            authToken = jwtAccessTokenManager.generateToken(authedMember.getEmail().getValue());
             given(fileStorageManager.upload(any(MultipartFile.class), any(String.class), any(String.class)))
                     .willReturn("https://s3://seongha-seeik");
         }
@@ -286,7 +286,7 @@ public class FeedThreadAcceptanceTest extends AcceptanceTest {
             final Member otherMember = testFixtureBuilder.buildMember(MemberFixtures.SEONGHA());
             final MemberTeamPlace otherMemberTeamPlace = otherMember.participate(participatedTeamPlace);
             testFixtureBuilder.buildMemberTeamPlace(otherMemberTeamPlace);
-            final String otherMemberToken = jwtTokenProvider.generateAccessToken(otherMember.getEmail().getValue());
+            final String otherMemberToken = jwtAccessTokenManager.generateToken(otherMember.getEmail().getValue());
 
             final Long teamPlaceId = participatedMemberTeamPlace.getId();
             final int size = 5;

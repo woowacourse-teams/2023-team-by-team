@@ -45,7 +45,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         void success() {
             // given
             final Member AUTHORIZED_MEMBER = testFixtureBuilder.buildMember(PHILIP());
-            final String TOKEN = jwtTokenProvider.generateAccessToken(AUTHORIZED_MEMBER.getEmail().getValue());
+            final String TOKEN = jwtAccessTokenManager.generateToken(AUTHORIZED_MEMBER.getEmail().getValue());
 
             // when
             final ExtractableResponse<Response> response = GET_MY_INFORMATION(TOKEN);
@@ -93,7 +93,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             testFixtureBuilder.buildMemberTeamPlace(ENDEL, JAPANESE_TEAM_PLACE);
             testFixtureBuilder.buildMemberTeamPlace(ENDEL, STATICS_TEAM_PLACE);
 
-            final String ENDEL_TOKEN = jwtTokenProvider.generateAccessToken(ENDEL.getEmail().getValue());
+            final String ENDEL_TOKEN = jwtAccessTokenManager.generateToken(ENDEL.getEmail().getValue());
 
             // when
             final ExtractableResponse<Response> response = GET_PARTICIPATED_TEAM_PLACES(ENDEL_TOKEN);
@@ -126,7 +126,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             testFixtureBuilder.buildMemberTeamPlace(ENDEL, STATICS_TEAM_PLACE);
 
             final Member unAuthorizedMember = PHILIP();
-            final String UNAUTHORIZED_TOKEN = jwtTokenProvider.generateAccessToken(unAuthorizedMember.getEmail().getValue());
+            final String UNAUTHORIZED_TOKEN = jwtAccessTokenManager.generateToken(unAuthorizedMember.getEmail().getValue());
 
             // when
             final ExtractableResponse<Response> response = GET_PARTICIPATED_TEAM_PLACES(UNAUTHORIZED_TOKEN);
@@ -151,7 +151,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(ENDEL, ENGLISH_TEAM_PLACE);
 
-            final String ENDEL_TOKEN = jwtTokenProvider.generateAccessToken(ENDEL.getEmail().getValue());
+            final String ENDEL_TOKEN = jwtAccessTokenManager.generateToken(ENDEL.getEmail().getValue());
 
             // when
             final ExtractableResponse<Response> response = DELETE_LEAVE_TEAM_PLACE(ENDEL_TOKEN, ENGLISH_TEAM_PLACE.getId());
@@ -192,7 +192,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             final TeamPlace JAPANESE_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.JAPANESE_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(ENDEL, ENGLISH_TEAM_PLACE);
 
-            final String ENDEL_TOKEN = jwtTokenProvider.generateAccessToken(ENDEL.getEmail().getValue());
+            final String ENDEL_TOKEN = jwtAccessTokenManager.generateToken(ENDEL.getEmail().getValue());
 
             // when
             final ExtractableResponse<Response> response = DELETE_LEAVE_TEAM_PLACE(ENDEL_TOKEN, JAPANESE_TEAM_PLACE.getId());
@@ -217,7 +217,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
             final String inviteCode = "aaaaaaaa";
             testFixtureBuilder.buildTeamPlaceInviteCode(new TeamPlaceInviteCode(new InviteCode(inviteCode), ENGLISH_TEAM_PLACE));
-            final String PHILIP_TOKEN = jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue());
+            final String PHILIP_TOKEN = jwtAccessTokenManager.generateToken(PHILIP.getEmail().getValue());
 
             // when
             final ExtractableResponse<Response> response = PARTICIPATE_TEAM_PLACE_REQUEST(PHILIP_TOKEN, inviteCode);
@@ -238,7 +238,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             final TeamPlace ENGLISH_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
             final String inviteCode = "aaaaaaaa";
             testFixtureBuilder.buildTeamPlaceInviteCode(new TeamPlaceInviteCode(new InviteCode(inviteCode), ENGLISH_TEAM_PLACE));
-            final String PHILIP_TOKEN = jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue());
+            final String PHILIP_TOKEN = jwtAccessTokenManager.generateToken(PHILIP.getEmail().getValue());
             PARTICIPATE_TEAM_PLACE_REQUEST(PHILIP_TOKEN, inviteCode);
 
             // when
@@ -258,7 +258,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             // given
             final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
             testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
-            final String PHILIP_TOKEN = jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue());
+            final String PHILIP_TOKEN = jwtAccessTokenManager.generateToken(PHILIP.getEmail().getValue());
             final String invalidInviteCode = "aaaaaaaa";
 
             // when
@@ -276,7 +276,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             // given
             final Member PHILIP = testFixtureBuilder.buildMember(PHILIP());
             testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
-            final String PHILIP_TOKEN = jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue());
+            final String PHILIP_TOKEN = jwtAccessTokenManager.generateToken(PHILIP.getEmail().getValue());
             final String invalidInviteCode = "aaaa";
 
             // when
@@ -320,7 +320,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         void success() {
             // given
             final Member AUTHORIZED_MEMBER = testFixtureBuilder.buildMember(PHILIP());
-            final String VALID_TOKEN = jwtTokenProvider.generateAccessToken(AUTHORIZED_MEMBER.getEmail().getValue());
+            final String VALID_TOKEN = jwtAccessTokenManager.generateToken(AUTHORIZED_MEMBER.getEmail().getValue());
             final MemberUpdateRequest request = new MemberUpdateRequest("양재필");
 
             // when
@@ -357,7 +357,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             final MemberUpdateRequest request = new MemberUpdateRequest("김덕우");
 
             final Member UNAUTHORIZED_MEMBER = PHILIP();
-            final String UNAUTHORIZED_TOKEN = jwtTokenProvider.generateAccessToken(UNAUTHORIZED_MEMBER.getEmail().getValue());
+            final String UNAUTHORIZED_TOKEN = jwtAccessTokenManager.generateToken(UNAUTHORIZED_MEMBER.getEmail().getValue());
 
             // when
             final ExtractableResponse<Response> response = UPDATE_MEMBER_INFORMATION(UNAUTHORIZED_TOKEN, request);
@@ -374,7 +374,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             final Member UTHORIZED_MEMBER = testFixtureBuilder.buildMember(ROY());
             final TeamPlace PARTICIPATED_TEAM_PLACE = testFixtureBuilder.buildTeamPlace(TeamPlaceFixtures.ENGLISH_TEAM_PLACE());
             testFixtureBuilder.buildMemberTeamPlace(UTHORIZED_MEMBER, PARTICIPATED_TEAM_PLACE);
-            final String VALID_TOKEN = jwtTokenProvider.generateAccessToken(UTHORIZED_MEMBER.getEmail().getValue());
+            final String VALID_TOKEN = jwtAccessTokenManager.generateToken(UTHORIZED_MEMBER.getEmail().getValue());
             final MemberUpdateRequest emptyValueRequest = new MemberUpdateRequest(memberNameToUpdate);
 
             // when
@@ -390,7 +390,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
             // given
             final Member AUTHORIZED_MEMBER = testFixtureBuilder.buildMember(PHILIP());
 
-            final String VALID_TOKEN = jwtTokenProvider.generateAccessToken(AUTHORIZED_MEMBER.getEmail().getValue());
+            final String VALID_TOKEN = jwtAccessTokenManager.generateToken(AUTHORIZED_MEMBER.getEmail().getValue());
             final String wrongNameToChange = "a".repeat(21);
             final MemberUpdateRequest request = new MemberUpdateRequest(wrongNameToChange);
 
@@ -406,7 +406,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         void successWithTrimmedNameToChange() {
             // given
             final Member AUTHORIZED_MEMBER = testFixtureBuilder.buildMember(PHILIP());
-            final String VALID_TOKEN = jwtTokenProvider.generateAccessToken(AUTHORIZED_MEMBER.getEmail().getValue());
+            final String VALID_TOKEN = jwtAccessTokenManager.generateToken(AUTHORIZED_MEMBER.getEmail().getValue());
             final String nameToChange = " 재피리 ";
             final MemberUpdateRequest request = new MemberUpdateRequest(nameToChange);
             final String changedName = "재피리";
@@ -429,8 +429,8 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         void success() {
             // given
             final Member PHILIP = testFixtureBuilder.buildMember(MemberFixtures.PHILIP());
-            final String PHILIP_ACCESS_TOKEN = jwtTokenProvider.generateAccessToken(PHILIP.getEmail().getValue());
-            final String PHILIP_REFRESH_TOKEN = jwtTokenProvider.generateRefreshToken(PHILIP.getEmail().getValue());
+            final String PHILIP_ACCESS_TOKEN = jwtAccessTokenManager.generateToken(PHILIP.getEmail().getValue());
+            final String PHILIP_REFRESH_TOKEN = jwtRefreshTokenManager.generateToken(PHILIP.getEmail().getValue());
             testFixtureBuilder.buildToken(TokenFixtures.TOKEN_ENTITY(PHILIP, PHILIP_REFRESH_TOKEN));
 
             // when
@@ -445,7 +445,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         void failWithUnAuthorizedMember() {
             // given
             final String mail = "notRegistered@gmail.com";
-            final String NOT_REGISTERED_MEMBER_TOKEN = jwtTokenProvider.generateAccessToken(mail);
+            final String NOT_REGISTERED_MEMBER_TOKEN = jwtAccessTokenManager.generateToken(mail);
 
             // when
             final ExtractableResponse<Response> response = DELETE_ACCOUNT(NOT_REGISTERED_MEMBER_TOKEN);

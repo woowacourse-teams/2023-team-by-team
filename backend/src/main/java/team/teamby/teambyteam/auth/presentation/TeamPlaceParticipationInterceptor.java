@@ -3,11 +3,11 @@ package team.teamby.teambyteam.auth.presentation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.HandlerMapping;
-import team.teamby.teambyteam.auth.jwt.JwtTokenExtractor;
-import team.teamby.teambyteam.auth.jwt.JwtTokenProvider;
+import team.teamby.teambyteam.auth.jwt.JwtAccessTokenManager;
 import team.teamby.teambyteam.member.domain.MemberRepository;
 import team.teamby.teambyteam.member.domain.MemberTeamPlaceRepository;
 import team.teamby.teambyteam.member.domain.vo.Email;
@@ -23,15 +23,14 @@ public final class TeamPlaceParticipationInterceptor implements HandlerIntercept
 
     private static final String PATH_VARIABLE_KEY = "teamPlaceId";
 
-    private final JwtTokenExtractor jwtTokenExtractor;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtAccessTokenManager jwtAccessTokenManager;
     private final MemberRepository memberRepository;
     private final MemberTeamPlaceRepository memberTeamPlaceRepository;
 
     @Override
     public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler) {
-        final String token = jwtTokenExtractor.extractAccessToken(request);
-        final String email = jwtTokenProvider.extractEmailFromAccessToken(token);
+        final String accessToken = jwtAccessTokenManager.parseToken(request.getHeader(HttpHeaders.AUTHORIZATION));
+        String email = jwtAccessTokenManager.parseEmail(accessToken);
         final Map<String, String> pathVariables = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
         if (Objects.isNull(pathVariables.get(PATH_VARIABLE_KEY))) {
             return true;

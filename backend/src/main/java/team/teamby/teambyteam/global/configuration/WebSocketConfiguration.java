@@ -8,7 +8,7 @@ import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
-import team.teamby.teambyteam.auth.jwt.JwtTokenProvider;
+import team.teamby.teambyteam.auth.jwt.JwtAccessTokenManager;
 import team.teamby.teambyteam.global.presentation.InboundChannelInterceptor;
 import team.teamby.teambyteam.member.configuration.MemberArgumentResolver;
 
@@ -19,7 +19,7 @@ import java.util.List;
 @EnableWebSocketMessageBroker
 public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer {
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtAccessTokenManager jwtAccessTokenManager;
     private final InboundChannelInterceptor inboundChannelInterceptor;
     private final StompErrorHandler stompErrorHandler;
 
@@ -49,7 +49,7 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        argumentResolvers.add(new MemberArgumentResolver(jwtTokenProvider));
+        argumentResolvers.add(new MemberArgumentResolver(jwtAccessTokenManager));
         WebSocketMessageBrokerConfigurer.super.addArgumentResolvers(argumentResolvers);
     }
 }

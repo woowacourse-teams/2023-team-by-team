@@ -7,7 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import team.teamby.teambyteam.auth.exception.AuthenticationException;
-import team.teamby.teambyteam.auth.jwt.JwtTokenExtractor;
+import team.teamby.teambyteam.auth.jwt.JwtAccessTokenManager;
+import team.teamby.teambyteam.auth.jwt.JwtRefreshTokenManager;
 import team.teamby.teambyteam.common.ApiDocsTest;
 import team.teamby.teambyteam.token.application.TokenService;
 import team.teamby.teambyteam.token.application.dto.TokenResponse;
@@ -51,9 +52,6 @@ public class TokenApiDocsTest extends ApiDocsTest {
     private TokenService tokenService;
 
     @MockBean
-    private JwtTokenExtractor jwtTokenExtractor;
-
-    @MockBean
     private TokenRepository tokenRepository;
 
     @Nested
@@ -65,16 +63,16 @@ public class TokenApiDocsTest extends ApiDocsTest {
         void success() throws Exception {
             // given
             final String originalRefreshToken = CORRECT_ORIGINAL_PHILIP_REFRESH_TOKEN;
-            given(jwtTokenExtractor.extractRefreshToken(any())).willReturn(originalRefreshToken);
-            given(jwtTokenProvider.generateAccessToken(PHILIP_EMAIL)).willReturn(CORRECT_REISSUE_PHILIP_ACCESS_TOKEN);
-            given(jwtTokenProvider.generateRefreshToken(PHILIP_EMAIL)).willReturn(CORRECT_REISSUE_PHILIP_REFRESH_TOKEN);
+            given(jwtRefreshTokenManager.parseToken(any())).willReturn(originalRefreshToken);
+            given(jwtAccessTokenManager.generateToken(PHILIP_EMAIL)).willReturn(CORRECT_REISSUE_PHILIP_ACCESS_TOKEN);
+            given(jwtRefreshTokenManager.generateToken(PHILIP_EMAIL)).willReturn(CORRECT_REISSUE_PHILIP_REFRESH_TOKEN);
             given(tokenRepository.findByRefreshToken(originalRefreshToken)).willReturn(Optional.of(TOKEN_ENTITY(PHILIP(), originalRefreshToken)));
 
-            final String generateAccessToken = jwtTokenProvider.generateAccessToken(PHILIP_EMAIL);
-            final String generateRefreshToken = jwtTokenProvider.generateRefreshToken(PHILIP_EMAIL);
+            final String generateAccessToken = jwtAccessTokenManager.generateToken(PHILIP_EMAIL);
+            final String generateRefreshToken = jwtRefreshTokenManager.generateToken(PHILIP_EMAIL);
             final TokenResponse reissueTokenResponse = TokenResponse.of(generateAccessToken, generateRefreshToken);
 
-            given(jwtTokenProvider.extractEmailFromRefreshToken(originalRefreshToken))
+            given(jwtRefreshTokenManager.parseEmail(originalRefreshToken))
                     .willReturn(PHILIP_EMAIL);
 
             given(tokenService.reissueToken(originalRefreshToken))
@@ -106,7 +104,7 @@ public class TokenApiDocsTest extends ApiDocsTest {
         void failExpiredRefreshToken() throws Exception {
             // given
             final String expiredRefreshToken = EXPIRED_REFRESH_TOKEN;
-            given(jwtTokenExtractor.extractRefreshToken(any())).willReturn(expiredRefreshToken);
+            given(jwtRefreshTokenManager.parseToken(any())).willReturn(expiredRefreshToken);
             willThrow(new ExpiredJwtException(null, null, "EXPIRED_REFRESH_TOKEN"))
                     .given(tokenService)
                     .reissueToken(expiredRefreshToken);
@@ -129,7 +127,7 @@ public class TokenApiDocsTest extends ApiDocsTest {
         void failMalFormedRefreshToken() throws Exception {
             // given
             final String malFormedRefreshToken = MALFORMED_JWT_TOKEN;
-            given(jwtTokenExtractor.extractRefreshToken(any())).willReturn(malFormedRefreshToken);
+            given(jwtRefreshTokenManager.parseToken(any())).willReturn(malFormedRefreshToken);
             willThrow(new AuthenticationException.FailAuthenticationException("잘못된 리프레시 토큰"))
                     .given(tokenService)
                     .reissueToken(malFormedRefreshToken);
@@ -152,7 +150,7 @@ public class TokenApiDocsTest extends ApiDocsTest {
         void failMissingClaimRefreshToken() throws Exception {
             // given
             final String missingClaimRefreshToken = MISSING_CLAIM_REFRESH_TOKEN;
-            given(jwtTokenExtractor.extractRefreshToken(any())).willReturn(missingClaimRefreshToken);
+            given(jwtRefreshTokenManager.parseToken(any())).willReturn(missingClaimRefreshToken);
             willThrow(new AuthenticationException.FailAuthenticationException("JWT 리프레시 토큰 Payload 이메일 누락"))
                     .given(tokenService)
                     .reissueToken(missingClaimRefreshToken);
@@ -175,7 +173,7 @@ public class TokenApiDocsTest extends ApiDocsTest {
         void failNotExistTokenDB() throws Exception {
             // given
             final String refreshToken = CORRECT_REFRESH_TOKEN;
-            given(jwtTokenExtractor.extractRefreshToken(any())).willReturn(refreshToken);
+            given(jwtRefreshTokenManager.parseToken(any())).willReturn(refreshToken);
             willThrow(new TokenNotFoundException(PHILIP_EMAIL))
                     .given(tokenService)
                     .reissueToken(refreshToken);

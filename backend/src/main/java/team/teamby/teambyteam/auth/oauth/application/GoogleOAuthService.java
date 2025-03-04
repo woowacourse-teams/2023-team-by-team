@@ -5,7 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.teamby.teambyteam.auth.jwt.JwtTokenProvider;
+import team.teamby.teambyteam.auth.jwt.JwtAccessTokenManager;
+import team.teamby.teambyteam.auth.jwt.JwtRefreshTokenManager;
 import team.teamby.teambyteam.auth.oauth.application.dto.GoogleTokenResponse;
 import team.teamby.teambyteam.auth.oauth.application.dto.OAuthMember;
 import team.teamby.teambyteam.auth.oauth.application.dto.TokenResponse;
@@ -20,7 +21,6 @@ import team.teamby.teambyteam.token.domain.TokenRepository;
 import java.util.Base64;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -31,7 +31,8 @@ public class GoogleOAuthService {
     private static final int PAYLOAD_INDEX = 1;
     private static final int NAME_BEGIN_INDEX = 0;
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtAccessTokenManager jwtAccessTokenManager;
+    private final JwtRefreshTokenManager jwtRefreshTokenManager;
     private final GoogleOAuthClient googleOAuthClient;
     private final MemberRepository memberRepository;
     private final TokenRepository tokenRepository;
@@ -41,8 +42,8 @@ public class GoogleOAuthService {
         final OAuthMember oAuthMember = createOAuthMember(googleTokenResponse.idToken());
         final Member member = createMemberIfNotExist(oAuthMember);
 
-        final String accessToken = jwtTokenProvider.generateAccessToken(oAuthMember.email());
-        final String refreshToken = jwtTokenProvider.generateRefreshToken(oAuthMember.email());
+        final String accessToken = jwtAccessTokenManager.generateToken(oAuthMember.email());
+        final String refreshToken = jwtRefreshTokenManager.generateToken(oAuthMember.email());
 
         saveOrUpdateRefreshToken(member, refreshToken);
 
