@@ -9,10 +9,13 @@ import { useScheduleEditModal } from '~/hooks/schedule/useScheduleEditModal';
 import type { Schedule } from '~/types/schedule';
 import TeamBadge from '~/components/team/TeamBadge/TeamBadge';
 import TimeTableMenu from '~/components/team_calendar/TimeTableMenu/TimeTableMenu';
-import Checkbox from '~/components/common/Checkbox/Checkbox';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import type { CalendarSize } from '~/types/size';
 import { getIsMobile } from '~/utils/getIsMobile';
+import Switch from '~/components/common/Switch/Switch';
+import theme from '~/styles/theme';
+import Svg from '~/components/common/Svg/Svg';
+import { SCHEDULE_DESCRIPTION_MAX_LENGTH } from '~/constants/calendar';
 
 interface ScheduleEditModalProps {
   calendarSize?: CalendarSize;
@@ -30,6 +33,9 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
     schedule,
     times,
     isAllDay,
+    isDescription,
+    isDescriptionMaxLength,
+
     handlers: {
       handleScheduleChange,
       handleScheduleBlur,
@@ -37,6 +43,8 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
       handleStartTimeChange,
       handleEndTimeChange,
       handleIsAllDayChange,
+      handleIsDescription,
+      handleDescriptionInput,
     },
   } = useScheduleEditModal(scheduleId, initialSchedule);
 
@@ -74,13 +82,11 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
           </S.TitleWrapper>
 
           <S.TimeSelectContainer $isMobile={isMobile}>
-            <Text size="lg" weight="semiBold">
-              일정 시작
-            </Text>
+            <Text weight="semiBold">일정 시작</Text>
             <S.InputWrapper $isMobile={isMobile}>
               <Input
                 width={isAllDay ? '100%' : '50%'}
-                height="40px"
+                height="36px"
                 type="date"
                 css={S.dateTimeLocalInput}
                 name="startDate"
@@ -98,13 +104,11 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
             </S.InputWrapper>
           </S.TimeSelectContainer>
           <S.TimeSelectContainer $isMobile={isMobile}>
-            <Text size="lg" weight="semiBold">
-              일정 마감
-            </Text>
+            <Text weight="semiBold">일정 마감</Text>
             <S.InputWrapper $isMobile={isMobile}>
               <Input
                 width={isAllDay ? '100%' : '50%'}
-                height="40px"
+                height="36px"
                 type="date"
                 css={S.dateTimeLocalInput}
                 name="endDate"
@@ -122,20 +126,74 @@ const ScheduleEditModal = (props: ScheduleEditModalProps) => {
               )}
             </S.InputWrapper>
           </S.TimeSelectContainer>
-          <S.CheckboxContainer>
-            <Text size="md" weight="semiBold">
-              종일
-            </Text>
-            <Checkbox
-              size="sm"
-              isChecked={isAllDay}
+          <S.ConvenientContainer>
+            <Switch
+              checked={isAllDay}
               onChange={handleIsAllDayChange}
-            />
-          </S.CheckboxContainer>
+              onLabel={'종일'}
+              offLabel={'종일'}
+              onColor={theme.color.PRIMARY}
+            />{' '}
+            <p
+              className="hidden"
+              aria-live="assertive"
+              aria-relevant="additions"
+            >
+              {isAllDay
+                ? '종일 일정이 선택되었습니다.'
+                : '종일 일정이 해제되었습니다.'}
+            </p>
+            <Button
+              variant="plain"
+              type="button"
+              css={S.descriptionButton(isDescription)}
+              onClick={handleIsDescription}
+            >
+              <Svg
+                type="MemoIcon"
+                size={18}
+                fill={isDescription ? theme.color.WHITE : theme.color.PRIMARY}
+              />
+              <Text
+                css={S.descriptionText(isDescription)}
+                weight="semiBold"
+                size="sm"
+              >
+                메모
+              </Text>
+            </Button>
+          </S.ConvenientContainer>
+          {isDescription && (
+            <>
+              <S.DescriptionTextarea
+                rows={1}
+                placeholder={`메모를 작성해주세요.(최대 ${SCHEDULE_DESCRIPTION_MAX_LENGTH}자)`}
+                value={schedule.description}
+                onChange={handleDescriptionInput}
+              />
+              <S.WarnDiv>
+                {!isDescriptionMaxLength ? (
+                  <Text size="xs">
+                    ({schedule.description.length} /
+                    {SCHEDULE_DESCRIPTION_MAX_LENGTH}자)
+                  </Text>
+                ) : (
+                  <Text size="xs" css={S.errorText}>
+                    최대 ${SCHEDULE_DESCRIPTION_MAX_LENGTH}자까지
+                    입력가능합니다.
+                  </Text>
+                )}
+              </S.WarnDiv>
+            </>
+          )}
           <S.InnerContainer>
             <S.TeamNameContainer title={displayName}>
               <TeamBadge teamPlaceColor={teamPlaceColor} size="lg" />
-              {!isMobile && <Text css={S.teamPlaceName}>{displayName}</Text>}
+              {!isMobile && (
+                <Text size="sm" css={S.teamPlaceName}>
+                  {displayName}
+                </Text>
+              )}
             </S.TeamNameContainer>
             <S.ControlButtonWrapper>
               <Button variant="primary" css={S.submitButton}>

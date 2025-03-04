@@ -6,18 +6,18 @@ export const Container = styled.div<{ $css: CSSProp; $isMobile: boolean }>`
   position: absolute;
   flex-direction: column;
   z-index: ${({ theme }) => theme.zIndex.MODAL};
-  gap: 16px;
+  gap: 10px;
 
   ${({ $isMobile }) => {
     if ($isMobile)
       return css`
         width: 300px;
-        padding: 10px 10px 20px 26px;
+        padding: 10px 26px 20px;
       `;
 
     return css`
-      width: 446px;
-      padding: 18px 22px;
+      width: 436px;
+      padding: 12px 16px;
     `;
   }}
 
@@ -76,6 +76,12 @@ export const PeriodWrapper = styled.div<{ $isMobile: boolean }>`
   }}
 `;
 
+export const DescriptionDiv = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
 export const teamName = css`
   overflow: hidden;
   white-space: nowrap;
@@ -111,8 +117,8 @@ export const closeButton = ($isMobile: boolean) => css`
   align-items: center;
   align-self: flex-end;
 
-  width: 80px;
-  height: 42px;
+  width: 76px;
+  height: 36px;
   ${$isMobile &&
   css`
     margin-right: 10px;

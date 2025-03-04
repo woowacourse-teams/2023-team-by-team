@@ -18,6 +18,8 @@ export const TIME_TABLE = arrayOf(48).map((_, i) => {
 
 export const SCHEDULE_CIRCLE_MAX_COUNT = 3;
 
+export const SCHEDULE_DESCRIPTION_MAX_LENGTH = 100;
+
 export const MODAL_OPEN_TYPE = {
   ADD: 'add',
   VIEW: 'view',

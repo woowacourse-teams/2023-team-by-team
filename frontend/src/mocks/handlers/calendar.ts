@@ -80,8 +80,6 @@ export const calendarHandlers = [
       const scheduleId = Number(params.scheduleId);
       const data = schedules.find((schedule) => schedule.id === scheduleId);
 
-      console.log('테스트', { scheduleId, data });
-
       const teamPlaceId = Number(params.teamPlaceId);
       const index = teamPlaces.findIndex(
         (teamPlace) => teamPlace.id === teamPlaceId,
@@ -99,12 +97,14 @@ export const calendarHandlers = [
   http.post<{ teamPlaceId: string }, ScheduleWithoutId>(
     `/api/team-place/:teamPlaceId/calendar/schedules`,
     async ({ request, params }) => {
-      const { title, startDateTime, endDateTime } = await request.json();
+      const { title, startDateTime, endDateTime, description } =
+        await request.json();
       const newSchedule = {
         id: Date.now(),
         title,
         startDateTime,
         endDateTime,
+        description,
       };
       const teamPlaceId = Number(params.teamPlaceId);
       const index = teamPlaces.findIndex(
@@ -133,8 +133,8 @@ export const calendarHandlers = [
       const teamPlaceId = Number(params.teamPlaceId);
       const scheduleId = Number(params.scheduleId);
 
-      const { title, startDateTime, endDateTime } = await request.json();
-      console.log('테스트', title, startDateTime, endDateTime);
+      const { title, startDateTime, endDateTime, description } =
+        await request.json();
       const index = schedules.findIndex(
         (schedule) => schedule.id === scheduleId,
       );
@@ -152,6 +152,7 @@ export const calendarHandlers = [
         title,
         startDateTime,
         endDateTime,
+        description,
       };
 
       mySchedules[myIndex] = {
@@ -160,6 +161,7 @@ export const calendarHandlers = [
         title,
         startDateTime,
         endDateTime,
+        description,
       };
 
       return new HttpResponse(null);

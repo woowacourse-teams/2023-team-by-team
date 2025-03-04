@@ -9,6 +9,11 @@ const user = {
 };
 
 export const userHandlers = [
+  http.get('/api/auth/oauth/google/login', () => {
+    return HttpResponse.json({
+      googleLoginUrl: '/login?accessToken=aaaa&refreshToken=bbbb',
+    });
+  }),
   // 사용자 정보 조회
   http.get('/api/me', () => {
     return HttpResponse.json(user);
