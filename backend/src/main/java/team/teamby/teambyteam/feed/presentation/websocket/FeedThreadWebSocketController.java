@@ -29,11 +29,10 @@ public final class FeedThreadWebSocketController {
                                                       @Header("RequestId") String requestId,
                                                       @Valid @Payload final FeedThreadWebsocketWritingRequest request) {
 
-        FeedWebsocketResponse feedWebsocketResponse = feedWriteService.writeFeedThread(teamplaceId, memberEmailDto, requestId, request);
+        final FeedWebsocketResponse feedWebsocketResponse = feedWriteService.writeFeedThread(teamplaceId, memberEmailDto, requestId, request);
 
         return MessageBuilder
                 .withPayload(feedWebsocketResponse)
-                .setHeader("RequestId", requestId)
                 .build();
     }
 }
