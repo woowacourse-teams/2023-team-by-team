@@ -136,6 +136,6 @@ public class FeedWriteService {
         log.info("스레드 생성 - 생성자 이메일 : {}, 스레드 아이디 : {}", memberEmailDto.email(), feedThread.getId());
 
         List<FeedImageResponse> feedImageResponses = images.stream().map(FeedImageResponse::from).toList();
-        return FeedWebsocketResponse.from(feedThread,author.getDisplayMemberNameValue(), author.findMemberProfileImageUrl(), feedImageResponses);
+        return FeedWebsocketResponse.from(requestId, feedThread,author.getDisplayMemberNameValue(), author.findMemberProfileImageUrl(), feedImageResponses);
     }
 }

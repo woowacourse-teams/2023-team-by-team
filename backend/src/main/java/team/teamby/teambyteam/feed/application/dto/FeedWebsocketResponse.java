@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record FeedWebsocketResponse(
+        String requestId,
         Long id,
         Long authorId,
         String authorName,
@@ -17,11 +18,13 @@ public record FeedWebsocketResponse(
         List<FeedImageResponse> images) {
 
     public static FeedWebsocketResponse from(
+            String requestId,
             final Feed feed,
             final String authorName,
             final String profileImageUrl,
             final List<FeedImageResponse> images) {
         return new FeedWebsocketResponse(
+                requestId,
                 feed.getId(),
                 feed.getAuthorId(),
                 authorName,
