@@ -6,12 +6,15 @@ import type {
 import { useEffect, useRef, useState } from 'react';
 import { useFetchNoticeThread } from '~/hooks/queries/useFetchNoticeThread';
 import { useSendNoticeThread } from '~/hooks/queries/useSendNoticeThread';
-import { useSendThread } from '~/hooks/queries/useSendThread';
 import { useImageUpload } from '~/hooks/thread/useImageUpload';
 import { useTeamPlace } from '~/hooks/useTeamPlace';
 import { useToast } from '~/hooks/useToast';
+import type { StompThreadRequest } from '~/types/feed';
+import { generateUuid } from '~/utils/generateUuid';
 
-export const useTeamFeedPage = () => {
+export const useTeamFeedPage = (
+  onSendThreadToStomp: (threadRequestInfo: StompThreadRequest) => void,
+) => {
   const { teamPlaceId } = useTeamPlace();
   const { showToast } = useToast();
   const {
@@ -22,7 +25,6 @@ export const useTeamFeedPage = () => {
     deleteAllImages,
   } = useImageUpload();
   const { noticeThread } = useFetchNoticeThread(teamPlaceId);
-  const { mutateSendThread, isSendThreadLoading } = useSendThread(teamPlaceId);
   const { mutateSendNoticeThread, isSendNoticeThreadLoading } =
     useSendNoticeThread(teamPlaceId);
 
@@ -33,9 +35,7 @@ export const useTeamFeedPage = () => {
   const [chatContent, setChatContent] = useState('');
   const ref = useRef<HTMLDivElement>(null);
 
-  const isSendingImage =
-    (isSendNoticeThreadLoading || isSendThreadLoading) &&
-    imageFiles.length !== 0;
+  const isSendingImage = isSendNoticeThreadLoading && imageFiles.length !== 0;
 
   const handleIsNoticeChange = () => {
     setIsNotice((prev) => !prev);
@@ -110,19 +110,12 @@ export const useTeamFeedPage = () => {
       return;
     }
 
-    mutateSendThread(
-      { content: chatContent, images: imageFiles },
-      {
-        onSuccess: () => {
-          resetChatBox();
-          deleteAllImages();
-          if (isImageDrawerOpen) handleImageDrawerToggle();
-        },
-        onError: () => {
-          showToast('error', '스레드 등록에 실패했습니다.');
-        },
-      },
-    );
+    onSendThreadToStomp({
+      content: chatContent,
+      imageIds: [],
+      requestId: generateUuid(),
+    });
+    resetChatBox();
   };
 
   const resetChatBox = () => {
