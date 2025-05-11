@@ -3,6 +3,7 @@ import { calendarHandlers } from '~/mocks/handlers/calendar';
 import { feedHandlers } from '~/mocks/handlers/feed';
 import { LinkHandlers } from '~/mocks/handlers/link';
 import { teamHandlers } from '~/mocks/handlers/team';
+import { stompHandlers } from '~/mocks/handlers/stomp';
 
 export const handlers = [
   ...userHandlers,
@@ -10,4 +11,5 @@ export const handlers = [
   ...feedHandlers,
   ...teamHandlers,
   ...LinkHandlers,
+  ...stompHandlers,
 ];
