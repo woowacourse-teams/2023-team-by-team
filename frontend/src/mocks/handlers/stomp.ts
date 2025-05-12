@@ -51,8 +51,6 @@ export const stompHandlers = [
       }
 
       if (command === 'SEND') {
-        console.log(headers, body);
-
         const { content } = body;
 
         setTimeout(() => {
