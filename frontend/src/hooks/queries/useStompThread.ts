@@ -33,7 +33,7 @@ export const useStompThread = () => {
             const stompThreadResponse: StompThreadResponse = JSON.parse(
               incomingMessage.body,
             );
-            const { requestId, ...newThread } = stompThreadResponse;
+            const { requestId, ...newThread } = stompThreadResponse.payload;
 
             queryClient.setQueryData<InfiniteData<ThreadsResponse>>(
               ['threadData', teamPlaceId],

@@ -79,6 +79,6 @@ export interface StompThreadRequest {
   requestId: string;
 }
 
-export interface StompThreadResponse extends Omit<Thread, 'type'> {
-  requestId: string;
+export interface StompThreadResponse {
+  payload: Omit<Thread, 'type'> & { requestId: string };
 }
