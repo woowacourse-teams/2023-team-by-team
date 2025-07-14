@@ -80,5 +80,5 @@ export interface StompThreadRequest {
 }
 
 export interface StompThreadResponse {
-  payload: Omit<Thread, 'type'> & { requestId: string };
+  payload: Omit<Thread, 'type' | 'isMe'> & { requestId: string };
 }
