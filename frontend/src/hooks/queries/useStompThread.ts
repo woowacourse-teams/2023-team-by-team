@@ -7,6 +7,7 @@ import type { ThreadsResponse } from '~/apis/feed';
 import { Client } from '@stomp/stompjs';
 import type { StompThreadRequest, StompThreadResponse } from '~/types/feed';
 import { baseUrl } from '~/apis/http';
+import { useFetchUserInfo } from '~/hooks/queries/useFetchUserInfo';
 
 const BASE_URL = baseUrl === undefined ? 'http://localhost:3000' : baseUrl;
 
@@ -15,6 +16,7 @@ export const useStompThread = () => {
   const { accessToken } = useToken();
   const { teamPlaceId } = useTeamPlace();
   const [client, setClient] = useState<Client | null>(null);
+  const { userInfo } = useFetchUserInfo();
 
   useEffect(() => {
     if (!teamPlaceId) {
@@ -41,7 +43,11 @@ export const useStompThread = () => {
                 if (oldData) {
                   const newFirstPageThreads = {
                     threads: [
-                      { ...newThread, type: 'thread' },
+                      {
+                        ...newThread,
+                        type: 'thread',
+                        isMe: newThread.authorId === userInfo?.id,
+                      },
                       ...oldData.pages[0].threads,
                     ],
                   };

@@ -25,11 +25,10 @@ export const stompHandlers = [
           const connectOkThread: StompThreadResponse = {
             payload: {
               id: Date.now(),
-              authorId: 1,
+              authorId: 2,
               authorName: 'STOMP 모킹 서버',
               profileImageUrl:
                 'https://github.com/user-attachments/assets/75220af3-66e8-4cda-b164-49de0b3d992b',
-              isMe: false,
               createdAt: generateYYYYMMDDHHMM(new Date()),
               content:
                 '성공적으로 Websocket을 이용한 STOMP 모킹 서버에 연결하였습니다.',
@@ -63,7 +62,6 @@ export const stompHandlers = [
               authorName: '나',
               profileImageUrl:
                 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYZjvO1QuvfgCfQxBwwzmJcHIT5pTXIBGOLeyBDIbZknn6Dhkd40WrU0ZCdjt-IoXLzI0&usqp=CAU',
-              isMe: true,
               createdAt: generateYYYYMMDDHHMM(new Date()),
               content,
               requestId: '',
